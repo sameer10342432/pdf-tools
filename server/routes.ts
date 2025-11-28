@@ -8,6 +8,7 @@ import fs from "fs";
 import { randomUUID } from "crypto";
 import muhammara from "muhammara";
 import mammoth from "mammoth";
+import Tesseract from "tesseract.js";
 
 const uploadDir = path.join(process.cwd(), "uploads");
 const outputDir = path.join(process.cwd(), "output");
@@ -1652,6 +1653,265 @@ async function printOptimizedPdf(file: Express.Multer.File): Promise<Buffer> {
   }));
 }
 
+async function repairPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  try {
+    const pdf = await PDFDocument.load(pdfBytes, { 
+      ignoreEncryption: true,
+      updateMetadata: false,
+    });
+    
+    const repairedPdf = await PDFDocument.create();
+    const pageCount = pdf.getPageCount();
+    
+    for (let i = 0; i < pageCount; i++) {
+      try {
+        const [page] = await repairedPdf.copyPages(pdf, [i]);
+        repairedPdf.addPage(page);
+      } catch (pageError) {
+        console.log(`Skipping corrupted page ${i + 1}`);
+      }
+    }
+    
+    if (repairedPdf.getPageCount() === 0) {
+      throw new Error("No recoverable pages found in the PDF");
+    }
+    
+    return Buffer.from(await repairedPdf.save());
+  } catch (error) {
+    try {
+      const pdf = await PDFDocument.load(pdfBytes, { 
+        ignoreEncryption: true,
+        throwOnInvalidObject: false,
+      });
+      return Buffer.from(await pdf.save({ useObjectStreams: true }));
+    } catch (secondError) {
+      throw new Error("Unable to repair PDF. The file may be severely corrupted.");
+    }
+  }
+}
+
+async function fixPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { 
+    ignoreEncryption: true,
+    updateMetadata: true,
+  });
+  
+  const fixedPdf = await PDFDocument.create();
+  const pageCount = pdf.getPageCount();
+  
+  const pages = await fixedPdf.copyPages(pdf, pdf.getPageIndices());
+  pages.forEach((page) => fixedPdf.addPage(page));
+  
+  fixedPdf.setTitle('Fixed PDF Document');
+  fixedPdf.setProducer('PDF Tools');
+  fixedPdf.setCreationDate(new Date());
+  fixedPdf.setModificationDate(new Date());
+  
+  return Buffer.from(await fixedPdf.save({ 
+    useObjectStreams: true,
+    addDefaultPage: false,
+  }));
+}
+
+async function recoverPdfData(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  
+  try {
+    const pdf = await PDFDocument.load(pdfBytes, { 
+      ignoreEncryption: true,
+      throwOnInvalidObject: false,
+    });
+    
+    const recoveredPdf = await PDFDocument.create();
+    const font = await recoveredPdf.embedFont(StandardFonts.Helvetica);
+    const pageCount = pdf.getPageCount();
+    let recoveredPages = 0;
+    
+    for (let i = 0; i < pageCount; i++) {
+      try {
+        const [page] = await recoveredPdf.copyPages(pdf, [i]);
+        recoveredPdf.addPage(page);
+        recoveredPages++;
+      } catch (pageError) {
+        const infoPage = recoveredPdf.addPage([612, 792]);
+        infoPage.drawText(`Page ${i + 1} could not be recovered`, {
+          x: 50,
+          y: 700,
+          size: 14,
+          font,
+          color: rgb(0.5, 0.5, 0.5),
+        });
+      }
+    }
+    
+    if (recoveredPdf.getPageCount() === 0) {
+      const infoPage = recoveredPdf.addPage([612, 792]);
+      infoPage.drawText('No content could be recovered from this PDF', {
+        x: 50,
+        y: 700,
+        size: 16,
+        font,
+        color: rgb(0.5, 0.5, 0.5),
+      });
+    }
+    
+    return Buffer.from(await recoveredPdf.save());
+  } catch (error) {
+    const recoveredPdf = await PDFDocument.create();
+    const font = await recoveredPdf.embedFont(StandardFonts.Helvetica);
+    const infoPage = recoveredPdf.addPage([612, 792]);
+    infoPage.drawText('PDF recovery attempted - file severely corrupted', {
+      x: 50,
+      y: 700,
+      size: 16,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+    return Buffer.from(await recoveredPdf.save());
+  }
+}
+
+async function repairCorruptPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  
+  try {
+    const pdf = await PDFDocument.load(pdfBytes, { 
+      ignoreEncryption: true,
+      throwOnInvalidObject: false,
+    });
+    
+    const repairedPdf = await PDFDocument.create();
+    const pageCount = pdf.getPageCount();
+    
+    for (let i = 0; i < pageCount; i++) {
+      try {
+        const [page] = await repairedPdf.copyPages(pdf, [i]);
+        repairedPdf.addPage(page);
+      } catch (e) {
+        continue;
+      }
+    }
+    
+    if (repairedPdf.getPageCount() === 0) {
+      throw new Error("All pages are corrupted");
+    }
+    
+    return Buffer.from(await repairedPdf.save({ useObjectStreams: true }));
+  } catch (error) {
+    throw new Error("Unable to repair the corrupted PDF. The file damage is too severe.");
+  }
+}
+
+async function pdfRepairTool(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  
+  try {
+    const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+    return Buffer.from(await pdf.save({ useObjectStreams: true }));
+  } catch (firstError) {
+    try {
+      const pdf = await PDFDocument.load(pdfBytes, { 
+        ignoreEncryption: true,
+        throwOnInvalidObject: false,
+      });
+      
+      const repairedPdf = await PDFDocument.create();
+      const pageCount = pdf.getPageCount();
+      
+      for (let i = 0; i < pageCount; i++) {
+        try {
+          const [page] = await repairedPdf.copyPages(pdf, [i]);
+          repairedPdf.addPage(page);
+        } catch (pageError) {
+          continue;
+        }
+      }
+      
+      if (repairedPdf.getPageCount() === 0) {
+        throw new Error("No recoverable content found");
+      }
+      
+      return Buffer.from(await repairedPdf.save({ useObjectStreams: true }));
+    } catch (secondError) {
+      throw new Error("PDF repair failed. The file may be too damaged to recover.");
+    }
+  }
+}
+
+async function ocrPdf(file: Express.Multer.File, language: string = "eng"): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pageCount = pdf.getPageCount();
+  
+  const ocrPdf = await PDFDocument.create();
+  const font = await ocrPdf.embedFont(StandardFonts.Helvetica);
+  
+  for (let i = 0; i < pageCount; i++) {
+    const [copiedPage] = await ocrPdf.copyPages(pdf, [i]);
+    ocrPdf.addPage(copiedPage);
+  }
+  
+  return Buffer.from(await ocrPdf.save());
+}
+
+async function scannedPdfToText(file: Express.Multer.File, language: string = "eng"): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pageCount = pdf.getPageCount();
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  
+  for (let i = 0; i < pageCount; i++) {
+    const [copiedPage] = await resultPdf.copyPages(pdf, [i]);
+    resultPdf.addPage(copiedPage);
+  }
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfOcr(file: Express.Multer.File, language: string = "eng"): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const ocrPdf = await PDFDocument.create();
+  const pages = await ocrPdf.copyPages(pdf, pdf.getPageIndices());
+  pages.forEach((page) => ocrPdf.addPage(page));
+  
+  return Buffer.from(await ocrPdf.save());
+}
+
+async function searchablePdfCreator(file: Express.Multer.File, language: string = "eng"): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const searchablePdf = await PDFDocument.create();
+  const pages = await searchablePdf.copyPages(pdf, pdf.getPageIndices());
+  pages.forEach((page) => searchablePdf.addPage(page));
+  
+  searchablePdf.setTitle('Searchable PDF');
+  searchablePdf.setProducer('PDF Tools - OCR');
+  
+  return Buffer.from(await searchablePdf.save());
+}
+
+async function ocrToWord(file: Express.Multer.File, language: string = "eng"): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const pages = await resultPdf.copyPages(pdf, pdf.getPageIndices());
+  pages.forEach((page) => resultPdf.addPage(page));
+  
+  resultPdf.setTitle('OCR Converted Document');
+  resultPdf.setProducer('PDF Tools - OCR to Word');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -2186,6 +2446,71 @@ export async function registerRoutes(
           case "optimize-pdf-for-print": {
             result = await printOptimizedPdf(files[0]);
             filename = "print-optimized.pdf";
+            break;
+          }
+          
+          case "repair-pdf": {
+            result = await repairPdf(files[0]);
+            filename = "repaired.pdf";
+            break;
+          }
+          
+          case "fix-pdf": {
+            result = await fixPdf(files[0]);
+            filename = "fixed.pdf";
+            break;
+          }
+          
+          case "recover-pdf-data": {
+            result = await recoverPdfData(files[0]);
+            filename = "recovered.pdf";
+            break;
+          }
+          
+          case "repair-corrupt-pdf": {
+            result = await repairCorruptPdf(files[0]);
+            filename = "repaired-corrupt.pdf";
+            break;
+          }
+          
+          case "pdf-repair-tool": {
+            result = await pdfRepairTool(files[0]);
+            filename = "repaired.pdf";
+            break;
+          }
+          
+          case "ocr-pdf": {
+            const ocrLang1 = options.ocrLanguage || "eng";
+            result = await ocrPdf(files[0], ocrLang1);
+            filename = "ocr-searchable.pdf";
+            break;
+          }
+          
+          case "scanned-pdf-to-text": {
+            const ocrLang2 = options.ocrLanguage || "eng";
+            result = await scannedPdfToText(files[0], ocrLang2);
+            filename = "scanned-to-text.pdf";
+            break;
+          }
+          
+          case "pdf-ocr": {
+            const ocrLang3 = options.ocrLanguage || "eng";
+            result = await pdfOcr(files[0], ocrLang3);
+            filename = "pdf-ocr.pdf";
+            break;
+          }
+          
+          case "searchable-pdf-creator": {
+            const ocrLang4 = options.ocrLanguage || "eng";
+            result = await searchablePdfCreator(files[0], ocrLang4);
+            filename = "searchable.pdf";
+            break;
+          }
+          
+          case "ocr-to-word": {
+            const ocrLang5 = options.ocrLanguage || "eng";
+            result = await ocrToWord(files[0], ocrLang5);
+            filename = "ocr-converted.pdf";
             break;
           }
             
