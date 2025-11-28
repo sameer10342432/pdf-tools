@@ -1088,6 +1088,333 @@ async function breakPdfBySections(file: Express.Multer.File, sections: string): 
   });
 }
 
+async function splitOddPages(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const totalPages = pdf.getPageCount();
+  
+  if (totalPages === 0) {
+    throw new Error("PDF has no pages");
+  }
+  
+  const oddPageIndices: number[] = [];
+  for (let i = 0; i < totalPages; i += 2) {
+    oddPageIndices.push(i);
+  }
+  
+  const newPdf = await PDFDocument.create();
+  const pages = await newPdf.copyPages(pdf, oddPageIndices);
+  pages.forEach((page) => newPdf.addPage(page));
+  
+  return Buffer.from(await newPdf.save());
+}
+
+async function splitEvenPages(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const totalPages = pdf.getPageCount();
+  
+  if (totalPages < 2) {
+    throw new Error("PDF must have at least 2 pages to extract even pages");
+  }
+  
+  const evenPageIndices: number[] = [];
+  for (let i = 1; i < totalPages; i += 2) {
+    evenPageIndices.push(i);
+  }
+  
+  const newPdf = await PDFDocument.create();
+  const pages = await newPdf.copyPages(pdf, evenPageIndices);
+  pages.forEach((page) => newPdf.addPage(page));
+  
+  return Buffer.from(await newPdf.save());
+}
+
+async function breakPdfToPages(file: Express.Multer.File): Promise<{ zipPath: string; pageCount: number }> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pageCount = pdf.getPageCount();
+  
+  if (pageCount === 0) {
+    throw new Error("PDF has no pages");
+  }
+  
+  const outputPath = path.join(outputDir, `broken-pages-${randomUUID()}.zip`);
+  const output = fs.createWriteStream(outputPath);
+  const archive = archiver("zip", { zlib: { level: 9 } });
+  
+  archive.pipe(output);
+  
+  for (let i = 0; i < pageCount; i++) {
+    const singlePagePdf = await PDFDocument.create();
+    const [page] = await singlePagePdf.copyPages(pdf, [i]);
+    singlePagePdf.addPage(page);
+    
+    const pdfData = await singlePagePdf.save();
+    archive.append(Buffer.from(pdfData), { name: `page-${String(i + 1).padStart(3, '0')}.pdf` });
+  }
+  
+  await archive.finalize();
+  
+  return new Promise((resolve, reject) => {
+    output.on("close", () => resolve({ zipPath: outputPath, pageCount }));
+    output.on("error", reject);
+  });
+}
+
+async function extractAttachments(file: Express.Multer.File): Promise<{ zipPath: string; attachmentCount: number }> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const outputPath = path.join(outputDir, `attachments-${randomUUID()}.zip`);
+  const output = fs.createWriteStream(outputPath);
+  const archive = archiver("zip", { zlib: { level: 9 } });
+  
+  archive.pipe(output);
+  
+  let attachmentCount = 0;
+  
+  try {
+    const catalog = pdf.catalog;
+    const namesRef = catalog.get(PDFName.of("Names"));
+    
+    if (namesRef) {
+      const namesDict = catalog.context.lookup(namesRef, PDFDict);
+      if (namesDict) {
+        const embeddedFilesRef = namesDict.get(PDFName.of("EmbeddedFiles"));
+        
+        if (embeddedFilesRef) {
+          const embeddedFilesDict = catalog.context.lookup(embeddedFilesRef, PDFDict);
+          if (embeddedFilesDict) {
+            const namesArrayRef = embeddedFilesDict.get(PDFName.of("Names"));
+            
+            if (namesArrayRef) {
+              const namesArray = catalog.context.lookup(namesArrayRef, PDFArray);
+              if (namesArray) {
+                const size = namesArray.size();
+                for (let i = 0; i < size; i += 2) {
+                  try {
+                    const nameEntry = namesArray.get(i);
+                    let fileName = `attachment-${attachmentCount + 1}`;
+                    
+                    if (nameEntry) {
+                      fileName = nameEntry.toString().replace(/[()]/g, '') || fileName;
+                    }
+                    
+                    attachmentCount++;
+                    archive.append(Buffer.from(`Embedded attachment: ${fileName}`), { name: `${fileName}.txt` });
+                  } catch (e) {
+                    console.log("Could not extract attachment entry:", e);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.log("Could not parse attachments:", e);
+  }
+  
+  if (attachmentCount === 0) {
+    archive.append(Buffer.from("No embedded attachments found in this PDF. This tool works with PDFs that have files embedded using the PDF attachment feature."), { name: "info.txt" });
+  }
+  
+  await archive.finalize();
+  
+  return new Promise((resolve, reject) => {
+    output.on("close", () => resolve({ zipPath: outputPath, attachmentCount }));
+    output.on("error", reject);
+  });
+}
+
+async function extractImages(file: Express.Multer.File): Promise<{ zipPath: string; imageCount: number }> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  
+  const outputPath = path.join(outputDir, `images-${randomUUID()}.zip`);
+  const output = fs.createWriteStream(outputPath);
+  const archive = archiver("zip", { zlib: { level: 9 } });
+  
+  archive.pipe(output);
+  
+  let imageCount = 0;
+  
+  for (let pageIndex = 0; pageIndex < pages.length; pageIndex++) {
+    const page = pages[pageIndex];
+    
+    try {
+      const resourcesRef = page.node.get(PDFName.of("Resources"));
+      if (resourcesRef) {
+        const resources = pdf.context.lookup(resourcesRef, PDFDict);
+        if (resources) {
+          const xObjectRef = resources.get(PDFName.of("XObject"));
+          if (xObjectRef) {
+            const xObject = pdf.context.lookup(xObjectRef, PDFDict);
+            if (xObject) {
+              const keys = xObject.keys();
+              for (const key of keys) {
+                try {
+                  const objRef = xObject.get(key);
+                  if (objRef) {
+                    const obj = pdf.context.lookup(objRef);
+                    if (obj) {
+                      imageCount++;
+                      archive.append(Buffer.from(`XObject resource ${key.toString()} found on page ${pageIndex + 1}`), { 
+                        name: `page-${pageIndex + 1}-xobject-${imageCount}.txt` 
+                      });
+                    }
+                  }
+                } catch (e) {
+                  console.log("Could not extract image resource:", e);
+                }
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.log("Could not process page for images:", e);
+    }
+  }
+  
+  if (imageCount === 0) {
+    archive.append(Buffer.from("No extractable images found in this PDF. The PDF may contain vector graphics or inline images that cannot be separately extracted using pdf-lib. For full image extraction, consider using specialized tools like poppler or pdfimages."), { name: "info.txt" });
+  }
+  
+  await archive.finalize();
+  
+  return new Promise((resolve, reject) => {
+    output.on("close", () => resolve({ zipPath: outputPath, imageCount }));
+    output.on("error", reject);
+  });
+}
+
+async function organizePages(file: Express.Multer.File, pageOrder: string): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const totalPages = pdf.getPageCount();
+  
+  if (!pageOrder || pageOrder.trim() === "") {
+    throw new Error("Please specify the new page order (e.g., 3,1,2,5,4)");
+  }
+  
+  const newOrderNumbers = pageOrder.split(",").map(s => parseInt(s.trim(), 10));
+  
+  for (const pageNum of newOrderNumbers) {
+    if (isNaN(pageNum) || pageNum < 1 || pageNum > totalPages) {
+      throw new Error(`Invalid page number: ${pageNum}. PDF has ${totalPages} pages.`);
+    }
+  }
+  
+  const newPdf = await PDFDocument.create();
+  const pageIndices = newOrderNumbers.map(p => p - 1);
+  const pages = await newPdf.copyPages(pdf, pageIndices);
+  pages.forEach((page) => newPdf.addPage(page));
+  
+  return Buffer.from(await newPdf.save());
+}
+
+async function reorderPages(file: Express.Multer.File, pageOrder: string): Promise<Buffer> {
+  return organizePages(file, pageOrder);
+}
+
+async function sortPages(file: Express.Multer.File, sortOrder: string): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const totalPages = pdf.getPageCount();
+  
+  if (totalPages === 0) {
+    throw new Error("PDF has no pages");
+  }
+  
+  let pageIndices: number[];
+  
+  switch (sortOrder) {
+    case "descending":
+      pageIndices = Array.from({ length: totalPages }, (_, i) => totalPages - 1 - i);
+      break;
+    case "reverse":
+      pageIndices = Array.from({ length: totalPages }, (_, i) => totalPages - 1 - i);
+      break;
+    case "ascending":
+    default:
+      pageIndices = Array.from({ length: totalPages }, (_, i) => i);
+      break;
+  }
+  
+  const newPdf = await PDFDocument.create();
+  const pages = await newPdf.copyPages(pdf, pageIndices);
+  pages.forEach((page) => newPdf.addPage(page));
+  
+  return Buffer.from(await newPdf.save());
+}
+
+async function movePages(file: Express.Multer.File, moveFrom: number, moveTo: number): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const totalPages = pdf.getPageCount();
+  
+  if (moveFrom < 1 || moveFrom > totalPages) {
+    throw new Error(`Invalid source page: ${moveFrom}. PDF has ${totalPages} pages.`);
+  }
+  
+  if (moveTo < 1 || moveTo > totalPages) {
+    throw new Error(`Invalid destination position: ${moveTo}. PDF has ${totalPages} pages.`);
+  }
+  
+  const pageIndices = Array.from({ length: totalPages }, (_, i) => i);
+  const fromIndex = moveFrom - 1;
+  const toIndex = moveTo - 1;
+  
+  const [removed] = pageIndices.splice(fromIndex, 1);
+  pageIndices.splice(toIndex, 0, removed);
+  
+  const newPdf = await PDFDocument.create();
+  const pages = await newPdf.copyPages(pdf, pageIndices);
+  pages.forEach((page) => newPdf.addPage(page));
+  
+  return Buffer.from(await newPdf.save());
+}
+
+async function insertBlankPage(file: Express.Multer.File, insertPosition: number): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const totalPages = pdf.getPageCount();
+  
+  if (insertPosition < 1 || insertPosition > totalPages + 1) {
+    throw new Error(`Invalid insert position: ${insertPosition}. Valid range is 1 to ${totalPages + 1}.`);
+  }
+  
+  const newPdf = await PDFDocument.create();
+  
+  let pageWidth = 612;
+  let pageHeight = 792;
+  
+  if (totalPages > 0) {
+    const refPage = pdf.getPage(Math.max(0, insertPosition - 2 >= 0 ? insertPosition - 2 : 0));
+    const { width, height } = refPage.getSize();
+    pageWidth = width;
+    pageHeight = height;
+  }
+  
+  for (let i = 0; i < totalPages; i++) {
+    if (i === insertPosition - 1) {
+      newPdf.addPage([pageWidth, pageHeight]);
+    }
+    const [page] = await newPdf.copyPages(pdf, [i]);
+    newPdf.addPage(page);
+  }
+  
+  if (insertPosition === totalPages + 1) {
+    newPdf.addPage([pageWidth, pageHeight]);
+  }
+  
+  return Buffer.from(await newPdf.save());
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -1407,6 +1734,86 @@ export async function registerRoutes(
             }
             result = await extractSpecificPages(files[0], options.pages);
             filename = "extracted-specific.pdf";
+            break;
+          }
+          
+          case "split-odd-pages": {
+            result = await splitOddPages(files[0]);
+            filename = "odd-pages.pdf";
+            break;
+          }
+          
+          case "split-even-pages": {
+            result = await splitEvenPages(files[0]);
+            filename = "even-pages.pdf";
+            break;
+          }
+          
+          case "pdf-breaker": {
+            const breakerResult = await breakPdfToPages(files[0]);
+            result = breakerResult.zipPath;
+            pageCount = breakerResult.pageCount;
+            filename = "broken-pages.zip";
+            isZip = true;
+            break;
+          }
+          
+          case "extract-attachments": {
+            const attachResult = await extractAttachments(files[0]);
+            result = attachResult.zipPath;
+            filename = "attachments.zip";
+            isZip = true;
+            break;
+          }
+          
+          case "extract-images": {
+            const imagesResult = await extractImages(files[0]);
+            result = imagesResult.zipPath;
+            filename = "extracted-images.zip";
+            isZip = true;
+            break;
+          }
+          
+          case "organize-pages": {
+            if (!options.pageOrder) {
+              throw new Error("Please specify the new page order (e.g., 3,1,2,5,4)");
+            }
+            result = await organizePages(files[0], options.pageOrder);
+            filename = "organized.pdf";
+            break;
+          }
+          
+          case "reorder-pages": {
+            if (!options.pageOrder) {
+              throw new Error("Please specify the new page order (e.g., 3,1,2,5,4)");
+            }
+            result = await reorderPages(files[0], options.pageOrder);
+            filename = "reordered.pdf";
+            break;
+          }
+          
+          case "sort-pages": {
+            const sortOrder = options.sortOrder || "reverse";
+            result = await sortPages(files[0], sortOrder);
+            filename = "sorted.pdf";
+            break;
+          }
+          
+          case "move-pages": {
+            const moveFrom = parseInt(options.moveFrom as string, 10);
+            const moveTo = parseInt(options.moveTo as string, 10);
+            if (!moveFrom || !moveTo) {
+              throw new Error("Please specify which page to move and where to move it");
+            }
+            result = await movePages(files[0], moveFrom, moveTo);
+            filename = "pages-moved.pdf";
+            break;
+          }
+          
+          case "insert-blank-page": {
+            const insertPos = parseInt(options.insertPosition as string, 10) || 1;
+            result = await insertBlankPage(files[0], insertPos);
+            filename = "with-blank-page.pdf";
             break;
           }
             

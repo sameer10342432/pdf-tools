@@ -397,6 +397,114 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "split-odd-pages":
+    case "split-even-pages":
+    case "pdf-breaker":
+    case "extract-attachments":
+    case "extract-images":
+      return null;
+
+    case "organize-pages":
+    case "reorder-pages":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="pageOrder">New Page Order</Label>
+            <Input
+              id="pageOrder"
+              placeholder="e.g., 3,1,2,5,4"
+              value={options.pageOrder || ""}
+              onChange={(e) => updateOption("pageOrder", e.target.value)}
+              data-testid="input-page-order"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter the new page order as comma-separated page numbers.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "sort-pages":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Sort Order</Label>
+            <Select
+              value={options.sortOrder || "reverse"}
+              onValueChange={(value) =>
+                updateOption("sortOrder", value as "ascending" | "descending" | "reverse")
+              }
+            >
+              <SelectTrigger data-testid="select-sort-order">
+                <SelectValue placeholder="Select sort order" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ascending">Ascending (1, 2, 3...)</SelectItem>
+                <SelectItem value="descending">Descending (last to first)</SelectItem>
+                <SelectItem value="reverse">Reverse Order</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "move-pages":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="moveFrom">Page to Move</Label>
+            <Input
+              id="moveFrom"
+              type="number"
+              min={1}
+              placeholder="Source page number"
+              value={options.moveFrom || ""}
+              onChange={(e) => updateOption("moveFrom", parseInt(e.target.value) || undefined)}
+              data-testid="input-move-from"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="moveTo">Move to Position</Label>
+            <Input
+              id="moveTo"
+              type="number"
+              min={1}
+              placeholder="Destination position"
+              value={options.moveTo || ""}
+              onChange={(e) => updateOption("moveTo", parseInt(e.target.value) || undefined)}
+              data-testid="input-move-to"
+            />
+            <p className="text-sm text-muted-foreground">
+              Move a page from one position to another.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "insert-blank-page":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="insertPosition">Insert Position</Label>
+            <Input
+              id="insertPosition"
+              type="number"
+              min={1}
+              placeholder="Position to insert blank page"
+              value={options.insertPosition || 1}
+              onChange={(e) => updateOption("insertPosition", parseInt(e.target.value) || 1)}
+              data-testid="input-insert-position"
+            />
+            <p className="text-sm text-muted-foreground">
+              Insert a blank page before this position.
+              {pageCount && ` (Valid: 1 to ${pageCount + 1})`}
+            </p>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }
