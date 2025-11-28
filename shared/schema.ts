@@ -52,6 +52,16 @@ export const pdfToolTypes = [
   "reduce-pdf-size",
   "optimize-pdf",
   "pdf-optimizer",
+  "high-compression-pdf",
+  "basic-compression-pdf",
+  "custom-pdf-compression",
+  "compress-pdf-for-web",
+  "compress-pdf-for-email",
+  "compress-scanned-pdf",
+  "pdf-size-reducer",
+  "shrink-pdf",
+  "pdf-file-compressor",
+  "optimize-pdf-for-print",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -1458,5 +1468,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Professional-Grade Results</h2>
 <p>Our PDF Optimizer delivers results that meet professional standards. Documents perform excellently in enterprise environments. Files meet submission requirements for various platforms. Quality remains suitable for professional use. Get the best possible version of every PDF you process.</p>`,
+  },
+  {
+    id: "high-compression-pdf",
+    name: "High Compression PDF",
+    description: "Maximum compression for smallest file size",
+    icon: "Minimize2",
+    type: "high-compression-pdf",
+    color: "bg-red-600",
+    emoji: "🔥",
+    metaTitle: "High Compression PDF Online Free - Maximum PDF Compression | PDF Tools",
+    metaDescription: "Apply high compression to PDF files online for free. Achieve maximum file size reduction up to 95%. Best for web sharing and email attachments.",
+    seoArticle: `<h2>High Compression PDF - Maximum File Size Reduction</h2>
+<p>When file size matters most, our High Compression PDF tool delivers the ultimate in size reduction. Using aggressive compression algorithms, we can reduce PDF file sizes by up to 95%, transforming large documents into lightweight files perfect for email, web uploads, and limited storage situations.</p>
+
+<h2>When to Use High Compression</h2>
+<p>High compression is ideal when file size is your primary concern. Use it for documents that exceed email attachment limits. Apply it to PDFs destined for web download where bandwidth matters. Choose it when storage space is critically limited. High compression solves file size problems decisively.</p>
+
+<h2>Aggressive Optimization Techniques</h2>
+<p>Our high compression mode employs every available optimization technique. Images are aggressively resampled and compressed. Fonts are subsetted to essential characters only. Metadata is stripped to minimum required data. Color spaces are optimized. Every byte is scrutinized for reduction potential.</p>
+
+<h2>Quality Considerations</h2>
+<p>High compression prioritizes size over quality. While documents remain readable and functional, some visual fidelity may be reduced. Images may show more compression artifacts. This trade-off is acceptable when size reduction is the priority and documents are primarily for viewing, not printing.</p>
+
+<h2>Simple High Compression Process</h2>
+<p>Upload your PDF that needs maximum compression. Our tool applies aggressive compression automatically. Processing optimizes every element for minimum size. Download your dramatically smaller PDF file. Share, email, and upload without size restrictions.</p>`,
+  },
+  {
+    id: "basic-compression-pdf",
+    name: "Basic Compression PDF",
+    description: "Light compression preserving maximum quality",
+    icon: "Archive",
+    type: "basic-compression-pdf",
+    color: "bg-blue-500",
+    emoji: "📦",
+    metaTitle: "Basic PDF Compression Online Free - Quality-Preserving Compression | PDF Tools",
+    metaDescription: "Apply basic compression to PDF files online for free. Light compression that preserves maximum document quality. Ideal for print-ready documents.",
+    seoArticle: `<h2>Basic PDF Compression - Quality-First File Reduction</h2>
+<p>When document quality is paramount but some size reduction is still needed, our Basic Compression PDF tool provides the perfect balance. We apply gentle compression techniques that reduce file size while maintaining near-original quality, perfect for documents that may be printed or require visual precision.</p>
+
+<h2>Preserve Document Quality</h2>
+<p>Basic compression prioritizes quality over aggressive size reduction. Images retain their sharpness and detail. Colors remain accurate and vibrant. Text stays crisp and perfectly readable. Your compressed document looks virtually identical to the original while still benefiting from size optimization.</p>
+
+<h2>Ideal Use Cases</h2>
+<p>Use basic compression for professional documents that may be printed. Apply it to portfolios and presentations where visual quality matters. Choose it for legal and official documents requiring clarity. Select it when you want smaller files without visible quality loss.</p>
+
+<h2>Gentle Optimization Approach</h2>
+<p>Our basic compression uses conservative optimization techniques. Images are lightly compressed with minimal quality impact. Document structure is cleaned without aggressive modification. Redundant data is removed while preserving all visual elements. The result is modest size reduction with excellent quality retention.</p>
+
+<h2>Quick and Easy Process</h2>
+<p>Upload your PDF for basic compression. Our tool applies quality-preserving compression automatically. Processing maintains visual fidelity throughout. Download your optimized PDF with pristine quality. Enjoy smaller files without quality compromise.</p>`,
+  },
+  {
+    id: "custom-pdf-compression",
+    name: "Custom PDF Compression",
+    description: "Customize compression settings to your needs",
+    icon: "Gauge",
+    type: "custom-pdf-compression",
+    color: "bg-purple-600",
+    emoji: "🎚️",
+    metaTitle: "Custom PDF Compression Online Free - Adjustable Compression Settings | PDF Tools",
+    metaDescription: "Customize PDF compression settings online for free. Adjust compression level to balance file size and quality. Flexible PDF compression tool.",
+    seoArticle: `<h2>Custom PDF Compression - Your Settings, Your Choice</h2>
+<p>Take complete control over your PDF compression with our Custom Compression tool. Unlike preset compression levels, this tool lets you fine-tune settings to achieve exactly the balance of file size and quality you need. Perfect for users who understand their requirements and want precise control.</p>
+
+<h2>Adjustable Compression Levels</h2>
+<p>Choose from low, medium, or high compression intensity. Low compression preserves maximum quality with modest size reduction. Medium compression balances quality and size effectively. High compression prioritizes size reduction aggressively. Select what works for your specific document and use case.</p>
+
+<h2>Understand the Trade-offs</h2>
+<p>Every compression choice involves trade-offs between size and quality. Lower compression means larger files but better quality. Higher compression means smaller files but more quality reduction. Our custom tool lets you make this choice consciously rather than accepting preset decisions.</p>
+
+<h2>Flexible for Every Situation</h2>
+<p>Different documents have different needs. A photo-heavy brochure needs different treatment than a text document. A file for email has different requirements than one for printing. Custom compression adapts to your specific situation with the settings you choose.</p>
+
+<h2>How to Use Custom Compression</h2>
+<p>Upload your PDF document. Select your preferred compression level using the slider or options. Preview the estimated size reduction if available. Process with your custom settings. Download your precisely compressed PDF.</p>`,
+  },
+  {
+    id: "compress-pdf-for-web",
+    name: "Compress PDF for Web",
+    description: "Optimize PDFs for fast web loading",
+    icon: "Zap",
+    type: "compress-pdf-for-web",
+    color: "bg-cyan-600",
+    emoji: "🌐",
+    metaTitle: "Compress PDF for Web Online Free - Web-Optimized PDF Compression | PDF Tools",
+    metaDescription: "Compress PDF files for web use online for free. Optimize PDFs for fast loading on websites and online platforms. Web-ready PDF compression.",
+    seoArticle: `<h2>Compress PDF for Web - Optimized for Online Performance</h2>
+<p>Web pages demand fast-loading content, and PDFs are no exception. Our Compress PDF for Web tool optimizes your documents specifically for online use, creating files that load quickly in browsers while remaining fully functional. Perfect for website downloads, online catalogs, and digital publications.</p>
+
+<h2>Web-Specific Optimization</h2>
+<p>Web optimization goes beyond basic compression. We enable fast web view (linearization) so PDFs start displaying before fully downloading. Images are optimized for screen resolution rather than print. Files are structured for efficient streaming. Every optimization targets web performance.</p>
+
+<h2>Browser Compatibility</h2>
+<p>Our web-optimized PDFs work perfectly in all modern browsers. They load smoothly in Chrome, Firefox, Safari, and Edge. Mobile browsers handle them efficiently. PDF plugins and readers display them without issues. Universal compatibility ensures your audience can access your content.</p>
+
+<h2>Ideal for Online Publishing</h2>
+<p>Use web compression for documents published on websites. Apply it to downloadable resources and guides. Optimize product catalogs and brochures for online viewing. Prepare reports and whitepapers for digital distribution. Any PDF shared online benefits from web optimization.</p>
+
+<h2>Quick Web Optimization</h2>
+<p>Upload your PDF for web optimization. Our tool applies web-specific compression and structuring. Processing creates browser-ready files. Download your web-optimized PDF. Upload to your website with confidence in performance.</p>`,
+  },
+  {
+    id: "compress-pdf-for-email",
+    name: "Compress PDF for Email",
+    description: "Shrink PDFs to fit email size limits",
+    icon: "Shrink",
+    type: "compress-pdf-for-email",
+    color: "bg-indigo-600",
+    emoji: "📧",
+    metaTitle: "Compress PDF for Email Online Free - Email-Ready PDF Compression | PDF Tools",
+    metaDescription: "Compress PDF files for email attachments online for free. Reduce PDF size to meet email limits. Fast email-ready PDF compression tool.",
+    seoArticle: `<h2>Compress PDF for Email - Fit Any Attachment Limit</h2>
+<p>Email attachment limits frustrate document sharing, but our Compress PDF for Email tool solves this problem instantly. We optimize your PDFs to fit within common email size restrictions while maintaining document usability. Share contracts, reports, and presentations via email without bounced messages.</p>
+
+<h2>Common Email Size Limits</h2>
+<p>Most email providers limit attachments to 25MB, with many corporate systems allowing even less. Our email compression targets sizes that pass these restrictions reliably. Whether you are using Gmail, Outlook, or corporate email, your compressed PDFs will send successfully.</p>
+
+<h2>Maintain Professional Quality</h2>
+<p>Even with aggressive size reduction, your documents remain professional and readable. Text stays clear and legible. Important images maintain sufficient quality. The document structure and navigation work perfectly. Recipients receive usable, professional documents.</p>
+
+<h2>Perfect for Business Communication</h2>
+<p>Send contracts and agreements without size issues. Share proposals and presentations via email. Distribute reports to team members efficiently. Attach invoices and receipts without compression worries. Email compression keeps your business communications flowing smoothly.</p>
+
+<h2>Simple Email-Ready Compression</h2>
+<p>Upload your PDF that is too large for email. Our tool compresses specifically for email requirements. Processing optimizes for size while preserving functionality. Download your email-ready PDF. Attach and send without delivery failures.</p>`,
+  },
+  {
+    id: "compress-scanned-pdf",
+    name: "Compress Scanned PDF",
+    description: "Reduce size of scanned document PDFs",
+    icon: "ScanLine",
+    type: "compress-scanned-pdf",
+    color: "bg-orange-600",
+    emoji: "📠",
+    metaTitle: "Compress Scanned PDF Online Free - Scanned Document Compression | PDF Tools",
+    metaDescription: "Compress scanned PDF documents online for free. Reduce large scan files dramatically. Specialized compression for scanned documents.",
+    seoArticle: `<h2>Compress Scanned PDF - Shrink Large Scan Files</h2>
+<p>Scanned documents often create enormous PDF files because they are essentially images of every page. Our Compress Scanned PDF tool specializes in reducing these large scan files dramatically while maintaining readability. Transform multi-megabyte scans into manageable, shareable documents.</p>
+
+<h2>Why Scanned PDFs Are Large</h2>
+<p>When you scan a document, the scanner captures an image of each page. These images contain millions of pixels, even for simple text documents. Without compression, a 10-page scan can easily exceed 50MB. Scanned PDF compression addresses this specific problem.</p>
+
+<h2>Specialized Scan Compression</h2>
+<p>Our tool recognizes that scanned PDFs need different treatment than native PDFs. We apply compression techniques optimized for scanned content. Images are intelligently processed to maintain text readability. Background noise is reduced. The result is dramatically smaller files that remain fully usable.</p>
+
+<h2>Ideal for Document Digitization</h2>
+<p>Offices digitizing paper archives benefit enormously from scan compression. Reduce storage requirements for historical documents. Make scanned records easy to email and share. Speed up document management system performance. Scan compression makes digitization practical and efficient.</p>
+
+<h2>Easy Scan Compression Process</h2>
+<p>Upload your scanned PDF document. Our tool applies scan-specific compression automatically. Processing reduces image data while preserving readability. Download your dramatically smaller scanned PDF. Store, share, and archive with ease.</p>`,
+  },
+  {
+    id: "pdf-size-reducer",
+    name: "PDF Size Reducer",
+    description: "Powerful tool to reduce any PDF file size",
+    icon: "TrendingDown",
+    type: "pdf-size-reducer",
+    color: "bg-rose-600",
+    emoji: "📐",
+    metaTitle: "PDF Size Reducer Online Free - Reduce PDF File Size | PDF Tools",
+    metaDescription: "Reduce PDF file size with our powerful size reducer tool online for free. Dramatically decrease file size while maintaining quality. Fast PDF reduction.",
+    seoArticle: `<h2>PDF Size Reducer - Powerful File Size Reduction</h2>
+<p>Large PDF files cause problems everywhere: they bounce back from email, take forever to upload, and consume precious storage space. Our PDF Size Reducer tackles these issues head-on with powerful compression that dramatically decreases file sizes while keeping your documents fully functional.</p>
+
+<h2>Dramatic Size Reduction</h2>
+<p>Our size reducer achieves significant reductions on most PDF files. Image-heavy documents often shrink by 70-90%. Text documents with embedded graphics see substantial improvements. Even already-optimized PDFs may benefit from additional reduction. We find every opportunity to reduce file size.</p>
+
+<h2>Maintain Document Usability</h2>
+<p>Reduced files remain completely usable for their intended purpose. Text is readable on screen and in print. Images maintain sufficient quality for viewing. Document navigation and interactive features work normally. Size reduction does not mean functionality reduction.</p>
+
+<h2>Universal Application</h2>
+<p>Use our size reducer on any PDF that is too large for your needs. Prepare files for email attachment. Optimize for cloud storage efficiency. Create versions suitable for web download. Meet file size requirements for various platforms. One tool handles all size reduction needs.</p>
+
+<h2>Quick Size Reduction</h2>
+<p>Upload your oversized PDF file. Our reducer analyzes and compresses automatically. Processing finds optimal size reduction strategies. Download your smaller, more manageable PDF. Use without size-related restrictions.</p>`,
+  },
+  {
+    id: "shrink-pdf",
+    name: "Shrink PDF",
+    description: "Quickly shrink PDF files to smaller size",
+    icon: "Minimize2",
+    type: "shrink-pdf",
+    color: "bg-teal-600",
+    emoji: "🔻",
+    metaTitle: "Shrink PDF Online Free - Quickly Reduce PDF Size | PDF Tools",
+    metaDescription: "Shrink PDF files to smaller size online for free. Quick and easy PDF shrinking with one click. Fast file size reduction tool.",
+    seoArticle: `<h2>Shrink PDF - Quick and Easy Size Reduction</h2>
+<p>Need to make a PDF smaller quickly? Our Shrink PDF tool provides fast, one-click size reduction without complicated settings or options. Upload your file, click shrink, and download a smaller version. Perfect for users who want results without fuss.</p>
+
+<h2>One-Click Simplicity</h2>
+<p>We have eliminated unnecessary complexity from PDF shrinking. No settings to configure, no options to understand, no technical knowledge required. Just upload your file and let our tool do the work. Shrinking a PDF has never been this simple.</p>
+
+<h2>Automatic Optimization</h2>
+<p>Our tool automatically analyzes your PDF and applies appropriate shrinking techniques. It recognizes document content and adjusts compression accordingly. Text-heavy documents get different treatment than image-heavy ones. Smart automation ensures good results every time.</p>
+
+<h2>Fast Processing</h2>
+<p>Time matters when you need to shrink a file quickly. Our processing is optimized for speed without sacrificing results. Most files shrink in seconds. Even large documents process quickly. Get your smaller PDF and move on with your work.</p>
+
+<h2>Straightforward Shrinking Process</h2>
+<p>Upload the PDF you want to shrink. Click the shrink button to start processing. Wait just moments for completion. Download your shrunken PDF file. That is all there is to it. Simple, fast, and effective.</p>`,
+  },
+  {
+    id: "pdf-file-compressor",
+    name: "PDF File Compressor",
+    description: "Professional-grade PDF file compression",
+    icon: "Archive",
+    type: "pdf-file-compressor",
+    color: "bg-violet-600",
+    emoji: "🗃️",
+    metaTitle: "PDF File Compressor Online Free - Professional PDF Compression | PDF Tools",
+    metaDescription: "Compress PDF files with professional-grade compression online for free. Reliable file compression for business documents. Enterprise PDF compressor.",
+    seoArticle: `<h2>PDF File Compressor - Professional-Grade Compression</h2>
+<p>Business documents deserve professional treatment. Our PDF File Compressor delivers enterprise-grade compression that meets the demands of professional environments. Reliable, consistent results for contracts, reports, presentations, and all your important business PDFs.</p>
+
+<h2>Enterprise-Ready Compression</h2>
+<p>Our compressor handles business documents with the care they require. Financial reports compress without data integrity concerns. Legal documents maintain their professional appearance. Marketing materials retain their visual impact. Every document type receives appropriate professional treatment.</p>
+
+<h2>Consistent, Reliable Results</h2>
+<p>Businesses need predictable outcomes from their tools. Our compressor delivers consistent results across all documents. The same quality standards apply to every file. You can trust the output for professional distribution and archiving.</p>
+
+<h2>Batch Processing Capability</h2>
+<p>Professional environments often need to compress multiple documents. Our tool handles individual files with equal efficiency. Process documents one at a time or prepare for batch operations. Scale your compression workflow to match your document volume.</p>
+
+<h2>Professional Compression Workflow</h2>
+<p>Upload your business PDF document. Our professional compressor analyzes and optimizes. Processing applies enterprise-grade compression techniques. Download your professionally compressed PDF. Distribute with confidence in quality and reliability.</p>`,
+  },
+  {
+    id: "optimize-pdf-for-print",
+    name: "Optimize PDF for Print",
+    description: "Prepare PDFs for high-quality printing",
+    icon: "Gauge",
+    type: "optimize-pdf-for-print",
+    color: "bg-emerald-600",
+    emoji: "🖨️",
+    metaTitle: "Optimize PDF for Print Online Free - Print-Ready PDF Optimization | PDF Tools",
+    metaDescription: "Optimize PDF files for printing online for free. Prepare documents for high-quality print output. Professional print optimization tool.",
+    seoArticle: `<h2>Optimize PDF for Print - Perfect Print Preparation</h2>
+<p>Printing demands different optimization than digital viewing. Our Optimize PDF for Print tool prepares your documents for high-quality physical output. We adjust settings and compression to ensure your printed documents look sharp, professional, and exactly as intended.</p>
+
+<h2>Print-Specific Optimization</h2>
+<p>Print optimization differs from web optimization in important ways. We maintain higher image resolutions suitable for print DPI requirements. Colors are preserved for accurate physical reproduction. Document structure is optimized for print processing. Every adjustment targets print quality.</p>
+
+<h2>Maintain Print Quality</h2>
+<p>While reducing file size, we never compromise print quality below professional standards. Images retain resolution needed for sharp printing. Text remains crisp at any print size. Graphics and charts print clearly. Your documents meet professional print expectations.</p>
+
+<h2>Ideal for Professional Printing</h2>
+<p>Use print optimization before sending documents to professional printers. Prepare marketing materials for production. Optimize reports and proposals for client presentations. Get documents ready for office printing needs. Print optimization ensures the best physical output.</p>
+
+<h2>Print-Ready Optimization Process</h2>
+<p>Upload your PDF destined for printing. Our tool applies print-specific optimization. Processing balances size reduction with quality preservation. Download your print-optimized PDF. Print with confidence in professional results.</p>`,
   },
 ];
