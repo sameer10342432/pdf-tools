@@ -275,6 +275,128 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "split-by-size":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="sizeLimitMB">Maximum File Size (MB)</Label>
+            <Input
+              id="sizeLimitMB"
+              type="number"
+              min={0.1}
+              step={0.1}
+              placeholder="5"
+              value={options.sizeLimitMB || 5}
+              onChange={(e) => updateOption("sizeLimitMB", parseFloat(e.target.value) || 5)}
+              data-testid="input-size-limit"
+            />
+            <p className="text-sm text-muted-foreground">
+              Each output file will not exceed this size limit.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "split-by-text":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="searchText">Split Text Pattern</Label>
+            <Input
+              id="searchText"
+              placeholder="e.g., Chapter, Section"
+              value={options.searchText || ""}
+              onChange={(e) => updateOption("searchText", e.target.value)}
+              data-testid="input-search-text"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter text that marks section boundaries in your PDF.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "split-every-x-pages":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="pageInterval">Page Interval</Label>
+            <Input
+              id="pageInterval"
+              type="number"
+              min={1}
+              placeholder="5"
+              value={options.pageInterval || 5}
+              onChange={(e) => updateOption("pageInterval", parseInt(e.target.value) || 5)}
+              data-testid="input-page-interval"
+            />
+            <p className="text-sm text-muted-foreground">
+              Split PDF every X pages. {pageCount && `(Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "extract-pages":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="pages">Page Ranges to Extract</Label>
+            <Input
+              id="pages"
+              placeholder="e.g., 1-5, 10-15, 20-25"
+              value={options.pages || ""}
+              onChange={(e) => updateOption("pages", e.target.value)}
+              data-testid="input-pages"
+            />
+            <p className="text-sm text-muted-foreground">
+              Each range creates a separate PDF file.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "page-remover":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="pages">Pages to Remove</Label>
+            <Input
+              id="pages"
+              placeholder="e.g., 1,3,5-10"
+              value={options.pages || ""}
+              onChange={(e) => updateOption("pages", e.target.value)}
+              data-testid="input-pages"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter page numbers to remove. Use comma for multiple, hyphen for ranges.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "extract-specific":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="pages">Pages to Extract</Label>
+            <Input
+              id="pages"
+              placeholder="e.g., 1,5,10-15"
+              value={options.pages || ""}
+              onChange={(e) => updateOption("pages", e.target.value)}
+              data-testid="input-pages"
+            />
+            <p className="text-sm text-muted-foreground">
+              Selected pages will be combined into a single PDF.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }

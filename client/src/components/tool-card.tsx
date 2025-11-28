@@ -14,6 +14,15 @@ import {
   Stamp,
   Lock,
   Unlock,
+  HardDrive,
+  Bookmark,
+  FileText,
+  SplitSquareHorizontal,
+  Grid,
+  FileOutput,
+  FileSearch,
+  Eraser,
+  Target,
   type LucideIcon,
 } from "lucide-react";
 
@@ -30,6 +39,15 @@ const iconMap: Record<string, LucideIcon> = {
   Stamp,
   Lock,
   Unlock,
+  HardDrive,
+  Bookmark,
+  FileText,
+  SplitSquareHorizontal,
+  Grid,
+  FileOutput,
+  FileSearch,
+  Eraser,
+  Target,
 };
 
 interface ToolCardProps {

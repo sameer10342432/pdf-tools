@@ -23,6 +23,15 @@ export const pdfToolTypes = [
   "divide-pdf",
   "break-pdf",
   "split-by-pages",
+  "split-by-size",
+  "split-by-bookmarks",
+  "split-by-text",
+  "split-in-half",
+  "split-every-x-pages",
+  "extract-pages",
+  "page-extractor",
+  "page-remover",
+  "extract-specific",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -81,6 +90,9 @@ export const toolOptionsSchema = z.object({
   unlockPassword: z.string().optional(),
   parts: z.number().optional(),
   sections: z.string().optional(),
+  sizeLimitMB: z.number().optional(),
+  searchText: z.string().optional(),
+  pageInterval: z.number().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -665,5 +677,257 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Batch Processing Ready</h2>
 <p>Individual page files are perfect for automated workflows. Process each page through OCR separately. Apply different treatments to different pages. Upload individual pages to document management systems. Page-by-page splitting enables sophisticated document automation.</p>`,
+  },
+  {
+    id: "split-by-size",
+    name: "Split PDF by Size",
+    description: "Split PDF when parts exceed size limit",
+    icon: "HardDrive",
+    type: "split-by-size",
+    color: "bg-amber-600",
+    emoji: "📦",
+    metaTitle: "Split PDF by Size Online Free - Divide by File Size | PDF Tools",
+    metaDescription: "Split PDF files by maximum file size online for free. Divide large PDFs into smaller parts based on MB limit. Easy size-based PDF splitter.",
+    seoArticle: `<h2>Split PDF by File Size - Manage Large Documents</h2>
+<p>Large PDF files often exceed email attachment limits or storage quotas. Our Split by Size tool divides your PDF into smaller parts based on your specified size limit. Set a maximum file size in megabytes, and the tool automatically creates multiple PDFs that each stay under your limit while preserving complete pages.</p>
+
+<h2>How Size-Based Splitting Works</h2>
+<p>Specify your maximum file size limit in megabytes. Our tool analyzes your PDF and groups pages together until adding another page would exceed your limit. Each resulting file contains complete pages and stays within your size constraint. This intelligent approach ensures no page is split or corrupted.</p>
+
+<h2>Perfect for Email Attachments</h2>
+<p>Most email services limit attachments to 25MB or less. A 100MB PDF report becomes impossible to email directly. With size-based splitting, you can divide it into 20MB chunks that email easily. Recipients receive all content without download issues or bounced messages.</p>
+
+<h2>Cloud Storage Optimization</h2>
+<p>Some cloud services have per-file size limits. Split large archival PDFs into compliant-sized portions for reliable storage. Each chunk uploads successfully and downloads quickly. Organize split files with consistent naming for easy reassembly when needed.</p>
+
+<h2>Simple Size-Based Splitting</h2>
+<p>Upload your PDF document securely. Enter your maximum file size in megabytes. Our tool calculates optimal page groupings automatically. Preview the planned splits before processing. Download all resulting files in a convenient ZIP archive.</p>
+
+<h2>Maintain Document Quality</h2>
+<p>Each split file maintains full original quality. Pages are never compressed or degraded to meet size limits. If a single page exceeds your size limit, you will be notified to adjust. Quality preservation is guaranteed across all output files.</p>`,
+  },
+  {
+    id: "split-by-bookmarks",
+    name: "Split PDF by Bookmarks",
+    description: "Split at bookmark locations",
+    icon: "BookMarked",
+    type: "split-by-bookmarks",
+    color: "bg-violet-600",
+    emoji: "📑",
+    metaTitle: "Split PDF by Bookmarks Online Free - Divide at Chapters | PDF Tools",
+    metaDescription: "Split PDF files at bookmark locations online for free. Divide documents by chapters or sections automatically. Smart bookmark-based PDF splitter.",
+    seoArticle: `<h2>Split PDF by Bookmarks - Chapter-Based Division</h2>
+<p>PDFs with bookmarks contain natural division points marking chapters, sections, or topics. Our Split by Bookmarks tool recognizes these markers and creates separate files for each bookmarked section automatically. Transform a multi-chapter document into individual chapter files with a single click.</p>
+
+<h2>Automatic Section Detection</h2>
+<p>Our tool reads the PDF bookmark structure and identifies top-level bookmarks as split points. Each bookmark becomes the start of a new file. The resulting files are named based on bookmark titles for easy identification. No manual page counting or range specification required.</p>
+
+<h2>Ideal for Structured Documents</h2>
+<p>Ebooks with chapter bookmarks split into individual chapter files. Technical manuals divide into topic-specific sections. Training materials separate into module files. Any document with bookmarked organization splits logically and automatically.</p>
+
+<h2>How Bookmark Splitting Works</h2>
+<p>Upload your bookmarked PDF document. Our tool analyzes the bookmark structure automatically. Each top-level bookmark defines a split point. Preview the planned divisions based on bookmark names. Process and download individual section files.</p>
+
+<h2>Preserve Nested Bookmarks</h2>
+<p>Documents often have multiple bookmark levels. Our tool splits at top-level bookmarks while preserving sub-bookmarks within each resulting file. Chapter files retain their section bookmarks for continued navigation. The internal structure of each split file remains intact.</p>
+
+<h2>Perfect for Publishing Workflows</h2>
+<p>Publishers use bookmark splitting to separate manuscript chapters for different editors. Authors extract specific sections for review or sharing. Educators divide course materials into lesson-specific files. Bookmark-based splitting streamlines complex document workflows.</p>`,
+  },
+  {
+    id: "split-by-text",
+    name: "Split PDF by Text",
+    description: "Split at pages containing specific text",
+    icon: "FileSearch",
+    type: "split-by-text",
+    color: "bg-fuchsia-600",
+    emoji: "🔍",
+    metaTitle: "Split PDF by Text Online Free - Divide at Keywords | PDF Tools",
+    metaDescription: "Split PDF files at pages containing specific text online for free. Divide documents by keyword occurrence. Smart text-based PDF splitter.",
+    seoArticle: `<h2>Split PDF by Text Content - Keyword-Based Division</h2>
+<p>Some documents have consistent text markers that indicate section breaks. Our Split by Text tool finds pages containing your specified text and uses them as split points. Whether documents start with "Chapter", "Section", or custom headers, text-based splitting creates files at exactly the right locations.</p>
+
+<h2>Text Pattern Recognition</h2>
+<p>Enter the text that marks your split points. Our tool scans every page for your specified text. When found, that page begins a new file. Multiple occurrences create multiple splits. The search is thorough and accurate across the entire document.</p>
+
+<h2>Perfect for Standardized Documents</h2>
+<p>Monthly reports starting with "Report Date:" split into individual monthly files. Forms beginning with "Application Number" separate into individual applications. Any document with consistent text headers benefits from text-based splitting.</p>
+
+<h2>Simple Text-Based Splitting</h2>
+<p>Upload your PDF document securely. Enter the text pattern that marks split points. Our tool identifies all occurrences throughout the document. Preview which pages will start new files. Process and download your split documents.</p>
+
+<h2>Handling Multiple Matches</h2>
+<p>Documents may contain your search text multiple times on some pages. Our tool uses the first occurrence on a page to determine if it is a split point. Pages without your text are included in the preceding section. The logic is straightforward and predictable.</p>
+
+<h2>Automate Document Processing</h2>
+<p>Text-based splitting enables automated document workflows. Process batches of combined documents into separate files. Extract specific sections from compiled reports. Create systematic file organization from merged document collections. Text patterns drive intelligent separation.</p>`,
+  },
+  {
+    id: "split-in-half",
+    name: "Split PDF in Half",
+    description: "Divide PDF into two equal parts",
+    icon: "Scissors",
+    type: "split-in-half",
+    color: "bg-lime-600",
+    emoji: "✂️",
+    metaTitle: "Split PDF in Half Online Free - Divide Into Two Parts | PDF Tools",
+    metaDescription: "Split PDF files exactly in half online for free. Divide documents into two equal parts instantly. Easy PDF halving tool with no installation.",
+    seoArticle: `<h2>Split PDF in Half - Simple Two-Part Division</h2>
+<p>Sometimes you need the simplest possible split: dividing a document exactly in half. Our Split in Half tool does precisely that. Upload your PDF and receive two files, each containing half the pages. No configuration needed, no page numbers to specify. Just simple, clean division.</p>
+
+<h2>Automatic Midpoint Calculation</h2>
+<p>Our tool calculates the exact midpoint of your document automatically. A 50-page PDF becomes two 25-page files. For odd page counts, the first half receives the extra page. The calculation is instant and the split is perfectly balanced.</p>
+
+<h2>When to Use Half Splitting</h2>
+<p>Share large documents with two people for parallel reading. Divide workload between two processors. Create first-half and second-half archives. Split semester materials into two term portions. Sometimes the simplest division is exactly what you need.</p>
+
+<h2>One-Click Simplicity</h2>
+<p>Upload your PDF document. Click split. Download two files. No options to configure, no decisions to make. The tool handles everything automatically. Your two half-sized files are ready in seconds.</p>
+
+<h2>Perfect Balance</h2>
+<p>Both halves contain roughly equal content. For documents with varying page complexity, the page count split ensures fair division. Neither half is significantly larger in file size than the other. Balance is maintained across both resulting files.</p>
+
+<h2>Quality Preservation</h2>
+<p>Both halves maintain the exact quality of the original document. No compression, no degradation, no quality loss. Each half is a perfect subset of the original, ready for any purpose. Professional quality is guaranteed in both output files.</p>`,
+  },
+  {
+    id: "split-every-x-pages",
+    name: "Split PDF Every X Pages",
+    description: "Split at regular page intervals",
+    icon: "LayoutGrid",
+    type: "split-every-x-pages",
+    color: "bg-sky-600",
+    emoji: "📊",
+    metaTitle: "Split PDF Every X Pages Online Free - Regular Intervals | PDF Tools",
+    metaDescription: "Split PDF files at regular page intervals online for free. Divide every 5, 10, or custom number of pages. Easy interval-based PDF splitter.",
+    seoArticle: `<h2>Split PDF Every X Pages - Regular Interval Division</h2>
+<p>Need to divide a document into consistent-sized portions? Our Split Every X Pages tool creates files at regular intervals you specify. Set the interval to 10 pages, and a 100-page document becomes ten 10-page files. Perfect for creating uniform document batches with predictable sizes.</p>
+
+<h2>Customizable Intervals</h2>
+<p>Choose any interval that suits your needs. Split every 5 pages for small portions. Every 25 pages for quarter-document divisions. Every 100 pages for manageable chunks of massive documents. You control the rhythm of the split.</p>
+
+<h2>Automatic File Creation</h2>
+<p>Specify your interval and let the tool handle everything else. Each file contains exactly your specified number of pages (except possibly the last file if pages do not divide evenly). File naming follows logical sequences for easy organization.</p>
+
+<h2>Simple Interval Splitting</h2>
+<p>Upload your PDF document securely. Enter your desired page interval. Our tool calculates how many files will result. Preview the planned division. Process and download all files in a convenient archive.</p>
+
+<h2>Handling Remainders</h2>
+<p>When page counts do not divide evenly, the final file contains the remaining pages. A 53-page document split every 10 pages creates five 10-page files plus one 3-page file. Nothing is lost, and the final portion is clearly identified.</p>
+
+<h2>Batch Processing Applications</h2>
+<p>Create uniform work batches for data entry teams. Divide scanned documents for parallel OCR processing. Split large archives into manageable portions. Create consistent-sized backups of long documents. Regular intervals enable systematic document handling.</p>`,
+  },
+  {
+    id: "extract-pages",
+    name: "Extract PDF Pages",
+    description: "Extract page ranges to separate files",
+    icon: "FileOutput",
+    type: "extract-pages",
+    color: "bg-emerald-600",
+    emoji: "📤",
+    metaTitle: "Extract PDF Pages Online Free - Pull Pages from PDF | PDF Tools",
+    metaDescription: "Extract specific pages from PDF files online for free. Pull page ranges into separate documents. Easy PDF page extraction tool.",
+    seoArticle: `<h2>Extract PDF Pages - Pull Specific Content</h2>
+<p>Extract exactly the pages you need from any PDF document. Specify page ranges and receive separate files for each range. Pull out chapters, sections, or scattered pages without affecting the original document. Page extraction gives you precise control over document content.</p>
+
+<h2>Multiple Range Extraction</h2>
+<p>Extract multiple page ranges in a single operation. Pull pages 1-5, 15-20, and 45-50 simultaneously. Each range becomes its own PDF file. Process complex extraction requirements efficiently without multiple passes through the document.</p>
+
+<h2>Non-Destructive Extraction</h2>
+<p>The original PDF remains completely unchanged. Extracted pages are copies, not removals. Extract the same pages multiple times for different purposes. Your source document stays intact for future extractions or reference.</p>
+
+<h2>How Page Extraction Works</h2>
+<p>Upload your PDF document securely. Specify page ranges using simple notation (1-5, 10, 15-20). Our tool creates separate files for each specified range. Preview extractions before processing. Download individual files or get all extractions in a ZIP.</p>
+
+<h2>Practical Applications</h2>
+<p>Extract contract signature pages for quick reference. Pull executive summaries from lengthy reports. Extract specific chapters for focused study. Create handout files from presentation decks. Extraction enables targeted content distribution.</p>
+
+<h2>Quality Guarantee</h2>
+<p>Extracted pages maintain exact original quality. Fonts, images, and formatting remain perfect. Interactive elements within extracted pages continue functioning. Your extracted files are immediately ready for any professional use.</p>`,
+  },
+  {
+    id: "page-extractor",
+    name: "PDF Page Extractor",
+    description: "Extract each page as a separate PDF",
+    icon: "FileStack",
+    type: "page-extractor",
+    color: "bg-orange-500",
+    emoji: "📋",
+    metaTitle: "PDF Page Extractor Online Free - Extract All Pages | PDF Tools",
+    metaDescription: "Extract every page from PDF as separate files online for free. Create individual PDFs from each page. Complete page extraction tool.",
+    seoArticle: `<h2>PDF Page Extractor - Individual Page Files</h2>
+<p>Transform any multi-page PDF into a collection of single-page files with our Page Extractor. Every page becomes its own PDF document, giving you maximum flexibility for organizing, distributing, or processing document content. Complete page-by-page extraction with a single click.</p>
+
+<h2>Complete Page Separation</h2>
+<p>Upload any PDF and receive individual files for every page. A 75-page document yields 75 separate single-page PDFs. Each file is properly formatted and immediately usable. Systematic file naming enables easy organization and retrieval.</p>
+
+<h2>Why Extract Every Page</h2>
+<p>Individual page files offer unique workflow possibilities. Sort pages in file managers. Share single pages without PDF editing. Process pages independently through different tools. Archive pages separately for granular version control. Maximum control over document content.</p>
+
+<h2>Simple Extraction Process</h2>
+<p>Upload your PDF using our secure interface. Our tool automatically processes every page. Each page becomes a separate PDF file. Download all pages in an organized ZIP archive. File names follow a logical sequence.</p>
+
+<h2>Perfect for Document Processing</h2>
+<p>Run OCR on individual pages for parallel processing. Apply different treatments to different pages. Upload pages to document management systems separately. Enable automated workflows that handle pages independently.</p>
+
+<h2>Quality Preservation</h2>
+<p>Each extracted page maintains full original quality. Text remains sharp, images stay detailed, formatting is perfect. Single-page PDFs are complete, functional documents ready for any purpose. No quality loss during the extraction process.</p>`,
+  },
+  {
+    id: "page-remover",
+    name: "PDF Page Remover",
+    description: "Remove unwanted pages from PDF",
+    icon: "FileX",
+    type: "page-remover",
+    color: "bg-red-500",
+    emoji: "🚫",
+    metaTitle: "Remove PDF Pages Online Free - Delete Unwanted Pages | PDF Tools",
+    metaDescription: "Remove unwanted pages from PDF files online for free. Delete specific pages instantly. Easy PDF page removal tool with no software needed.",
+    seoArticle: `<h2>PDF Page Remover - Clean Up Your Documents</h2>
+<p>Remove unwanted pages from any PDF document with our Page Remover tool. Delete blank pages, remove outdated content, or eliminate sensitive sections before sharing. Create clean, focused documents containing only the pages you want to keep.</p>
+
+<h2>Selective Page Deletion</h2>
+<p>Specify exactly which pages to remove using simple notation. Delete page 3, pages 10-15, or scattered pages like 2, 7, 12, 20. Our tool removes only the pages you specify while keeping everything else intact. Precise control over document content.</p>
+
+<h2>Clean Document Creation</h2>
+<p>The result is a new PDF without the removed pages. Page numbers adjust automatically. The document flows smoothly without gaps. Recipients see only the content you intend them to see.</p>
+
+<h2>Easy Removal Process</h2>
+<p>Upload your PDF document securely. Enter the pages you want to remove. Our tool creates a new PDF excluding those pages. Preview the result before downloading. Get your cleaned document instantly.</p>
+
+<h2>Common Removal Scenarios</h2>
+<p>Remove cover pages before distribution. Delete blank pages from scanned documents. Eliminate outdated sections from manuals. Remove confidential pages before sharing externally. Clean up documents for professional presentation.</p>
+
+<h2>Safe and Non-Destructive</h2>
+<p>Page removal creates a new file without modifying your original. The source PDF remains unchanged with all pages intact. Create multiple versions with different pages removed. Experiment with removal without permanent consequences.</p>`,
+  },
+  {
+    id: "extract-specific",
+    name: "Extract Specific Pages",
+    description: "Extract selected pages as single PDF",
+    icon: "FileCheck",
+    type: "extract-specific",
+    color: "bg-blue-600",
+    emoji: "✅",
+    metaTitle: "Extract Specific PDF Pages Online Free - Select and Extract | PDF Tools",
+    metaDescription: "Extract specific pages from PDF into one file online for free. Select pages and create a new PDF. Easy specific page extraction tool.",
+    seoArticle: `<h2>Extract Specific Pages - Create Focused Documents</h2>
+<p>Pull exactly the pages you need from any PDF and combine them into a single new document. Unlike splitting which divides documents, specific page extraction lets you cherry-pick pages from anywhere in the document to create a new, focused PDF containing only your selected content.</p>
+
+<h2>Cherry-Pick Any Pages</h2>
+<p>Select pages from anywhere in your document. Extract pages 1, 5, 23, and 47 into one file. Combine non-consecutive pages that share a theme. Create compilations from scattered content. Your selections become one cohesive document.</p>
+
+<h2>Unified Output</h2>
+<p>Unlike tools that create separate files for each selection, specific page extraction creates one combined PDF. All your selected pages appear in sequence in a single file. Perfect for creating summary documents, excerpt collections, or focused handouts.</p>
+
+<h2>How Specific Extraction Works</h2>
+<p>Upload your source PDF document. Specify the pages you want using comma-separated lists and ranges. Our tool extracts and combines your selections. Download a single PDF containing only your chosen pages.</p>
+
+<h2>Practical Applications</h2>
+<p>Create meeting handouts from comprehensive reports. Extract key pages for executive summaries. Compile relevant sections from different document areas. Build portfolios from selected work samples. Create focused documents from comprehensive sources.</p>
+
+<h2>Maintain Page Order</h2>
+<p>Extracted pages appear in the order you specify them. List pages in any order you prefer. The output PDF follows your sequence exactly. Create logical flow regardless of original page positions. Full control over the final document structure.</p>`,
   },
 ];

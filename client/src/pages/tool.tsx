@@ -32,6 +32,15 @@ import {
   Stamp,
   Lock,
   Unlock,
+  HardDrive,
+  Bookmark,
+  FileText,
+  SplitSquareHorizontal,
+  Grid,
+  FileOutput,
+  FileSearch,
+  Eraser,
+  Target,
   type LucideIcon,
 } from "lucide-react";
 
@@ -48,6 +57,15 @@ const iconMap: Record<string, LucideIcon> = {
   Stamp,
   Lock,
   Unlock,
+  HardDrive,
+  Bookmark,
+  FileText,
+  SplitSquareHorizontal,
+  Grid,
+  FileOutput,
+  FileSearch,
+  Eraser,
+  Target,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";
@@ -102,7 +120,13 @@ export default function ToolPage() {
     if (tool?.type === "divide-pdf" && options.parts === undefined) {
       setOptions((prev) => ({ ...prev, parts: 2 }));
     }
-  }, [tool?.type, options.parts]);
+    if (tool?.type === "split-by-size" && options.sizeLimitMB === undefined) {
+      setOptions((prev) => ({ ...prev, sizeLimitMB: 5 }));
+    }
+    if (tool?.type === "split-every-x-pages" && options.pageInterval === undefined) {
+      setOptions((prev) => ({ ...prev, pageInterval: 5 }));
+    }
+  }, [tool?.type, options.parts, options.sizeLimitMB, options.pageInterval]);
 
   if (!tool) {
     return (
@@ -205,6 +229,40 @@ export default function ToolPage() {
 
     if (tool.type === "break-pdf" && !options.sections?.trim()) {
       return false;
+    }
+
+    if (tool.type === "split-by-text" && !options.searchText?.trim()) {
+      return false;
+    }
+
+    if (tool.type === "extract-pages" && !options.pages?.trim()) {
+      return false;
+    }
+
+    if (tool.type === "page-remover" && !options.pages?.trim()) {
+      return false;
+    }
+
+    if (tool.type === "extract-specific" && !options.pages?.trim()) {
+      return false;
+    }
+
+    if (tool.type === "split-by-size") {
+      const sizeLimit = typeof options.sizeLimitMB === 'string' 
+        ? parseFloat(options.sizeLimitMB) 
+        : options.sizeLimitMB;
+      if (!sizeLimit || sizeLimit < 0.1) {
+        return false;
+      }
+    }
+
+    if (tool.type === "split-every-x-pages") {
+      const interval = typeof options.pageInterval === 'string' 
+        ? parseInt(options.pageInterval, 10) 
+        : options.pageInterval;
+      if (!interval || interval < 1) {
+        return false;
+      }
     }
     
     return true;
