@@ -78,6 +78,11 @@ export function ToolOptionsComponent({
       );
 
     case "compress":
+    case "compress-pdf":
+    case "pdf-compressor":
+    case "reduce-pdf-size":
+    case "optimize-pdf":
+    case "pdf-optimizer":
       return (
         <div className="space-y-4">
           <div className="space-y-2">
@@ -607,34 +612,6 @@ export function ToolOptionsComponent({
 
     case "scan-to-pdf":
       return null;
-
-    case "compress-pdf":
-    case "pdf-compressor":
-    case "reduce-pdf-size":
-    case "optimize-pdf":
-    case "pdf-optimizer":
-      return (
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label>Compression Level</Label>
-            <Select
-              value={options.compressionLevel || "medium"}
-              onValueChange={(value) =>
-                updateOption("compressionLevel", value as "low" | "medium" | "high")
-              }
-            >
-              <SelectTrigger data-testid="select-compression">
-                <SelectValue placeholder="Select compression level" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="low">Low (Larger file, better quality)</SelectItem>
-                <SelectItem value="medium">Medium (Balanced)</SelectItem>
-                <SelectItem value="high">High (Smaller file, lower quality)</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      );
 
     default:
       return null;
