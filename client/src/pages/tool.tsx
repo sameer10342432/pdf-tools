@@ -60,6 +60,10 @@ import {
   Eye,
   FilePlus,
   FileEdit,
+  FileSpreadsheet,
+  Globe,
+  ImageDown,
+  Type,
   type LucideIcon,
 } from "lucide-react";
 
@@ -104,6 +108,10 @@ const iconMap: Record<string, LucideIcon> = {
   Eye,
   FilePlus,
   FileEdit,
+  FileSpreadsheet,
+  Globe,
+  ImageDown,
+  Type,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";
@@ -187,7 +195,7 @@ export default function ToolPage() {
   const Icon = iconMap[tool.icon] || Layers;
 
   const getAcceptType = () => {
-    if (tool.type === "images-to-pdf" || tool.type === "scan-to-pdf") {
+    if (tool.type === "images-to-pdf" || tool.type === "scan-to-pdf" || tool.type === "image-to-text") {
       return "image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp";
     }
     if (tool.type === "pdf-images-combiner") {
@@ -195,6 +203,9 @@ export default function ToolPage() {
     }
     if (tool.type === "pdf-word-merger") {
       return ".pdf,application/pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    }
+    if (tool.type === "word-to-pdf" || tool.type === "docx-to-pdf" || tool.type === "doc-to-pdf") {
+      return ".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
     }
     return ".pdf,application/pdf";
   };

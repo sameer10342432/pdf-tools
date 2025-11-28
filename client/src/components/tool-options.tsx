@@ -637,6 +637,8 @@ export function ToolOptionsComponent({
     case "pdf-ocr":
     case "searchable-pdf-creator":
     case "ocr-to-word":
+    case "ocr-to-excel":
+    case "image-to-text":
       return (
         <div className="space-y-4">
           <div className="space-y-2">
@@ -670,6 +672,63 @@ export function ToolOptionsComponent({
           </div>
         </div>
       );
+
+    case "downsample-pdf-images":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Target DPI</Label>
+            <Select
+              value={String(options.downsampleDpi || 150)}
+              onValueChange={(value) => updateOption("downsampleDpi", parseInt(value))}
+            >
+              <SelectTrigger data-testid="select-dpi">
+                <SelectValue placeholder="Select DPI" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="72">72 DPI (Web/Screen)</SelectItem>
+                <SelectItem value="96">96 DPI (Standard Screen)</SelectItem>
+                <SelectItem value="150">150 DPI (Balanced)</SelectItem>
+                <SelectItem value="200">200 DPI (Good Quality)</SelectItem>
+                <SelectItem value="300">300 DPI (Print Quality)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Lower DPI means smaller file size but reduced image quality.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label>Image Quality</Label>
+            <Select
+              value={String(options.imageQuality || 80)}
+              onValueChange={(value) => updateOption("imageQuality", parseInt(value))}
+            >
+              <SelectTrigger data-testid="select-quality">
+                <SelectValue placeholder="Select quality" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="50">50% (Small file)</SelectItem>
+                <SelectItem value="65">65% (Balanced)</SelectItem>
+                <SelectItem value="80">80% (Good quality)</SelectItem>
+                <SelectItem value="90">90% (High quality)</SelectItem>
+                <SelectItem value="100">100% (Maximum quality)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Image compression quality after downsampling.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "linearize-pdf":
+    case "pdf-fast-web-view":
+    case "pdf-optimizer-remove-unused":
+    case "pdf-font-subsetter":
+    case "word-to-pdf":
+    case "doc-to-pdf":
+    case "docx-to-pdf":
+      return null;
 
     default:
       return null;

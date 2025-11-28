@@ -2195,27 +2195,27 @@ export const pdfTools: PdfTool[] = [
   {
     id: "doc-to-pdf",
     name: "DOC to PDF",
-    description: "Convert legacy DOC files to PDF format",
+    description: "Convert Word documents (DOCX format) to PDF",
     icon: "FileText",
     type: "doc-to-pdf",
     color: "bg-blue-800",
     emoji: "📄",
-    metaTitle: "DOC to PDF Online Free - Convert DOC to PDF | PDF Tools",
-    metaDescription: "Convert DOC files to PDF online for free. Transform legacy Word documents to PDF format. Simple and fast DOC to PDF converter.",
-    seoArticle: `<h2>DOC to PDF - Convert Legacy Word Documents</h2>
-<p>Convert older Microsoft Word DOC files to universally readable PDF format. Legacy DOC documents may not open correctly in modern software, but converting to PDF ensures long-term accessibility and compatibility. Our converter handles DOC files from any Word version, producing clean PDFs.</p>
+    metaTitle: "Word to PDF Online Free - Convert Word Documents to PDF | PDF Tools",
+    metaDescription: "Convert Word documents to PDF online for free. Transform DOCX files to PDF format. Simple and fast Word to PDF converter.",
+    seoArticle: `<h2>Word Document to PDF - Simple Conversion</h2>
+<p>Convert your Microsoft Word documents to universally readable PDF format. Modern Word documents (DOCX format) can be easily converted to PDF for sharing, archiving, or professional distribution. Our converter extracts text content and formats it into clean, readable PDFs.</p>
 
-<h2>Handle Legacy Formats</h2>
-<p>The DOC format was used by Microsoft Word from 1997 through 2003 and remains common in archived documents. Our converter fully supports this legacy format, extracting text, images, and formatting to create modern PDFs. No need to hunt for old software to open these files.</p>
+<h2>Modern Format Support</h2>
+<p>This tool works with modern DOCX files created by Microsoft Word 2007 and later. DOCX is the standard format for Word documents today. Upload your DOCX file and receive a professionally formatted PDF in seconds.</p>
 
 <h2>Document Preservation</h2>
-<p>Converting legacy documents to PDF helps preserve important content for the future. PDFs are a stable, long-lasting format supported by international standards. Your converted documents will remain accessible for decades, protected from format obsolescence.</p>
+<p>Converting documents to PDF helps preserve important content for the future. PDFs are a stable, long-lasting format supported by international standards. Your converted documents will remain accessible for decades, protected from format obsolescence.</p>
 
-<h2>Maintain Original Appearance</h2>
-<p>Despite format differences, we preserve the visual appearance of your DOC files. Text formatting, paragraph styles, and document structure transfer to PDF. Images and basic graphics are maintained. Your PDF accurately represents the original document content.</p>
+<h2>Text Content Extraction</h2>
+<p>Our converter extracts the text content from your Word document and formats it into a clean PDF. Paragraphs, headings, and text structure are preserved. The resulting PDF is easy to read and share across all devices and platforms.</p>
 
-<h2>DOC to PDF Conversion Process</h2>
-<p>Upload your legacy DOC file. Our converter processes the document extracting all content. Text, images, and formatting are converted to PDF. Download your modern, compatible PDF file. Access your legacy documents on any device.</p>`,
+<h2>Conversion Process</h2>
+<p>Upload your Word document (DOCX format). Our converter processes the document extracting all text content. Text is formatted into a clean PDF layout. Download your PDF file. Share your document with confidence on any platform.</p>`,
   },
   {
     id: "docx-to-pdf",

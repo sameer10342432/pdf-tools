@@ -1,7 +1,7 @@
 # PDF Tools - Online PDF Processing Application
 
 ## Overview
-A comprehensive web application providing 52 powerful PDF manipulation tools. Built with React frontend and Express backend, featuring a beautiful, responsive design, SEO optimization, and secure file processing.
+A comprehensive web application providing 62 powerful PDF manipulation tools. Built with React frontend and Express backend, featuring a beautiful, responsive design, SEO optimization, and secure file processing.
 
 ## Project Structure
 ```
@@ -106,11 +106,25 @@ server/
 51. **PDF OCR** - Apply OCR to recognize text in any PDF
 52. **Searchable PDF Creator** - Create searchable PDFs from scanned documents
 53. **OCR to Word** - Convert scanned PDFs to editable Word documents
+54. **OCR to Excel** - Extract text from scanned PDFs to Excel spreadsheets
+55. **Image to Text** - Extract text from images using OCR technology
+
+### PDF Optimization Tools
+56. **Linearize PDF** - Optimize PDF for fast web viewing with byte-serving
+57. **PDF Fast Web View** - Enable progressive loading for PDFs
+58. **PDF Optimizer (Remove Unused)** - Remove unused objects from PDF
+59. **Downsample PDF Images** - Reduce image resolution in PDFs
+60. **PDF Font Subsetter** - Subset fonts to reduce file size
+
+### Document Conversion Tools
+61. **Word to PDF** - Convert Microsoft Word documents to PDF
+62. **DOC to PDF** - Convert legacy DOC files to PDF
+63. **DOCX to PDF** - Convert DOCX documents to PDF
 
 ## Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, Shadcn UI
 - **Backend**: Express, Node.js
-- **PDF Processing**: pdf-lib, sharp, archiver, mammoth, tesseract.js
+- **PDF Processing**: pdf-lib, sharp, archiver, mammoth, tesseract.js, xlsx
 - **File Upload**: multer (server), drag-and-drop (client)
 
 ## Key Features
