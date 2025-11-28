@@ -72,6 +72,16 @@ export const pdfToolTypes = [
   "pdf-ocr",
   "searchable-pdf-creator",
   "ocr-to-word",
+  "ocr-to-excel",
+  "image-to-text",
+  "linearize-pdf",
+  "pdf-fast-web-view",
+  "pdf-optimizer-remove-unused",
+  "downsample-pdf-images",
+  "pdf-font-subsetter",
+  "word-to-pdf",
+  "doc-to-pdf",
+  "docx-to-pdf",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -143,6 +153,8 @@ export const toolOptionsSchema = z.object({
   addPagesPosition: z.enum(["start", "end", "after"]).optional(),
   insertAfterPage: z.number().optional(),
   ocrLanguage: z.enum(["eng", "spa", "fra", "deu", "ita", "por", "nld", "rus", "jpn", "chi_sim", "chi_tra", "kor", "ara", "hin"]).optional(),
+  downsampleDpi: z.number().optional(),
+  imageQuality: z.number().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -1979,5 +1991,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>OCR to Word Conversion Process</h2>
 <p>Upload your scanned PDF document. Our OCR engine recognizes all text content. Text is formatted and structured for editing. Download your searchable, text-based PDF document. Open it and edit the recognized content as needed.</p>`,
+  },
+  {
+    id: "ocr-to-excel",
+    name: "OCR to Excel",
+    description: "Extract text from scanned PDFs and convert to Excel spreadsheet",
+    icon: "FileSpreadsheet",
+    type: "ocr-to-excel",
+    color: "bg-green-600",
+    emoji: "📊",
+    metaTitle: "OCR to Excel Online Free - Convert Scanned PDF to Excel | PDF Tools",
+    metaDescription: "Convert scanned PDFs to Excel spreadsheets online for free. Extract tables and data from scanned documents using OCR technology.",
+    seoArticle: `<h2>OCR to Excel - Extract Data from Scanned Documents</h2>
+<p>Transform scanned documents containing tables and data into editable Excel spreadsheets. Our OCR to Excel tool uses advanced optical character recognition to identify and extract tabular data from your scanned PDFs, converting them into organized spreadsheet format for easy editing and analysis.</p>
+
+<h2>Intelligent Table Detection</h2>
+<p>Our OCR engine is optimized to recognize table structures within scanned documents. It identifies rows, columns, and cell boundaries automatically. Headers are detected and preserved. The resulting Excel file maintains the logical structure of your original tables, ready for immediate use.</p>
+
+<h2>Perfect for Data Digitization</h2>
+<p>Organizations often have valuable data locked in paper documents or scanned PDFs. Financial records, inventory lists, survey results, and legacy reports can all be converted to editable Excel format. Once in Excel, you can analyze, chart, and integrate this data with your existing workflows.</p>
+
+<h2>Multi-Language Support</h2>
+<p>Our OCR technology supports text recognition in multiple languages. Whether your documents contain English, Spanish, German, French, or other languages, the text is accurately extracted. Select your document language for optimal recognition accuracy.</p>
+
+<h2>OCR to Excel Conversion Process</h2>
+<p>Upload your scanned PDF containing tables or data. Our OCR engine analyzes and recognizes all text content. Tables are identified and structured into spreadsheet format. Download your Excel file with organized, editable data. Your scanned tables are now ready for analysis and editing.</p>`,
+  },
+  {
+    id: "image-to-text",
+    name: "Image to Text",
+    description: "Extract text from images using OCR technology",
+    icon: "ScanText",
+    type: "image-to-text",
+    color: "bg-purple-600",
+    emoji: "🔤",
+    metaTitle: "Image to Text Online Free - Extract Text from Images | PDF Tools",
+    metaDescription: "Extract text from images online for free using OCR. Convert JPG, PNG images to editable text. Fast and accurate image text extraction.",
+    seoArticle: `<h2>Image to Text - Extract Text from Any Image</h2>
+<p>Convert text within images into editable, searchable text content. Our Image to Text tool uses powerful OCR technology to recognize and extract text from photographs, screenshots, scanned documents, and any image containing text. Perfect for digitizing printed content and extracting information from visual sources.</p>
+
+<h2>Support for Multiple Image Formats</h2>
+<p>Upload images in any common format including JPG, PNG, GIF, WebP, and more. Our tool handles images of varying quality and resolution. Whether you have a crisp screenshot or a smartphone photo of a document, our OCR engine works to extract the text accurately.</p>
+
+<h2>Accurate Text Recognition</h2>
+<p>Our OCR engine employs advanced machine learning algorithms for high-accuracy text recognition. It handles various fonts, sizes, and text styles effectively. Even handwritten text can be recognized with reasonable accuracy. The extracted text is clean and properly formatted.</p>
+
+<h2>Multiple Use Cases</h2>
+<p>Extract text from photos of whiteboards or presentations. Digitize business cards and contact information. Copy text from screenshots for documentation. Convert printed articles or book pages to digital text. Extract data from infographics and charts. The applications are endless.</p>
+
+<h2>Image to Text Conversion Process</h2>
+<p>Upload your image containing text. Our OCR technology analyzes and recognizes all text content. Text is extracted and organized for easy use. Download your extracted text in PDF format. Copy, edit, and use your text however you need.</p>`,
+  },
+  {
+    id: "linearize-pdf",
+    name: "Linearize PDF",
+    description: "Optimize PDF for fast web viewing with byte-serving",
+    icon: "Zap",
+    type: "linearize-pdf",
+    color: "bg-amber-600",
+    emoji: "⚡",
+    metaTitle: "Linearize PDF Online Free - Fast Web View Optimization | PDF Tools",
+    metaDescription: "Linearize PDF files for fast web viewing online for free. Enable byte-serving for progressive PDF loading. Optimize PDFs for web delivery.",
+    seoArticle: `<h2>Linearize PDF - Optimize for Fast Web Viewing</h2>
+<p>Linearization restructures PDF files for optimal web delivery. A linearized PDF can begin displaying immediately while the rest of the file downloads, providing a much better user experience. Our tool transforms your PDFs into web-optimized format, enabling fast first-page display and smooth scrolling.</p>
+
+<h2>How Linearization Works</h2>
+<p>Standard PDFs require the entire file to download before viewing can begin. Linearized PDFs reorganize data so the first page information comes first in the file. Web browsers and PDF viewers can display the first page almost instantly while remaining pages download in the background.</p>
+
+<h2>Benefits for Web Publishing</h2>
+<p>If you host PDFs on websites, linearization dramatically improves user experience. Visitors see content immediately instead of waiting for complete downloads. This is especially important for large PDFs that would otherwise cause significant delays. Reduce bounce rates and improve engagement with fast-loading PDFs.</p>
+
+<h2>Byte-Serving Enabled</h2>
+<p>Linearized PDFs support byte-range requests, allowing viewers to request only the portions they need. Jump directly to page 50 of a 100-page document without downloading pages 1-49 first. This efficient delivery saves bandwidth and provides instant navigation throughout the document.</p>
+
+<h2>Linearization Process</h2>
+<p>Upload your PDF file for linearization. Our tool restructures the file for web optimization. Critical data is moved to the beginning of the file. Download your linearized, web-ready PDF. Enjoy fast loading and instant viewing on any platform.</p>`,
+  },
+  {
+    id: "pdf-fast-web-view",
+    name: "PDF Fast Web View",
+    description: "Enable fast web view for progressive PDF loading",
+    icon: "Globe",
+    type: "pdf-fast-web-view",
+    color: "bg-blue-600",
+    emoji: "🌐",
+    metaTitle: "PDF Fast Web View Online Free - Enable Progressive Loading | PDF Tools",
+    metaDescription: "Enable Fast Web View for PDF files online for free. Optimize PDFs for progressive loading in web browsers. Improve PDF web performance.",
+    seoArticle: `<h2>PDF Fast Web View - Progressive Loading Optimization</h2>
+<p>Fast Web View optimization transforms your PDFs for superior web delivery. When a PDF has Fast Web View enabled, web browsers can display it progressively as it downloads. Users see the first page immediately and can begin reading while remaining content loads seamlessly in the background.</p>
+
+<h2>Progressive Download Technology</h2>
+<p>Traditional PDFs load completely before displaying. Fast Web View PDFs stream progressively, showing content as soon as sufficient data arrives. This approach eliminates the frustrating wait for large files. Users engage with content immediately, improving satisfaction and reducing abandonment.</p>
+
+<h2>Ideal for Document Distribution</h2>
+<p>Organizations distributing PDFs through websites, email, or content management systems benefit significantly from Fast Web View optimization. Reports, brochures, manuals, and catalogs all load faster. Recipients can begin reading instantly regardless of file size or connection speed.</p>
+
+<h2>Compatibility and Performance</h2>
+<p>Fast Web View is a standard PDF feature supported by all major browsers and PDF readers. Adobe Reader, Chrome, Firefox, Safari, and mobile viewers all support progressive PDF loading. Your optimized files work everywhere without requiring special software or plugins.</p>
+
+<h2>Fast Web View Optimization Process</h2>
+<p>Upload your PDF file for optimization. Our tool enables Fast Web View functionality. File structure is optimized for progressive delivery. Download your web-optimized PDF. Share files that load instantly for all recipients.</p>`,
+  },
+  {
+    id: "pdf-optimizer-remove-unused",
+    name: "PDF Optimizer",
+    description: "Remove unused objects and optimize PDF structure",
+    icon: "Trash2",
+    type: "pdf-optimizer-remove-unused",
+    color: "bg-red-600",
+    emoji: "🧹",
+    metaTitle: "PDF Optimizer Online Free - Remove Unused Objects | PDF Tools",
+    metaDescription: "Optimize PDF files by removing unused objects online for free. Clean up PDF structure and reduce file size. Professional PDF optimization tool.",
+    seoArticle: `<h2>PDF Optimizer - Remove Unused Objects</h2>
+<p>Over time, PDF files accumulate unused objects, orphaned resources, and redundant data that bloat file size without adding value. Our PDF Optimizer analyzes your documents and removes these unnecessary elements, resulting in cleaner, smaller, and more efficient PDF files.</p>
+
+<h2>What Gets Removed</h2>
+<p>Our optimizer identifies and removes unused fonts and font subsets, orphaned images and graphics, duplicate objects, obsolete form field data, embedded thumbnails that can be regenerated, metadata from deleted content, and other remnants from editing operations.</p>
+
+<h2>Maintain Document Integrity</h2>
+<p>Optimization removes only truly unused elements. All visible content, formatting, and functionality remain intact. Interactive features, links, bookmarks, and annotations work perfectly. Your document looks and functions exactly as before, just with a smaller file size.</p>
+
+<h2>Ideal for Document Cleanup</h2>
+<p>Documents that have undergone multiple edits often contain significant unused data. Export files from design software may include unused embedded resources. PDFs created from other formats may carry over unnecessary elements. Our optimizer cleans all of this efficiently.</p>
+
+<h2>Optimization Process</h2>
+<p>Upload your PDF file for optimization. Our tool analyzes the document structure thoroughly. Unused objects and redundant data are identified and removed. Document integrity is verified after cleanup. Download your optimized, streamlined PDF file.</p>`,
+  },
+  {
+    id: "downsample-pdf-images",
+    name: "Downsample PDF Images",
+    description: "Reduce image resolution in PDFs to decrease file size",
+    icon: "ImageDown",
+    type: "downsample-pdf-images",
+    color: "bg-orange-600",
+    emoji: "📉",
+    metaTitle: "Downsample PDF Images Online Free - Reduce Image Resolution | PDF Tools",
+    metaDescription: "Downsample images in PDF files online for free. Reduce image resolution to decrease file size. Optimize PDF images for web or email.",
+    seoArticle: `<h2>Downsample PDF Images - Reduce Resolution for Smaller Files</h2>
+<p>Images are often the largest component of PDF files. When high-resolution images are embedded at resolutions far exceeding display or print requirements, they waste storage and bandwidth. Our downsampling tool reduces image resolution to appropriate levels, significantly decreasing file size while maintaining acceptable visual quality.</p>
+
+<h2>Choose Your Target Resolution</h2>
+<p>Select the appropriate DPI (dots per inch) for your intended use. 72 DPI is ideal for screen viewing and web delivery. 150 DPI works well for general purpose documents. 300 DPI maintains print quality for professional output. Lower resolutions mean smaller files; choose based on your specific needs.</p>
+
+<h2>Smart Image Processing</h2>
+<p>Our tool intelligently processes embedded images without affecting other PDF content. Vector graphics, text, and other elements remain at full quality. Only raster images are downsampled. The result maintains document clarity while achieving significant size reduction.</p>
+
+<h2>Ideal Use Cases</h2>
+<p>Prepare high-resolution PDFs for web distribution. Reduce file sizes for email attachments. Optimize documents for mobile viewing. Create lightweight versions of image-heavy catalogs and brochures. Archive documents at practical resolutions. Balance quality against storage requirements.</p>
+
+<h2>Downsampling Process</h2>
+<p>Upload your PDF containing high-resolution images. Select your target DPI resolution. Our tool processes and downsamples all embedded images. Text and vector content remain unchanged. Download your optimized PDF with reduced file size.</p>`,
+  },
+  {
+    id: "pdf-font-subsetter",
+    name: "PDF Font Subsetter",
+    description: "Subset embedded fonts to reduce PDF file size",
+    icon: "Type",
+    type: "pdf-font-subsetter",
+    color: "bg-indigo-600",
+    emoji: "🔤",
+    metaTitle: "PDF Font Subsetter Online Free - Reduce Font Size | PDF Tools",
+    metaDescription: "Subset fonts in PDF files online for free. Remove unused font characters to reduce file size. Optimize PDF fonts for smaller documents.",
+    seoArticle: `<h2>PDF Font Subsetter - Optimize Embedded Fonts</h2>
+<p>PDF files often embed complete font files, including thousands of characters that are never used in the document. Font subsetting replaces full fonts with subsets containing only the characters actually used, dramatically reducing file size without affecting document appearance.</p>
+
+<h2>How Font Subsetting Works</h2>
+<p>A typical font file contains hundreds or thousands of glyphs for different languages and symbols. Your document might use only 50-100 of these characters. Subsetting extracts just the needed glyphs, creating a minimal font file that perfectly renders your specific text while discarding unused characters.</p>
+
+<h2>Significant Size Reduction</h2>
+<p>Full font embeddings can add megabytes to PDF files, especially with multiple fonts or extensive Unicode fonts. Subsetting often reduces font data by 90% or more. A 5MB PDF with embedded fonts might shrink to under 500KB after proper subsetting.</p>
+
+<h2>Preserve Visual Fidelity</h2>
+<p>Subsetted fonts render identically to full fonts for the characters they contain. Your document's typography, spacing, and appearance remain exactly as designed. The only difference is file size - viewers cannot tell whether a font is full or subsetted.</p>
+
+<h2>Font Subsetting Process</h2>
+<p>Upload your PDF with embedded fonts. Our tool analyzes which characters are used from each font. Fonts are replaced with minimal subsets containing only needed glyphs. Full font rendering is preserved for all document text. Download your optimized PDF with dramatically reduced size.</p>`,
+  },
+  {
+    id: "word-to-pdf",
+    name: "Word to PDF",
+    description: "Convert Microsoft Word documents to PDF format",
+    icon: "FileText",
+    type: "word-to-pdf",
+    color: "bg-blue-700",
+    emoji: "📝",
+    metaTitle: "Word to PDF Online Free - Convert Word to PDF | PDF Tools",
+    metaDescription: "Convert Word documents to PDF online for free. Transform DOC and DOCX files to PDF format. Fast, secure Word to PDF converter.",
+    seoArticle: `<h2>Word to PDF - Convert Documents Effortlessly</h2>
+<p>Transform your Microsoft Word documents into universally compatible PDF format. Our Word to PDF converter preserves your document's formatting, fonts, images, and layout while creating a PDF that can be viewed on any device without requiring Microsoft Office. Perfect for sharing documents professionally.</p>
+
+<h2>Preserve Formatting and Layout</h2>
+<p>Our converter carefully translates Word formatting to PDF. Headers, footers, margins, columns, and page breaks are maintained. Font styles, sizes, and colors appear as intended. Tables, lists, and paragraph formatting transfer accurately. Your PDF looks exactly like your Word document.</p>
+
+<h2>Universal Compatibility</h2>
+<p>PDFs can be opened on any computer, tablet, or smartphone regardless of operating system. Recipients don't need Microsoft Word or any specific software. The document displays identically everywhere, ensuring your formatting is seen exactly as you designed it.</p>
+
+<h2>Secure Document Sharing</h2>
+<p>PDF format protects your content from easy editing. When sharing contracts, reports, or official documents, PDF ensures recipients see your intended content without accidental modifications. Professional correspondence and formal documents benefit from PDF's stability and universality.</p>
+
+<h2>Word to PDF Conversion Process</h2>
+<p>Upload your Word document (DOC or DOCX format). Our converter processes the document preserving all formatting. Images, tables, and styling are converted accurately. Download your professionally formatted PDF. Share your document with confidence on any platform.</p>`,
+  },
+  {
+    id: "doc-to-pdf",
+    name: "DOC to PDF",
+    description: "Convert legacy DOC files to PDF format",
+    icon: "FileText",
+    type: "doc-to-pdf",
+    color: "bg-blue-800",
+    emoji: "📄",
+    metaTitle: "DOC to PDF Online Free - Convert DOC to PDF | PDF Tools",
+    metaDescription: "Convert DOC files to PDF online for free. Transform legacy Word documents to PDF format. Simple and fast DOC to PDF converter.",
+    seoArticle: `<h2>DOC to PDF - Convert Legacy Word Documents</h2>
+<p>Convert older Microsoft Word DOC files to universally readable PDF format. Legacy DOC documents may not open correctly in modern software, but converting to PDF ensures long-term accessibility and compatibility. Our converter handles DOC files from any Word version, producing clean PDFs.</p>
+
+<h2>Handle Legacy Formats</h2>
+<p>The DOC format was used by Microsoft Word from 1997 through 2003 and remains common in archived documents. Our converter fully supports this legacy format, extracting text, images, and formatting to create modern PDFs. No need to hunt for old software to open these files.</p>
+
+<h2>Document Preservation</h2>
+<p>Converting legacy documents to PDF helps preserve important content for the future. PDFs are a stable, long-lasting format supported by international standards. Your converted documents will remain accessible for decades, protected from format obsolescence.</p>
+
+<h2>Maintain Original Appearance</h2>
+<p>Despite format differences, we preserve the visual appearance of your DOC files. Text formatting, paragraph styles, and document structure transfer to PDF. Images and basic graphics are maintained. Your PDF accurately represents the original document content.</p>
+
+<h2>DOC to PDF Conversion Process</h2>
+<p>Upload your legacy DOC file. Our converter processes the document extracting all content. Text, images, and formatting are converted to PDF. Download your modern, compatible PDF file. Access your legacy documents on any device.</p>`,
+  },
+  {
+    id: "docx-to-pdf",
+    name: "DOCX to PDF",
+    description: "Convert DOCX documents to PDF format",
+    icon: "FileText",
+    type: "docx-to-pdf",
+    color: "bg-blue-500",
+    emoji: "📑",
+    metaTitle: "DOCX to PDF Online Free - Convert DOCX to PDF | PDF Tools",
+    metaDescription: "Convert DOCX files to PDF online for free. Transform Word documents to PDF format with preserved formatting. Fast DOCX to PDF converter.",
+    seoArticle: `<h2>DOCX to PDF - Modern Word Document Conversion</h2>
+<p>Convert Microsoft Word DOCX documents to professional PDF format instantly. DOCX is the modern Word document format used since Office 2007. Our converter transforms these files into PDFs while preserving all formatting, images, styles, and document structure for universal viewing.</p>
+
+<h2>Complete Format Support</h2>
+<p>DOCX files support rich formatting including styles, themes, headers, footers, tables, charts, and embedded objects. Our converter handles all these elements, translating them accurately to PDF format. Complex documents with multiple formatting features convert cleanly.</p>
+
+<h2>Perfect for Professional Use</h2>
+<p>Business documents, reports, proposals, and contracts often originate as Word files. Converting to PDF before distribution ensures consistent appearance across all recipients' devices. PDFs prevent accidental edits and present a polished, professional appearance.</p>
+
+<h2>Preserve Document Fidelity</h2>
+<p>Our conversion maintains the exact appearance of your DOCX document. Fonts are embedded or substituted accurately. Page layout, margins, and spacing remain consistent. Graphics and images display at appropriate quality. What you see in Word is what you get in PDF.</p>
+
+<h2>DOCX to PDF Conversion Process</h2>
+<p>Upload your DOCX document file. Our converter analyzes and processes all content. Formatting, images, and styles are preserved in PDF. Download your professional-quality PDF file. Share documents that display perfectly everywhere.</p>`,
   },
 ];
