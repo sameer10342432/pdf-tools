@@ -1582,6 +1582,76 @@ async function advancedCompressPdf(file: Express.Multer.File, level: string = "m
   }));
 }
 
+async function highCompressionPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  return Buffer.from(await pdf.save({ 
+    useObjectStreams: true,
+    addDefaultPage: false,
+  }));
+}
+
+async function basicCompressionPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  return Buffer.from(await pdf.save({ 
+    useObjectStreams: true,
+    addDefaultPage: false,
+  }));
+}
+
+async function customCompressionPdf(file: Express.Multer.File, level: string = "medium"): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  return Buffer.from(await pdf.save({ 
+    useObjectStreams: true,
+    addDefaultPage: false,
+  }));
+}
+
+async function webOptimizedPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  return Buffer.from(await pdf.save({ 
+    useObjectStreams: true,
+    addDefaultPage: false,
+  }));
+}
+
+async function emailOptimizedPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  return Buffer.from(await pdf.save({ 
+    useObjectStreams: true,
+    addDefaultPage: false,
+  }));
+}
+
+async function scannedPdfCompression(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  return Buffer.from(await pdf.save({ 
+    useObjectStreams: true,
+    addDefaultPage: false,
+  }));
+}
+
+async function printOptimizedPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  return Buffer.from(await pdf.save({ 
+    useObjectStreams: true,
+    addDefaultPage: false,
+  }));
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -2056,6 +2126,66 @@ export async function registerRoutes(
           case "pdf-optimizer": {
             result = await advancedCompressPdf(files[0], options.compressionLevel || "medium");
             filename = "optimized.pdf";
+            break;
+          }
+          
+          case "high-compression-pdf": {
+            result = await highCompressionPdf(files[0]);
+            filename = "high-compressed.pdf";
+            break;
+          }
+          
+          case "basic-compression-pdf": {
+            result = await basicCompressionPdf(files[0]);
+            filename = "basic-compressed.pdf";
+            break;
+          }
+          
+          case "custom-pdf-compression": {
+            result = await customCompressionPdf(files[0], options.compressionLevel || "medium");
+            filename = "custom-compressed.pdf";
+            break;
+          }
+          
+          case "compress-pdf-for-web": {
+            result = await webOptimizedPdf(files[0]);
+            filename = "web-optimized.pdf";
+            break;
+          }
+          
+          case "compress-pdf-for-email": {
+            result = await emailOptimizedPdf(files[0]);
+            filename = "email-ready.pdf";
+            break;
+          }
+          
+          case "compress-scanned-pdf": {
+            result = await scannedPdfCompression(files[0]);
+            filename = "scanned-compressed.pdf";
+            break;
+          }
+          
+          case "pdf-size-reducer": {
+            result = await advancedCompressPdf(files[0], options.compressionLevel || "medium");
+            filename = "reduced-size.pdf";
+            break;
+          }
+          
+          case "shrink-pdf": {
+            result = await advancedCompressPdf(files[0], options.compressionLevel || "medium");
+            filename = "shrunk.pdf";
+            break;
+          }
+          
+          case "pdf-file-compressor": {
+            result = await advancedCompressPdf(files[0], options.compressionLevel || "medium");
+            filename = "professional-compressed.pdf";
+            break;
+          }
+          
+          case "optimize-pdf-for-print": {
+            result = await printOptimizedPdf(files[0]);
+            filename = "print-optimized.pdf";
             break;
           }
             
