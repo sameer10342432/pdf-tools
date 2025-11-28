@@ -1,11 +1,7 @@
-import { pdfTools, type PdfTool } from "@shared/schema";
+import { pdfTools } from "@shared/schema";
 import { ToolCard } from "./tool-card";
 
-interface ToolsGridProps {
-  onSelectTool: (tool: PdfTool) => void;
-}
-
-export function ToolsGrid({ onSelectTool }: ToolsGridProps) {
+export function ToolsGrid() {
   return (
     <section id="tools" className="py-16 md:py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4">
@@ -19,11 +15,11 @@ export function ToolsGrid({ onSelectTool }: ToolsGridProps) {
         </div>
         
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
           data-testid="grid-tools"
         >
           {pdfTools.map((tool) => (
-            <ToolCard key={tool.id} tool={tool} onClick={onSelectTool} />
+            <ToolCard key={tool.id} tool={tool} />
           ))}
         </div>
       </div>

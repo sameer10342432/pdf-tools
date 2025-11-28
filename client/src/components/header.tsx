@@ -1,11 +1,12 @@
 import { FileText } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
+import { Link } from "wouter";
 
 export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-        <a
+        <Link
           href="/"
           className="flex items-center gap-2 font-bold text-xl"
           data-testid="link-home"
@@ -14,18 +15,18 @@ export function Header() {
             <FileText className="h-5 w-5 text-primary-foreground" />
           </div>
           <span className="hidden sm:inline-block">PDF Tools</span>
-        </a>
+        </Link>
         
         <nav className="hidden md:flex items-center gap-6">
-          <a
-            href="#tools"
+          <Link
+            href="/tools"
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             data-testid="link-tools"
           >
             All Tools
-          </a>
+          </Link>
           <a
-            href="#features"
+            href="/#features"
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             data-testid="link-features"
           >
