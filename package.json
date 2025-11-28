@@ -58,6 +58,7 @@
     "framer-motion": "^11.13.1",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.453.0",
+    "mammoth": "^1.11.0",
     "memorystore": "^1.6.7",
     "muhammara": "^6.0.0",
     "multer": "^2.0.2",
