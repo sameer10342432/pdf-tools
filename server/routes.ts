@@ -7,6 +7,7 @@ import path from "path";
 import fs from "fs";
 import { randomUUID } from "crypto";
 import muhammara from "muhammara";
+import mammoth from "mammoth";
 
 const uploadDir = path.join(process.cwd(), "uploads");
 const outputDir = path.join(process.cwd(), "output");
@@ -32,8 +33,10 @@ const upload = multer({
     const isPdf = file.mimetype === "application/pdf" || file.originalname.toLowerCase().endsWith(".pdf");
     const isImage = file.mimetype.startsWith("image/") || 
       [".jpg", ".jpeg", ".png", ".gif", ".webp"].some(ext => file.originalname.toLowerCase().endsWith(ext));
+    const isDocx = file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || 
+      file.originalname.toLowerCase().endsWith(".docx");
     
-    if (isPdf || isImage) {
+    if (isPdf || isImage || isDocx) {
       cb(null, true);
     } else {
       cb(new Error("Invalid file type"));
@@ -392,6 +395,335 @@ async function unlockPdf(file: Express.Multer.File, password: string): Promise<B
   }
 }
 
+async function mergePdfsWithBookmarks(files: Express.Multer.File[]): Promise<Buffer> {
+  const mergedPdf = await PDFDocument.create();
+  const font = await mergedPdf.embedFont(StandardFonts.HelveticaBold);
+  const regularFont = await mergedPdf.embedFont(StandardFonts.Helvetica);
+  
+  for (let fileIndex = 0; fileIndex < files.length; fileIndex++) {
+    const file = files[fileIndex];
+    const pdfBytes = fs.readFileSync(file.path);
+    const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+    const pageCount = pdf.getPageCount();
+    const fileName = path.basename(file.originalname, '.pdf');
+    
+    const separatorPage = mergedPdf.addPage([612, 792]);
+    const { width, height } = separatorPage.getSize();
+    
+    separatorPage.drawRectangle({
+      x: 0,
+      y: height - 120,
+      width: width,
+      height: 120,
+      color: rgb(0.15, 0.15, 0.15),
+    });
+    
+    const titleFontSize = 28;
+    const titleWidth = font.widthOfTextAtSize(fileName, titleFontSize);
+    separatorPage.drawText(fileName, {
+      x: (width - titleWidth) / 2,
+      y: height - 70,
+      size: titleFontSize,
+      font,
+      color: rgb(1, 1, 1),
+    });
+    
+    const subtitleText = `Document ${fileIndex + 1} of ${files.length}`;
+    const subtitleFontSize = 14;
+    const subtitleWidth = regularFont.widthOfTextAtSize(subtitleText, subtitleFontSize);
+    separatorPage.drawText(subtitleText, {
+      x: (width - subtitleWidth) / 2,
+      y: height - 100,
+      size: subtitleFontSize,
+      font: regularFont,
+      color: rgb(0.8, 0.8, 0.8),
+    });
+    
+    const pageInfoText = `${pageCount} page${pageCount !== 1 ? 's' : ''}`;
+    const pageInfoFontSize = 12;
+    const pageInfoWidth = regularFont.widthOfTextAtSize(pageInfoText, pageInfoFontSize);
+    separatorPage.drawText(pageInfoText, {
+      x: (width - pageInfoWidth) / 2,
+      y: height / 2,
+      size: pageInfoFontSize,
+      font: regularFont,
+      color: rgb(0.4, 0.4, 0.4),
+    });
+    
+    const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+    pages.forEach((page) => mergedPdf.addPage(page));
+  }
+  
+  return Buffer.from(await mergedPdf.save());
+}
+
+async function combinePdfsAndImages(files: Express.Multer.File[]): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  
+  for (const file of files) {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const fileBuffer = fs.readFileSync(file.path);
+    
+    if (ext === ".pdf") {
+      const pdf = await PDFDocument.load(fileBuffer, { ignoreEncryption: true });
+      const pages = await pdfDoc.copyPages(pdf, pdf.getPageIndices());
+      pages.forEach((page) => pdfDoc.addPage(page));
+    } else if ([".jpg", ".jpeg", ".png", ".gif", ".webp"].includes(ext)) {
+      let image;
+      try {
+        if (ext === ".png") {
+          image = await pdfDoc.embedPng(fileBuffer);
+        } else {
+          image = await pdfDoc.embedJpg(fileBuffer);
+        }
+      } catch (e) {
+        throw new Error(`Failed to process image: ${file.originalname}. Please use JPG or PNG format.`);
+      }
+      
+      const page = pdfDoc.addPage([image.width, image.height]);
+      page.drawImage(image, {
+        x: 0,
+        y: 0,
+        width: image.width,
+        height: image.height,
+      });
+    }
+  }
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function convertWordAndMerge(files: Express.Multer.File[]): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  
+  for (const file of files) {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const fileBuffer = fs.readFileSync(file.path);
+    
+    if (ext === ".pdf") {
+      const pdf = await PDFDocument.load(fileBuffer, { ignoreEncryption: true });
+      const pages = await pdfDoc.copyPages(pdf, pdf.getPageIndices());
+      pages.forEach((page) => pdfDoc.addPage(page));
+    } else if (ext === ".docx") {
+      const result = await mammoth.extractRawText({ buffer: fileBuffer });
+      const text = result.value;
+      
+      const pageWidth = 612;
+      const pageHeight = 792;
+      const margin = 50;
+      const fontSize = 12;
+      const lineHeight = fontSize * 1.5;
+      const maxWidth = pageWidth - 2 * margin;
+      const maxLines = Math.floor((pageHeight - 2 * margin) / lineHeight);
+      
+      const lines: string[] = [];
+      const paragraphs = text.split('\n');
+      
+      for (const para of paragraphs) {
+        if (para.trim() === '') {
+          lines.push('');
+          continue;
+        }
+        
+        const words = para.split(' ');
+        let currentLine = '';
+        
+        for (const word of words) {
+          const testLine = currentLine ? `${currentLine} ${word}` : word;
+          const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+          
+          if (testWidth > maxWidth && currentLine) {
+            lines.push(currentLine);
+            currentLine = word;
+          } else {
+            currentLine = testLine;
+          }
+        }
+        
+        if (currentLine) {
+          lines.push(currentLine);
+        }
+      }
+      
+      for (let i = 0; i < lines.length; i += maxLines) {
+        const pageLines = lines.slice(i, i + maxLines);
+        const page = pdfDoc.addPage([pageWidth, pageHeight]);
+        
+        pageLines.forEach((line, index) => {
+          page.drawText(line, {
+            x: margin,
+            y: pageHeight - margin - (index + 1) * lineHeight,
+            size: fontSize,
+            font,
+            color: rgb(0, 0, 0),
+          });
+        });
+      }
+    }
+  }
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function splitPdfToZip(file: Express.Multer.File): Promise<{ zipPath: string; pageCount: number }> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pageCount = pdf.getPageCount();
+  
+  const outputPath = path.join(outputDir, `split-${randomUUID()}.zip`);
+  const output = fs.createWriteStream(outputPath);
+  const archive = archiver("zip", { zlib: { level: 9 } });
+  
+  archive.pipe(output);
+  
+  for (let i = 0; i < pageCount; i++) {
+    const singlePagePdf = await PDFDocument.create();
+    const [page] = await singlePagePdf.copyPages(pdf, [i]);
+    singlePagePdf.addPage(page);
+    
+    const pdfData = await singlePagePdf.save();
+    archive.append(Buffer.from(pdfData), { name: `page-${i + 1}.pdf` });
+  }
+  
+  await archive.finalize();
+  
+  return new Promise((resolve, reject) => {
+    output.on("close", () => resolve({ zipPath: outputPath, pageCount }));
+    output.on("error", reject);
+  });
+}
+
+async function splitByRangesZip(file: Express.Multer.File, rangesString: string): Promise<{ zipPath: string; fileCount: number }> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const totalPages = pdf.getPageCount();
+  
+  const ranges = rangesString.split(",").map(s => s.trim());
+  
+  const outputPath = path.join(outputDir, `split-ranges-${randomUUID()}.zip`);
+  const output = fs.createWriteStream(outputPath);
+  const archive = archiver("zip", { zlib: { level: 9 } });
+  
+  archive.pipe(output);
+  
+  let fileCount = 0;
+  
+  for (const range of ranges) {
+    const pageNumbers = parsePageRanges(range, totalPages);
+    
+    if (pageNumbers.length > 0) {
+      const rangePdf = await PDFDocument.create();
+      const pages = await rangePdf.copyPages(pdf, pageNumbers.map(p => p - 1));
+      pages.forEach(page => rangePdf.addPage(page));
+      
+      const pdfData = await rangePdf.save();
+      archive.append(Buffer.from(pdfData), { name: `pages-${range.replace(/\s/g, '')}.pdf` });
+      fileCount++;
+    }
+  }
+  
+  if (fileCount === 0) {
+    throw new Error(`Invalid page ranges. PDF has ${totalPages} pages.`);
+  }
+  
+  await archive.finalize();
+  
+  return new Promise((resolve, reject) => {
+    output.on("close", () => resolve({ zipPath: outputPath, fileCount }));
+    output.on("error", reject);
+  });
+}
+
+async function dividePdfIntoParts(file: Express.Multer.File, parts: number): Promise<{ zipPath: string; partCount: number }> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const totalPages = pdf.getPageCount();
+  
+  if (parts < 1) {
+    throw new Error("Number of parts must be at least 1");
+  }
+  
+  if (parts > totalPages) {
+    throw new Error(`Cannot divide ${totalPages} pages into ${parts} parts`);
+  }
+  
+  const pagesPerPart = Math.ceil(totalPages / parts);
+  
+  const outputPath = path.join(outputDir, `divided-${randomUUID()}.zip`);
+  const output = fs.createWriteStream(outputPath);
+  const archive = archiver("zip", { zlib: { level: 9 } });
+  
+  archive.pipe(output);
+  
+  let partCount = 0;
+  
+  for (let i = 0; i < totalPages; i += pagesPerPart) {
+    const endPage = Math.min(i + pagesPerPart, totalPages);
+    const partPdf = await PDFDocument.create();
+    
+    const pageIndices = [];
+    for (let j = i; j < endPage; j++) {
+      pageIndices.push(j);
+    }
+    
+    const pages = await partPdf.copyPages(pdf, pageIndices);
+    pages.forEach(page => partPdf.addPage(page));
+    
+    const pdfData = await partPdf.save();
+    archive.append(Buffer.from(pdfData), { name: `part-${partCount + 1}.pdf` });
+    partCount++;
+  }
+  
+  await archive.finalize();
+  
+  return new Promise((resolve, reject) => {
+    output.on("close", () => resolve({ zipPath: outputPath, partCount }));
+    output.on("error", reject);
+  });
+}
+
+async function breakPdfBySections(file: Express.Multer.File, sections: string): Promise<{ zipPath: string; sectionCount: number }> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const totalPages = pdf.getPageCount();
+  
+  const sectionRanges = sections.split(",").map(s => s.trim());
+  
+  const outputPath = path.join(outputDir, `sections-${randomUUID()}.zip`);
+  const output = fs.createWriteStream(outputPath);
+  const archive = archiver("zip", { zlib: { level: 9 } });
+  
+  archive.pipe(output);
+  
+  let sectionCount = 0;
+  
+  for (const range of sectionRanges) {
+    const pageNumbers = parsePageRanges(range, totalPages);
+    
+    if (pageNumbers.length > 0) {
+      const sectionPdf = await PDFDocument.create();
+      const pages = await sectionPdf.copyPages(pdf, pageNumbers.map(p => p - 1));
+      pages.forEach(page => sectionPdf.addPage(page));
+      
+      const pdfData = await sectionPdf.save();
+      sectionCount++;
+      archive.append(Buffer.from(pdfData), { name: `section-${sectionCount}.pdf` });
+    }
+  }
+  
+  if (sectionCount === 0) {
+    throw new Error(`Invalid section ranges. PDF has ${totalPages} pages.`);
+  }
+  
+  await archive.finalize();
+  
+  return new Promise((resolve, reject) => {
+    output.on("close", () => resolve({ zipPath: outputPath, sectionCount }));
+    output.on("error", reject);
+  });
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -534,6 +866,96 @@ export async function registerRoutes(
             result = await unlockPdf(files[0], options.unlockPassword);
             filename = "unlocked.pdf";
             break;
+            
+          case "interleave-pdf":
+            if (files.length !== 2) {
+              throw new Error("Please upload exactly 2 PDF files for interleaving");
+            }
+            result = await mergeAlternately(files);
+            filename = "interleaved.pdf";
+            break;
+            
+          case "pdf-binder":
+            if (files.length < 2) {
+              throw new Error("At least 2 PDF files are required for binding");
+            }
+            result = await mergePdfs(files);
+            filename = "bound.pdf";
+            break;
+            
+          case "merge-with-bookmarks":
+            if (files.length < 2) {
+              throw new Error("At least 2 PDF files are required for merging with bookmarks");
+            }
+            result = await mergePdfsWithBookmarks(files);
+            filename = "merged-with-bookmarks.pdf";
+            break;
+            
+          case "pdf-images-combiner":
+            if (files.length === 0) {
+              throw new Error("Please upload at least one PDF or image file");
+            }
+            result = await combinePdfsAndImages(files);
+            filename = "combined.pdf";
+            break;
+            
+          case "pdf-word-merger":
+            if (files.length === 0) {
+              throw new Error("Please upload at least one PDF or Word file");
+            }
+            result = await convertWordAndMerge(files);
+            filename = "merged-documents.pdf";
+            break;
+            
+          case "split-pdf": {
+            const splitResult = await splitPdfToZip(files[0]);
+            result = splitResult.zipPath;
+            pageCount = splitResult.pageCount;
+            filename = "split-pages.zip";
+            isZip = true;
+            break;
+          }
+            
+          case "pdf-splitter":
+            if (!options.pages) {
+              throw new Error("Please specify page ranges to split (e.g., 1-3,4-6,7-10)");
+            }
+            const splitterResult = await splitByRangesZip(files[0], options.pages);
+            result = splitterResult.zipPath;
+            filename = "split-ranges.zip";
+            isZip = true;
+            break;
+            
+          case "divide-pdf": {
+            const partsNum = parseInt(options.parts as string, 10);
+            if (!partsNum || partsNum < 1) {
+              throw new Error("Please specify the number of parts to divide into");
+            }
+            const divideResult = await dividePdfIntoParts(files[0], partsNum);
+            result = divideResult.zipPath;
+            filename = "divided-parts.zip";
+            isZip = true;
+            break;
+          }
+            
+          case "break-pdf":
+            if (!options.sections) {
+              throw new Error("Please specify sections to extract (e.g., 1-5,6-10,11-15)");
+            }
+            const breakResult = await breakPdfBySections(files[0], options.sections);
+            result = breakResult.zipPath;
+            filename = "sections.zip";
+            isZip = true;
+            break;
+            
+          case "split-by-pages": {
+            const splitByPagesResult = await splitPdfToZip(files[0]);
+            result = splitByPagesResult.zipPath;
+            pageCount = splitByPagesResult.pageCount;
+            filename = "individual-pages.zip";
+            isZip = true;
+            break;
+          }
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);

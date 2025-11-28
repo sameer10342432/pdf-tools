@@ -52,6 +52,7 @@ export function ToolCard({ tool }: ToolCardProps) {
             <Icon className="h-7 w-7 text-white" />
           </div>
           <h3 className="font-semibold text-lg mb-2" data-testid={`text-tool-name-${tool.id}`}>
+            <span className="mr-2 text-xl" data-testid={`emoji-tool-${tool.id}`}>{tool.emoji}</span>
             {tool.name}
           </h3>
           <p className="text-sm text-muted-foreground leading-relaxed" data-testid={`text-tool-desc-${tool.id}`}>

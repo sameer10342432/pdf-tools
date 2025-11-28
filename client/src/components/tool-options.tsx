@@ -213,6 +213,68 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "divide-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="parts">Number of Parts</Label>
+            <Input
+              id="parts"
+              type="number"
+              min={2}
+              placeholder="2"
+              value={options.parts || 2}
+              onChange={(e) => updateOption("parts", parseInt(e.target.value) || 2)}
+              data-testid="input-parts"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter how many equal parts to divide the PDF into.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "break-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="sections">Page Sections</Label>
+            <Input
+              id="sections"
+              placeholder="e.g., 1-5,6-10,11-15"
+              value={options.sections || ""}
+              onChange={(e) => updateOption("sections", e.target.value)}
+              data-testid="input-sections"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter page ranges separated by commas to define each section.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "pdf-splitter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="pages">Pages to extract</Label>
+            <Input
+              id="pages"
+              placeholder="e.g., 1,3,5-10"
+              value={options.pages || ""}
+              onChange={(e) => updateOption("pages", e.target.value)}
+              data-testid="input-pages"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter page numbers separated by commas. Use hyphen for ranges.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useParams, useLocation } from "wouter";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -77,6 +77,33 @@ export default function ToolPage() {
     navigate(`/tool/${toolId}`);
   }, [navigate]);
 
+  useEffect(() => {
+    if (tool) {
+      document.title = tool.metaTitle;
+      
+      let metaDescription = document.querySelector('meta[name="description"]');
+      if (!metaDescription) {
+        metaDescription = document.createElement("meta");
+        metaDescription.setAttribute("name", "description");
+        document.head.appendChild(metaDescription);
+      }
+      metaDescription.setAttribute("content", tool.metaDescription);
+
+      return () => {
+        document.title = "PDF Tools - Free Online PDF Editor";
+        if (metaDescription) {
+          metaDescription.setAttribute("content", "Free online PDF tools to merge, split, compress, convert, rotate, unlock and watermark PDFs.");
+        }
+      };
+    }
+  }, [tool]);
+
+  useEffect(() => {
+    if (tool?.type === "divide-pdf" && options.parts === undefined) {
+      setOptions((prev) => ({ ...prev, parts: 2 }));
+    }
+  }, [tool?.type, options.parts]);
+
   if (!tool) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -101,20 +128,43 @@ export default function ToolPage() {
     if (tool.type === "images-to-pdf") {
       return "image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp";
     }
+    if (tool.type === "pdf-images-combiner") {
+      return ".pdf,application/pdf,image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp";
+    }
+    if (tool.type === "pdf-word-merger") {
+      return ".pdf,application/pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    }
     return ".pdf,application/pdf";
   };
 
   const isMultiFileAllowed = () => {
-    return ["merge", "images-to-pdf"].includes(tool.type);
+    return [
+      "merge",
+      "images-to-pdf",
+      "pdf-binder",
+      "merge-with-bookmarks",
+      "pdf-images-combiner",
+      "pdf-word-merger",
+      "interleave-pdf",
+    ].includes(tool.type);
   };
 
   const needsMultipleFiles = () => {
-    return ["merge", "merge-alternately"].includes(tool.type);
+    return [
+      "merge",
+      "merge-alternately",
+      "pdf-binder",
+      "merge-with-bookmarks",
+      "interleave-pdf",
+    ].includes(tool.type);
   };
 
   const getMinFiles = () => {
     if (tool.type === "merge") return 2;
     if (tool.type === "merge-alternately") return 2;
+    if (tool.type === "pdf-binder") return 2;
+    if (tool.type === "merge-with-bookmarks") return 2;
+    if (tool.type === "interleave-pdf") return 2;
     return 1;
   };
 
@@ -137,6 +187,23 @@ export default function ToolPage() {
     }
 
     if (tool.type === "unlock" && !options.unlockPassword?.trim()) {
+      return false;
+    }
+
+    if (tool.type === "pdf-splitter" && !options.pages?.trim()) {
+      return false;
+    }
+
+    if (tool.type === "divide-pdf") {
+      const parts = typeof options.parts === 'string' 
+        ? parseInt(options.parts, 10) 
+        : options.parts;
+      if (!parts || parts < 2) {
+        return false;
+      }
+    }
+
+    if (tool.type === "break-pdf" && !options.sections?.trim()) {
       return false;
     }
     
@@ -353,6 +420,15 @@ export default function ToolPage() {
               </div>
             </CardContent>
           </Card>
+
+          {tool.seoArticle && (
+            <div className="mt-12" data-testid="section-seo-article">
+              <article 
+                className="prose prose-slate dark:prose-invert max-w-none"
+                dangerouslySetInnerHTML={{ __html: tool.seoArticle }}
+              />
+            </div>
+          )}
         </div>
       </main>
       <Footer onToolClick={handleFooterToolClick} />
