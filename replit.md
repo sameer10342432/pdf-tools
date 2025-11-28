@@ -1,7 +1,7 @@
 # PDF Tools - Online PDF Processing Application
 
 ## Overview
-A comprehensive web application providing 32 powerful PDF manipulation tools. Built with React frontend and Express backend, featuring a beautiful, responsive design, SEO optimization, and secure file processing.
+A comprehensive web application providing 52 powerful PDF manipulation tools. Built with React frontend and Express backend, featuring a beautiful, responsive design, SEO optimization, and secure file processing.
 
 ## Project Structure
 ```
@@ -32,7 +32,7 @@ server/
   index.ts              # Express server setup
 ```
 
-## 42 PDF Tools Available
+## 52 PDF Tools Available
 
 ### Merge Tools
 1. **Merge PDF** - Combine multiple PDFs into one
@@ -93,10 +93,24 @@ server/
 42. **Protect PDF** - Add password protection
 43. **Unlock PDF** - Remove password protection
 
+### PDF Repair Tools
+44. **Repair PDF** - Fix and repair damaged or corrupted PDF files
+45. **Fix PDF** - Resolve PDF issues and restore functionality
+46. **Recover PDF Data** - Extract and recover data from damaged PDFs
+47. **Repair Corrupt PDF** - Fix severely corrupted PDF documents
+48. **PDF Repair Tool** - All-in-one PDF repair and recovery solution
+
+### OCR Tools
+49. **OCR PDF** - Make scanned PDFs searchable with text recognition
+50. **Scanned PDF to Text** - Extract text content from scanned PDF documents
+51. **PDF OCR** - Apply OCR to recognize text in any PDF
+52. **Searchable PDF Creator** - Create searchable PDFs from scanned documents
+53. **OCR to Word** - Convert scanned PDFs to editable Word documents
+
 ## Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, Shadcn UI
 - **Backend**: Express, Node.js
-- **PDF Processing**: pdf-lib, sharp, archiver, mammoth
+- **PDF Processing**: pdf-lib, sharp, archiver, mammoth, tesseract.js
 - **File Upload**: multer (server), drag-and-drop (client)
 
 ## Key Features
@@ -134,8 +148,13 @@ Each tool has:
 - Emoji support for visual appeal
 
 ## Recent Changes (November 2025)
+- Added 10 new PDF tools: 5 PDF repair tools and 5 OCR tools (repair-pdf, fix-pdf, recover-pdf-data, repair-corrupt-pdf, pdf-repair-tool, ocr-pdf, scanned-pdf-to-text, pdf-ocr, searchable-pdf-creator, ocr-to-word)
+- Total tools now at 52
+- Added Tesseract.js for OCR text recognition capabilities
+- PDF repair tools use advanced pdf-lib recovery with page-by-page reconstruction
+- OCR tools preserve original PDF layout while making documents searchable
+- Added OCR language selection supporting 14 languages (English, Spanish, French, German, Italian, Portuguese, Russian, Chinese, Japanese, Korean, Arabic, Hindi)
 - Added 10 new specialized PDF compression tools (high-compression-pdf, basic-compression-pdf, custom-pdf-compression, compress-pdf-for-web, compress-pdf-for-email, compress-scanned-pdf, pdf-size-reducer, shrink-pdf, pdf-file-compressor, optimize-pdf-for-print)
-- Total tools now at 42
 - Added specialized compression functions with different strategies (high compression, basic compression, web-optimized, email-optimized, scanned document, print-optimized)
 - Added 10 advanced splitting and extraction tools (split-by-size, split-by-bookmarks, split-by-text, split-in-half, split-every-x-pages, extract-pages, page-extractor, page-remover, extract-specific)
 - Added 10 previous tools (interleave, pdf-binder, merge-with-bookmarks, pdf-images-combiner, pdf-word-merger, split-pdf, pdf-splitter, divide-pdf, break-pdf, split-by-pages)
