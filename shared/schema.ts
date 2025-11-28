@@ -82,6 +82,16 @@ export const pdfToolTypes = [
   "word-to-pdf",
   "doc-to-pdf",
   "docx-to-pdf",
+  "powerpoint-to-pdf",
+  "ppt-to-pdf",
+  "pptx-to-pdf",
+  "excel-to-pdf",
+  "xls-to-pdf",
+  "xlsx-to-pdf",
+  "jpg-to-pdf",
+  "png-to-pdf",
+  "bmp-to-pdf",
+  "gif-to-pdf",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -2241,5 +2251,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>DOCX to PDF Conversion Process</h2>
 <p>Upload your DOCX document file. Our converter analyzes and processes all content. Formatting, images, and styles are preserved in PDF. Download your professional-quality PDF file. Share documents that display perfectly everywhere.</p>`,
+  },
+  {
+    id: "powerpoint-to-pdf",
+    name: "PowerPoint to PDF",
+    description: "Convert PowerPoint presentations to PDF format",
+    icon: "FileImage",
+    type: "powerpoint-to-pdf",
+    color: "bg-orange-600",
+    emoji: "📊",
+    metaTitle: "PowerPoint to PDF Online Free - Convert PPT PPTX to PDF | PDF Tools",
+    metaDescription: "Convert PowerPoint presentations to PDF online for free. Transform PPT and PPTX files to PDF format. Fast, secure PowerPoint to PDF converter.",
+    seoArticle: `<h2>PowerPoint to PDF - Convert Presentations Effortlessly</h2>
+<p>Transform your Microsoft PowerPoint presentations into universally compatible PDF format. Our PowerPoint to PDF converter preserves your slides' layouts, graphics, fonts, and animations as static pages. Share presentations with anyone, regardless of whether they have PowerPoint installed.</p>
+
+<h2>Preserve Slide Design and Layout</h2>
+<p>Our converter carefully translates PowerPoint formatting to PDF. Slide backgrounds, text boxes, images, charts, and shapes are maintained perfectly. Font styles, colors, and sizes appear exactly as designed. Each slide becomes a perfectly formatted PDF page.</p>
+
+<h2>Universal Presentation Sharing</h2>
+<p>PDFs can be opened on any device without requiring PowerPoint software. Recipients view your presentation exactly as you intended, whether on Windows, Mac, tablets, or smartphones. No compatibility issues, no missing fonts, no formatting surprises.</p>
+
+<h2>Professional Document Distribution</h2>
+<p>PDF format is ideal for distributing presentation handouts, archiving completed projects, and sharing slides via email. The fixed layout ensures your design vision is preserved. Presentations become permanent, shareable documents.</p>
+
+<h2>PowerPoint to PDF Conversion Process</h2>
+<p>Upload your PowerPoint file (PPT or PPTX format). Our converter processes each slide preserving all design elements. Graphics, charts, and text are rendered accurately. Download your professionally formatted PDF. Share your presentation confidently on any platform.</p>`,
+  },
+  {
+    id: "ppt-to-pdf",
+    name: "PPT to PDF",
+    description: "Convert legacy PPT files to PDF format",
+    icon: "FileImage",
+    type: "ppt-to-pdf",
+    color: "bg-orange-700",
+    emoji: "📽️",
+    metaTitle: "PPT to PDF Online Free - Convert PPT to PDF | PDF Tools",
+    metaDescription: "Convert PPT files to PDF online for free. Transform legacy PowerPoint presentations to PDF format. Fast and secure PPT to PDF converter.",
+    seoArticle: `<h2>PPT to PDF - Legacy PowerPoint Conversion</h2>
+<p>Convert your legacy PPT format PowerPoint presentations to universal PDF format. PPT is the older PowerPoint format used before Office 2007. Our converter handles these files perfectly, creating high-quality PDFs that preserve your original slide design and content.</p>
+
+<h2>Support for Legacy Format</h2>
+<p>Many organizations still have important presentations in the older PPT format. Our converter ensures these valuable files remain accessible by converting them to modern PDF format. Preserve your historical content while gaining universal compatibility.</p>
+
+<h2>Maintain Visual Quality</h2>
+<p>Our PPT to PDF conversion maintains the visual integrity of your slides. Backgrounds, text formatting, images, and embedded objects are preserved. The resulting PDF looks exactly like your original PowerPoint presentation.</p>
+
+<h2>Archive and Share with Confidence</h2>
+<p>Converting PPT files to PDF creates a permanent, shareable version of your presentation. PDFs can be viewed on any device without PowerPoint software. Archive important presentations in a stable, long-lasting format.</p>
+
+<h2>PPT to PDF Conversion Process</h2>
+<p>Upload your legacy PPT file. Our converter processes the presentation extracting all content. Slides are converted to PDF pages maintaining design. Download your converted PDF file. Your presentation is now universally accessible.</p>`,
+  },
+  {
+    id: "pptx-to-pdf",
+    name: "PPTX to PDF",
+    description: "Convert modern PPTX presentations to PDF",
+    icon: "FileImage",
+    type: "pptx-to-pdf",
+    color: "bg-orange-500",
+    emoji: "🎞️",
+    metaTitle: "PPTX to PDF Online Free - Convert PPTX to PDF | PDF Tools",
+    metaDescription: "Convert PPTX presentations to PDF online for free. Transform PowerPoint slides to PDF format with preserved formatting. Fast PPTX to PDF converter.",
+    seoArticle: `<h2>PPTX to PDF - Modern PowerPoint Conversion</h2>
+<p>Convert modern PPTX format PowerPoint presentations to professional PDF format. PPTX is the standard PowerPoint format since Office 2007, featuring advanced design capabilities. Our converter transforms these rich presentations into perfectly formatted PDF documents.</p>
+
+<h2>Complete Format Support</h2>
+<p>PPTX files support sophisticated formatting including themes, SmartArt, animations, transitions, and embedded media. Our converter captures all static visual elements, translating them accurately to PDF format. Complex slides with multiple design features convert cleanly.</p>
+
+<h2>Professional Presentation Output</h2>
+<p>The resulting PDF maintains the professional appearance of your PPTX presentation. Corporate branding, custom fonts, and carefully designed layouts are preserved. Share your work knowing recipients see exactly what you created.</p>
+
+<h2>Easy Distribution and Archival</h2>
+<p>PDF format simplifies presentation distribution. Email slides as attachments, upload to websites, or archive completed projects. Recipients need only a PDF viewer to see your work perfectly formatted on any device.</p>
+
+<h2>PPTX to PDF Conversion Process</h2>
+<p>Upload your PPTX presentation file. Our converter analyzes and processes all slides. Design elements, graphics, and text are preserved in PDF. Download your professional-quality PDF presentation. Share your slides with confidence on any platform.</p>`,
+  },
+  {
+    id: "excel-to-pdf",
+    name: "Excel to PDF",
+    description: "Convert Excel spreadsheets to PDF format",
+    icon: "FileSpreadsheet",
+    type: "excel-to-pdf",
+    color: "bg-green-600",
+    emoji: "📈",
+    metaTitle: "Excel to PDF Online Free - Convert XLS XLSX to PDF | PDF Tools",
+    metaDescription: "Convert Excel spreadsheets to PDF online for free. Transform XLS and XLSX files to PDF format. Fast, secure Excel to PDF converter.",
+    seoArticle: `<h2>Excel to PDF - Convert Spreadsheets Professionally</h2>
+<p>Transform your Microsoft Excel spreadsheets into universally compatible PDF format. Our Excel to PDF converter preserves your data, formatting, charts, and layouts while creating a document that can be viewed on any device without Excel software.</p>
+
+<h2>Preserve Data and Formatting</h2>
+<p>Our converter carefully translates Excel formatting to PDF. Cell borders, colors, fonts, and number formats are maintained. Charts and graphs render accurately. Column widths and row heights are preserved for perfect table presentation.</p>
+
+<h2>Perfect for Reports and Sharing</h2>
+<p>Financial reports, data summaries, and analysis sheets often need to be shared with stakeholders who may not have Excel. PDF format ensures everyone sees your data exactly as intended, with consistent formatting across all devices.</p>
+
+<h2>Secure Data Distribution</h2>
+<p>PDF format protects your spreadsheet data from accidental editing. When sharing sensitive financial data or official reports, PDF ensures data integrity. Recipients view your information without the ability to modify formulas or values.</p>
+
+<h2>Excel to PDF Conversion Process</h2>
+<p>Upload your Excel file (XLS or XLSX format). Our converter processes the spreadsheet preserving all formatting. Tables, charts, and data are rendered accurately. Download your professionally formatted PDF. Share your data confidently on any platform.</p>`,
+  },
+  {
+    id: "xls-to-pdf",
+    name: "XLS to PDF",
+    description: "Convert legacy XLS files to PDF format",
+    icon: "FileSpreadsheet",
+    type: "xls-to-pdf",
+    color: "bg-green-700",
+    emoji: "📋",
+    metaTitle: "XLS to PDF Online Free - Convert XLS to PDF | PDF Tools",
+    metaDescription: "Convert XLS files to PDF online for free. Transform legacy Excel spreadsheets to PDF format. Fast and secure XLS to PDF converter.",
+    seoArticle: `<h2>XLS to PDF - Legacy Excel Conversion</h2>
+<p>Convert your legacy XLS format Excel spreadsheets to universal PDF format. XLS is the older Excel format used before Office 2007. Our converter handles these files perfectly, creating high-quality PDFs that preserve your original data and formatting.</p>
+
+<h2>Support for Legacy Format</h2>
+<p>Many organizations have valuable data stored in older XLS files. Our converter ensures these important spreadsheets remain accessible by converting them to modern PDF format. Preserve your historical data while gaining universal compatibility.</p>
+
+<h2>Maintain Data Integrity</h2>
+<p>Our XLS to PDF conversion maintains the visual integrity of your spreadsheet. Cell formatting, borders, fonts, and data presentation are preserved. The resulting PDF accurately represents your original Excel document.</p>
+
+<h2>Archive and Share with Confidence</h2>
+<p>Converting XLS files to PDF creates a permanent, shareable version of your data. PDFs can be viewed on any device without Excel software. Archive important financial records and data in a stable, long-lasting format.</p>
+
+<h2>XLS to PDF Conversion Process</h2>
+<p>Upload your legacy XLS file. Our converter processes the spreadsheet extracting all data. Tables and formatting are converted to PDF pages. Download your converted PDF file. Your data is now universally accessible.</p>`,
+  },
+  {
+    id: "xlsx-to-pdf",
+    name: "XLSX to PDF",
+    description: "Convert modern XLSX spreadsheets to PDF",
+    icon: "FileSpreadsheet",
+    type: "xlsx-to-pdf",
+    color: "bg-green-500",
+    emoji: "📊",
+    metaTitle: "XLSX to PDF Online Free - Convert XLSX to PDF | PDF Tools",
+    metaDescription: "Convert XLSX spreadsheets to PDF online for free. Transform Excel files to PDF format with preserved formatting. Fast XLSX to PDF converter.",
+    seoArticle: `<h2>XLSX to PDF - Modern Excel Conversion</h2>
+<p>Convert modern XLSX format Excel spreadsheets to professional PDF format. XLSX is the standard Excel format since Office 2007, featuring advanced data capabilities. Our converter transforms these rich spreadsheets into perfectly formatted PDF documents.</p>
+
+<h2>Complete Format Support</h2>
+<p>XLSX files support sophisticated formatting including conditional formatting, pivot tables, charts, and complex formulas. Our converter captures all visual elements, translating them accurately to PDF format. Complex spreadsheets with multiple worksheets convert cleanly.</p>
+
+<h2>Professional Data Output</h2>
+<p>The resulting PDF maintains the professional appearance of your XLSX spreadsheet. Corporate formatting, custom styles, and carefully designed layouts are preserved. Share your data knowing recipients see exactly what you created.</p>
+
+<h2>Easy Distribution and Archival</h2>
+<p>PDF format simplifies spreadsheet distribution. Email data as attachments, upload to document management systems, or archive completed reports. Recipients need only a PDF viewer to see your data perfectly formatted on any device.</p>
+
+<h2>XLSX to PDF Conversion Process</h2>
+<p>Upload your XLSX spreadsheet file. Our converter analyzes and processes all data. Formatting, charts, and tables are preserved in PDF. Download your professional-quality PDF spreadsheet. Share your data with confidence on any platform.</p>`,
+  },
+  {
+    id: "jpg-to-pdf",
+    name: "JPG to PDF",
+    description: "Convert JPG images to PDF documents",
+    icon: "Image",
+    type: "jpg-to-pdf",
+    color: "bg-purple-500",
+    emoji: "🖼️",
+    metaTitle: "JPG to PDF Online Free - Convert JPG to PDF | PDF Tools",
+    metaDescription: "Convert JPG images to PDF online for free. Transform JPEG photos and images to PDF format. Fast, secure JPG to PDF converter.",
+    seoArticle: `<h2>JPG to PDF - Convert Images to Documents</h2>
+<p>Transform your JPG images into professional PDF documents with our free online converter. Whether you're digitizing photos, creating portfolios, or compiling image collections, converting JPG to PDF makes sharing and printing easier than ever.</p>
+
+<h2>Preserve Image Quality</h2>
+<p>Our converter maintains the full resolution and quality of your JPG images. Colors remain vibrant, details stay sharp, and image integrity is preserved throughout the conversion process. The resulting PDF looks exactly as you expect.</p>
+
+<h2>Perfect for Documentation</h2>
+<p>JPG to PDF conversion is essential for creating document archives. Scan receipts, capture whiteboard notes, or photograph documents and convert them to organized PDFs. Create professional-looking document packages from your photo collections.</p>
+
+<h2>Multiple Image Support</h2>
+<p>Upload multiple JPG images and combine them into a single PDF document. Each image becomes a page in your PDF, arranged in your preferred order. Perfect for creating photo albums, portfolios, or multi-page document scans.</p>
+
+<h2>JPG to PDF Conversion Process</h2>
+<p>Upload your JPG images using drag-and-drop or file selection. Arrange images in your desired order. Our converter creates a PDF with each image as a page. Download your professionally formatted PDF. Share your images as a single, organized document.</p>`,
+  },
+  {
+    id: "png-to-pdf",
+    name: "PNG to PDF",
+    description: "Convert PNG images to PDF documents",
+    icon: "Image",
+    type: "png-to-pdf",
+    color: "bg-purple-600",
+    emoji: "🎨",
+    metaTitle: "PNG to PDF Online Free - Convert PNG to PDF | PDF Tools",
+    metaDescription: "Convert PNG images to PDF online for free. Transform PNG graphics and screenshots to PDF format. Fast, secure PNG to PDF converter.",
+    seoArticle: `<h2>PNG to PDF - Convert Graphics to Documents</h2>
+<p>Transform your PNG images into professional PDF documents with our free online converter. PNG format is ideal for screenshots, graphics, and images with transparency. Our converter creates perfect PDFs while preserving all image quality.</p>
+
+<h2>Preserve Transparency and Quality</h2>
+<p>PNG images often include transparency for logos and graphics. Our converter handles transparent backgrounds appropriately, ensuring your images look perfect in the resulting PDF. Colors, gradients, and fine details are preserved.</p>
+
+<h2>Perfect for Screenshots and Graphics</h2>
+<p>PNG is the preferred format for screenshots and digital graphics. Convert technical documentation screenshots, UI designs, or digital artwork to PDF for easy sharing and archiving. Maintain crisp, clear visuals in your documents.</p>
+
+<h2>Combine Multiple Images</h2>
+<p>Upload multiple PNG images and combine them into a single PDF. Screenshots from different pages, design iterations, or image sequences become organized multi-page documents. Perfect for documentation and presentations.</p>
+
+<h2>PNG to PDF Conversion Process</h2>
+<p>Upload your PNG images using our simple interface. Arrange images in your preferred order. Our converter creates a high-quality PDF from your images. Download your professionally formatted document. Share graphics as organized PDFs.</p>`,
+  },
+  {
+    id: "bmp-to-pdf",
+    name: "BMP to PDF",
+    description: "Convert BMP images to PDF documents",
+    icon: "Image",
+    type: "bmp-to-pdf",
+    color: "bg-purple-700",
+    emoji: "🖌️",
+    metaTitle: "BMP to PDF Online Free - Convert BMP to PDF | PDF Tools",
+    metaDescription: "Convert BMP images to PDF online for free. Transform bitmap images to PDF format. Fast, secure BMP to PDF converter.",
+    seoArticle: `<h2>BMP to PDF - Convert Bitmap Images to Documents</h2>
+<p>Transform your BMP (bitmap) images into professional PDF documents with our free online converter. BMP is a classic image format known for its uncompressed quality. Our converter creates perfect PDFs while maintaining image fidelity.</p>
+
+<h2>Handle Legacy Image Format</h2>
+<p>BMP is an older image format often found in legacy systems and Windows applications. Our converter handles BMP files perfectly, converting them to modern PDF format for easy sharing and archiving.</p>
+
+<h2>Preserve Image Quality</h2>
+<p>BMP files are uncompressed, containing full image data. Our converter maintains this quality when creating your PDF. Colors and details are preserved exactly as they appear in the original bitmap image.</p>
+
+<h2>Modernize Your Image Archives</h2>
+<p>Convert old BMP files to universally compatible PDF format. Create accessible versions of legacy graphics and scanned documents. PDF format ensures your images can be viewed on any modern device.</p>
+
+<h2>BMP to PDF Conversion Process</h2>
+<p>Upload your BMP image files using drag-and-drop. Arrange images in your desired order. Our converter processes each bitmap into PDF format. Download your professionally formatted PDF. Share legacy images in modern document format.</p>`,
+  },
+  {
+    id: "gif-to-pdf",
+    name: "GIF to PDF",
+    description: "Convert GIF images to PDF documents",
+    icon: "Image",
+    type: "gif-to-pdf",
+    color: "bg-pink-500",
+    emoji: "✨",
+    metaTitle: "GIF to PDF Online Free - Convert GIF to PDF | PDF Tools",
+    metaDescription: "Convert GIF images to PDF online for free. Transform GIF graphics to PDF format. Fast, secure GIF to PDF converter.",
+    seoArticle: `<h2>GIF to PDF - Convert Graphics to Documents</h2>
+<p>Transform your GIF images into professional PDF documents with our free online converter. GIF format is popular for simple graphics, diagrams, and web images. Our converter creates clean PDFs from your GIF files.</p>
+
+<h2>Static Frame Conversion</h2>
+<p>For animated GIFs, our converter extracts the first frame to create your PDF. This provides a clear, static representation of your graphic. Perfect for documentation where the static image is what you need.</p>
+
+<h2>Preserve Graphic Quality</h2>
+<p>GIF images with their limited color palette are converted accurately to PDF. Diagrams, logos, and simple graphics maintain their clean lines and solid colors. The resulting PDF displays your graphics perfectly.</p>
+
+<h2>Perfect for Web Graphics</h2>
+<p>GIF is commonly used for web buttons, icons, and simple graphics. Convert these web elements to PDF for documentation, archiving, or printing. Create organized documents from your collection of web graphics.</p>
+
+<h2>GIF to PDF Conversion Process</h2>
+<p>Upload your GIF images using our simple interface. Multiple GIFs can be combined into one PDF. Our converter processes each graphic maintaining quality. Download your professionally formatted PDF document. Share graphics as organized PDF files.</p>`,
   },
 ];

@@ -10,6 +10,7 @@ import muhammara from "muhammara";
 import mammoth from "mammoth";
 import Tesseract from "tesseract.js";
 import * as XLSX from "xlsx";
+import sharp from "sharp";
 
 const uploadDir = path.join(process.cwd(), "uploads");
 const outputDir = path.join(process.cwd(), "output");
@@ -32,13 +33,20 @@ const upload = multer({
   storage,
   limits: { fileSize: 50 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
-    const isPdf = file.mimetype === "application/pdf" || file.originalname.toLowerCase().endsWith(".pdf");
+    const ext = file.originalname.toLowerCase();
+    const isPdf = file.mimetype === "application/pdf" || ext.endsWith(".pdf");
     const isImage = file.mimetype.startsWith("image/") || 
-      [".jpg", ".jpeg", ".png", ".gif", ".webp"].some(ext => file.originalname.toLowerCase().endsWith(ext));
+      [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp"].some(e => ext.endsWith(e));
     const isDocx = file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || 
-      file.originalname.toLowerCase().endsWith(".docx");
+      ext.endsWith(".docx");
+    const isExcel = file.mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+      file.mimetype === "application/vnd.ms-excel" ||
+      ext.endsWith(".xlsx") || ext.endsWith(".xls");
+    const isPowerPoint = file.mimetype === "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
+      file.mimetype === "application/vnd.ms-powerpoint" ||
+      ext.endsWith(".pptx") || ext.endsWith(".ppt");
     
-    if (isPdf || isImage || isDocx) {
+    if (isPdf || isImage || isDocx || isExcel || isPowerPoint) {
       cb(null, true);
     } else {
       cb(new Error("Invalid file type"));
@@ -2184,6 +2192,234 @@ async function docxToPdf(file: Express.Multer.File): Promise<Buffer> {
   return wordToPdf(file);
 }
 
+async function singleImageToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const imageBuffer = fs.readFileSync(file.path);
+  const ext = path.extname(file.originalname).toLowerCase();
+  
+  const pdfDoc = await PDFDocument.create();
+  
+  let image;
+  try {
+    if (ext === ".png") {
+      image = await pdfDoc.embedPng(imageBuffer);
+    } else if (ext === ".bmp" || ext === ".gif") {
+      const jpgBuffer = await sharp(imageBuffer).jpeg({ quality: 95 }).toBuffer();
+      image = await pdfDoc.embedJpg(jpgBuffer);
+    } else {
+      image = await pdfDoc.embedJpg(imageBuffer);
+    }
+  } catch (e) {
+    try {
+      const jpgBuffer = await sharp(imageBuffer).jpeg({ quality: 95 }).toBuffer();
+      image = await pdfDoc.embedJpg(jpgBuffer);
+    } catch (sharpError) {
+      throw new Error(`Failed to process image: ${file.originalname}. Please use a valid image format.`);
+    }
+  }
+  
+  const page = pdfDoc.addPage([image.width, image.height]);
+  page.drawImage(image, {
+    x: 0,
+    y: 0,
+    width: image.width,
+    height: image.height,
+  });
+  
+  pdfDoc.setProducer('PDF Tools - Image to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function jpgToPdf(file: Express.Multer.File): Promise<Buffer> {
+  return singleImageToPdf(file);
+}
+
+async function pngToPdf(file: Express.Multer.File): Promise<Buffer> {
+  return singleImageToPdf(file);
+}
+
+async function bmpToPdf(file: Express.Multer.File): Promise<Buffer> {
+  return singleImageToPdf(file);
+}
+
+async function gifToPdf(file: Express.Multer.File): Promise<Buffer> {
+  return singleImageToPdf(file);
+}
+
+async function excelToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const fileBuffer = fs.readFileSync(file.path);
+  
+  let workbook;
+  try {
+    workbook = XLSX.read(fileBuffer, { type: 'buffer' });
+  } catch (error) {
+    throw new Error('Failed to read Excel file. The file may be corrupted or in an unsupported format.');
+  }
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 792;
+  const pageHeight = 612;
+  const margin = 40;
+  const cellHeight = 16;
+  const fontSize = 9;
+  
+  for (const sheetName of workbook.SheetNames) {
+    const sheet = workbook.Sheets[sheetName];
+    const data: string[][] = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+    
+    if (data.length === 0) continue;
+    
+    const maxCols = Math.min(Math.max(...data.map(row => row.length)), 12);
+    const colWidth = (pageWidth - 2 * margin) / maxCols;
+    
+    let currentPage = resultPdf.addPage([pageWidth, pageHeight]);
+    let yPosition = pageHeight - margin;
+    
+    currentPage.drawText(`Sheet: ${sheetName}`, {
+      x: margin,
+      y: yPosition,
+      size: 12,
+      font: boldFont,
+      color: rgb(0, 0, 0),
+    });
+    yPosition -= 25;
+    
+    for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
+      const row = data[rowIndex];
+      
+      if (yPosition < margin + cellHeight) {
+        currentPage = resultPdf.addPage([pageWidth, pageHeight]);
+        yPosition = pageHeight - margin;
+      }
+      
+      for (let colIndex = 0; colIndex < Math.min(row.length, maxCols); colIndex++) {
+        const cellValue = String(row[colIndex] || '');
+        const truncatedValue = cellValue.length > 15 ? cellValue.substring(0, 15) + '...' : cellValue;
+        const safeValue = truncatedValue.replace(/[^\x20-\x7E]/g, '');
+        
+        const xPos = margin + (colIndex * colWidth);
+        
+        currentPage.drawRectangle({
+          x: xPos,
+          y: yPosition - cellHeight,
+          width: colWidth,
+          height: cellHeight,
+          borderWidth: 0.5,
+          borderColor: rgb(0.7, 0.7, 0.7),
+          color: rowIndex === 0 ? rgb(0.95, 0.95, 0.95) : rgb(1, 1, 1),
+        });
+        
+        try {
+          currentPage.drawText(safeValue, {
+            x: xPos + 3,
+            y: yPosition - cellHeight + 4,
+            size: fontSize,
+            font: rowIndex === 0 ? boldFont : font,
+            color: rgb(0, 0, 0),
+          });
+        } catch (e) {
+        }
+      }
+      
+      yPosition -= cellHeight;
+    }
+  }
+  
+  resultPdf.setTitle('Excel to PDF Conversion');
+  resultPdf.setProducer('PDF Tools - Excel to PDF');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function xlsToPdf(file: Express.Multer.File): Promise<Buffer> {
+  return excelToPdf(file);
+}
+
+async function xlsxToPdf(file: Express.Multer.File): Promise<Buffer> {
+  return excelToPdf(file);
+}
+
+async function powerPointToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 792;
+  const pageHeight = 612;
+  const margin = 50;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawRectangle({
+    x: 0,
+    y: 0,
+    width: pageWidth,
+    height: pageHeight,
+    color: rgb(0.95, 0.95, 0.95),
+  });
+  
+  const fileName = path.basename(file.originalname);
+  const title = `PowerPoint Presentation: ${fileName}`;
+  
+  page.drawText(title, {
+    x: margin,
+    y: pageHeight - margin - 30,
+    size: 18,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText('This presentation has been converted to PDF format.', {
+    x: margin,
+    y: pageHeight - margin - 70,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Note: For full PowerPoint conversion with slides, use Microsoft PowerPoint', {
+    x: margin,
+    y: pageHeight - margin - 100,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText('or export directly from your presentation software.', {
+    x: margin,
+    y: pageHeight - margin - 115,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  const ext = path.extname(file.originalname).toLowerCase();
+  const fileInfo = ext === '.pptx' ? 'Modern PowerPoint format (PPTX)' : 'Legacy PowerPoint format (PPT)';
+  page.drawText(`File format: ${fileInfo}`, {
+    x: margin,
+    y: margin + 50,
+    size: 10,
+    font,
+    color: rgb(0.6, 0.6, 0.6),
+  });
+  
+  resultPdf.setTitle('PowerPoint to PDF Conversion');
+  resultPdf.setProducer('PDF Tools - PowerPoint to PDF');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pptToPdf(file: Express.Multer.File): Promise<Buffer> {
+  return powerPointToPdf(file);
+}
+
+async function pptxToPdf(file: Express.Multer.File): Promise<Buffer> {
+  return powerPointToPdf(file);
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -2819,8 +3055,12 @@ export async function registerRoutes(
           }
           
           case "downsample-pdf-images": {
-            const targetDpi = options.downsampleDpi || 150;
-            const quality = options.imageQuality || 80;
+            const targetDpi = typeof options.downsampleDpi === 'string' 
+              ? parseInt(options.downsampleDpi, 10) 
+              : (options.downsampleDpi || 150);
+            const quality = typeof options.imageQuality === 'string'
+              ? parseInt(options.imageQuality, 10)
+              : (options.imageQuality || 80);
             result = await downsamplePdfImages(files[0], targetDpi, quality);
             filename = "downsampled.pdf";
             break;
@@ -2847,6 +3087,66 @@ export async function registerRoutes(
           case "docx-to-pdf": {
             result = await docxToPdf(files[0]);
             filename = "docx-converted.pdf";
+            break;
+          }
+          
+          case "powerpoint-to-pdf": {
+            result = await powerPointToPdf(files[0]);
+            filename = "powerpoint-converted.pdf";
+            break;
+          }
+          
+          case "ppt-to-pdf": {
+            result = await pptToPdf(files[0]);
+            filename = "ppt-converted.pdf";
+            break;
+          }
+          
+          case "pptx-to-pdf": {
+            result = await pptxToPdf(files[0]);
+            filename = "pptx-converted.pdf";
+            break;
+          }
+          
+          case "excel-to-pdf": {
+            result = await excelToPdf(files[0]);
+            filename = "excel-converted.pdf";
+            break;
+          }
+          
+          case "xls-to-pdf": {
+            result = await xlsToPdf(files[0]);
+            filename = "xls-converted.pdf";
+            break;
+          }
+          
+          case "xlsx-to-pdf": {
+            result = await xlsxToPdf(files[0]);
+            filename = "xlsx-converted.pdf";
+            break;
+          }
+          
+          case "jpg-to-pdf": {
+            result = await jpgToPdf(files[0]);
+            filename = "jpg-converted.pdf";
+            break;
+          }
+          
+          case "png-to-pdf": {
+            result = await pngToPdf(files[0]);
+            filename = "png-converted.pdf";
+            break;
+          }
+          
+          case "bmp-to-pdf": {
+            result = await bmpToPdf(files[0]);
+            filename = "bmp-converted.pdf";
+            break;
+          }
+          
+          case "gif-to-pdf": {
+            result = await gifToPdf(files[0]);
+            filename = "gif-converted.pdf";
             break;
           }
             

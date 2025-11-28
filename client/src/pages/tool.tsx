@@ -207,6 +207,36 @@ export default function ToolPage() {
     if (tool.type === "word-to-pdf" || tool.type === "docx-to-pdf" || tool.type === "doc-to-pdf") {
       return ".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
     }
+    if (tool.type === "powerpoint-to-pdf") {
+      return ".ppt,.pptx,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    }
+    if (tool.type === "ppt-to-pdf") {
+      return ".ppt,application/vnd.ms-powerpoint";
+    }
+    if (tool.type === "pptx-to-pdf") {
+      return ".pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    }
+    if (tool.type === "excel-to-pdf") {
+      return ".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    }
+    if (tool.type === "xls-to-pdf") {
+      return ".xls,application/vnd.ms-excel";
+    }
+    if (tool.type === "xlsx-to-pdf") {
+      return ".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    }
+    if (tool.type === "jpg-to-pdf") {
+      return ".jpg,.jpeg,image/jpeg";
+    }
+    if (tool.type === "png-to-pdf") {
+      return ".png,image/png";
+    }
+    if (tool.type === "bmp-to-pdf") {
+      return ".bmp,image/bmp";
+    }
+    if (tool.type === "gif-to-pdf") {
+      return ".gif,image/gif";
+    }
     return ".pdf,application/pdf";
   };
 

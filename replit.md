@@ -32,7 +32,7 @@ server/
   index.ts              # Express server setup
 ```
 
-## 52 PDF Tools Available
+## 73 PDF Tools Available
 
 ### Merge Tools
 1. **Merge PDF** - Combine multiple PDFs into one
@@ -120,6 +120,18 @@ server/
 61. **Word to PDF** - Convert Microsoft Word documents to PDF
 62. **DOC to PDF** - Convert legacy DOC files to PDF
 63. **DOCX to PDF** - Convert DOCX documents to PDF
+64. **PowerPoint to PDF** - Convert PowerPoint presentations to PDF
+65. **PPT to PDF** - Convert legacy PPT files to PDF
+66. **PPTX to PDF** - Convert PPTX presentations to PDF
+67. **Excel to PDF** - Convert Excel spreadsheets to PDF
+68. **XLS to PDF** - Convert legacy XLS files to PDF
+69. **XLSX to PDF** - Convert XLSX spreadsheets to PDF
+
+### Image Conversion Tools
+70. **JPG to PDF** - Convert JPG images to PDF documents
+71. **PNG to PDF** - Convert PNG images to PDF documents
+72. **BMP to PDF** - Convert BMP images to PDF documents
+73. **GIF to PDF** - Convert GIF images to PDF documents
 
 ## Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, Shadcn UI
@@ -162,8 +174,9 @@ Each tool has:
 - Emoji support for visual appeal
 
 ## Recent Changes (November 2025)
-- Added 10 new PDF tools: 5 PDF repair tools and 5 OCR tools (repair-pdf, fix-pdf, recover-pdf-data, repair-corrupt-pdf, pdf-repair-tool, ocr-pdf, scanned-pdf-to-text, pdf-ocr, searchable-pdf-creator, ocr-to-word)
-- Total tools now at 52
+- Added 10 new document and image conversion tools (powerpoint-to-pdf, ppt-to-pdf, pptx-to-pdf, excel-to-pdf, xls-to-pdf, xlsx-to-pdf, jpg-to-pdf, png-to-pdf, bmp-to-pdf, gif-to-pdf)
+- Total tools now at 73
+- Added 10 previous PDF repair and OCR tools (repair-pdf, fix-pdf, recover-pdf-data, repair-corrupt-pdf, pdf-repair-tool, ocr-pdf, scanned-pdf-to-text, pdf-ocr, searchable-pdf-creator, ocr-to-word)
 - Added Tesseract.js for OCR text recognition capabilities
 - PDF repair tools use advanced pdf-lib recovery with page-by-page reconstruction
 - OCR tools preserve original PDF layout while making documents searchable
