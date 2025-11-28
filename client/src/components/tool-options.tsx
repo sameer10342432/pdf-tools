@@ -505,6 +505,137 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "add-pages":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Insert Position</Label>
+            <Select
+              value={options.addPagesPosition || "end"}
+              onValueChange={(value) =>
+                updateOption("addPagesPosition", value as "start" | "end" | "after")
+              }
+            >
+              <SelectTrigger data-testid="select-add-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="start">At the beginning</SelectItem>
+                <SelectItem value="end">At the end</SelectItem>
+                <SelectItem value="after">After specific page</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.addPagesPosition === "after" && (
+            <div className="space-y-2">
+              <Label htmlFor="insertAfterPage">Insert After Page</Label>
+              <Input
+                id="insertAfterPage"
+                type="number"
+                min={1}
+                placeholder="Page number"
+                value={options.insertAfterPage || 1}
+                onChange={(e) => updateOption("insertAfterPage", parseInt(e.target.value) || 1)}
+                data-testid="input-insert-after"
+              />
+              <p className="text-sm text-muted-foreground">
+                New pages will be inserted after this page number.
+              </p>
+            </div>
+          )}
+        </div>
+      );
+
+    case "duplicate-pages":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="duplicatePages">Pages to Duplicate</Label>
+            <Input
+              id="duplicatePages"
+              placeholder="e.g., 1,3,5-7"
+              value={options.duplicatePages || ""}
+              onChange={(e) => updateOption("duplicatePages", e.target.value)}
+              data-testid="input-duplicate-pages"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter page numbers to duplicate. Use comma for multiple, hyphen for ranges.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="duplicateCount">Number of Copies</Label>
+            <Input
+              id="duplicateCount"
+              type="number"
+              min={1}
+              max={10}
+              placeholder="1"
+              value={options.duplicateCount || 1}
+              onChange={(e) => updateOption("duplicateCount", parseInt(e.target.value) || 1)}
+              data-testid="input-duplicate-count"
+            />
+            <p className="text-sm text-muted-foreground">
+              How many copies to create for each selected page (max 10).
+            </p>
+          </div>
+        </div>
+      );
+
+    case "pdf-page-manager":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="pageOrder">Page Order</Label>
+            <Input
+              id="pageOrder"
+              placeholder="e.g., 3,1,2,5,4"
+              value={options.pageOrder || ""}
+              onChange={(e) => updateOption("pageOrder", e.target.value)}
+              data-testid="input-page-order"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter the desired page order. Pages not listed will be removed.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "reverse-pages":
+      return null;
+
+    case "scan-to-pdf":
+      return null;
+
+    case "compress-pdf":
+    case "pdf-compressor":
+    case "reduce-pdf-size":
+    case "optimize-pdf":
+    case "pdf-optimizer":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Compression Level</Label>
+            <Select
+              value={options.compressionLevel || "medium"}
+              onValueChange={(value) =>
+                updateOption("compressionLevel", value as "low" | "medium" | "high")
+              }
+            >
+              <SelectTrigger data-testid="select-compression">
+                <SelectValue placeholder="Select compression level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="low">Low (Larger file, better quality)</SelectItem>
+                <SelectItem value="medium">Medium (Balanced)</SelectItem>
+                <SelectItem value="high">High (Smaller file, lower quality)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }

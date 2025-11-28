@@ -1415,6 +1415,173 @@ async function insertBlankPage(file: Express.Multer.File, insertPosition: number
   return Buffer.from(await newPdf.save());
 }
 
+async function addPagesToDocument(files: Express.Multer.File[], position: string, insertAfterPage?: number): Promise<Buffer> {
+  if (files.length < 2) {
+    throw new Error("Please upload the main PDF and the PDF with pages to add");
+  }
+  
+  const mainPdfBytes = fs.readFileSync(files[0].path);
+  const mainPdf = await PDFDocument.load(mainPdfBytes, { ignoreEncryption: true });
+  const mainPageCount = mainPdf.getPageCount();
+  
+  const addPdfBytes = fs.readFileSync(files[1].path);
+  const addPdf = await PDFDocument.load(addPdfBytes, { ignoreEncryption: true });
+  
+  const newPdf = await PDFDocument.create();
+  
+  if (position === "start") {
+    const addPages = await newPdf.copyPages(addPdf, addPdf.getPageIndices());
+    addPages.forEach((page) => newPdf.addPage(page));
+    const mainPages = await newPdf.copyPages(mainPdf, mainPdf.getPageIndices());
+    mainPages.forEach((page) => newPdf.addPage(page));
+  } else if (position === "end") {
+    const mainPages = await newPdf.copyPages(mainPdf, mainPdf.getPageIndices());
+    mainPages.forEach((page) => newPdf.addPage(page));
+    const addPages = await newPdf.copyPages(addPdf, addPdf.getPageIndices());
+    addPages.forEach((page) => newPdf.addPage(page));
+  } else if (position === "after" && insertAfterPage) {
+    const insertAt = Math.min(Math.max(1, insertAfterPage), mainPageCount);
+    
+    for (let i = 0; i < insertAt; i++) {
+      const [page] = await newPdf.copyPages(mainPdf, [i]);
+      newPdf.addPage(page);
+    }
+    
+    const addPages = await newPdf.copyPages(addPdf, addPdf.getPageIndices());
+    addPages.forEach((page) => newPdf.addPage(page));
+    
+    for (let i = insertAt; i < mainPageCount; i++) {
+      const [page] = await newPdf.copyPages(mainPdf, [i]);
+      newPdf.addPage(page);
+    }
+  } else {
+    const mainPages = await newPdf.copyPages(mainPdf, mainPdf.getPageIndices());
+    mainPages.forEach((page) => newPdf.addPage(page));
+    const addPages = await newPdf.copyPages(addPdf, addPdf.getPageIndices());
+    addPages.forEach((page) => newPdf.addPage(page));
+  }
+  
+  return Buffer.from(await newPdf.save());
+}
+
+async function duplicatePdfPages(file: Express.Multer.File, pagesToDuplicate: string, duplicateCount: number): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const totalPages = pdf.getPageCount();
+  
+  const pagesToCopy = parsePageRanges(pagesToDuplicate, totalPages);
+  
+  if (pagesToCopy.length === 0) {
+    throw new Error(`Invalid page selection. PDF has ${totalPages} pages.`);
+  }
+  
+  const copies = Math.max(1, Math.min(duplicateCount || 1, 10));
+  
+  const newPdf = await PDFDocument.create();
+  const pagesSet = new Set(pagesToCopy);
+  
+  for (let i = 0; i < totalPages; i++) {
+    const [page] = await newPdf.copyPages(pdf, [i]);
+    newPdf.addPage(page);
+    
+    if (pagesSet.has(i + 1)) {
+      for (let c = 0; c < copies; c++) {
+        const [dupPage] = await newPdf.copyPages(pdf, [i]);
+        newPdf.addPage(dupPage);
+      }
+    }
+  }
+  
+  return Buffer.from(await newPdf.save());
+}
+
+async function managePdfPages(file: Express.Multer.File, pageOrder: string): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const totalPages = pdf.getPageCount();
+  
+  if (!pageOrder || pageOrder.trim() === "") {
+    throw new Error("Please specify the desired page order (e.g., 1,3,2,5,4)");
+  }
+  
+  const newOrderNumbers = pageOrder.split(",").map(s => parseInt(s.trim(), 10));
+  
+  for (const pageNum of newOrderNumbers) {
+    if (isNaN(pageNum) || pageNum < 1 || pageNum > totalPages) {
+      throw new Error(`Invalid page number: ${pageNum}. PDF has ${totalPages} pages.`);
+    }
+  }
+  
+  const newPdf = await PDFDocument.create();
+  const pageIndices = newOrderNumbers.map(p => p - 1);
+  const pages = await newPdf.copyPages(pdf, pageIndices);
+  pages.forEach((page) => newPdf.addPage(page));
+  
+  return Buffer.from(await newPdf.save());
+}
+
+async function reversePdfPages(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const totalPages = pdf.getPageCount();
+  
+  if (totalPages === 0) {
+    throw new Error("PDF has no pages");
+  }
+  
+  const reversedIndices = Array.from({ length: totalPages }, (_, i) => totalPages - 1 - i);
+  
+  const newPdf = await PDFDocument.create();
+  const pages = await newPdf.copyPages(pdf, reversedIndices);
+  pages.forEach((page) => newPdf.addPage(page));
+  
+  return Buffer.from(await newPdf.save());
+}
+
+async function scanToPdf(files: Express.Multer.File[]): Promise<Buffer> {
+  if (files.length === 0) {
+    throw new Error("Please upload at least one scanned image");
+  }
+  
+  const pdfDoc = await PDFDocument.create();
+  
+  for (const file of files) {
+    const imageBuffer = fs.readFileSync(file.path);
+    const ext = path.extname(file.originalname).toLowerCase();
+    
+    let image;
+    try {
+      if (ext === ".png") {
+        image = await pdfDoc.embedPng(imageBuffer);
+      } else {
+        image = await pdfDoc.embedJpg(imageBuffer);
+      }
+    } catch (e) {
+      throw new Error(`Failed to process scan: ${file.originalname}. Please use JPG or PNG format.`);
+    }
+    
+    const page = pdfDoc.addPage([image.width, image.height]);
+    page.drawImage(image, {
+      x: 0,
+      y: 0,
+      width: image.width,
+      height: image.height,
+    });
+  }
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function advancedCompressPdf(file: Express.Multer.File, level: string = "medium"): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  return Buffer.from(await pdf.save({ 
+    useObjectStreams: true,
+    addDefaultPage: false,
+  }));
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -1814,6 +1981,81 @@ export async function registerRoutes(
             const insertPos = parseInt(options.insertPosition as string, 10) || 1;
             result = await insertBlankPage(files[0], insertPos);
             filename = "with-blank-page.pdf";
+            break;
+          }
+          
+          case "add-pages": {
+            if (files.length < 2) {
+              throw new Error("Please upload the main PDF and the PDF with pages to add");
+            }
+            const addPosition = options.addPagesPosition || "end";
+            const insertAfter = parseInt(options.insertAfterPage as string, 10) || undefined;
+            result = await addPagesToDocument(files, addPosition, insertAfter);
+            filename = "pages-added.pdf";
+            break;
+          }
+          
+          case "duplicate-pages": {
+            if (!options.duplicatePages) {
+              throw new Error("Please specify which pages to duplicate (e.g., 1,3,5)");
+            }
+            const dupCount = parseInt(options.duplicateCount as string, 10) || 1;
+            result = await duplicatePdfPages(files[0], options.duplicatePages, dupCount);
+            filename = "pages-duplicated.pdf";
+            break;
+          }
+          
+          case "pdf-page-manager": {
+            if (!options.pageOrder) {
+              throw new Error("Please specify the page order (e.g., 3,1,2,5,4)");
+            }
+            result = await managePdfPages(files[0], options.pageOrder);
+            filename = "managed.pdf";
+            break;
+          }
+          
+          case "reverse-pages": {
+            result = await reversePdfPages(files[0]);
+            filename = "reversed.pdf";
+            break;
+          }
+          
+          case "scan-to-pdf": {
+            if (files.length === 0) {
+              throw new Error("Please upload at least one scanned image");
+            }
+            result = await scanToPdf(files);
+            filename = "scanned-document.pdf";
+            break;
+          }
+          
+          case "compress-pdf": {
+            result = await advancedCompressPdf(files[0], options.compressionLevel || "medium");
+            filename = "compressed.pdf";
+            break;
+          }
+          
+          case "pdf-compressor": {
+            result = await advancedCompressPdf(files[0], options.compressionLevel || "medium");
+            filename = "compressed.pdf";
+            break;
+          }
+          
+          case "reduce-pdf-size": {
+            result = await advancedCompressPdf(files[0], options.compressionLevel || "medium");
+            filename = "reduced.pdf";
+            break;
+          }
+          
+          case "optimize-pdf": {
+            result = await advancedCompressPdf(files[0], options.compressionLevel || "medium");
+            filename = "optimized.pdf";
+            break;
+          }
+          
+          case "pdf-optimizer": {
+            result = await advancedCompressPdf(files[0], options.compressionLevel || "medium");
+            filename = "optimized.pdf";
             break;
           }
             

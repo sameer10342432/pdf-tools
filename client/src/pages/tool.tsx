@@ -41,6 +41,16 @@ import {
   FileSearch,
   Eraser,
   Target,
+  FilePlus2,
+  Copy,
+  LayoutGrid,
+  ArrowDownUp,
+  ScanLine,
+  Minimize2,
+  Shrink,
+  TrendingDown,
+  Zap,
+  Gauge,
   type LucideIcon,
 } from "lucide-react";
 
@@ -66,6 +76,16 @@ const iconMap: Record<string, LucideIcon> = {
   FileSearch,
   Eraser,
   Target,
+  FilePlus2,
+  Copy,
+  LayoutGrid,
+  ArrowDownUp,
+  ScanLine,
+  Minimize2,
+  Shrink,
+  TrendingDown,
+  Zap,
+  Gauge,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";
@@ -149,7 +169,7 @@ export default function ToolPage() {
   const Icon = iconMap[tool.icon] || Layers;
 
   const getAcceptType = () => {
-    if (tool.type === "images-to-pdf") {
+    if (tool.type === "images-to-pdf" || tool.type === "scan-to-pdf") {
       return "image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp";
     }
     if (tool.type === "pdf-images-combiner") {
@@ -170,6 +190,8 @@ export default function ToolPage() {
       "pdf-images-combiner",
       "pdf-word-merger",
       "interleave-pdf",
+      "add-pages",
+      "scan-to-pdf",
     ].includes(tool.type);
   };
 
@@ -180,6 +202,7 @@ export default function ToolPage() {
       "pdf-binder",
       "merge-with-bookmarks",
       "interleave-pdf",
+      "add-pages",
     ].includes(tool.type);
   };
 
@@ -189,6 +212,7 @@ export default function ToolPage() {
     if (tool.type === "pdf-binder") return 2;
     if (tool.type === "merge-with-bookmarks") return 2;
     if (tool.type === "interleave-pdf") return 2;
+    if (tool.type === "add-pages") return 2;
     return 1;
   };
 
@@ -261,6 +285,23 @@ export default function ToolPage() {
         ? parseInt(options.pageInterval, 10) 
         : options.pageInterval;
       if (!interval || interval < 1) {
+        return false;
+      }
+    }
+
+    if (tool.type === "duplicate-pages" && !options.duplicatePages?.trim()) {
+      return false;
+    }
+
+    if (tool.type === "pdf-page-manager" && !options.pageOrder?.trim()) {
+      return false;
+    }
+
+    if (tool.type === "add-pages" && options.addPagesPosition === "after") {
+      const insertAfter = typeof options.insertAfterPage === 'string'
+        ? parseInt(options.insertAfterPage, 10)
+        : options.insertAfterPage;
+      if (!insertAfter || insertAfter < 1) {
         return false;
       }
     }

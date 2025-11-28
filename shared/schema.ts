@@ -42,6 +42,16 @@ export const pdfToolTypes = [
   "sort-pages",
   "move-pages",
   "insert-blank-page",
+  "add-pages",
+  "duplicate-pages",
+  "pdf-page-manager",
+  "reverse-pages",
+  "scan-to-pdf",
+  "compress-pdf",
+  "pdf-compressor",
+  "reduce-pdf-size",
+  "optimize-pdf",
+  "pdf-optimizer",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -108,6 +118,10 @@ export const toolOptionsSchema = z.object({
   moveFrom: z.number().optional(),
   moveTo: z.number().optional(),
   sortOrder: z.enum(["ascending", "descending", "reverse"]).optional(),
+  duplicatePages: z.string().optional(),
+  duplicateCount: z.number().optional(),
+  addPagesPosition: z.enum(["start", "end", "after"]).optional(),
+  insertAfterPage: z.number().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -1194,5 +1208,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Matching Page Size</h2>
 <p>Inserted blank pages automatically match the dimensions of surrounding pages. Whether your document uses letter, A4, or custom sizes, blank pages fit seamlessly. Consistency is maintained throughout the document.</p>`,
+  },
+  {
+    id: "add-pages",
+    name: "Add Pages to PDF",
+    description: "Insert pages from another PDF at any position",
+    icon: "FilePlus2",
+    type: "add-pages",
+    color: "bg-emerald-600",
+    emoji: "➕",
+    metaTitle: "Add Pages to PDF Online Free - Insert PDF Pages | PDF Tools",
+    metaDescription: "Add pages to PDF documents from another PDF file online for free. Insert pages at start, end, or any position. Easy PDF page insertion tool.",
+    seoArticle: `<h2>Add Pages to PDF - Insert Pages From Another Document</h2>
+<p>Enhance your PDF documents by adding pages from other PDF files with our Add Pages to PDF tool. Whether you need to insert additional content at the beginning, end, or anywhere in between, this tool makes page insertion seamless and precise. Perfect for combining related documents, adding appendices, or inserting cover pages.</p>
+
+<h2>Flexible Page Insertion Options</h2>
+<p>Choose exactly where to insert your new pages. Add at the very beginning to insert cover pages or introductions. Append at the end for supplementary materials and attachments. Insert after any specific page for precise document assembly. Complete control over your final document structure.</p>
+
+<h2>Preserve Original Document Quality</h2>
+<p>When you add pages to your PDF, both the original document and inserted pages maintain their full quality. Fonts, images, formatting, and interactive elements stay perfect. The resulting document looks professionally assembled with consistent quality throughout.</p>
+
+<h2>How to Add Pages to PDF</h2>
+<p>Upload your main PDF document first. Then upload the PDF containing pages you want to add. Select the insertion position: start, end, or after a specific page number. Click process to create your enhanced document. Download the combined PDF with all pages in place.</p>
+
+<h2>Common Use Cases for Adding Pages</h2>
+<p>Insert a professional cover page at the start of reports. Add terms and conditions pages to contracts. Include updated appendices in existing manuals. Insert divider pages between document sections. Add signature pages where needed. Page insertion opens countless document assembly possibilities.</p>`,
+  },
+  {
+    id: "duplicate-pages",
+    name: "Duplicate PDF Pages",
+    description: "Create copies of specific pages within your PDF",
+    icon: "Copy",
+    type: "duplicate-pages",
+    color: "bg-violet-600",
+    emoji: "📋",
+    metaTitle: "Duplicate PDF Pages Online Free - Copy PDF Pages | PDF Tools",
+    metaDescription: "Duplicate specific pages within PDF documents online for free. Create multiple copies of any page. Easy PDF page duplication tool with no software needed.",
+    seoArticle: `<h2>Duplicate PDF Pages - Create Page Copies Instantly</h2>
+<p>Need multiple copies of specific pages in your PDF? Our Duplicate PDF Pages tool lets you create copies of any page within your document. Perfect for creating worksheets with multiple identical pages, duplicating forms for completion, or repeating important content for emphasis.</p>
+
+<h2>Precise Page Duplication</h2>
+<p>Select exactly which pages to duplicate and how many copies you need. Duplicate a single page multiple times or duplicate multiple pages at once. Each copy is a perfect reproduction of the original, maintaining all content, formatting, and quality.</p>
+
+<h2>Control Copy Placement</h2>
+<p>Duplicated pages are inserted immediately after the original page position. This maintains logical document flow while creating the copies you need. For different placement requirements, combine with our page reordering tools for complete flexibility.</p>
+
+<h2>How to Duplicate Pages</h2>
+<p>Upload your PDF document. Specify which pages to duplicate (e.g., 1, 3, 5-7). Enter how many copies of each page you need. Click process to generate duplicates. Download your PDF with all duplicate pages in place.</p>
+
+<h2>Practical Duplication Scenarios</h2>
+<p>Create multi-page worksheets from a single template. Duplicate forms that need multiple signatures or copies. Repeat title pages for different sections. Create backup copies of important pages within the same document. Page duplication serves many practical purposes in document preparation.</p>`,
+  },
+  {
+    id: "pdf-page-manager",
+    name: "PDF Page Manager",
+    description: "Complete page management: reorder, delete, and organize",
+    icon: "LayoutGrid",
+    type: "pdf-page-manager",
+    color: "bg-blue-600",
+    emoji: "📊",
+    metaTitle: "PDF Page Manager Online Free - Manage PDF Pages | PDF Tools",
+    metaDescription: "Manage PDF pages with complete control online for free. Reorder, delete, and organize pages visually. Comprehensive PDF page management tool.",
+    seoArticle: `<h2>PDF Page Manager - Complete Page Control</h2>
+<p>Take complete control of your PDF pages with our comprehensive PDF Page Manager. Combine multiple page operations in one tool: reorder pages, delete unwanted content, and organize your document structure. The ultimate solution for PDF page manipulation and document organization.</p>
+
+<h2>All Page Operations in One Tool</h2>
+<p>Why use multiple tools when one does everything? Our PDF Page Manager combines reordering, deletion, and organization capabilities. Restructure entire documents in a single session. Apply multiple changes before generating your final output. Maximum efficiency for document editing.</p>
+
+<h2>Visual Page Organization</h2>
+<p>See thumbnail previews of every page while working. Identify pages quickly by their visual content. Make informed decisions about which pages to keep, delete, or reorder. Visual management prevents mistakes and ensures accurate results.</p>
+
+<h2>How to Use PDF Page Manager</h2>
+<p>Upload your PDF document for management. View all pages as visual thumbnails. Specify your desired final page order as comma-separated numbers. Pages not included will be removed. Click process to generate your reorganized document.</p>
+
+<h2>Advanced Document Control</h2>
+<p>Create custom document versions for different audiences. Remove confidential pages before external sharing. Reorder content for different presentation sequences. Combine multiple reorganization tasks efficiently. The PDF Page Manager handles complex document editing with ease.</p>`,
+  },
+  {
+    id: "reverse-pages",
+    name: "Reverse PDF Pages",
+    description: "Reverse the order of all pages in your PDF",
+    icon: "ArrowDownUp",
+    type: "reverse-pages",
+    color: "bg-orange-600",
+    emoji: "🔄",
+    metaTitle: "Reverse PDF Pages Online Free - Flip Page Order | PDF Tools",
+    metaDescription: "Reverse the order of all PDF pages online for free. Flip page sequence from last to first instantly. Easy PDF page reversal tool.",
+    seoArticle: `<h2>Reverse PDF Pages - Flip Your Document Order</h2>
+<p>Instantly reverse the page order of any PDF document with our Reverse PDF Pages tool. Transform a document from pages 1, 2, 3... to 3, 2, 1 with a single click. Perfect for fixing scanning errors, creating countdown-style presentations, or adapting documents for different reading directions.</p>
+
+<h2>One-Click Page Reversal</h2>
+<p>No complex settings or page-by-page selection needed. Upload your PDF, click reverse, and download. Every page in your document flips to the opposite order automatically. A 100-page document instantly becomes page 100, 99, 98... through page 1.</p>
+
+<h2>Common Reversal Scenarios</h2>
+<p>Fix documents scanned in reverse order from a feeder. Create dramatic countdown presentations. Adapt materials for right-to-left reading conventions. Correct batch processing order mistakes. Prepare documents for specific binding requirements. Page reversal solves many practical problems.</p>
+
+<h2>How to Reverse Pages</h2>
+<p>Upload your PDF document. Click the reverse button. Our tool instantly reorders all pages. Preview the reversed document. Download your PDF with pages in reverse order. The entire process takes just seconds.</p>
+
+<h2>Quality Preservation</h2>
+<p>Reversing pages only changes their order, not their content. Every page maintains its original quality exactly. Text stays sharp, images remain detailed, formatting is preserved. Your reversed PDF is identical in quality to the original, just in opposite sequence.</p>`,
+  },
+  {
+    id: "scan-to-pdf",
+    name: "Scan to PDF",
+    description: "Convert scanned images into a PDF document",
+    icon: "ScanLine",
+    type: "scan-to-pdf",
+    color: "bg-cyan-600",
+    emoji: "📠",
+    metaTitle: "Scan to PDF Online Free - Convert Scans to PDF | PDF Tools",
+    metaDescription: "Convert scanned images to PDF documents online for free. Combine multiple scans into one PDF. Easy scan to PDF converter with image optimization.",
+    seoArticle: `<h2>Scan to PDF - Convert Your Scans to Documents</h2>
+<p>Transform your scanned images into professional PDF documents with our Scan to PDF tool. Whether you have photos of documents, scanned pages, or camera captures of paperwork, convert them all into organized PDF files. Perfect for digitizing paper documents, creating archives, and preparing digital submissions.</p>
+
+<h2>Multiple Scan Support</h2>
+<p>Upload multiple scanned images at once and combine them into a single, organized PDF document. Scans appear as pages in the order you upload them. Whether its a single page or hundreds of scanned documents, process them all together efficiently.</p>
+
+<h2>Image Format Compatibility</h2>
+<p>Our tool accepts all common image formats: JPG, JPEG, PNG, GIF, and WebP. Scans from any device or scanner work perfectly. No need to convert image formats before uploading. Just provide your scans and we handle the rest.</p>
+
+<h2>How to Convert Scans to PDF</h2>
+<p>Upload your scanned images in the order you want them to appear. Arrange them if needed by adjusting the upload order. Click convert to create your PDF. Download your professional PDF document containing all scans.</p>
+
+<h2>Practical Scanning Applications</h2>
+<p>Digitize paper records for electronic storage. Create PDF copies of receipts and invoices. Convert handwritten notes to shareable documents. Archive historical documents in PDF format. Prepare scanned forms for email submission. Scan to PDF makes paperwork digital and manageable.</p>`,
+  },
+  {
+    id: "compress-pdf",
+    name: "Compress PDF",
+    description: "Reduce PDF file size with advanced compression",
+    icon: "Minimize2",
+    type: "compress-pdf",
+    color: "bg-red-600",
+    emoji: "📦",
+    metaTitle: "Compress PDF Online Free - Shrink PDF File Size | PDF Tools",
+    metaDescription: "Compress PDF files to reduce size online for free. Shrink PDFs by up to 90% while maintaining quality. Fast and secure PDF compression tool.",
+    seoArticle: `<h2>Compress PDF - Shrink Your Files Instantly</h2>
+<p>Reduce your PDF file sizes dramatically with our advanced Compress PDF tool. Whether you need to email large documents, upload to size-limited platforms, or simply save storage space, our compression technology shrinks files by up to 90% while maintaining readable quality.</p>
+
+<h2>Intelligent Compression Technology</h2>
+<p>Our compression engine analyzes each PDF and applies optimal settings automatically. Images are intelligently recompressed without visible quality loss. Redundant data is eliminated. Font information is optimized. The result is significantly smaller files that remain perfectly usable.</p>
+
+<h2>Multiple Compression Levels</h2>
+<p>Choose the compression level that matches your needs. Light compression maintains maximum quality with moderate size reduction. Medium provides optimal balance between quality and file size. Maximum compression achieves the smallest possible file size for sharing and storage.</p>
+
+<h2>How to Compress Your PDF</h2>
+<p>Upload your PDF file using our secure uploader. Select your preferred compression level. Click compress to process your file. Download your optimized, smaller PDF. The original document structure and readability are preserved.</p>
+
+<h2>Why Compress PDFs?</h2>
+<p>Email attachments have size limits that large PDFs exceed. Website uploads often restrict file sizes. Cloud storage costs less with smaller files. Compressed PDFs transfer faster over slow connections. Proper compression makes PDF management easier everywhere.</p>`,
+  },
+  {
+    id: "pdf-compressor",
+    name: "PDF Compressor",
+    description: "Powerful compression to minimize PDF size",
+    icon: "Shrink",
+    type: "pdf-compressor",
+    color: "bg-pink-600",
+    emoji: "🗜️",
+    metaTitle: "PDF Compressor Online Free - Minimize PDF Size | PDF Tools",
+    metaDescription: "Compress PDF files with our powerful PDF compressor online for free. Minimize file size while keeping quality. Professional PDF compression tool.",
+    seoArticle: `<h2>PDF Compressor - Professional File Size Reduction</h2>
+<p>Our PDF Compressor delivers professional-grade file size reduction for all your PDF documents. Using advanced compression algorithms, we minimize file sizes while preserving the quality you need. Ideal for businesses handling large document volumes and individuals managing limited storage.</p>
+
+<h2>Advanced Compression Algorithms</h2>
+<p>Our compressor employs sophisticated algorithms that analyze PDF structure deeply. Text compression maintains perfect readability. Image recompression uses perceptual quality optimization. Metadata cleanup removes unnecessary embedded data. Every aspect of the PDF is optimized for minimal size.</p>
+
+<h2>Batch-Ready Compression</h2>
+<p>Process single files or multiple PDFs efficiently. Each document receives the same professional compression treatment. Consistent results across all your compressed files. Save time by compressing document collections in one session.</p>
+
+<h2>Simple Compression Process</h2>
+<p>Upload your PDF documents for compression. Choose your desired quality-size balance. Our compressor processes each file automatically. Download your minimized PDFs ready for use. Professional results without professional complexity.</p>
+
+<h2>Enterprise-Grade Results</h2>
+<p>Businesses rely on our compressor for document management efficiency. Reduce storage costs with smaller archive files. Speed up document transfers and sharing. Meet file size requirements for various platforms. Professional compression for professional document handling.</p>`,
+  },
+  {
+    id: "reduce-pdf-size",
+    name: "Reduce PDF Size",
+    description: "Make your PDF files smaller and lighter",
+    icon: "TrendingDown",
+    type: "reduce-pdf-size",
+    color: "bg-amber-600",
+    emoji: "📉",
+    metaTitle: "Reduce PDF Size Online Free - Make PDF Smaller | PDF Tools",
+    metaDescription: "Reduce PDF file size online for free. Make your PDFs smaller and easier to share. Simple PDF size reduction tool with quality preservation.",
+    seoArticle: `<h2>Reduce PDF Size - Make Files Smaller Easily</h2>
+<p>Make your PDF files smaller and more manageable with our Reduce PDF Size tool. Large PDFs are difficult to email, slow to upload, and waste storage space. Our size reduction tool shrinks files efficiently while keeping them perfectly readable and usable.</p>
+
+<h2>Why Reduce PDF Size?</h2>
+<p>Smaller PDFs are easier to work with in every way. They email without bouncing back for size limits. They upload faster to cloud services and websites. They download quickly even on slow connections. They take less space in your storage. Size reduction improves PDF usability everywhere.</p>
+
+<h2>Smart Size Reduction</h2>
+<p>Our tool intelligently reduces file size without compromising document usability. Images are optimized while remaining clear. Text stays sharp and readable. Document structure is preserved. You get smaller files that work exactly like the originals.</p>
+
+<h2>How to Reduce Your PDF Size</h2>
+<p>Upload the PDF you want to make smaller. Select your reduction level based on your quality needs. Click reduce to process your file. Download your smaller, optimized PDF. Share, upload, and store with ease.</p>
+
+<h2>Ideal Size Reduction Results</h2>
+<p>Most PDFs can be reduced by 50-90% depending on their content. Image-heavy documents see the greatest reductions. Text documents optimize efficiently while maintaining readability. Whatever your PDF content, our tool finds the optimal size reduction approach.</p>`,
+  },
+  {
+    id: "optimize-pdf",
+    name: "Optimize PDF",
+    description: "Optimize PDFs for web, email, or print",
+    icon: "Zap",
+    type: "optimize-pdf",
+    color: "bg-yellow-600",
+    emoji: "⚡",
+    metaTitle: "Optimize PDF Online Free - PDF Optimization Tool | PDF Tools",
+    metaDescription: "Optimize PDF files for web, email, or print online for free. Improve PDF performance and reduce size. Professional PDF optimization tool.",
+    seoArticle: `<h2>Optimize PDF - Improve Performance and Efficiency</h2>
+<p>Optimize your PDF documents for better performance and smaller file sizes with our PDF Optimization tool. Whether you are preparing documents for web display, email sharing, or print production, our optimizer ensures your PDFs perform their best in every context.</p>
+
+<h2>Multi-Purpose Optimization</h2>
+<p>Different uses require different optimization approaches. Web optimization prioritizes fast loading and screen display. Email optimization ensures reliable transmission within size limits. Print optimization maintains quality for physical reproduction. Our tool handles all optimization scenarios.</p>
+
+<h2>Comprehensive PDF Enhancement</h2>
+<p>Optimization goes beyond simple compression. Image resolutions are matched to actual display needs. Embedded resources are streamlined. Document structure is cleaned and reorganized. Metadata is optimized. Every aspect of your PDF is refined for better performance.</p>
+
+<h2>How to Optimize Your PDF</h2>
+<p>Upload your PDF document for optimization. Our tool analyzes content and applies optimal settings. Processing enhances every aspect of the file. Download your optimized PDF ready for its intended use. Better performance, smaller size, same great content.</p>
+
+<h2>Benefits of PDF Optimization</h2>
+<p>Optimized PDFs load faster in browsers and readers. They transfer more quickly over networks. They open smoothly on any device. They consume less bandwidth and storage. Optimization makes every PDF better without changing its content.</p>`,
+  },
+  {
+    id: "pdf-optimizer",
+    name: "PDF Optimizer",
+    description: "Advanced optimization for maximum efficiency",
+    icon: "Gauge",
+    type: "pdf-optimizer",
+    color: "bg-lime-600",
+    emoji: "🎯",
+    metaTitle: "PDF Optimizer Online Free - Advanced PDF Optimization | PDF Tools",
+    metaDescription: "Optimize PDFs with advanced settings online for free. Maximum efficiency with customizable optimization. Professional PDF optimizer tool.",
+    seoArticle: `<h2>PDF Optimizer - Maximum Efficiency for Your Documents</h2>
+<p>Achieve maximum PDF efficiency with our advanced PDF Optimizer. Using sophisticated optimization techniques, we transform your PDFs into lean, fast-loading documents that perform excellently across all platforms. The ultimate tool for professionals who demand the best PDF performance.</p>
+
+<h2>Advanced Optimization Techniques</h2>
+<p>Our optimizer employs techniques beyond basic compression. Linearization enables fast web viewing. Font subsetting reduces embedded font data. Image downsampling matches resolution to actual needs. Object stream compression consolidates PDF structure. Every technique works together for maximum efficiency.</p>
+
+<h2>Customizable Optimization Levels</h2>
+<p>Choose optimization settings that match your specific requirements. Standard optimization balances size and quality. Aggressive optimization achieves minimum file size. Quality-focused optimization maintains visual fidelity. Select the approach that fits your use case.</p>
+
+<h2>How PDF Optimizer Works</h2>
+<p>Upload your PDF for optimization. Select your preferred optimization level. Our engine applies comprehensive enhancements. Processing improves every aspect of the file. Download your maximally optimized PDF.</p>
+
+<h2>Professional-Grade Results</h2>
+<p>Our PDF Optimizer delivers results that meet professional standards. Documents perform excellently in enterprise environments. Files meet submission requirements for various platforms. Quality remains suitable for professional use. Get the best possible version of every PDF you process.</p>`,
   },
 ];
