@@ -83,6 +83,10 @@ export function ToolOptionsComponent({
     case "reduce-pdf-size":
     case "optimize-pdf":
     case "pdf-optimizer":
+    case "custom-pdf-compression":
+    case "pdf-size-reducer":
+    case "shrink-pdf":
+    case "pdf-file-compressor":
       return (
         <div className="space-y-4">
           <div className="space-y-2">
@@ -105,6 +109,14 @@ export function ToolOptionsComponent({
           </div>
         </div>
       );
+
+    case "high-compression-pdf":
+    case "basic-compression-pdf":
+    case "compress-pdf-for-web":
+    case "compress-pdf-for-email":
+    case "compress-scanned-pdf":
+    case "optimize-pdf-for-print":
+      return null;
 
     case "pdf-to-images":
       return null;
