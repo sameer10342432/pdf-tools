@@ -173,6 +173,46 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "protect":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter password to protect PDF"
+              value={options.password || ""}
+              onChange={(e) => updateOption("password", e.target.value)}
+              data-testid="input-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              This password will be required to open the PDF.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "unlock":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="unlockPassword">Current Password</Label>
+            <Input
+              id="unlockPassword"
+              type="password"
+              placeholder="Enter current PDF password"
+              value={options.unlockPassword || ""}
+              onChange={(e) => updateOption("unlockPassword", e.target.value)}
+              data-testid="input-unlock-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter the password used to protect this PDF.
+            </p>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }

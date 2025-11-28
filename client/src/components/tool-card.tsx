@@ -11,6 +11,8 @@ import {
   Shuffle,
   Hash,
   Stamp,
+  Lock,
+  Unlock,
   type LucideIcon,
 } from "lucide-react";
 
@@ -25,6 +27,8 @@ const iconMap: Record<string, LucideIcon> = {
   Shuffle,
   Hash,
   Stamp,
+  Lock,
+  Unlock,
 };
 
 interface ToolCardProps {

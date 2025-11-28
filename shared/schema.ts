@@ -11,6 +11,8 @@ export const pdfToolTypes = [
   "merge-alternately",
   "add-page-numbers",
   "watermark",
+  "protect",
+  "unlock",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -61,6 +63,8 @@ export const toolOptionsSchema = z.object({
   watermarkText: z.string().optional(),
   watermarkPosition: z.enum(["center", "top-left", "top-right", "bottom-left", "bottom-right"]).optional(),
   pageNumberPosition: z.enum(["bottom-center", "bottom-left", "bottom-right", "top-center", "top-left", "top-right"]).optional(),
+  password: z.string().optional(),
+  unlockPassword: z.string().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -145,5 +149,21 @@ export const pdfTools: PdfTool[] = [
     icon: "Stamp",
     type: "watermark",
     color: "bg-pink-500",
+  },
+  {
+    id: "protect",
+    name: "Protect PDF",
+    description: "Add password protection to your PDF",
+    icon: "Lock",
+    type: "protect",
+    color: "bg-rose-500",
+  },
+  {
+    id: "unlock",
+    name: "Unlock PDF",
+    description: "Remove password from protected PDF",
+    icon: "Unlock",
+    type: "unlock",
+    color: "bg-cyan-500",
   },
 ];

@@ -6,6 +6,7 @@ import archiver from "archiver";
 import path from "path";
 import fs from "fs";
 import { randomUUID } from "crypto";
+import muhammara from "muhammara";
 
 const uploadDir = path.join(process.cwd(), "uploads");
 const outputDir = path.join(process.cwd(), "output");
@@ -362,6 +363,35 @@ async function addWatermark(
   return Buffer.from(await pdf.save());
 }
 
+async function protectPdf(file: Express.Multer.File, password: string): Promise<Buffer> {
+  const pdfBuffer = fs.readFileSync(file.path);
+  const inputStream = new muhammara.PDFRStreamForBuffer(pdfBuffer);
+  const outputStream = new muhammara.PDFWStreamForBuffer();
+  
+  muhammara.recrypt(inputStream, outputStream, {
+    userPassword: password,
+    ownerPassword: password,
+    userProtectionFlag: 4
+  });
+  
+  return outputStream.buffer;
+}
+
+async function unlockPdf(file: Express.Multer.File, password: string): Promise<Buffer> {
+  const pdfBuffer = fs.readFileSync(file.path);
+  const inputStream = new muhammara.PDFRStreamForBuffer(pdfBuffer);
+  const outputStream = new muhammara.PDFWStreamForBuffer();
+  
+  try {
+    muhammara.recrypt(inputStream, outputStream, {
+      password: password
+    });
+    return outputStream.buffer;
+  } catch (error) {
+    throw new Error("Invalid password or the PDF is not encrypted");
+  }
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -487,6 +517,22 @@ export async function registerRoutes(
               options.watermarkPosition || "center"
             );
             filename = "watermarked.pdf";
+            break;
+            
+          case "protect":
+            if (!options.password || options.password.trim() === "") {
+              throw new Error("Please enter a password to protect the PDF");
+            }
+            result = await protectPdf(files[0], options.password);
+            filename = "protected.pdf";
+            break;
+            
+          case "unlock":
+            if (!options.unlockPassword || options.unlockPassword.trim() === "") {
+              throw new Error("Please enter the PDF password");
+            }
+            result = await unlockPdf(files[0], options.unlockPassword);
+            filename = "unlocked.pdf";
             break;
             
           default:
