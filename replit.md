@@ -32,7 +32,7 @@ server/
   index.ts              # Express server setup
 ```
 
-## 22 PDF Tools Available
+## 42 PDF Tools Available
 
 ### Merge Tools
 1. **Merge PDF** - Combine multiple PDFs into one
@@ -60,20 +60,38 @@ server/
 19. **Page Remover** - Remove specific pages from PDF
 20. **Extract Specific** - Extract specific pages into a single PDF
 
+### Compression Tools (Standard)
+21. **Compress PDF** - Reduce file size with customizable compression
+22. **PDF Compressor** - Professional compression tool
+23. **Reduce PDF Size** - Make PDFs smaller
+24. **Optimize PDF** - Optimize PDF for smaller size
+25. **PDF Optimizer** - Advanced PDF optimization
+
+### Compression Tools (Specialized)
+26. **High Compression PDF** - Maximum compression for smallest file size
+27. **Basic Compression PDF** - Light compression preserving quality
+28. **Custom PDF Compression** - Adjustable compression levels
+29. **Compress PDF for Web** - Optimize PDFs for web delivery
+30. **Compress PDF for Email** - Reduce size for email attachments
+31. **Compress Scanned PDF** - Specialized compression for scanned documents
+32. **PDF Size Reducer** - Simple file size reduction
+33. **Shrink PDF** - Quick PDF shrinking
+34. **PDF File Compressor** - Professional-grade compression
+35. **Optimize PDF for Print** - Prepare high-quality print versions
+
 ### Transform Tools
-21. **Compress PDF** - Reduce file size
-22. **Rotate PDF** - Rotate pages 90°/180°/270°
-23. **PDF to Images** - Convert pages to JPG/PNG
-24. **Images to PDF** - Convert images to PDF
+36. **Rotate PDF** - Rotate pages 90°/180°/270°
+37. **PDF to Images** - Convert pages to JPG/PNG
+38. **Images to PDF** - Convert images to PDF
 
 ### Edit Tools
-25. **Delete Pages** - Remove specific pages
-26. **Add Page Numbers** - Insert page numbers
-27. **Add Watermark** - Add text watermarks
+39. **Delete Pages** - Remove specific pages
+40. **Add Page Numbers** - Insert page numbers
+41. **Add Watermark** - Add text watermarks
 
 ### Security Tools
-28. **Protect PDF** - Add password protection
-29. **Unlock PDF** - Remove password protection
+42. **Protect PDF** - Add password protection
+43. **Unlock PDF** - Remove password protection
 
 ## Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, Shadcn UI
@@ -116,8 +134,10 @@ Each tool has:
 - Emoji support for visual appeal
 
 ## Recent Changes (November 2025)
-- Added 10 new advanced splitting and extraction tools (split-by-size, split-by-bookmarks, split-by-text, split-in-half, split-every-x-pages, extract-pages, page-extractor, page-remover, extract-specific)
-- Total tools now at 32
+- Added 10 new specialized PDF compression tools (high-compression-pdf, basic-compression-pdf, custom-pdf-compression, compress-pdf-for-web, compress-pdf-for-email, compress-scanned-pdf, pdf-size-reducer, shrink-pdf, pdf-file-compressor, optimize-pdf-for-print)
+- Total tools now at 42
+- Added specialized compression functions with different strategies (high compression, basic compression, web-optimized, email-optimized, scanned document, print-optimized)
+- Added 10 advanced splitting and extraction tools (split-by-size, split-by-bookmarks, split-by-text, split-in-half, split-every-x-pages, extract-pages, page-extractor, page-remover, extract-specific)
 - Added 10 previous tools (interleave, pdf-binder, merge-with-bookmarks, pdf-images-combiner, pdf-word-merger, split-pdf, pdf-splitter, divide-pdf, break-pdf, split-by-pages)
 - Migrated from dialog-based to page-based navigation
 - Added SEO optimization with meta tags and articles
