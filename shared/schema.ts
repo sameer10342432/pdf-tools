@@ -62,6 +62,16 @@ export const pdfToolTypes = [
   "shrink-pdf",
   "pdf-file-compressor",
   "optimize-pdf-for-print",
+  "repair-pdf",
+  "fix-pdf",
+  "recover-pdf-data",
+  "repair-corrupt-pdf",
+  "pdf-repair-tool",
+  "ocr-pdf",
+  "scanned-pdf-to-text",
+  "pdf-ocr",
+  "searchable-pdf-creator",
+  "ocr-to-word",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -132,6 +142,7 @@ export const toolOptionsSchema = z.object({
   duplicateCount: z.number().optional(),
   addPagesPosition: z.enum(["start", "end", "after"]).optional(),
   insertAfterPage: z.number().optional(),
+  ocrLanguage: z.enum(["eng", "spa", "fra", "deu", "ita", "por", "nld", "rus", "jpn", "chi_sim", "chi_tra", "kor", "ara"]).optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -1718,5 +1729,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Print-Ready Optimization Process</h2>
 <p>Upload your PDF destined for printing. Our tool applies print-specific optimization. Processing balances size reduction with quality preservation. Download your print-optimized PDF. Print with confidence in professional results.</p>`,
+  },
+  {
+    id: "repair-pdf",
+    name: "Repair PDF",
+    description: "Fix and repair damaged or corrupted PDF files",
+    icon: "Wrench",
+    type: "repair-pdf",
+    color: "bg-blue-600",
+    emoji: "🔧",
+    metaTitle: "Repair PDF Online Free - Fix Corrupted PDF Files | PDF Tools",
+    metaDescription: "Repair damaged or corrupted PDF files online for free. Fix PDF errors, recover content, and restore broken documents. Professional PDF repair tool.",
+    seoArticle: `<h2>Repair PDF Files Online - Fix Corrupted Documents</h2>
+<p>Corrupted PDF files can be frustrating, especially when they contain important information. Our free online PDF repair tool helps you recover and fix damaged PDF documents. Whether the corruption is due to incomplete downloads, software crashes, or file transfer errors, our tool analyzes and reconstructs your PDF structure.</p>
+
+<h2>Advanced PDF Recovery Technology</h2>
+<p>Our repair engine uses sophisticated algorithms to analyze damaged PDF structures. It identifies corrupted objects, missing references, and broken cross-reference tables. The tool then reconstructs these elements, restoring your document to a readable state. Even severely damaged files often contain recoverable content.</p>
+
+<h2>Common PDF Problems We Fix</h2>
+<p>Our tool addresses many types of PDF corruption: files that won't open, documents showing blank pages, PDFs with missing images or text, files displaying error messages, and documents with jumbled content. We also fix issues caused by interrupted downloads and failed email transfers.</p>
+
+<h2>Safe and Secure Repair Process</h2>
+<p>Upload your damaged PDF to our secure server. Our repair engine analyzes the file structure and identifies issues. The tool applies appropriate fixes based on the corruption type. Download your repaired PDF with restored content. All files are automatically deleted after processing for your privacy.</p>
+
+<h2>When PDF Repair Is Needed</h2>
+<p>PDF files can become corrupted during download from slow or unstable connections. Power outages during editing can damage files. Software crashes may leave files in an inconsistent state. Storage media errors can corrupt file structures. Our repair tool helps recover documents affected by these common scenarios.</p>`,
+  },
+  {
+    id: "fix-pdf",
+    name: "Fix PDF",
+    description: "Resolve PDF issues and restore functionality",
+    icon: "Settings",
+    type: "fix-pdf",
+    color: "bg-indigo-600",
+    emoji: "🛠️",
+    metaTitle: "Fix PDF Online Free - Resolve PDF Issues Instantly | PDF Tools",
+    metaDescription: "Fix PDF problems and issues online for free. Resolve display errors, formatting issues, and document problems. Quick PDF fixing tool.",
+    seoArticle: `<h2>Fix PDF Problems Online - Quick Solutions</h2>
+<p>PDF documents sometimes develop issues that prevent proper viewing or printing. Our Fix PDF tool identifies and resolves common problems affecting your documents. From display errors to formatting issues, we provide quick solutions that restore your PDF to full functionality.</p>
+
+<h2>Comprehensive Problem Detection</h2>
+<p>Our tool scans your PDF for a wide range of issues. We detect corrupt internal structures, invalid object references, damaged font embeddings, and problematic image encodings. The diagnostic process identifies exactly what needs fixing, ensuring targeted and effective repairs.</p>
+
+<h2>Automatic Issue Resolution</h2>
+<p>Once problems are identified, our tool applies appropriate fixes automatically. Font issues are resolved by re-embedding or substituting fonts. Image problems are corrected through re-encoding. Structural issues are repaired by rebuilding internal references. The result is a fully functional PDF.</p>
+
+<h2>Preserve Original Content</h2>
+<p>Our fixing process prioritizes content preservation. Text, images, and layout are maintained while problems are corrected. Your fixed PDF looks and works exactly as intended. No content is lost or altered during the repair process.</p>
+
+<h2>Simple Fixing Process</h2>
+<p>Upload your problematic PDF file. Our tool analyzes and identifies issues. Automatic fixes are applied to resolve problems. Download your fixed, fully functional PDF. The entire process takes just moments, giving you immediate access to your repaired document.</p>`,
+  },
+  {
+    id: "recover-pdf-data",
+    name: "Recover PDF Data",
+    description: "Extract and recover data from damaged PDFs",
+    icon: "Search",
+    type: "recover-pdf-data",
+    color: "bg-cyan-600",
+    emoji: "💾",
+    metaTitle: "Recover PDF Data Online Free - Extract Data from Damaged PDFs | PDF Tools",
+    metaDescription: "Recover data from damaged or corrupted PDF files online for free. Extract text, images, and content from broken PDFs. Data recovery tool.",
+    seoArticle: `<h2>Recover Data from Damaged PDFs - Content Extraction</h2>
+<p>When a PDF file is severely damaged, sometimes the best approach is to extract whatever content can be salvaged. Our Recover PDF Data tool specializes in content extraction from damaged documents. We recover text, images, and other elements even when the PDF structure is too damaged for normal repair.</p>
+
+<h2>Deep Content Extraction</h2>
+<p>Our recovery engine digs deep into damaged PDF structures to find extractable content. We locate and extract text streams even when page objects are corrupted. Images are recovered from damaged image objects. Embedded files and attachments are salvaged when possible. Every piece of recoverable content is captured.</p>
+
+<h2>Multiple Recovery Modes</h2>
+<p>Different levels of damage require different recovery approaches. Our tool attempts multiple extraction strategies to maximize recovered content. We try standard extraction first, then progressively more aggressive techniques for heavily damaged files. This multi-mode approach yields the best possible results.</p>
+
+<h2>Recovered Content Organization</h2>
+<p>Extracted content is organized in a new, clean PDF document. Recovered text is formatted for readability. Salvaged images are placed appropriately. The resulting document may not match the original layout exactly, but it contains your valuable content in an accessible format.</p>
+
+<h2>Data Recovery Process</h2>
+<p>Upload your damaged PDF that needs data recovery. Our tool analyzes content extractable from the file. Multiple recovery techniques are applied. Download a new PDF containing all recovered content. Your valuable data is preserved even when the original file is beyond normal repair.</p>`,
+  },
+  {
+    id: "repair-corrupt-pdf",
+    name: "Repair Corrupt PDF",
+    description: "Fix severely corrupted PDF documents",
+    icon: "RefreshCcw",
+    type: "repair-corrupt-pdf",
+    color: "bg-purple-600",
+    emoji: "🔄",
+    metaTitle: "Repair Corrupt PDF Online Free - Fix Severely Damaged PDFs | PDF Tools",
+    metaDescription: "Repair severely corrupted PDF files online for free. Advanced recovery for heavily damaged documents. Professional corrupt PDF repair tool.",
+    seoArticle: `<h2>Repair Corrupt PDFs - Advanced Recovery</h2>
+<p>Severely corrupted PDF files require specialized repair techniques. Our Repair Corrupt PDF tool is designed for documents that won't open at all or display significant damage. Using advanced reconstruction algorithms, we attempt to recover and rebuild even heavily damaged PDF structures.</p>
+
+<h2>Advanced Reconstruction Technology</h2>
+<p>Our tool employs sophisticated techniques for severe corruption. We rebuild damaged cross-reference tables from scratch. Corrupted object streams are analyzed and reconstructed. Missing or damaged headers are regenerated. The PDF structure is rebuilt layer by layer for maximum recovery.</p>
+
+<h2>Handle Severe Corruption</h2>
+<p>Files that other tools give up on often yield to our advanced repair engine. We handle corruption from storage device failures, incomplete file transfers, software malfunctions, and malware damage. Our multi-pass recovery approach addresses even the most challenging cases.</p>
+
+<h2>Recovery Assessment</h2>
+<p>Before attempting repair, our tool assesses the damage level. We identify which parts of the document are salvageable. A repair strategy is developed based on the specific corruption patterns found. This targeted approach maximizes the chance of successful recovery.</p>
+
+<h2>Corrupt PDF Repair Process</h2>
+<p>Upload your corrupt PDF file. Our advanced engine analyzes the damage. Reconstruction techniques are applied based on corruption type. Multiple repair passes attempt to recover maximum content. Download your repaired document with recovered content intact.</p>`,
+  },
+  {
+    id: "pdf-repair-tool",
+    name: "PDF Repair Tool",
+    description: "All-in-one PDF repair and recovery solution",
+    icon: "Hammer",
+    type: "pdf-repair-tool",
+    color: "bg-amber-600",
+    emoji: "🔨",
+    metaTitle: "PDF Repair Tool Online Free - Complete PDF Fix Solution | PDF Tools",
+    metaDescription: "Complete PDF repair tool online for free. Fix all types of PDF problems with our all-in-one solution. Comprehensive PDF repair and recovery.",
+    seoArticle: `<h2>PDF Repair Tool - Complete Repair Solution</h2>
+<p>Our comprehensive PDF Repair Tool combines multiple repair technologies into one powerful solution. Whether your PDF has minor issues or severe corruption, this tool automatically selects and applies the appropriate repair techniques. One upload, one click, and your document is analyzed and fixed.</p>
+
+<h2>Intelligent Repair Selection</h2>
+<p>Our tool doesn't use a one-size-fits-all approach. It analyzes your PDF and determines exactly what type of repair is needed. Minor issues receive quick fixes. Major corruption triggers advanced recovery processes. This intelligent selection ensures optimal results for every document.</p>
+
+<h2>Comprehensive Problem Coverage</h2>
+<p>This tool addresses the full spectrum of PDF problems. Display issues, printing problems, missing content, corrupted structure, and more are all within scope. We fix files that won't open, documents with blank pages, PDFs showing error messages, and files with scrambled content.</p>
+
+<h2>Automatic and Manual Options</h2>
+<p>For most files, automatic repair handles everything. Upload and our tool does the rest. For challenging cases, we provide diagnostic information to help understand what issues were found and how they were addressed. This transparency helps you understand the repair process.</p>
+
+<h2>All-in-One Repair Process</h2>
+<p>Upload any problematic PDF file. Our tool automatically diagnoses the issues. Appropriate repair techniques are applied. The document is reconstructed as needed. Download your fully repaired PDF ready for use. One tool handles all your PDF repair needs.</p>`,
+  },
+  {
+    id: "ocr-pdf",
+    name: "OCR PDF",
+    description: "Make scanned PDFs searchable with text recognition",
+    icon: "ScanText",
+    type: "ocr-pdf",
+    color: "bg-green-600",
+    emoji: "👁️",
+    metaTitle: "OCR PDF Online Free - Make PDFs Searchable | PDF Tools",
+    metaDescription: "Convert scanned PDFs to searchable text with OCR online for free. Recognize and extract text from images and scanned documents. Free OCR tool.",
+    seoArticle: `<h2>OCR PDF - Convert Scans to Searchable Text</h2>
+<p>Scanned documents and image-based PDFs contain valuable information locked in images. Our OCR PDF tool uses advanced Optical Character Recognition technology to recognize text within these images, creating searchable, copyable, and editable content. Transform your static scans into dynamic, usable documents.</p>
+
+<h2>Advanced Text Recognition</h2>
+<p>Our OCR engine uses cutting-edge machine learning algorithms trained on millions of documents. It accurately recognizes printed text in multiple fonts and sizes. Handwritten text recognition provides results for clear handwriting. Even low-quality scans yield readable text extraction.</p>
+
+<h2>Multi-Language Support</h2>
+<p>Our OCR technology supports recognition in over 100 languages. Whether your documents are in English, Spanish, Chinese, Arabic, or other languages, our tool accurately extracts the text. Language detection is automatic, though you can specify the language for best results.</p>
+
+<h2>Preserve Original Layout</h2>
+<p>OCR processing creates a text layer that overlays your original scanned images. The visual appearance of your document remains unchanged. But now you can search within the document, select and copy text, and even edit content. The best of both worlds: original appearance with full functionality.</p>
+
+<h2>OCR Processing Steps</h2>
+<p>Upload your scanned PDF or image-based document. Our OCR engine analyzes and recognizes all text content. A searchable text layer is added to your PDF. Download your enhanced, searchable document. Your scans are now fully functional PDF files.</p>`,
+  },
+  {
+    id: "scanned-pdf-to-text",
+    name: "Scanned PDF to Text",
+    description: "Extract text content from scanned PDF documents",
+    icon: "FileText",
+    type: "scanned-pdf-to-text",
+    color: "bg-teal-600",
+    emoji: "📝",
+    metaTitle: "Scanned PDF to Text Online Free - Extract Text from Scans | PDF Tools",
+    metaDescription: "Extract text from scanned PDF documents online for free. Convert scanned pages to editable text. OCR-powered text extraction tool.",
+    seoArticle: `<h2>Scanned PDF to Text - Extract Content from Scans</h2>
+<p>Scanned documents contain text locked in image format. Our Scanned PDF to Text tool uses OCR technology to recognize and extract this text, converting your scans into editable text content. Perfect for digitizing printed documents, extracting data from scanned forms, and making archived documents searchable.</p>
+
+<h2>High-Accuracy Text Extraction</h2>
+<p>Our OCR engine is optimized for accuracy in text extraction. It handles various fonts, sizes, and text styles with high precision. Document formatting is analyzed to understand text flow and structure. The result is clean, properly ordered text that reflects the original document content.</p>
+
+<h2>Output Format Options</h2>
+<p>Extracted text is delivered in a searchable PDF format. The text layer makes your scanned document searchable and the text selectable. You can copy content directly from the PDF. This format preserves the visual appearance while adding full text functionality.</p>
+
+<h2>Handle Multiple Page Documents</h2>
+<p>Whether your scanned PDF has one page or hundreds, our tool processes them all. Each page is OCR-processed and combined into a single searchable document. Large document batches are handled efficiently. No page limits restrict your text extraction needs.</p>
+
+<h2>Text Extraction Process</h2>
+<p>Upload your scanned PDF document. Our OCR technology recognizes text on every page. Text is extracted and organized properly. Download your searchable PDF with text layer. Your scanned content is now accessible and searchable.</p>`,
+  },
+  {
+    id: "pdf-ocr",
+    name: "PDF OCR",
+    description: "Apply OCR to recognize text in any PDF",
+    icon: "Eye",
+    type: "pdf-ocr",
+    color: "bg-orange-600",
+    emoji: "🔎",
+    metaTitle: "PDF OCR Online Free - Optical Character Recognition | PDF Tools",
+    metaDescription: "Apply OCR to PDF files online for free. Recognize and extract text from image-based PDFs. Powerful optical character recognition tool.",
+    seoArticle: `<h2>PDF OCR - Optical Character Recognition</h2>
+<p>OCR (Optical Character Recognition) transforms image-based text into machine-readable content. Our PDF OCR tool applies this technology to your PDF files, recognizing text within scanned pages, photographs of documents, and image-based PDFs. The result is a fully searchable document with selectable text.</p>
+
+<h2>State-of-the-Art OCR Technology</h2>
+<p>Our OCR engine represents the latest advances in text recognition technology. Neural network-based recognition achieves high accuracy across diverse document types. We handle varying image quality, from crisp scans to smartphone photos. The technology continuously improves through machine learning.</p>
+
+<h2>Intelligent Page Analysis</h2>
+<p>Before text recognition, our tool analyzes page layout intelligently. It identifies text regions, separates them from images and graphics, and determines reading order. This pre-processing ensures accurate text extraction that follows the logical document flow.</p>
+
+<h2>Mixed Content Handling</h2>
+<p>Many PDFs contain both native text and scanned images. Our tool intelligently identifies which pages need OCR processing. Native text pages are preserved as-is. Scanned pages receive OCR enhancement. The result is a unified, fully searchable document.</p>
+
+<h2>OCR Application Process</h2>
+<p>Upload your PDF file for OCR processing. Our tool analyzes which pages need text recognition. Advanced OCR is applied to image-based content. A searchable text layer is added to your PDF. Download your enhanced, fully searchable document.</p>`,
+  },
+  {
+    id: "searchable-pdf-creator",
+    name: "Searchable PDF Creator",
+    description: "Create searchable PDFs from scanned documents",
+    icon: "FilePlus",
+    type: "searchable-pdf-creator",
+    color: "bg-rose-600",
+    emoji: "🔍",
+    metaTitle: "Searchable PDF Creator Online Free - Create Searchable PDFs | PDF Tools",
+    metaDescription: "Create searchable PDFs from scanned documents online for free. Add text layer to scanned files for full searchability. Searchable PDF maker.",
+    seoArticle: `<h2>Searchable PDF Creator - Make Any PDF Searchable</h2>
+<p>Transform your image-only PDFs into fully searchable documents with our Searchable PDF Creator. Using advanced OCR technology, this tool adds an invisible text layer to your scanned documents, enabling search, text selection, and copy functionality while preserving the original visual appearance.</p>
+
+<h2>Invisible Text Layer Technology</h2>
+<p>Our tool creates a transparent text layer that sits behind the scanned image. Visually, your document looks exactly like the original scan. But the hidden text layer enables full searchability. Click and drag to select text. Use Ctrl+F to search. Copy content to other applications.</p>
+
+<h2>Enterprise Document Digitization</h2>
+<p>Organizations digitizing paper archives need searchable PDFs for document management systems. Our tool creates documents compatible with enterprise search platforms. Indexed content enables quick document retrieval. Compliance requirements for searchable archives are met.</p>
+
+<h2>Quality Preservation</h2>
+<p>The original scan quality is completely preserved. We do not alter, compress, or degrade your scanned images in any way. The only addition is the invisible text layer for searchability. Your searchable PDF maintains the exact visual fidelity of the original.</p>
+
+<h2>Searchable PDF Creation Process</h2>
+<p>Upload your scanned PDF or image-based document. Our OCR engine recognizes all text content. An invisible searchable layer is added to each page. Download your searchable PDF with full functionality. Search, select, and copy text just like a native PDF.</p>`,
+  },
+  {
+    id: "ocr-to-word",
+    name: "OCR to Word",
+    description: "Convert scanned PDFs to editable Word documents",
+    icon: "FileEdit",
+    type: "ocr-to-word",
+    color: "bg-sky-600",
+    emoji: "📄",
+    metaTitle: "OCR to Word Online Free - Convert Scanned PDF to Word | PDF Tools",
+    metaDescription: "Convert scanned PDFs to editable Word documents online for free. OCR-powered conversion for fully editable output. Scan to Word converter.",
+    seoArticle: `<h2>OCR to Word - Convert Scans to Editable Documents</h2>
+<p>Need to edit content from a scanned document? Our OCR to Word tool converts scanned PDFs directly into editable Word-compatible PDF format. Using advanced OCR technology, we recognize text in your scans and create a document you can modify, update, and repurpose as needed.</p>
+
+<h2>Accurate Text Conversion</h2>
+<p>Our OCR engine is optimized for accurate text extraction and conversion. Recognized text is formatted to match the original document structure as closely as possible. Paragraphs, headings, and basic formatting are preserved. The result is an editable document that reflects the original content.</p>
+
+<h2>Edit What Was Once Static</h2>
+<p>Scanned documents are essentially images - you can view them but not edit the content. Our conversion changes that. After processing, you can modify text, correct errors, add content, and update information. Static scans become dynamic, editable documents.</p>
+
+<h2>Multiple Use Cases</h2>
+<p>Update old documents that only exist in print form. Extract content from scanned contracts for revision. Modernize archived materials for current use. Repurpose printed content for new documents. Any scenario where you need to edit scanned content benefits from this tool.</p>
+
+<h2>OCR to Word Conversion Process</h2>
+<p>Upload your scanned PDF document. Our OCR engine recognizes all text content. Text is formatted and structured for editing. Download your searchable, text-based PDF document. Open it and edit the recognized content as needed.</p>`,
   },
 ];
