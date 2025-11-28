@@ -625,6 +625,52 @@ export function ToolOptionsComponent({
     case "scan-to-pdf":
       return null;
 
+    case "repair-pdf":
+    case "fix-pdf":
+    case "recover-pdf-data":
+    case "repair-corrupt-pdf":
+    case "pdf-repair-tool":
+      return null;
+
+    case "ocr-pdf":
+    case "scanned-pdf-to-text":
+    case "pdf-ocr":
+    case "searchable-pdf-creator":
+    case "ocr-to-word":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>OCR Language</Label>
+            <Select
+              value={options.ocrLanguage || "eng"}
+              onValueChange={(value) => updateOption("ocrLanguage", value as ToolOptions["ocrLanguage"])}
+            >
+              <SelectTrigger data-testid="select-ocr-language">
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="eng">English</SelectItem>
+                <SelectItem value="spa">Spanish</SelectItem>
+                <SelectItem value="fra">French</SelectItem>
+                <SelectItem value="deu">German</SelectItem>
+                <SelectItem value="ita">Italian</SelectItem>
+                <SelectItem value="por">Portuguese</SelectItem>
+                <SelectItem value="rus">Russian</SelectItem>
+                <SelectItem value="chi_sim">Chinese (Simplified)</SelectItem>
+                <SelectItem value="chi_tra">Chinese (Traditional)</SelectItem>
+                <SelectItem value="jpn">Japanese</SelectItem>
+                <SelectItem value="kor">Korean</SelectItem>
+                <SelectItem value="ara">Arabic</SelectItem>
+                <SelectItem value="hin">Hindi</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Select the language of the text in your scanned document.
+            </p>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }

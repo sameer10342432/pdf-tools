@@ -51,6 +51,15 @@ import {
   TrendingDown,
   Zap,
   Gauge,
+  Wrench,
+  Settings,
+  Search,
+  RefreshCcw,
+  Hammer,
+  ScanText,
+  Eye,
+  FilePlus,
+  FileEdit,
   type LucideIcon,
 } from "lucide-react";
 
@@ -86,6 +95,15 @@ const iconMap: Record<string, LucideIcon> = {
   TrendingDown,
   Zap,
   Gauge,
+  Wrench,
+  Settings,
+  Search,
+  RefreshCcw,
+  Hammer,
+  ScanText,
+  Eye,
+  FilePlus,
+  FileEdit,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";

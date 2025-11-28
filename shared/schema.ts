@@ -142,7 +142,7 @@ export const toolOptionsSchema = z.object({
   duplicateCount: z.number().optional(),
   addPagesPosition: z.enum(["start", "end", "after"]).optional(),
   insertAfterPage: z.number().optional(),
-  ocrLanguage: z.enum(["eng", "spa", "fra", "deu", "ita", "por", "nld", "rus", "jpn", "chi_sim", "chi_tra", "kor", "ara"]).optional(),
+  ocrLanguage: z.enum(["eng", "spa", "fra", "deu", "ita", "por", "nld", "rus", "jpn", "chi_sim", "chi_tra", "kor", "ara", "hin"]).optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
