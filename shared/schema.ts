@@ -231,6 +231,16 @@ export const pdfToolTypes = [
   "crop-pdf-margins",
   "resize-pdf",
   "pdf-resizer",
+  "change-pdf-page-size",
+  "pdf-to-a4",
+  "pdf-to-letter",
+  "change-pdf-layout",
+  "n-up-pdf",
+  "pdf-page-inverter",
+  "invert-pdf-colors",
+  "pdf-color-inverter",
+  "auto-crop-pdf-margins",
+  "auto-deskew-pdf",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -365,6 +375,17 @@ export const toolOptionsSchema = z.object({
   resizeScale: z.number().optional(),
   resizeMode: z.enum(["dimensions", "scale", "percentage"]).optional(),
   sanitizeLevel: z.enum(["basic", "standard", "thorough"]).optional(),
+  targetPageSize: z.enum(["a4", "letter", "legal", "a3", "a5", "b5", "executive", "tabloid"]).optional(),
+  pageOrientation: z.enum(["portrait", "landscape", "auto"]).optional(),
+  nupLayout: z.enum(["2-up", "4-up", "6-up", "8-up", "9-up"]).optional(),
+  nupOrder: z.enum(["horizontal", "vertical", "z-pattern"]).optional(),
+  nupBorder: z.boolean().optional(),
+  nupSpacing: z.number().optional(),
+  invertMode: z.enum(["colors", "pages", "both"]).optional(),
+  autoCropMode: z.enum(["trim-whitespace", "detect-content", "uniform"]).optional(),
+  autoCropThreshold: z.number().optional(),
+  deskewAngle: z.number().optional(),
+  deskewMode: z.enum(["auto", "manual"]).optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -6176,5 +6197,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Standard Size Presets</h2>
 <p>Quick access to common paper sizes speeds workflow. Select A4, Letter, Legal, Tabloid, and more. Choose standard photo sizes for image-based PDFs. Custom sizes save for repeated use. Presets combined with custom options cover all sizing needs.</p>`,
+  },
+  {
+    id: "change-pdf-page-size",
+    name: "Change PDF Page Size",
+    description: "Convert PDF pages to any standard or custom size",
+    icon: "Maximize",
+    type: "change-pdf-page-size",
+    color: "bg-blue-600",
+    emoji: "📐",
+    metaTitle: "Change PDF Page Size Online Free - Resize PDF Pages | PDF Tools",
+    metaDescription: "Change PDF page size to A4, Letter, Legal, or custom dimensions online for free. Fast PDF page resizing with content scaling options.",
+    seoArticle: `<h2>Change PDF Page Size - Complete Guide to Resizing PDF Documents</h2>
+<p>Changing PDF page size is essential when preparing documents for different purposes. Whether you need to convert a US Letter document to A4 for international distribution, or resize pages for specific printing requirements, our PDF page size changer handles the conversion seamlessly. The tool preserves your content while adapting it to the new page dimensions.</p>
+
+<h2>Why Change PDF Page Size?</h2>
+<p>Different regions use different standard paper sizes. North America primarily uses Letter size (8.5 x 11 inches), while most of the world uses A4 (210 x 297 mm). When sharing documents internationally, page size mismatches can cause printing issues, cut-off content, or awkward margins. Our tool ensures your documents display correctly regardless of the destination printer's paper size.</p>
+
+<h2>Supported Page Sizes and Formats</h2>
+<p>Our PDF page size changer supports all standard international paper sizes. Convert to A4, A3, A5, B5, Letter, Legal, Executive, or Tabloid formats. You can also specify custom dimensions in inches, centimeters, or millimeters. The tool handles both portrait and landscape orientations, automatically detecting and preserving your document's original layout while adapting content to fit the new size.</p>
+
+<h2>Content Scaling and Positioning Options</h2>
+<p>When changing page size, you control how content adapts. Scale content proportionally to fit the new dimensions while maintaining aspect ratio. Center content on the new page size with appropriate margins. Stretch content to fill the entire new page when exact coverage is needed. Our intelligent scaling ensures text remains readable and images maintain their quality throughout the conversion process.</p>
+
+<h2>Professional Results for Business Documents</h2>
+<p>Businesses rely on consistent document formatting across global offices. Our page size conversion tool ensures proposals, contracts, and reports look professional regardless of where they're printed. Maintain brand consistency with precise page dimensions that match your corporate standards. Handle multi-page documents efficiently with batch processing capabilities that apply size changes uniformly.</p>`,
+  },
+  {
+    id: "pdf-to-a4",
+    name: "PDF to A4",
+    description: "Convert any PDF to A4 paper size format",
+    icon: "FileText",
+    type: "pdf-to-a4",
+    color: "bg-green-600",
+    emoji: "📄",
+    metaTitle: "PDF to A4 Converter Online Free - Convert PDF to A4 Size | PDF Tools",
+    metaDescription: "Convert PDF to A4 size (210x297mm) online for free. Perfect for international document standards. Fast, secure A4 PDF conversion.",
+    seoArticle: `<h2>PDF to A4 - Convert Documents to International Standard Size</h2>
+<p>A4 is the most widely used paper size internationally, making PDF to A4 conversion essential for global document sharing. Our converter transforms any PDF to the standard A4 dimensions (210 x 297 millimeters or 8.27 x 11.69 inches). Whether your source document is Letter size, Legal, or any custom dimension, this tool produces perfectly formatted A4 PDFs ready for international use.</p>
+
+<h2>Why A4 is the Global Standard</h2>
+<p>The A4 paper size is used by virtually every country except the United States and Canada. It's the official document format for government paperwork, academic submissions, and business correspondence worldwide. When submitting documents to international organizations, universities, or companies, A4 formatting ensures professional presentation and avoids printing complications. Our tool makes this conversion instant and accurate.</p>
+
+<h2>Intelligent Content Adaptation</h2>
+<p>Converting from Letter to A4 involves more than just changing page dimensions. Letter paper is slightly wider but shorter than A4. Our tool intelligently scales and repositions content to fit the new aspect ratio without cropping important information or creating excessive margins. Text remains readable, images stay sharp, and the overall layout maintains its professional appearance.</p>
+
+<h2>Batch Conversion for Multiple Documents</h2>
+<p>Need to convert entire document sets to A4? Our batch processing capability handles multiple PDFs simultaneously. Upload your documents, select A4 as the target size, and receive perfectly converted files in seconds. This is ideal for preparing document packages for international clients or standardizing files across departments that work with global partners.</p>
+
+<h2>Perfect for Print and Digital Distribution</h2>
+<p>A4 PDFs created with our tool are optimized for both printing and digital distribution. The conversion maintains proper margins for binding, ensures content is within safe print areas, and preserves embedded fonts and images. Share your A4 documents confidently, knowing they will display and print correctly on any A4-compatible device or printer worldwide.</p>`,
+  },
+  {
+    id: "pdf-to-letter",
+    name: "PDF to Letter",
+    description: "Convert any PDF to US Letter size format",
+    icon: "FileText",
+    type: "pdf-to-letter",
+    color: "bg-red-600",
+    emoji: "🇺🇸",
+    metaTitle: "PDF to Letter Size Converter Online Free - Convert to US Letter | PDF Tools",
+    metaDescription: "Convert PDF to US Letter size (8.5x11 inches) online for free. Perfect for North American document standards. Fast and secure conversion.",
+    seoArticle: `<h2>PDF to Letter - Convert to US Standard Paper Size</h2>
+<p>US Letter size (8.5 x 11 inches or 215.9 x 279.4 mm) is the standard paper format in the United States and Canada. Our PDF to Letter converter transforms documents from A4, Legal, or any other size to this North American standard. Ensure your documents print correctly on standard US office printers and meet North American document requirements with this precise conversion tool.</p>
+
+<h2>When You Need Letter Size Documents</h2>
+<p>Letter size is required for numerous purposes in North America: legal filings, academic submissions, business correspondence, tax forms, and standard office documentation. When sending documents to US-based recipients or printing on standard North American printers, Letter format ensures proper display without scaling issues or cut-off content. Our converter handles this transformation accurately and quickly.</p>
+
+<h2>A4 to Letter Conversion Made Easy</h2>
+<p>The most common conversion is A4 to Letter. Since A4 is narrower but taller than Letter, direct scaling can result in awkward proportions. Our intelligent conversion algorithm adjusts content positioning and scaling to maximize readability while fitting within Letter dimensions. Margins are automatically adjusted to ensure content appears centered and professional on Letter-size paper.</p>
+
+<h2>Preserve Document Integrity</h2>
+<p>Our Letter conversion maintains the integrity of your original document. Fonts, images, form fields, and interactive elements remain intact and functional. The tool handles complex documents with multiple columns, tables, and graphics without breaking layouts. Whether your PDF contains simple text or complex designs, the Letter-size output preserves the original intent and quality.</p>
+
+<h2>Ideal for Business and Legal Documents</h2>
+<p>Legal and business documents in North America require Letter format for official submission and filing. Our tool ensures contracts, proposals, court documents, and corporate reports meet these requirements. The conversion produces print-ready PDFs that align with US document standards, saving time and avoiding reformatting headaches when working with US-based clients or institutions.</p>`,
+  },
+  {
+    id: "change-pdf-layout",
+    name: "Change PDF Layout",
+    description: "Transform page layout between portrait and landscape",
+    icon: "RotateCcw",
+    type: "change-pdf-layout",
+    color: "bg-purple-600",
+    emoji: "🔄",
+    metaTitle: "Change PDF Layout Online Free - Portrait to Landscape Converter | PDF Tools",
+    metaDescription: "Change PDF layout from portrait to landscape or vice versa online for free. Transform page orientation while preserving content quality.",
+    seoArticle: `<h2>Change PDF Layout - Transform Document Orientation</h2>
+<p>Document layout significantly impacts readability and presentation. Our PDF layout changer converts between portrait and landscape orientations, adapting content to fit the new page format. Whether you need to present wide tables in landscape mode or convert presentations back to portrait for printing, this tool handles the transformation while preserving document quality and content positioning.</p>
+
+<h2>Portrait vs Landscape: Choosing the Right Layout</h2>
+<p>Portrait orientation (vertical) is standard for most documents, letters, and reports. Landscape orientation (horizontal) is ideal for wide spreadsheets, charts, timelines, and presentations. Sometimes a document needs conversion for specific purposes: printing slideshows as handouts, reformatting reports for different devices, or adapting content for various display requirements. Our tool makes these conversions seamless.</p>
+
+<h2>Intelligent Content Repositioning</h2>
+<p>Changing layout involves more than rotating the page. Our tool intelligently repositions and scales content to fit the new orientation. Wide tables that were cramped in portrait mode expand naturally in landscape. Tall documents reformatted to landscape receive appropriate margins and scaling. The algorithm ensures content remains readable and visually balanced in the new layout.</p>
+
+<h2>Selective Page Layout Changes</h2>
+<p>Not all pages need the same orientation. Our tool allows selective layout changes for specific pages within a document. Keep text-heavy pages in portrait while converting data-intensive pages to landscape. This flexibility is essential for complex documents like reports that combine narrative sections with wide tables or charts. Create mixed-orientation documents that serve your content best.</p>
+
+<h2>Optimize for Different Viewing Contexts</h2>
+<p>Different devices and viewing contexts favor different orientations. Tablets and monitors often display landscape content better. Mobile phones prefer portrait documents. Our layout converter helps you create versions optimized for various platforms. Transform a landscape presentation into a portrait document for mobile reading, or convert portrait reports to landscape for widescreen presentations.</p>`,
+  },
+  {
+    id: "n-up-pdf",
+    name: "N-up PDF",
+    description: "Arrange multiple pages on single sheets (2-up, 4-up, etc.)",
+    icon: "Grid",
+    type: "n-up-pdf",
+    color: "bg-orange-600",
+    emoji: "📊",
+    metaTitle: "N-up PDF Creator Online Free - Multiple Pages Per Sheet | PDF Tools",
+    metaDescription: "Create N-up PDFs with 2, 4, 6, or more pages per sheet online for free. Perfect for handouts, drafts, and paper-saving printing.",
+    seoArticle: `<h2>N-up PDF - Multiple Pages Per Sheet for Efficient Printing</h2>
+<p>N-up printing arranges multiple document pages on a single sheet, dramatically reducing paper usage and creating compact handouts. Our N-up PDF tool supports 2-up (two pages per sheet), 4-up, 6-up, 8-up, and 9-up layouts. Whether you're creating meeting handouts, saving paper on draft prints, or producing study materials, this tool arranges pages precisely for professional multi-page layouts.</p>
+
+<h2>Benefits of N-up Printing</h2>
+<p>N-up layouts offer significant advantages. Reduce paper consumption by up to 75% with 4-up printing. Create presentation handouts with multiple slides per page. Produce compact reference materials that are easy to carry. Review document drafts without wasting full sheets. Compare multiple pages side by side for editing and proofreading. N-up printing is both economical and practical for numerous applications.</p>
+
+<h2>Layout Options and Configurations</h2>
+<p>Choose from various N-up arrangements to match your needs. 2-up places two pages side by side for easy reading. 4-up creates a 2x2 grid, ideal for presentation handouts. 6-up and 9-up maximize pages per sheet for compact printing. Select horizontal or vertical reading order based on how content should flow. Add optional borders between pages to maintain visual separation and improve readability.</p>
+
+<h2>Preserve Content Clarity</h2>
+<p>When reducing page size, clarity is paramount. Our tool scales content proportionally to maintain readability. Text remains sharp and images retain quality even at reduced sizes. Choose paper size for output to control final page dimensions. Preview your N-up layout before generating the final PDF to ensure the arrangement meets your requirements.</p>
+
+<h2>Perfect for Educational and Business Materials</h2>
+<p>Educators use N-up layouts for creating worksheet packages, test materials, and study guides. Businesses create training handouts, meeting materials, and reference sheets. Our tool produces professional N-up PDFs ready for distribution. Add page borders, adjust spacing, and control margins for polished results that serve your audience effectively while conserving resources.</p>`,
+  },
+  {
+    id: "pdf-page-inverter",
+    name: "PDF Page Inverter",
+    description: "Reverse the order of pages in your PDF document",
+    icon: "ArrowUpDown",
+    type: "pdf-page-inverter",
+    color: "bg-indigo-600",
+    emoji: "🔃",
+    metaTitle: "PDF Page Inverter Online Free - Reverse Page Order | PDF Tools",
+    metaDescription: "Invert PDF page order online for free. Reverse your document pages from last to first instantly. Fast, secure page reversal tool.",
+    seoArticle: `<h2>PDF Page Inverter - Reverse Document Page Order</h2>
+<p>The PDF Page Inverter reverses the order of pages in your document, making the last page first and the first page last. This functionality is essential for various printing and document preparation scenarios. Whether you need to correct duplex printing order, prepare documents for specific binding methods, or simply flip chronological content, our inverter handles the task instantly and accurately.</p>
+
+<h2>When to Use Page Inversion</h2>
+<p>Page inversion solves common document challenges. Correct stack order after duplex printing where pages emerged in reverse sequence. Prepare documents for bottom-feed printers that output pages upside down in the stack. Reverse chronological documents so oldest entries appear first. Prepare documents for specific binding methods that require reverse page order. Our tool addresses all these scenarios with a single click.</p>
+
+<h2>Perfect for Print Production</h2>
+<p>Print production often requires specific page ordering. Certain binding techniques need pages in reverse order for proper assembly. Some printing equipment outputs pages in reverse sequence. Rather than manually reorganizing printed pages, invert the PDF before printing to receive correctly ordered output. This saves time and eliminates manual sorting errors in print production workflows.</p>
+
+<h2>Maintain Document Quality</h2>
+<p>Page inversion doesn't alter content quality. All text, images, and formatting remain intact. Only the sequence of pages changes. Bookmarks, hyperlinks, and interactive elements continue functioning correctly in the inverted document. The tool processes any PDF regardless of size or complexity, delivering the reversed document in seconds without quality degradation.</p>
+
+<h2>Combine with Other Operations</h2>
+<p>Page inversion often complements other PDF operations. After splitting a document, invert one section for specific purposes. Combine inverted documents with regular ones for custom ordering. Use inversion as part of a larger document preparation workflow. Our inverter integrates seamlessly with other PDF tools, enabling comprehensive document manipulation to meet exact requirements.</p>`,
+  },
+  {
+    id: "invert-pdf-colors",
+    name: "Invert PDF Colors",
+    description: "Create negative color versions of PDF documents",
+    icon: "Palette",
+    type: "invert-pdf-colors",
+    color: "bg-gray-800",
+    emoji: "🌙",
+    metaTitle: "Invert PDF Colors Online Free - Create Negative PDF | PDF Tools",
+    metaDescription: "Invert PDF colors to create negative versions online for free. Perfect for dark mode reading and accessibility. Fast color inversion tool.",
+    seoArticle: `<h2>Invert PDF Colors - Create Negative Color Documents</h2>
+<p>Color inversion transforms PDF documents by swapping colors to their opposite values on the color spectrum. White becomes black, black becomes white, and all colors shift to their complementary counterparts. This creates a negative version of your document, useful for dark mode reading, accessibility purposes, design applications, and reducing eye strain when reading for extended periods.</p>
+
+<h2>Benefits of Color Inverted PDFs</h2>
+<p>Dark mode reading has become increasingly popular for reducing eye strain, especially in low-light environments. Inverted PDFs display light text on dark backgrounds, which many users find more comfortable for extended reading sessions. This is particularly beneficial for educational materials, technical documentation, and ebooks that users read for long periods. Create eye-friendly versions of any document with our inverter.</p>
+
+<h2>Accessibility and Visual Comfort</h2>
+<p>Some users with visual impairments find inverted colors easier to read. High contrast between text and background improves readability for users with certain visual conditions. Our color inversion tool creates documents that serve these accessibility needs without requiring special software or device settings. Simply invert the PDF and share an accessible version with users who need it.</p>
+
+<h2>Design and Creative Applications</h2>
+<p>Designers use color inversion for creative purposes. Create striking visual effects by inverting document elements. Produce negative versions of graphics and artwork. Generate complementary color schemes for design exploration. Our tool processes all colors in the document, including images and graphics, creating complete negative versions suitable for creative and design applications.</p>
+
+<h2>Preserve Document Functionality</h2>
+<p>Color inversion affects only the visual appearance of your PDF. All interactive elements, links, form fields, and document structure remain fully functional. The inverted document retains its searchability, with text remaining extractable despite the color change. Share inverted PDFs knowing they maintain all the capabilities of the original while offering the visual benefits of inverted colors.</p>`,
+  },
+  {
+    id: "pdf-color-inverter",
+    name: "PDF Color Inverter",
+    description: "Professional tool for inverting document color schemes",
+    icon: "Contrast",
+    type: "pdf-color-inverter",
+    color: "bg-slate-700",
+    emoji: "🎨",
+    metaTitle: "PDF Color Inverter Online Free - Professional Color Inversion | PDF Tools",
+    metaDescription: "Professional PDF color inverter for creating negative color documents. Advanced options for selective color inversion and dark mode conversion.",
+    seoArticle: `<h2>PDF Color Inverter - Advanced Color Transformation Tool</h2>
+<p>The PDF Color Inverter provides professional-grade color transformation capabilities for your documents. Beyond simple full-document inversion, this tool offers control over how colors are inverted, which elements are affected, and how the final output appears. Create precisely customized inverted documents for dark mode reading, accessibility, or creative purposes with granular control over the inversion process.</p>
+
+<h2>Selective Inversion Options</h2>
+<p>Control what gets inverted in your document. Invert only text colors while preserving images in their original form. Apply inversion to backgrounds only, maintaining original text colors. Exclude specific color ranges from inversion to preserve branding elements or important color-coded information. This selective approach creates inverted documents that maintain critical visual information while providing the benefits of color inversion.</p>
+
+<h2>Optimize for Screen Reading</h2>
+<p>Screen reading requires different optimization than print. Our color inverter creates PDFs optimized for digital display with inverted color schemes that reduce screen glare and eye strain. The tool adjusts contrast levels for comfortable extended reading. Create documents specifically designed for on-screen consumption that prioritize reader comfort while maintaining content clarity and professionalism.</p>
+
+<h2>Batch Processing Capabilities</h2>
+<p>Process multiple PDFs with consistent inversion settings. Upload your document collection, configure inversion parameters once, and apply them uniformly across all files. This is ideal for creating dark mode versions of documentation libraries, educational materials, or publication archives. Batch processing ensures consistent appearance across all inverted documents while saving significant time.</p>
+
+<h2>Quality Preservation</h2>
+<p>Professional color inversion requires maintaining document quality. Our inverter processes colors without degrading image quality or introducing artifacts. Vector graphics remain sharp, text stays crisp, and gradients invert smoothly. The tool handles complex color spaces and embedded color profiles correctly, ensuring professional-quality output suitable for business and publication use.</p>`,
+  },
+  {
+    id: "auto-crop-pdf-margins",
+    name: "Auto-Crop PDF Margins",
+    description: "Automatically detect and remove excess white margins",
+    icon: "Crop",
+    type: "auto-crop-pdf-margins",
+    color: "bg-teal-600",
+    emoji: "✂️",
+    metaTitle: "Auto-Crop PDF Margins Online Free - Remove White Space | PDF Tools",
+    metaDescription: "Automatically crop PDF margins and remove excess white space online for free. Intelligent margin detection for cleaner documents.",
+    seoArticle: `<h2>Auto-Crop PDF Margins - Intelligent Whitespace Removal</h2>
+<p>Excessive margins waste space and reduce content visibility, especially on digital screens. Our Auto-Crop PDF Margins tool analyzes each page, detects content boundaries, and removes unnecessary white space automatically. This creates more compact, screen-friendly documents where content takes center stage. Perfect for ebooks, scanned documents, and any PDF with oversized margins that diminish the reading experience.</p>
+
+<h2>Smart Content Detection</h2>
+<p>Our algorithm intelligently identifies the true content area of each page. It recognizes text blocks, images, and graphical elements, then calculates optimal crop boundaries. Unlike simple margin trimming, smart detection handles pages with varying content positions. Centered content, full-width elements, and mixed layouts are all analyzed individually to determine the ideal crop for each page.</p>
+
+<h2>Perfect for Scanned Documents</h2>
+<p>Scanned documents often have inconsistent margins due to paper placement variations during scanning. Auto-crop normalizes these variations, creating uniform margins across all pages. This is especially valuable for digitized book chapters, archived documents, and scanned paperwork where original margins vary page by page. The result is a professionally consistent document with optimized margins throughout.</p>
+
+<h2>Enhance Digital Reading Experience</h2>
+<p>On tablets and e-readers, large margins reduce the effective content area, making text smaller than necessary. Auto-cropped PDFs maximize content size on any screen. Readers can see more text without zooming, improving readability and navigation. For documents frequently read on digital devices, auto-cropping significantly enhances the user experience without any content modification.</p>
+
+<h2>Customizable Margin Buffer</h2>
+<p>While auto-crop removes excess space, you can specify a margin buffer to maintain some white space around content. Set uniform margins or different values for each side. This ensures content isn't cropped too tightly while still eliminating unnecessary white space. The result balances compact presentation with comfortable reading margins that frame your content appropriately.</p>`,
+  },
+  {
+    id: "auto-deskew-pdf",
+    name: "Auto-Deskew PDF",
+    description: "Automatically straighten crooked scanned pages",
+    icon: "AlignCenter",
+    type: "auto-deskew-pdf",
+    color: "bg-cyan-600",
+    emoji: "📏",
+    metaTitle: "Auto-Deskew PDF Online Free - Straighten Scanned Pages | PDF Tools",
+    metaDescription: "Automatically straighten and deskew crooked PDF pages online for free. Perfect for fixing tilted scanned documents. Intelligent angle detection.",
+    seoArticle: `<h2>Auto-Deskew PDF - Straighten Tilted Document Pages</h2>
+<p>Scanned documents often suffer from slight rotation or skew when pages aren't perfectly aligned on the scanner. This creates unprofessional-looking documents where text runs at an angle. Our Auto-Deskew tool analyzes each page, detects the skew angle, and automatically rotates content to perfect alignment. Transform crooked scans into straight, professional documents with intelligent automatic correction.</p>
+
+<h2>How Deskewing Works</h2>
+<p>Our algorithm analyzes text lines, image edges, and document borders to determine the skew angle. It identifies the dominant orientation and calculates the precise rotation needed for perfect alignment. The correction is applied with high-quality resampling to maintain text sharpness and image quality. Even subtle skew angles of a fraction of a degree are detected and corrected.</p>
+
+<h2>Essential for Document Digitization</h2>
+<p>Organizations digitizing paper archives benefit significantly from auto-deskewing. When scanning hundreds or thousands of pages, perfect alignment on every scan is impractical. Auto-deskew corrects the inevitable variations in paper placement, producing consistently aligned digital documents. This makes digitized archives look professional and improves OCR accuracy for text recognition.</p>
+
+<h2>Improve OCR Results</h2>
+<p>Optical Character Recognition (OCR) works best on properly aligned text. Skewed documents often produce OCR errors as the software struggles with tilted characters. By deskewing before OCR processing, you significantly improve text recognition accuracy. Our tool is ideal as a preprocessing step before running OCR on scanned documents, ensuring the best possible text extraction results.</p>
+
+<h2>Batch Deskewing for Large Documents</h2>
+<p>Process entire multi-page documents with a single operation. Our tool analyzes and corrects each page individually, handling documents where skew varies from page to page. This is common in scanned books and documents where each page may have been positioned slightly differently. Batch deskewing ensures consistent alignment throughout your document regardless of original scanning variations.</p>`,
   },
 ];
