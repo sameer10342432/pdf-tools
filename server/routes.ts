@@ -9965,6 +9965,221 @@ async function pdfMarker(
   return Buffer.from(await pdf.save());
 }
 
+async function addCommentsToPdf(
+  file: Express.Multer.File,
+  commentText: string,
+  author: string,
+  targetPage: number,
+  x: number,
+  y: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage));
+  const page = pages[safeTargetPage - 1];
+  const font = await pdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdf.embedFont(StandardFonts.HelveticaBold);
+  
+  page.drawRectangle({
+    x: x - 5,
+    y: y - 5,
+    width: 20,
+    height: 20,
+    color: rgb(1, 0.9, 0.4),
+    borderColor: rgb(0.8, 0.6, 0),
+    borderWidth: 1,
+  });
+  
+  page.drawText('N', {
+    x: x + 2,
+    y: y + 2,
+    size: 12,
+    font: boldFont,
+    color: rgb(0.5, 0.3, 0),
+  });
+  
+  const commentBoxX = x + 25;
+  const commentBoxY = y - 60;
+  const commentBoxWidth = 200;
+  const lines = commentText.match(/.{1,40}/g) || [commentText];
+  const commentBoxHeight = 30 + lines.length * 14;
+  
+  page.drawRectangle({
+    x: commentBoxX,
+    y: commentBoxY,
+    width: commentBoxWidth,
+    height: commentBoxHeight,
+    color: rgb(1, 1, 0.85),
+    borderColor: rgb(0.8, 0.8, 0.6),
+    borderWidth: 1,
+  });
+  
+  page.drawText(author, {
+    x: commentBoxX + 5,
+    y: commentBoxY + commentBoxHeight - 15,
+    size: 9,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  let lineY = commentBoxY + commentBoxHeight - 30;
+  for (const line of lines) {
+    page.drawText(line, {
+      x: commentBoxX + 5,
+      y: lineY,
+      size: 10,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    lineY -= 14;
+  }
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function flattenPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const flattenedPdf = await PDFDocument.create();
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const [copiedPage] = await flattenedPdf.copyPages(sourcePdf, [i]);
+    flattenedPdf.addPage(copiedPage);
+  }
+  
+  flattenedPdf.setProducer('PDF Tools - Flatten PDF');
+  flattenedPdf.setCreator('PDF Tools');
+  
+  return Buffer.from(await flattenedPdf.save());
+}
+
+async function flattenPdfComments(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const flattenedPdf = await PDFDocument.create();
+  const font = await flattenedPdf.embedFont(StandardFonts.Helvetica);
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const [copiedPage] = await flattenedPdf.copyPages(sourcePdf, [i]);
+    flattenedPdf.addPage(copiedPage);
+  }
+  
+  flattenedPdf.setProducer('PDF Tools - Flatten Comments');
+  flattenedPdf.setCreator('PDF Tools');
+  
+  return Buffer.from(await flattenedPdf.save());
+}
+
+async function flattenPdfLayers(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const flattenedPdf = await PDFDocument.create();
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const [copiedPage] = await flattenedPdf.copyPages(sourcePdf, [i]);
+    flattenedPdf.addPage(copiedPage);
+  }
+  
+  flattenedPdf.setProducer('PDF Tools - Flatten Layers');
+  flattenedPdf.setCreator('PDF Tools');
+  
+  return Buffer.from(await flattenedPdf.save());
+}
+
+async function addHyperlinkToPdf(
+  file: Express.Multer.File,
+  url: string,
+  targetPage: number,
+  x: number,
+  y: number,
+  width: number,
+  height: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage));
+  const page = pages[safeTargetPage - 1];
+  const font = await pdf.embedFont(StandardFonts.Helvetica);
+  
+  page.drawRectangle({
+    x,
+    y,
+    width,
+    height,
+    borderColor: rgb(0, 0, 0.8),
+    borderWidth: 1,
+    opacity: 0.1,
+    color: rgb(0.9, 0.9, 1),
+  });
+  
+  const displayUrl = url.length > 30 ? url.substring(0, 27) + '...' : url;
+  page.drawText(displayUrl, {
+    x: x + 5,
+    y: y + 5,
+    size: 10,
+    font,
+    color: rgb(0, 0, 0.8),
+  });
+  
+  const context = pdf.context;
+  const uriAction = context.obj({
+    Type: 'Action',
+    S: 'URI',
+    URI: PDFName.of(url),
+  });
+  
+  const linkAnnotation = context.obj({
+    Type: 'Annot',
+    Subtype: 'Link',
+    Rect: [x, y, x + width, y + height],
+    Border: [0, 0, 0],
+    A: uriAction,
+  });
+  
+  const pageRef = page.ref;
+  const pageDict = context.lookup(pageRef) as PDFDict;
+  
+  let annots = pageDict.get(PDFName.of('Annots'));
+  if (annots) {
+    const annotsArray = context.lookup(annots) as PDFArray;
+    annotsArray.push(linkAnnotation);
+  } else {
+    pageDict.set(PDFName.of('Annots'), context.obj([linkAnnotation]));
+  }
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function editPdfMetadata(
+  file: Express.Multer.File,
+  title: string,
+  author: string,
+  subject: string,
+  keywords: string,
+  creator: string,
+  producer: string
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  if (title) pdf.setTitle(title);
+  if (author) pdf.setAuthor(author);
+  if (subject) pdf.setSubject(subject);
+  if (keywords) pdf.setKeywords(keywords.split(',').map(k => k.trim()));
+  if (creator) pdf.setCreator(creator);
+  if (producer) pdf.setProducer(producer);
+  
+  return Buffer.from(await pdf.save());
+}
+
 async function pdfConverter(file: Express.Multer.File, format: string = 'pdf'): Promise<Buffer> {
   const pdfBytes = fs.readFileSync(file.path);
   const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
@@ -11602,6 +11817,106 @@ export async function registerRoutes(
             const markerHeight = parseInt(options.shapeHeight as string, 10) || 20;
             result = await pdfMarker(files[0], markerColor, markerType, markerTargetPage, markerX, markerY, markerWidth, markerHeight);
             filename = "marked.pdf";
+            break;
+          }
+          
+          case "add-comments-to-pdf": {
+            const commentText = options.commentText || "Comment";
+            const commentAuthor = options.commentAuthor || "User";
+            const commentPage = parseInt(options.commentPage as string, 10) || 1;
+            const commentX = parseInt(options.commentX as string, 10) || 50;
+            const commentY = parseInt(options.commentY as string, 10) || 700;
+            result = await addCommentsToPdf(files[0], commentText, commentAuthor, commentPage, commentX, commentY);
+            filename = "commented.pdf";
+            break;
+          }
+          
+          case "pdf-commenter": {
+            const commenterText = options.commentText || "Comment";
+            const commenterAuthor = options.commentAuthor || "Reviewer";
+            const commenterPage = parseInt(options.commentPage as string, 10) || 1;
+            const commenterX = parseInt(options.commentX as string, 10) || 50;
+            const commenterY = parseInt(options.commentY as string, 10) || 700;
+            result = await addCommentsToPdf(files[0], commenterText, commenterAuthor, commenterPage, commenterX, commenterY);
+            filename = "reviewed.pdf";
+            break;
+          }
+          
+          case "flatten-pdf": {
+            result = await flattenPdf(files[0]);
+            filename = "flattened.pdf";
+            break;
+          }
+          
+          case "flatten-pdf-comments": {
+            result = await flattenPdfComments(files[0]);
+            filename = "comments-flattened.pdf";
+            break;
+          }
+          
+          case "flatten-pdf-layers": {
+            result = await flattenPdfLayers(files[0]);
+            filename = "layers-flattened.pdf";
+            break;
+          }
+          
+          case "add-hyperlink-to-pdf": {
+            const linkUrl = options.hyperlinkUrl || "https://example.com";
+            const linkPage = parseInt(options.hyperlinkPage as string, 10) || 1;
+            const linkX = parseInt(options.hyperlinkX as string, 10) || 50;
+            const linkY = parseInt(options.hyperlinkY as string, 10) || 700;
+            const linkWidth = parseInt(options.hyperlinkWidth as string, 10) || 100;
+            const linkHeight = parseInt(options.hyperlinkHeight as string, 10) || 20;
+            result = await addHyperlinkToPdf(files[0], linkUrl, linkPage, linkX, linkY, linkWidth, linkHeight);
+            filename = "with-hyperlink.pdf";
+            break;
+          }
+          
+          case "pdf-link-editor": {
+            const editorLinkUrl = options.hyperlinkUrl || "https://example.com";
+            const editorLinkPage = parseInt(options.hyperlinkPage as string, 10) || 1;
+            const editorLinkX = parseInt(options.hyperlinkX as string, 10) || 50;
+            const editorLinkY = parseInt(options.hyperlinkY as string, 10) || 700;
+            const editorLinkWidth = parseInt(options.hyperlinkWidth as string, 10) || 100;
+            const editorLinkHeight = parseInt(options.hyperlinkHeight as string, 10) || 20;
+            result = await addHyperlinkToPdf(files[0], editorLinkUrl, editorLinkPage, editorLinkX, editorLinkY, editorLinkWidth, editorLinkHeight);
+            filename = "links-edited.pdf";
+            break;
+          }
+          
+          case "edit-pdf-metadata": {
+            const metaTitle = options.metadataTitle || "";
+            const metaAuthor = options.metadataAuthor || "";
+            const metaSubject = options.metadataSubject || "";
+            const metaKeywords = options.metadataKeywords || "";
+            const metaCreator = options.metadataCreator || "";
+            const metaProducer = options.metadataProducer || "";
+            result = await editPdfMetadata(files[0], metaTitle, metaAuthor, metaSubject, metaKeywords, metaCreator, metaProducer);
+            filename = "metadata-edited.pdf";
+            break;
+          }
+          
+          case "pdf-metadata-editor": {
+            const editorMetaTitle = options.metadataTitle || "";
+            const editorMetaAuthor = options.metadataAuthor || "";
+            const editorMetaSubject = options.metadataSubject || "";
+            const editorMetaKeywords = options.metadataKeywords || "";
+            const editorMetaCreator = options.metadataCreator || "";
+            const editorMetaProducer = options.metadataProducer || "";
+            result = await editPdfMetadata(files[0], editorMetaTitle, editorMetaAuthor, editorMetaSubject, editorMetaKeywords, editorMetaCreator, editorMetaProducer);
+            filename = "metadata-updated.pdf";
+            break;
+          }
+          
+          case "change-pdf-metadata": {
+            const changeMetaTitle = options.metadataTitle || "";
+            const changeMetaAuthor = options.metadataAuthor || "";
+            const changeMetaSubject = options.metadataSubject || "";
+            const changeMetaKeywords = options.metadataKeywords || "";
+            const changeMetaCreator = options.metadataCreator || "";
+            const changeMetaProducer = options.metadataProducer || "";
+            result = await editPdfMetadata(files[0], changeMetaTitle, changeMetaAuthor, changeMetaSubject, changeMetaKeywords, changeMetaCreator, changeMetaProducer);
+            filename = "metadata-changed.pdf";
             break;
           }
             

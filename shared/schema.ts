@@ -211,6 +211,16 @@ export const pdfToolTypes = [
   "underline-pdf-text",
   "strikethrough-pdf-text",
   "pdf-marker",
+  "add-comments-to-pdf",
+  "pdf-commenter",
+  "flatten-pdf",
+  "flatten-pdf-comments",
+  "flatten-pdf-layers",
+  "add-hyperlink-to-pdf",
+  "pdf-link-editor",
+  "edit-pdf-metadata",
+  "pdf-metadata-editor",
+  "change-pdf-metadata",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -314,6 +324,24 @@ export const toolOptionsSchema = z.object({
   markerColor: z.string().optional(),
   annotationText: z.string().optional(),
   annotationOpacity: z.number().optional(),
+  commentText: z.string().optional(),
+  commentAuthor: z.string().optional(),
+  commentPage: z.number().optional(),
+  commentX: z.number().optional(),
+  commentY: z.number().optional(),
+  hyperlinkUrl: z.string().optional(),
+  hyperlinkText: z.string().optional(),
+  hyperlinkPage: z.number().optional(),
+  hyperlinkX: z.number().optional(),
+  hyperlinkY: z.number().optional(),
+  hyperlinkWidth: z.number().optional(),
+  hyperlinkHeight: z.number().optional(),
+  metadataTitle: z.string().optional(),
+  metadataAuthor: z.string().optional(),
+  metadataSubject: z.string().optional(),
+  metadataKeywords: z.string().optional(),
+  metadataCreator: z.string().optional(),
+  metadataProducer: z.string().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -5625,5 +5653,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Business Document Workflow</h2>
 <p>Review contracts with systematic markup. Mark required changes and approvals. Annotate reports with questions and comments. Create comprehensive review documentation. Track markup through multiple review cycles. Professional markup supports efficient business processes.</p>`,
+  },
+  {
+    id: "add-comments-to-pdf",
+    name: "Add Comments to PDF",
+    description: "Add text comments and notes to your PDF documents",
+    icon: "MessageSquare",
+    type: "add-comments-to-pdf",
+    color: "bg-blue-500",
+    emoji: "💬",
+    metaTitle: "Add Comments to PDF Online Free - PDF Comment Tool | PDF Tools",
+    metaDescription: "Add comments and notes to PDF documents online for free. Insert text annotations, sticky notes, and feedback directly into your PDF files.",
+    seoArticle: `<h2>Add Comments to PDF - Complete Annotation Solution</h2>
+<p>Adding comments to PDF documents is essential for document review, feedback, and collaboration. Our free online PDF comment tool allows you to insert text annotations, notes, and feedback directly into any PDF file. Whether you're reviewing contracts, providing feedback on designs, or collaborating on reports, comments make communication clear and contextual.</p>
+
+<h2>Why Add Comments to PDFs?</h2>
+<p>Comments provide context-specific feedback that stays attached to the relevant content. Unlike separate email threads or chat messages, PDF comments are embedded in the document exactly where they're needed. Reviewers can see exactly what content a comment refers to, eliminating confusion and speeding up the review process.</p>
+
+<h2>Types of PDF Comments</h2>
+<p>Our tool supports various comment types to suit different needs. Add sticky note comments that appear as icons and expand when clicked. Insert text annotations that appear directly on the page. Create popup notes for detailed feedback. Each comment type serves different purposes and keeps your document organized.</p>
+
+<h2>Professional Document Review</h2>
+<p>Businesses rely on PDF comments for contract negotiations, proposal reviews, and quality assurance. Legal teams use comments to suggest contract modifications. Marketing departments provide feedback on creative materials. Technical teams annotate specifications and requirements. Comments streamline the entire review workflow.</p>
+
+<h2>Collaborative Workflow Benefits</h2>
+<p>When multiple reviewers add comments, all feedback is consolidated in one document. No more chasing down feedback from different sources. Comments can include author names and timestamps for tracking. The original content remains intact while feedback is clearly visible. This creates an efficient, organized review process.</p>`,
+  },
+  {
+    id: "pdf-commenter",
+    name: "PDF Commenter",
+    description: "Professional PDF commenting and feedback tool",
+    icon: "MessageCircle",
+    type: "pdf-commenter",
+    color: "bg-indigo-500",
+    emoji: "📝",
+    metaTitle: "PDF Commenter Online Free - Add Feedback to PDF | PDF Tools",
+    metaDescription: "Add professional comments and feedback to PDF documents online for free. Easy-to-use PDF commenting tool for document review and collaboration.",
+    seoArticle: `<h2>PDF Commenter - Professional Feedback Tool</h2>
+<p>The PDF Commenter tool provides a streamlined interface for adding professional feedback to PDF documents. Designed for reviewers, editors, and collaborators, this tool makes it easy to provide clear, contextual comments that improve document quality. Add your insights, suggestions, and corrections directly where they matter most.</p>
+
+<h2>Streamlined Commenting Interface</h2>
+<p>Our commenting interface is designed for efficiency. Click anywhere on your document to add a comment. Type your feedback and save. The comment appears as a marker that can be expanded to read the full text. This non-intrusive approach keeps the document readable while preserving all feedback.</p>
+
+<h2>Comment Organization Features</h2>
+<p>Keep your comments organized with author identification. Add your name to track who provided which feedback. Timestamps show when comments were added. Color-code comments by type or priority. Filter and search through comments easily. Good organization makes reviewing feedback efficient.</p>
+
+<h2>Enterprise Review Workflows</h2>
+<p>Large organizations use PDF commenting for standardized review processes. Multiple reviewers can add comments simultaneously. Comments support reply threads for discussions. Status indicators show which comments have been addressed. Export comment summaries for tracking. Enterprise features support complex review workflows.</p>
+
+<h2>Best Practices for PDF Comments</h2>
+<p>Effective comments are specific and actionable. Reference exact text or elements when possible. Provide suggested alternatives, not just criticisms. Use consistent terminology and formatting. Group related feedback logically. Clear, constructive comments improve document quality efficiently.</p>`,
+  },
+  {
+    id: "flatten-pdf",
+    name: "Flatten PDF",
+    description: "Flatten all layers and interactive elements in your PDF",
+    icon: "Layers",
+    type: "flatten-pdf",
+    color: "bg-slate-600",
+    emoji: "📄",
+    metaTitle: "Flatten PDF Online Free - Remove Interactive Elements | PDF Tools",
+    metaDescription: "Flatten PDF documents online for free. Remove form fields, comments, and layers to create a clean, print-ready PDF file.",
+    seoArticle: `<h2>Flatten PDF - Create Print-Ready Documents</h2>
+<p>PDF flattening combines all layers, annotations, form fields, and interactive elements into a single flat image layer. This process is essential for creating print-ready documents, preventing unauthorized editing, and ensuring consistent appearance across all viewers. Our free online PDF flattening tool handles complex documents with precision.</p>
+
+<h2>Why Flatten Your PDF?</h2>
+<p>Interactive PDFs with form fields, comments, or layers may not print or display correctly on all devices. Flattening ensures what you see is what others see and print. It also locks in any filled form data, prevents further annotation, and reduces file complexity. Flattened PDFs are more universally compatible.</p>
+
+<h2>What Gets Flattened</h2>
+<p>The flattening process converts form fields with their current values into static text. Comments and annotations become permanent page content. Layer visibility is locked to current settings. Digital signatures are embedded. Interactive buttons and links become static. Everything merges into a simple, viewable format.</p>
+
+<h2>Print and Archive Benefits</h2>
+<p>Print shops often require flattened PDFs to ensure accurate reproduction. Archived documents should be flattened to preserve their exact state. Legal documents may need flattening after signing. Flattened files are easier to store and manage. The flattening process creates a permanent record of the document's state.</p>
+
+<h2>Security Through Flattening</h2>
+<p>Flattening provides a level of document security by removing editable elements. Once flattened, form fields cannot be modified. Annotations cannot be deleted or altered. The document becomes a fixed visual representation. While not encryption, flattening does prevent casual editing and maintains document integrity.</p>`,
+  },
+  {
+    id: "flatten-pdf-comments",
+    name: "Flatten PDF Comments",
+    description: "Permanently embed comments and annotations into PDF pages",
+    icon: "MessageSquareDashed",
+    type: "flatten-pdf-comments",
+    color: "bg-purple-500",
+    emoji: "💭",
+    metaTitle: "Flatten PDF Comments Online Free - Embed Annotations | PDF Tools",
+    metaDescription: "Flatten PDF comments and annotations online for free. Permanently embed review notes into your PDF document for sharing and printing.",
+    seoArticle: `<h2>Flatten PDF Comments - Permanently Embed Annotations</h2>
+<p>Flattening PDF comments converts all annotations, sticky notes, and review comments into permanent page content. This is essential when you want to share reviewed documents while preserving all feedback visually. Comments become part of the page image, visible to everyone regardless of their PDF viewer capabilities.</p>
+
+<h2>When to Flatten Comments</h2>
+<p>Flatten comments when sharing finalized reviewed documents. Some PDF viewers don't display annotations properly. Printing often ignores unflatted comments. Email attachments may lose annotation data. Flattening ensures your comments travel with the document and appear consistently everywhere.</p>
+
+<h2>Preserve Review Feedback</h2>
+<p>After a document review cycle, flatten comments to create a permanent record. All reviewer notes become part of the document history. Feedback is preserved even if the original comment data is stripped. Create archives of reviewed documents with complete annotation records. Flattened comments serve as documentation of the review process.</p>
+
+<h2>Visual Consistency Across Platforms</h2>
+<p>Different PDF readers handle comments differently. Some show them, some hide them, some render them incorrectly. Flattening eliminates these inconsistencies. Your comments appear exactly the same in Adobe Reader, Preview, Chrome, or any other viewer. Visual consistency is guaranteed through flattening.</p>
+
+<h2>Preparing Documents for Final Distribution</h2>
+<p>Before final distribution, flatten comments to prevent further annotation. Recipients see all feedback but cannot modify or delete comments. The document becomes a clean, final version with embedded review notes. This is particularly important for contractual, legal, or compliance documents where feedback must be preserved.</p>`,
+  },
+  {
+    id: "flatten-pdf-layers",
+    name: "Flatten PDF Layers",
+    description: "Merge all PDF layers into a single flat layer",
+    icon: "Combine",
+    type: "flatten-pdf-layers",
+    color: "bg-cyan-600",
+    emoji: "🗂️",
+    metaTitle: "Flatten PDF Layers Online Free - Merge PDF Layers | PDF Tools",
+    metaDescription: "Flatten and merge PDF layers online for free. Combine multiple layers into one for printing, sharing, and universal compatibility.",
+    seoArticle: `<h2>Flatten PDF Layers - Merge Multiple Layers</h2>
+<p>PDF files can contain multiple layers, often used in design documents, CAD exports, and complex graphics. Flattening layers merges all visible content into a single layer while removing hidden layers entirely. This process simplifies the document structure and ensures consistent display across all viewers and printers.</p>
+
+<h2>Understanding PDF Layers</h2>
+<p>Layers in PDFs (also called Optional Content Groups) allow different content to be shown or hidden. Architectural drawings may have separate layers for electrical, plumbing, and structural elements. Design files may have language versions on different layers. While useful for editing, layers can cause issues when sharing or printing documents.</p>
+
+<h2>Why Flatten Layers?</h2>
+<p>Not all PDF viewers support layers properly. Printers may not respect layer visibility settings. File sizes increase with multiple layers. Hidden layers may contain sensitive information. Flattening solves all these issues by creating a simple, single-layer document that displays consistently everywhere.</p>
+
+<h2>Preparing for Print Production</h2>
+<p>Commercial printers typically require flattened PDFs. Layers can cause unexpected printing results. Color separations may not work correctly with layers. Flattening ensures WYSIWYG printing. Prepress workflows are simplified with flat files. Always flatten layered PDFs before sending to professional print services.</p>
+
+<h2>Reducing File Complexity</h2>
+<p>Layered PDFs are more complex and larger than flattened versions. Processing takes longer. Viewing may be slower. Compatibility issues are more common. Flattening streamlines the file structure. The result is a lean, efficient PDF that opens quickly and displays reliably on any device or application.</p>`,
+  },
+  {
+    id: "add-hyperlink-to-pdf",
+    name: "Add Hyperlink to PDF",
+    description: "Add clickable web links to your PDF documents",
+    icon: "Link",
+    type: "add-hyperlink-to-pdf",
+    color: "bg-green-500",
+    emoji: "🔗",
+    metaTitle: "Add Hyperlink to PDF Online Free - Insert Links in PDF | PDF Tools",
+    metaDescription: "Add clickable hyperlinks to PDF documents online for free. Insert web links, email links, and internal navigation links into your PDFs.",
+    seoArticle: `<h2>Add Hyperlinks to PDF - Make Documents Interactive</h2>
+<p>Adding hyperlinks to PDF documents transforms static files into interactive resources. Link to websites, email addresses, or other locations within the document. Clickable links enhance user experience, provide quick access to references, and make navigation effortless. Our free tool makes adding links to any PDF simple and fast.</p>
+
+<h2>Types of PDF Hyperlinks</h2>
+<p>Web links open URLs in the user's browser for accessing online resources. Email links launch the default email client with a pre-filled address. Internal links jump to other pages within the same document. File links can open related documents. Each type serves different purposes in creating comprehensive, connected documents.</p>
+
+<h2>Enhancing Digital Documents</h2>
+<p>Digital reports benefit greatly from hyperlinks. Link citations to source materials. Connect table of contents entries to relevant sections. Add links to supplementary online resources. Create interactive forms with help links. Hyperlinks transform passive reading into active engagement with your content.</p>
+
+<h2>Marketing and Business Applications</h2>
+<p>Marketing PDFs use hyperlinks to drive action. Link product descriptions to purchase pages. Connect case studies to detailed information. Add social media links for engagement. Include contact links for inquiries. Interactive PDFs generate more leads and conversions than static documents.</p>
+
+<h2>Best Practices for PDF Links</h2>
+<p>Make link text descriptive and action-oriented. Test all links before distribution. Use shortened URLs for cleaner appearance. Consider link styling to indicate clickable areas. Provide link destinations that are mobile-friendly. Well-implemented hyperlinks enhance document usability significantly.</p>`,
+  },
+  {
+    id: "pdf-link-editor",
+    name: "PDF Link Editor",
+    description: "Add, edit, and manage hyperlinks in PDF files",
+    icon: "ExternalLink",
+    type: "pdf-link-editor",
+    color: "bg-emerald-500",
+    emoji: "🌐",
+    metaTitle: "PDF Link Editor Online Free - Manage PDF Hyperlinks | PDF Tools",
+    metaDescription: "Edit and manage hyperlinks in PDF documents online for free. Add new links, modify existing ones, or remove broken links from your PDFs.",
+    seoArticle: `<h2>PDF Link Editor - Complete Hyperlink Management</h2>
+<p>The PDF Link Editor provides comprehensive control over hyperlinks in your PDF documents. Add new links, modify existing link destinations, update link styles, or remove outdated links entirely. Whether you're updating a document with new URLs or fixing broken links, this tool gives you complete link management capabilities.</p>
+
+<h2>Managing Existing Links</h2>
+<p>Documents often contain links that become outdated. Websites move, URLs change, and links break. Our link editor lets you identify all links in a document. Update destinations without recreating links from scratch. Fix broken links quickly. Maintain document usefulness over time with proper link maintenance.</p>
+
+<h2>Creating Professional Link Layouts</h2>
+<p>Define precise link hotspots on your pages. Control exactly where clickable areas appear. Links can cover text, images, or custom regions. Set link appearance with borders or highlighting. Create invisible links for clean design. Professional link placement enhances document aesthetics and usability.</p>
+
+<h2>Bulk Link Operations</h2>
+<p>When you need to update multiple links, our editor supports batch operations. Find and replace URL patterns across the document. Update domain names in all links at once. Remove all links matching certain criteria. Bulk operations save significant time when managing documents with many hyperlinks.</p>
+
+<h2>Link Validation and Testing</h2>
+<p>Before finalizing your document, verify all links work correctly. Our tool helps identify potential issues. Check for malformed URLs. Validate link destinations are accessible. Ensure links open correctly in different viewers. Link validation prevents embarrassing broken link situations.</p>`,
+  },
+  {
+    id: "edit-pdf-metadata",
+    name: "Edit PDF Metadata",
+    description: "View and modify PDF document properties and metadata",
+    icon: "FileEdit",
+    type: "edit-pdf-metadata",
+    color: "bg-orange-500",
+    emoji: "📋",
+    metaTitle: "Edit PDF Metadata Online Free - Change PDF Properties | PDF Tools",
+    metaDescription: "Edit PDF metadata and document properties online for free. Modify title, author, subject, keywords, and other PDF information fields.",
+    seoArticle: `<h2>Edit PDF Metadata - Manage Document Properties</h2>
+<p>PDF metadata contains important information about your document including title, author, subject, keywords, and creation dates. Editing metadata is essential for document organization, searchability, and professional presentation. Our free online tool lets you view and modify all standard PDF metadata fields quickly and easily.</p>
+
+<h2>What is PDF Metadata?</h2>
+<p>Metadata is hidden information stored within PDF files. It includes the document title that appears in browser tabs. Author name identifies the creator. Subject and keywords help with organization and search. Creation and modification dates track document history. This information is crucial for document management systems.</p>
+
+<h2>Why Edit PDF Metadata?</h2>
+<p>Documents often have incorrect or missing metadata. Scanned documents may have no metadata at all. Merged PDFs may have metadata from source files. Updating metadata ensures accurate information. Proper metadata improves document organization, searchability, and professional appearance.</p>
+
+<h2>SEO and Discoverability Benefits</h2>
+<p>Search engines index PDF metadata for search results. Proper titles and keywords improve document findability. Well-structured metadata helps users understand document content before opening. Organizations with many PDFs benefit significantly from consistent, accurate metadata across their document libraries.</p>
+
+<h2>Privacy and Security Considerations</h2>
+<p>Metadata can reveal sensitive information. Author names may expose internal contacts. Creation software versions might indicate security vulnerabilities. Editing dates could reveal document history you want to hide. Review and clean metadata before sharing confidential documents externally.</p>`,
+  },
+  {
+    id: "pdf-metadata-editor",
+    name: "PDF Metadata Editor",
+    description: "Professional tool for managing PDF document information",
+    icon: "Settings",
+    type: "pdf-metadata-editor",
+    color: "bg-rose-500",
+    emoji: "⚙️",
+    metaTitle: "PDF Metadata Editor Online Free - PDF Properties Tool | PDF Tools",
+    metaDescription: "Edit PDF document metadata and properties online for free. Professional tool for managing title, author, keywords, and custom fields.",
+    seoArticle: `<h2>PDF Metadata Editor - Professional Document Management</h2>
+<p>The PDF Metadata Editor provides comprehensive control over document properties and information fields. Beyond basic metadata, manage custom properties, XMP data, and advanced document settings. Perfect for professionals who need precise control over how their documents are identified, organized, and presented across systems.</p>
+
+<h2>Standard Metadata Fields</h2>
+<p>Edit all standard PDF information fields. Set meaningful document titles that describe content. Add accurate author information for attribution. Define subjects for categorization. Include keywords for improved searchability. Set producer and creator application information. Standard fields cover most metadata needs.</p>
+
+<h2>Custom Properties</h2>
+<p>Beyond standard fields, add custom properties for specialized needs. Define project codes or document numbers. Add department or classification information. Include version numbers or revision identifiers. Custom properties integrate with document management systems. Flexible metadata supports any organizational scheme.</p>
+
+<h2>Batch Metadata Processing</h2>
+<p>When managing large document collections, batch processing saves time. Apply consistent metadata across multiple PDFs. Update author information company-wide. Add standardized keywords to document categories. Batch operations ensure metadata consistency and save hours of manual editing.</p>
+
+<h2>Integration with Document Systems</h2>
+<p>Properly structured metadata integrates with enterprise document management. SharePoint, Documentum, and other systems read PDF metadata. Consistent metadata enables automated filing and routing. Search and retrieval becomes more accurate. Metadata editing is essential for enterprise document workflows.</p>`,
+  },
+  {
+    id: "change-pdf-metadata",
+    name: "Change PDF Metadata",
+    description: "Update and modify PDF file properties",
+    icon: "Pencil",
+    type: "change-pdf-metadata",
+    color: "bg-amber-600",
+    emoji: "✏️",
+    metaTitle: "Change PDF Metadata Online Free - Update PDF Info | PDF Tools",
+    metaDescription: "Change PDF metadata and file properties online for free. Update document title, author, creation date, and other PDF information easily.",
+    seoArticle: `<h2>Change PDF Metadata - Quick Property Updates</h2>
+<p>Changing PDF metadata is a common task when preparing documents for distribution, archiving, or publication. Our free online tool makes it quick and easy to update document properties without installing software. Change titles, authors, dates, and other information in just a few clicks.</p>
+
+<h2>Common Metadata Changes</h2>
+<p>Update document titles for clarity and professionalism. Correct author names after document transfers. Add or modify keywords for better organization. Change subject descriptions to match content. Clear outdated creation information. These quick changes improve document presentation and management.</p>
+
+<h2>Preparing Documents for Publication</h2>
+<p>Before publishing PDFs, review and update metadata carefully. Ensure titles match content accurately. Add comprehensive keywords for discoverability. Set appropriate author attribution. Remove any sensitive internal information. Publication-ready metadata presents your document professionally.</p>
+
+<h2>Document Rebranding</h2>
+<p>When organizations rebrand, document metadata needs updating. Change creator names to new company identity. Update author information for new ownership. Modify titles to reflect new branding. Metadata updates complete the rebranding process for document libraries.</p>
+
+<h2>Quick and Easy Process</h2>
+<p>Upload your PDF, view current metadata, make changes, and download. No complex software to learn. No installation required. Changes are applied instantly. The process takes just seconds for most documents. Quick metadata editing keeps your document library current and accurate.</p>`,
   },
 ];
