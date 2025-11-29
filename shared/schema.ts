@@ -221,6 +221,16 @@ export const pdfToolTypes = [
   "edit-pdf-metadata",
   "pdf-metadata-editor",
   "change-pdf-metadata",
+  "redact-pdf",
+  "pdf-redactor",
+  "blackout-pdf",
+  "sanitize-pdf",
+  "remove-pdf-metadata",
+  "crop-pdf",
+  "pdf-cropper",
+  "crop-pdf-margins",
+  "resize-pdf",
+  "pdf-resizer",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -342,6 +352,19 @@ export const toolOptionsSchema = z.object({
   metadataKeywords: z.string().optional(),
   metadataCreator: z.string().optional(),
   metadataProducer: z.string().optional(),
+  redactAreas: z.string().optional(),
+  redactColor: z.string().optional(),
+  redactText: z.string().optional(),
+  cropTop: z.number().optional(),
+  cropBottom: z.number().optional(),
+  cropLeft: z.number().optional(),
+  cropRight: z.number().optional(),
+  cropMargin: z.number().optional(),
+  resizeWidth: z.number().optional(),
+  resizeHeight: z.number().optional(),
+  resizeScale: z.number().optional(),
+  resizeMode: z.enum(["dimensions", "scale", "percentage"]).optional(),
+  sanitizeLevel: z.enum(["basic", "standard", "thorough"]).optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -5903,5 +5926,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Quick and Easy Process</h2>
 <p>Upload your PDF, view current metadata, make changes, and download. No complex software to learn. No installation required. Changes are applied instantly. The process takes just seconds for most documents. Quick metadata editing keeps your document library current and accurate.</p>`,
+  },
+  {
+    id: "redact-pdf",
+    name: "Redact PDF",
+    description: "Permanently remove sensitive information from PDFs",
+    icon: "EyeOff",
+    type: "redact-pdf",
+    color: "bg-slate-700",
+    emoji: "🔒",
+    metaTitle: "Redact PDF Online Free - Remove Sensitive Information | PDF Tools",
+    metaDescription: "Redact PDF documents online for free. Permanently remove sensitive text, images, and confidential information. Secure PDF redaction tool.",
+    seoArticle: `<h2>Redact PDF Documents - Secure Information Removal</h2>
+<p>PDF redaction is essential for protecting sensitive information before sharing documents. Our free online redaction tool permanently removes confidential data from PDFs, replacing it with solid black boxes that cannot be reversed. Unlike simple highlighting or covering, true redaction completely eliminates the underlying content from the document.</p>
+
+<h2>Why Proper Redaction Matters</h2>
+<p>Simply placing black boxes over text or using highlight tools does not truly remove information. The original content remains in the PDF and can be extracted using basic tools. Proper redaction permanently deletes the data, replacing it with empty space or solid color. Our tool ensures complete information removal that meets legal and compliance standards.</p>
+
+<h2>Common Redaction Use Cases</h2>
+<p>Legal professionals redact client information in court filings. Healthcare providers remove patient identifiers for HIPAA compliance. Government agencies redact classified information for FOIA requests. Businesses protect trade secrets and competitive information. Financial institutions secure account numbers and personal data.</p>
+
+<h2>How to Redact Your PDF</h2>
+<p>Upload your PDF document to our secure platform. Select areas to redact by drawing boxes or specifying coordinates. Choose your redaction style - solid black, white, or custom color. Apply redactions and download your secured PDF. The process is fast and the results are permanent.</p>
+
+<h2>Security and Compliance</h2>
+<p>Proper redaction is required for legal, medical, and governmental document sharing. Our tool meets industry standards for permanent information removal. All processing occurs on secure servers, and files are automatically deleted after processing. Redact with confidence knowing your sensitive information is truly protected.</p>`,
+  },
+  {
+    id: "pdf-redactor",
+    name: "PDF Redactor",
+    description: "Professional tool for blacking out confidential content",
+    icon: "Shield",
+    type: "pdf-redactor",
+    color: "bg-gray-800",
+    emoji: "🛡️",
+    metaTitle: "PDF Redactor Online Free - Professional Redaction Tool | PDF Tools",
+    metaDescription: "Professional PDF redactor for blacking out confidential content. Secure, permanent redaction of sensitive text and images in PDF documents.",
+    seoArticle: `<h2>PDF Redactor - Professional Document Security</h2>
+<p>The PDF Redactor is a professional-grade tool for permanently removing sensitive information from documents. Designed for legal professionals, compliance officers, and security-conscious organizations, it provides complete control over what information is revealed and what remains hidden.</p>
+
+<h2>Advanced Redaction Features</h2>
+<p>Our redactor offers precision tools for selecting exactly what to remove. Draw rectangular areas around sensitive content. Specify exact coordinates for programmatic redaction. Apply redactions to multiple pages simultaneously. Preview results before finalizing. Professional features ensure accurate, thorough redaction.</p>
+
+<h2>Permanent Data Removal</h2>
+<p>Unlike overlay methods, our redactor permanently removes the underlying content. Text is completely eliminated from the document structure. Images are replaced with solid fills. Metadata associated with redacted areas is also removed. The result is a document that truly contains no trace of the original sensitive information.</p>
+
+<h2>Compliance and Legal Requirements</h2>
+<p>Many industries have strict requirements for document redaction. Legal discovery requires proper redaction of privileged information. Healthcare regulations mandate removal of protected health information. Government agencies must redact classified content appropriately. Our tool helps meet these compliance requirements.</p>
+
+<h2>Workflow Integration</h2>
+<p>Professional redaction fits into document review workflows. Review documents to identify sensitive content. Mark areas for redaction with precision tools. Apply redactions and verify results. Export redacted documents for distribution. Streamlined workflow ensures thorough, efficient document processing.</p>`,
+  },
+  {
+    id: "blackout-pdf",
+    name: "Blackout PDF",
+    description: "Cover sensitive areas with permanent black boxes",
+    icon: "Square",
+    type: "blackout-pdf",
+    color: "bg-black",
+    emoji: "⬛",
+    metaTitle: "Blackout PDF Online Free - Cover Sensitive Content | PDF Tools",
+    metaDescription: "Blackout PDF content online for free. Cover sensitive text and images with permanent black boxes. Easy and secure PDF blackout tool.",
+    seoArticle: `<h2>Blackout PDF Content - Quick Privacy Protection</h2>
+<p>The PDF Blackout tool provides a quick and easy way to cover sensitive information with permanent black boxes. Whether you're hiding names, addresses, account numbers, or confidential text, blackout provides an effective visual barrier that protects privacy while maintaining document readability.</p>
+
+<h2>When to Use Blackout</h2>
+<p>Blackout is ideal for documents where visual obscuring is sufficient. Cover personal information on forms before filing. Hide pricing on quotes when sharing features. Obscure competitor names in proposals. Block out dates or reference numbers. Quick blackout saves time while providing adequate protection for many scenarios.</p>
+
+<h2>Simple One-Click Process</h2>
+<p>Our blackout tool makes the process incredibly simple. Upload your PDF document. Select areas to blackout by drawing rectangles. Click apply to permanently add black boxes. Download your protected document. No complex settings or technical knowledge required - just point, click, and protect.</p>
+
+<h2>Permanent Results</h2>
+<p>Unlike digital sticky notes or removable annotations, our blackout is permanent. The black boxes become part of the document. They cannot be removed or moved after processing. The original content beneath is permanently obscured. Recipients cannot access the hidden information through any means.</p>
+
+<h2>Versatile Applications</h2>
+<p>Use blackout for contracts, invoices, reports, and any document with sensitive areas. Prepare documents for public posting. Create sample documents without revealing specifics. Protect witness identities in legal documents. Quick blackout serves countless privacy protection needs across industries.</p>`,
+  },
+  {
+    id: "sanitize-pdf",
+    name: "Sanitize PDF",
+    description: "Remove hidden data, metadata, and embedded content",
+    icon: "Sparkles",
+    type: "sanitize-pdf",
+    color: "bg-cyan-600",
+    emoji: "✨",
+    metaTitle: "Sanitize PDF Online Free - Clean Hidden Data | PDF Tools",
+    metaDescription: "Sanitize PDF documents online for free. Remove hidden data, metadata, comments, and embedded content. Clean PDFs for secure sharing.",
+    seoArticle: `<h2>Sanitize PDF - Complete Document Cleaning</h2>
+<p>PDF documents often contain hidden information that isn't visible when viewing but can be extracted by others. Our sanitization tool removes all hidden data, metadata, comments, annotations, embedded files, and other invisible content. The result is a clean PDF that reveals only what you intend to share.</p>
+
+<h2>What Gets Removed</h2>
+<p>Sanitization removes document metadata including author names, creation dates, and software information. Hidden text layers are eliminated. Comments and annotations disappear. Embedded files and attachments are removed. JavaScript code is stripped. Form field data is cleared. The document is thoroughly cleaned of all non-visible content.</p>
+
+<h2>Why Sanitization Matters</h2>
+<p>Hidden data can reveal sensitive information about your organization. Metadata might show internal processes or software versions. Comments could contain confidential discussions. Embedded content might include data you didn't intend to share. Sanitization ensures nothing hidden accompanies your visible content.</p>
+
+<h2>Sanitization Levels</h2>
+<p>Choose the level of sanitization that fits your needs. Basic level removes common metadata and comments. Standard level includes form data and embedded files. Thorough level strips everything possible while preserving document appearance. Select based on your security requirements and document purpose.</p>
+
+<h2>Best Practices for Document Sharing</h2>
+<p>Always sanitize PDFs before sharing externally. Check for hidden layers that might reveal draft content. Remove tracked changes and editing history. Clear any embedded spreadsheets or databases. Sanitization should be the final step before distributing any document containing sensitive information.</p>`,
+  },
+  {
+    id: "remove-pdf-metadata",
+    name: "Remove PDF Metadata",
+    description: "Strip all metadata and document properties",
+    icon: "Trash2",
+    type: "remove-pdf-metadata",
+    color: "bg-red-700",
+    emoji: "🗑️",
+    metaTitle: "Remove PDF Metadata Online Free - Strip Document Info | PDF Tools",
+    metaDescription: "Remove PDF metadata online for free. Strip author names, creation dates, and all document properties. Protect your privacy instantly.",
+    seoArticle: `<h2>Remove PDF Metadata - Protect Your Privacy</h2>
+<p>PDF metadata can reveal more about you and your organization than you realize. Author names, software versions, company names, creation dates, and editing history are all embedded in PDFs by default. Our metadata removal tool strips all this information, giving you a clean document that reveals nothing about its origins.</p>
+
+<h2>What Metadata Contains</h2>
+<p>Standard PDF metadata includes document title, subject, author name, creator application, production software, creation date, modification date, and custom properties. This information persists through editing and can identify individuals, software, and organizations. Metadata removal eliminates all these identifying details.</p>
+
+<h2>Privacy Concerns</h2>
+<p>Metadata can compromise privacy in unexpected ways. Author names might reveal employees handling sensitive documents. Creation software could indicate organizational technology choices. Modification history might show document evolution. For truly private document sharing, metadata must be removed.</p>
+
+<h2>When to Remove Metadata</h2>
+<p>Remove metadata before sharing documents externally. Clean PDFs before public website posting. Strip author information from anonymous submissions. Remove creation dates from timeless documents. Clear software information for competitive reasons. Many scenarios benefit from clean, metadata-free documents.</p>
+
+<h2>Simple Removal Process</h2>
+<p>Upload your PDF and we instantly remove all metadata. No settings to configure - we strip everything. Download your cleaned document immediately. The visible content remains identical while all hidden information disappears. Fast, easy, and complete metadata removal in seconds.</p>`,
+  },
+  {
+    id: "crop-pdf",
+    name: "Crop PDF",
+    description: "Remove unwanted margins and trim PDF pages",
+    icon: "Crop",
+    type: "crop-pdf",
+    color: "bg-green-600",
+    emoji: "✂️",
+    metaTitle: "Crop PDF Online Free - Trim PDF Margins | PDF Tools",
+    metaDescription: "Crop PDF pages online for free. Remove unwanted margins, trim edges, and adjust page boundaries. Easy PDF cropping tool.",
+    seoArticle: `<h2>Crop PDF Pages - Remove Unwanted Areas</h2>
+<p>PDF cropping removes unwanted margins, edges, and areas from your documents. Whether you're eliminating excessive whitespace, removing letterheads, or focusing on specific content areas, our cropping tool gives you precise control over what remains in your final document.</p>
+
+<h2>Why Crop PDFs</h2>
+<p>Scanned documents often have uneven margins. Downloaded PDFs may include unwanted headers or footers. Book pages might have excessive binding margins. Presentations may have distracting borders. Cropping removes these unwanted elements while preserving the content that matters.</p>
+
+<h2>Flexible Cropping Options</h2>
+<p>Specify exact margins to remove from each side. Use percentage-based cropping for proportional trimming. Apply the same crop to all pages or customize per page. Preview results before applying changes. Our flexible options accommodate any cropping need.</p>
+
+<h2>How to Crop Your PDF</h2>
+<p>Upload your PDF document. Set margin values for top, bottom, left, and right. Preview the cropped result. Apply to selected pages or the entire document. Download your trimmed PDF. The process takes just seconds regardless of document length.</p>
+
+<h2>Practical Applications</h2>
+<p>Prepare scanned books for e-readers by removing binding margins. Create presentation handouts without header/footer clutter. Focus on data tables by cropping surrounding text. Standardize margins across documents from different sources. Cropping improves document appearance and usability.</p>`,
+  },
+  {
+    id: "pdf-cropper",
+    name: "PDF Cropper",
+    description: "Advanced tool for precise PDF page trimming",
+    icon: "Maximize2",
+    type: "pdf-cropper",
+    color: "bg-emerald-600",
+    emoji: "📐",
+    metaTitle: "PDF Cropper Online Free - Precise Page Trimming | PDF Tools",
+    metaDescription: "Professional PDF cropper for precise page trimming. Remove margins, adjust boundaries, and crop PDF pages with pixel-perfect accuracy.",
+    seoArticle: `<h2>PDF Cropper - Precision Page Trimming</h2>
+<p>The PDF Cropper provides advanced tools for precise page boundary adjustments. When exact trimming is required, this professional-grade tool delivers pixel-perfect results. Define custom crop boxes, maintain aspect ratios, and apply consistent cropping across multi-page documents with ease.</p>
+
+<h2>Advanced Cropping Controls</h2>
+<p>Set exact pixel or point values for crop boundaries. Maintain specific aspect ratios during cropping. Lock proportions to prevent distortion. Use numerical input for precise positioning. Professional controls ensure accurate, repeatable results for demanding applications.</p>
+
+<h2>Multi-Page Document Handling</h2>
+<p>Apply consistent cropping across all pages for uniform documents. Customize crop settings per page when needed. Preview any page before applying changes. Batch process large documents efficiently. Multi-page features save time on lengthy documents.</p>
+
+<h2>Preserving Content Quality</h2>
+<p>Cropping adjusts page boundaries without affecting content quality. Text remains sharp and readable. Images maintain their resolution. Vector graphics preserve their precision. The cropped document appears as if originally created at the new dimensions.</p>
+
+<h2>Professional Workflow Integration</h2>
+<p>PDF Cropper fits into professional publishing and document preparation workflows. Prepare documents for print by removing bleed areas. Standardize page sizes across merged documents. Optimize layouts for digital distribution. Professional tools meet professional standards.</p>`,
+  },
+  {
+    id: "crop-pdf-margins",
+    name: "Crop PDF Margins",
+    description: "Automatically detect and remove excess margins",
+    icon: "Minimize2",
+    type: "crop-pdf-margins",
+    color: "bg-teal-600",
+    emoji: "📏",
+    metaTitle: "Crop PDF Margins Online Free - Auto Margin Removal | PDF Tools",
+    metaDescription: "Automatically crop PDF margins online for free. Smart detection removes excess whitespace while preserving content. Easy margin cropping.",
+    seoArticle: `<h2>Crop PDF Margins - Smart Margin Removal</h2>
+<p>Excessive margins waste space and make documents harder to read on screens. Our margin cropping tool intelligently detects content boundaries and removes unnecessary whitespace. The result is a cleaner, more compact document that focuses on the actual content.</p>
+
+<h2>Intelligent Margin Detection</h2>
+<p>Our tool analyzes page content to identify actual boundaries. It detects where text, images, and graphics begin. Empty margins are automatically identified. The smart algorithm handles varied layouts and mixed content types. Detection works on any PDF regardless of how it was created.</p>
+
+<h2>Consistent Results</h2>
+<p>Apply uniform margin removal across all pages for professional consistency. Each page is analyzed individually but cropped to common dimensions. The result is a document where all pages have matching visible areas. Consistent margins improve reading experience and printing.</p>
+
+<h2>Customizable Minimum Margins</h2>
+<p>Specify minimum margins to preserve around content. Ensure adequate space for printing or binding. Maintain aesthetic spacing around page edges. Balance content visibility with comfortable margins. Customization options give you control over the final appearance.</p>
+
+<h2>Ideal For Various Documents</h2>
+<p>Perfect for scanned documents with irregular margins. Great for e-book preparation where screen space is precious. Useful for documents from different sources that need standardization. Helps reduce file size by eliminating empty page areas. Margin cropping improves nearly any PDF.</p>`,
+  },
+  {
+    id: "resize-pdf",
+    name: "Resize PDF",
+    description: "Change PDF page dimensions and scale content",
+    icon: "Scaling",
+    type: "resize-pdf",
+    color: "bg-purple-600",
+    emoji: "📐",
+    metaTitle: "Resize PDF Online Free - Change Page Size | PDF Tools",
+    metaDescription: "Resize PDF pages online for free. Change page dimensions, scale content, and adjust document size. Easy PDF resizing tool.",
+    seoArticle: `<h2>Resize PDF Pages - Adjust Document Dimensions</h2>
+<p>PDF resizing changes page dimensions to meet specific requirements. Whether you need to convert between paper sizes, scale for different displays, or fit content to specific dimensions, our resizing tool adjusts your PDF while maintaining content quality and proportions.</p>
+
+<h2>Common Resizing Scenarios</h2>
+<p>Convert between standard paper sizes like Letter, A4, Legal, and Tabloid. Scale documents for large format printing or poster creation. Reduce page dimensions for mobile device viewing. Adjust dimensions for specific printing or display requirements. Resizing adapts documents to any size need.</p>
+
+<h2>Scaling Options</h2>
+<p>Scale content proportionally to maintain aspect ratios. Fit content to new dimensions with intelligent scaling. Specify exact width and height for precise control. Use percentage scaling for proportional adjustments. Multiple options ensure perfect results for any scenario.</p>
+
+<h2>Quality Preservation</h2>
+<p>Resizing maintains document quality at any scale. Vector elements remain crisp at any size. Text stays sharp and readable. Images scale smoothly without pixelation. The resized document looks professional regardless of how much dimensions change.</p>
+
+<h2>How to Resize Your PDF</h2>
+<p>Upload your PDF document. Choose your target dimensions or scaling factor. Select how content should fit the new size. Preview the resized result. Download your adjusted PDF. Fast processing handles documents of any length.</p>`,
+  },
+  {
+    id: "pdf-resizer",
+    name: "PDF Resizer",
+    description: "Professional page dimension and scaling tool",
+    icon: "Move",
+    type: "pdf-resizer",
+    color: "bg-violet-600",
+    emoji: "🔄",
+    metaTitle: "PDF Resizer Online Free - Professional Page Scaling | PDF Tools",
+    metaDescription: "Professional PDF resizer for precise page scaling. Change dimensions, adjust proportions, and resize PDF documents with accuracy.",
+    seoArticle: `<h2>PDF Resizer - Professional Dimension Control</h2>
+<p>The PDF Resizer provides comprehensive control over page dimensions and content scaling. When precise sizing is critical, this tool delivers exact results. Specify target sizes, control how content adapts, and ensure your document meets exact specifications.</p>
+
+<h2>Precise Dimension Specification</h2>
+<p>Enter exact width and height values in various units. Choose from inches, centimeters, millimeters, or points. Specify different dimensions for different pages if needed. Precise input ensures documents match exact requirements. Professional precision for professional results.</p>
+
+<h2>Content Adaptation Options</h2>
+<p>Control how content adapts to new dimensions. Scale proportionally to fill new space. Fit content within new boundaries with margins. Stretch to fill exact dimensions when needed. Center content on resized pages. Content adaptation options ensure appropriate results.</p>
+
+<h2>Multi-Page Consistency</h2>
+<p>Apply consistent resizing across all pages for uniform documents. Handle mixed orientation documents appropriately. Maintain relative proportions between elements. Create professionally consistent resized documents. Multi-page handling ensures complete document uniformity.</p>
+
+<h2>Standard Size Presets</h2>
+<p>Quick access to common paper sizes speeds workflow. Select A4, Letter, Legal, Tabloid, and more. Choose standard photo sizes for image-based PDFs. Custom sizes save for repeated use. Presets combined with custom options cover all sizing needs.</p>`,
   },
 ];
