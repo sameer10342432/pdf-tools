@@ -151,6 +151,16 @@ export const pdfToolTypes = [
   "pdf-to-png",
   "pdf-to-bmp",
   "pdf-to-gif",
+  "pdf-to-tiff",
+  "pdf-to-svg",
+  "pdf-to-webp",
+  "pdf-to-images-zip",
+  "pdf-to-txt",
+  "pdf-to-rtf",
+  "pdf-to-odt",
+  "pdf-to-ods",
+  "pdf-to-odp",
+  "pdf-to-epub",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -4035,5 +4045,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Web-Ready Graphics</h2>
 <p>Create images for email newsletters. Generate graphics for legacy web systems. Produce universally compatible document previews. Convert diagrams and charts for broad sharing. PDF to GIF ensures your images work everywhere.</p>`,
+  },
+  {
+    id: "pdf-to-tiff",
+    name: "PDF to TIFF",
+    description: "Convert PDF pages to high-quality TIFF images",
+    icon: "FileImage",
+    type: "pdf-to-tiff",
+    color: "bg-indigo-600",
+    emoji: "📸",
+    metaTitle: "PDF to TIFF Online Free - Convert PDF Pages to TIFF Images | PDF Tools",
+    metaDescription: "Convert PDF files to TIFF images online for free. Transform PDF pages to professional-grade TIFF format. Perfect for archival and printing.",
+    seoArticle: `<h2>PDF to TIFF Converter - Professional Image Quality</h2>
+<p>Convert your PDF documents to high-quality TIFF (Tagged Image File Format) images with our free online converter. TIFF is the industry standard for professional printing, archival storage, and applications requiring maximum image fidelity. Each PDF page becomes a pristine TIFF image.</p>
+
+<h2>Why Choose TIFF Format?</h2>
+<p>TIFF is the preferred format for professional photographers, publishers, and archivists. It supports lossless compression, multiple color spaces, and high bit depths. TIFF preserves every detail without quality degradation, making it ideal for documents that need to maintain their original quality over time.</p>
+
+<h2>Professional-Grade Output</h2>
+<p>Our converter produces high-resolution TIFF images suitable for commercial printing, legal documentation, and long-term archival. Text remains razor-sharp, graphics maintain their precision, and colors are accurately preserved in the industry-standard format.</p>
+
+<h2>Simple PDF to TIFF Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes each page with professional quality settings. Download your TIFF images individually or as a convenient ZIP archive. Ready for printing, archiving, or professional workflows.</p>
+
+<h2>Perfect for Professional Use</h2>
+<p>Prepare documents for commercial printing. Create archival copies of important documents. Generate images for legal and medical records. Convert engineering drawings and technical documents. PDF to TIFF delivers the quality professionals demand.</p>`,
+  },
+  {
+    id: "pdf-to-svg",
+    name: "PDF to SVG",
+    description: "Convert PDF pages to scalable vector graphics",
+    icon: "FileImage",
+    type: "pdf-to-svg",
+    color: "bg-cyan-600",
+    emoji: "🎯",
+    metaTitle: "PDF to SVG Online Free - Convert PDF to Scalable Vector Graphics | PDF Tools",
+    metaDescription: "Convert PDF files to SVG vector graphics online for free. Transform PDF pages to infinitely scalable SVG format. Perfect for web and design.",
+    seoArticle: `<h2>PDF to SVG Converter - Scalable Vector Graphics</h2>
+<p>Convert your PDF documents to SVG (Scalable Vector Graphics) format with our free online converter. SVG is a modern web standard that maintains perfect quality at any size, making it ideal for logos, icons, illustrations, and responsive web design. Your PDF content becomes infinitely scalable.</p>
+
+<h2>Why Choose SVG Format?</h2>
+<p>SVG is resolution-independent, meaning your graphics look perfect on any screen, from mobile phones to 8K displays. Unlike raster images that become pixelated when enlarged, SVG maintains crisp edges at any zoom level. It's the smart choice for modern web development and design.</p>
+
+<h2>Infinite Scalability</h2>
+<p>Our converter extracts vector elements from your PDF and creates clean SVG files. Text remains selectable and searchable. Graphics scale smoothly without any quality loss. Colors and shapes are precisely preserved in the vector format.</p>
+
+<h2>Simple PDF to SVG Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes each page to SVG format. Download your vector graphics ready for web use or further editing. Integrate seamlessly with design workflows.</p>
+
+<h2>Perfect for Modern Web</h2>
+<p>Create responsive graphics for websites. Generate icons that look sharp on retina displays. Extract logos for brand materials. Convert illustrations for design projects. PDF to SVG enables truly scalable content.</p>`,
+  },
+  {
+    id: "pdf-to-webp",
+    name: "PDF to WebP",
+    description: "Convert PDF pages to modern WebP images",
+    icon: "FileImage",
+    type: "pdf-to-webp",
+    color: "bg-green-600",
+    emoji: "🌐",
+    metaTitle: "PDF to WebP Online Free - Convert PDF Pages to WebP Images | PDF Tools",
+    metaDescription: "Convert PDF files to WebP images online for free. Transform PDF pages to Google's modern WebP format. Smaller files, better quality.",
+    seoArticle: `<h2>PDF to WebP Converter - Modern Image Format</h2>
+<p>Convert your PDF documents to WebP images with our free online converter. WebP is Google's modern image format that provides superior compression while maintaining excellent quality. Each PDF page becomes a compact, high-quality WebP image perfect for web use.</p>
+
+<h2>Why Choose WebP Format?</h2>
+<p>WebP offers 25-34% smaller file sizes compared to JPEG at equivalent quality, and 26% smaller than PNG. This means faster loading websites, reduced bandwidth usage, and better user experience. All modern browsers support WebP, making it the smart choice for web images.</p>
+
+<h2>Superior Compression</h2>
+<p>Our converter produces optimally compressed WebP images that load quickly while preserving visual quality. Text remains readable, graphics stay crisp, and photos maintain their detail - all in smaller file sizes than traditional formats.</p>
+
+<h2>Simple PDF to WebP Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes each page to WebP format with optimal compression settings. Download your WebP images ready for web deployment. Faster websites start here.</p>
+
+<h2>Optimized for the Web</h2>
+<p>Speed up your website loading times. Reduce hosting bandwidth costs. Improve SEO with faster page loads. Create efficient image galleries. PDF to WebP delivers the web's most efficient image format.</p>`,
+  },
+  {
+    id: "pdf-to-images-zip",
+    name: "PDF to Images",
+    description: "Convert all PDF pages to images in a ZIP file",
+    icon: "FileImage",
+    type: "pdf-to-images-zip",
+    color: "bg-violet-600",
+    emoji: "📦",
+    metaTitle: "PDF to Images Online Free - Extract All Pages as Images | PDF Tools",
+    metaDescription: "Convert all PDF pages to images online for free. Extract every page as a high-quality image in a convenient ZIP download. Batch PDF to image converter.",
+    seoArticle: `<h2>PDF to Images Converter - Batch Page Extraction</h2>
+<p>Convert all pages of your PDF document to high-quality images with our free online converter. Every page becomes a separate image file, packaged conveniently in a ZIP archive for easy download. Perfect for processing multi-page documents efficiently.</p>
+
+<h2>Efficient Batch Processing</h2>
+<p>Whether your PDF has 5 pages or 500, our converter handles them all in one operation. Each page is rendered as a high-quality image, and all images are compressed into a single ZIP file for convenient download and organization.</p>
+
+<h2>High-Quality Output</h2>
+<p>Our converter produces high-resolution images suitable for viewing, printing, or further processing. Text remains sharp and readable, graphics maintain their detail, and the visual integrity of each page is preserved perfectly.</p>
+
+<h2>Simple Batch Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes every page automatically. Download a single ZIP file containing all page images. Extract and use your images immediately.</p>
+
+<h2>Versatile Applications</h2>
+<p>Create image galleries from PDF presentations. Extract pages for social media sharing. Generate thumbnails for document management. Convert ebooks to image sequences. PDF to Images handles all your bulk conversion needs.</p>`,
+  },
+  {
+    id: "pdf-to-txt",
+    name: "PDF to TXT",
+    description: "Extract plain text content from PDF files",
+    icon: "FileText",
+    type: "pdf-to-txt",
+    color: "bg-gray-600",
+    emoji: "📝",
+    metaTitle: "PDF to TXT Online Free - Extract Text from PDF Files | PDF Tools",
+    metaDescription: "Extract plain text from PDF files online for free. Convert PDF content to editable TXT format. Fast and accurate text extraction.",
+    seoArticle: `<h2>PDF to TXT Converter - Extract Pure Text</h2>
+<p>Extract all text content from your PDF documents with our free online converter. Transform your PDFs into clean, editable plain text files that can be opened in any text editor. Perfect for content extraction, data processing, and accessibility.</p>
+
+<h2>Clean Text Extraction</h2>
+<p>Our converter intelligently extracts text from your PDF while maintaining logical reading order. Paragraphs are preserved, line breaks are handled appropriately, and the resulting text file is ready for editing or processing in any application.</p>
+
+<h2>Universal Compatibility</h2>
+<p>TXT files are the most universal text format, readable by any device, any operating system, and any text editor. The extracted text can be easily copied, searched, edited, and used in any workflow that requires plain text input.</p>
+
+<h2>Simple Text Extraction</h2>
+<p>Upload your PDF file using our secure interface. Our converter extracts all readable text content. Download your TXT file ready for immediate use. Edit, search, or process your text as needed.</p>
+
+<h2>Versatile Text Applications</h2>
+<p>Extract content for data analysis. Create searchable text archives. Convert documents for screen readers. Prepare text for translation services. PDF to TXT makes your content universally accessible.</p>`,
+  },
+  {
+    id: "pdf-to-rtf",
+    name: "PDF to RTF",
+    description: "Convert PDF to Rich Text Format documents",
+    icon: "FileText",
+    type: "pdf-to-rtf",
+    color: "bg-orange-600",
+    emoji: "📄",
+    metaTitle: "PDF to RTF Online Free - Convert PDF to Rich Text Format | PDF Tools",
+    metaDescription: "Convert PDF files to RTF format online for free. Transform PDFs to editable Rich Text documents. Compatible with all word processors.",
+    seoArticle: `<h2>PDF to RTF Converter - Rich Text Documents</h2>
+<p>Convert your PDF documents to RTF (Rich Text Format) with our free online converter. RTF preserves formatting while remaining universally compatible with word processors including Microsoft Word, Google Docs, LibreOffice, and more. Edit your PDF content with full formatting control.</p>
+
+<h2>Why Choose RTF Format?</h2>
+<p>RTF is a universal document format supported by virtually every word processor and text editor. Unlike plain text, RTF preserves formatting such as fonts, styles, and basic layouts. It's the perfect bridge between PDF documents and editable word processor files.</p>
+
+<h2>Formatting Preservation</h2>
+<p>Our converter maintains text formatting, paragraph structure, and document layout in the RTF output. Bold, italic, and other text styles are preserved. The result is an editable document that closely matches your original PDF's appearance.</p>
+
+<h2>Simple PDF to RTF Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes the document while preserving formatting. Download your RTF file ready for editing in any word processor. Make changes and save in any format you need.</p>
+
+<h2>Universal Document Editing</h2>
+<p>Edit PDF content in Microsoft Word. Open documents in LibreOffice or OpenOffice. Work with files in Google Docs. Share editable documents with anyone. PDF to RTF enables universal document compatibility.</p>`,
+  },
+  {
+    id: "pdf-to-odt",
+    name: "PDF to ODT",
+    description: "Convert PDF to OpenDocument Text format",
+    icon: "FileText",
+    type: "pdf-to-odt",
+    color: "bg-blue-600",
+    emoji: "📋",
+    metaTitle: "PDF to ODT Online Free - Convert PDF to OpenDocument Format | PDF Tools",
+    metaDescription: "Convert PDF files to ODT format online for free. Transform PDFs to LibreOffice and OpenOffice compatible documents. Open standard format.",
+    seoArticle: `<h2>PDF to ODT Converter - Open Document Format</h2>
+<p>Convert your PDF documents to ODT (OpenDocument Text) format with our free online converter. ODT is an open standard format used by LibreOffice, OpenOffice, and many other applications. Edit your PDF content in free, open-source software.</p>
+
+<h2>Why Choose ODT Format?</h2>
+<p>ODT is an international open standard (ISO/IEC 26300) that ensures your documents remain accessible regardless of software changes. It's the native format for LibreOffice Writer and works seamlessly with OpenOffice, Google Docs, and even Microsoft Word.</p>
+
+<h2>Open Standard Benefits</h2>
+<p>ODT files are future-proof - the open standard ensures long-term accessibility. They're also smaller than equivalent DOC files and fully support modern document features including styles, images, tables, and advanced formatting.</p>
+
+<h2>Simple PDF to ODT Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter transforms your document to ODT format. Download your file ready for editing in LibreOffice, OpenOffice, or any compatible application. Full formatting control awaits.</p>
+
+<h2>Free Software Compatible</h2>
+<p>Edit documents in LibreOffice Writer. Work with OpenOffice Writer. Import into Google Docs. Open in Microsoft Word. PDF to ODT embraces the open document standard for universal access.</p>`,
+  },
+  {
+    id: "pdf-to-ods",
+    name: "PDF to ODS",
+    description: "Convert PDF tables to OpenDocument Spreadsheet",
+    icon: "FileSpreadsheet",
+    type: "pdf-to-ods",
+    color: "bg-emerald-600",
+    emoji: "📊",
+    metaTitle: "PDF to ODS Online Free - Convert PDF Tables to Spreadsheet | PDF Tools",
+    metaDescription: "Convert PDF tables to ODS spreadsheet format online for free. Extract data from PDFs to LibreOffice Calc compatible format. Open standard spreadsheet.",
+    seoArticle: `<h2>PDF to ODS Converter - Spreadsheet Extraction</h2>
+<p>Convert tables and data from your PDF documents to ODS (OpenDocument Spreadsheet) format with our free online converter. ODS is the open standard spreadsheet format used by LibreOffice Calc, OpenOffice Calc, and compatible applications. Extract and analyze your PDF data in spreadsheet form.</p>
+
+<h2>Why Choose ODS Format?</h2>
+<p>ODS is an international open standard for spreadsheets, ensuring your data remains accessible with free, open-source software. It supports all standard spreadsheet features including formulas, charts, and multiple sheets - perfect for data analysis and manipulation.</p>
+
+<h2>Data Extraction Power</h2>
+<p>Our converter intelligently extracts tabular data from your PDF and structures it in spreadsheet format. Rows and columns are properly organized, numbers are formatted correctly, and the data is ready for analysis, calculations, or visualization.</p>
+
+<h2>Simple PDF to ODS Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter extracts and structures your data. Download your ODS spreadsheet file. Open in LibreOffice Calc or any compatible application for full data manipulation.</p>
+
+<h2>Spreadsheet Analysis Ready</h2>
+<p>Analyze PDF financial reports. Process survey data from documents. Extract statistics for visualization. Convert invoices to calculable format. PDF to ODS unlocks your PDF data for spreadsheet power.</p>`,
+  },
+  {
+    id: "pdf-to-odp",
+    name: "PDF to ODP",
+    description: "Convert PDF to OpenDocument Presentation",
+    icon: "FileImage",
+    type: "pdf-to-odp",
+    color: "bg-amber-600",
+    emoji: "🎬",
+    metaTitle: "PDF to ODP Online Free - Convert PDF to Presentation Format | PDF Tools",
+    metaDescription: "Convert PDF files to ODP presentation format online for free. Transform PDFs to LibreOffice Impress compatible slides. Open standard presentations.",
+    seoArticle: `<h2>PDF to ODP Converter - Presentation Format</h2>
+<p>Convert your PDF documents to ODP (OpenDocument Presentation) format with our free online converter. ODP is the open standard presentation format used by LibreOffice Impress and OpenOffice Impress. Transform your PDF content into editable presentation slides.</p>
+
+<h2>Why Choose ODP Format?</h2>
+<p>ODP is an international open standard for presentations, compatible with free software like LibreOffice Impress. It supports animations, transitions, embedded media, and all the features you need for professional presentations - without proprietary software lock-in.</p>
+
+<h2>Slide Conversion</h2>
+<p>Each page of your PDF becomes a slide in the ODP presentation. Content is positioned appropriately, and the resulting presentation is ready for editing, adding animations, or presenting directly. Perfect for converting PDF handouts to full presentations.</p>
+
+<h2>Simple PDF to ODP Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter transforms each page into a presentation slide. Download your ODP file ready for LibreOffice Impress or compatible applications. Present, edit, and share freely.</p>
+
+<h2>Presentation Freedom</h2>
+<p>Convert PDF slides to editable presentations. Transform handouts into slideshows. Edit presentations in free software. Share with anyone regardless of software. PDF to ODP enables open presentation workflows.</p>`,
+  },
+  {
+    id: "pdf-to-epub",
+    name: "PDF to EPUB",
+    description: "Convert PDF documents to EPUB ebook format",
+    icon: "FileText",
+    type: "pdf-to-epub",
+    color: "bg-rose-600",
+    emoji: "📚",
+    metaTitle: "PDF to EPUB Online Free - Convert PDF to Ebook Format | PDF Tools",
+    metaDescription: "Convert PDF files to EPUB ebook format online for free. Transform PDFs to reflowable ebooks for e-readers and mobile devices. Universal ebook format.",
+    seoArticle: `<h2>PDF to EPUB Converter - Ebook Creation</h2>
+<p>Convert your PDF documents to EPUB format with our free online converter. EPUB is the universal ebook standard supported by virtually all e-readers except Kindle (which can still read EPUB via conversion). Create reflowable ebooks that adapt perfectly to any screen size.</p>
+
+<h2>Why Choose EPUB Format?</h2>
+<p>EPUB is the industry standard for ebooks, supported by Apple Books, Google Play Books, Kobo, Nook, and most e-readers. Unlike fixed-layout PDFs, EPUB content reflows to fit any screen, making reading comfortable on phones, tablets, and dedicated e-readers.</p>
+
+<h2>Reflowable Content</h2>
+<p>Our converter transforms your PDF into reflowable EPUB content. Text adjusts to screen width, font sizes can be changed by readers, and the reading experience is optimized for digital devices. Perfect for long-form reading on any device.</p>
+
+<h2>Simple PDF to EPUB Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter creates a properly formatted EPUB file. Download your ebook ready for any e-reader application. Enjoy reading on your preferred device.</p>
+
+<h2>Universal Ebook Access</h2>
+<p>Read documents on e-ink devices. Enjoy books on tablets and phones. Share ebooks through digital stores. Create accessible reading experiences. PDF to EPUB opens the world of digital reading.</p>`,
   },
 ];
