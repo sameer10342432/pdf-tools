@@ -1,7 +1,7 @@
 # PDF Tools - Online PDF Processing Application
 
 ## Overview
-A comprehensive web application providing 120 powerful PDF manipulation tools. Built with React frontend and Express backend, featuring a beautiful, responsive design, SEO optimization, and secure file processing.
+A comprehensive web application providing 130+ powerful PDF manipulation tools. Built with React frontend and Express backend, featuring a beautiful, responsive design, SEO optimization, and secure file processing.
 
 ## Project Structure
 ```
@@ -32,7 +32,7 @@ server/
   index.ts              # Express server setup
 ```
 
-## 120 PDF Tools Available
+## 130+ PDF Tools Available
 
 ### Merge Tools
 1. **Merge PDF** - Combine multiple PDFs into one
@@ -197,12 +197,28 @@ server/
 ### Email Converters
 115. **Email to PDF** - Convert EML email files to PDF
 116. **MSG to PDF** - Convert Outlook MSG email files to PDF
+117. **EML to PDF** - Convert EML email files with full content extraction
 
-### Additional Tools (117-120)
-117. **TIFF to PDF** - Convert TIFF images to PDF documents
-118. **SVG to PDF** - Convert SVG graphics to PDF format
-119. **WEBP to PDF** - Convert WebP images to PDF documents
-120. **RAW to PDF** - Convert camera RAW images to PDF
+### Additional Image Tools (118-120)
+118. **TIFF to PDF** - Convert TIFF images to PDF documents
+119. **SVG to PDF** - Convert SVG graphics to PDF format
+120. **WEBP to PDF** - Convert WebP images to PDF documents
+
+### Design Tools (121-123)
+121. **PSD to PDF** - Convert Adobe Photoshop files to PDF
+122. **AI to PDF** - Convert Adobe Illustrator files to PDF
+123. **INDD to PDF** - Convert Adobe InDesign files to PDF
+
+### CAD Converters (124-125)
+124. **DWG to PDF** - Convert AutoCAD DWG drawings to PDF
+125. **DXF to PDF** - Convert DXF CAD exchange files to PDF
+
+### Document Converters (126-130)
+126. **XPS to PDF** - Convert Microsoft XPS documents to PDF
+127. **OXPS to PDF** - Convert Open XPS documents to PDF
+128. **WPD to PDF** - Convert WordPerfect documents to PDF
+129. **CBR to PDF** - Convert comic book CBR archives to PDF
+130. **RAW to PDF** - Convert camera RAW images to PDF
 
 ## Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, Shadcn UI
@@ -245,11 +261,12 @@ Each tool has:
 - Emoji support for visual appeal
 
 ## Recent Changes (November 2025)
-- Added 10 new tools: Create PDF, PDF Creator, PUB to PDF, VSD to PDF, MPP to PDF, Pages to PDF, Numbers to PDF, Keynote to PDF, Email to PDF, MSG to PDF
+- Added 10 new format conversion tools: EML to PDF (email), PSD/AI/INDD to PDF (Adobe design), DWG/DXF to PDF (CAD), XPS/OXPS to PDF (Microsoft documents), WPD to PDF (WordPerfect), CBR to PDF (comics)
+- Total tools expanded to 130+
+- Added 10 previous tools: Create PDF, PDF Creator, PUB to PDF, VSD to PDF, MPP to PDF, Pages to PDF, Numbers to PDF, Keynote to PDF, Email to PDF, MSG to PDF
 - Fixed file upload validation for create-pdf and pdf-creator (fileless tools)
 - Proprietary format converters return informative placeholder PDFs (full conversion requires external libraries)
 - Added 10 new advanced format conversion tools (odt-to-pdf, ods-to-pdf, odp-to-pdf, csv-to-pdf, epub-to-pdf, mobi-to-pdf, djvu-to-pdf, xml-to-pdf, markdown-to-pdf, md-to-pdf)
-- Total tools now at 120
 - Installed marked library for Markdown parsing
 - Installed adm-zip for ODF file extraction (ODT, ODS, ODP)
 - Added 10 document and image conversion tools (powerpoint-to-pdf, ppt-to-pdf, pptx-to-pdf, excel-to-pdf, xls-to-pdf, xlsx-to-pdf, jpg-to-pdf, png-to-pdf, bmp-to-pdf, gif-to-pdf)
