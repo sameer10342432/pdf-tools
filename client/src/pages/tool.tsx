@@ -201,6 +201,9 @@ export default function ToolPage() {
     if (tool.type === "pdf-images-combiner") {
       return ".pdf,application/pdf,image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp";
     }
+    if (tool.type === "add-image-to-pdf" || tool.type === "replace-image-in-pdf") {
+      return ".pdf,application/pdf,image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp";
+    }
     if (tool.type === "pdf-word-merger") {
       return ".pdf,application/pdf,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
     }
@@ -272,6 +275,8 @@ export default function ToolPage() {
       "interleave-pdf",
       "add-pages",
       "scan-to-pdf",
+      "add-image-to-pdf",
+      "replace-image-in-pdf",
     ].includes(tool.type);
   };
 
@@ -283,6 +288,8 @@ export default function ToolPage() {
       "merge-with-bookmarks",
       "interleave-pdf",
       "add-pages",
+      "add-image-to-pdf",
+      "replace-image-in-pdf",
     ].includes(tool.type);
   };
 
@@ -293,6 +300,8 @@ export default function ToolPage() {
     if (tool.type === "merge-with-bookmarks") return 2;
     if (tool.type === "interleave-pdf") return 2;
     if (tool.type === "add-pages") return 2;
+    if (tool.type === "add-image-to-pdf") return 2;
+    if (tool.type === "replace-image-in-pdf") return 2;
     return 1;
   };
 
