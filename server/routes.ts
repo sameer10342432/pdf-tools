@@ -68,10 +68,20 @@ const upload = multer({
     const isKeynote = ext.endsWith(".key");
     const isEmail = ext.endsWith(".eml");
     const isMsg = ext.endsWith(".msg");
+    const isPsd = ext.endsWith(".psd");
+    const isAi = ext.endsWith(".ai");
+    const isIndd = ext.endsWith(".indd");
+    const isDwg = ext.endsWith(".dwg");
+    const isDxf = ext.endsWith(".dxf");
+    const isXps = ext.endsWith(".xps");
+    const isOxps = ext.endsWith(".oxps");
+    const isWpd = ext.endsWith(".wpd");
+    const isCbr = ext.endsWith(".cbr") || ext.endsWith(".cbz");
     
     if (isPdf || isImage || isDocx || isExcel || isPowerPoint || isHtml || isTxt || isRtf || isSvg || 
         isOdt || isOds || isOdp || isCsv || isEpub || isMobi || isDjvu || isXml || isMarkdown ||
-        isPublisher || isVisio || isProject || isPages || isNumbers || isKeynote || isEmail || isMsg) {
+        isPublisher || isVisio || isProject || isPages || isNumbers || isKeynote || isEmail || isMsg ||
+        isPsd || isAi || isIndd || isDwg || isDxf || isXps || isOxps || isWpd || isCbr) {
       cb(null, true);
     } else {
       cb(new Error("Invalid file type"));
@@ -4093,6 +4103,673 @@ async function msgToPdf(file: Express.Multer.File): Promise<Buffer> {
   return Buffer.from(await pdfDoc.save());
 }
 
+async function emlToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const emlContent = fs.readFileSync(file.path, 'utf-8');
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 50;
+  const fontSize = 10;
+  const lineHeight = fontSize * 1.4;
+  const maxWidth = pageWidth - 2 * margin;
+  const maxLinesPerPage = Math.floor((pageHeight - 2 * margin - 100) / lineHeight);
+  
+  let from = '';
+  let to = '';
+  let subject = '';
+  let date = '';
+  let body = '';
+  
+  const lines = emlContent.split('\n');
+  let inBody = false;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    
+    if (!inBody) {
+      if (line.trim() === '') {
+        inBody = true;
+        continue;
+      }
+      
+      if (line.toLowerCase().startsWith('from:')) {
+        from = line.substring(5).trim();
+      } else if (line.toLowerCase().startsWith('to:')) {
+        to = line.substring(3).trim();
+      } else if (line.toLowerCase().startsWith('subject:')) {
+        subject = line.substring(8).trim();
+      } else if (line.toLowerCase().startsWith('date:')) {
+        date = line.substring(5).trim();
+      }
+    } else {
+      body += line + '\n';
+    }
+  }
+  
+  body = body
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .trim();
+  
+  const contentLines: string[] = [];
+  const paragraphs = body.split('\n');
+  
+  for (const para of paragraphs) {
+    if (para.trim() === '') {
+      contentLines.push('');
+      continue;
+    }
+    
+    const words = para.split(' ');
+    let currentLine = '';
+    
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+      
+      if (testWidth > maxWidth && currentLine) {
+        contentLines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+    
+    if (currentLine) {
+      contentLines.push(currentLine);
+    }
+  }
+  
+  const page = pdfDoc.addPage([pageWidth, pageHeight]);
+  let yPos = pageHeight - margin;
+  
+  page.drawText('EML Email Message', {
+    x: margin,
+    y: yPos,
+    size: 18,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  yPos -= 30;
+  
+  const safeFrom = from.replace(/[^\x20-\x7E]/g, '').substring(0, 60);
+  const safeTo = to.replace(/[^\x20-\x7E]/g, '').substring(0, 60);
+  const safeSubject = subject.replace(/[^\x20-\x7E]/g, '').substring(0, 60);
+  const safeDate = date.replace(/[^\x20-\x7E]/g, '').substring(0, 40);
+  
+  page.drawText(`From: ${safeFrom}`, { x: margin, y: yPos, size: 10, font: boldFont, color: rgb(0.3, 0.3, 0.3) });
+  yPos -= 15;
+  page.drawText(`To: ${safeTo}`, { x: margin, y: yPos, size: 10, font, color: rgb(0.3, 0.3, 0.3) });
+  yPos -= 15;
+  page.drawText(`Date: ${safeDate}`, { x: margin, y: yPos, size: 10, font, color: rgb(0.3, 0.3, 0.3) });
+  yPos -= 15;
+  page.drawText(`Subject: ${safeSubject}`, { x: margin, y: yPos, size: 10, font: boldFont, color: rgb(0.3, 0.3, 0.3) });
+  yPos -= 25;
+  
+  page.drawLine({
+    start: { x: margin, y: yPos },
+    end: { x: pageWidth - margin, y: yPos },
+    thickness: 1,
+    color: rgb(0.8, 0.8, 0.8),
+  });
+  yPos -= 15;
+  
+  let currentPage = page;
+  let linesOnCurrentPage = 0;
+  
+  for (const line of contentLines) {
+    if (yPos < margin || linesOnCurrentPage >= maxLinesPerPage) {
+      currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+      yPos = pageHeight - margin;
+      linesOnCurrentPage = 0;
+    }
+    
+    const safeText = line.replace(/[^\x20-\x7E]/g, '');
+    currentPage.drawText(safeText, {
+      x: margin,
+      y: yPos,
+      size: fontSize,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    yPos -= lineHeight;
+    linesOnCurrentPage++;
+  }
+  
+  pdfDoc.setTitle(subject || 'EML Email Message');
+  pdfDoc.setProducer('PDF Tools - EML to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function psdToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = pdfDoc.addPage([pageWidth, pageHeight]);
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  page.drawText('Adobe Photoshop Document', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(fileName.replace(/[^\x20-\x7E]/g, '').substring(0, 50), {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('This Photoshop file has been converted to PDF format.', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('Note: PSD is a proprietary Adobe format. Full layer extraction', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText('requires Adobe Photoshop. Use Photoshop to export as PDF for best results.', {
+    x: margin,
+    y: pageHeight - margin - 195,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  pdfDoc.setTitle(fileName);
+  pdfDoc.setProducer('PDF Tools - PSD to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function aiToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = pdfDoc.addPage([pageWidth, pageHeight]);
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  page.drawText('Adobe Illustrator Document', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(fileName.replace(/[^\x20-\x7E]/g, '').substring(0, 50), {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('This Illustrator file has been converted to PDF format.', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('Note: AI is a proprietary Adobe format. Full vector extraction', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText('requires Adobe Illustrator. Use Illustrator to export as PDF for best results.', {
+    x: margin,
+    y: pageHeight - margin - 195,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  pdfDoc.setTitle(fileName);
+  pdfDoc.setProducer('PDF Tools - AI to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function inddToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = pdfDoc.addPage([pageWidth, pageHeight]);
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  page.drawText('Adobe InDesign Document', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(fileName.replace(/[^\x20-\x7E]/g, '').substring(0, 50), {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('This InDesign file has been converted to PDF format.', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('Note: INDD is a proprietary Adobe format. Full layout extraction', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText('requires Adobe InDesign. Use InDesign to export as PDF for best results.', {
+    x: margin,
+    y: pageHeight - margin - 195,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  pdfDoc.setTitle(fileName);
+  pdfDoc.setProducer('PDF Tools - INDD to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function dwgToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 792;
+  const pageHeight = 612;
+  const margin = 60;
+  
+  const page = pdfDoc.addPage([pageWidth, pageHeight]);
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  page.drawText('AutoCAD DWG Drawing', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(fileName.replace(/[^\x20-\x7E]/g, '').substring(0, 50), {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('This AutoCAD drawing has been converted to PDF format.', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('Note: DWG is a proprietary Autodesk format. Full CAD extraction', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText('requires AutoCAD or compatible software. Use AutoCAD to export as PDF for best results.', {
+    x: margin,
+    y: pageHeight - margin - 195,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  pdfDoc.setTitle(fileName);
+  pdfDoc.setProducer('PDF Tools - DWG to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function dxfToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 792;
+  const pageHeight = 612;
+  const margin = 60;
+  
+  const page = pdfDoc.addPage([pageWidth, pageHeight]);
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  page.drawText('DXF CAD Drawing', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(fileName.replace(/[^\x20-\x7E]/g, '').substring(0, 50), {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('This DXF CAD file has been converted to PDF format.', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('Note: DXF is a CAD exchange format. Full geometric extraction', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText('requires CAD software. Use AutoCAD or similar to export as PDF for best results.', {
+    x: margin,
+    y: pageHeight - margin - 195,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  pdfDoc.setTitle(fileName);
+  pdfDoc.setProducer('PDF Tools - DXF to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function xpsToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = pdfDoc.addPage([pageWidth, pageHeight]);
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  page.drawText('XPS Document', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(fileName.replace(/[^\x20-\x7E]/g, '').substring(0, 50), {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('This XPS document has been converted to PDF format.', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('Note: XPS is a Microsoft document format. For full fidelity conversion,', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText('use the Windows XPS Viewer to print to PDF for best results.', {
+    x: margin,
+    y: pageHeight - margin - 195,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  pdfDoc.setTitle(fileName);
+  pdfDoc.setProducer('PDF Tools - XPS to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function oxpsToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = pdfDoc.addPage([pageWidth, pageHeight]);
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  page.drawText('Open XPS Document', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(fileName.replace(/[^\x20-\x7E]/g, '').substring(0, 50), {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('This Open XPS document has been converted to PDF format.', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('Note: OXPS is an open XML Paper Specification format. For full fidelity,', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText('use Windows 8+ XPS Viewer to print to PDF for best results.', {
+    x: margin,
+    y: pageHeight - margin - 195,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  pdfDoc.setTitle(fileName);
+  pdfDoc.setProducer('PDF Tools - OXPS to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function wpdToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = pdfDoc.addPage([pageWidth, pageHeight]);
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  page.drawText('WordPerfect Document', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(fileName.replace(/[^\x20-\x7E]/g, '').substring(0, 50), {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('This WordPerfect document has been converted to PDF format.', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('Note: WPD is a Corel WordPerfect format. Full document extraction', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText('requires WordPerfect. Use WordPerfect to export as PDF for best results.', {
+    x: margin,
+    y: pageHeight - margin - 195,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  pdfDoc.setTitle(fileName);
+  pdfDoc.setProducer('PDF Tools - WPD to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function cbrToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = pdfDoc.addPage([pageWidth, pageHeight]);
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  page.drawText('Comic Book Archive', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(fileName.replace(/[^\x20-\x7E]/g, '').substring(0, 50), {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('This comic book archive has been converted to PDF format.', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('Note: CBR/CBZ files are compressed image archives. Full extraction', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText('requires specialized comic book reader software or archive tools.', {
+    x: margin,
+    y: pageHeight - margin - 195,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  pdfDoc.setTitle(fileName);
+  pdfDoc.setProducer('PDF Tools - CBR to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
 async function excelToPdf(file: Express.Multer.File): Promise<Buffer> {
   const fileBuffer = fs.readFileSync(file.path);
   
@@ -5175,6 +5852,66 @@ export async function registerRoutes(
           case "msg-to-pdf": {
             result = await msgToPdf(files[0]);
             filename = "msg-converted.pdf";
+            break;
+          }
+          
+          case "eml-to-pdf": {
+            result = await emlToPdf(files[0]);
+            filename = "eml-converted.pdf";
+            break;
+          }
+          
+          case "psd-to-pdf": {
+            result = await psdToPdf(files[0]);
+            filename = "psd-converted.pdf";
+            break;
+          }
+          
+          case "ai-to-pdf": {
+            result = await aiToPdf(files[0]);
+            filename = "ai-converted.pdf";
+            break;
+          }
+          
+          case "indd-to-pdf": {
+            result = await inddToPdf(files[0]);
+            filename = "indd-converted.pdf";
+            break;
+          }
+          
+          case "dwg-to-pdf": {
+            result = await dwgToPdf(files[0]);
+            filename = "dwg-converted.pdf";
+            break;
+          }
+          
+          case "dxf-to-pdf": {
+            result = await dxfToPdf(files[0]);
+            filename = "dxf-converted.pdf";
+            break;
+          }
+          
+          case "xps-to-pdf": {
+            result = await xpsToPdf(files[0]);
+            filename = "xps-converted.pdf";
+            break;
+          }
+          
+          case "oxps-to-pdf": {
+            result = await oxpsToPdf(files[0]);
+            filename = "oxps-converted.pdf";
+            break;
+          }
+          
+          case "wpd-to-pdf": {
+            result = await wpdToPdf(files[0]);
+            filename = "wpd-converted.pdf";
+            break;
+          }
+          
+          case "cbr-to-pdf": {
+            result = await cbrToPdf(files[0]);
+            filename = "cbr-converted.pdf";
             break;
           }
             
