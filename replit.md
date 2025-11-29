@@ -1,7 +1,7 @@
 # PDF Tools - Online PDF Processing Application
 
 ## Overview
-A comprehensive web application providing 62 powerful PDF manipulation tools. Built with React frontend and Express backend, featuring a beautiful, responsive design, SEO optimization, and secure file processing.
+A comprehensive web application providing 83 powerful PDF manipulation tools. Built with React frontend and Express backend, featuring a beautiful, responsive design, SEO optimization, and secure file processing.
 
 ## Project Structure
 ```
@@ -32,7 +32,7 @@ server/
   index.ts              # Express server setup
 ```
 
-## 73 PDF Tools Available
+## 83 PDF Tools Available
 
 ### Merge Tools
 1. **Merge PDF** - Combine multiple PDFs into one
@@ -133,6 +133,18 @@ server/
 72. **BMP to PDF** - Convert BMP images to PDF documents
 73. **GIF to PDF** - Convert GIF images to PDF documents
 
+### Advanced Format Conversion Tools
+74. **ODT to PDF** - Convert OpenDocument Text files to PDF
+75. **ODS to PDF** - Convert OpenDocument Spreadsheet files to PDF
+76. **ODP to PDF** - Convert OpenDocument Presentation files to PDF
+77. **CSV to PDF** - Convert CSV spreadsheet data to formatted PDF tables
+78. **EPUB to PDF** - Convert EPUB ebooks to PDF documents
+79. **MOBI to PDF** - Convert MOBI ebook files to PDF format
+80. **DJVU to PDF** - Convert DJVU scanned documents to PDF
+81. **XML to PDF** - Convert XML data files to formatted PDF documents
+82. **Markdown to PDF** - Convert Markdown files to beautifully formatted PDFs
+83. **MD to PDF** - Convert .md Markdown files to PDF documents
+
 ## Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, Shadcn UI
 - **Backend**: Express, Node.js
@@ -174,8 +186,11 @@ Each tool has:
 - Emoji support for visual appeal
 
 ## Recent Changes (November 2025)
-- Added 10 new document and image conversion tools (powerpoint-to-pdf, ppt-to-pdf, pptx-to-pdf, excel-to-pdf, xls-to-pdf, xlsx-to-pdf, jpg-to-pdf, png-to-pdf, bmp-to-pdf, gif-to-pdf)
-- Total tools now at 73
+- Added 10 new advanced format conversion tools (odt-to-pdf, ods-to-pdf, odp-to-pdf, csv-to-pdf, epub-to-pdf, mobi-to-pdf, djvu-to-pdf, xml-to-pdf, markdown-to-pdf, md-to-pdf)
+- Total tools now at 83
+- Installed marked library for Markdown parsing
+- Installed adm-zip for ODF file extraction (ODT, ODS, ODP)
+- Added 10 document and image conversion tools (powerpoint-to-pdf, ppt-to-pdf, pptx-to-pdf, excel-to-pdf, xls-to-pdf, xlsx-to-pdf, jpg-to-pdf, png-to-pdf, bmp-to-pdf, gif-to-pdf)
 - Added 10 previous PDF repair and OCR tools (repair-pdf, fix-pdf, recover-pdf-data, repair-corrupt-pdf, pdf-repair-tool, ocr-pdf, scanned-pdf-to-text, pdf-ocr, searchable-pdf-creator, ocr-to-word)
 - Added Tesseract.js for OCR text recognition capabilities
 - PDF repair tools use advanced pdf-lib recovery with page-by-page reconstruction
