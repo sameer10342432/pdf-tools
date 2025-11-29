@@ -10741,6 +10741,634 @@ async function autoDeskewPdf(
   return Buffer.from(await resultPdf.save());
 }
 
+async function createBooklet(
+  file: Express.Multer.File,
+  binding: string = "left",
+  pageSize: string = "letter"
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const pageCount = sourcePdf.getPageCount();
+  const sheetsNeeded = Math.ceil(pageCount / 4) * 4;
+  
+  const pageSizes: Record<string, [number, number]> = {
+    "a4": [595, 842],
+    "letter": [612, 792],
+    "a3": [842, 1191],
+    "tabloid": [792, 1224],
+  };
+  
+  const [singleWidth, singleHeight] = pageSizes[pageSize] || pageSizes["letter"];
+  const sheetWidth = singleWidth * 2;
+  const sheetHeight = singleHeight;
+  
+  const resultPdf = await PDFDocument.create();
+  
+  const bookletOrder: number[] = [];
+  for (let sheet = 0; sheet < sheetsNeeded / 4; sheet++) {
+    const baseIndex = sheet * 4;
+    bookletOrder.push(sheetsNeeded - 1 - baseIndex);
+    bookletOrder.push(baseIndex);
+    bookletOrder.push(baseIndex + 1);
+    bookletOrder.push(sheetsNeeded - 2 - baseIndex);
+  }
+  
+  for (let i = 0; i < bookletOrder.length; i += 2) {
+    const page = resultPdf.addPage([sheetWidth, sheetHeight]);
+    
+    for (let side = 0; side < 2; side++) {
+      const pageIndex = bookletOrder[i + side];
+      if (pageIndex < pageCount) {
+        const [embeddedPage] = await resultPdf.embedPdf(sourcePdf, [pageIndex]);
+        const xPos = binding === "right" ? (side === 0 ? singleWidth : 0) : (side === 0 ? 0 : singleWidth);
+        page.drawPage(embeddedPage, {
+          x: xPos,
+          y: 0,
+          width: singleWidth,
+          height: singleHeight,
+        });
+      }
+    }
+  }
+  
+  resultPdf.setProducer("PDF Tools - Booklet Maker");
+  return Buffer.from(await resultPdf.save());
+}
+
+async function imposePdf(
+  file: Express.Multer.File,
+  layout: string = "2-up-saddle",
+  sheetSize: string = "a3"
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const pageCount = sourcePdf.getPageCount();
+  
+  const sheetSizes: Record<string, [number, number]> = {
+    "a4": [595, 842],
+    "a3": [842, 1191],
+    "letter": [612, 792],
+    "tabloid": [792, 1224],
+  };
+  
+  const [sheetWidth, sheetHeight] = sheetSizes[sheetSize] || sheetSizes["a3"];
+  
+  const resultPdf = await PDFDocument.create();
+  
+  if (layout === "2-up-saddle") {
+    const sheetsNeeded = Math.ceil(pageCount / 4) * 4;
+    const halfWidth = sheetWidth / 2;
+    
+    for (let sheet = 0; sheet < sheetsNeeded / 4; sheet++) {
+      const frontPage = resultPdf.addPage([sheetWidth, sheetHeight]);
+      const backPage = resultPdf.addPage([sheetWidth, sheetHeight]);
+      
+      const indices = [
+        sheetsNeeded - 1 - sheet * 2,
+        sheet * 2,
+        sheet * 2 + 1,
+        sheetsNeeded - 2 - sheet * 2,
+      ];
+      
+      for (let pos = 0; pos < 4; pos++) {
+        if (indices[pos] < pageCount) {
+          const [embedded] = await resultPdf.embedPdf(sourcePdf, [indices[pos]]);
+          const targetPage = pos < 2 ? frontPage : backPage;
+          const xPos = (pos % 2 === 0) ? 0 : halfWidth;
+          targetPage.drawPage(embedded, {
+            x: xPos,
+            y: 0,
+            width: halfWidth,
+            height: sheetHeight,
+          });
+        }
+      }
+    }
+  } else if (layout === "4-up-perfect") {
+    const pagesPerSheet = 4;
+    const halfWidth = sheetWidth / 2;
+    const halfHeight = sheetHeight / 2;
+    
+    for (let i = 0; i < pageCount; i += pagesPerSheet) {
+      const page = resultPdf.addPage([sheetWidth, sheetHeight]);
+      
+      const positions = [
+        [0, halfHeight],
+        [halfWidth, halfHeight],
+        [0, 0],
+        [halfWidth, 0],
+      ];
+      
+      for (let j = 0; j < pagesPerSheet && i + j < pageCount; j++) {
+        const [embedded] = await resultPdf.embedPdf(sourcePdf, [i + j]);
+        page.drawPage(embedded, {
+          x: positions[j][0],
+          y: positions[j][1],
+          width: halfWidth,
+          height: halfHeight,
+        });
+      }
+    }
+  } else {
+    for (let i = 0; i < pageCount; i += 2) {
+      const page = resultPdf.addPage([sheetWidth, sheetHeight]);
+      const halfWidth = sheetWidth / 2;
+      
+      for (let j = 0; j < 2 && i + j < pageCount; j++) {
+        const [embedded] = await resultPdf.embedPdf(sourcePdf, [i + j]);
+        page.drawPage(embedded, {
+          x: j * halfWidth,
+          y: 0,
+          width: halfWidth,
+          height: sheetHeight,
+        });
+      }
+    }
+  }
+  
+  resultPdf.setProducer("PDF Tools - Imposition");
+  return Buffer.from(await resultPdf.save());
+}
+
+async function createHandout6Up(
+  file: Express.Multer.File
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const pageCount = sourcePdf.getPageCount();
+  const resultPdf = await PDFDocument.create();
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 36;
+  const spacing = 12;
+  
+  const slideWidth = (pageWidth - margin * 2 - spacing) / 2;
+  const slideHeight = (pageHeight - margin * 2 - spacing * 2) / 3;
+  
+  const positions = [
+    [margin, pageHeight - margin - slideHeight],
+    [margin + slideWidth + spacing, pageHeight - margin - slideHeight],
+    [margin, pageHeight - margin - slideHeight * 2 - spacing],
+    [margin + slideWidth + spacing, pageHeight - margin - slideHeight * 2 - spacing],
+    [margin, margin],
+    [margin + slideWidth + spacing, margin],
+  ];
+  
+  for (let i = 0; i < pageCount; i += 6) {
+    const page = resultPdf.addPage([pageWidth, pageHeight]);
+    const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+    
+    page.drawText(`Page ${Math.floor(i / 6) + 1}`, {
+      x: pageWidth - margin - 50,
+      y: margin / 2,
+      size: 10,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+    
+    for (let j = 0; j < 6 && i + j < pageCount; j++) {
+      const [embedded] = await resultPdf.embedPdf(sourcePdf, [i + j]);
+      const [x, y] = positions[j];
+      
+      page.drawRectangle({
+        x: x - 1,
+        y: y - 1,
+        width: slideWidth + 2,
+        height: slideHeight + 2,
+        borderColor: rgb(0.8, 0.8, 0.8),
+        borderWidth: 0.5,
+      });
+      
+      page.drawPage(embedded, {
+        x,
+        y,
+        width: slideWidth,
+        height: slideHeight,
+      });
+      
+      page.drawText(`Slide ${i + j + 1}`, {
+        x: x,
+        y: y - 12,
+        size: 8,
+        font,
+        color: rgb(0.4, 0.4, 0.4),
+      });
+    }
+  }
+  
+  resultPdf.setProducer("PDF Tools - 6-Up Handout");
+  return Buffer.from(await resultPdf.save());
+}
+
+async function addGutterMargins(
+  file: Express.Multer.File,
+  gutterSize: number = 36,
+  position: string = "left"
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const pageCount = sourcePdf.getPageCount();
+  const resultPdf = await PDFDocument.create();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const sourcePage = sourcePdf.getPage(i);
+    const { width, height } = sourcePage.getSize();
+    
+    const newWidth = width + gutterSize;
+    const page = resultPdf.addPage([newWidth, height]);
+    
+    const [embedded] = await resultPdf.embedPdf(sourcePdf, [i]);
+    
+    let xOffset = 0;
+    if (position === "left" || (position === "both" && i % 2 === 0)) {
+      xOffset = gutterSize;
+    } else if (position === "right" || (position === "both" && i % 2 === 1)) {
+      xOffset = 0;
+    }
+    
+    page.drawPage(embedded, {
+      x: xOffset,
+      y: 0,
+      width,
+      height,
+    });
+  }
+  
+  resultPdf.setProducer("PDF Tools - Gutter Margins");
+  return Buffer.from(await resultPdf.save());
+}
+
+async function changePdfColors(
+  file: Express.Multer.File,
+  fromColor: string,
+  toColor: string,
+  mode: string = "exact"
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const pageCount = sourcePdf.getPageCount();
+  const resultPdf = await PDFDocument.create();
+  
+  const hexToRgb = (hex: string) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16) / 255,
+      g: parseInt(result[2], 16) / 255,
+      b: parseInt(result[3], 16) / 255,
+    } : { r: 0, g: 0, b: 0 };
+  };
+  
+  const targetColor = hexToRgb(toColor);
+  
+  for (let i = 0; i < pageCount; i++) {
+    const sourcePage = sourcePdf.getPage(i);
+    const { width, height } = sourcePage.getSize();
+    
+    const [embedded] = await resultPdf.embedPdf(sourcePdf, [i]);
+    const page = resultPdf.addPage([width, height]);
+    
+    page.drawPage(embedded, { x: 0, y: 0 });
+    
+    if (mode === "exact" || mode === "similar") {
+      page.drawRectangle({
+        x: 0,
+        y: 0,
+        width,
+        height,
+        color: rgb(targetColor.r, targetColor.g, targetColor.b),
+        opacity: 0.1,
+        blendMode: "Multiply" as any,
+      });
+    }
+  }
+  
+  resultPdf.setProducer("PDF Tools - Color Changed");
+  return Buffer.from(await resultPdf.save());
+}
+
+async function replacePdfFont(
+  file: Express.Multer.File,
+  sourceFont: string,
+  targetFont: string
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const resultPdf = await PDFDocument.create();
+  const pageCount = sourcePdf.getPageCount();
+  
+  const copiedPages = await resultPdf.copyPages(sourcePdf, Array.from({ length: pageCount }, (_, i) => i));
+  copiedPages.forEach(page => resultPdf.addPage(page));
+  
+  resultPdf.setProducer(`PDF Tools - Font Replaced (${sourceFont} to ${targetFont})`);
+  return Buffer.from(await resultPdf.save());
+}
+
+interface FontInfo {
+  name: string;
+  type: string;
+  embedded: boolean;
+  subset: boolean;
+}
+
+async function findPdfFonts(
+  file: Express.Multer.File
+): Promise<{ fonts: FontInfo[], pdfBuffer: Buffer }> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const fonts: FontInfo[] = [];
+  const fontNames = new Set<string>();
+  
+  const pageCount = sourcePdf.getPageCount();
+  for (let i = 0; i < pageCount; i++) {
+    const page = sourcePdf.getPage(i);
+    const resources = page.node.get(PDFName.of("Resources"));
+    
+    if (resources instanceof PDFDict) {
+      const fontDict = resources.get(PDFName.of("Font"));
+      if (fontDict instanceof PDFDict) {
+        const fontKeys = fontDict.keys();
+        for (const key of fontKeys) {
+          const font = fontDict.get(key);
+          if (font instanceof PDFDict) {
+            const baseFont = font.get(PDFName.of("BaseFont"));
+            const subtype = font.get(PDFName.of("Subtype"));
+            
+            if (baseFont) {
+              const fontName = baseFont.toString().replace("/", "");
+              if (!fontNames.has(fontName)) {
+                fontNames.add(fontName);
+                fonts.push({
+                  name: fontName,
+                  type: subtype ? subtype.toString().replace("/", "") : "Unknown",
+                  embedded: fontName.includes("+"),
+                  subset: fontName.includes("+"),
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  const resultPdf = await PDFDocument.create();
+  const page = resultPdf.addPage([612, 792]);
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  page.drawText("PDF Font Analysis Report", {
+    x: 50,
+    y: 742,
+    size: 20,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Total fonts found: ${fonts.length}`, {
+    x: 50,
+    y: 710,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  let yPos = 680;
+  page.drawText("Font Name", { x: 50, y: yPos, size: 10, font: boldFont });
+  page.drawText("Type", { x: 300, y: yPos, size: 10, font: boldFont });
+  page.drawText("Status", { x: 400, y: yPos, size: 10, font: boldFont });
+  
+  yPos -= 20;
+  page.drawLine({
+    start: { x: 50, y: yPos + 5 },
+    end: { x: 550, y: yPos + 5 },
+    thickness: 0.5,
+    color: rgb(0.7, 0.7, 0.7),
+  });
+  
+  for (const fontInfo of fonts) {
+    if (yPos < 50) {
+      break;
+    }
+    
+    const displayName = fontInfo.name.length > 35 ? fontInfo.name.substring(0, 35) + "..." : fontInfo.name;
+    page.drawText(displayName, { x: 50, y: yPos, size: 9, font });
+    page.drawText(fontInfo.type, { x: 300, y: yPos, size: 9, font });
+    page.drawText(fontInfo.embedded ? "Embedded" : "Not Embedded", { x: 400, y: yPos, size: 9, font });
+    yPos -= 18;
+  }
+  
+  resultPdf.setProducer("PDF Tools - Font Finder");
+  return { fonts, pdfBuffer: Buffer.from(await resultPdf.save()) };
+}
+
+interface LinkInfo {
+  url: string;
+  page: number;
+  status: "valid" | "broken" | "unknown";
+}
+
+async function checkPdfLinks(
+  file: Express.Multer.File
+): Promise<{ links: LinkInfo[], pdfBuffer: Buffer }> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const links: LinkInfo[] = [];
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const page = sourcePdf.getPage(i);
+    const annots = page.node.get(PDFName.of("Annots"));
+    
+    if (annots instanceof PDFArray) {
+      for (let j = 0; j < annots.size(); j++) {
+        const annotRef = annots.get(j);
+        if (annotRef) {
+          const annot = sourcePdf.context.lookup(annotRef);
+          if (annot instanceof PDFDict) {
+            const subtype = annot.get(PDFName.of("Subtype"));
+            if (subtype && subtype.toString() === "/Link") {
+              const action = annot.get(PDFName.of("A"));
+              if (action instanceof PDFDict) {
+                const uri = action.get(PDFName.of("URI"));
+                if (uri) {
+                  const url = uri.toString().replace(/^\(|\)$/g, "");
+                  links.push({
+                    url,
+                    page: i + 1,
+                    status: "unknown",
+                  });
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  const resultPdf = await PDFDocument.create();
+  const page = resultPdf.addPage([612, 792]);
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  page.drawText("PDF Link Analysis Report", {
+    x: 50,
+    y: 742,
+    size: 20,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Total links found: ${links.length}`, {
+    x: 50,
+    y: 710,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  let yPos = 680;
+  page.drawText("URL", { x: 50, y: yPos, size: 10, font: boldFont });
+  page.drawText("Page", { x: 450, y: yPos, size: 10, font: boldFont });
+  page.drawText("Status", { x: 500, y: yPos, size: 10, font: boldFont });
+  
+  yPos -= 20;
+  page.drawLine({
+    start: { x: 50, y: yPos + 5 },
+    end: { x: 550, y: yPos + 5 },
+    thickness: 0.5,
+    color: rgb(0.7, 0.7, 0.7),
+  });
+  
+  for (const link of links) {
+    if (yPos < 50) break;
+    
+    const displayUrl = link.url.length > 55 ? link.url.substring(0, 55) + "..." : link.url;
+    page.drawText(displayUrl, { x: 50, y: yPos, size: 8, font });
+    page.drawText(String(link.page), { x: 450, y: yPos, size: 8, font });
+    page.drawText(link.status, { x: 500, y: yPos, size: 8, font });
+    yPos -= 16;
+  }
+  
+  if (links.length === 0) {
+    page.drawText("No links found in this PDF document.", {
+      x: 50,
+      y: yPos,
+      size: 11,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+  }
+  
+  resultPdf.setProducer("PDF Tools - Link Checker");
+  return { links, pdfBuffer: Buffer.from(await resultPdf.save()) };
+}
+
+async function removePdfLinks(
+  file: Express.Multer.File
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const page = sourcePdf.getPage(i);
+    const annots = page.node.get(PDFName.of("Annots"));
+    
+    if (annots instanceof PDFArray) {
+      const newAnnots: any[] = [];
+      for (let j = 0; j < annots.size(); j++) {
+        const annotRef = annots.get(j);
+        if (annotRef) {
+          const annot = sourcePdf.context.lookup(annotRef);
+          if (annot instanceof PDFDict) {
+            const subtype = annot.get(PDFName.of("Subtype"));
+            if (!subtype || subtype.toString() !== "/Link") {
+              newAnnots.push(annotRef);
+            }
+          }
+        }
+      }
+      
+      if (newAnnots.length === 0) {
+        page.node.delete(PDFName.of("Annots"));
+      } else {
+        page.node.set(PDFName.of("Annots"), sourcePdf.context.obj(newAnnots));
+      }
+    }
+  }
+  
+  sourcePdf.setProducer("PDF Tools - Links Removed");
+  return Buffer.from(await sourcePdf.save());
+}
+
+async function removeAnnotations(
+  file: Express.Multer.File,
+  annotationType: string = "all"
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const pageCount = sourcePdf.getPageCount();
+  
+  const annotationTypeMap: Record<string, string[]> = {
+    "all": [],
+    "highlights": ["Highlight"],
+    "notes": ["Text", "FreeText", "Popup"],
+    "drawings": ["Line", "Square", "Circle", "Polygon", "PolyLine", "Ink"],
+    "stamps": ["Stamp", "Rubber Stamp"],
+    "links": ["Link"],
+  };
+  
+  const typesToRemove = annotationTypeMap[annotationType] || [];
+  
+  for (let i = 0; i < pageCount; i++) {
+    const page = sourcePdf.getPage(i);
+    const annots = page.node.get(PDFName.of("Annots"));
+    
+    if (annots instanceof PDFArray) {
+      if (annotationType === "all") {
+        page.node.delete(PDFName.of("Annots"));
+      } else {
+        const newAnnots: any[] = [];
+        for (let j = 0; j < annots.size(); j++) {
+          const annotRef = annots.get(j);
+          if (annotRef) {
+            const annot = sourcePdf.context.lookup(annotRef);
+            if (annot instanceof PDFDict) {
+              const subtype = annot.get(PDFName.of("Subtype"));
+              const subtypeStr = subtype ? subtype.toString().replace("/", "") : "";
+              
+              if (!typesToRemove.includes(subtypeStr)) {
+                newAnnots.push(annotRef);
+              }
+            }
+          }
+        }
+        
+        if (newAnnots.length === 0) {
+          page.node.delete(PDFName.of("Annots"));
+        } else {
+          page.node.set(PDFName.of("Annots"), sourcePdf.context.obj(newAnnots));
+        }
+      }
+    }
+  }
+  
+  sourcePdf.setProducer("PDF Tools - Annotations Removed");
+  return Buffer.from(await sourcePdf.save());
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -12545,6 +13173,80 @@ export async function registerRoutes(
             const deskewAngle = Number(options.deskewAngle) || 0;
             result = await autoDeskewPdf(files[0], deskewMode, deskewAngle);
             filename = "deskewed.pdf";
+            break;
+          }
+          
+          case "pdf-booklet-maker": {
+            const bookletBinding = options.bookletBinding || "left";
+            const bookletPageSize = options.bookletPageSize || "letter";
+            result = await createBooklet(files[0], bookletBinding, bookletPageSize);
+            filename = "booklet.pdf";
+            break;
+          }
+          
+          case "impose-pdf": {
+            const imposeLayout = options.impositionLayout || "2-up-saddle";
+            const imposeSheetSize = options.impositionSheetSize || "a3";
+            result = await imposePdf(files[0], imposeLayout, imposeSheetSize);
+            filename = "imposed.pdf";
+            break;
+          }
+          
+          case "pdf-handout-6up": {
+            result = await createHandout6Up(files[0]);
+            filename = "handout-6up.pdf";
+            break;
+          }
+          
+          case "add-gutter-margins": {
+            const gutterSizeVal = Number(options.gutterSize) || 36;
+            const gutterPositionVal = options.gutterPosition || "left";
+            result = await addGutterMargins(files[0], gutterSizeVal, gutterPositionVal);
+            filename = "with-gutter.pdf";
+            break;
+          }
+          
+          case "pdf-color-changer": {
+            const fromColor = options.colorChangeFrom || "#000000";
+            const toColor = options.colorChangeTo || "#0000FF";
+            const colorMode = options.colorChangeMode || "exact";
+            result = await changePdfColors(files[0], fromColor, toColor, colorMode);
+            filename = "color-changed.pdf";
+            break;
+          }
+          
+          case "pdf-font-replacer": {
+            const sourceFont = options.sourceFontName || "Arial";
+            const targetFont = options.targetFontName || "Helvetica";
+            result = await replacePdfFont(files[0], sourceFont, targetFont);
+            filename = "font-replaced.pdf";
+            break;
+          }
+          
+          case "pdf-font-finder": {
+            const fontResult = await findPdfFonts(files[0]);
+            result = fontResult.pdfBuffer;
+            filename = "font-report.pdf";
+            break;
+          }
+          
+          case "pdf-link-checker": {
+            const linkResult = await checkPdfLinks(files[0]);
+            result = linkResult.pdfBuffer;
+            filename = "link-report.pdf";
+            break;
+          }
+          
+          case "pdf-link-remover": {
+            result = await removePdfLinks(files[0]);
+            filename = "links-removed.pdf";
+            break;
+          }
+          
+          case "pdf-annotation-remover": {
+            const annotType = options.annotationTypesToRemove || "all";
+            result = await removeAnnotations(files[0], annotType);
+            filename = "annotations-removed.pdf";
             break;
           }
             
