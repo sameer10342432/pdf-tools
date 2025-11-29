@@ -241,6 +241,16 @@ export const pdfToolTypes = [
   "pdf-color-inverter",
   "auto-crop-pdf-margins",
   "auto-deskew-pdf",
+  "pdf-booklet-maker",
+  "impose-pdf",
+  "pdf-handout-6up",
+  "add-gutter-margins",
+  "pdf-color-changer",
+  "pdf-font-replacer",
+  "pdf-font-finder",
+  "pdf-link-checker",
+  "pdf-link-remover",
+  "pdf-annotation-remover",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -386,6 +396,19 @@ export const toolOptionsSchema = z.object({
   autoCropThreshold: z.number().optional(),
   deskewAngle: z.number().optional(),
   deskewMode: z.enum(["auto", "manual"]).optional(),
+  bookletBinding: z.enum(["left", "right", "top"]).optional(),
+  bookletPageSize: z.enum(["a4", "letter", "a3", "tabloid"]).optional(),
+  impositionLayout: z.enum(["2-up-saddle", "4-up-perfect", "step-repeat", "cut-stack"]).optional(),
+  impositionSheetSize: z.enum(["a4", "a3", "letter", "tabloid", "custom"]).optional(),
+  gutterSize: z.number().optional(),
+  gutterPosition: z.enum(["left", "right", "both"]).optional(),
+  colorChangeFrom: z.string().optional(),
+  colorChangeTo: z.string().optional(),
+  colorChangeMode: z.enum(["exact", "similar", "range"]).optional(),
+  colorTolerance: z.number().optional(),
+  sourceFontName: z.string().optional(),
+  targetFontName: z.string().optional(),
+  annotationTypesToRemove: z.enum(["all", "highlights", "notes", "drawings", "stamps", "links"]).optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -6447,5 +6470,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Batch Deskewing for Large Documents</h2>
 <p>Process entire multi-page documents with a single operation. Our tool analyzes and corrects each page individually, handling documents where skew varies from page to page. This is common in scanned books and documents where each page may have been positioned slightly differently. Batch deskewing ensures consistent alignment throughout your document regardless of original scanning variations.</p>`,
+  },
+  {
+    id: "pdf-booklet-maker",
+    name: "PDF Booklet Maker",
+    description: "Convert PDF to printable booklet format with proper page imposition",
+    icon: "BookOpen",
+    type: "pdf-booklet-maker",
+    color: "bg-indigo-600",
+    emoji: "📖",
+    metaTitle: "PDF Booklet Maker Online Free - Create Printable Booklets | PDF Tools",
+    metaDescription: "Convert any PDF into a printable booklet format online for free. Automatic page reordering and imposition for saddle-stitch binding. No software needed.",
+    seoArticle: `<h2>PDF Booklet Maker - Create Professional Printable Booklets</h2>
+<p>Transform any PDF document into a perfectly formatted booklet ready for printing and folding. Our PDF Booklet Maker automatically reorders and imposes pages so that when printed double-sided and folded, pages appear in the correct sequence. Whether you're creating event programs, educational materials, or marketing brochures, this tool handles the complex page mathematics for you.</p>
+
+<h2>How Booklet Imposition Works</h2>
+<p>Booklet printing requires special page arrangement. When you fold a sheet of paper in half, the pages must be in a specific order to read correctly. Our tool calculates the exact positioning for each page based on your document length and automatically creates the proper imposition layout. Simply print the output double-sided, fold, and staple for a professional booklet.</p>
+
+<h2>Multiple Binding Options</h2>
+<p>Choose from left-edge, right-edge, or top-edge binding orientations to match your booklet design. Left binding works for standard Western reading order, while right binding suits right-to-left languages. Top binding is perfect for calendars, flip charts, and presentation materials. Each option correctly positions pages for the chosen binding method.</p>
+
+<h2>Automatic Page Padding</h2>
+<p>Booklets require page counts divisible by four. Our tool automatically adds blank pages as needed to complete the final signature. You control where blank pages appear - at the beginning, end, or distributed throughout. This ensures your booklet prints correctly without manual page count adjustments.</p>
+
+<h2>Perfect for Print Shops and Home Printing</h2>
+<p>Whether you're using a commercial print shop or a home printer with duplex capability, our booklet maker creates print-ready files. The output includes proper margins for folding and binding. Crop marks and registration guides can be added for professional printing. Create publication-quality booklets from any PDF document with ease.</p>`,
+  },
+  {
+    id: "impose-pdf",
+    name: "Impose PDF",
+    description: "Arrange multiple pages on sheets for professional printing",
+    icon: "LayoutGrid",
+    type: "impose-pdf",
+    color: "bg-purple-600",
+    emoji: "📐",
+    metaTitle: "Impose PDF Online Free - Professional Print Imposition | PDF Tools",
+    metaDescription: "Professional PDF imposition for print production. Arrange multiple pages on press sheets with n-up layouts, step-and-repeat, and cut-stack options.",
+    seoArticle: `<h2>PDF Imposition - Professional Print Production Tool</h2>
+<p>PDF imposition is essential for professional print production, arranging document pages onto larger press sheets for efficient printing. Our Impose PDF tool supports multiple imposition methods including saddle-stitch booklets, perfect binding signatures, step-and-repeat for business cards, and cut-stack for efficient post-press handling. Transform your documents into print-ready impositions without expensive desktop publishing software.</p>
+
+<h2>Imposition Layout Options</h2>
+<p>Choose from industry-standard imposition layouts based on your printing requirements. 2-up saddle stitch creates booklet signatures for staple binding. 4-up perfect binding arranges pages for glue-bound books. Step-and-repeat tiles identical content for business cards, labels, and postcards. Cut-stack ordering optimizes for guillotine cutting. Each layout calculates correct page positioning and orientation automatically.</p>
+
+<h2>Customizable Sheet Settings</h2>
+<p>Define your output sheet size to match your printing equipment. Standard sizes like A4, A3, Letter, and Tabloid are preset for quick selection. Custom dimensions accommodate specialty papers and press requirements. Set margins, gutters, and bleed areas to meet your printer's specifications. Crop marks, registration marks, and color bars can be included for professional print production.</p>
+
+<h2>Page Rotation and Positioning</h2>
+<p>Imposition often requires specific page rotations for work-and-turn or work-and-tumble printing methods. Our tool handles these rotations automatically based on your selected layout. Manual rotation overrides are available for custom requirements. Pages are precisely positioned on the sheet with accurate spacing for consistent trimming results.</p>
+
+<h2>Creep Compensation for Booklets</h2>
+<p>Multi-page booklets experience creep - inner pages extend beyond outer pages when folded. Our imposition tool can compensate for creep by progressively shifting page positions. This ensures text and images align correctly at the trim edge across all pages. Professional-quality booklets require creep compensation, and our tool delivers it automatically.</p>`,
+  },
+  {
+    id: "pdf-handout-6up",
+    name: "PDF Handout Maker (6-up)",
+    description: "Create 6-slide-per-page handouts from PDF presentations",
+    icon: "Grid",
+    type: "pdf-handout-6up",
+    color: "bg-teal-600",
+    emoji: "📋",
+    metaTitle: "PDF Handout Maker 6-Up Online Free - Create Presentation Handouts | PDF Tools",
+    metaDescription: "Create 6-slide-per-page PDF handouts from presentations online for free. Perfect for meeting notes, lecture materials, and training documents.",
+    seoArticle: `<h2>PDF Handout Maker - Create 6-Up Presentation Handouts</h2>
+<p>Transform your presentations into compact, print-friendly handouts with six slides per page. Our PDF Handout Maker is perfect for creating meeting materials, lecture notes, and training documentation. Attendees can follow along with your presentation while having space to jot notes beside each slide. Save paper and printing costs while providing valuable takeaway materials.</p>
+
+<h2>Optimized 6-Up Layout</h2>
+<p>The 6-up layout places three slides per column in two columns, maximizing readability while conserving paper. Each slide is sized large enough to read content clearly while fitting six on a standard page. This layout has become the standard for presentation handouts because it balances visibility with paper efficiency. Your audience gets useful reference materials without excessive page counts.</p>
+
+<h2>Note Lines and Annotation Space</h2>
+<p>Our handout maker adds ruled lines beside each slide for note-taking. Attendees can write observations, questions, and action items directly on the handout. This integrated note space makes handouts more useful during and after presentations. Choose from lined, blank, or no annotation areas based on your audience's needs and preferences.</p>
+
+<h2>Header and Footer Options</h2>
+<p>Add professional headers and footers to your handouts. Include presentation title, date, presenter name, and company logo. Page numbers help attendees navigate longer handouts. Custom text fields let you add copyright notices, confidentiality statements, or other required information. These elements transform simple slide printouts into polished professional materials.</p>
+
+<h2>Print-Ready Output</h2>
+<p>The generated handouts are optimized for printing on standard paper sizes. Black and white printing produces clear, readable results even from color presentations. The layout accounts for typical printer margins ensuring no content is cut off. Create handouts ready for immediate printing and distribution with no additional formatting required.</p>`,
+  },
+  {
+    id: "add-gutter-margins",
+    name: "Add Gutter Margins to PDF",
+    description: "Add extra margin space for binding or hole punching",
+    icon: "Columns",
+    type: "add-gutter-margins",
+    color: "bg-amber-600",
+    emoji: "📏",
+    metaTitle: "Add Gutter Margins to PDF Online Free - Binding Margins | PDF Tools",
+    metaDescription: "Add gutter margins to PDF for binding, hole punching, or spiral binding online for free. Shift content to accommodate binding requirements.",
+    seoArticle: `<h2>Add Gutter Margins to PDF - Prepare Documents for Binding</h2>
+<p>When binding documents, content near the spine edge becomes difficult to read. Our Gutter Margin tool adds extra space along the binding edge so text and images remain fully visible after binding. Whether you're preparing documents for three-ring binders, spiral binding, or perfect binding, proper gutter margins ensure professional, readable results.</p>
+
+<h2>What Are Gutter Margins?</h2>
+<p>Gutter margins are additional space added to the inside edge of pages (the edge that will be bound). For double-sided documents, the gutter alternates between left and right margins on facing pages. This extra space compensates for the area lost to binding, ensuring consistent visible margins throughout the document. Our tool automatically handles the alternating pattern for duplex printing.</p>
+
+<h2>Customizable Gutter Size</h2>
+<p>Different binding methods require different gutter widths. Three-ring binders need about 0.5 inches for punch holes. Spiral and comb binding require slightly less. Perfect binding for books needs gutters based on page count and paper thickness. Our tool lets you specify exact gutter dimensions to match your binding method. Preview the result before downloading to ensure adequate space.</p>
+
+<h2>Preserve Original Content</h2>
+<p>Adding gutters doesn't crop or scale your content. The tool shifts the entire page content toward the outer edge, maintaining all original elements at their original size. Alternatively, you can add the gutter by expanding the page size, keeping content in its original position. Choose the method that best suits your printing and binding requirements.</p>
+
+<h2>Facing Pages and Mirror Margins</h2>
+<p>For documents that will be printed double-sided and bound as a book, gutter margins must alternate correctly. Odd pages need the gutter on the left for left-bound documents, while even pages need it on the right. Our tool automatically creates this mirror margin pattern. The result is a document where all pages have equal visible margins when bound, regardless of which side they're on.</p>`,
+  },
+  {
+    id: "pdf-color-changer",
+    name: "PDF Color Changer",
+    description: "Replace specific colors throughout PDF documents",
+    icon: "Palette",
+    type: "pdf-color-changer",
+    color: "bg-pink-600",
+    emoji: "🎨",
+    metaTitle: "PDF Color Changer Online Free - Replace Colors in PDF | PDF Tools",
+    metaDescription: "Change and replace specific colors in PDF documents online for free. Update branding colors, fix color issues, or transform document appearance.",
+    seoArticle: `<h2>PDF Color Changer - Transform Document Colors</h2>
+<p>Need to update branding colors across a PDF or change a specific color throughout a document? Our PDF Color Changer finds and replaces colors in your PDF documents. Update old brand colors to new ones, change text colors for better readability, or transform document appearance for different purposes. Color replacement works on text, shapes, and vector graphics throughout your document.</p>
+
+<h2>Precise Color Matching</h2>
+<p>Specify the exact color to find using hex codes, RGB values, or our visual color picker. The tool identifies all instances of that color throughout your document. Choose whether to match the exact color only or include similar shades within a tolerance range. This flexibility handles both precise brand color updates and broader color transformations effectively.</p>
+
+<h2>Brand Color Updates</h2>
+<p>Companies frequently update brand guidelines with new color palettes. Updating all existing documents manually is time-consuming and error-prone. Our Color Changer automates this process, finding every instance of old brand colors and replacing them with new ones. Update logos, headings, accent elements, and graphics throughout a document in seconds rather than hours.</p>
+
+<h2>Color Accessibility Improvements</h2>
+<p>Some color combinations don't meet accessibility standards for contrast and readability. Use our tool to update problematic colors to more accessible alternatives. Change light gray text to darker shades for better visibility. Replace color combinations that are difficult for colorblind readers. Improve document accessibility without recreating content from scratch.</p>
+
+<h2>Batch Color Replacement</h2>
+<p>Replace multiple colors in a single operation. Define a color mapping table with original and replacement colors, then apply all changes at once. This is ideal for comprehensive brand refreshes or theme changes affecting multiple colors. Each color in your mapping is processed independently, allowing complex color scheme transformations with one upload.</p>`,
+  },
+  {
+    id: "pdf-font-replacer",
+    name: "PDF Font Replacer",
+    description: "Replace fonts throughout PDF documents",
+    icon: "Type",
+    type: "pdf-font-replacer",
+    color: "bg-violet-600",
+    emoji: "🔤",
+    metaTitle: "PDF Font Replacer Online Free - Replace Fonts in PDF | PDF Tools",
+    metaDescription: "Replace fonts in PDF documents online for free. Substitute missing fonts, update typography, or standardize document fonts easily.",
+    seoArticle: `<h2>PDF Font Replacer - Substitute and Update Fonts</h2>
+<p>Fonts play a crucial role in document appearance and readability. Our PDF Font Replacer allows you to substitute one font for another throughout your document. Fix missing font issues that cause display problems, update typography to match current brand standards, or standardize fonts across document collections. Font replacement preserves your document content while transforming its visual presentation.</p>
+
+<h2>Solve Missing Font Problems</h2>
+<p>PDFs sometimes reference fonts not embedded in the file or not available on the viewing system. This causes display issues ranging from incorrect rendering to unreadable text. Our Font Replacer substitutes the missing font with an available alternative, solving display problems without requiring the original fonts. Choose from commonly available fonts that render consistently across all systems.</p>
+
+<h2>Typography Updates</h2>
+<p>Brand guidelines evolve, and documents need to reflect current typography standards. Replace outdated fonts with approved alternatives across entire documents. Our tool handles the font metrics differences, adjusting text flow to accommodate different character widths and heights. Update documents to current standards while maintaining overall layout and pagination.</p>
+
+<h2>Font Standardization</h2>
+<p>Documents from multiple sources often use various fonts, creating an inconsistent appearance. Our Font Replacer standardizes typography by replacing diverse fonts with a consistent selection. Create unified document collections where all files share the same professional font choices. This is especially valuable for merged documents, archives, and publication collections.</p>
+
+<h2>Preserve Text Formatting</h2>
+<p>Font replacement maintains other text formatting attributes. Bold, italic, and bold-italic variations are mapped to corresponding styles in the replacement font. Font sizes, colors, and spacing are preserved. The result is documents where only the typeface changes while all other typographic decisions remain intact. Your carefully crafted layouts stay consistent despite the font change.</p>`,
+  },
+  {
+    id: "pdf-font-finder",
+    name: "PDF Font Finder",
+    description: "Identify and analyze all fonts used in PDF documents",
+    icon: "Search",
+    type: "pdf-font-finder",
+    color: "bg-cyan-600",
+    emoji: "🔍",
+    metaTitle: "PDF Font Finder Online Free - Identify Fonts in PDF | PDF Tools",
+    metaDescription: "Identify all fonts used in PDF documents online for free. Get complete font information including names, types, and embedding status.",
+    seoArticle: `<h2>PDF Font Finder - Identify Fonts in Any PDF</h2>
+<p>Discover exactly which fonts are used in any PDF document. Our Font Finder analyzes your PDF and provides a comprehensive report of all fonts including their names, types, and embedding status. Whether you're troubleshooting display issues, preparing documents for print, or simply curious about a document's typography, this tool delivers the information you need.</p>
+
+<h2>Complete Font Information</h2>
+<p>The font analysis report includes detailed information about each font used. See the font family name, style (regular, bold, italic), and type (TrueType, Type 1, OpenType, CID). Learn whether fonts are fully embedded, subset embedded, or simply referenced. This comprehensive information helps diagnose rendering issues and understand document requirements.</p>
+
+<h2>Embedding Status Analysis</h2>
+<p>Font embedding determines whether a PDF displays correctly across different systems. Our tool shows which fonts are embedded and which rely on system availability. Fully embedded fonts render correctly everywhere. Subset embedded fonts include only used characters. Referenced fonts depend on the viewer's system having the font installed. Understanding this helps identify potential display issues.</p>
+
+<h2>Print Preparation</h2>
+<p>Professional printers require specific font embedding for quality output. Our Font Finder identifies any fonts that might cause printing issues. Spot fonts that aren't embedded and need to be before sending to print. Identify non-standard fonts that might require licensing verification. Ensure your documents meet print production requirements before submission.</p>
+
+<h2>Font Licensing Verification</h2>
+<p>Some fonts have licensing restrictions on embedding and distribution. Our tool identifies all fonts so you can verify licensing compliance. This is especially important for documents that will be shared publicly or commercially distributed. Know exactly which fonts are in your document to ensure proper licensing for your intended use.</p>`,
+  },
+  {
+    id: "pdf-link-checker",
+    name: "PDF Link Checker",
+    description: "Find and validate all hyperlinks in PDF documents",
+    icon: "Link",
+    type: "pdf-link-checker",
+    color: "bg-green-600",
+    emoji: "🔗",
+    metaTitle: "PDF Link Checker Online Free - Validate PDF Links | PDF Tools",
+    metaDescription: "Check and validate all hyperlinks in PDF documents online for free. Find broken links, verify URLs, and ensure all PDF links work correctly.",
+    seoArticle: `<h2>PDF Link Checker - Validate All Document Links</h2>
+<p>Broken links in PDFs create frustrating user experiences and reflect poorly on document quality. Our PDF Link Checker scans your document, extracts all hyperlinks, and validates each one. Get a comprehensive report showing which links work, which are broken, and which might have issues. Ensure your PDF documents provide reliable navigation to external resources.</p>
+
+<h2>Comprehensive Link Extraction</h2>
+<p>Our tool finds all types of links in your PDF including URL hyperlinks, email links, and internal document links. External links are validated against live servers to confirm they're accessible. Internal links are verified to ensure they point to valid locations within the document. The complete link inventory helps you understand your document's connectivity.</p>
+
+<h2>Link Status Report</h2>
+<p>The validation report categorizes links by status. Working links return successful connections. Broken links fail to connect or return error codes. Redirected links work but point to different URLs than specified. Suspicious links might work but show warning signs. This detailed categorization helps prioritize which links need attention and which are functioning correctly.</p>
+
+<h2>Quality Assurance for Publications</h2>
+<p>Documents distributed to large audiences must have working links. Academic papers, business reports, and marketing materials all suffer when links fail. Our Link Checker is an essential quality assurance step before publication or distribution. Catch and fix broken links before readers encounter them, maintaining document credibility and usefulness.</p>
+
+<h2>Periodic Link Maintenance</h2>
+<p>Web content changes constantly. Links that worked when a document was created may fail later as websites update or relocate content. Regular link checking helps maintain document value over time. Run periodic checks on important PDFs to identify links that have broken since creation. Keep your archived documents functional with ongoing link validation.</p>`,
+  },
+  {
+    id: "pdf-link-remover",
+    name: "PDF Link Remover",
+    description: "Remove all hyperlinks from PDF documents",
+    icon: "Unlink",
+    type: "pdf-link-remover",
+    color: "bg-red-600",
+    emoji: "🚫",
+    metaTitle: "PDF Link Remover Online Free - Remove Hyperlinks from PDF | PDF Tools",
+    metaDescription: "Remove all hyperlinks and clickable links from PDF documents online for free. Clean PDFs for printing or create static document versions.",
+    seoArticle: `<h2>PDF Link Remover - Create Clean, Static Documents</h2>
+<p>Sometimes hyperlinks in PDFs are more hindrance than help. Accidental clicks during reading, security concerns about external links, or simply wanting a clean print version - there are many reasons to remove links from PDF documents. Our Link Remover strips all hyperlinks while preserving the visual appearance of your document. The blue underlined text remains, but clicks no longer navigate away.</p>
+
+<h2>Remove All Link Types</h2>
+<p>Our tool removes various link types found in PDFs. External URL links to websites are removed. Email links that open mail clients are stripped. Internal document navigation links are cleared. JavaScript-based interactive links are deactivated. The result is a completely static document with no clickable elements except form fields if present.</p>
+
+<h2>Prepare Documents for Print</h2>
+<p>Printed documents don't need hyperlinks - they can't be clicked on paper. Removing links before printing creates cleaner PDFs without the interactive overhead. File sizes may decrease slightly without link data. More importantly, the document is optimized for its intended use as a printed, rather than interactive, medium.</p>
+
+<h2>Security and Privacy</h2>
+<p>Links can pose security risks by directing users to malicious sites or tracking their behavior. Removing links from documents before distribution eliminates these concerns. Recipients can read the content without risk of clicking harmful links. This is especially important for documents that will be shared with security-conscious audiences or children.</p>
+
+<h2>Preserve Visual Formatting</h2>
+<p>Link removal affects only the interactive behavior, not the visual appearance. Text that was styled as a link (often blue and underlined) retains its formatting. This maintains design consistency and indicates where links originally existed. If you prefer to also remove the link styling, our text editing tools can help with that additional step.</p>`,
+  },
+  {
+    id: "pdf-annotation-remover",
+    name: "PDF Annotation Remover",
+    description: "Remove highlights, notes, and annotations from PDFs",
+    icon: "Eraser",
+    type: "pdf-annotation-remover",
+    color: "bg-orange-600",
+    emoji: "🧹",
+    metaTitle: "PDF Annotation Remover Online Free - Remove PDF Annotations | PDF Tools",
+    metaDescription: "Remove all annotations, highlights, comments, and markup from PDF documents online for free. Create clean versions of annotated PDFs.",
+    seoArticle: `<h2>PDF Annotation Remover - Clean Up Marked Documents</h2>
+<p>PDFs accumulate annotations during review cycles - highlights, sticky notes, text comments, drawings, and stamps. When you need a clean version of the document without these markups, our Annotation Remover strips them all away. Create pristine final versions from heavily annotated review copies, or prepare documents for new rounds of feedback starting with a clean slate.</p>
+
+<h2>Remove All Annotation Types</h2>
+<p>Our tool handles every type of PDF annotation. Text highlights and underlines are removed. Sticky notes and pop-up comments are cleared. Drawing markups including lines, shapes, and freehand drawings are erased. Stamps and watermarks added as annotations disappear. Text insertion and deletion markups from review processes are cleaned up. Every form of annotation is comprehensively removed.</p>
+
+<h2>Selective Annotation Removal</h2>
+<p>Sometimes you want to remove only certain types of annotations. Our tool lets you choose which annotation types to remove while preserving others. Keep useful highlights while removing comment notes. Preserve text corrections while clearing drawing markups. This selective approach gives you control over exactly what stays and what goes in your cleaned document.</p>
+
+<h2>Prepare Final Versions</h2>
+<p>After collaborative review, documents need cleaning before final distribution. The working copy with everyone's feedback becomes a distraction-free final version. Our Annotation Remover is the last step in the review process, transforming marked-up drafts into polished deliverables. The content remains intact while all review artifacts are removed.</p>
+
+<h2>Reduce File Size</h2>
+<p>Annotations add data to PDF files. Heavily annotated documents can be significantly larger than their clean counterparts. Removing annotations reduces file size, making documents easier to share and store. This is especially noticeable with documents containing many text comments, embedded images in annotations, or extensive drawing markups.</p>`,
   },
 ];
