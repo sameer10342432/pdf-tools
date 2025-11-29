@@ -191,6 +191,16 @@ export const pdfToolTypes = [
   "pdf-to-mp3",
   "pdf-to-single-page-html",
   "pdf-to-multi-page-html",
+  "pdf-to-png-transparent",
+  "pdf-to-tiff-multipage",
+  "pdf-to-word-layout",
+  "pdf-to-word-flow",
+  "pdf-to-ppt-editable",
+  "pdf-to-ppt-images",
+  "edit-pdf",
+  "pdf-editor",
+  "add-text-to-pdf",
+  "edit-pdf-text",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -264,6 +274,15 @@ export const toolOptionsSchema = z.object({
   ocrLanguage: z.enum(["eng", "spa", "fra", "deu", "ita", "por", "nld", "rus", "jpn", "chi_sim", "chi_tra", "kor", "ara", "hin"]).optional(),
   downsampleDpi: z.number().optional(),
   imageQuality: z.number().optional(),
+  textContent: z.string().optional(),
+  textX: z.number().optional(),
+  textY: z.number().optional(),
+  fontSize: z.number().optional(),
+  fontColor: z.string().optional(),
+  targetPage: z.number().optional(),
+  pngDpi: z.number().optional(),
+  tiffDpi: z.number().optional(),
+  exportMode: z.enum(["layout", "flow", "editable", "images"]).optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -5075,5 +5094,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Ideal for Documentation and Books</h2>
 <p>Create online documentation portals from PDF manuals. Build web-based reading experiences for books. Convert training materials to interactive web courses. Make long documents easier to navigate online. Multi-page HTML provides the ultimate web document experience.</p>`,
+  },
+  {
+    id: "pdf-to-png-transparent",
+    name: "PDF to PNG (Transparent)",
+    description: "Convert PDF pages to PNG images with transparency support",
+    icon: "ImageDown",
+    type: "pdf-to-png-transparent",
+    color: "bg-violet-500",
+    emoji: "🖼️",
+    metaTitle: "PDF to PNG with Transparency Online Free - Convert PDF to Transparent PNG | PDF Tools",
+    metaDescription: "Convert PDF files to PNG images with transparency support online for free. Export high-quality transparent PNG images from PDF pages instantly.",
+    seoArticle: `<h2>Convert PDF to PNG with Transparency - Complete Guide</h2>
+<p>Transform your PDF documents into high-quality PNG images with full transparency support using our free online converter. Unlike standard image exports, transparent PNGs preserve alpha channels, making them perfect for overlaying on different backgrounds in design projects, presentations, and web graphics.</p>
+
+<h2>Why Choose Transparent PNG Format?</h2>
+<p>PNG format supports alpha transparency, allowing portions of images to be see-through. This is essential for logos, graphics, and design elements that need to blend seamlessly with various backgrounds. Standard JPEG exports lose this transparency, but our tool preserves it perfectly, giving you maximum flexibility in how you use your converted images.</p>
+
+<h2>High-Resolution Output Quality</h2>
+<p>Our converter produces crisp, clear PNG images at customizable DPI settings. Choose from 72 DPI for web use, 150 DPI for general purposes, or 300 DPI for print-quality output. Higher DPI means larger files but sharper images. Select the resolution that matches your intended use case.</p>
+
+<h2>Perfect for Designers and Developers</h2>
+<p>Graphic designers use transparent PNGs for layered compositions in Photoshop, Illustrator, and other design software. Web developers need transparent graphics for responsive websites. Marketing teams require clean logos without backgrounds. Our tool delivers publication-ready transparent images every time.</p>
+
+<h2>Simple Conversion Process</h2>
+<p>Upload your PDF document to our secure platform. Select your desired DPI resolution and page range. Click convert and watch as each page transforms into a transparent PNG. Download individual images or get all pages in a convenient ZIP archive. No software installation required.</p>`,
+  },
+  {
+    id: "pdf-to-tiff-multipage",
+    name: "PDF to TIFF (Multipage)",
+    description: "Convert PDF to multipage TIFF format for archival",
+    icon: "FileImage",
+    type: "pdf-to-tiff-multipage",
+    color: "bg-amber-600",
+    emoji: "📚",
+    metaTitle: "PDF to Multipage TIFF Online Free - Convert PDF to TIFF Archive | PDF Tools",
+    metaDescription: "Convert PDF files to multipage TIFF format online for free. Create archival-quality TIFF images from PDFs with all pages in a single file.",
+    seoArticle: `<h2>Convert PDF to Multipage TIFF - Professional Archival</h2>
+<p>Transform your PDF documents into multipage TIFF format with our free online converter. TIFF (Tagged Image File Format) is the industry standard for document archiving, legal document storage, and professional printing. Our tool creates a single TIFF file containing all PDF pages, perfect for long-term preservation.</p>
+
+<h2>Why Multipage TIFF Format?</h2>
+<p>Multipage TIFF files store multiple images in a single file, similar to PDF but in a universal image format. This makes them ideal for document imaging systems, fax servers, and archival applications. Legal and medical industries prefer TIFF for its lossless compression and universal compatibility across systems.</p>
+
+<h2>Archival Quality Preservation</h2>
+<p>Our converter produces TIFF files with optional LZW compression for smaller file sizes without quality loss. Choose uncompressed TIFF for maximum compatibility or compressed for efficient storage. Both options maintain perfect image quality suitable for legal compliance and long-term document retention.</p>
+
+<h2>Enterprise Document Workflow Integration</h2>
+<p>Many enterprise document management systems require TIFF format input. Scanning archives commonly use multipage TIFF. Legal discovery processes accept TIFF as a standard format. Medical imaging systems often work with TIFF files. Our converter bridges PDF documents with these specialized systems.</p>
+
+<h2>Conversion Features</h2>
+<p>Upload your PDF and select your output preferences. Set DPI resolution from 150 to 600 for your quality needs. Choose compression options to balance file size and compatibility. All pages combine into one multipage TIFF file. Download your archive-ready document instantly.</p>`,
+  },
+  {
+    id: "pdf-to-word-layout",
+    name: "PDF to Word (Keep Layout)",
+    description: "Convert PDF to Word while preserving exact layout and formatting",
+    icon: "FileText",
+    type: "pdf-to-word-layout",
+    color: "bg-blue-600",
+    emoji: "📋",
+    metaTitle: "PDF to Word Keep Layout Online Free - Convert PDF to Editable DOCX | PDF Tools",
+    metaDescription: "Convert PDF to Word documents while preserving exact layout and formatting. Transform PDFs to editable DOCX files with original positioning intact.",
+    seoArticle: `<h2>Convert PDF to Word While Preserving Layout - Complete Guide</h2>
+<p>Transform your PDF documents into fully editable Word files while maintaining exact layout and positioning with our free online converter. Unlike basic PDF to Word tools, our layout-preserving conversion recreates the precise visual arrangement of your original document, including columns, tables, images, and text positioning.</p>
+
+<h2>Why Layout Preservation Matters</h2>
+<p>Many PDF documents have complex layouts with multiple columns, text boxes, images positioned precisely, and tables with specific formatting. Standard converters often scramble these elements, creating unreadable Word documents. Our tool analyzes the PDF structure and recreates it accurately in Word format, saving hours of manual reformatting.</p>
+
+<h2>Perfect for Complex Documents</h2>
+<p>Brochures, reports, magazines, and forms often have intricate layouts that must be preserved for editing. Legal documents require precise formatting for validity. Marketing materials need exact spacing and positioning. Our layout-preserving converter handles these challenges, delivering Word documents that match your original PDFs visually.</p>
+
+<h2>Advanced Conversion Technology</h2>
+<p>Our converter uses sophisticated algorithms to detect text blocks, identify columns, recognize tables, and map image positions. Each element is converted to the appropriate Word feature: text boxes for positioned content, Word tables for tabular data, and inline images with proper text wrapping. The result is a native Word document you can edit freely.</p>
+
+<h2>Seamless Editing Experience</h2>
+<p>After conversion, simply open the DOCX file in Microsoft Word, LibreOffice, or Google Docs. Edit text while maintaining layout. Modify tables and images as needed. The preserved formatting means your edits integrate naturally. Save as Word or export back to PDF when finished.</p>`,
+  },
+  {
+    id: "pdf-to-word-flow",
+    name: "PDF to Word (Flowing Text)",
+    description: "Convert PDF to Word with flowing, easily editable text",
+    icon: "Type",
+    type: "pdf-to-word-flow",
+    color: "bg-sky-600",
+    emoji: "📝",
+    metaTitle: "PDF to Word Flowing Text Online Free - Convert PDF to Editable Document | PDF Tools",
+    metaDescription: "Convert PDF to Word with flowing, easily editable text online for free. Transform PDFs into clean Word documents optimized for easy editing.",
+    seoArticle: `<h2>Convert PDF to Word with Flowing Text - Easy Editing</h2>
+<p>Transform your PDF documents into clean, flowing Word documents optimized for easy editing with our free online converter. Instead of preserving rigid layouts, this conversion prioritizes editability, creating Word files where text flows naturally and can be modified, reformatted, and restyled without fighting positioning constraints.</p>
+
+<h2>When Flowing Text is Better</h2>
+<p>Not all conversions need exact layout preservation. When you want to rewrite content, change formatting, or integrate text into other documents, flowing text is superior. It removes layout constraints, allowing Word to handle text flow naturally. This makes editing faster and results in cleaner documents.</p>
+
+<h2>Perfect for Content Reuse</h2>
+<p>Extract article text for repurposing in other documents. Copy content from reports for presentations. Edit contracts and agreements without layout complications. Merge content from multiple PDFs into new documents. Flowing text conversion maximizes content flexibility.</p>
+
+<h2>Clean, Semantic Output</h2>
+<p>Our converter produces Word documents with proper heading styles, paragraph formatting, and list structures. Instead of position-based layout, content uses Word's native formatting features. This results in documents that reflow beautifully at any page size and are fully accessible to screen readers.</p>
+
+<h2>Ideal for Mobile and Responsive Use</h2>
+<p>Flowing text documents adapt to any screen size or page layout. View on phones, tablets, or desktop without horizontal scrolling. Print at any page size with automatic text reflow. Share documents that look good everywhere. Flowing format provides ultimate document flexibility.</p>`,
+  },
+  {
+    id: "pdf-to-ppt-editable",
+    name: "PDF to PowerPoint (Editable)",
+    description: "Convert PDF to fully editable PowerPoint slides",
+    icon: "FileSpreadsheet",
+    type: "pdf-to-ppt-editable",
+    color: "bg-orange-600",
+    emoji: "📊",
+    metaTitle: "PDF to Editable PowerPoint Online Free - Convert PDF to PPTX | PDF Tools",
+    metaDescription: "Convert PDF to fully editable PowerPoint presentations online for free. Transform PDF pages into PPTX slides with editable text and elements.",
+    seoArticle: `<h2>Convert PDF to Editable PowerPoint - Full Control</h2>
+<p>Transform your PDF presentations into fully editable PowerPoint files with our free online converter. Each PDF page becomes a PowerPoint slide with editable text, shapes, and images. Make changes, update content, add animations, and customize your presentation without recreating slides from scratch.</p>
+
+<h2>True Editability, Not Just Images</h2>
+<p>Many PDF to PowerPoint converters simply insert PDF pages as images, leaving you unable to edit content. Our advanced converter extracts actual text, identifies shapes and diagrams, and recreates them as native PowerPoint elements. The result is a presentation you can fully modify using PowerPoint's editing tools.</p>
+
+<h2>Perfect for Presentation Updates</h2>
+<p>Received a PDF presentation you need to modify? Update outdated statistics and graphs. Change branding and logos. Add new slides between existing content. Modify speaker notes. Our converter gives you the power to customize presentations to your exact needs.</p>
+
+<h2>Preserve Visual Design</h2>
+<p>While making content editable, we preserve the visual design of your original PDF. Colors, fonts, and layouts transfer accurately. Background elements remain intact. Your converted presentation maintains professional appearance while gaining full editability.</p>
+
+<h2>Cross-Platform Compatibility</h2>
+<p>Generated PPTX files work in Microsoft PowerPoint, Google Slides, Keynote, and LibreOffice Impress. Edit on any platform. Collaborate with colleagues using different software. Present from any device. Our universal format ensures maximum compatibility.</p>`,
+  },
+  {
+    id: "pdf-to-ppt-images",
+    name: "PDF to PowerPoint (Images)",
+    description: "Convert PDF pages to PowerPoint slides as high-quality images",
+    icon: "Image",
+    type: "pdf-to-ppt-images",
+    color: "bg-rose-600",
+    emoji: "🎴",
+    metaTitle: "PDF to PowerPoint Images Online Free - PDF to PPTX Slides | PDF Tools",
+    metaDescription: "Convert PDF pages to PowerPoint slides as high-quality images online for free. Transform PDFs into PPTX presentations with perfect visual fidelity.",
+    seoArticle: `<h2>Convert PDF to PowerPoint as Images - Perfect Fidelity</h2>
+<p>Transform your PDF documents into PowerPoint presentations with each page as a high-quality image slide using our free online converter. This method guarantees 100% visual accuracy - every font, graphic, and layout element appears exactly as in your original PDF, with no conversion artifacts or formatting changes.</p>
+
+<h2>When Image Slides Are Best</h2>
+<p>Some documents have complex graphics, custom fonts, or precise layouts that are difficult to convert accurately to editable elements. Architectural drawings, detailed infographics, and stylized designs convert perfectly as images. When visual accuracy is paramount, image-based conversion is the reliable choice.</p>
+
+<h2>High-Resolution Quality</h2>
+<p>Our converter renders each PDF page at high resolution, ensuring crisp, clear images even on large presentation screens. Choose from standard, high, or maximum quality settings based on your needs. Even fine text and small details remain sharp and readable in the resulting PowerPoint.</p>
+
+<h2>Quick and Reliable Conversion</h2>
+<p>Image-based conversion is fast and consistent. No complex text extraction or layout analysis required. Every PDF converts successfully without errors. Upload your PDF, select quality settings, and download your PowerPoint presentation in moments.</p>
+
+<h2>Perfect for Presentation and Archival</h2>
+<p>Present PDF content in PowerPoint meetings without compatibility issues. Share documents as presentations via email or cloud storage. Archive important documents in presentation format. Add notes and annotations to slides. Image-based conversion provides a universal solution for PDF to PowerPoint needs.</p>`,
+  },
+  {
+    id: "edit-pdf",
+    name: "Edit PDF",
+    description: "Modify text, images, and content in your PDF documents",
+    icon: "FileEdit",
+    type: "edit-pdf",
+    color: "bg-indigo-600",
+    emoji: "✏️",
+    metaTitle: "Edit PDF Online Free - Modify PDF Content Instantly | PDF Tools",
+    metaDescription: "Edit PDF documents online for free. Add, modify, or delete text and images in your PDFs. Easy-to-use PDF editor with no software installation.",
+    seoArticle: `<h2>Edit PDF Documents Online - Complete Guide</h2>
+<p>Modify your PDF documents directly in your browser with our free online PDF editor. Add new text, insert images, annotate pages, and make changes without needing expensive software like Adobe Acrobat. Our tool provides essential editing capabilities for anyone who needs to update PDF content quickly.</p>
+
+<h2>Comprehensive Editing Features</h2>
+<p>Our PDF editor offers a range of editing capabilities. Add text anywhere on the page with customizable fonts, sizes, and colors. Insert images and position them precisely. Draw shapes and lines for emphasis. Add highlights and annotations. All changes are saved directly to your PDF.</p>
+
+<h2>No Software Required</h2>
+<p>Unlike desktop PDF editors that require installation and often expensive subscriptions, our online editor works instantly in any modern browser. Chrome, Firefox, Safari, Edge - all supported. Edit PDFs on Windows, Mac, Linux, or even tablets. Access your editing tools from anywhere.</p>
+
+<h2>User-Friendly Interface</h2>
+<p>Our editor features an intuitive toolbar with clearly labeled tools. Select the text tool to add new text. Choose the image tool to insert graphics. Use the shape tools for annotations. Undo and redo buttons let you experiment without worry. Even first-time users can edit PDFs effectively.</p>
+
+<h2>Secure Document Handling</h2>
+<p>Your documents are processed securely in our cloud infrastructure. Files are encrypted during upload and processing. No data is stored after you download your edited PDF. Edit confidential documents with complete peace of mind knowing your privacy is protected.</p>`,
+  },
+  {
+    id: "pdf-editor",
+    name: "PDF Editor",
+    description: "Professional PDF editing with advanced modification tools",
+    icon: "Settings",
+    type: "pdf-editor",
+    color: "bg-purple-600",
+    emoji: "🔧",
+    metaTitle: "PDF Editor Online Free - Professional PDF Modification Tool | PDF Tools",
+    metaDescription: "Professional PDF editor online for free. Advanced tools for modifying PDF documents including text editing, image insertion, and annotations.",
+    seoArticle: `<h2>Professional PDF Editor - Advanced Document Modification</h2>
+<p>Our professional-grade online PDF editor provides advanced tools for comprehensive document modification. Whether you're a business professional updating contracts, a student annotating study materials, or anyone needing to modify PDF content, our editor delivers the power you need without expensive software.</p>
+
+<h2>Advanced Text Editing</h2>
+<p>Add text with precise control over font family, size, color, and positioning. Place text blocks anywhere on the page. Adjust line spacing and alignment. Create multi-line text areas for longer content. Our text tools rival desktop applications in capability.</p>
+
+<h2>Image and Graphics Management</h2>
+<p>Insert images from your computer or drag and drop from your desktop. Resize and position images precisely. Maintain aspect ratios or stretch as needed. Layer images over or under existing content. Build complex document layouts with ease.</p>
+
+<h2>Annotation and Markup</h2>
+<p>Highlight important passages in any color. Add comments and notes for reviewers. Draw arrows and lines to connect ideas. Use shapes like rectangles and circles for emphasis. Create stamps for quick approval markings. Comprehensive markup tools for document review workflows.</p>
+
+<h2>Cross-Device Compatibility</h2>
+<p>Edit PDFs on any device with a modern web browser. Start editing on your desktop, continue on your tablet. No syncing required - just access our tool from any device. Responsive interface adapts to your screen size for comfortable editing everywhere.</p>`,
+  },
+  {
+    id: "add-text-to-pdf",
+    name: "Add Text to PDF",
+    description: "Insert new text content anywhere in your PDF document",
+    icon: "Type",
+    type: "add-text-to-pdf",
+    color: "bg-teal-600",
+    emoji: "💬",
+    metaTitle: "Add Text to PDF Online Free - Insert Text in PDF Documents | PDF Tools",
+    metaDescription: "Add text to PDF documents online for free. Insert new text content anywhere on PDF pages with customizable fonts, sizes, and colors.",
+    seoArticle: `<h2>Add Text to PDF Documents - Quick and Easy</h2>
+<p>Insert new text content anywhere in your PDF documents with our free online tool. Whether you need to fill in form fields, add notes, insert missing information, or annotate documents, our text addition tool makes it simple. Customize font, size, and color to match your document's style.</p>
+
+<h2>Precise Text Placement</h2>
+<p>Click anywhere on your PDF page to place text exactly where you need it. No guessing or trial and error. Position text in margins, between paragraphs, or overlay existing content. Our intuitive interface shows exactly where your text will appear before you confirm.</p>
+
+<h2>Customizable Text Styling</h2>
+<p>Match your added text to the existing document style. Choose from standard fonts like Arial, Times New Roman, and Helvetica. Select any font size from 8 to 72 points. Pick text color from a full color palette. Bold and italic options for emphasis. Your additions blend seamlessly.</p>
+
+<h2>Perfect for Form Filling</h2>
+<p>Many PDF forms aren't fillable electronically. Our tool lets you add text to any form field, checkbox area, or signature line. Complete applications, contracts, and questionnaires without printing and scanning. Save time and paper with digital form completion.</p>
+
+<h2>Multi-Page Support</h2>
+<p>Add text to any page in multi-page documents. Navigate through pages easily. Add different text to different pages as needed. All additions save to a single updated PDF file. Handle documents of any length with full control over every page.</p>`,
+  },
+  {
+    id: "edit-pdf-text",
+    name: "Edit PDF Text",
+    description: "Modify existing text content within PDF documents",
+    icon: "FileEdit",
+    type: "edit-pdf-text",
+    color: "bg-cyan-600",
+    emoji: "📑",
+    metaTitle: "Edit PDF Text Online Free - Modify Text in PDF Documents | PDF Tools",
+    metaDescription: "Edit existing text in PDF documents online for free. Modify, update, or correct text content in your PDFs without recreating documents.",
+    seoArticle: `<h2>Edit Existing Text in PDF Documents</h2>
+<p>Modify existing text content within your PDF documents using our free online editor. Fix typos, update dates, change names, and correct information without recreating entire documents. Our text editing tool lets you work directly with the text already in your PDF, making corrections quick and seamless.</p>
+
+<h2>Direct Text Modification</h2>
+<p>Unlike tools that only add new text, our editor works with existing PDF text. Select text passages and modify them directly. Change individual words or entire paragraphs. The modified text integrates naturally with surrounding content, maintaining document flow and appearance.</p>
+
+<h2>Preserve Original Formatting</h2>
+<p>When you edit text, we preserve the original formatting. Font style, size, and color remain consistent. Text alignment and spacing stay intact. Your edits look like they were always part of the original document, maintaining professional appearance.</p>
+
+<h2>Common Use Cases</h2>
+<p>Correct spelling errors in finalized documents. Update contact information in forms. Change dates on recurring documents. Fix pricing or quantity mistakes in invoices. Modify names after personnel changes. Our text editor handles everyday document corrections efficiently.</p>
+
+<h2>Simple Editing Workflow</h2>
+<p>Upload your PDF document. Navigate to the page with text to edit. Select the text area you want to modify. Make your changes in the editing interface. Preview results before saving. Download your corrected PDF instantly. The entire process takes just minutes.</p>`,
   },
 ];

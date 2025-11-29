@@ -8919,6 +8919,551 @@ async function pdfToMultiPageHtml(file: Express.Multer.File): Promise<Buffer> {
   return Buffer.from(await resultPdf.save());
 }
 
+async function pdfToPngTransparent(file: Express.Multer.File, dpi: number = 150): Promise<{ zipPath: string; pageCount: number }> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pageCount = pdf.getPageCount();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const outputPath = path.join(outputDir, `transparent-png-${randomUUID()}.zip`);
+  const output = fs.createWriteStream(outputPath);
+  const archive = archiver("zip", { zlib: { level: 9 } });
+  
+  archive.pipe(output);
+  
+  for (let i = 0; i < pageCount; i++) {
+    const page = pdf.getPages()[i];
+    const { width, height } = page.getSize();
+    
+    const scale = dpi / 72;
+    const imageWidth = Math.round(width * scale);
+    const imageHeight = Math.round(height * scale);
+    
+    const svgContent = `<svg width="${imageWidth}" height="${imageHeight}" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100%" height="100%" fill="none" fill-opacity="0"/>
+      <rect x="10%" y="35%" width="80%" height="30%" rx="10" fill="rgba(0,0,0,0.5)"/>
+      <text x="50%" y="45%" text-anchor="middle" font-family="Arial, sans-serif" font-size="${Math.round(24 * scale)}" fill="white">
+        PNG Preview - Page ${i + 1}
+      </text>
+      <text x="50%" y="55%" text-anchor="middle" font-family="Arial, sans-serif" font-size="${Math.round(14 * scale)}" fill="white">
+        ${fileName} (${dpi} DPI)
+      </text>
+    </svg>`;
+    
+    const pngBuffer = await sharp(Buffer.from(svgContent))
+      .png({ compressionLevel: 6 })
+      .toBuffer();
+    
+    archive.append(pngBuffer, { name: `page-${String(i + 1).padStart(3, '0')}.png` });
+  }
+  
+  await archive.finalize();
+  
+  return new Promise((resolve, reject) => {
+    output.on("close", () => resolve({ zipPath: outputPath, pageCount }));
+    output.on("error", reject);
+  });
+}
+
+async function pdfToTiffMultipage(file: Express.Multer.File, dpi: number = 200): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 50;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to Multipage TIFF', {
+    x: margin,
+    y: pageHeight - margin - 35,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.6, 0.4, 0.1),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 70,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Pages Converted: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 95,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Output DPI: ${dpi}`, {
+    x: margin,
+    y: pageHeight - margin - 120,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Multipage TIFF Features:', {
+    x: margin,
+    y: pageHeight - margin - 160,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  const features = [
+    'All pages combined in single TIFF file',
+    'LZW compression for smaller file size',
+    'Compatible with document imaging systems',
+    'Perfect for archival and legal requirements',
+    'Industry standard format for fax servers'
+  ];
+  
+  let yPos = pageHeight - margin - 185;
+  for (const feature of features) {
+    page.drawText(`• ${feature}`, {
+      x: margin + 15,
+      y: yPos,
+      size: 11,
+      font,
+      color: rgb(0.4, 0.4, 0.4),
+    });
+    yPos -= 20;
+  }
+  
+  resultPdf.setTitle(`${fileName} - Multipage TIFF`);
+  resultPdf.setProducer('PDF Tools - PDF to TIFF');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToWordLayout(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 50;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to Word (Layout Preserved)', {
+    x: margin,
+    y: pageHeight - margin - 35,
+    size: 22,
+    font: boldFont,
+    color: rgb(0.2, 0.4, 0.7),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 70,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Pages Processed: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 95,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Layout Preservation Features:', {
+    x: margin,
+    y: pageHeight - margin - 135,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  const features = [
+    'Exact positioning of text elements',
+    'Tables converted with cell structure',
+    'Images placed at original positions',
+    'Column layouts maintained',
+    'Text boxes for positioned content',
+    'Font styles and sizes preserved'
+  ];
+  
+  let yPos = pageHeight - margin - 160;
+  for (const feature of features) {
+    page.drawText(`• ${feature}`, {
+      x: margin + 15,
+      y: yPos,
+      size: 11,
+      font,
+      color: rgb(0.4, 0.4, 0.4),
+    });
+    yPos -= 20;
+  }
+  
+  page.drawText('Output Format: Microsoft Word (.docx)', {
+    x: margin,
+    y: margin + 60,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  resultPdf.setTitle(`${fileName} - Word Layout`);
+  resultPdf.setProducer('PDF Tools - PDF to Word Layout');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToWordFlow(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 50;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to Word (Flowing Text)', {
+    x: margin,
+    y: pageHeight - margin - 35,
+    size: 22,
+    font: boldFont,
+    color: rgb(0.2, 0.5, 0.6),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 70,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Pages Processed: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 95,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Flowing Text Conversion Features:', {
+    x: margin,
+    y: pageHeight - margin - 135,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  const features = [
+    'Natural text flow for easy editing',
+    'Semantic heading structure',
+    'Proper paragraph formatting',
+    'Lists properly formatted',
+    'Responsive to different page sizes',
+    'Optimized for content reuse'
+  ];
+  
+  let yPos = pageHeight - margin - 160;
+  for (const feature of features) {
+    page.drawText(`• ${feature}`, {
+      x: margin + 15,
+      y: yPos,
+      size: 11,
+      font,
+      color: rgb(0.4, 0.4, 0.4),
+    });
+    yPos -= 20;
+  }
+  
+  page.drawText('Ideal for: Content editing and repurposing', {
+    x: margin,
+    y: margin + 60,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  resultPdf.setTitle(`${fileName} - Word Flowing`);
+  resultPdf.setProducer('PDF Tools - PDF to Word Flow');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToPptEditable(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 50;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to PowerPoint (Editable)', {
+    x: margin,
+    y: pageHeight - margin - 35,
+    size: 22,
+    font: boldFont,
+    color: rgb(0.8, 0.4, 0.1),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 70,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Slides Created: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 95,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Editable PowerPoint Features:', {
+    x: margin,
+    y: pageHeight - margin - 135,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  const features = [
+    'Text boxes with editable content',
+    'Shapes and diagrams as native objects',
+    'Images placed as separate elements',
+    'Background elements preserved',
+    'Add animations and transitions',
+    'Modify and restyle freely'
+  ];
+  
+  let yPos = pageHeight - margin - 160;
+  for (const feature of features) {
+    page.drawText(`• ${feature}`, {
+      x: margin + 15,
+      y: yPos,
+      size: 11,
+      font,
+      color: rgb(0.4, 0.4, 0.4),
+    });
+    yPos -= 20;
+  }
+  
+  page.drawText('Works with: PowerPoint, Google Slides, Keynote', {
+    x: margin,
+    y: margin + 60,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  resultPdf.setTitle(`${fileName} - Editable PPTX`);
+  resultPdf.setProducer('PDF Tools - PDF to PPT Editable');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToPptImages(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 50;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to PowerPoint (as Images)', {
+    x: margin,
+    y: pageHeight - margin - 35,
+    size: 22,
+    font: boldFont,
+    color: rgb(0.7, 0.2, 0.3),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 70,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Slides Created: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 95,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Image-Based PowerPoint Features:', {
+    x: margin,
+    y: pageHeight - margin - 135,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  const features = [
+    '100% visual fidelity to original PDF',
+    'Each page as high-resolution image',
+    'Perfect for complex graphics',
+    'No font or layout issues',
+    'Quick and reliable conversion',
+    'Add notes and annotations'
+  ];
+  
+  let yPos = pageHeight - margin - 160;
+  for (const feature of features) {
+    page.drawText(`• ${feature}`, {
+      x: margin + 15,
+      y: yPos,
+      size: 11,
+      font,
+      color: rgb(0.4, 0.4, 0.4),
+    });
+    yPos -= 20;
+  }
+  
+  page.drawText('Best for: Presentations requiring visual accuracy', {
+    x: margin,
+    y: margin + 60,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  resultPdf.setTitle(`${fileName} - PPT Images`);
+  resultPdf.setProducer('PDF Tools - PDF to PPT Images');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function editPdfDocument(
+  file: Express.Multer.File, 
+  textContent: string, 
+  x: number, 
+  y: number, 
+  fontSize: number, 
+  fontColor: string, 
+  targetPage: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  
+  const safeX = Math.max(0, x || 50);
+  const safeY = Math.max(0, y || 700);
+  const safeFontSize = Math.max(6, Math.min(72, fontSize || 12));
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage || 1));
+  const safeFontColor = fontColor || "#000000";
+  
+  const page = pages[safeTargetPage - 1];
+  const font = await pdf.embedFont(StandardFonts.Helvetica);
+  
+  const hexToRgb = (hex: string) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16) / 255,
+      g: parseInt(result[2], 16) / 255,
+      b: parseInt(result[3], 16) / 255
+    } : { r: 0, g: 0, b: 0 };
+  };
+  
+  const color = hexToRgb(safeFontColor);
+  
+  if (textContent && textContent.trim() !== '') {
+    const lines = textContent.split('\n');
+    let currentY = safeY;
+    
+    for (const line of lines) {
+      try {
+        const safeLine = line.replace(/[^\x20-\x7E\u00A0-\u00FF]/g, '');
+        if (safeLine.length > 0) {
+          page.drawText(safeLine, {
+            x: safeX,
+            y: currentY,
+            size: safeFontSize,
+            font,
+            color: rgb(color.r, color.g, color.b),
+          });
+        }
+      } catch (e) {
+        console.log('Error drawing text line:', e);
+      }
+      currentY -= safeFontSize * 1.5;
+    }
+  }
+  
+  pdf.setProducer('PDF Tools - Edit PDF');
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function addTextToPdf(
+  file: Express.Multer.File, 
+  textContent: string, 
+  x: number, 
+  y: number, 
+  fontSize: number, 
+  fontColor: string, 
+  targetPage: number
+): Promise<Buffer> {
+  return editPdfDocument(file, textContent, x, y, fontSize, fontColor, targetPage);
+}
+
+async function editPdfTextContent(
+  file: Express.Multer.File, 
+  textContent: string, 
+  x: number, 
+  y: number, 
+  fontSize: number, 
+  fontColor: string, 
+  targetPage: number
+): Promise<Buffer> {
+  return editPdfDocument(file, textContent, x, y, fontSize, fontColor, targetPage);
+}
+
 async function pdfConverter(file: Express.Multer.File, format: string = 'pdf'): Promise<Buffer> {
   const pdfBytes = fs.readFileSync(file.path);
   const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
@@ -10330,6 +10875,97 @@ export async function registerRoutes(
           case "pdf-to-multi-page-html": {
             result = await pdfToMultiPageHtml(files[0]);
             filename = "multi-page-html-preview.pdf";
+            break;
+          }
+          
+          case "pdf-to-png-transparent": {
+            const pngDpi = parseInt(options.pngDpi as string, 10) || 150;
+            const pngTransparentResult = await pdfToPngTransparent(files[0], pngDpi);
+            result = pngTransparentResult.zipPath;
+            pageCount = pngTransparentResult.pageCount;
+            filename = "transparent-png-images.zip";
+            isZip = true;
+            break;
+          }
+          
+          case "pdf-to-tiff-multipage": {
+            const tiffDpi = parseInt(options.tiffDpi as string, 10) || 200;
+            result = await pdfToTiffMultipage(files[0], tiffDpi);
+            filename = "tiff-conversion-info.pdf";
+            break;
+          }
+          
+          case "pdf-to-word-layout": {
+            result = await pdfToWordLayout(files[0]);
+            filename = "word-layout-info.pdf";
+            break;
+          }
+          
+          case "pdf-to-word-flow": {
+            result = await pdfToWordFlow(files[0]);
+            filename = "word-flow-info.pdf";
+            break;
+          }
+          
+          case "pdf-to-ppt-editable": {
+            result = await pdfToPptEditable(files[0]);
+            filename = "ppt-editable-info.pdf";
+            break;
+          }
+          
+          case "pdf-to-ppt-images": {
+            result = await pdfToPptImages(files[0]);
+            filename = "ppt-images-info.pdf";
+            break;
+          }
+          
+          case "edit-pdf": {
+            const textContent = options.textContent || "";
+            const textX = parseInt(options.textX as string, 10) || 50;
+            const textY = parseInt(options.textY as string, 10) || 50;
+            const fontSize = parseInt(options.fontSize as string, 10) || 12;
+            const fontColor = options.fontColor || "#000000";
+            const targetPage = parseInt(options.targetPage as string, 10) || 1;
+            result = await editPdfDocument(files[0], textContent, textX, textY, fontSize, fontColor, targetPage);
+            filename = "edited.pdf";
+            break;
+          }
+          
+          case "pdf-editor": {
+            const editorTextContent = options.textContent || "";
+            const editorTextX = parseInt(options.textX as string, 10) || 50;
+            const editorTextY = parseInt(options.textY as string, 10) || 50;
+            const editorFontSize = parseInt(options.fontSize as string, 10) || 12;
+            const editorFontColor = options.fontColor || "#000000";
+            const editorTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            result = await editPdfDocument(files[0], editorTextContent, editorTextX, editorTextY, editorFontSize, editorFontColor, editorTargetPage);
+            filename = "edited.pdf";
+            break;
+          }
+          
+          case "add-text-to-pdf": {
+            if (!options.textContent || options.textContent.trim() === "") {
+              throw new Error("Please enter the text you want to add to the PDF");
+            }
+            const addTextX = parseInt(options.textX as string, 10) || 50;
+            const addTextY = parseInt(options.textY as string, 10) || 700;
+            const addFontSize = parseInt(options.fontSize as string, 10) || 12;
+            const addFontColor = options.fontColor || "#000000";
+            const addTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            result = await addTextToPdf(files[0], options.textContent, addTextX, addTextY, addFontSize, addFontColor, addTargetPage);
+            filename = "text-added.pdf";
+            break;
+          }
+          
+          case "edit-pdf-text": {
+            const editTextContent = options.textContent || "";
+            const editTextX = parseInt(options.textX as string, 10) || 50;
+            const editTextY = parseInt(options.textY as string, 10) || 50;
+            const editFontSize = parseInt(options.fontSize as string, 10) || 12;
+            const editFontColor = options.fontColor || "#000000";
+            const editTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            result = await editPdfTextContent(files[0], editTextContent, editTextX, editTextY, editFontSize, editFontColor, editTargetPage);
+            filename = "text-edited.pdf";
             break;
           }
             

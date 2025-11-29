@@ -730,6 +730,157 @@ export function ToolOptionsComponent({
     case "docx-to-pdf":
       return null;
 
+    case "pdf-to-png-transparent":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output DPI (Resolution)</Label>
+            <Select
+              value={String(options.pngDpi || 150)}
+              onValueChange={(value) => updateOption("pngDpi", parseInt(value))}
+            >
+              <SelectTrigger data-testid="select-png-dpi">
+                <SelectValue placeholder="Select DPI" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="72">72 DPI (Web/Screen)</SelectItem>
+                <SelectItem value="150">150 DPI (Standard)</SelectItem>
+                <SelectItem value="300">300 DPI (High Quality)</SelectItem>
+                <SelectItem value="600">600 DPI (Print Quality)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Higher DPI produces larger, sharper images with transparent backgrounds.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "pdf-to-tiff-multipage":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output DPI (Resolution)</Label>
+            <Select
+              value={String(options.tiffDpi || 200)}
+              onValueChange={(value) => updateOption("tiffDpi", parseInt(value))}
+            >
+              <SelectTrigger data-testid="select-tiff-dpi">
+                <SelectValue placeholder="Select DPI" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="150">150 DPI (Balanced)</SelectItem>
+                <SelectItem value="200">200 DPI (Good Quality)</SelectItem>
+                <SelectItem value="300">300 DPI (High Quality)</SelectItem>
+                <SelectItem value="600">600 DPI (Archival Quality)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Higher DPI produces larger files with better detail for archival.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "pdf-to-word-layout":
+    case "pdf-to-word-flow":
+    case "pdf-to-ppt-editable":
+    case "pdf-to-ppt-images":
+      return null;
+
+    case "edit-pdf":
+    case "pdf-editor":
+    case "add-text-to-pdf":
+    case "edit-pdf-text":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textContent">Text to Add</Label>
+            <Input
+              id="textContent"
+              placeholder="Enter the text you want to add..."
+              value={options.textContent || ""}
+              onChange={(e) => updateOption("textContent", e.target.value)}
+              data-testid="input-text-content"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="textX">X Position (pixels from left)</Label>
+              <Input
+                id="textX"
+                type="number"
+                placeholder="50"
+                value={options.textX || ""}
+                onChange={(e) => updateOption("textX", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-x"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="textY">Y Position (pixels from bottom)</Label>
+              <Input
+                id="textY"
+                type="number"
+                placeholder="700"
+                value={options.textY || ""}
+                onChange={(e) => updateOption("textY", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-y"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Font Size</Label>
+              <Select
+                value={String(options.fontSize || 12)}
+                onValueChange={(value) => updateOption("fontSize", parseInt(value))}
+              >
+                <SelectTrigger data-testid="select-font-size">
+                  <SelectValue placeholder="Select size" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="8">8pt</SelectItem>
+                  <SelectItem value="10">10pt</SelectItem>
+                  <SelectItem value="12">12pt</SelectItem>
+                  <SelectItem value="14">14pt</SelectItem>
+                  <SelectItem value="16">16pt</SelectItem>
+                  <SelectItem value="18">18pt</SelectItem>
+                  <SelectItem value="24">24pt</SelectItem>
+                  <SelectItem value="36">36pt</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="fontColor">Font Color</Label>
+              <Input
+                id="fontColor"
+                type="color"
+                value={options.fontColor || "#000000"}
+                onChange={(e) => updateOption("fontColor", e.target.value)}
+                className="h-9 cursor-pointer"
+                data-testid="input-font-color"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="targetPage">Target Page</Label>
+            <Input
+              id="targetPage"
+              type="number"
+              placeholder="1"
+              min={1}
+              value={options.targetPage || ""}
+              onChange={(e) => updateOption("targetPage", parseInt(e.target.value) || undefined)}
+              data-testid="input-target-page"
+            />
+            <p className="text-sm text-muted-foreground">
+              Page number where the text will be added.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }
