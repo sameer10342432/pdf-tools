@@ -181,6 +181,16 @@ export const pdfToolTypes = [
   "pdf-to-wpd",
   "pdf-to-keynote",
   "pdf-to-pages",
+  "pdf-to-numbers",
+  "pdf-to-odt-ocr",
+  "pdf-to-docx-ocr",
+  "pdf-to-searchable-pdf",
+  "pdf-to-txt-ocr",
+  "pdf-to-epub-ocr",
+  "pdf-to-speech",
+  "pdf-to-mp3",
+  "pdf-to-single-page-html",
+  "pdf-to-multi-page-html",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -4815,5 +4825,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Apple Workflow Integration</h2>
 <p>Edit documents seamlessly across Mac and iOS. Collaborate with Pages users via iCloud. Apply beautiful Pages templates to content. Export to other formats when sharing outside Apple. PDF to Pages connects documents to Apple's ecosystem.</p>`,
+  },
+  {
+    id: "pdf-to-numbers",
+    name: "PDF to Numbers",
+    description: "Convert PDF tables and data to Apple Numbers spreadsheets",
+    icon: "Table",
+    type: "pdf-to-numbers",
+    color: "bg-green-600",
+    emoji: "📊",
+    metaTitle: "PDF to Numbers Online Free - Convert PDF to Apple Numbers | PDF Tools",
+    metaDescription: "Convert PDF tables and data to Apple Numbers format online for free. Extract spreadsheet data from PDFs into editable Numbers files for Mac and iOS.",
+    seoArticle: `<h2>PDF to Numbers Converter - Apple Spreadsheet Format</h2>
+<p>Transform your PDF data into Apple Numbers spreadsheets with our free online converter. Numbers is Apple's powerful spreadsheet application, featuring beautiful charts, interactive tables, and seamless iCloud integration. Convert PDF tables, reports, and data into fully editable Numbers documents.</p>
+
+<h2>Why Convert PDF to Numbers?</h2>
+<p>Numbers offers an elegant approach to spreadsheet creation with stunning visualizations and intuitive design. Perfect for financial reports, data analysis, and business tracking. Converting PDFs to Numbers enables full editing, formula creation, and chart generation within Apple's ecosystem.</p>
+
+<h2>Table Extraction Technology</h2>
+<p>Our converter intelligently identifies tables within your PDF. Data is extracted and organized into structured spreadsheet cells. Columns and rows are preserved. Numbers are recognized for calculations. The result is a Numbers document ready for analysis and editing.</p>
+
+<h2>Simple PDF to Numbers Process</h2>
+<p>Upload your PDF file containing tables or data. Our converter extracts and structures the information. Download your Numbers-compatible file. Open in Numbers on Mac, iPad, or iPhone for immediate editing and analysis.</p>
+
+<h2>Apple Numbers Integration</h2>
+<p>Create beautiful charts from extracted data. Apply Numbers' powerful formulas. Collaborate via iCloud sharing. Export to Excel or CSV when needed. PDF to Numbers unlocks the full power of Apple's spreadsheet application.</p>`,
+  },
+  {
+    id: "pdf-to-odt-ocr",
+    name: "PDF to ODT (OCR)",
+    description: "Convert scanned PDFs to editable OpenDocument Text using OCR",
+    icon: "FileText",
+    type: "pdf-to-odt-ocr",
+    color: "bg-blue-600",
+    emoji: "👁️",
+    metaTitle: "PDF to ODT OCR Online Free - Scanned PDF to OpenDocument | PDF Tools",
+    metaDescription: "Convert scanned PDF files to editable ODT format using OCR technology. Extract text from image-based PDFs into OpenDocument Text format online for free.",
+    seoArticle: `<h2>PDF to ODT with OCR - Scanned Document Conversion</h2>
+<p>Convert scanned PDFs and image-based documents to editable OpenDocument Text format using our advanced OCR technology. Optical Character Recognition extracts text from images, transforming non-searchable PDFs into fully editable ODT documents compatible with LibreOffice, OpenOffice, and other applications.</p>
+
+<h2>OCR Technology Explained</h2>
+<p>Optical Character Recognition analyzes images of text and converts them to actual text characters. Our OCR engine recognizes multiple fonts, handwriting styles, and 100+ languages. Even poor-quality scans are processed with high accuracy, extracting text that was previously locked in image form.</p>
+
+<h2>Why Choose ODT Format?</h2>
+<p>ODT (OpenDocument Text) is an open standard format supported by many word processors. It's the native format for LibreOffice and OpenOffice. ODT files are compact, widely compatible, and future-proof. Perfect for organizations committed to open-source solutions.</p>
+
+<h2>Accurate Text Extraction</h2>
+<p>Our OCR accurately identifies text, preserves paragraph structure, and maintains formatting where possible. Tables are detected and structured. Multi-column layouts are handled intelligently. The result is an ODT document that captures your PDF content faithfully.</p>
+
+<h2>Multi-Language OCR Support</h2>
+<p>Process documents in English, Spanish, French, German, Italian, Portuguese, Russian, Japanese, Chinese, Korean, Arabic, Hindi, and many more languages. Our OCR engine adapts to different scripts and character sets automatically.</p>`,
+  },
+  {
+    id: "pdf-to-docx-ocr",
+    name: "PDF to DOCX (OCR)",
+    description: "Convert scanned PDFs to editable Word documents using OCR",
+    icon: "FileType",
+    type: "pdf-to-docx-ocr",
+    color: "bg-blue-700",
+    emoji: "🔍",
+    metaTitle: "PDF to Word OCR Online Free - Scanned PDF to DOCX | PDF Tools",
+    metaDescription: "Convert scanned PDF files to editable Word DOCX format using OCR technology. Extract text from image-based PDFs online for free with high accuracy.",
+    seoArticle: `<h2>PDF to Word with OCR - Scanned Document to DOCX</h2>
+<p>Transform scanned PDFs and image-based documents into editable Microsoft Word files using advanced OCR technology. Our converter recognizes text in images and creates fully editable DOCX documents. Perfect for digitizing paper documents, editing scanned contracts, or working with legacy documents.</p>
+
+<h2>Advanced OCR Engine</h2>
+<p>Our Optical Character Recognition technology analyzes every pixel of your scanned document. Text is identified with remarkable accuracy, even in challenging conditions like faded prints, unusual fonts, or mixed content. The extracted text maintains the original formatting wherever possible.</p>
+
+<h2>Professional DOCX Output</h2>
+<p>The converted Word document preserves document structure including headings, paragraphs, and lists. Tables are reconstructed as Word tables. Images are embedded in their original positions. The result is a professional document ready for editing in Microsoft Word or compatible applications.</p>
+
+<h2>How OCR to Word Works</h2>
+<p>Upload your scanned PDF or image-based document. Our OCR engine processes each page, extracting text and layout information. Text is placed in a Word document maintaining original positioning. Download your editable DOCX file for immediate use.</p>
+
+<h2>Business Applications</h2>
+<p>Digitize archived paper documents. Edit received scanned contracts. Extract data from old reports. Make legacy documents searchable and editable. PDF to DOCX with OCR bridges the gap between paper and digital workflows.</p>`,
+  },
+  {
+    id: "pdf-to-searchable-pdf",
+    name: "PDF to Searchable PDF",
+    description: "Make scanned PDFs searchable using OCR technology",
+    icon: "Search",
+    type: "pdf-to-searchable-pdf",
+    color: "bg-purple-600",
+    emoji: "🔎",
+    metaTitle: "Create Searchable PDF with OCR Online Free - OCR PDF Maker | PDF Tools",
+    metaDescription: "Convert scanned PDFs to searchable PDFs using OCR technology online for free. Make image-based documents text-searchable while preserving original appearance.",
+    seoArticle: `<h2>Create Searchable PDFs with OCR Technology</h2>
+<p>Transform your scanned documents into searchable PDFs using our advanced OCR technology. A searchable PDF looks identical to the original but contains an invisible text layer underneath. This enables text selection, copy-paste, and full-text search while preserving the document's exact appearance.</p>
+
+<h2>How Searchable PDFs Work</h2>
+<p>Searchable PDFs contain two layers: the original scanned image layer and an OCR-generated text layer beneath it. When you view the document, you see the original scan. When you search or select text, you interact with the invisible text layer. This dual-layer approach provides the best of both worlds.</p>
+
+<h2>Benefits of Searchable PDFs</h2>
+<p>Find specific content instantly using Ctrl+F or any PDF reader's search function. Copy text from scanned documents for use elsewhere. Create bookmarks based on document text. Enable accessibility features for screen readers. Improve document management and organization.</p>
+
+<h2>High-Accuracy OCR Processing</h2>
+<p>Our OCR engine delivers exceptional accuracy across many languages and fonts. The text layer is precisely aligned with the visible content, ensuring search results highlight the correct locations. Even handwriting and unusual fonts are processed effectively.</p>
+
+<h2>Archive and Compliance Ready</h2>
+<p>Searchable PDFs meet archival requirements for many industries. Legal, medical, and financial documents become more accessible while maintaining visual authenticity. Create PDF/A compliant searchable archives for long-term preservation.</p>`,
+  },
+  {
+    id: "pdf-to-txt-ocr",
+    name: "PDF to TXT (OCR)",
+    description: "Extract text from scanned PDFs using OCR technology",
+    icon: "FileText",
+    type: "pdf-to-txt-ocr",
+    color: "bg-gray-600",
+    emoji: "📝",
+    metaTitle: "PDF to Text OCR Online Free - Extract Text from Scanned PDFs | PDF Tools",
+    metaDescription: "Extract text from scanned PDF files using OCR technology online for free. Convert image-based PDFs to plain text with high accuracy.",
+    seoArticle: `<h2>Extract Text from Scanned PDFs with OCR</h2>
+<p>Extract readable text from scanned documents and image-based PDFs using our powerful OCR technology. Unlike standard PDF-to-text conversion which only works with digital PDFs, our OCR engine reads text from images, making previously inaccessible content available for editing, copying, and analysis.</p>
+
+<h2>When You Need OCR Text Extraction</h2>
+<p>Standard PDF text extraction fails with scanned documents because the text exists only as an image. OCR technology solves this by "reading" the images just like a human would. Use OCR extraction when your PDF contains scanned pages, photographs of documents, or any image-based content.</p>
+
+<h2>Clean Plain Text Output</h2>
+<p>Our converter produces clean, well-structured plain text. Paragraphs are preserved. Line breaks are intelligently placed. Special characters are recognized and converted. The output text is ready for use in any application that accepts plain text.</p>
+
+<h2>Multi-Language Recognition</h2>
+<p>Our OCR engine supports over 100 languages including English, Spanish, French, German, Chinese, Japanese, Korean, Arabic, Russian, Hindi, and many more. Language is detected automatically, or you can specify it for optimal results.</p>
+
+<h2>Use Cases for OCR Text Extraction</h2>
+<p>Digitize old books and documents. Extract data from scanned forms. Convert faxes and photocopies to editable text. Create searchable text archives from paper documents. Feed extracted text to translation or analysis tools.</p>`,
+  },
+  {
+    id: "pdf-to-epub-ocr",
+    name: "PDF to EPUB (OCR)",
+    description: "Convert scanned PDFs to EPUB eBooks using OCR technology",
+    icon: "Book",
+    type: "pdf-to-epub-ocr",
+    color: "bg-indigo-600",
+    emoji: "📚",
+    metaTitle: "PDF to EPUB OCR Online Free - Scanned PDF to eBook | PDF Tools",
+    metaDescription: "Convert scanned PDF files to EPUB eBook format using OCR technology online for free. Create readable eBooks from scanned documents and books.",
+    seoArticle: `<h2>Convert Scanned PDFs to EPUB eBooks with OCR</h2>
+<p>Transform scanned documents and image-based PDFs into flowing EPUB eBooks using our advanced OCR technology. EPUB is the universal eBook format supported by nearly all e-readers, tablets, and reading apps. Perfect for creating eBooks from old books, scanned manuscripts, or any paper-based content.</p>
+
+<h2>OCR-Powered eBook Creation</h2>
+<p>Our OCR engine extracts text from scanned pages, then structures it for optimal eBook reading. Unlike fixed-layout PDF, EPUB reflows text to fit any screen size. Readers can adjust fonts, sizes, and spacing for comfortable reading on any device.</p>
+
+<h2>EPUB Format Advantages</h2>
+<p>EPUB provides the best reading experience on e-readers and mobile devices. Text reflows naturally on any screen size. Readers can customize fonts and background colors. Bookmarking, highlighting, and note-taking are fully supported. Night mode and accessibility features enhance usability.</p>
+
+<h2>Conversion Process</h2>
+<p>Upload your scanned PDF or image-based document. Our OCR engine extracts all text content. The text is structured into chapters and paragraphs. Download your EPUB file, ready for any e-reader or reading app.</p>
+
+<h2>Perfect for Book Digitization</h2>
+<p>Create eBooks from old printed books. Digitize family documents and letters. Convert research papers for comfortable reading. Transform manuals and guides into portable eBooks. PDF to EPUB with OCR brings any printed content to your e-reader.</p>`,
+  },
+  {
+    id: "pdf-to-speech",
+    name: "PDF to Speech",
+    description: "Convert PDF text to natural speech audio output",
+    icon: "Volume2",
+    type: "pdf-to-speech",
+    color: "bg-pink-600",
+    emoji: "🔊",
+    metaTitle: "PDF to Speech Online Free - Convert PDF to Audio | PDF Tools",
+    metaDescription: "Convert PDF documents to speech audio online for free. Transform PDF text into natural-sounding audio for listening on the go. Text-to-speech converter.",
+    seoArticle: `<h2>Convert PDF to Speech - Listen to Your Documents</h2>
+<p>Transform any PDF document into natural-sounding speech with our free text-to-speech converter. Listen to reports during your commute, study materials while exercising, or books before bed. PDF to speech makes documents accessible anywhere, anytime, without requiring visual attention.</p>
+
+<h2>Natural Voice Technology</h2>
+<p>Our text-to-speech engine produces clear, natural-sounding audio. Multiple voices and languages are available. Speed and pitch can be adjusted to your preference. The result sounds like a real narrator reading your document aloud.</p>
+
+<h2>Accessibility and Convenience</h2>
+<p>PDF to speech technology benefits everyone. Visually impaired users gain access to document content. Busy professionals listen while multitasking. Students reinforce learning through audio. Language learners improve comprehension and pronunciation. Convert any PDF for accessible listening.</p>
+
+<h2>How PDF to Speech Works</h2>
+<p>Upload your PDF document. Our engine extracts text content (using OCR if needed for scanned documents). The text is processed through our speech synthesis system. Download or stream the audio output in standard formats.</p>
+
+<h2>Multiple Use Cases</h2>
+<p>Listen to ebooks and articles during commutes. Review meeting minutes without screen time. Consume research papers while relaxing. Proofread your own writing by hearing it aloud. PDF to speech opens new ways to consume written content.</p>`,
+  },
+  {
+    id: "pdf-to-mp3",
+    name: "PDF to MP3",
+    description: "Convert PDF documents to MP3 audio files",
+    icon: "Music",
+    type: "pdf-to-mp3",
+    color: "bg-red-600",
+    emoji: "🎧",
+    metaTitle: "PDF to MP3 Online Free - Convert PDF to Audio MP3 | PDF Tools",
+    metaDescription: "Convert PDF documents to MP3 audio files online for free. Transform PDF text into downloadable MP3 audio. Perfect for podcasts and audiobooks.",
+    seoArticle: `<h2>Convert PDF to MP3 Audio Files</h2>
+<p>Transform your PDF documents into downloadable MP3 audio files with our free converter. MP3 is the universal audio format, playable on virtually any device including smartphones, music players, car stereos, and computers. Create portable audio versions of any document for listening anywhere.</p>
+
+<h2>Why MP3 Format?</h2>
+<p>MP3 is the most widely supported audio format worldwide. Files are compact yet maintain quality. Every device plays MP3 files natively. Transfer to any media player, phone, or car audio system. MP3 makes your documents truly portable and accessible everywhere.</p>
+
+<h2>Text-to-Speech Technology</h2>
+<p>Our converter extracts text from your PDF and synthesizes it into natural-sounding speech. Multiple voices provide variety. Clear pronunciation ensures comprehension. The generated MP3 sounds professional and is easy to listen to for extended periods.</p>
+
+<h2>Simple Conversion Process</h2>
+<p>Upload your PDF document to our converter. Text is extracted and processed through our speech engine. High-quality MP3 audio is generated. Download your audio file and transfer it to any device.</p>
+
+<h2>Perfect for Audio Learning</h2>
+<p>Create audio versions of textbooks and study materials. Convert articles to podcast-style content. Transform manuals into hands-free instructions. Build audio libraries from written content. PDF to MP3 turns reading into listening.</p>`,
+  },
+  {
+    id: "pdf-to-single-page-html",
+    name: "PDF to Single Page HTML",
+    description: "Convert PDF to a single-page HTML document",
+    icon: "Code",
+    type: "pdf-to-single-page-html",
+    color: "bg-cyan-600",
+    emoji: "📄",
+    metaTitle: "PDF to Single Page HTML Online Free - Convert PDF to HTML | PDF Tools",
+    metaDescription: "Convert PDF files to single-page HTML documents online for free. Transform PDFs into web-ready HTML format with all content on one page.",
+    seoArticle: `<h2>Convert PDF to Single Page HTML</h2>
+<p>Transform your PDF documents into clean, single-page HTML files with our free online converter. A single-page HTML puts all your PDF content on one continuous web page, perfect for online viewing, embedding in websites, or creating web archives of documents.</p>
+
+<h2>Why Single Page HTML?</h2>
+<p>Single-page HTML documents are ideal for web publishing. No page navigation required - users simply scroll through content. Perfect for articles, reports, and documentation. Easy to embed in existing websites. Search engines can index all content easily.</p>
+
+<h2>Clean HTML Output</h2>
+<p>Our converter generates semantic, well-structured HTML code. Text is properly formatted with appropriate headings. Images are embedded or linked correctly. CSS styling maintains visual appearance. The result is clean code that works in all browsers.</p>
+
+<h2>Conversion Process</h2>
+<p>Upload your PDF file. Our converter extracts content from all pages. Content is combined into a single flowing HTML document. Styling is applied to maintain readability. Download your HTML file, ready for web use.</p>
+
+<h2>Web Publishing Made Easy</h2>
+<p>Publish documents directly on your website. Create web archives of important PDFs. Make document content accessible without PDF readers. Improve SEO by converting to indexable HTML. Single-page HTML simplifies web document publishing.</p>`,
+  },
+  {
+    id: "pdf-to-multi-page-html",
+    name: "PDF to Multi-Page HTML",
+    description: "Convert PDF to multiple linked HTML pages",
+    icon: "LayoutGrid",
+    type: "pdf-to-multi-page-html",
+    color: "bg-teal-600",
+    emoji: "📑",
+    metaTitle: "PDF to Multi-Page HTML Online Free - Convert PDF to Website | PDF Tools",
+    metaDescription: "Convert PDF files to multiple linked HTML pages online for free. Transform PDFs into navigable multi-page websites with automatic page navigation.",
+    seoArticle: `<h2>Convert PDF to Multi-Page HTML Website</h2>
+<p>Transform your PDF documents into navigable multi-page HTML websites with our free converter. Each PDF page becomes a separate HTML page, connected with navigation links. Perfect for creating web-based document viewers, online books, or interactive documentation.</p>
+
+<h2>Structured Multi-Page Layout</h2>
+<p>Each PDF page is converted to its own HTML page, maintaining individual page integrity. Navigation links connect all pages seamlessly. Users can move forward, backward, or jump to any page. A table of contents provides quick access to all content.</p>
+
+<h2>Professional Navigation Features</h2>
+<p>Auto-generated navigation includes next/previous page links. Page numbers are displayed prominently. A sidebar or menu shows all pages for quick jumping. Responsive design ensures good viewing on all devices.</p>
+
+<h2>How It Works</h2>
+<p>Upload your PDF document. Each page is converted to a separate HTML file. Navigation elements are generated automatically. All files are packaged together. Download the complete multi-page website as a ZIP archive.</p>
+
+<h2>Ideal for Documentation and Books</h2>
+<p>Create online documentation portals from PDF manuals. Build web-based reading experiences for books. Convert training materials to interactive web courses. Make long documents easier to navigate online. Multi-page HTML provides the ultimate web document experience.</p>`,
   },
 ];
