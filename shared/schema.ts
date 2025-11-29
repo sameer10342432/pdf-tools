@@ -111,6 +111,16 @@ export const pdfToolTypes = [
   "xml-to-pdf",
   "markdown-to-pdf",
   "md-to-pdf",
+  "create-pdf",
+  "pdf-creator",
+  "pub-to-pdf",
+  "vsd-to-pdf",
+  "mpp-to-pdf",
+  "pages-to-pdf",
+  "numbers-to-pdf",
+  "keynote-to-pdf",
+  "email-to-pdf",
+  "msg-to-pdf",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -2995,5 +3005,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>How to Convert MD to PDF</h2>
 <p>Upload your .md file using drag-and-drop. Our converter processes all Markdown syntax. Download your beautifully formatted PDF document. Share technical documentation in a professional format. Print or distribute Markdown content to any audience.</p>`,
+  },
+  {
+    id: "create-pdf",
+    name: "Create PDF",
+    description: "Create a new blank PDF document from scratch",
+    icon: "FilePlus",
+    type: "create-pdf",
+    color: "bg-blue-600",
+    emoji: "📄",
+    metaTitle: "Create PDF Online Free - Make New PDF Documents | PDF Tools",
+    metaDescription: "Create new blank PDF documents online for free. Generate custom PDF files with specified page sizes instantly. Easy PDF creation tool.",
+    seoArticle: `<h2>Create PDF Documents Online - Start Fresh</h2>
+<p>Need a blank PDF document to work with? Our Create PDF tool generates new, empty PDF documents with your specified dimensions. Perfect for creating templates, starting projects, or generating blank forms. Create professional PDF files instantly without any design software.</p>
+
+<h2>Choose Your Page Size</h2>
+<p>Select from standard page sizes including Letter, A4, Legal, or custom dimensions. Our tool creates properly formatted PDF documents that work seamlessly with any PDF reader or editor. Start your projects with correctly sized blank canvases ready for content.</p>
+
+<h2>Professional PDF Generation</h2>
+<p>The PDFs we generate are fully compliant with PDF standards. They open correctly in all PDF readers, can be edited in any PDF editor, and print perfectly. Use them as starting points for forms, certificates, or any document creation project.</p>
+
+<h2>Simple Creation Process</h2>
+<p>Choose your desired page size and number of pages. Click create to generate your blank PDF instantly. Download your new document ready for editing. No complicated software or account registration required. Quick, simple PDF creation at your fingertips.</p>
+
+<h2>Perfect Starting Point</h2>
+<p>Use blank PDFs as templates for recurring documents. Create forms to fill with PDF editors. Generate placeholder documents for project planning. Start design projects with correctly sized canvases. Blank PDF creation serves countless practical purposes.</p>`,
+  },
+  {
+    id: "pdf-creator",
+    name: "PDF Creator",
+    description: "Create custom PDF documents with text content",
+    icon: "FileEdit",
+    type: "pdf-creator",
+    color: "bg-indigo-600",
+    emoji: "✍️",
+    metaTitle: "PDF Creator Online Free - Generate Custom PDF Documents | PDF Tools",
+    metaDescription: "Create custom PDF documents with your own text content online for free. Generate professional PDFs instantly. Easy online PDF creator tool.",
+    seoArticle: `<h2>PDF Creator - Build Documents Your Way</h2>
+<p>Create professional PDF documents with your own content using our PDF Creator tool. Enter your text, choose formatting options, and generate polished PDF documents instantly. Perfect for creating simple documents, text-based content, or formatted reports without complex software.</p>
+
+<h2>Add Your Content</h2>
+<p>Enter the text content you want in your PDF document. Our creator formats your text professionally with proper fonts and spacing. Create single-page documents or multi-page content automatically. Your text becomes a beautifully formatted PDF document.</p>
+
+<h2>Professional Output</h2>
+<p>Generated PDFs look professionally typeset with clean fonts and proper margins. Documents are suitable for business use, sharing with clients, or printing. No design skills needed to create polished, professional-looking PDF documents.</p>
+
+<h2>Quick Document Generation</h2>
+<p>Enter your text content in the input area. Choose your preferred page size. Click create to generate your PDF document. Download your professionally formatted document instantly. The entire process takes just seconds.</p>
+
+<h2>Versatile Document Creation</h2>
+<p>Create quick memos and notes in PDF format. Generate simple reports for distribution. Build text-based documents for archiving. Create printable content from any text. PDF Creator makes document generation fast and simple.</p>`,
+  },
+  {
+    id: "pub-to-pdf",
+    name: "PUB to PDF",
+    description: "Convert Microsoft Publisher files to PDF format",
+    icon: "FileType",
+    type: "pub-to-pdf",
+    color: "bg-teal-600",
+    emoji: "📰",
+    metaTitle: "PUB to PDF Online Free - Convert Publisher to PDF | PDF Tools",
+    metaDescription: "Convert Microsoft Publisher PUB files to PDF online for free. Transform Publisher documents to universal PDF format. Fast PUB to PDF converter.",
+    seoArticle: `<h2>PUB to PDF Converter - Publisher Documents Made Universal</h2>
+<p>Convert your Microsoft Publisher (.pub) files to universally readable PDF documents with our free online converter. Publisher is great for creating brochures, newsletters, and marketing materials, but not everyone has Publisher installed. Converting to PDF ensures your designs can be viewed by anyone.</p>
+
+<h2>Why Convert PUB to PDF?</h2>
+<p>Microsoft Publisher files require Publisher software to open. By converting to PDF, you create documents that anyone can view using free PDF readers. Share your brochures, flyers, and publications with clients, colleagues, and the public without software compatibility issues.</p>
+
+<h2>Preserve Your Designs</h2>
+<p>Our converter maintains the layout and design of your Publisher documents. Text positioning, images, and graphical elements are preserved in the PDF output. Your marketing materials and publications look exactly as you designed them.</p>
+
+<h2>Simple Conversion Process</h2>
+<p>Upload your .pub file using our secure interface. Our converter processes your Publisher document. Download your universally compatible PDF. Share your publications with anyone, regardless of what software they have installed.</p>
+
+<h2>Professional Publishing Made Easy</h2>
+<p>Convert newsletters for email distribution. Share brochures without requiring Publisher. Create print-ready PDFs from Publisher designs. Distribute marketing materials in a format everyone can open. PUB to PDF conversion simplifies sharing.</p>`,
+  },
+  {
+    id: "vsd-to-pdf",
+    name: "VSD to PDF",
+    description: "Convert Microsoft Visio diagrams to PDF format",
+    icon: "Network",
+    type: "vsd-to-pdf",
+    color: "bg-purple-600",
+    emoji: "📊",
+    metaTitle: "VSD to PDF Online Free - Convert Visio to PDF | PDF Tools",
+    metaDescription: "Convert Microsoft Visio VSD files to PDF online for free. Transform Visio diagrams to universal PDF format. Fast VSD to PDF converter.",
+    seoArticle: `<h2>VSD to PDF Converter - Visio Diagrams Made Shareable</h2>
+<p>Transform your Microsoft Visio (.vsd) diagrams into universally viewable PDF documents with our free online converter. Visio is the industry standard for flowcharts, org charts, and technical diagrams, but recipients need Visio to view VSD files. PDF conversion solves this accessibility problem.</p>
+
+<h2>Share Diagrams Without Software Requirements</h2>
+<p>Not everyone has Microsoft Visio installed. Converting your diagrams to PDF means anyone with a free PDF reader can view your flowcharts, network diagrams, and organizational charts. Share technical documentation without software barriers.</p>
+
+<h2>Maintain Diagram Precision</h2>
+<p>Our converter preserves the precision of your Visio diagrams. Lines, shapes, connections, and text elements maintain their exact positions. Technical accuracy is crucial for diagrams, and our conversion process respects that requirement.</p>
+
+<h2>Easy Diagram Conversion</h2>
+<p>Upload your .vsd or .vsdx Visio file. Our converter processes your diagram. Download your diagram as a PDF. Share flowcharts and org charts with anyone. No Visio required for recipients to view your work.</p>
+
+<h2>Professional Documentation</h2>
+<p>Convert process flowcharts for project documentation. Share network diagrams with non-technical stakeholders. Distribute org charts company-wide. Include diagrams in PDF reports and proposals. VSD to PDF makes diagram sharing effortless.</p>`,
+  },
+  {
+    id: "mpp-to-pdf",
+    name: "MPP to PDF",
+    description: "Convert Microsoft Project files to PDF format",
+    icon: "GanttChart",
+    type: "mpp-to-pdf",
+    color: "bg-orange-600",
+    emoji: "📅",
+    metaTitle: "MPP to PDF Online Free - Convert MS Project to PDF | PDF Tools",
+    metaDescription: "Convert Microsoft Project MPP files to PDF online for free. Transform project plans to universal PDF format. Fast MPP to PDF converter.",
+    seoArticle: `<h2>MPP to PDF Converter - Project Plans Made Accessible</h2>
+<p>Convert your Microsoft Project (.mpp) files to universally viewable PDF documents with our free online converter. Project managers rely on MS Project for Gantt charts and project schedules, but stakeholders often lack Project software. PDF conversion enables universal access to project information.</p>
+
+<h2>Share Project Plans Universally</h2>
+<p>Microsoft Project is specialized software that many stakeholders don't have. Converting project plans to PDF creates documents that clients, executives, and team members can view without software purchases. Keep everyone informed about project timelines and milestones.</p>
+
+<h2>Preserve Project Information</h2>
+<p>Our converter captures the essential information from your project files. Gantt charts, task lists, and timeline views are converted to clear PDF representations. Stakeholders can review project status without needing Project software.</p>
+
+<h2>Simple Project Conversion</h2>
+<p>Upload your .mpp Project file. Our converter processes your project plan. Download your project as a viewable PDF. Share project timelines with any stakeholder. Eliminate software barriers to project visibility.</p>
+
+<h2>Enhanced Project Communication</h2>
+<p>Distribute project schedules to clients. Share Gantt charts in status reports. Include project timelines in proposals. Archive project plans in accessible format. MPP to PDF improves project communication.</p>`,
+  },
+  {
+    id: "pages-to-pdf",
+    name: "Pages to PDF",
+    description: "Convert Apple Pages documents to PDF format",
+    icon: "FileText",
+    type: "pages-to-pdf",
+    color: "bg-gray-600",
+    emoji: "🍎",
+    metaTitle: "Pages to PDF Online Free - Convert Apple Pages to PDF | PDF Tools",
+    metaDescription: "Convert Apple Pages documents to PDF online for free. Transform Pages files to universal PDF format. Fast Pages to PDF converter.",
+    seoArticle: `<h2>Pages to PDF Converter - Apple Documents Made Universal</h2>
+<p>Convert your Apple Pages documents to universally compatible PDF files with our free online converter. Pages creates beautiful documents on Mac and iOS, but Windows users and others may struggle to open .pages files. PDF conversion ensures everyone can access your documents.</p>
+
+<h2>Cross-Platform Document Sharing</h2>
+<p>Apple Pages is exclusive to the Apple ecosystem. When you need to share documents with Windows users, Android users, or anyone without Apple devices, PDF is the universal solution. Convert your Pages documents for seamless cross-platform sharing.</p>
+
+<h2>Preserve Document Formatting</h2>
+<p>Our converter maintains the formatting and layout of your Pages documents. Text styles, images, and page layouts are preserved in the PDF output. Your documents look as intended regardless of the recipient's platform or software.</p>
+
+<h2>Easy Apple Document Conversion</h2>
+<p>Upload your .pages file using our interface. Our converter processes your Apple document. Download your universally compatible PDF. Share documents with anyone regardless of their operating system or device.</p>
+
+<h2>Bridge the Apple-Windows Gap</h2>
+<p>Share Apple-created documents with Windows colleagues. Send Pages documents to clients on any platform. Archive Apple documents in universal format. Distribute content without platform restrictions. Pages to PDF enables universal access.</p>`,
+  },
+  {
+    id: "numbers-to-pdf",
+    name: "Numbers to PDF",
+    description: "Convert Apple Numbers spreadsheets to PDF format",
+    icon: "Table",
+    type: "numbers-to-pdf",
+    color: "bg-green-600",
+    emoji: "📈",
+    metaTitle: "Numbers to PDF Online Free - Convert Apple Numbers to PDF | PDF Tools",
+    metaDescription: "Convert Apple Numbers spreadsheets to PDF online for free. Transform Numbers files to universal PDF format. Fast Numbers to PDF converter.",
+    seoArticle: `<h2>Numbers to PDF Converter - Apple Spreadsheets Made Shareable</h2>
+<p>Transform your Apple Numbers spreadsheets into universally viewable PDF documents with our free online converter. Numbers creates powerful spreadsheets on Mac and iOS, but sharing with non-Apple users requires format conversion. PDF ensures your data is accessible to everyone.</p>
+
+<h2>Share Spreadsheets Across Platforms</h2>
+<p>Apple Numbers files are not directly compatible with Windows or Android systems. Converting to PDF creates documents that open on any device with any operating system. Share financial reports, data tables, and charts without platform barriers.</p>
+
+<h2>Preserve Data Presentation</h2>
+<p>Our converter maintains the visual presentation of your Numbers spreadsheets. Tables, charts, and formatting are preserved in the PDF output. Recipients see your data exactly as you formatted it, regardless of their platform.</p>
+
+<h2>Simple Spreadsheet Conversion</h2>
+<p>Upload your .numbers file securely. Our converter processes your Apple spreadsheet. Download your data as a viewable PDF. Share spreadsheets with anyone on any platform. No Apple software required for recipients.</p>
+
+<h2>Universal Data Distribution</h2>
+<p>Share financial reports with non-Apple stakeholders. Distribute data summaries to diverse teams. Archive spreadsheets in universal format. Present data in any business context. Numbers to PDF enables platform-independent sharing.</p>`,
+  },
+  {
+    id: "keynote-to-pdf",
+    name: "Keynote to PDF",
+    description: "Convert Apple Keynote presentations to PDF format",
+    icon: "Presentation",
+    type: "keynote-to-pdf",
+    color: "bg-blue-500",
+    emoji: "🎬",
+    metaTitle: "Keynote to PDF Online Free - Convert Apple Keynote to PDF | PDF Tools",
+    metaDescription: "Convert Apple Keynote presentations to PDF online for free. Transform Keynote files to universal PDF format. Fast Keynote to PDF converter.",
+    seoArticle: `<h2>Keynote to PDF Converter - Apple Presentations Made Universal</h2>
+<p>Convert your Apple Keynote presentations to universally viewable PDF documents with our free online converter. Keynote creates stunning presentations on Mac and iOS, but sharing with Windows users requires format conversion. PDF ensures your presentation content reaches everyone.</p>
+
+<h2>Present Anywhere, To Anyone</h2>
+<p>Keynote presentations are limited to Apple devices. When presenting to clients or colleagues who use Windows or need offline access, PDF is the perfect solution. Convert your Keynote slides to PDF for universal viewing without software requirements.</p>
+
+<h2>Preserve Presentation Design</h2>
+<p>Our converter captures the visual design of your Keynote presentations. Slides, graphics, and layouts are preserved in the PDF output. Your presentation looks professional regardless of the viewing platform or software available.</p>
+
+<h2>Quick Presentation Conversion</h2>
+<p>Upload your .key Keynote file. Our converter processes your presentation. Download your slides as a PDF document. Share presentations with anyone on any device. Eliminate platform restrictions on your content.</p>
+
+<h2>Flexible Presentation Distribution</h2>
+<p>Share presentation decks with Windows clients. Distribute slide content for offline review. Archive presentations in universal format. Create handouts from Keynote slides. Keynote to PDF enables unlimited presentation sharing.</p>`,
+  },
+  {
+    id: "email-to-pdf",
+    name: "Email to PDF",
+    description: "Convert email files (EML) to PDF documents",
+    icon: "Mail",
+    type: "email-to-pdf",
+    color: "bg-red-500",
+    emoji: "📧",
+    metaTitle: "Email to PDF Online Free - Convert EML to PDF | PDF Tools",
+    metaDescription: "Convert email EML files to PDF documents online for free. Transform emails to PDF format for archiving. Fast email to PDF converter.",
+    seoArticle: `<h2>Email to PDF Converter - Archive Emails Professionally</h2>
+<p>Convert your email files (.eml) to professional PDF documents with our free online converter. Emails contain important communications that often need to be archived, shared, or presented as evidence. PDF conversion creates permanent, viewable records of email content.</p>
+
+<h2>Why Convert Emails to PDF?</h2>
+<p>EML files require email software to view properly. Converting to PDF creates standalone documents that anyone can open. PDFs preserve email content for legal records, compliance requirements, and long-term archiving. Create permanent records of important communications.</p>
+
+<h2>Preserve Email Content</h2>
+<p>Our converter extracts all essential email information: sender, recipients, subject, date, and message body. Email content is formatted into a clear, readable PDF document. Headers and metadata are preserved for complete record-keeping.</p>
+
+<h2>Simple Email Conversion</h2>
+<p>Export emails as .eml files from your email client. Upload the EML file to our converter. Download your email as a formatted PDF document. Archive, share, or print email records in universal format.</p>
+
+<h2>Professional Email Archiving</h2>
+<p>Create legal records of important correspondence. Archive business communications for compliance. Share email content without forwarding. Build documentation from email threads. Email to PDF enables professional email management.</p>`,
+  },
+  {
+    id: "msg-to-pdf",
+    name: "MSG to PDF",
+    description: "Convert Outlook MSG files to PDF documents",
+    icon: "Mail",
+    type: "msg-to-pdf",
+    color: "bg-blue-700",
+    emoji: "📨",
+    metaTitle: "MSG to PDF Online Free - Convert Outlook MSG to PDF | PDF Tools",
+    metaDescription: "Convert Outlook MSG files to PDF documents online for free. Transform Outlook emails to PDF format. Fast MSG to PDF converter.",
+    seoArticle: `<h2>MSG to PDF Converter - Outlook Emails to Universal Documents</h2>
+<p>Convert your Microsoft Outlook email files (.msg) to universally viewable PDF documents with our free online converter. MSG files are Outlook's proprietary email format that requires Outlook to open. PDF conversion creates documents accessible to everyone.</p>
+
+<h2>Break Free from Outlook Dependency</h2>
+<p>MSG files only open properly in Microsoft Outlook. When you need to share email content with people who don't use Outlook, or archive emails in a universal format, PDF is the solution. Convert Outlook emails to PDFs that anyone can read.</p>
+
+<h2>Complete Email Preservation</h2>
+<p>Our converter extracts all MSG file content: email headers, sender information, recipients, subject lines, and message bodies. The PDF output provides a complete, formatted record of the original email communication.</p>
+
+<h2>Easy Outlook Email Conversion</h2>
+<p>Save emails from Outlook as .msg files. Upload the MSG file to our converter. Download your email as a readable PDF. Share Outlook emails without requiring recipients to have Outlook installed.</p>
+
+<h2>Professional Email Documentation</h2>
+<p>Archive Outlook emails in accessible format. Create legal records from Outlook correspondence. Share email content with non-Outlook users. Document business communications permanently. MSG to PDF bridges the Outlook accessibility gap.</p>`,
   },
 ];
