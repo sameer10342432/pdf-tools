@@ -201,6 +201,16 @@ export const pdfToolTypes = [
   "pdf-editor",
   "add-text-to-pdf",
   "edit-pdf-text",
+  "add-image-to-pdf",
+  "replace-image-in-pdf",
+  "add-shapes-to-pdf",
+  "draw-on-pdf",
+  "pdf-annotator",
+  "annotate-pdf",
+  "highlight-pdf-text",
+  "underline-pdf-text",
+  "strikethrough-pdf-text",
+  "pdf-marker",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -283,6 +293,27 @@ export const toolOptionsSchema = z.object({
   pngDpi: z.number().optional(),
   tiffDpi: z.number().optional(),
   exportMode: z.enum(["layout", "flow", "editable", "images"]).optional(),
+  imageX: z.number().optional(),
+  imageY: z.number().optional(),
+  imageWidth: z.number().optional(),
+  imageHeight: z.number().optional(),
+  imagePosition: z.enum(["center", "top-left", "top-right", "bottom-left", "bottom-right", "custom"]).optional(),
+  shapeType: z.enum(["rectangle", "circle", "line", "arrow", "ellipse"]).optional(),
+  shapeX: z.number().optional(),
+  shapeY: z.number().optional(),
+  shapeWidth: z.number().optional(),
+  shapeHeight: z.number().optional(),
+  shapeColor: z.string().optional(),
+  shapeFillColor: z.string().optional(),
+  shapeStrokeWidth: z.number().optional(),
+  drawColor: z.string().optional(),
+  drawStrokeWidth: z.number().optional(),
+  annotationType: z.enum(["highlight", "underline", "strikethrough", "note", "freehand"]).optional(),
+  annotationColor: z.string().optional(),
+  highlightColor: z.string().optional(),
+  markerColor: z.string().optional(),
+  annotationText: z.string().optional(),
+  annotationOpacity: z.number().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -5344,5 +5375,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Simple Editing Workflow</h2>
 <p>Upload your PDF document. Navigate to the page with text to edit. Select the text area you want to modify. Make your changes in the editing interface. Preview results before saving. Download your corrected PDF instantly. The entire process takes just minutes.</p>`,
+  },
+  {
+    id: "add-image-to-pdf",
+    name: "Add Image to PDF",
+    description: "Insert images into your PDF documents at any position",
+    icon: "ImagePlus",
+    type: "add-image-to-pdf",
+    color: "bg-emerald-500",
+    emoji: "🖼️",
+    metaTitle: "Add Image to PDF Online Free - Insert Pictures in PDF | PDF Tools",
+    metaDescription: "Add images to PDF documents online for free. Insert photos, logos, signatures, and graphics anywhere in your PDFs. Easy drag-and-drop image insertion.",
+    seoArticle: `<h2>Add Images to PDF Documents - Complete Guide</h2>
+<p>Insert images, photos, logos, and graphics anywhere in your PDF documents with our free online tool. Whether you need to add a company logo to a contract, insert product photos in a catalog, or place a signature image on a form, our image insertion tool makes it effortless. Support for JPG, PNG, and other common image formats.</p>
+
+<h2>Flexible Image Placement</h2>
+<p>Position images precisely where you need them on any page. Choose from preset positions like center, corners, or custom coordinates for pixel-perfect placement. Resize images while maintaining aspect ratio or stretch to fit specific dimensions. Layer images over or under existing content as needed.</p>
+
+<h2>Support for Multiple Image Formats</h2>
+<p>Upload images in JPG, PNG, GIF, WebP, and other popular formats. Our tool automatically converts and optimizes images for PDF embedding. Transparent PNG backgrounds are preserved, allowing images to blend seamlessly with page content. High-resolution images maintain quality in the final PDF.</p>
+
+<h2>Common Use Cases</h2>
+<p>Add company logos to official documents and letterheads. Insert product images in catalogs and brochures. Place signature images on contracts and agreements. Add photos to reports and presentations. Include charts and diagrams in business documents. The possibilities are endless with image insertion.</p>
+
+<h2>Multi-Page Image Addition</h2>
+<p>Add images to specific pages or apply the same image across all pages. Perfect for adding watermarks, headers, or footers with logo images. Batch process multiple pages efficiently. Control exactly which pages receive images and where they appear on each page.</p>`,
+  },
+  {
+    id: "replace-image-in-pdf",
+    name: "Replace Image in PDF",
+    description: "Swap existing images in your PDF with new ones",
+    icon: "RefreshCw",
+    type: "replace-image-in-pdf",
+    color: "bg-blue-500",
+    emoji: "🔄",
+    metaTitle: "Replace Image in PDF Online Free - Swap PDF Images | PDF Tools",
+    metaDescription: "Replace images in PDF documents online for free. Swap old images with new ones while keeping the same position and size. Easy image replacement tool.",
+    seoArticle: `<h2>Replace Images in PDF Documents</h2>
+<p>Update and swap images within your PDF documents without recreating the entire file. Our image replacement tool lets you substitute old images with new ones while maintaining the original position, size, and layout. Perfect for updating outdated photos, refreshing logos, or correcting image errors in finalized documents.</p>
+
+<h2>Seamless Image Swapping</h2>
+<p>Replace images without disrupting document layout. The new image takes the exact position and dimensions of the original. Maintain document integrity while updating visual content. No need to recreate complex layouts or reformat surrounding text and elements.</p>
+
+<h2>Quality Preservation</h2>
+<p>Upload high-quality replacement images and our tool optimizes them for PDF embedding. Maintain visual fidelity while ensuring reasonable file sizes. Support for various image formats with automatic conversion. Your replaced images look professional and print-ready.</p>
+
+<h2>Business Applications</h2>
+<p>Update product photos in catalogs when items change. Refresh company logos after rebranding. Replace employee photos in organizational documents. Swap placeholder images with final graphics. Update seasonal imagery in marketing materials. Keep documents current without full recreation.</p>
+
+<h2>Simple Replacement Process</h2>
+<p>Upload your PDF document and the replacement image. Select which page contains the image to replace. Our tool identifies image positions and allows selection. Upload your new image and confirm the replacement. Download your updated PDF with fresh imagery instantly.</p>`,
+  },
+  {
+    id: "add-shapes-to-pdf",
+    name: "Add Shapes to PDF",
+    description: "Draw rectangles, circles, lines and arrows on PDF pages",
+    icon: "Square",
+    type: "add-shapes-to-pdf",
+    color: "bg-violet-500",
+    emoji: "🔷",
+    metaTitle: "Add Shapes to PDF Online Free - Draw Shapes on PDF | PDF Tools",
+    metaDescription: "Add shapes to PDF documents online for free. Draw rectangles, circles, lines, arrows, and more on your PDFs for annotations and emphasis.",
+    seoArticle: `<h2>Add Shapes to PDF Documents - Annotation Made Easy</h2>
+<p>Enhance your PDF documents with shapes including rectangles, circles, lines, arrows, and ellipses. Our shape tool is perfect for highlighting areas, creating diagrams, emphasizing important sections, and adding visual annotations. Customize colors, sizes, and stroke widths for professional-looking results.</p>
+
+<h2>Variety of Shape Options</h2>
+<p>Choose from essential shapes for any annotation need. Rectangles for boxing content sections. Circles and ellipses for highlighting key points. Lines for connecting related items. Arrows for directing attention. Each shape fully customizable to match your requirements and document style.</p>
+
+<h2>Full Customization Control</h2>
+<p>Set outline color and fill color independently. Adjust stroke width from thin lines to bold outlines. Control opacity for subtle overlays or solid shapes. Size shapes precisely with width and height controls. Position shapes exactly where needed with coordinate placement.</p>
+
+<h2>Professional Annotations</h2>
+<p>Create professional document annotations for review workflows. Mark sections requiring attention with colored boxes. Draw arrows to indicate flow or relationships. Circle important figures or statistics. Add visual hierarchy to complex documents. Shapes communicate beyond what text alone can convey.</p>
+
+<h2>Multi-Page Shape Support</h2>
+<p>Add shapes to any page in your document. Apply consistent annotations across multiple pages. Create recurring visual elements for branding or organization. Navigate easily between pages while adding shapes. Build comprehensive annotated documents with shapes throughout.</p>`,
+  },
+  {
+    id: "draw-on-pdf",
+    name: "Draw on PDF",
+    description: "Freehand drawing and sketching on PDF pages",
+    icon: "Pencil",
+    type: "draw-on-pdf",
+    color: "bg-orange-500",
+    emoji: "✏️",
+    metaTitle: "Draw on PDF Online Free - Freehand Drawing Tool | PDF Tools",
+    metaDescription: "Draw on PDF documents online for free. Add freehand drawings, sketches, and handwritten annotations to your PDFs with customizable colors and stroke widths.",
+    seoArticle: `<h2>Draw on PDF Documents - Freehand Annotation</h2>
+<p>Add freehand drawings, sketches, and handwritten annotations directly onto your PDF documents. Our drawing tool provides the flexibility of pen-on-paper with the convenience of digital documents. Perfect for marking up designs, adding personal touches, sketching ideas, or signing documents by hand.</p>
+
+<h2>Natural Drawing Experience</h2>
+<p>Draw smoothly with mouse or stylus input. Create flowing lines and curves naturally. Sketch diagrams and illustrations freehand. Write handwritten notes and comments. The drawing tool captures your input faithfully, producing clean, natural-looking marks on your documents.</p>
+
+<h2>Customizable Drawing Tools</h2>
+<p>Select from a spectrum of colors for your drawings. Adjust stroke width from fine lines to broad strokes. Control opacity for transparent overlays or solid marks. Choose different brush styles for varied effects. Create visually distinct annotations that stand out appropriately.</p>
+
+<h2>Perfect for Document Review</h2>
+<p>Mark up documents naturally during review processes. Circle errors and draw arrows to corrections. Sketch proposed changes and additions. Add handwritten approval signatures. Create visual feedback that's intuitive and clear. Drawing communicates intentions effectively.</p>
+
+<h2>Design and Creative Uses</h2>
+<p>Annotate design mockups and wireframes. Sketch modifications to architectural plans. Add artistic touches to creative documents. Draw diagrams and flowcharts. Illustrate concepts directly on reference materials. The drawing tool unlocks creative annotation possibilities.</p>`,
+  },
+  {
+    id: "pdf-annotator",
+    name: "PDF Annotator",
+    description: "Professional PDF annotation with multiple markup tools",
+    icon: "MessageSquare",
+    type: "pdf-annotator",
+    color: "bg-pink-500",
+    emoji: "📝",
+    metaTitle: "PDF Annotator Online Free - Professional Annotation Tool | PDF Tools",
+    metaDescription: "Annotate PDF documents online for free. Professional markup tools including highlights, comments, shapes, and drawings. Complete PDF annotation solution.",
+    seoArticle: `<h2>Professional PDF Annotator - Complete Markup Solution</h2>
+<p>Our comprehensive PDF annotator provides all the tools you need for professional document markup. Combine highlights, text comments, shapes, and freehand drawings in a single powerful interface. Whether you're reviewing contracts, grading papers, or collaborating on documents, our annotator delivers the complete toolkit.</p>
+
+<h2>Comprehensive Annotation Tools</h2>
+<p>Access highlights in multiple colors for text emphasis. Add sticky notes and text comments for detailed feedback. Draw shapes like rectangles, circles, and arrows for visual markup. Use freehand drawing for sketches and signatures. All tools work together seamlessly in one integrated interface.</p>
+
+<h2>Organized Annotation Workflow</h2>
+<p>Annotations are clearly visible and easily navigable. Jump between annotated sections quickly. Track all markup in a organized sidebar. Filter by annotation type or author. Export annotation summaries for review documentation. Professional workflows demand organized annotation management.</p>
+
+<h2>Collaboration Ready</h2>
+<p>Create annotations that communicate clearly to others. Use consistent color coding for different types of feedback. Add explanatory comments alongside visual markup. Build comprehensive review documents. Share annotated PDFs for team review and response.</p>
+
+<h2>Academic and Professional Use</h2>
+<p>Grade assignments with markup and comments. Review legal documents with precise annotations. Provide design feedback on creative materials. Document review processes for compliance. Annotate research papers and publications. Professional annotation enhances document-based communication.</p>`,
+  },
+  {
+    id: "annotate-pdf",
+    name: "Annotate PDF",
+    description: "Add comments, notes and markup to PDF documents",
+    icon: "Edit3",
+    type: "annotate-pdf",
+    color: "bg-indigo-500",
+    emoji: "✍️",
+    metaTitle: "Annotate PDF Online Free - Add Comments and Notes | PDF Tools",
+    metaDescription: "Annotate PDF files online for free. Add comments, notes, highlights, and markup to your PDF documents. Simple and powerful annotation tools.",
+    seoArticle: `<h2>Annotate PDF Documents - Add Notes and Comments</h2>
+<p>Add meaningful annotations to your PDF documents with our free online tool. Insert comments, sticky notes, text callouts, and markup throughout your documents. Perfect for document review, collaboration, personal notes, and feedback. Create richly annotated PDFs that communicate clearly.</p>
+
+<h2>Text Annotations and Notes</h2>
+<p>Add sticky note comments anywhere on pages. Insert text callouts for inline annotations. Create footnotes and margin notes. Link annotations to specific page areas. Type detailed feedback and explanations. Text annotations preserve your thoughts alongside document content.</p>
+
+<h2>Visual Markup Options</h2>
+<p>Highlight text passages for emphasis. Underline key phrases and sentences. Strike through obsolete or incorrect content. Draw boxes around important sections. Create visual hierarchies with color-coded markup. Visual annotations communicate quickly and clearly.</p>
+
+<h2>Review and Collaboration</h2>
+<p>Build annotation layers for review cycles. Add author information to annotations. Track changes through multiple review rounds. Export annotations for meeting documentation. Share annotated documents with stakeholders. Annotation facilitates effective document collaboration.</p>
+
+<h2>Personal Document Notes</h2>
+<p>Mark up textbooks and study materials. Add personal notes to reference documents. Create reading annotations for later review. Tag important sections for quick retrieval. Build personalized annotated document libraries. Your annotations enhance document utility.</p>`,
+  },
+  {
+    id: "highlight-pdf-text",
+    name: "Highlight PDF Text",
+    description: "Highlight text passages with customizable colors",
+    icon: "Highlighter",
+    type: "highlight-pdf-text",
+    color: "bg-yellow-500",
+    emoji: "🖍️",
+    metaTitle: "Highlight PDF Text Online Free - Text Highlighter Tool | PDF Tools",
+    metaDescription: "Highlight text in PDF documents online for free. Add yellow, green, pink, and custom color highlights to important text passages in your PDFs.",
+    seoArticle: `<h2>Highlight PDF Text - Emphasize Important Content</h2>
+<p>Add colorful highlights to important text passages in your PDF documents. Our highlighting tool works just like a physical highlighter pen, but with digital convenience and undo capability. Choose from yellow, green, pink, blue, or custom colors to emphasize key information, mark study notes, or annotate documents for review.</p>
+
+<h2>Multiple Highlight Colors</h2>
+<p>Use classic yellow for general emphasis. Apply green for positive items or approvals. Mark concerns or errors in pink or red. Use blue for references or citations. Create your own color-coding system. Multiple colors help categorize different types of highlighted content.</p>
+
+<h2>Precise Text Selection</h2>
+<p>Highlight exactly the text you want with precise selection tools. Select individual words, complete sentences, or entire paragraphs. Highlights conform perfectly to text boundaries. No messy overlap or misaligned marks. Professional-looking highlights every time.</p>
+
+<h2>Academic and Study Applications</h2>
+<p>Mark key concepts and definitions in textbooks. Highlight important passages for exam preparation. Create color-coded study notes. Emphasize thesis statements and supporting evidence. Track reading progress with systematic highlighting. Enhance learning with visual text emphasis.</p>
+
+<h2>Business Document Review</h2>
+<p>Highlight action items in meeting notes. Mark key terms in contracts and agreements. Emphasize important figures in financial documents. Tag content requiring follow-up. Create clear visual documentation of review findings. Highlighting streamlines business document workflows.</p>`,
+  },
+  {
+    id: "underline-pdf-text",
+    name: "Underline PDF Text",
+    description: "Add underlines to important text in your PDFs",
+    icon: "Underline",
+    type: "underline-pdf-text",
+    color: "bg-blue-600",
+    emoji: "📑",
+    metaTitle: "Underline PDF Text Online Free - Text Underline Tool | PDF Tools",
+    metaDescription: "Underline text in PDF documents online for free. Add clean underlines to important passages with customizable colors and styles.",
+    seoArticle: `<h2>Underline PDF Text - Classic Text Emphasis</h2>
+<p>Add clean, professional underlines to important text in your PDF documents. Underlining is a classic method for emphasizing key content, marking important passages, and adding subtle annotations. Our tool provides precise underlining with customizable colors and styles for professional document markup.</p>
+
+<h2>Professional Underline Styles</h2>
+<p>Create clean single underlines for standard emphasis. Choose line colors that complement your document. Adjust line thickness from subtle to bold. Underlines align perfectly with text baselines. Achieve a polished, professional appearance that enhances readability without distraction.</p>
+
+<h2>Precise Text Selection</h2>
+<p>Underline exactly the text you select with precision. Mark individual words, phrases, or complete paragraphs. Underlines follow text wrapping naturally. No messy manual drawing required. Clean, consistent underlines throughout your document with minimal effort.</p>
+
+<h2>Academic and Editorial Uses</h2>
+<p>Mark titles and headings in academic papers. Emphasize key terms and definitions. Indicate book titles and publication names. Highlight important references and citations. Follow academic styling conventions. Underlining meets formal documentation standards.</p>
+
+<h2>Business Documentation</h2>
+<p>Emphasize important clauses in contracts. Mark signature lines and required fields. Highlight key figures and deadlines. Create visual distinction in forms. Add emphasis without changing document formatting. Professional underlining enhances business document clarity.</p>`,
+  },
+  {
+    id: "strikethrough-pdf-text",
+    name: "Strikethrough PDF Text",
+    description: "Strike through text to mark deletions or corrections",
+    icon: "Strikethrough",
+    type: "strikethrough-pdf-text",
+    color: "bg-red-500",
+    emoji: "🔴",
+    metaTitle: "Strikethrough PDF Text Online Free - Cross Out Text | PDF Tools",
+    metaDescription: "Add strikethrough to PDF text online for free. Cross out obsolete or incorrect text while preserving readability. Perfect for document editing and review.",
+    seoArticle: `<h2>Strikethrough PDF Text - Mark Deletions and Corrections</h2>
+<p>Add strikethrough lines to text in your PDF documents to mark deletions, indicate obsolete content, or suggest corrections. Strikethrough is essential for document review, contract editing, and collaborative markup. The crossed-out text remains readable while clearly indicating it should be removed or replaced.</p>
+
+<h2>Clear Deletion Marking</h2>
+<p>Strike through text while keeping it visible. Readers see what was removed or suggested for deletion. Maintain document history and edit tracking. Compare original and revised content at a glance. Strikethrough preserves context while indicating change.</p>
+
+<h2>Professional Document Review</h2>
+<p>Mark text for deletion in contract negotiations. Indicate obsolete information in policy documents. Suggest copy edits in marketing materials. Track content changes through review cycles. Create comprehensive edit documentation. Strikethrough is essential for collaborative document work.</p>
+
+<h2>Customizable Strikethrough Styles</h2>
+<p>Choose strikethrough line colors that stand out appropriately. Red for critical deletions, gray for minor corrections. Adjust line thickness for visibility. Single or double strikethrough options. Match your document review conventions and preferences.</p>
+
+<h2>Legal and Compliance Applications</h2>
+<p>Mark superseded clauses in legal documents. Indicate replaced terms in amended contracts. Track policy changes with clear strikethrough. Maintain audit trails for compliance documentation. Strikethrough provides essential legal document markup capabilities.</p>`,
+  },
+  {
+    id: "pdf-marker",
+    name: "PDF Marker",
+    description: "Mark up PDFs with various highlighting and annotation tools",
+    icon: "Pen",
+    type: "pdf-marker",
+    color: "bg-amber-500",
+    emoji: "🖊️",
+    metaTitle: "PDF Marker Online Free - Mark Up PDF Documents | PDF Tools",
+    metaDescription: "Mark up PDF documents online for free. Comprehensive marking tools including highlights, underlines, circles, and annotations for document review.",
+    seoArticle: `<h2>PDF Marker - Comprehensive Document Markup Tool</h2>
+<p>Mark up your PDF documents with our versatile all-in-one marker tool. Combine highlighting, underlining, circling, and annotation in a single powerful interface. Perfect for teachers grading papers, professionals reviewing documents, students studying materials, or anyone who needs to mark up PDF content comprehensively.</p>
+
+<h2>All-in-One Marking Solution</h2>
+<p>Access multiple marking tools from one convenient interface. Highlight with various colors for text emphasis. Underline for subtle importance marking. Circle or box key sections. Add margin notes and comments. Draw arrows connecting related content. Everything you need for comprehensive markup.</p>
+
+<h2>Color-Coded Marking System</h2>
+<p>Develop your own color-coding conventions. Use yellow for general importance. Apply red for errors or concerns. Mark corrections in green. Highlight questions in blue. Create systematic markup that communicates meaning through color. Consistent color coding improves document review efficiency.</p>
+
+<h2>Educational Applications</h2>
+<p>Grade assignments with comprehensive markup. Provide detailed feedback on student work. Mark errors and suggest corrections. Highlight exemplary passages. Add encouraging comments and constructive criticism. PDF marking enhances educational feedback quality.</p>
+
+<h2>Business Document Workflow</h2>
+<p>Review contracts with systematic markup. Mark required changes and approvals. Annotate reports with questions and comments. Create comprehensive review documentation. Track markup through multiple review cycles. Professional markup supports efficient business processes.</p>`,
   },
 ];
