@@ -23,6 +23,7 @@ import {
   FileSearch,
   Eraser,
   Target,
+  Globe,
   type LucideIcon,
 } from "lucide-react";
 
@@ -48,6 +49,7 @@ const iconMap: Record<string, LucideIcon> = {
   FileSearch,
   Eraser,
   Target,
+  Globe,
 };
 
 interface ToolCardProps {

@@ -237,6 +237,27 @@ export default function ToolPage() {
     if (tool.type === "gif-to-pdf") {
       return ".gif,image/gif";
     }
+    if (tool.type === "tiff-to-pdf") {
+      return ".tiff,.tif,image/tiff";
+    }
+    if (tool.type === "heic-to-pdf") {
+      return ".heic,.heif,image/heic,image/heif";
+    }
+    if (tool.type === "webp-to-pdf") {
+      return ".webp,image/webp";
+    }
+    if (tool.type === "svg-to-pdf") {
+      return ".svg,image/svg+xml";
+    }
+    if (tool.type === "html-to-pdf" || tool.type === "url-to-pdf" || tool.type === "webpage-to-pdf") {
+      return ".html,.htm,text/html";
+    }
+    if (tool.type === "txt-to-pdf") {
+      return ".txt,text/plain";
+    }
+    if (tool.type === "rtf-to-pdf") {
+      return ".rtf,application/rtf,text/rtf";
+    }
     return ".pdf,application/pdf";
   };
 

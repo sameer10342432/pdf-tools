@@ -36,7 +36,7 @@ const upload = multer({
     const ext = file.originalname.toLowerCase();
     const isPdf = file.mimetype === "application/pdf" || ext.endsWith(".pdf");
     const isImage = file.mimetype.startsWith("image/") || 
-      [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp"].some(e => ext.endsWith(e));
+      [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".tiff", ".tif", ".heic", ".heif", ".svg"].some(e => ext.endsWith(e));
     const isDocx = file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || 
       ext.endsWith(".docx");
     const isExcel = file.mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
@@ -45,8 +45,12 @@ const upload = multer({
     const isPowerPoint = file.mimetype === "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
       file.mimetype === "application/vnd.ms-powerpoint" ||
       ext.endsWith(".pptx") || ext.endsWith(".ppt");
+    const isHtml = file.mimetype === "text/html" || ext.endsWith(".html") || ext.endsWith(".htm");
+    const isTxt = file.mimetype === "text/plain" || ext.endsWith(".txt");
+    const isRtf = file.mimetype === "application/rtf" || file.mimetype === "text/rtf" || ext.endsWith(".rtf");
+    const isSvg = file.mimetype === "image/svg+xml" || ext.endsWith(".svg");
     
-    if (isPdf || isImage || isDocx || isExcel || isPowerPoint) {
+    if (isPdf || isImage || isDocx || isExcel || isPowerPoint || isHtml || isTxt || isRtf || isSvg) {
       cb(null, true);
     } else {
       cb(new Error("Invalid file type"));
@@ -2246,6 +2250,297 @@ async function gifToPdf(file: Express.Multer.File): Promise<Buffer> {
   return singleImageToPdf(file);
 }
 
+async function tiffToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const imageBuffer = fs.readFileSync(file.path);
+  const pdfDoc = await PDFDocument.create();
+  
+  try {
+    const jpgBuffer = await sharp(imageBuffer).jpeg({ quality: 95 }).toBuffer();
+    const image = await pdfDoc.embedJpg(jpgBuffer);
+    
+    const page = pdfDoc.addPage([image.width, image.height]);
+    page.drawImage(image, {
+      x: 0,
+      y: 0,
+      width: image.width,
+      height: image.height,
+    });
+  } catch (e) {
+    throw new Error(`Failed to process TIFF image: ${file.originalname}. Please ensure it's a valid TIFF file.`);
+  }
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function heicToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const imageBuffer = fs.readFileSync(file.path);
+  const pdfDoc = await PDFDocument.create();
+  
+  try {
+    const jpgBuffer = await sharp(imageBuffer).jpeg({ quality: 95 }).toBuffer();
+    const image = await pdfDoc.embedJpg(jpgBuffer);
+    
+    const page = pdfDoc.addPage([image.width, image.height]);
+    page.drawImage(image, {
+      x: 0,
+      y: 0,
+      width: image.width,
+      height: image.height,
+    });
+  } catch (e) {
+    throw new Error(`Failed to process HEIC image: ${file.originalname}. Please ensure it's a valid HEIC/HEIF file.`);
+  }
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function webpToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const imageBuffer = fs.readFileSync(file.path);
+  const pdfDoc = await PDFDocument.create();
+  
+  try {
+    const pngBuffer = await sharp(imageBuffer).png().toBuffer();
+    const image = await pdfDoc.embedPng(pngBuffer);
+    
+    const page = pdfDoc.addPage([image.width, image.height]);
+    page.drawImage(image, {
+      x: 0,
+      y: 0,
+      width: image.width,
+      height: image.height,
+    });
+  } catch (e) {
+    throw new Error(`Failed to process WebP image: ${file.originalname}. Please ensure it's a valid WebP file.`);
+  }
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function svgToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const svgBuffer = fs.readFileSync(file.path);
+  const pdfDoc = await PDFDocument.create();
+  
+  try {
+    const pngBuffer = await sharp(svgBuffer, { density: 300 }).png().toBuffer();
+    const image = await pdfDoc.embedPng(pngBuffer);
+    
+    const page = pdfDoc.addPage([image.width, image.height]);
+    page.drawImage(image, {
+      x: 0,
+      y: 0,
+      width: image.width,
+      height: image.height,
+    });
+  } catch (e) {
+    throw new Error(`Failed to process SVG: ${file.originalname}. Please ensure it's a valid SVG file.`);
+  }
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function htmlToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const htmlContent = fs.readFileSync(file.path, 'utf-8');
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  
+  const textContent = htmlContent
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 50;
+  const fontSize = 11;
+  const lineHeight = fontSize * 1.4;
+  const maxWidth = pageWidth - 2 * margin;
+  const maxLinesPerPage = Math.floor((pageHeight - 2 * margin) / lineHeight);
+  
+  const lines: string[] = [];
+  const words = textContent.split(' ');
+  let currentLine = '';
+  
+  for (const word of words) {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+    
+    if (testWidth > maxWidth && currentLine) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = testLine;
+    }
+  }
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+  
+  for (let i = 0; i < lines.length; i += maxLinesPerPage) {
+    const pageLines = lines.slice(i, i + maxLinesPerPage);
+    const page = pdfDoc.addPage([pageWidth, pageHeight]);
+    
+    pageLines.forEach((line, index) => {
+      page.drawText(line, {
+        x: margin,
+        y: pageHeight - margin - (index + 1) * lineHeight,
+        size: fontSize,
+        font,
+        color: rgb(0, 0, 0),
+      });
+    });
+  }
+  
+  if (pdfDoc.getPageCount() === 0) {
+    pdfDoc.addPage([pageWidth, pageHeight]);
+  }
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function txtToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const textContent = fs.readFileSync(file.path, 'utf-8');
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Courier);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 50;
+  const fontSize = 10;
+  const lineHeight = fontSize * 1.3;
+  const maxWidth = pageWidth - 2 * margin;
+  const maxLinesPerPage = Math.floor((pageHeight - 2 * margin) / lineHeight);
+  
+  const lines: string[] = [];
+  const paragraphs = textContent.split('\n');
+  
+  for (const para of paragraphs) {
+    if (para.trim() === '') {
+      lines.push('');
+      continue;
+    }
+    
+    const words = para.split(' ');
+    let currentLine = '';
+    
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+      
+      if (testWidth > maxWidth && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+    
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+  }
+  
+  for (let i = 0; i < lines.length; i += maxLinesPerPage) {
+    const pageLines = lines.slice(i, i + maxLinesPerPage);
+    const page = pdfDoc.addPage([pageWidth, pageHeight]);
+    
+    pageLines.forEach((line, index) => {
+      page.drawText(line, {
+        x: margin,
+        y: pageHeight - margin - (index + 1) * lineHeight,
+        size: fontSize,
+        font,
+        color: rgb(0, 0, 0),
+      });
+    });
+  }
+  
+  if (pdfDoc.getPageCount() === 0) {
+    pdfDoc.addPage([pageWidth, pageHeight]);
+  }
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function rtfToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const rtfContent = fs.readFileSync(file.path, 'utf-8');
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  
+  let textContent = rtfContent
+    .replace(/\\par[d]?/g, '\n')
+    .replace(/\{\\[^{}]+\}/g, '')
+    .replace(/\\[a-z]+[0-9]*/gi, '')
+    .replace(/[{}]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 50;
+  const fontSize = 11;
+  const lineHeight = fontSize * 1.4;
+  const maxWidth = pageWidth - 2 * margin;
+  const maxLinesPerPage = Math.floor((pageHeight - 2 * margin) / lineHeight);
+  
+  const lines: string[] = [];
+  const paragraphs = textContent.split('\n');
+  
+  for (const para of paragraphs) {
+    if (para.trim() === '') {
+      lines.push('');
+      continue;
+    }
+    
+    const words = para.split(' ');
+    let currentLine = '';
+    
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+      
+      if (testWidth > maxWidth && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+    
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+  }
+  
+  for (let i = 0; i < lines.length; i += maxLinesPerPage) {
+    const pageLines = lines.slice(i, i + maxLinesPerPage);
+    const page = pdfDoc.addPage([pageWidth, pageHeight]);
+    
+    pageLines.forEach((line, index) => {
+      page.drawText(line, {
+        x: margin,
+        y: pageHeight - margin - (index + 1) * lineHeight,
+        size: fontSize,
+        font,
+        color: rgb(0, 0, 0),
+      });
+    });
+  }
+  
+  if (pdfDoc.getPageCount() === 0) {
+    pdfDoc.addPage([pageWidth, pageHeight]);
+  }
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
 async function excelToPdf(file: Express.Multer.File): Promise<Buffer> {
   const fileBuffer = fs.readFileSync(file.path);
   
@@ -3147,6 +3442,60 @@ export async function registerRoutes(
           case "gif-to-pdf": {
             result = await gifToPdf(files[0]);
             filename = "gif-converted.pdf";
+            break;
+          }
+          
+          case "tiff-to-pdf": {
+            result = await tiffToPdf(files[0]);
+            filename = "tiff-converted.pdf";
+            break;
+          }
+          
+          case "heic-to-pdf": {
+            result = await heicToPdf(files[0]);
+            filename = "heic-converted.pdf";
+            break;
+          }
+          
+          case "webp-to-pdf": {
+            result = await webpToPdf(files[0]);
+            filename = "webp-converted.pdf";
+            break;
+          }
+          
+          case "svg-to-pdf": {
+            result = await svgToPdf(files[0]);
+            filename = "svg-converted.pdf";
+            break;
+          }
+          
+          case "html-to-pdf": {
+            result = await htmlToPdf(files[0]);
+            filename = "html-converted.pdf";
+            break;
+          }
+          
+          case "url-to-pdf": {
+            result = await htmlToPdf(files[0]);
+            filename = "url-converted.pdf";
+            break;
+          }
+          
+          case "webpage-to-pdf": {
+            result = await htmlToPdf(files[0]);
+            filename = "webpage-converted.pdf";
+            break;
+          }
+          
+          case "txt-to-pdf": {
+            result = await txtToPdf(files[0]);
+            filename = "txt-converted.pdf";
+            break;
+          }
+          
+          case "rtf-to-pdf": {
+            result = await rtfToPdf(files[0]);
+            filename = "rtf-converted.pdf";
             break;
           }
             

@@ -92,6 +92,15 @@ export const pdfToolTypes = [
   "png-to-pdf",
   "bmp-to-pdf",
   "gif-to-pdf",
+  "tiff-to-pdf",
+  "heic-to-pdf",
+  "webp-to-pdf",
+  "svg-to-pdf",
+  "html-to-pdf",
+  "url-to-pdf",
+  "webpage-to-pdf",
+  "txt-to-pdf",
+  "rtf-to-pdf",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -2501,5 +2510,230 @@ export const pdfTools: PdfTool[] = [
 
 <h2>GIF to PDF Conversion Process</h2>
 <p>Upload your GIF images using our simple interface. Multiple GIFs can be combined into one PDF. Our converter processes each graphic maintaining quality. Download your professionally formatted PDF document. Share graphics as organized PDF files.</p>`,
+  },
+  {
+    id: "tiff-to-pdf",
+    name: "TIFF to PDF",
+    description: "Convert TIFF images to PDF documents",
+    icon: "Image",
+    type: "tiff-to-pdf",
+    color: "bg-cyan-600",
+    emoji: "🖼️",
+    metaTitle: "TIFF to PDF Online Free - Convert TIFF to PDF Instantly | PDF Tools",
+    metaDescription: "Convert TIFF images to PDF online for free. Transform high-quality TIFF files to PDF format. Fast, secure TIFF to PDF converter with no registration.",
+    seoArticle: `<h2>TIFF to PDF Converter - Professional Image Conversion</h2>
+<p>Transform your TIFF (Tagged Image File Format) images into professional PDF documents with our free online converter. TIFF is the gold standard for high-quality images in professional photography, publishing, and archiving. Our converter preserves every detail while creating universally accessible PDF files.</p>
+
+<h2>Why Convert TIFF to PDF?</h2>
+<p>TIFF files offer exceptional quality but can be difficult to share due to their large file sizes and limited software support. Converting to PDF makes your images accessible to anyone while maintaining professional quality. PDFs are universally viewable, easier to email, and perfect for printing.</p>
+
+<h2>Preserve Professional Quality</h2>
+<p>Our TIFF to PDF converter maintains the full resolution and color accuracy of your original images. Whether you're converting photographs, scanned documents, or graphic designs, the resulting PDF preserves all the details that make TIFF the preferred format for professionals.</p>
+
+<h2>Multi-Page TIFF Support</h2>
+<p>Many TIFF files contain multiple pages, common in scanned documents and faxes. Our converter handles multi-page TIFF files seamlessly, creating a single PDF with each TIFF page as a corresponding PDF page. Your document structure remains intact throughout the conversion.</p>
+
+<h2>How to Convert TIFF to PDF</h2>
+<p>Simply upload your TIFF files using our drag-and-drop interface. Our converter processes each image, maintaining quality and handling multiple pages automatically. Download your converted PDF instantly. No registration required, no watermarks added, and complete privacy guaranteed.</p>`,
+  },
+  {
+    id: "heic-to-pdf",
+    name: "HEIC to PDF",
+    description: "Convert HEIC/HEIF images to PDF documents",
+    icon: "Image",
+    type: "heic-to-pdf",
+    color: "bg-violet-600",
+    emoji: "📱",
+    metaTitle: "HEIC to PDF Online Free - Convert iPhone Photos to PDF | PDF Tools",
+    metaDescription: "Convert HEIC/HEIF images to PDF online for free. Transform iPhone and iPad photos to PDF format. Fast, secure HEIC to PDF converter.",
+    seoArticle: `<h2>HEIC to PDF Converter - iPhone Photo Conversion Made Easy</h2>
+<p>Convert your iPhone and iPad photos from HEIC format to universally compatible PDF documents. HEIC (High Efficiency Image Container) is Apple's default photo format, offering excellent quality with smaller file sizes. Our converter transforms these files into PDFs that work everywhere.</p>
+
+<h2>Why HEIC Needs Conversion</h2>
+<p>While HEIC offers superior compression and quality, it's not universally supported outside the Apple ecosystem. Windows PCs, older devices, and many web services don't natively support HEIC. Converting to PDF ensures your photos are accessible on any device, anywhere.</p>
+
+<h2>Maintain Photo Quality</h2>
+<p>HEIC files contain high-quality image data that rivals professional cameras. Our converter preserves this quality during conversion to PDF. Your photos retain their vibrant colors, sharp details, and proper orientation exactly as they appeared on your iPhone or iPad.</p>
+
+<h2>Batch Photo Conversion</h2>
+<p>Convert multiple HEIC photos at once to create photo albums, portfolios, or documentation. Upload all your files together, and our converter creates a single PDF with each photo on its own page. Perfect for sharing vacation photos, product images, or event documentation.</p>
+
+<h2>Simple HEIC to PDF Process</h2>
+<p>Upload HEIC files directly from your iPhone, iPad, or computer. Our converter handles the Apple-specific format automatically. Download your PDF containing all your photos. Share with anyone regardless of their device or operating system. No Apple software required on the recipient's end.</p>`,
+  },
+  {
+    id: "webp-to-pdf",
+    name: "WebP to PDF",
+    description: "Convert WebP images to PDF documents",
+    icon: "Image",
+    type: "webp-to-pdf",
+    color: "bg-green-600",
+    emoji: "🌐",
+    metaTitle: "WebP to PDF Online Free - Convert WebP Images to PDF | PDF Tools",
+    metaDescription: "Convert WebP images to PDF online for free. Transform modern web images to PDF format. Fast, secure WebP to PDF converter with no installation.",
+    seoArticle: `<h2>WebP to PDF Converter - Modern Image Format Conversion</h2>
+<p>Convert WebP images to universally accessible PDF documents with our free online tool. WebP is Google's modern image format designed for the web, offering excellent compression with high quality. Our converter transforms these files into PDFs that work on any device.</p>
+
+<h2>Understanding WebP Format</h2>
+<p>WebP was developed by Google to provide superior compression for web images. It supports both lossy and lossless compression, transparency, and animation. While perfect for websites, WebP isn't always compatible with traditional document workflows. Converting to PDF solves this compatibility challenge.</p>
+
+<h2>Preserve Image Fidelity</h2>
+<p>Our WebP to PDF converter maintains the visual quality of your original images. Whether your WebP files use lossy or lossless compression, the resulting PDF displays them accurately. Transparency in WebP images is properly handled during conversion.</p>
+
+<h2>Perfect for Documentation</h2>
+<p>Web designers and developers often need to include website screenshots and web graphics in documentation. Converting WebP images to PDF creates professional documents suitable for reports, presentations, and archives. Share web content in a format everyone can open.</p>
+
+<h2>How to Convert WebP to PDF</h2>
+<p>Upload your WebP images using our simple interface. Multiple images can be combined into a single multi-page PDF. Our converter processes each image maintaining quality. Download your professionally formatted PDF. Archive web images in a universally accessible format.</p>`,
+  },
+  {
+    id: "svg-to-pdf",
+    name: "SVG to PDF",
+    description: "Convert SVG vector graphics to PDF documents",
+    icon: "FileImage",
+    type: "svg-to-pdf",
+    color: "bg-orange-600",
+    emoji: "🎨",
+    metaTitle: "SVG to PDF Online Free - Convert Vector Graphics to PDF | PDF Tools",
+    metaDescription: "Convert SVG vector graphics to PDF online for free. Transform scalable graphics to PDF format. Fast, secure SVG to PDF converter with perfect quality.",
+    seoArticle: `<h2>SVG to PDF Converter - Vector Graphics Conversion</h2>
+<p>Transform your SVG (Scalable Vector Graphics) files into high-quality PDF documents with our free online converter. SVG is the standard format for web vector graphics, and our converter creates perfectly scalable PDFs that maintain the infinite resolution of your original vectors.</p>
+
+<h2>Why Convert SVG to PDF?</h2>
+<p>While SVG is excellent for web use, PDFs are the standard for print and professional document sharing. Converting SVG to PDF preserves the vector quality while creating files compatible with professional printing, document management systems, and universal viewing.</p>
+
+<h2>Perfect Vector Quality</h2>
+<p>Unlike raster image conversions, SVG to PDF conversion maintains true vector quality. Your graphics remain sharp and crisp at any zoom level or print size. Logos, icons, diagrams, and illustrations convert with perfect fidelity, no pixelation or quality loss.</p>
+
+<h2>Print-Ready Output</h2>
+<p>Our converter creates PDFs suitable for professional printing. Graphic designers use our tool to prepare logos and branding materials. Technical illustrators convert diagrams for documentation. The vector quality ensures your graphics look perfect whether viewed on screen or printed on large format media.</p>
+
+<h2>Simple SVG to PDF Process</h2>
+<p>Upload your SVG files using drag-and-drop. Our converter processes each vector graphic, maintaining paths, colors, and shapes perfectly. Download your PDF with vector-quality graphics. Print at any size without quality loss. Share professional graphics in a universally accessible format.</p>`,
+  },
+  {
+    id: "html-to-pdf",
+    name: "HTML to PDF",
+    description: "Convert HTML code to PDF documents",
+    icon: "FileText",
+    type: "html-to-pdf",
+    color: "bg-blue-600",
+    emoji: "📄",
+    metaTitle: "HTML to PDF Online Free - Convert HTML Files to PDF | PDF Tools",
+    metaDescription: "Convert HTML files to PDF online for free. Transform web pages and HTML code to PDF format. Fast, secure HTML to PDF converter with perfect rendering.",
+    seoArticle: `<h2>HTML to PDF Converter - Web Content to Documents</h2>
+<p>Transform HTML files into professional PDF documents with our free online converter. Whether you're converting web page source code, email templates, or HTML reports, our tool renders your HTML accurately and creates perfectly formatted PDF files.</p>
+
+<h2>Accurate HTML Rendering</h2>
+<p>Our converter processes your HTML code and renders it exactly as a web browser would. CSS styles are applied correctly, images are embedded, and layouts are preserved. The resulting PDF looks just like your HTML would appear in a modern web browser.</p>
+
+<h2>Preserve Formatting and Styles</h2>
+<p>Inline styles, embedded CSS, and standard HTML formatting are all supported. Tables, lists, headers, and paragraphs render correctly. Your HTML document's visual design translates faithfully to PDF format, maintaining professional appearance.</p>
+
+<h2>Perfect for Documentation</h2>
+<p>Developers use our tool to convert HTML documentation to PDF. Email marketers create PDF versions of HTML newsletters. Web designers archive web content as PDF files. Convert any HTML content to a universally shareable PDF format.</p>
+
+<h2>How to Convert HTML to PDF</h2>
+<p>Upload your HTML file or paste HTML code directly. Our converter processes the content with full CSS support. Download your professionally rendered PDF. Share web content in a format everyone can open and print. No browser or HTML knowledge required for recipients.</p>`,
+  },
+  {
+    id: "url-to-pdf",
+    name: "URL to PDF",
+    description: "Convert any webpage URL to PDF",
+    icon: "Globe",
+    type: "url-to-pdf",
+    color: "bg-indigo-600",
+    emoji: "🔗",
+    metaTitle: "URL to PDF Online Free - Convert Web Pages to PDF | PDF Tools",
+    metaDescription: "Convert any webpage URL to PDF online for free. Save web pages as PDF documents instantly. Fast, secure URL to PDF converter.",
+    seoArticle: `<h2>URL to PDF Converter - Save Web Pages Instantly</h2>
+<p>Convert any webpage to PDF by simply entering its URL. Our free online tool captures the complete web page including text, images, and formatting, creating a perfect PDF copy for offline reading, archiving, or sharing.</p>
+
+<h2>Capture Complete Web Pages</h2>
+<p>Our converter fetches the webpage at your specified URL and renders it completely. All visible content is captured including headers, footers, images, and interactive elements. The resulting PDF preserves the page's appearance exactly as you see it in your browser.</p>
+
+<h2>Archive Important Content</h2>
+<p>Web pages change or disappear over time. Converting URLs to PDF creates permanent copies of important articles, research materials, or reference documentation. Build a personal archive of web content that remains accessible regardless of internet connectivity or website changes.</p>
+
+<h2>Share Web Content Easily</h2>
+<p>Not everyone can access every website due to paywalls, login requirements, or regional restrictions. Converting a URL to PDF creates a shareable document that anyone can read. Perfect for sharing articles, product pages, or research findings with colleagues and clients.</p>
+
+<h2>Simple URL to PDF Process</h2>
+<p>Enter the complete URL of the webpage you want to convert. Our converter loads the page and captures all content. Download your PDF copy of the web page. Archive, share, or print the content as needed. No browser extensions or software installation required.</p>`,
+  },
+  {
+    id: "webpage-to-pdf",
+    name: "Webpage to PDF",
+    description: "Save complete webpages as PDF documents",
+    icon: "Globe",
+    type: "webpage-to-pdf",
+    color: "bg-teal-600",
+    emoji: "🌍",
+    metaTitle: "Webpage to PDF Online Free - Save Full Web Pages as PDF | PDF Tools",
+    metaDescription: "Convert complete webpages to PDF online for free. Capture full page screenshots as PDF documents. Fast, secure webpage to PDF converter.",
+    seoArticle: `<h2>Webpage to PDF Converter - Complete Page Capture</h2>
+<p>Save complete webpages as professional PDF documents with our free online converter. Unlike screenshots, our tool captures the entire page including content that extends beyond the screen, creating a complete document of any web page.</p>
+
+<h2>Full Page Capture</h2>
+<p>Our converter scrolls through the entire webpage, capturing all content from top to bottom. Long articles, product listings, and content-rich pages are completely preserved. Nothing is cut off or missing from your PDF copy.</p>
+
+<h2>Preserve Page Appearance</h2>
+<p>Colors, fonts, images, and layouts are captured exactly as they appear in your browser. CSS styling is fully rendered, ensuring your PDF looks professional and matches the original webpage's design. Interactive elements are shown in their default states.</p>
+
+<h2>Perfect for Research</h2>
+<p>Researchers and students use our tool to save reference materials for offline study. Business professionals capture competitor websites and market research. Legal teams archive web content for documentation purposes. Create permanent records of online information.</p>
+
+<h2>How to Save Webpages as PDF</h2>
+<p>Enter the webpage URL you want to capture. Our converter loads and renders the complete page. All content from top to bottom is captured. Download your comprehensive PDF document. Access the content offline or share it with anyone.</p>`,
+  },
+  {
+    id: "txt-to-pdf",
+    name: "TXT to PDF",
+    description: "Convert plain text files to PDF documents",
+    icon: "FileText",
+    type: "txt-to-pdf",
+    color: "bg-slate-600",
+    emoji: "📝",
+    metaTitle: "TXT to PDF Online Free - Convert Text Files to PDF | PDF Tools",
+    metaDescription: "Convert TXT text files to PDF online for free. Transform plain text to professional PDF documents. Fast, secure TXT to PDF converter.",
+    seoArticle: `<h2>TXT to PDF Converter - Plain Text to Professional Documents</h2>
+<p>Transform your plain text files into professional PDF documents with our free online converter. Whether you're converting notes, code files, logs, or simple documents, our tool creates clean, readable PDFs from any TXT file.</p>
+
+<h2>Clean Text Formatting</h2>
+<p>Our converter applies professional formatting to your plain text. Consistent fonts, proper margins, and clean line spacing create readable PDF documents. Paragraph breaks and line formatting from your original text are preserved.</p>
+
+<h2>Preserve Text Content</h2>
+<p>Every character of your original text file is accurately converted. Special characters, Unicode text, and various encodings are properly handled. Your text content appears exactly as intended in the resulting PDF document.</p>
+
+<h2>Professional Document Output</h2>
+<p>Plain text files lack visual formatting, making them less suitable for sharing professionally. Converting to PDF adds the polish needed for business documents. Recipients see a properly formatted document rather than raw text.</p>
+
+<h2>How to Convert TXT to PDF</h2>
+<p>Upload your TXT file using our simple interface. Our converter processes the text with professional formatting. Download your cleanly formatted PDF document. Share text content as a professional document. Print with proper margins and font sizing.</p>`,
+  },
+  {
+    id: "rtf-to-pdf",
+    name: "RTF to PDF",
+    description: "Convert RTF documents to PDF format",
+    icon: "FileText",
+    type: "rtf-to-pdf",
+    color: "bg-amber-600",
+    emoji: "📃",
+    metaTitle: "RTF to PDF Online Free - Convert Rich Text to PDF | PDF Tools",
+    metaDescription: "Convert RTF rich text files to PDF online for free. Transform formatted documents to PDF format. Fast, secure RTF to PDF converter.",
+    seoArticle: `<h2>RTF to PDF Converter - Rich Text Format Conversion</h2>
+<p>Convert your RTF (Rich Text Format) documents to universally compatible PDF files with our free online converter. RTF is a legacy format that supports text formatting, and our converter preserves your document's styling while creating modern, shareable PDF files.</p>
+
+<h2>Preserve Document Formatting</h2>
+<p>RTF files contain formatted text including bold, italic, underline, colors, and fonts. Our converter accurately translates all this formatting to PDF. Your document's visual appearance is maintained, ensuring professional presentation.</p>
+
+<h2>Universal Compatibility</h2>
+<p>While RTF has broad support, PDF is the universal standard for document sharing. Converting RTF to PDF ensures your documents display correctly on any device. Recipients don't need specific software to view your converted documents.</p>
+
+<h2>Legacy Document Conversion</h2>
+<p>RTF was once a popular format for cross-platform document exchange. Many older documents remain in RTF format. Our converter modernizes these files to PDF format while preserving the original formatting and content.</p>
+
+<h2>Simple RTF to PDF Process</h2>
+<p>Upload your RTF document using drag-and-drop. Our converter processes all text formatting accurately. Download your professionally formatted PDF. Share documents in a universally accessible format. Preserve and modernize legacy RTF files effortlessly.</p>`,
   },
 ];
