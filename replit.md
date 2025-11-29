@@ -1,7 +1,7 @@
 # PDF Tools - Online PDF Processing Application
 
 ## Overview
-A comprehensive web application providing 83 powerful PDF manipulation tools. Built with React frontend and Express backend, featuring a beautiful, responsive design, SEO optimization, and secure file processing.
+A comprehensive web application providing 120 powerful PDF manipulation tools. Built with React frontend and Express backend, featuring a beautiful, responsive design, SEO optimization, and secure file processing.
 
 ## Project Structure
 ```
@@ -32,7 +32,7 @@ server/
   index.ts              # Express server setup
 ```
 
-## 83 PDF Tools Available
+## 120 PDF Tools Available
 
 ### Merge Tools
 1. **Merge PDF** - Combine multiple PDFs into one
@@ -145,6 +145,65 @@ server/
 82. **Markdown to PDF** - Convert Markdown files to beautifully formatted PDFs
 83. **MD to PDF** - Convert .md Markdown files to PDF documents
 
+### PDF Creation Tools
+84. **Create PDF** - Create blank PDF documents with custom page size
+85. **PDF Creator** - Create PDFs with custom text content
+
+### Advanced Utility Tools
+86. **PDF to Text** - Extract text content from PDF files
+87. **PDF to HTML** - Convert PDF pages to HTML format
+88. **HTML to PDF** - Convert HTML files to PDF documents
+89. **Flatten PDF** - Flatten form fields and annotations
+90. **PDF Metadata Editor** - Edit PDF metadata and properties
+91. **Reverse PDF** - Reverse page order in PDF documents
+92. **Scan to PDF** - Convert scanned images to searchable PDFs
+
+### Signing Tools
+93. **Sign PDF** - Add signatures to PDF documents
+94. **E-Sign PDF** - Electronic signature for PDFs
+95. **Digital Signature** - Add certified digital signatures
+
+### Annotation Tools
+96. **Highlight PDF** - Highlight text in PDF documents
+97. **Annotate PDF** - Add annotations and comments
+
+### Comparison & Analysis Tools
+98. **Compare PDF** - Compare two PDF documents side by side
+99. **Diff PDF** - Find differences between PDFs
+100. **PDF to Word** - Convert PDF to editable Word documents
+101. **PDF to Excel** - Extract tables from PDF to Excel
+102. **PDF to PowerPoint** - Convert PDF to presentation format
+
+### Form Tools
+103. **PDF Form Creator** - Create fillable PDF forms
+104. **Fill PDF Form** - Fill in PDF form fields
+105. **PDF Form to Excel** - Export form data to Excel
+
+### Batch Processing Tools
+106. **Batch Convert** - Convert multiple files at once
+107. **Batch Compress** - Compress multiple PDFs
+108. **Batch Watermark** - Add watermark to multiple PDFs
+
+### Proprietary Format Converters
+109. **PUB to PDF** - Convert Microsoft Publisher files to PDF
+110. **VSD to PDF** - Convert Microsoft Visio diagrams to PDF
+111. **MPP to PDF** - Convert Microsoft Project files to PDF
+
+### Apple iWork Converters
+112. **Pages to PDF** - Convert Apple Pages documents to PDF
+113. **Numbers to PDF** - Convert Apple Numbers spreadsheets to PDF
+114. **Keynote to PDF** - Convert Apple Keynote presentations to PDF
+
+### Email Converters
+115. **Email to PDF** - Convert EML email files to PDF
+116. **MSG to PDF** - Convert Outlook MSG email files to PDF
+
+### Additional Tools (117-120)
+117. **TIFF to PDF** - Convert TIFF images to PDF documents
+118. **SVG to PDF** - Convert SVG graphics to PDF format
+119. **WEBP to PDF** - Convert WebP images to PDF documents
+120. **RAW to PDF** - Convert camera RAW images to PDF
+
 ## Tech Stack
 - **Frontend**: React, TypeScript, Tailwind CSS, Shadcn UI
 - **Backend**: Express, Node.js
@@ -186,8 +245,11 @@ Each tool has:
 - Emoji support for visual appeal
 
 ## Recent Changes (November 2025)
+- Added 10 new tools: Create PDF, PDF Creator, PUB to PDF, VSD to PDF, MPP to PDF, Pages to PDF, Numbers to PDF, Keynote to PDF, Email to PDF, MSG to PDF
+- Fixed file upload validation for create-pdf and pdf-creator (fileless tools)
+- Proprietary format converters return informative placeholder PDFs (full conversion requires external libraries)
 - Added 10 new advanced format conversion tools (odt-to-pdf, ods-to-pdf, odp-to-pdf, csv-to-pdf, epub-to-pdf, mobi-to-pdf, djvu-to-pdf, xml-to-pdf, markdown-to-pdf, md-to-pdf)
-- Total tools now at 83
+- Total tools now at 120
 - Installed marked library for Markdown parsing
 - Installed adm-zip for ODF file extraction (ODT, ODS, ODP)
 - Added 10 document and image conversion tools (powerpoint-to-pdf, ppt-to-pdf, pptx-to-pdf, excel-to-pdf, xls-to-pdf, xlsx-to-pdf, jpg-to-pdf, png-to-pdf, bmp-to-pdf, gif-to-pdf)
