@@ -308,6 +308,23 @@ export default function ToolPage() {
   const canProcess = () => {
     if (files.length < getMinFiles()) return false;
     
+    if (tool.type === "add-image-to-pdf" || tool.type === "replace-image-in-pdf") {
+      const hasPdf = files.some(f => 
+        f.name.toLowerCase().endsWith('.pdf') || f.type === 'application/pdf'
+      );
+      const hasImage = files.some(f => {
+        const ext = f.name.toLowerCase();
+        const isImageExt = ext.endsWith('.jpg') || ext.endsWith('.jpeg') || ext.endsWith('.png') || 
+               ext.endsWith('.gif') || ext.endsWith('.webp') || ext.endsWith('.bmp') ||
+               ext.endsWith('.tiff') || ext.endsWith('.tif');
+        const isImageMime = f.type.startsWith('image/');
+        return isImageExt || isImageMime;
+      });
+      if (!hasPdf || !hasImage) {
+        return false;
+      }
+    }
+    
     if (tool.type === "watermark" && !options.watermarkText?.trim()) {
       return false;
     }
