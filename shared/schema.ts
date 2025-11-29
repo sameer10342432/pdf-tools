@@ -161,6 +161,16 @@ export const pdfToolTypes = [
   "pdf-to-ods",
   "pdf-to-odp",
   "pdf-to-epub",
+  "pdf-to-mobi",
+  "pdf-to-html",
+  "pdf-to-pdfa",
+  "pdf-to-xml",
+  "pdf-to-json",
+  "pdf-to-csv",
+  "pdf-to-grayscale",
+  "pdf-to-bw",
+  "pdf-to-text",
+  "pdf-converter",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -4295,5 +4305,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Universal Ebook Access</h2>
 <p>Read documents on e-ink devices. Enjoy books on tablets and phones. Share ebooks through digital stores. Create accessible reading experiences. PDF to EPUB opens the world of digital reading.</p>`,
+  },
+  {
+    id: "pdf-to-mobi",
+    name: "PDF to MOBI",
+    description: "Convert PDF documents to Kindle MOBI ebook format",
+    icon: "FileText",
+    type: "pdf-to-mobi",
+    color: "bg-orange-600",
+    emoji: "📖",
+    metaTitle: "PDF to MOBI Online Free - Convert PDF to Kindle Format | PDF Tools",
+    metaDescription: "Convert PDF files to MOBI Kindle ebook format online for free. Transform PDFs to Amazon Kindle-compatible ebooks. Read on any Kindle device.",
+    seoArticle: `<h2>PDF to MOBI Converter - Kindle Ebook Creation</h2>
+<p>Convert your PDF documents to MOBI format with our free online converter. MOBI is Amazon's proprietary ebook format, natively supported by all Kindle devices and the Kindle app. Create ebooks that work seamlessly on the world's most popular e-reader ecosystem.</p>
+
+<h2>Why Choose MOBI Format?</h2>
+<p>MOBI is the native format for Amazon Kindle devices and apps. While Amazon now also supports AZW3 and KF8, MOBI remains widely compatible with older Kindles and provides reliable delivery across all Kindle platforms. Perfect for personal reading or sharing with Kindle users.</p>
+
+<h2>Kindle-Optimized Reading</h2>
+<p>Our converter transforms your PDF into a MOBI file optimized for Kindle reading. Text reflows beautifully, navigation works smoothly, and the reading experience matches native Kindle books. Your documents become proper ebooks ready for comfortable reading.</p>
+
+<h2>Simple PDF to MOBI Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter creates a properly formatted MOBI ebook. Download and transfer to your Kindle via USB or email. Enjoy reading your documents on Kindle with all its features.</p>
+
+<h2>Kindle Ecosystem Access</h2>
+<p>Read PDF content on Kindle Paperwhite. Enjoy documents on Kindle apps for iOS and Android. Send books to friends with Kindles. Create your personal Kindle library from PDFs. PDF to MOBI connects your documents to Kindle.</p>`,
+  },
+  {
+    id: "pdf-to-html",
+    name: "PDF to HTML",
+    description: "Convert PDF documents to HTML web pages",
+    icon: "Globe",
+    type: "pdf-to-html",
+    color: "bg-blue-600",
+    emoji: "🌐",
+    metaTitle: "PDF to HTML Online Free - Convert PDF to Web Pages | PDF Tools",
+    metaDescription: "Convert PDF files to HTML web pages online for free. Transform PDFs to responsive HTML code. Make PDF content accessible on the web.",
+    seoArticle: `<h2>PDF to HTML Converter - Web Publishing</h2>
+<p>Convert your PDF documents to HTML format with our free online converter. HTML is the standard language of the web, making your PDF content accessible in any browser on any device. Transform static PDFs into interactive, searchable web content.</p>
+
+<h2>Why Choose HTML Format?</h2>
+<p>HTML is universally accessible - every web browser on every device can display HTML content. Converting PDFs to HTML makes your content searchable by search engines, accessible to screen readers, and viewable without PDF software. Perfect for web publishing and accessibility.</p>
+
+<h2>Web-Ready Content</h2>
+<p>Our converter transforms PDF content into clean, semantic HTML. Text becomes properly structured with headings and paragraphs. Images are extracted and embedded. Links become clickable. The result is a web page ready for viewing or further editing.</p>
+
+<h2>Simple PDF to HTML Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter generates clean HTML code from your document. Download the HTML file ready for web hosting. Open in any browser or edit with any HTML editor.</p>
+
+<h2>Web Publishing Power</h2>
+<p>Publish PDF reports as web pages. Make documents searchable online. Create accessible content for all users. Integrate PDF content into websites. PDF to HTML bridges documents and the web.</p>`,
+  },
+  {
+    id: "pdf-to-pdfa",
+    name: "PDF to PDF/A",
+    description: "Convert PDF to archival PDF/A format for long-term preservation",
+    icon: "Archive",
+    type: "pdf-to-pdfa",
+    color: "bg-slate-700",
+    emoji: "🏛️",
+    metaTitle: "PDF to PDF/A Online Free - Create Archival PDFs | PDF Tools",
+    metaDescription: "Convert PDF files to PDF/A archival format online for free. Create ISO-standardized documents for long-term preservation. Ensure document longevity.",
+    seoArticle: `<h2>PDF to PDF/A Converter - Document Archival</h2>
+<p>Convert your PDF documents to PDF/A format with our free online converter. PDF/A is an ISO-standardized version of PDF designed for digital preservation and long-term archiving. Ensure your important documents remain readable for decades to come.</p>
+
+<h2>Why Choose PDF/A Format?</h2>
+<p>PDF/A (ISO 19005) is the international standard for archival PDFs. It guarantees that documents will display identically regardless of software, operating system, or hardware - now and in the future. Required by many government agencies, legal systems, and archives worldwide.</p>
+
+<h2>Self-Contained Documents</h2>
+<p>PDF/A files embed all necessary components - fonts, color profiles, and metadata - directly in the file. No external dependencies mean no broken links, missing fonts, or changed appearances over time. Your documents are completely self-sufficient.</p>
+
+<h2>Simple PDF to PDF/A Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter transforms it to PDF/A-compliant format. Download your archival-ready PDF. Store with confidence for long-term preservation.</p>
+
+<h2>Archival Compliance</h2>
+<p>Meet government archival requirements. Satisfy legal document retention standards. Preserve corporate records properly. Create museum-quality digital documents. PDF to PDF/A ensures your documents last.</p>`,
+  },
+  {
+    id: "pdf-to-xml",
+    name: "PDF to XML",
+    description: "Extract PDF content and structure to XML format",
+    icon: "FileOutput",
+    type: "pdf-to-xml",
+    color: "bg-emerald-600",
+    emoji: "📋",
+    metaTitle: "PDF to XML Online Free - Extract PDF Data to XML | PDF Tools",
+    metaDescription: "Convert PDF files to XML structured data format online for free. Extract PDF content as machine-readable XML. Perfect for data processing and integration.",
+    seoArticle: `<h2>PDF to XML Converter - Structured Data Extraction</h2>
+<p>Convert your PDF documents to XML format with our free online converter. XML (eXtensible Markup Language) is a universal data format that makes PDF content machine-readable and processable. Extract and structure your document data for integration and analysis.</p>
+
+<h2>Why Choose XML Format?</h2>
+<p>XML is the standard for structured data exchange between systems. Converting PDFs to XML makes document content processable by software, databases, and automated workflows. Perfect for data extraction, system integration, and content management systems.</p>
+
+<h2>Structured Content Extraction</h2>
+<p>Our converter analyzes your PDF and extracts content into a logical XML structure. Text, headings, paragraphs, and tables become properly tagged elements. The hierarchical structure of your document is preserved in semantic XML markup.</p>
+
+<h2>Simple PDF to XML Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter generates well-formed XML from your document. Download the XML file ready for processing. Import into databases, applications, or content management systems.</p>
+
+<h2>Data Integration Power</h2>
+<p>Feed PDF data into enterprise systems. Process documents automatically. Transform content for different outputs. Enable content reuse across platforms. PDF to XML unlocks your document data.</p>`,
+  },
+  {
+    id: "pdf-to-json",
+    name: "PDF to JSON",
+    description: "Extract PDF content to JSON data format",
+    icon: "FileOutput",
+    type: "pdf-to-json",
+    color: "bg-yellow-600",
+    emoji: "🔧",
+    metaTitle: "PDF to JSON Online Free - Extract PDF Data to JSON | PDF Tools",
+    metaDescription: "Convert PDF files to JSON data format online for free. Extract PDF content as structured JSON data. Perfect for web applications and APIs.",
+    seoArticle: `<h2>PDF to JSON Converter - API-Ready Data</h2>
+<p>Convert your PDF documents to JSON format with our free online converter. JSON (JavaScript Object Notation) is the most popular data format for web applications and APIs. Transform your PDF content into structured data ready for modern applications.</p>
+
+<h2>Why Choose JSON Format?</h2>
+<p>JSON is the lingua franca of web development. It's natively supported by JavaScript, easily parsed by any programming language, and perfect for REST APIs. Converting PDFs to JSON makes document content instantly usable in web applications, mobile apps, and cloud services.</p>
+
+<h2>Developer-Friendly Output</h2>
+<p>Our converter extracts PDF content into clean, well-structured JSON. Document metadata, text content, page information, and structure are organized into intuitive JSON objects and arrays. Ready to parse and use in your applications immediately.</p>
+
+<h2>Simple PDF to JSON Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter generates structured JSON from your document. Download the JSON file or copy the data. Use directly in your applications, databases, or workflows.</p>
+
+<h2>Application Integration</h2>
+<p>Build document-powered web apps. Feed PDF data to APIs. Create searchable document databases. Automate document processing workflows. PDF to JSON connects documents to code.</p>`,
+  },
+  {
+    id: "pdf-to-csv",
+    name: "PDF to CSV",
+    description: "Extract tables and data from PDF to CSV spreadsheet format",
+    icon: "FileSpreadsheet",
+    type: "pdf-to-csv",
+    color: "bg-green-600",
+    emoji: "📊",
+    metaTitle: "PDF to CSV Online Free - Extract PDF Tables to CSV | PDF Tools",
+    metaDescription: "Convert PDF tables and data to CSV spreadsheet format online for free. Extract tabular data from PDFs. Import into Excel, Google Sheets, or databases.",
+    seoArticle: `<h2>PDF to CSV Converter - Table Data Extraction</h2>
+<p>Convert tables and data from your PDF documents to CSV format with our free online converter. CSV (Comma-Separated Values) is the universal format for tabular data, compatible with every spreadsheet application and database system.</p>
+
+<h2>Why Choose CSV Format?</h2>
+<p>CSV is the simplest and most widely supported format for tabular data. Every spreadsheet program (Excel, Google Sheets, LibreOffice), database system, and data analysis tool can import CSV files. Perfect for extracting data from PDF reports, invoices, and statements.</p>
+
+<h2>Intelligent Table Extraction</h2>
+<p>Our converter analyzes your PDF to identify tables and structured data. Rows and columns are properly detected and separated. Numbers, dates, and text are preserved accurately. The result is clean, ready-to-use CSV data.</p>
+
+<h2>Simple PDF to CSV Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter extracts tabular data to CSV format. Download your CSV file ready for analysis. Import directly into Excel, Google Sheets, or any database.</p>
+
+<h2>Data Analysis Ready</h2>
+<p>Extract financial report data for analysis. Convert invoice tables to spreadsheets. Process survey results from PDF reports. Import PDF data into databases. PDF to CSV frees your data.</p>`,
+  },
+  {
+    id: "pdf-to-grayscale",
+    name: "PDF to Grayscale",
+    description: "Convert colored PDF pages to grayscale for printing",
+    icon: "Image",
+    type: "pdf-to-grayscale",
+    color: "bg-gray-600",
+    emoji: "🖤",
+    metaTitle: "PDF to Grayscale Online Free - Convert Color PDF to Black & White | PDF Tools",
+    metaDescription: "Convert color PDF files to grayscale online for free. Remove color for economical printing. Reduce file size while maintaining readability.",
+    seoArticle: `<h2>PDF to Grayscale Converter - Color to Gray</h2>
+<p>Convert your color PDF documents to grayscale with our free online converter. Grayscale conversion removes color while preserving all shades and details in varying tones of gray. Perfect for economical printing or creating visually consistent documents.</p>
+
+<h2>Why Convert to Grayscale?</h2>
+<p>Grayscale PDFs are ideal for black-and-white printing, reducing ink costs significantly. They also produce smaller file sizes than color PDFs. Many professional and legal documents are traditionally printed in grayscale, making this conversion essential for formal submissions.</p>
+
+<h2>Professional Gray Tones</h2>
+<p>Our converter intelligently maps colors to appropriate gray values. Bright colors become light grays, dark colors become darker grays. Text remains crisp and readable. Images retain their detail and contrast. The result is a professional grayscale document.</p>
+
+<h2>Simple PDF to Grayscale Conversion</h2>
+<p>Upload your color PDF file using our secure interface. Our converter processes each page to grayscale. Download your converted PDF ready for printing. Save on color ink while maintaining document quality.</p>
+
+<h2>Printing Efficiency</h2>
+<p>Reduce printing costs significantly. Create consistent black-and-white documents. Prepare documents for fax transmission. Meet submission requirements for gray-only documents. PDF to Grayscale makes printing practical.</p>`,
+  },
+  {
+    id: "pdf-to-bw",
+    name: "PDF to Black and White",
+    description: "Convert PDF to pure black and white (no gray tones)",
+    icon: "Image",
+    type: "pdf-to-bw",
+    color: "bg-neutral-800",
+    emoji: "⬛",
+    metaTitle: "PDF to Black and White Online Free - High Contrast PDF Conversion | PDF Tools",
+    metaDescription: "Convert PDF files to pure black and white online for free. Create high-contrast documents with no gray tones. Perfect for text-heavy documents and OCR.",
+    seoArticle: `<h2>PDF to Black and White Converter - High Contrast</h2>
+<p>Convert your PDF documents to pure black and white with our free online converter. Unlike grayscale, black and white conversion creates documents with only two colors - pure black and pure white. Perfect for text documents, forms, and high-contrast output.</p>
+
+<h2>Why Choose Pure Black and White?</h2>
+<p>Pure black and white PDFs produce the smallest file sizes and the sharpest text. They're ideal for text-heavy documents, scanned forms, and documents that will undergo OCR processing. The high contrast ensures maximum readability and clean printing.</p>
+
+<h2>Sharp, Clean Output</h2>
+<p>Our converter applies intelligent thresholding to determine which pixels become black and which become white. Text edges remain sharp and crisp. Line art is preserved perfectly. The result is a clean, high-contrast document ideal for reading and printing.</p>
+
+<h2>Simple PDF to B&W Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes pages to pure black and white. Download your converted PDF with maximum contrast. Print with minimal ink or process with OCR software.</p>
+
+<h2>Maximum Clarity</h2>
+<p>Create the clearest possible text documents. Prepare files for OCR processing. Minimize file sizes dramatically. Produce clean copies of forms and contracts. PDF to Black and White delivers pure clarity.</p>`,
+  },
+  {
+    id: "pdf-to-text",
+    name: "PDF to Text",
+    description: "Extract all text content from PDF documents",
+    icon: "FileText",
+    type: "pdf-to-text",
+    color: "bg-cyan-600",
+    emoji: "📝",
+    metaTitle: "PDF to Text Online Free - Extract Text from PDF | PDF Tools",
+    metaDescription: "Extract text content from PDF files online for free. Convert PDF documents to plain text format. Copy, edit, and reuse PDF text content easily.",
+    seoArticle: `<h2>PDF to Text Converter - Content Extraction</h2>
+<p>Extract text from your PDF documents with our free online converter. This tool pulls all readable text content from your PDF and provides it as plain text. Perfect for copying content, creating searchable text, or converting documents for accessibility.</p>
+
+<h2>Why Extract PDF Text?</h2>
+<p>Plain text is the most universal format - readable by any device, any software, and any system. Extracting text from PDFs allows you to copy content to other documents, create searchable archives, make documents accessible to screen readers, or process content programmatically.</p>
+
+<h2>Complete Text Extraction</h2>
+<p>Our converter reads through your entire PDF, extracting all text content while preserving paragraph breaks and basic structure. Headers, body text, captions, and other text elements are all captured. The result is clean, usable text content.</p>
+
+<h2>Simple PDF to Text Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter extracts all text content. Download the text file or copy the content directly. Use the text in any way you need.</p>
+
+<h2>Universal Accessibility</h2>
+<p>Make PDF content accessible to screen readers. Create searchable document archives. Copy content for reuse in other documents. Process text with any software. PDF to Text unlocks document content.</p>`,
+  },
+  {
+    id: "pdf-converter",
+    name: "PDF Converter",
+    description: "Universal PDF converter - convert PDF to multiple formats",
+    icon: "Shuffle",
+    type: "pdf-converter",
+    color: "bg-purple-600",
+    emoji: "🔄",
+    metaTitle: "PDF Converter Online Free - Universal PDF Format Conversion | PDF Tools",
+    metaDescription: "Universal PDF converter for all format conversions. Convert PDF to Word, Excel, images, and more. One tool for all your PDF conversion needs.",
+    seoArticle: `<h2>Universal PDF Converter - All Formats</h2>
+<p>The ultimate PDF conversion tool - convert your PDF documents to virtually any format with our free online converter. Whether you need Word documents, Excel spreadsheets, images, or specialized formats, this single tool handles all your conversion needs.</p>
+
+<h2>One Tool, Many Formats</h2>
+<p>Instead of searching for separate converters, use our universal PDF converter for all your needs. Convert to Word for editing, to Excel for data analysis, to images for web use, to text for accessibility, and many more formats - all from one convenient interface.</p>
+
+<h2>Smart Format Selection</h2>
+<p>Our converter analyzes your PDF and offers the most suitable output formats. Text-heavy documents convert well to Word or text. Data tables work best as Excel or CSV. Visual documents shine as images. Choose the format that best fits your needs.</p>
+
+<h2>Simple Universal Conversion</h2>
+<p>Upload your PDF file using our secure interface. Select your desired output format from the comprehensive list. Our converter processes your document with format-specific optimization. Download your converted file ready for use.</p>
+
+<h2>Complete Conversion Solution</h2>
+<p>Handle all PDF conversions in one place. Save time with a single, powerful tool. Convert to any format your work requires. Simplify your document workflow. PDF Converter is your one-stop conversion solution.</p>`,
   },
 ];
