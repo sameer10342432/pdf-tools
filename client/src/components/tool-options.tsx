@@ -1920,6 +1920,286 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "pdf-booklet-maker":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="bookletBinding">Binding Edge</Label>
+            <Select
+              value={options.bookletBinding || "left"}
+              onValueChange={(value) => updateOption("bookletBinding", value)}
+            >
+              <SelectTrigger id="bookletBinding" data-testid="select-booklet-binding">
+                <SelectValue placeholder="Select binding edge" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="left">Left Edge (Standard)</SelectItem>
+                <SelectItem value="right">Right Edge (RTL)</SelectItem>
+                <SelectItem value="top">Top Edge</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="bookletPageSize">Page Size</Label>
+            <Select
+              value={options.bookletPageSize || "letter"}
+              onValueChange={(value) => updateOption("bookletPageSize", value)}
+            >
+              <SelectTrigger id="bookletPageSize" data-testid="select-booklet-page-size">
+                <SelectValue placeholder="Select page size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="letter">Letter (8.5 x 11 in)</SelectItem>
+                <SelectItem value="a4">A4 (210 x 297 mm)</SelectItem>
+                <SelectItem value="a3">A3 (297 x 420 mm)</SelectItem>
+                <SelectItem value="tabloid">Tabloid (11 x 17 in)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Creates booklet-ready PDF with proper page ordering for folding
+          </p>
+        </div>
+      );
+
+    case "impose-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="impositionLayout">Imposition Layout</Label>
+            <Select
+              value={options.impositionLayout || "2-up-saddle"}
+              onValueChange={(value) => updateOption("impositionLayout", value)}
+            >
+              <SelectTrigger id="impositionLayout" data-testid="select-imposition-layout">
+                <SelectValue placeholder="Select layout" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2-up-saddle">2-Up Saddle Stitch</SelectItem>
+                <SelectItem value="4-up-perfect">4-Up Perfect Binding</SelectItem>
+                <SelectItem value="step-repeat">Step and Repeat</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="impositionSheetSize">Sheet Size</Label>
+            <Select
+              value={options.impositionSheetSize || "a3"}
+              onValueChange={(value) => updateOption("impositionSheetSize", value)}
+            >
+              <SelectTrigger id="impositionSheetSize" data-testid="select-imposition-sheet-size">
+                <SelectValue placeholder="Select sheet size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="a3">A3</SelectItem>
+                <SelectItem value="tabloid">Tabloid</SelectItem>
+                <SelectItem value="a4">A4</SelectItem>
+                <SelectItem value="letter">Letter</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Arrange pages on sheets for professional printing
+          </p>
+        </div>
+      );
+
+    case "pdf-handout-6up":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Creates 6-slide-per-page handouts from your PDF. Perfect for presentations and lecture materials.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Each page will contain 6 slides arranged in a 2x3 grid with slide numbers.
+          </p>
+        </div>
+      );
+
+    case "add-gutter-margins":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="gutterSize">Gutter Size (points)</Label>
+            <Input
+              id="gutterSize"
+              type="number"
+              placeholder="36"
+              min={1}
+              max={144}
+              value={options.gutterSize || ""}
+              onChange={(e) => updateOption("gutterSize", e.target.value)}
+              data-testid="input-gutter-size"
+            />
+            <p className="text-sm text-muted-foreground">
+              72 points = 1 inch. Default: 36 points (0.5 inch)
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="gutterPosition">Gutter Position</Label>
+            <Select
+              value={options.gutterPosition || "left"}
+              onValueChange={(value) => updateOption("gutterPosition", value)}
+            >
+              <SelectTrigger id="gutterPosition" data-testid="select-gutter-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="left">Left Side</SelectItem>
+                <SelectItem value="right">Right Side</SelectItem>
+                <SelectItem value="both">Mirror (Alternating)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "pdf-color-changer":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="colorChangeFrom">Color to Find</Label>
+            <Input
+              id="colorChangeFrom"
+              type="color"
+              value={options.colorChangeFrom || "#000000"}
+              onChange={(e) => updateOption("colorChangeFrom", e.target.value)}
+              data-testid="input-color-from"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="colorChangeTo">Replace With</Label>
+            <Input
+              id="colorChangeTo"
+              type="color"
+              value={options.colorChangeTo || "#0000FF"}
+              onChange={(e) => updateOption("colorChangeTo", e.target.value)}
+              data-testid="input-color-to"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="colorChangeMode">Match Mode</Label>
+            <Select
+              value={options.colorChangeMode || "exact"}
+              onValueChange={(value) => updateOption("colorChangeMode", value)}
+            >
+              <SelectTrigger id="colorChangeMode" data-testid="select-color-mode">
+                <SelectValue placeholder="Select mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="exact">Exact Match</SelectItem>
+                <SelectItem value="similar">Similar Colors</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "pdf-font-replacer":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="sourceFontName">Font to Replace</Label>
+            <Input
+              id="sourceFontName"
+              placeholder="Arial"
+              value={options.sourceFontName || ""}
+              onChange={(e) => updateOption("sourceFontName", e.target.value)}
+              data-testid="input-source-font"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="targetFontName">Replace With</Label>
+            <Select
+              value={options.targetFontName || "Helvetica"}
+              onValueChange={(value) => updateOption("targetFontName", value)}
+            >
+              <SelectTrigger id="targetFontName" data-testid="select-target-font">
+                <SelectValue placeholder="Select font" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Helvetica">Helvetica</SelectItem>
+                <SelectItem value="Times-Roman">Times Roman</SelectItem>
+                <SelectItem value="Courier">Courier</SelectItem>
+                <SelectItem value="Symbol">Symbol</SelectItem>
+                <SelectItem value="ZapfDingbats">Zapf Dingbats</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Replaces font references throughout the document
+          </p>
+        </div>
+      );
+
+    case "pdf-font-finder":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Analyzes your PDF and generates a report of all fonts used, including:
+          </p>
+          <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1">
+            <li>Font names and types</li>
+            <li>Embedding status</li>
+            <li>Subset information</li>
+          </ul>
+        </div>
+      );
+
+    case "pdf-link-checker":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Scans your PDF and generates a report of all hyperlinks found, including:
+          </p>
+          <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1">
+            <li>Link URLs</li>
+            <li>Page locations</li>
+            <li>Link status</li>
+          </ul>
+        </div>
+      );
+
+    case "pdf-link-remover":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Removes all hyperlinks from your PDF document. The visual appearance of link text is preserved, but links will no longer be clickable.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Useful for creating print versions or removing potentially unsafe links.
+          </p>
+        </div>
+      );
+
+    case "pdf-annotation-remover":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="annotationTypesToRemove">Annotations to Remove</Label>
+            <Select
+              value={options.annotationTypesToRemove || "all"}
+              onValueChange={(value) => updateOption("annotationTypesToRemove", value)}
+            >
+              <SelectTrigger id="annotationTypesToRemove" data-testid="select-annotation-type">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Annotations</SelectItem>
+                <SelectItem value="highlights">Highlights Only</SelectItem>
+                <SelectItem value="notes">Notes & Comments</SelectItem>
+                <SelectItem value="drawings">Drawings & Shapes</SelectItem>
+                <SelectItem value="stamps">Stamps</SelectItem>
+                <SelectItem value="links">Links Only</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Creates a clean version of your PDF without the selected annotations
+          </p>
+        </div>
+      );
+
     default:
       return null;
   }
