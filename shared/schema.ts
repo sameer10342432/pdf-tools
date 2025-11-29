@@ -171,6 +171,16 @@ export const pdfToolTypes = [
   "pdf-to-bw",
   "pdf-to-text",
   "pdf-converter",
+  "pdf-to-markdown",
+  "pdf-to-md",
+  "pdf-to-dwg",
+  "pdf-to-dxf",
+  "pdf-to-xps",
+  "pdf-to-ps",
+  "pdf-to-eps",
+  "pdf-to-wpd",
+  "pdf-to-keynote",
+  "pdf-to-pages",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -4555,5 +4565,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Complete Conversion Solution</h2>
 <p>Handle all PDF conversions in one place. Save time with a single, powerful tool. Convert to any format your work requires. Simplify your document workflow. PDF Converter is your one-stop conversion solution.</p>`,
+  },
+  {
+    id: "pdf-to-markdown",
+    name: "PDF to Markdown",
+    description: "Convert PDF documents to Markdown format for easy editing",
+    icon: "FileCode",
+    type: "pdf-to-markdown",
+    color: "bg-slate-700",
+    emoji: "📝",
+    metaTitle: "PDF to Markdown Online Free - Convert PDF to MD Format | PDF Tools",
+    metaDescription: "Convert PDF files to Markdown format online for free. Transform PDF documents into editable Markdown text. Perfect for documentation, blogs, and GitHub.",
+    seoArticle: `<h2>PDF to Markdown Converter - Developer-Friendly Format</h2>
+<p>Convert your PDF documents to Markdown format with our free online converter. Markdown is the universal language of documentation, used by developers, technical writers, and content creators worldwide. Transform complex PDF content into clean, portable Markdown text.</p>
+
+<h2>Why Choose Markdown Format?</h2>
+<p>Markdown is lightweight, readable, and universally supported. It's the standard for README files, documentation sites, blogs, and static site generators. Converting PDFs to Markdown makes your content editable in any text editor, version-controllable with Git, and publishable across countless platforms.</p>
+
+<h2>Intelligent Structure Conversion</h2>
+<p>Our converter analyzes your PDF structure and maps it to Markdown syntax. Headings become # headers, lists become bulleted or numbered items, emphasis becomes bold or italic text, and links are properly formatted. The result is clean, semantic Markdown ready for use.</p>
+
+<h2>Simple PDF to Markdown Process</h2>
+<p>Upload your PDF file using our secure interface. Our converter extracts text and applies Markdown formatting. Download your .md file ready for editing. Use in GitHub, documentation platforms, or any Markdown-compatible system.</p>
+
+<h2>Perfect for Documentation</h2>
+<p>Convert technical manuals to editable docs. Transform reports for GitHub repositories. Create blog posts from PDF content. Build documentation sites from existing materials. PDF to Markdown bridges documents and development.</p>`,
+  },
+  {
+    id: "pdf-to-md",
+    name: "PDF to MD",
+    description: "Extract PDF content as MD (Markdown) text files",
+    icon: "FileCode2",
+    type: "pdf-to-md",
+    color: "bg-zinc-700",
+    emoji: "📄",
+    metaTitle: "PDF to MD Online Free - Convert PDF to .MD Files | PDF Tools",
+    metaDescription: "Convert PDF files to .md Markdown files online for free. Extract PDF content as editable MD format. Ideal for GitHub, documentation, and static sites.",
+    seoArticle: `<h2>PDF to MD File Converter - Markdown Made Easy</h2>
+<p>Convert your PDF documents to .md files with our free online converter. MD (Markdown) files are the standard for technical documentation, project README files, and web content creation. Transform your PDFs into the most versatile text format available.</p>
+
+<h2>The Power of .MD Files</h2>
+<p>MD files are plain text with simple formatting syntax that renders beautifully on GitHub, GitLab, documentation platforms, and websites. They're small, fast, version-control friendly, and editable with any text editor. Convert your PDFs to unlock this flexibility.</p>
+
+<h2>Clean Text Extraction</h2>
+<p>Our converter extracts text from your PDF while applying appropriate Markdown syntax. Paragraphs are separated properly, headings are marked with hash symbols, and code blocks are preserved. The output is readable both as raw text and rendered Markdown.</p>
+
+<h2>Easy Conversion Steps</h2>
+<p>Upload your PDF document to our secure converter. Processing extracts and formats content as Markdown. Download your .md file instantly. Open in VS Code, Notepad, or any editor and start editing immediately.</p>
+
+<h2>Developer Workflow Integration</h2>
+<p>Add converted docs to Git repositories. Generate documentation from existing PDFs. Create wiki pages from manuals. Build knowledge bases from archived documents. PDF to MD fits seamlessly into modern workflows.</p>`,
+  },
+  {
+    id: "pdf-to-dwg",
+    name: "PDF to DWG",
+    description: "Convert PDF drawings to AutoCAD DWG format",
+    icon: "PenTool",
+    type: "pdf-to-dwg",
+    color: "bg-blue-700",
+    emoji: "📐",
+    metaTitle: "PDF to DWG Online Free - Convert PDF to AutoCAD Format | PDF Tools",
+    metaDescription: "Convert PDF drawings to DWG AutoCAD format online for free. Transform PDF blueprints and technical drawings into editable CAD files.",
+    seoArticle: `<h2>PDF to DWG Converter - CAD Format Conversion</h2>
+<p>Convert your PDF drawings to DWG format with our free online converter. DWG is the native format for AutoCAD and other CAD software, making it essential for architects, engineers, and designers who need to edit technical drawings originally shared as PDFs.</p>
+
+<h2>Why Convert to DWG?</h2>
+<p>DWG files are editable in AutoCAD, allowing you to modify drawings, add annotations, extract measurements, and continue design work. When you receive blueprints or technical plans as PDFs, converting to DWG unlocks full editing capabilities that PDF viewing alone cannot provide.</p>
+
+<h2>Vector Drawing Recognition</h2>
+<p>Our converter analyzes vector elements in your PDF - lines, arcs, circles, and curves - and translates them to DWG entities. Text is extracted and positioned accurately. Layers are created to organize different drawing elements. The result is a workable CAD file.</p>
+
+<h2>Simple Conversion Process</h2>
+<p>Upload your PDF drawing using our secure interface. Our converter processes vector elements and creates DWG output. Download your AutoCAD-compatible file. Open in AutoCAD, DraftSight, or any DWG-compatible software.</p>
+
+<h2>Architecture and Engineering Ready</h2>
+<p>Edit received architectural plans. Modify engineering schematics for new projects. Extract measurements from technical drawings. Incorporate legacy drawings into current projects. PDF to DWG bridges document formats and CAD workflows.</p>`,
+  },
+  {
+    id: "pdf-to-dxf",
+    name: "PDF to DXF",
+    description: "Convert PDF to DXF CAD exchange format",
+    icon: "Ruler",
+    type: "pdf-to-dxf",
+    color: "bg-indigo-700",
+    emoji: "📏",
+    metaTitle: "PDF to DXF Online Free - Convert PDF to DXF CAD Format | PDF Tools",
+    metaDescription: "Convert PDF files to DXF CAD exchange format online for free. Transform PDF drawings into universal CAD format compatible with all CAD software.",
+    seoArticle: `<h2>PDF to DXF Converter - Universal CAD Format</h2>
+<p>Convert your PDF documents to DXF format with our free online converter. DXF (Drawing Exchange Format) is the universal CAD format readable by virtually every CAD application. Transform PDF drawings into editable vector files compatible with AutoCAD, SolidWorks, and more.</p>
+
+<h2>Why Choose DXF Format?</h2>
+<p>DXF is the most compatible CAD format available, supported by nearly every CAD program regardless of vendor. Unlike proprietary formats, DXF ensures your drawings can be opened and edited anywhere. It's the ideal choice for sharing technical drawings across different CAD platforms.</p>
+
+<h2>Accurate Vector Extraction</h2>
+<p>Our converter identifies vector graphics in your PDF and converts them to DXF entities with precision. Lines, arcs, polylines, and text are accurately translated. Scale and dimensions are preserved. The output is ready for CAD editing and modification.</p>
+
+<h2>Easy PDF to DXF Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter analyzes and extracts vector content. Download your DXF file ready for CAD software. Import into any CAD application for editing or further development.</p>
+
+<h2>Cross-Platform Compatibility</h2>
+<p>Share drawings with any CAD user regardless of software. Edit PDF plans in your preferred CAD tool. Incorporate PDF content into CAD projects. Maintain drawing accuracy across platforms. PDF to DXF ensures universal compatibility.</p>`,
+  },
+  {
+    id: "pdf-to-xps",
+    name: "PDF to XPS",
+    description: "Convert PDF documents to Microsoft XPS format",
+    icon: "FileText",
+    type: "pdf-to-xps",
+    color: "bg-blue-600",
+    emoji: "📋",
+    metaTitle: "PDF to XPS Online Free - Convert PDF to XPS Format | PDF Tools",
+    metaDescription: "Convert PDF files to Microsoft XPS format online for free. Transform PDF documents into Windows-native XPS format for viewing and printing.",
+    seoArticle: `<h2>PDF to XPS Converter - Microsoft Document Format</h2>
+<p>Convert your PDF documents to XPS format with our free online converter. XPS (XML Paper Specification) is Microsoft's fixed-document format, offering similar benefits to PDF within the Windows ecosystem. Transform your PDFs for seamless integration with Windows applications.</p>
+
+<h2>Understanding XPS Format</h2>
+<p>XPS is Windows' native document format for preserving document fidelity. It's built into Windows 10 and 11, requiring no additional software to view. XPS files maintain exact layout, fonts, and graphics, making them ideal for archival and printing within Microsoft environments.</p>
+
+<h2>Perfect Document Preservation</h2>
+<p>Our converter translates PDF content to XPS while maintaining visual fidelity. Page layouts are preserved exactly. Fonts are embedded or substituted appropriately. Graphics and images transfer accurately. Your XPS looks identical to the original PDF.</p>
+
+<h2>Simple Conversion Steps</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes pages and creates XPS output. Download your XPS document instantly. Open with XPS Viewer built into Windows or print directly.</p>
+
+<h2>Windows Integration</h2>
+<p>View documents without PDF software on Windows. Print with native Windows support. Archive documents in Microsoft's format. Share with users in Windows-centric environments. PDF to XPS bridges the document format gap.</p>`,
+  },
+  {
+    id: "pdf-to-ps",
+    name: "PDF to PostScript",
+    description: "Convert PDF to PostScript (PS) printing format",
+    icon: "Printer",
+    type: "pdf-to-ps",
+    color: "bg-gray-700",
+    emoji: "🖨️",
+    metaTitle: "PDF to PostScript Online Free - Convert PDF to PS Format | PDF Tools",
+    metaDescription: "Convert PDF files to PostScript (PS) format online for free. Transform PDF documents into printer-ready PostScript files for professional printing.",
+    seoArticle: `<h2>PDF to PostScript Converter - Professional Printing Format</h2>
+<p>Convert your PDF documents to PostScript format with our free online converter. PostScript is the industry-standard page description language used by professional printers and typesetters worldwide. Transform your PDFs into print-ready PS files for high-quality output.</p>
+
+<h2>Why Use PostScript?</h2>
+<p>PostScript has been the printing industry standard for decades. It provides precise control over typography, graphics, and page layout. Many professional print shops and RIP (Raster Image Processor) systems require PostScript files. Converting PDF to PS ensures compatibility with professional printing workflows.</p>
+
+<h2>Print-Ready Output</h2>
+<p>Our converter generates clean PostScript code from your PDF content. Fonts are properly handled for printer compatibility. Vector graphics translate accurately to PostScript drawing commands. The output is optimized for professional printing equipment.</p>
+
+<h2>Easy PDF to PS Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter generates PostScript output. Download your .ps file ready for printing. Send directly to PostScript-compatible printers or prepress workflows.</p>
+
+<h2>Professional Printing Workflow</h2>
+<p>Prepare files for commercial printing. Submit to print services requiring PS format. Drive PostScript printers directly. Integrate with prepress software and RIPs. PDF to PostScript meets professional printing standards.</p>`,
+  },
+  {
+    id: "pdf-to-eps",
+    name: "PDF to EPS",
+    description: "Convert PDF to Encapsulated PostScript for graphics",
+    icon: "Image",
+    type: "pdf-to-eps",
+    color: "bg-violet-700",
+    emoji: "🎨",
+    metaTitle: "PDF to EPS Online Free - Convert PDF to Encapsulated PostScript | PDF Tools",
+    metaDescription: "Convert PDF files to EPS (Encapsulated PostScript) format online for free. Transform PDF graphics into scalable EPS vector format for publishing.",
+    seoArticle: `<h2>PDF to EPS Converter - Vector Graphics Format</h2>
+<p>Convert your PDF documents to EPS format with our free online converter. EPS (Encapsulated PostScript) is the preferred format for vector graphics in professional publishing and design. Transform your PDF content into high-quality EPS files for desktop publishing applications.</p>
+
+<h2>The EPS Advantage</h2>
+<p>EPS files are self-contained graphics that can be placed in page layout applications like InDesign, QuarkXPress, and Illustrator. They scale without quality loss, making them perfect for print production. EPS is the trusted format for logos, illustrations, and graphics in professional workflows.</p>
+
+<h2>High-Quality Graphics Conversion</h2>
+<p>Our converter extracts vector content from your PDF and creates properly formatted EPS files. Graphics maintain their scalable vector quality. Text is preserved accurately. The bounding box is calculated correctly for proper placement in layout applications.</p>
+
+<h2>Simple PDF to EPS Process</h2>
+<p>Upload your PDF file using our secure interface. Our converter generates EPS output. Download your .eps file ready for use. Import into InDesign, Illustrator, or any EPS-compatible application.</p>
+
+<h2>Publishing and Design Ready</h2>
+<p>Create graphics for print publications. Extract logos from PDF brand guides. Prepare illustrations for page layouts. Archive vector content in industry-standard format. PDF to EPS serves professional publishing needs.</p>`,
+  },
+  {
+    id: "pdf-to-wpd",
+    name: "PDF to WPD",
+    description: "Convert PDF to WordPerfect document format",
+    icon: "FileText",
+    type: "pdf-to-wpd",
+    color: "bg-teal-700",
+    emoji: "📃",
+    metaTitle: "PDF to WPD Online Free - Convert PDF to WordPerfect Format | PDF Tools",
+    metaDescription: "Convert PDF files to WordPerfect WPD format online for free. Transform PDF documents into editable WordPerfect documents for legal and business use.",
+    seoArticle: `<h2>PDF to WordPerfect Converter - WPD Format</h2>
+<p>Convert your PDF documents to WordPerfect WPD format with our free online converter. WordPerfect remains essential in legal, government, and academic environments where it has been the standard for decades. Transform your PDFs into editable WPD files for these specialized workflows.</p>
+
+<h2>WordPerfect in Professional Settings</h2>
+<p>Despite Microsoft Word's dominance, WordPerfect persists in many law firms, courts, and government agencies. Its Reveal Codes feature and precise formatting control make it preferred for legal documents. Converting PDFs to WPD enables editing in these WordPerfect-centric environments.</p>
+
+<h2>Document Structure Preservation</h2>
+<p>Our converter extracts text and formatting from your PDF and creates properly structured WPD files. Paragraphs, headings, and basic formatting are translated to WordPerfect equivalents. The result is an editable document ready for WordPerfect users.</p>
+
+<h2>Easy PDF to WPD Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes and creates WPD output. Download your WordPerfect document. Open in Corel WordPerfect or compatible applications for editing.</p>
+
+<h2>Legal and Government Workflows</h2>
+<p>Create editable legal documents from PDF briefs. Convert court filings for WordPerfect users. Transform government forms for internal editing. Maintain workflow compatibility with WordPerfect offices. PDF to WPD bridges document format gaps.</p>`,
+  },
+  {
+    id: "pdf-to-keynote",
+    name: "PDF to Keynote",
+    description: "Convert PDF presentations to Apple Keynote format",
+    icon: "Presentation",
+    type: "pdf-to-keynote",
+    color: "bg-orange-600",
+    emoji: "🎬",
+    metaTitle: "PDF to Keynote Online Free - Convert PDF to Apple Keynote | PDF Tools",
+    metaDescription: "Convert PDF presentations to Apple Keynote format online for free. Transform PDF slides into editable Keynote presentations for Mac and iOS.",
+    seoArticle: `<h2>PDF to Keynote Converter - Apple Presentation Format</h2>
+<p>Convert your PDF presentations to Keynote format with our free online converter. Keynote is Apple's powerful presentation software, known for stunning animations and beautiful templates. Transform your PDF slides into fully editable Keynote presentations for Mac and iOS devices.</p>
+
+<h2>Why Convert to Keynote?</h2>
+<p>Keynote offers exceptional design capabilities, smooth animations, and seamless integration across Apple devices. Converting PDFs to Keynote allows you to enhance presentations with Keynote's features, collaborate with Apple users, or present on Mac and iPad with optimal compatibility.</p>
+
+<h2>Slide-by-Slide Conversion</h2>
+<p>Our converter treats each PDF page as a presentation slide. Content is extracted and positioned to maintain visual layout. Text becomes editable. Images are embedded properly. The result is a Keynote presentation you can refine and enhance.</p>
+
+<h2>Simple PDF to Keynote Process</h2>
+<p>Upload your PDF file using our secure interface. Our converter creates Keynote-compatible output. Download your presentation file. Open in Keynote on Mac, iPad, or iPhone for editing and presenting.</p>
+
+<h2>Apple Ecosystem Integration</h2>
+<p>Present on Mac with full Keynote features. Edit on iPad with Apple Pencil. Collaborate via iCloud. Export to other formats when needed. PDF to Keynote unlocks Apple's presentation power.</p>`,
+  },
+  {
+    id: "pdf-to-pages",
+    name: "PDF to Pages",
+    description: "Convert PDF documents to Apple Pages format",
+    icon: "FileText",
+    type: "pdf-to-pages",
+    color: "bg-amber-600",
+    emoji: "📑",
+    metaTitle: "PDF to Pages Online Free - Convert PDF to Apple Pages Format | PDF Tools",
+    metaDescription: "Convert PDF files to Apple Pages format online for free. Transform PDF documents into editable Pages documents for Mac, iPad, and iPhone.",
+    seoArticle: `<h2>PDF to Pages Converter - Apple Document Format</h2>
+<p>Convert your PDF documents to Apple Pages format with our free online converter. Pages is Apple's word processor, offering beautiful templates, seamless iCloud integration, and cross-device editing. Transform your PDFs into fully editable Pages documents.</p>
+
+<h2>The Pages Advantage</h2>
+<p>Pages provides an intuitive writing experience with powerful formatting tools and stunning templates. It syncs perfectly across Mac, iPad, and iPhone via iCloud. Converting PDFs to Pages lets you edit documents in Apple's ecosystem with all its collaborative and design features.</p>
+
+<h2>Content Extraction and Formatting</h2>
+<p>Our converter extracts text and basic formatting from your PDF. Paragraphs are structured properly. Images are embedded and positioned. The result is a Pages document that maintains the essence of your PDF while enabling full editing capabilities.</p>
+
+<h2>Easy PDF to Pages Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter generates Pages-compatible output. Download your document file. Open in Pages on any Apple device for immediate editing.</p>
+
+<h2>Apple Workflow Integration</h2>
+<p>Edit documents seamlessly across Mac and iOS. Collaborate with Pages users via iCloud. Apply beautiful Pages templates to content. Export to other formats when sharing outside Apple. PDF to Pages connects documents to Apple's ecosystem.</p>`,
   },
 ];
