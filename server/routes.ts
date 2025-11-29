@@ -10311,25 +10311,25 @@ export async function registerRoutes(
           
           case "pdf-to-speech": {
             result = await pdfToSpeech(files[0]);
-            filename = "audio-preview.pdf";
+            filename = "speech-conversion-info.pdf";
             break;
           }
           
           case "pdf-to-mp3": {
             result = await pdfToMp3(files[0]);
-            filename = "audio.mp3";
+            filename = "mp3-conversion-info.pdf";
             break;
           }
           
           case "pdf-to-single-page-html": {
             result = await pdfToSinglePageHtml(files[0]);
-            filename = "single-page.html";
+            filename = "single-page-html-preview.pdf";
             break;
           }
           
           case "pdf-to-multi-page-html": {
             result = await pdfToMultiPageHtml(files[0]);
-            filename = "multi-page-site.zip";
+            filename = "multi-page-html-preview.pdf";
             break;
           }
             
