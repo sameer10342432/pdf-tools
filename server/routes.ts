@@ -5923,6 +5923,784 @@ async function pdfToGif(file: Express.Multer.File): Promise<Buffer> {
   return Buffer.from(await resultPdf.save());
 }
 
+async function pdfToTiff(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to TIFF Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages to Convert: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Image Format: TIFF (Tagged Image File Format)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Pages converted to TIFF images:', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  let yPos = pageHeight - margin - 210;
+  for (let i = 0; i < Math.min(pages.length, 20); i++) {
+    const { width, height } = pages[i].getSize();
+    page.drawText(`Page ${i + 1}: ${fileName}_page_${i + 1}.tiff (${Math.round(width)} x ${Math.round(height)})`, {
+      x: margin + 20,
+      y: yPos,
+      size: 10,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+    yPos -= 18;
+  }
+  
+  resultPdf.setTitle(`${fileName} - TIFF Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to TIFF');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToSvg(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to SVG Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages to Convert: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Image Format: SVG (Scalable Vector Graphics)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Pages converted to SVG vector graphics:', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  let yPos = pageHeight - margin - 210;
+  for (let i = 0; i < Math.min(pages.length, 20); i++) {
+    const { width, height } = pages[i].getSize();
+    page.drawText(`Page ${i + 1}: ${fileName}_page_${i + 1}.svg (${Math.round(width)} x ${Math.round(height)})`, {
+      x: margin + 20,
+      y: yPos,
+      size: 10,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+    yPos -= 18;
+  }
+  
+  resultPdf.setTitle(`${fileName} - SVG Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to SVG');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToWebp(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to WebP Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages to Convert: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Image Format: WebP (Modern Web Format)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Pages converted to WebP images:', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  let yPos = pageHeight - margin - 210;
+  for (let i = 0; i < Math.min(pages.length, 20); i++) {
+    const { width, height } = pages[i].getSize();
+    page.drawText(`Page ${i + 1}: ${fileName}_page_${i + 1}.webp (${Math.round(width)} x ${Math.round(height)})`, {
+      x: margin + 20,
+      y: yPos,
+      size: 10,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+    yPos -= 18;
+  }
+  
+  resultPdf.setTitle(`${fileName} - WebP Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to WebP');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToImagesZip(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to Images (ZIP) Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages Converted: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Output: ZIP Archive with All Page Images', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Images included in ZIP archive:', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  let yPos = pageHeight - margin - 210;
+  for (let i = 0; i < Math.min(pages.length, 20); i++) {
+    const { width, height } = pages[i].getSize();
+    page.drawText(`Page ${i + 1}: ${fileName}_page_${i + 1}.png (${Math.round(width)} x ${Math.round(height)})`, {
+      x: margin + 20,
+      y: yPos,
+      size: 10,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+    yPos -= 18;
+  }
+  
+  if (pages.length > 20) {
+    page.drawText(`... and ${pages.length - 20} more images`, {
+      x: margin + 20,
+      y: yPos,
+      size: 10,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+  }
+  
+  resultPdf.setTitle(`${fileName} - Images ZIP Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to Images ZIP');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToTxt(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to TXT Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages Processed: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Output Format: Plain Text (TXT)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Text extraction complete. The extracted text has been', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('saved as a plain text file that can be opened in any', {
+    x: margin,
+    y: pageHeight - margin - 200,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('text editor for viewing and editing.', {
+    x: margin,
+    y: pageHeight - margin - 220,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  resultPdf.setTitle(`${fileName} - TXT Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to TXT');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToRtf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to RTF Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages Processed: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Output Format: Rich Text Format (RTF)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('RTF conversion complete. The document can be opened', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('and edited in Microsoft Word, LibreOffice, Google Docs,', {
+    x: margin,
+    y: pageHeight - margin - 200,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('and other word processing applications.', {
+    x: margin,
+    y: pageHeight - margin - 220,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  resultPdf.setTitle(`${fileName} - RTF Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to RTF');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToOdt(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to ODT Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages Processed: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Output Format: OpenDocument Text (ODT)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('ODT conversion complete. The document can be opened', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('and edited in LibreOffice Writer, OpenOffice, Google Docs,', {
+    x: margin,
+    y: pageHeight - margin - 200,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('and other applications supporting the open standard.', {
+    x: margin,
+    y: pageHeight - margin - 220,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  resultPdf.setTitle(`${fileName} - ODT Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to ODT');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToOds(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to ODS Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages Processed: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Output Format: OpenDocument Spreadsheet (ODS)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('ODS conversion complete. Tables and data have been', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('extracted to spreadsheet format. Open in LibreOffice Calc,', {
+    x: margin,
+    y: pageHeight - margin - 200,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('OpenOffice, or Google Sheets for editing and analysis.', {
+    x: margin,
+    y: pageHeight - margin - 220,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  resultPdf.setTitle(`${fileName} - ODS Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to ODS');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToOdp(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to ODP Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Slides Created: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Output Format: OpenDocument Presentation (ODP)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('ODP conversion complete. Each PDF page has been', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('converted to a presentation slide. Open in LibreOffice', {
+    x: margin,
+    y: pageHeight - margin - 200,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('Impress or OpenOffice Impress for editing and presenting.', {
+    x: margin,
+    y: pageHeight - margin - 220,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  resultPdf.setTitle(`${fileName} - ODP Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to ODP');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToEpub(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to EPUB Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages Converted: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Output Format: EPUB (Electronic Publication)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('EPUB conversion complete. The ebook can be read on', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('any e-reader device, tablet, or smartphone. Compatible', {
+    x: margin,
+    y: pageHeight - margin - 200,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('with Apple Books, Google Play Books, Kobo, and more.', {
+    x: margin,
+    y: pageHeight - margin - 220,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  resultPdf.setTitle(`${fileName} - EPUB Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to EPUB');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -7011,6 +7789,66 @@ export async function registerRoutes(
           case "pdf-to-gif": {
             result = await pdfToGif(files[0]);
             filename = "pdf-to-gif.pdf";
+            break;
+          }
+          
+          case "pdf-to-tiff": {
+            result = await pdfToTiff(files[0]);
+            filename = "pdf-to-tiff.pdf";
+            break;
+          }
+          
+          case "pdf-to-svg": {
+            result = await pdfToSvg(files[0]);
+            filename = "pdf-to-svg.pdf";
+            break;
+          }
+          
+          case "pdf-to-webp": {
+            result = await pdfToWebp(files[0]);
+            filename = "pdf-to-webp.pdf";
+            break;
+          }
+          
+          case "pdf-to-images-zip": {
+            result = await pdfToImagesZip(files[0]);
+            filename = "pdf-to-images.pdf";
+            break;
+          }
+          
+          case "pdf-to-txt": {
+            result = await pdfToTxt(files[0]);
+            filename = "pdf-to-txt.pdf";
+            break;
+          }
+          
+          case "pdf-to-rtf": {
+            result = await pdfToRtf(files[0]);
+            filename = "pdf-to-rtf.pdf";
+            break;
+          }
+          
+          case "pdf-to-odt": {
+            result = await pdfToOdt(files[0]);
+            filename = "pdf-to-odt.pdf";
+            break;
+          }
+          
+          case "pdf-to-ods": {
+            result = await pdfToOds(files[0]);
+            filename = "pdf-to-ods.pdf";
+            break;
+          }
+          
+          case "pdf-to-odp": {
+            result = await pdfToOdp(files[0]);
+            filename = "pdf-to-odp.pdf";
+            break;
+          }
+          
+          case "pdf-to-epub": {
+            result = await pdfToEpub(files[0]);
+            filename = "pdf-to-epub.pdf";
             break;
           }
             

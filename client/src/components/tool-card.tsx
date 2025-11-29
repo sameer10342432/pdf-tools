@@ -24,6 +24,7 @@ import {
   Eraser,
   Target,
   Globe,
+  FileSpreadsheet,
   type LucideIcon,
 } from "lucide-react";
 
@@ -50,6 +51,7 @@ const iconMap: Record<string, LucideIcon> = {
   Eraser,
   Target,
   Globe,
+  FileSpreadsheet,
 };
 
 interface ToolCardProps {
