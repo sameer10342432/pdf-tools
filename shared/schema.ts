@@ -121,6 +121,16 @@ export const pdfToolTypes = [
   "keynote-to-pdf",
   "email-to-pdf",
   "msg-to-pdf",
+  "eml-to-pdf",
+  "psd-to-pdf",
+  "ai-to-pdf",
+  "indd-to-pdf",
+  "dwg-to-pdf",
+  "dxf-to-pdf",
+  "xps-to-pdf",
+  "oxps-to-pdf",
+  "wpd-to-pdf",
+  "cbr-to-pdf",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -3255,5 +3265,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Professional Email Documentation</h2>
 <p>Archive Outlook emails in accessible format. Create legal records from Outlook correspondence. Share email content with non-Outlook users. Document business communications permanently. MSG to PDF bridges the Outlook accessibility gap.</p>`,
+  },
+  {
+    id: "eml-to-pdf",
+    name: "EML to PDF",
+    description: "Convert EML email files to PDF documents",
+    icon: "Mail",
+    type: "eml-to-pdf",
+    color: "bg-red-600",
+    emoji: "📧",
+    metaTitle: "EML to PDF Online Free - Convert Email Files to PDF | PDF Tools",
+    metaDescription: "Convert EML email files to PDF documents online for free. Transform email messages to PDF format for archiving and sharing. Fast EML to PDF converter.",
+    seoArticle: `<h2>EML to PDF Converter - Transform Email Files to Universal Documents</h2>
+<p>Convert your EML email files to professionally formatted PDF documents with our free online converter. EML is a standard email format used by many email clients including Outlook Express, Windows Mail, and Thunderbird. Converting to PDF creates permanent, shareable records of your email communications that anyone can open.</p>
+
+<h2>Why Convert EML Files to PDF?</h2>
+<p>EML files require compatible email software to view properly. PDF conversion creates standalone documents that open on any device without special software. Preserve important email communications for legal records, compliance requirements, business documentation, and long-term archiving in a universally accessible format.</p>
+
+<h2>Complete Email Content Preservation</h2>
+<p>Our converter extracts all essential email information from EML files: sender and recipient addresses, subject line, date and time, and the complete message body. Email headers and metadata are preserved for complete record-keeping. The PDF output provides a clear, formatted representation of the original email.</p>
+
+<h2>Simple EML Conversion Process</h2>
+<p>Upload your EML file using our secure interface. Our converter parses the email content and formats it professionally. Download your email as a clean, readable PDF document. Archive, share, or print email records in universal format without any software requirements for recipients.</p>
+
+<h2>Professional Email Archiving Solution</h2>
+<p>Create legal records of important correspondence for litigation or compliance. Archive business communications for regulatory requirements. Share email content without forwarding or requiring specific software. Build comprehensive documentation from email threads. EML to PDF enables professional email management and permanent archiving.</p>`,
+  },
+  {
+    id: "psd-to-pdf",
+    name: "PSD to PDF",
+    description: "Convert Adobe Photoshop files to PDF format",
+    icon: "Image",
+    type: "psd-to-pdf",
+    color: "bg-blue-600",
+    emoji: "🎨",
+    metaTitle: "PSD to PDF Online Free - Convert Photoshop to PDF | PDF Tools",
+    metaDescription: "Convert Adobe Photoshop PSD files to PDF online for free. Transform Photoshop designs to universal PDF format. Fast PSD to PDF converter.",
+    seoArticle: `<h2>PSD to PDF Converter - Share Photoshop Designs Universally</h2>
+<p>Convert your Adobe Photoshop (.psd) files to universally viewable PDF documents with our free online converter. Photoshop is the industry standard for image editing and design, but sharing PSD files requires recipients to have Photoshop installed. PDF conversion enables anyone to view your designs without specialized software.</p>
+
+<h2>Share Designs Without Software Barriers</h2>
+<p>Not everyone has Adobe Photoshop, and purchasing it just to view a design file is impractical. Converting your PSD files to PDF creates documents that clients, colleagues, and stakeholders can open on any device. Share mockups, proofs, and final designs with anyone, regardless of their software setup.</p>
+
+<h2>Preserve Visual Quality</h2>
+<p>Our converter captures the flattened visual output of your Photoshop design. Colors, gradients, effects, and image quality are preserved in the PDF output. Recipients see your design as intended, making PDF perfect for design proofs, client presentations, and final deliverables.</p>
+
+<h2>Easy Design Conversion</h2>
+<p>Upload your .psd Photoshop file using our secure interface. Our converter processes your design file. Download your design as a high-quality PDF document. Share your creative work with anyone without requiring Adobe software installation.</p>
+
+<h2>Professional Design Workflow</h2>
+<p>Send design proofs to clients for approval. Share mockups with team members across departments. Create print-ready PDFs from Photoshop artwork. Archive design files in universally accessible format. PSD to PDF streamlines creative collaboration and delivery.</p>`,
+  },
+  {
+    id: "ai-to-pdf",
+    name: "AI to PDF",
+    description: "Convert Adobe Illustrator files to PDF format",
+    icon: "PenTool",
+    type: "ai-to-pdf",
+    color: "bg-orange-600",
+    emoji: "✏️",
+    metaTitle: "AI to PDF Online Free - Convert Illustrator to PDF | PDF Tools",
+    metaDescription: "Convert Adobe Illustrator AI files to PDF online for free. Transform vector graphics to universal PDF format. Fast AI to PDF converter.",
+    seoArticle: `<h2>AI to PDF Converter - Make Illustrator Files Accessible</h2>
+<p>Convert your Adobe Illustrator (.ai) files to universally viewable PDF documents with our free online converter. Illustrator is the professional standard for vector graphics, logos, and illustrations. Converting to PDF enables anyone to view your vector artwork without requiring Adobe Illustrator software.</p>
+
+<h2>Universal Vector Graphics Sharing</h2>
+<p>Adobe Illustrator files can only be properly viewed with Illustrator software. When sharing logos, illustrations, or vector designs with clients who don't have Illustrator, PDF is the perfect solution. Your vector graphics maintain their quality while becoming accessible to everyone.</p>
+
+<h2>Maintain Vector Quality</h2>
+<p>PDF format supports vector graphics natively, preserving the scalability and sharpness of your Illustrator designs. Logos stay crisp at any size. Illustrations maintain their precise lines and curves. Your vector artwork looks professional in the PDF output.</p>
+
+<h2>Simple Illustrator Conversion</h2>
+<p>Upload your .ai Illustrator file using our secure interface. Our converter processes your vector artwork. Download your design as a high-quality PDF document. Share illustrations and logos with anyone regardless of their software setup.</p>
+
+<h2>Professional Creative Sharing</h2>
+<p>Send logo designs to clients for review. Share illustrations in portfolios and presentations. Create print-ready PDFs from vector artwork. Distribute brand assets in accessible format. AI to PDF bridges the gap between designers and non-designers.</p>`,
+  },
+  {
+    id: "indd-to-pdf",
+    name: "INDD to PDF",
+    description: "Convert Adobe InDesign files to PDF format",
+    icon: "Layout",
+    type: "indd-to-pdf",
+    color: "bg-pink-600",
+    emoji: "📰",
+    metaTitle: "INDD to PDF Online Free - Convert InDesign to PDF | PDF Tools",
+    metaDescription: "Convert Adobe InDesign INDD files to PDF online for free. Transform InDesign layouts to universal PDF format. Fast INDD to PDF converter.",
+    seoArticle: `<h2>INDD to PDF Converter - Share InDesign Layouts Universally</h2>
+<p>Convert your Adobe InDesign (.indd) files to universally viewable PDF documents with our free online converter. InDesign is the professional standard for page layout and publishing, used for magazines, brochures, and books. PDF conversion enables anyone to view your layouts without requiring Adobe InDesign software.</p>
+
+<h2>Share Publications Without Software Requirements</h2>
+<p>InDesign is specialized desktop publishing software that many clients and stakeholders don't own. Converting your layouts to PDF creates documents that anyone can open and review. Share magazine layouts, brochure designs, and book proofs with clients on any platform.</p>
+
+<h2>Preserve Layout Precision</h2>
+<p>Our converter captures the complete visual layout of your InDesign document. Text, images, colors, and positioning are preserved exactly as designed. Multi-page documents maintain their page order and formatting. Your publication looks professional in PDF format.</p>
+
+<h2>Easy Layout Conversion</h2>
+<p>Upload your .indd InDesign file using our interface. Our converter processes your layout document. Download your publication as a formatted PDF. Share design proofs and final layouts with anyone without software barriers.</p>
+
+<h2>Professional Publishing Workflow</h2>
+<p>Send layout proofs to clients for approval. Share magazine spreads for review. Create print-ready PDFs for commercial printing. Distribute brochures and catalogs digitally. INDD to PDF streamlines the publishing and review process.</p>`,
+  },
+  {
+    id: "dwg-to-pdf",
+    name: "DWG to PDF",
+    description: "Convert AutoCAD DWG drawings to PDF format",
+    icon: "Ruler",
+    type: "dwg-to-pdf",
+    color: "bg-green-700",
+    emoji: "📐",
+    metaTitle: "DWG to PDF Online Free - Convert AutoCAD to PDF | PDF Tools",
+    metaDescription: "Convert AutoCAD DWG files to PDF online for free. Transform CAD drawings to universal PDF format. Fast DWG to PDF converter.",
+    seoArticle: `<h2>DWG to PDF Converter - Share CAD Drawings Universally</h2>
+<p>Convert your AutoCAD (.dwg) drawing files to universally viewable PDF documents with our free online converter. DWG is the native format for AutoCAD, the industry standard for computer-aided design. Converting to PDF enables architects, engineers, and contractors to share technical drawings with anyone.</p>
+
+<h2>Share Drawings Without CAD Software</h2>
+<p>AutoCAD is expensive, specialized software that clients and contractors often don't have. Converting DWG files to PDF creates documents that anyone can view, print, and mark up without purchasing AutoCAD. Streamline communication in construction and engineering projects.</p>
+
+<h2>Maintain Technical Precision</h2>
+<p>Our converter preserves the precision of your CAD drawings. Lines, dimensions, annotations, and layers are captured accurately in the PDF output. Technical drawings maintain their accuracy for review, printing, and documentation purposes.</p>
+
+<h2>Easy CAD Conversion</h2>
+<p>Upload your .dwg AutoCAD file using our secure interface. Our converter processes your technical drawing. Download your CAD design as a PDF document. Share drawings with anyone involved in your project without software barriers.</p>
+
+<h2>Professional Engineering Workflow</h2>
+<p>Submit drawings for permit applications. Share floor plans with clients and contractors. Include technical drawings in project documentation. Archive engineering drawings in accessible format. DWG to PDF simplifies CAD file distribution.</p>`,
+  },
+  {
+    id: "dxf-to-pdf",
+    name: "DXF to PDF",
+    description: "Convert DXF CAD files to PDF format",
+    icon: "Ruler",
+    type: "dxf-to-pdf",
+    color: "bg-teal-700",
+    emoji: "📏",
+    metaTitle: "DXF to PDF Online Free - Convert CAD DXF to PDF | PDF Tools",
+    metaDescription: "Convert DXF CAD files to PDF online for free. Transform CAD exchange format to universal PDF. Fast DXF to PDF converter.",
+    seoArticle: `<h2>DXF to PDF Converter - Universal CAD File Sharing</h2>
+<p>Convert your DXF (Drawing Exchange Format) files to universally viewable PDF documents with our free online converter. DXF is an open CAD format designed for data exchange between different CAD applications. Converting to PDF enables anyone to view CAD drawings without specialized software.</p>
+
+<h2>Cross-Platform CAD Sharing</h2>
+<p>DXF files require CAD software to view properly. While DXF is more compatible than proprietary formats, PDF provides truly universal accessibility. Convert your technical drawings to PDF for sharing with clients, contractors, and stakeholders who don't have CAD software installed.</p>
+
+<h2>Preserve Drawing Details</h2>
+<p>Our converter captures all the geometric data in your DXF file. Lines, arcs, circles, text, and dimensions are accurately represented in the PDF output. Technical drawings maintain their precision for review and documentation purposes.</p>
+
+<h2>Simple DXF Conversion</h2>
+<p>Upload your .dxf file using our secure interface. Our converter processes your CAD drawing data. Download your technical drawing as a PDF document. Share CAD content with anyone regardless of their software setup.</p>
+
+<h2>Engineering and Design Collaboration</h2>
+<p>Share technical drawings across different CAD platforms. Distribute drawings to non-CAD users. Create print-ready documentation from CAD files. Archive technical drawings in accessible format. DXF to PDF enables universal CAD file access.</p>`,
+  },
+  {
+    id: "xps-to-pdf",
+    name: "XPS to PDF",
+    description: "Convert XPS documents to PDF format",
+    icon: "FileText",
+    type: "xps-to-pdf",
+    color: "bg-purple-700",
+    emoji: "📋",
+    metaTitle: "XPS to PDF Online Free - Convert XPS to PDF | PDF Tools",
+    metaDescription: "Convert XPS documents to PDF online for free. Transform Microsoft XPS files to universal PDF format. Fast XPS to PDF converter.",
+    seoArticle: `<h2>XPS to PDF Converter - Transform Microsoft Documents</h2>
+<p>Convert your XPS (XML Paper Specification) documents to universally compatible PDF format with our free online converter. XPS was Microsoft's alternative to PDF, but it never achieved widespread adoption. Converting XPS to PDF ensures your documents are accessible on any platform and device.</p>
+
+<h2>Universal Document Compatibility</h2>
+<p>XPS files have limited software support compared to PDF. While Windows has built-in XPS viewing, Mac and Linux users often struggle with XPS files. Converting to PDF creates documents that open consistently on every operating system, device, and browser.</p>
+
+<h2>Preserve Document Formatting</h2>
+<p>Our converter maintains the formatting and layout of your XPS documents. Text, images, fonts, and page layouts are preserved accurately in the PDF output. Your documents look identical to the original XPS files while gaining universal compatibility.</p>
+
+<h2>Easy XPS Conversion</h2>
+<p>Upload your .xps file using our secure interface. Our converter processes your Microsoft document. Download your content as a universally compatible PDF. Share documents with anyone regardless of their operating system or software.</p>
+
+<h2>Modernize Legacy Documents</h2>
+<p>Convert archived XPS documents to modern PDF format. Ensure long-term accessibility of important files. Share XPS content with Mac and Linux users. Integrate XPS documents into PDF-based workflows. XPS to PDF brings your documents into the universal standard.</p>`,
+  },
+  {
+    id: "oxps-to-pdf",
+    name: "OXPS to PDF",
+    description: "Convert Open XPS documents to PDF format",
+    icon: "FileText",
+    type: "oxps-to-pdf",
+    color: "bg-indigo-700",
+    emoji: "📄",
+    metaTitle: "OXPS to PDF Online Free - Convert Open XPS to PDF | PDF Tools",
+    metaDescription: "Convert OXPS Open XPS documents to PDF online for free. Transform OXPS files to universal PDF format. Fast OXPS to PDF converter.",
+    seoArticle: `<h2>OXPS to PDF Converter - Open XPS to Universal Format</h2>
+<p>Convert your OXPS (Open XML Paper Specification) documents to universally compatible PDF format with our free online converter. OXPS is the updated, open version of Microsoft's XPS format introduced in Windows 8. Converting to PDF ensures maximum compatibility across all platforms and devices.</p>
+
+<h2>Why Convert OXPS to PDF?</h2>
+<p>OXPS files have limited support outside the Windows ecosystem. While newer than XPS, OXPS still lacks the universal acceptance of PDF. Converting your OXPS documents to PDF guarantees they can be opened by anyone on any device, from Windows PCs to Macs to mobile devices.</p>
+
+<h2>Complete Format Preservation</h2>
+<p>Our converter accurately translates OXPS content to PDF format. Document structure, text, images, and formatting are preserved. Your converted documents maintain their professional appearance while gaining universal accessibility.</p>
+
+<h2>Simple OXPS Conversion</h2>
+<p>Upload your .oxps file using our secure interface. Our converter processes your Open XPS document. Download your content as a standard PDF file. Share with anyone without worrying about software compatibility.</p>
+
+<h2>Future-Proof Your Documents</h2>
+<p>PDF is an ISO standard with guaranteed long-term support. Converting OXPS to PDF protects your documents against format obsolescence. Ensure your important files remain accessible for years to come. OXPS to PDF modernizes your document archive.</p>`,
+  },
+  {
+    id: "wpd-to-pdf",
+    name: "WPD to PDF",
+    description: "Convert WordPerfect documents to PDF format",
+    icon: "FileText",
+    type: "wpd-to-pdf",
+    color: "bg-blue-800",
+    emoji: "📝",
+    metaTitle: "WPD to PDF Online Free - Convert WordPerfect to PDF | PDF Tools",
+    metaDescription: "Convert WordPerfect WPD files to PDF online for free. Transform legacy WordPerfect documents to universal PDF format. Fast WPD to PDF converter.",
+    seoArticle: `<h2>WPD to PDF Converter - Revive WordPerfect Documents</h2>
+<p>Convert your WordPerfect (.wpd) documents to universally readable PDF format with our free online converter. WordPerfect was once a dominant word processor, and many organizations still have valuable documents in WPD format. Converting to PDF ensures these legacy documents remain accessible in the modern era.</p>
+
+<h2>Preserve Legacy Document Access</h2>
+<p>WordPerfect usage has declined significantly, making WPD files increasingly difficult to open. Many users don't have WordPerfect installed, and newer systems may not support it at all. PDF conversion creates permanent, accessible versions of your important WordPerfect documents.</p>
+
+<h2>Rescue Archived Documents</h2>
+<p>Law firms, government agencies, and businesses often have years of important documents in WordPerfect format. Our converter helps rescue this content by transforming WPD files into universally readable PDFs. Preserve institutional knowledge without maintaining legacy software.</p>
+
+<h2>Simple Legacy Conversion</h2>
+<p>Upload your .wpd WordPerfect file using our interface. Our converter processes your legacy document. Download your content as a modern PDF file. Access and share documents that were previously locked in an outdated format.</p>
+
+<h2>Document Modernization</h2>
+<p>Convert legal documents from WordPerfect archives. Modernize government records stored in WPD format. Rescue personal documents from obsolete software. Create permanent PDF copies of important WordPerfect files. WPD to PDF bridges the gap between legacy and modern formats.</p>`,
+  },
+  {
+    id: "cbr-to-pdf",
+    name: "CBR to PDF",
+    description: "Convert comic book CBR archives to PDF format",
+    icon: "BookOpen",
+    type: "cbr-to-pdf",
+    color: "bg-yellow-600",
+    emoji: "📚",
+    metaTitle: "CBR to PDF Online Free - Convert Comic Books to PDF | PDF Tools",
+    metaDescription: "Convert CBR comic book files to PDF online for free. Transform comic archives to universal PDF format. Fast CBR to PDF converter.",
+    seoArticle: `<h2>CBR to PDF Converter - Comics in Universal Format</h2>
+<p>Convert your CBR (Comic Book RAR) files to universally readable PDF format with our free online converter. CBR is a popular format for digital comics, but it requires specialized comic reader software. Converting to PDF enables you to read your comics on any device with a standard PDF reader.</p>
+
+<h2>Read Comics Anywhere</h2>
+<p>CBR files need comic-specific applications to open properly. PDF readers, on the other hand, are available on every device and platform. Converting your comics to PDF means you can read them on your phone, tablet, computer, or e-reader without installing special software.</p>
+
+<h2>Preserve Comic Quality</h2>
+<p>Our converter extracts the images from your CBR archive and assembles them into a properly ordered PDF. Each page of your comic becomes a page in the PDF, maintaining the reading experience. Image quality is preserved for an enjoyable reading experience.</p>
+
+<h2>Easy Comic Conversion</h2>
+<p>Upload your .cbr comic book file using our interface. Our converter extracts and organizes all comic pages. Download your comic as a standard PDF file. Read your comics on any device with a PDF reader installed.</p>
+
+<h2>Universal Comic Access</h2>
+<p>Share comics with friends who don't have CBR readers. Read comics on e-readers that support PDF. Archive your comic collection in a standard format. Print comics from PDF when desired. CBR to PDF opens your comics to all devices and platforms.</p>`,
   },
 ];
