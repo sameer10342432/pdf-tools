@@ -11,6 +11,8 @@ import mammoth from "mammoth";
 import Tesseract from "tesseract.js";
 import * as XLSX from "xlsx";
 import sharp from "sharp";
+import { marked } from "marked";
+import AdmZip from "adm-zip";
 
 const uploadDir = path.join(process.cwd(), "uploads");
 const outputDir = path.join(process.cwd(), "output");
@@ -49,8 +51,18 @@ const upload = multer({
     const isTxt = file.mimetype === "text/plain" || ext.endsWith(".txt");
     const isRtf = file.mimetype === "application/rtf" || file.mimetype === "text/rtf" || ext.endsWith(".rtf");
     const isSvg = file.mimetype === "image/svg+xml" || ext.endsWith(".svg");
+    const isOdt = file.mimetype === "application/vnd.oasis.opendocument.text" || ext.endsWith(".odt");
+    const isOds = file.mimetype === "application/vnd.oasis.opendocument.spreadsheet" || ext.endsWith(".ods");
+    const isOdp = file.mimetype === "application/vnd.oasis.opendocument.presentation" || ext.endsWith(".odp");
+    const isCsv = file.mimetype === "text/csv" || ext.endsWith(".csv");
+    const isEpub = file.mimetype === "application/epub+zip" || ext.endsWith(".epub");
+    const isMobi = ext.endsWith(".mobi") || ext.endsWith(".azw") || ext.endsWith(".azw3");
+    const isDjvu = ext.endsWith(".djvu") || ext.endsWith(".djv");
+    const isXml = file.mimetype === "application/xml" || file.mimetype === "text/xml" || ext.endsWith(".xml");
+    const isMarkdown = ext.endsWith(".md") || ext.endsWith(".markdown");
     
-    if (isPdf || isImage || isDocx || isExcel || isPowerPoint || isHtml || isTxt || isRtf || isSvg) {
+    if (isPdf || isImage || isDocx || isExcel || isPowerPoint || isHtml || isTxt || isRtf || isSvg || 
+        isOdt || isOds || isOdp || isCsv || isEpub || isMobi || isDjvu || isXml || isMarkdown) {
       cb(null, true);
     } else {
       cb(new Error("Invalid file type"));
