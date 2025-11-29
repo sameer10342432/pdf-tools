@@ -10263,6 +10263,184 @@ async function pdfConverter(file: Express.Multer.File, format: string = 'pdf'): 
   return Buffer.from(await resultPdf.save());
 }
 
+async function redactPdf(
+  file: Express.Multer.File,
+  redactAreas: string,
+  redactColor: string = "#000000"
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  
+  const colorValues = hexToRgbValues(redactColor);
+  
+  let areas: Array<{ page: number; x: number; y: number; width: number; height: number }> = [];
+  try {
+    areas = JSON.parse(redactAreas);
+  } catch (e) {
+    areas = [{ page: 1, x: 50, y: 700, width: 200, height: 30 }];
+  }
+  
+  for (const area of areas) {
+    const pageIndex = Math.max(0, Math.min(pages.length - 1, (area.page || 1) - 1));
+    const page = pages[pageIndex];
+    
+    page.drawRectangle({
+      x: area.x || 50,
+      y: area.y || 700,
+      width: area.width || 200,
+      height: area.height || 30,
+      color: rgb(colorValues.r, colorValues.g, colorValues.b),
+    });
+  }
+  
+  pdf.setProducer('PDF Tools - Redaction');
+  return Buffer.from(await pdf.save());
+}
+
+async function blackoutPdf(
+  file: Express.Multer.File,
+  redactAreas: string
+): Promise<Buffer> {
+  return redactPdf(file, redactAreas, "#000000");
+}
+
+async function sanitizePdf(
+  file: Express.Multer.File,
+  level: string = "standard"
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const sanitizedPdf = await PDFDocument.create();
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const [copiedPage] = await sanitizedPdf.copyPages(sourcePdf, [i]);
+    sanitizedPdf.addPage(copiedPage);
+  }
+  
+  if (level !== "basic") {
+    sanitizedPdf.setTitle("");
+    sanitizedPdf.setAuthor("");
+    sanitizedPdf.setSubject("");
+    sanitizedPdf.setKeywords([]);
+    sanitizedPdf.setCreator("");
+  }
+  
+  sanitizedPdf.setProducer("PDF Tools - Sanitized");
+  sanitizedPdf.setCreationDate(new Date());
+  sanitizedPdf.setModificationDate(new Date());
+  
+  return Buffer.from(await sanitizedPdf.save());
+}
+
+async function removePdfMetadata(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const cleanPdf = await PDFDocument.create();
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const [copiedPage] = await cleanPdf.copyPages(sourcePdf, [i]);
+    cleanPdf.addPage(copiedPage);
+  }
+  
+  cleanPdf.setTitle("");
+  cleanPdf.setAuthor("");
+  cleanPdf.setSubject("");
+  cleanPdf.setKeywords([]);
+  cleanPdf.setCreator("");
+  cleanPdf.setProducer("");
+  
+  return Buffer.from(await cleanPdf.save());
+}
+
+async function cropPdf(
+  file: Express.Multer.File,
+  top: number = 0,
+  bottom: number = 0,
+  left: number = 0,
+  right: number = 0
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  
+  for (const page of pages) {
+    const { width, height } = page.getSize();
+    
+    const newLeft = left;
+    const newBottom = bottom;
+    const newWidth = width - left - right;
+    const newHeight = height - top - bottom;
+    
+    if (newWidth > 0 && newHeight > 0) {
+      page.setCropBox(newLeft, newBottom, newWidth, newHeight);
+      page.setMediaBox(newLeft, newBottom, newWidth, newHeight);
+    }
+  }
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function cropPdfMargins(
+  file: Express.Multer.File,
+  margin: number = 20
+): Promise<Buffer> {
+  return cropPdf(file, margin, margin, margin, margin);
+}
+
+async function resizePdf(
+  file: Express.Multer.File,
+  targetWidth: number,
+  targetHeight: number,
+  mode: string = "dimensions"
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const resizedPdf = await PDFDocument.create();
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const sourcePage = sourcePdf.getPage(i);
+    const { width: origWidth, height: origHeight } = sourcePage.getSize();
+    
+    let newWidth = targetWidth || origWidth;
+    let newHeight = targetHeight || origHeight;
+    
+    if (mode === "scale") {
+      const scale = targetWidth || 1;
+      newWidth = origWidth * scale;
+      newHeight = origHeight * scale;
+    } else if (mode === "percentage") {
+      const percentage = (targetWidth || 100) / 100;
+      newWidth = origWidth * percentage;
+      newHeight = origHeight * percentage;
+    }
+    
+    newWidth = Math.max(72, Math.min(5000, newWidth));
+    newHeight = Math.max(72, Math.min(5000, newHeight));
+    
+    const [embeddedPage] = await resizedPdf.embedPdf(sourcePdf, [i]);
+    const page = resizedPdf.addPage([newWidth, newHeight]);
+    
+    const scaleX = newWidth / origWidth;
+    const scaleY = newHeight / origHeight;
+    
+    page.drawPage(embeddedPage, {
+      x: 0,
+      y: 0,
+      xScale: scaleX,
+      yScale: scaleY,
+    });
+  }
+  
+  return Buffer.from(await resizedPdf.save());
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -11917,6 +12095,87 @@ export async function registerRoutes(
             const changeMetaProducer = options.metadataProducer || "";
             result = await editPdfMetadata(files[0], changeMetaTitle, changeMetaAuthor, changeMetaSubject, changeMetaKeywords, changeMetaCreator, changeMetaProducer);
             filename = "metadata-changed.pdf";
+            break;
+          }
+          
+          case "redact-pdf": {
+            const redactAreas = options.redactAreas || "[]";
+            const redactColor = options.redactColor || "#000000";
+            result = await redactPdf(files[0], redactAreas, redactColor);
+            filename = "redacted.pdf";
+            break;
+          }
+          
+          case "pdf-redactor": {
+            const redactorAreas = options.redactAreas || "[]";
+            const redactorColor = options.redactColor || "#000000";
+            result = await redactPdf(files[0], redactorAreas, redactorColor);
+            filename = "redacted-document.pdf";
+            break;
+          }
+          
+          case "blackout-pdf": {
+            const blackoutAreas = options.redactAreas || "[]";
+            result = await blackoutPdf(files[0], blackoutAreas);
+            filename = "blackout.pdf";
+            break;
+          }
+          
+          case "sanitize-pdf": {
+            const sanitizeLevel = options.sanitizeLevel || "standard";
+            result = await sanitizePdf(files[0], sanitizeLevel);
+            filename = "sanitized.pdf";
+            break;
+          }
+          
+          case "remove-pdf-metadata": {
+            result = await removePdfMetadata(files[0]);
+            filename = "no-metadata.pdf";
+            break;
+          }
+          
+          case "crop-pdf": {
+            const cropTop = Number(options.cropTop) || 0;
+            const cropBottom = Number(options.cropBottom) || 0;
+            const cropLeft = Number(options.cropLeft) || 0;
+            const cropRight = Number(options.cropRight) || 0;
+            result = await cropPdf(files[0], cropTop, cropBottom, cropLeft, cropRight);
+            filename = "cropped.pdf";
+            break;
+          }
+          
+          case "pdf-cropper": {
+            const cropperTop = Number(options.cropTop) || 0;
+            const cropperBottom = Number(options.cropBottom) || 0;
+            const cropperLeft = Number(options.cropLeft) || 0;
+            const cropperRight = Number(options.cropRight) || 0;
+            result = await cropPdf(files[0], cropperTop, cropperBottom, cropperLeft, cropperRight);
+            filename = "cropped-document.pdf";
+            break;
+          }
+          
+          case "crop-pdf-margins": {
+            const marginCrop = Number(options.cropMargin) || 20;
+            result = await cropPdfMargins(files[0], marginCrop);
+            filename = "margins-cropped.pdf";
+            break;
+          }
+          
+          case "resize-pdf": {
+            const resizeWidth = Number(options.resizeWidth) || 612;
+            const resizeHeight = Number(options.resizeHeight) || 792;
+            const resizeMode = options.resizeMode || "dimensions";
+            result = await resizePdf(files[0], resizeWidth, resizeHeight, resizeMode);
+            filename = "resized.pdf";
+            break;
+          }
+          
+          case "pdf-resizer": {
+            const resizerWidth = Number(options.resizeWidth) || 612;
+            const resizerHeight = Number(options.resizeHeight) || 792;
+            const resizerMode = options.resizeMode || "dimensions";
+            result = await resizePdf(files[0], resizerWidth, resizerHeight, resizerMode);
+            filename = "resized-document.pdf";
             break;
           }
             
