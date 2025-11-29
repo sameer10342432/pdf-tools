@@ -131,6 +131,16 @@ export const pdfToolTypes = [
   "oxps-to-pdf",
   "wpd-to-pdf",
   "cbr-to-pdf",
+  "cbz-to-pdf",
+  "latex-to-pdf",
+  "tex-to-pdf",
+  "visio-to-pdf",
+  "publisher-to-pdf",
+  "ps-to-pdf",
+  "eps-to-pdf",
+  "pdf-to-word",
+  "pdf-to-doc",
+  "pdf-to-docx",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -3515,5 +3525,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Universal Comic Access</h2>
 <p>Share comics with friends who don't have CBR readers. Read comics on e-readers that support PDF. Archive your comic collection in a standard format. Print comics from PDF when desired. CBR to PDF opens your comics to all devices and platforms.</p>`,
+  },
+  {
+    id: "cbz-to-pdf",
+    name: "CBZ to PDF",
+    description: "Convert comic book CBZ archives to PDF format",
+    icon: "BookOpen",
+    type: "cbz-to-pdf",
+    color: "bg-orange-600",
+    emoji: "📖",
+    metaTitle: "CBZ to PDF Online Free - Convert Comic Books to PDF | PDF Tools",
+    metaDescription: "Convert CBZ comic book files to PDF online for free. Transform ZIP-based comic archives to universal PDF format. Fast CBZ to PDF converter.",
+    seoArticle: `<h2>CBZ to PDF Converter - Comics in Universal Format</h2>
+<p>Convert your CBZ (Comic Book ZIP) files to universally readable PDF format with our free online converter. CBZ is a popular format for digital comics that uses ZIP compression to store comic pages as images. Converting to PDF enables you to read your comics on any device with a standard PDF reader.</p>
+
+<h2>What is CBZ Format?</h2>
+<p>CBZ files are simply ZIP archives containing sequential image files that make up a comic book. Unlike CBR (which uses RAR compression), CBZ uses the more universal ZIP format. However, you still need a comic book reader application to properly view CBZ files. Converting to PDF eliminates this software requirement.</p>
+
+<h2>Read Comics Anywhere</h2>
+<p>CBZ files need comic-specific applications to open properly. PDF readers, on the other hand, are available on every device and platform. Converting your comics to PDF means you can read them on your phone, tablet, computer, or e-reader without installing special software.</p>
+
+<h2>Preserve Comic Quality</h2>
+<p>Our converter extracts the images from your CBZ archive and assembles them into a properly ordered PDF. Each page of your comic becomes a page in the PDF, maintaining the reading experience. Image quality is preserved for an enjoyable reading experience.</p>
+
+<h2>Easy Comic Conversion</h2>
+<p>Upload your .cbz comic book file using our interface. Our converter extracts and organizes all comic pages. Download your comic as a standard PDF file. Read your comics on any device with a PDF reader installed.</p>`,
+  },
+  {
+    id: "latex-to-pdf",
+    name: "LaTeX to PDF",
+    description: "Convert LaTeX documents to PDF format",
+    icon: "FileCode",
+    type: "latex-to-pdf",
+    color: "bg-teal-600",
+    emoji: "📐",
+    metaTitle: "LaTeX to PDF Online Free - Convert LaTeX Documents | PDF Tools",
+    metaDescription: "Convert LaTeX files to PDF online for free. Transform scientific and academic LaTeX documents to universal PDF format. Fast LaTeX to PDF converter.",
+    seoArticle: `<h2>LaTeX to PDF Converter - Academic Documents Made Accessible</h2>
+<p>Convert your LaTeX (.latex, .tex) documents to universally readable PDF format with our free online converter. LaTeX is the gold standard for academic and scientific documents, offering precise typesetting for complex mathematical equations and scientific notation. Converting to PDF creates shareable documents anyone can read.</p>
+
+<h2>Why LaTeX for Academic Writing?</h2>
+<p>LaTeX provides superior formatting for mathematical equations, chemical formulas, and scientific notation. It handles complex document structures including references, footnotes, and bibliographies automatically. Converting LaTeX to PDF preserves this beautiful formatting while making documents accessible to everyone.</p>
+
+<h2>Professional Scientific Documents</h2>
+<p>Academic journals, dissertations, and research papers often require LaTeX formatting. Our converter transforms your LaTeX source into professionally formatted PDF documents. Mathematical symbols, tables, figures, and cross-references are rendered perfectly.</p>
+
+<h2>Simple LaTeX Conversion</h2>
+<p>Upload your .latex or .tex file using our secure interface. Our converter processes your LaTeX markup and renders the document. Download your beautifully formatted PDF. Share your academic work with colleagues and reviewers easily.</p>
+
+<h2>Perfect for Researchers</h2>
+<p>Share research papers with collaborators. Submit journal articles in required PDF format. Distribute thesis documents to committee members. Create handouts from lecture notes. LaTeX to PDF makes academic content universally accessible.</p>`,
+  },
+  {
+    id: "tex-to-pdf",
+    name: "TeX to PDF",
+    description: "Convert TeX documents to PDF format",
+    icon: "FileCode",
+    type: "tex-to-pdf",
+    color: "bg-cyan-600",
+    emoji: "📝",
+    metaTitle: "TeX to PDF Online Free - Convert TeX Documents | PDF Tools",
+    metaDescription: "Convert TeX files to PDF online for free. Transform TeX typesetting documents to universal PDF format. Fast TeX to PDF converter.",
+    seoArticle: `<h2>TeX to PDF Converter - Professional Typesetting Made Accessible</h2>
+<p>Convert your TeX (.tex) documents to universally readable PDF format with our free online converter. TeX is a powerful typesetting system created by Donald Knuth, renowned for its superior handling of mathematical formulas and professional document formatting. Converting to PDF creates documents anyone can view.</p>
+
+<h2>The Power of TeX Typesetting</h2>
+<p>TeX offers unmatched control over document formatting, especially for mathematical and scientific content. From simple equations to complex proofs, TeX renders mathematical notation with precision. Our converter captures this beautiful typesetting in PDF format.</p>
+
+<h2>Academic and Scientific Excellence</h2>
+<p>TeX remains the preferred choice for mathematicians, physicists, and computer scientists worldwide. Textbooks, research papers, and technical documentation benefit from TeX's precise formatting. Converting to PDF makes these professional documents shareable with anyone.</p>
+
+<h2>Simple TeX Conversion</h2>
+<p>Upload your .tex file using our secure interface. Our converter processes your TeX document and renders the output. Download your professionally formatted PDF. Share your work without requiring others to have TeX installed.</p>
+
+<h2>Preserve Formatting Perfectly</h2>
+<p>Mathematical equations render with precision. Tables and figures maintain their layout. Cross-references and citations display correctly. Font choices and spacing are preserved. TeX to PDF captures the full beauty of TeX typesetting.</p>`,
+  },
+  {
+    id: "visio-to-pdf",
+    name: "Visio to PDF",
+    description: "Convert Microsoft Visio diagrams to PDF format",
+    icon: "Share2",
+    type: "visio-to-pdf",
+    color: "bg-blue-600",
+    emoji: "📊",
+    metaTitle: "Visio to PDF Online Free - Convert VSD VSDX to PDF | PDF Tools",
+    metaDescription: "Convert Microsoft Visio files to PDF online for free. Transform VSD and VSDX diagrams to universal PDF format. Fast Visio to PDF converter.",
+    seoArticle: `<h2>Visio to PDF Converter - Share Diagrams Universally</h2>
+<p>Convert your Microsoft Visio (.vsd, .vsdx) files to universally viewable PDF format with our free online converter. Visio is Microsoft's professional diagramming tool used for flowcharts, org charts, network diagrams, and more. Converting to PDF enables sharing with anyone, regardless of whether they have Visio installed.</p>
+
+<h2>Why Convert Visio to PDF?</h2>
+<p>Microsoft Visio is specialized, expensive software that many people don't have. When you share a Visio file, recipients often can't open it. Converting to PDF creates a document that anyone can view, print, and annotate using free PDF readers available on every platform.</p>
+
+<h2>Preserve Diagram Details</h2>
+<p>Our converter maintains the visual fidelity of your Visio diagrams. Shapes, connectors, text, and formatting are preserved accurately in the PDF output. Your flowcharts, org charts, and network diagrams look exactly as designed.</p>
+
+<h2>Easy Visio Conversion</h2>
+<p>Upload your .vsd or .vsdx Visio file using our secure interface. Our converter processes your diagram. Download your diagram as a universally viewable PDF. Share with colleagues, clients, and stakeholders without software barriers.</p>
+
+<h2>Professional Documentation</h2>
+<p>Include process flowcharts in project documentation. Share org charts with new employees. Distribute network diagrams to IT teams. Present business processes to stakeholders. Visio to PDF makes professional diagrams accessible to all.</p>`,
+  },
+  {
+    id: "publisher-to-pdf",
+    name: "Publisher to PDF",
+    description: "Convert Microsoft Publisher files to PDF format",
+    icon: "Newspaper",
+    type: "publisher-to-pdf",
+    color: "bg-purple-600",
+    emoji: "📰",
+    metaTitle: "Publisher to PDF Online Free - Convert PUB to PDF | PDF Tools",
+    metaDescription: "Convert Microsoft Publisher files to PDF online for free. Transform PUB desktop publishing documents to universal PDF format. Fast Publisher to PDF converter.",
+    seoArticle: `<h2>Publisher to PDF Converter - Desktop Publishing Made Shareable</h2>
+<p>Convert your Microsoft Publisher (.pub) files to universally viewable PDF format with our free online converter. Publisher is Microsoft's desktop publishing application used for creating brochures, newsletters, flyers, and marketing materials. Converting to PDF ensures your designs can be viewed and printed by anyone.</p>
+
+<h2>Share Your Designs Everywhere</h2>
+<p>Microsoft Publisher files can only be opened by Publisher software, limiting your ability to share designs. Converting to PDF creates print-ready documents that anyone can view, whether they're using Windows, Mac, or mobile devices. Professional printers also prefer PDF format for production.</p>
+
+<h2>Preserve Layout and Design</h2>
+<p>Our converter maintains the precise layout of your Publisher documents. Images, text boxes, shapes, and formatting are preserved accurately. Your brochures, newsletters, and flyers look exactly as designed when converted to PDF.</p>
+
+<h2>Simple Publisher Conversion</h2>
+<p>Upload your .pub file using our secure interface. Our converter processes your Publisher document. Download your design as a print-ready PDF. Share with clients, printers, or audiences without any software requirements.</p>
+
+<h2>Perfect for Marketing Materials</h2>
+<p>Send brochures to commercial printers. Share newsletters with subscribers. Distribute event flyers widely. Present marketing materials to clients. Publisher to PDF makes your designs accessible everywhere.</p>`,
+  },
+  {
+    id: "ps-to-pdf",
+    name: "PostScript to PDF",
+    description: "Convert PostScript files to PDF format",
+    icon: "Printer",
+    type: "ps-to-pdf",
+    color: "bg-gray-600",
+    emoji: "🖨️",
+    metaTitle: "PostScript to PDF Online Free - Convert PS to PDF | PDF Tools",
+    metaDescription: "Convert PostScript PS files to PDF online for free. Transform printer-ready PostScript documents to universal PDF format. Fast PS to PDF converter.",
+    seoArticle: `<h2>PostScript to PDF Converter - Modernize Print Documents</h2>
+<p>Convert your PostScript (.ps) files to universally viewable PDF format with our free online converter. PostScript is a page description language developed by Adobe, primarily used for printing and professional graphics. Converting to PDF makes these technical documents accessible on any modern device.</p>
+
+<h2>What is PostScript?</h2>
+<p>PostScript was revolutionary when introduced, enabling precise, device-independent printing. While still used in professional printing environments, PostScript files are difficult to view on regular computers. PDF evolved from PostScript technology and offers the same precision with universal accessibility.</p>
+
+<h2>Bridge Legacy and Modern</h2>
+<p>Many organizations have archives of PostScript files from older publishing systems. Converting these to PDF preserves the content while making it accessible on modern devices. No special software needed to view the converted documents.</p>
+
+<h2>Simple PostScript Conversion</h2>
+<p>Upload your .ps PostScript file using our secure interface. Our converter processes the page descriptions. Download your document as a universally viewable PDF. Share or archive with confidence in long-term accessibility.</p>
+
+<h2>Professional Printing Workflow</h2>
+<p>Convert legacy print files for modern use. Archive PostScript documents in accessible format. Share printer proofs with clients. Modernize technical documentation. PostScript to PDF brings print-ready files to the digital age.</p>`,
+  },
+  {
+    id: "eps-to-pdf",
+    name: "EPS to PDF",
+    description: "Convert Encapsulated PostScript to PDF format",
+    icon: "Image",
+    type: "eps-to-pdf",
+    color: "bg-pink-600",
+    emoji: "🎨",
+    metaTitle: "EPS to PDF Online Free - Convert Encapsulated PostScript | PDF Tools",
+    metaDescription: "Convert EPS Encapsulated PostScript files to PDF online for free. Transform vector graphics to universal PDF format. Fast EPS to PDF converter.",
+    seoArticle: `<h2>EPS to PDF Converter - Vector Graphics Made Accessible</h2>
+<p>Convert your EPS (Encapsulated PostScript) files to universally viewable PDF format with our free online converter. EPS is a vector graphics format commonly used for logos, illustrations, and professional graphics. Converting to PDF preserves vector quality while making graphics viewable anywhere.</p>
+
+<h2>Understanding EPS Format</h2>
+<p>EPS files contain vector graphics that scale perfectly to any size without losing quality. They're commonly used by designers and illustrators for logos, icons, and print-ready artwork. However, EPS files require specialized software to view. PDF conversion solves this accessibility challenge.</p>
+
+<h2>Preserve Vector Quality</h2>
+<p>Our converter maintains the vector nature of your EPS graphics. Lines stay crisp, curves remain smooth, and scaling produces perfect results. The PDF output retains the professional quality of your original EPS artwork.</p>
+
+<h2>Simple EPS Conversion</h2>
+<p>Upload your .eps file using our secure interface. Our converter processes your vector graphics. Download your artwork as a high-quality PDF. Share with clients, printers, or colleagues without software requirements.</p>
+
+<h2>Professional Design Workflow</h2>
+<p>Share logo designs with clients for approval. Send illustrations to publishers. Provide artwork to print vendors. Archive graphics in accessible format. EPS to PDF makes professional vector graphics universally viewable.</p>`,
+  },
+  {
+    id: "pdf-to-word",
+    name: "PDF to Word",
+    description: "Convert PDF documents to editable Word format",
+    icon: "FileOutput",
+    type: "pdf-to-word",
+    color: "bg-blue-500",
+    emoji: "📄",
+    metaTitle: "PDF to Word Online Free - Convert PDF to DOCX | PDF Tools",
+    metaDescription: "Convert PDF files to editable Word documents online for free. Transform PDFs to DOCX format for easy editing. Fast PDF to Word converter.",
+    seoArticle: `<h2>PDF to Word Converter - Edit Your PDFs Easily</h2>
+<p>Convert your PDF documents to editable Microsoft Word format with our free online converter. PDFs are great for sharing final documents, but what if you need to make changes? Our PDF to Word converter extracts text and formatting from PDFs, creating editable Word documents you can modify freely.</p>
+
+<h2>Why Convert PDF to Word?</h2>
+<p>PDFs are designed to preserve formatting, not for editing. When you receive a PDF and need to make changes, you're stuck unless you have the original source file. Converting to Word unlocks the content, allowing you to edit text, update information, and repurpose content easily.</p>
+
+<h2>Preserve Document Structure</h2>
+<p>Our converter attempts to maintain the structure of your PDF document. Paragraphs, headings, and basic formatting are preserved where possible. While complex layouts may need some adjustment, the text content is accurately extracted for editing.</p>
+
+<h2>Simple PDF to Word Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter analyzes and extracts the document content. Download your editable Word document. Open in Microsoft Word or any compatible word processor to make your changes.</p>
+
+<h2>Common Use Cases</h2>
+<p>Update outdated information in old PDFs. Repurpose content for new documents. Make corrections to received PDF files. Extract text for research or analysis. PDF to Word transforms static documents into editable content.</p>`,
+  },
+  {
+    id: "pdf-to-doc",
+    name: "PDF to DOC",
+    description: "Convert PDF documents to legacy DOC format",
+    icon: "FileOutput",
+    type: "pdf-to-doc",
+    color: "bg-indigo-500",
+    emoji: "📋",
+    metaTitle: "PDF to DOC Online Free - Convert PDF to Word DOC | PDF Tools",
+    metaDescription: "Convert PDF files to DOC format online for free. Transform PDFs to legacy Word documents for compatibility. Fast PDF to DOC converter.",
+    seoArticle: `<h2>PDF to DOC Converter - Legacy Word Format</h2>
+<p>Convert your PDF documents to the classic Microsoft Word DOC format with our free online converter. While DOCX is the modern Word format, some older systems and applications still require the legacy DOC format. Our converter extracts content from PDFs and creates compatible DOC files.</p>
+
+<h2>When to Use DOC Format</h2>
+<p>The DOC format was Microsoft Word's standard before 2007. Some legacy systems, older Word versions, and specific applications may require DOC instead of DOCX. If you need maximum compatibility with older software, PDF to DOC conversion provides the solution.</p>
+
+<h2>Extract Editable Content</h2>
+<p>Our converter extracts text and basic formatting from your PDF documents. The resulting DOC file can be opened in Microsoft Word 97-2003 and later, as well as compatible word processors. Edit, modify, and repurpose your PDF content freely.</p>
+
+<h2>Simple PDF to DOC Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes and extracts the document content. Download your legacy-compatible DOC file. Open in older Word versions or legacy-compatible applications.</p>
+
+<h2>Maximum Compatibility</h2>
+<p>Support legacy business systems still using DOC format. Share documents with users on older Word versions. Meet specific format requirements from clients or organizations. PDF to DOC ensures your documents work everywhere.</p>`,
+  },
+  {
+    id: "pdf-to-docx",
+    name: "PDF to DOCX",
+    description: "Convert PDF documents to modern DOCX format",
+    icon: "FileOutput",
+    type: "pdf-to-docx",
+    color: "bg-sky-500",
+    emoji: "📝",
+    metaTitle: "PDF to DOCX Online Free - Convert PDF to Word DOCX | PDF Tools",
+    metaDescription: "Convert PDF files to DOCX format online for free. Transform PDFs to modern Word documents for editing. Fast PDF to DOCX converter.",
+    seoArticle: `<h2>PDF to DOCX Converter - Modern Word Format</h2>
+<p>Convert your PDF documents to the modern Microsoft Word DOCX format with our free online converter. DOCX is the current standard for Word documents, offering better compatibility, smaller file sizes, and improved formatting options. Extract and edit your PDF content in the most widely-supported word processing format.</p>
+
+<h2>Benefits of DOCX Format</h2>
+<p>DOCX files are more compact than the older DOC format, use open XML standards, and offer better recovery options if files get corrupted. They're compatible with Microsoft Word 2007 and later, Google Docs, LibreOffice, and many other applications. DOCX is the ideal choice for modern document workflows.</p>
+
+<h2>Extract and Edit PDF Content</h2>
+<p>Our converter analyzes your PDF and extracts text content while attempting to preserve formatting. The resulting DOCX file opens in any modern word processor, ready for your edits. Modify text, add content, update formatting, and save your changes.</p>
+
+<h2>Simple PDF to DOCX Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes and extracts the document content. Download your modern DOCX file. Open in Microsoft Word, Google Docs, or any compatible application to edit.</p>
+
+<h2>Transform Static to Editable</h2>
+<p>Update information in PDF reports. Repurpose PDF content for new documents. Make corrections without the original source file. Extract text for research and analysis. PDF to DOCX unlocks your PDF content for editing.</p>`,
   },
 ];
