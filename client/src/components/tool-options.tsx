@@ -1700,6 +1700,226 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "add-comments-to-pdf":
+    case "pdf-commenter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="commentText">Comment Text</Label>
+            <Input
+              id="commentText"
+              placeholder="Enter your comment"
+              value={options.commentText || ""}
+              onChange={(e) => updateOption("commentText", e.target.value)}
+              data-testid="input-comment-text"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="commentAuthor">Author Name</Label>
+            <Input
+              id="commentAuthor"
+              placeholder="Your name"
+              value={options.commentAuthor || ""}
+              onChange={(e) => updateOption("commentAuthor", e.target.value)}
+              data-testid="input-comment-author"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="commentPage">Page Number</Label>
+              <Input
+                id="commentPage"
+                type="number"
+                placeholder="1"
+                min={1}
+                value={options.commentPage || ""}
+                onChange={(e) => updateOption("commentPage", parseInt(e.target.value) || undefined)}
+                data-testid="input-comment-page"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="commentX">X Position</Label>
+              <Input
+                id="commentX"
+                type="number"
+                placeholder="50"
+                value={options.commentX || ""}
+                onChange={(e) => updateOption("commentX", parseInt(e.target.value) || undefined)}
+                data-testid="input-comment-x"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="commentY">Y Position</Label>
+              <Input
+                id="commentY"
+                type="number"
+                placeholder="700"
+                value={options.commentY || ""}
+                onChange={(e) => updateOption("commentY", parseInt(e.target.value) || undefined)}
+                data-testid="input-comment-y"
+              />
+            </div>
+          </div>
+        </div>
+      );
+
+    case "flatten-pdf":
+    case "flatten-pdf-comments":
+    case "flatten-pdf-layers":
+      return null;
+
+    case "add-hyperlink-to-pdf":
+    case "pdf-link-editor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="hyperlinkUrl">Link URL</Label>
+            <Input
+              id="hyperlinkUrl"
+              placeholder="https://example.com"
+              value={options.hyperlinkUrl || ""}
+              onChange={(e) => updateOption("hyperlinkUrl", e.target.value)}
+              data-testid="input-hyperlink-url"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="hyperlinkPage">Page Number</Label>
+              <Input
+                id="hyperlinkPage"
+                type="number"
+                placeholder="1"
+                min={1}
+                value={options.hyperlinkPage || ""}
+                onChange={(e) => updateOption("hyperlinkPage", parseInt(e.target.value) || undefined)}
+                data-testid="input-hyperlink-page"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="hyperlinkX">X Position</Label>
+              <Input
+                id="hyperlinkX"
+                type="number"
+                placeholder="50"
+                value={options.hyperlinkX || ""}
+                onChange={(e) => updateOption("hyperlinkX", parseInt(e.target.value) || undefined)}
+                data-testid="input-hyperlink-x"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="hyperlinkY">Y Position</Label>
+              <Input
+                id="hyperlinkY"
+                type="number"
+                placeholder="700"
+                value={options.hyperlinkY || ""}
+                onChange={(e) => updateOption("hyperlinkY", parseInt(e.target.value) || undefined)}
+                data-testid="input-hyperlink-y"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="hyperlinkWidth">Link Width</Label>
+              <Input
+                id="hyperlinkWidth"
+                type="number"
+                placeholder="100"
+                value={options.hyperlinkWidth || ""}
+                onChange={(e) => updateOption("hyperlinkWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-hyperlink-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="hyperlinkHeight">Link Height</Label>
+              <Input
+                id="hyperlinkHeight"
+                type="number"
+                placeholder="20"
+                value={options.hyperlinkHeight || ""}
+                onChange={(e) => updateOption("hyperlinkHeight", parseInt(e.target.value) || undefined)}
+                data-testid="input-hyperlink-height"
+              />
+            </div>
+          </div>
+        </div>
+      );
+
+    case "edit-pdf-metadata":
+    case "pdf-metadata-editor":
+    case "change-pdf-metadata":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="metadataTitle">Document Title</Label>
+            <Input
+              id="metadataTitle"
+              placeholder="Enter document title"
+              value={options.metadataTitle || ""}
+              onChange={(e) => updateOption("metadataTitle", e.target.value)}
+              data-testid="input-metadata-title"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="metadataAuthor">Author</Label>
+            <Input
+              id="metadataAuthor"
+              placeholder="Enter author name"
+              value={options.metadataAuthor || ""}
+              onChange={(e) => updateOption("metadataAuthor", e.target.value)}
+              data-testid="input-metadata-author"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="metadataSubject">Subject</Label>
+            <Input
+              id="metadataSubject"
+              placeholder="Enter document subject"
+              value={options.metadataSubject || ""}
+              onChange={(e) => updateOption("metadataSubject", e.target.value)}
+              data-testid="input-metadata-subject"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="metadataKeywords">Keywords</Label>
+            <Input
+              id="metadataKeywords"
+              placeholder="keyword1, keyword2, keyword3"
+              value={options.metadataKeywords || ""}
+              onChange={(e) => updateOption("metadataKeywords", e.target.value)}
+              data-testid="input-metadata-keywords"
+            />
+            <p className="text-sm text-muted-foreground">
+              Separate keywords with commas
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="metadataCreator">Creator Application</Label>
+            <Input
+              id="metadataCreator"
+              placeholder="Enter creator application"
+              value={options.metadataCreator || ""}
+              onChange={(e) => updateOption("metadataCreator", e.target.value)}
+              data-testid="input-metadata-creator"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="metadataProducer">Producer</Label>
+            <Input
+              id="metadataProducer"
+              placeholder="Enter producer"
+              value={options.metadataProducer || ""}
+              onChange={(e) => updateOption("metadataProducer", e.target.value)}
+              data-testid="input-metadata-producer"
+            />
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }

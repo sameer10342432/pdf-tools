@@ -64,6 +64,14 @@ import {
   Globe,
   ImageDown,
   Type,
+  MessageSquare,
+  MessageCircle,
+  MessageSquareDashed,
+  Link,
+  ExternalLink,
+  Combine,
+  Pencil,
+  Pen,
   type LucideIcon,
 } from "lucide-react";
 
@@ -112,6 +120,14 @@ const iconMap: Record<string, LucideIcon> = {
   Globe,
   ImageDown,
   Type,
+  MessageSquare,
+  MessageCircle,
+  MessageSquareDashed,
+  Link,
+  ExternalLink,
+  Combine,
+  Pencil,
+  Pen,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";
