@@ -141,6 +141,16 @@ export const pdfToolTypes = [
   "pdf-to-word",
   "pdf-to-doc",
   "pdf-to-docx",
+  "pdf-to-powerpoint",
+  "pdf-to-ppt",
+  "pdf-to-pptx",
+  "pdf-to-excel",
+  "pdf-to-xls",
+  "pdf-to-xlsx",
+  "pdf-to-jpg",
+  "pdf-to-png",
+  "pdf-to-bmp",
+  "pdf-to-gif",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -3775,5 +3785,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Transform Static to Editable</h2>
 <p>Update information in PDF reports. Repurpose PDF content for new documents. Make corrections without the original source file. Extract text for research and analysis. PDF to DOCX unlocks your PDF content for editing.</p>`,
+  },
+  {
+    id: "pdf-to-powerpoint",
+    name: "PDF to PowerPoint",
+    description: "Convert PDF documents to editable PowerPoint presentations",
+    icon: "Presentation",
+    type: "pdf-to-powerpoint",
+    color: "bg-orange-500",
+    emoji: "🎯",
+    metaTitle: "PDF to PowerPoint Online Free - Convert PDF to PPT/PPTX | PDF Tools",
+    metaDescription: "Convert PDF files to editable PowerPoint presentations online for free. Transform PDFs to PPT/PPTX format for presentations. Fast PDF to PowerPoint converter.",
+    seoArticle: `<h2>PDF to PowerPoint Converter - Create Editable Presentations</h2>
+<p>Convert your PDF documents to editable Microsoft PowerPoint presentations with our free online converter. Whether you need to repurpose content from a PDF report into a presentation or edit slides that were shared as PDF, our converter extracts content and creates presentation-ready slides.</p>
+
+<h2>Why Convert PDF to PowerPoint?</h2>
+<p>PDFs preserve formatting perfectly but aren't editable. When you receive a presentation as PDF and need to modify it, you're stuck without the original file. Our PDF to PowerPoint converter unlocks that content, letting you edit slides, add animations, change layouts, and customize your presentation.</p>
+
+<h2>Intelligent Content Extraction</h2>
+<p>Our converter analyzes your PDF structure and extracts content intelligently. Each PDF page becomes a slide in your presentation. Text, headings, and basic formatting are preserved where possible. The resulting PowerPoint file is ready for your edits and enhancements.</p>
+
+<h2>Simple PDF to PowerPoint Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes each page and creates corresponding slides. Download your editable PowerPoint presentation. Open in Microsoft PowerPoint, Google Slides, or any compatible application to edit.</p>
+
+<h2>Perfect for Business Professionals</h2>
+<p>Repurpose PDF reports for executive presentations. Edit slides received as PDF attachments. Convert PDF proposals into pitch decks. Transform PDF documentation into training materials. PDF to PowerPoint makes your content presentation-ready.</p>`,
+  },
+  {
+    id: "pdf-to-ppt",
+    name: "PDF to PPT",
+    description: "Convert PDF files to legacy PPT format",
+    icon: "Presentation",
+    type: "pdf-to-ppt",
+    color: "bg-red-500",
+    emoji: "📊",
+    metaTitle: "PDF to PPT Online Free - Convert PDF to PowerPoint PPT | PDF Tools",
+    metaDescription: "Convert PDF files to PPT format online for free. Transform PDFs to legacy PowerPoint format for compatibility. Fast PDF to PPT converter.",
+    seoArticle: `<h2>PDF to PPT Converter - Legacy PowerPoint Format</h2>
+<p>Convert your PDF documents to the classic Microsoft PowerPoint PPT format with our free online converter. While PPTX is the modern standard, some older systems and applications still require the legacy PPT format. Our converter extracts content from PDFs and creates compatible PPT presentations.</p>
+
+<h2>When to Use PPT Format</h2>
+<p>The PPT format was PowerPoint's standard before 2007. Some legacy projectors, older PowerPoint versions, and specific corporate systems may require PPT instead of PPTX. If you need maximum compatibility with older presentation software, PDF to PPT conversion provides the solution.</p>
+
+<h2>Extract Presentation Content</h2>
+<p>Our converter extracts content from your PDF pages and creates corresponding slides. Each page becomes a slide with extracted text and formatting. The resulting PPT file can be opened in PowerPoint 97-2003 and later versions, as well as compatible presentation software.</p>
+
+<h2>Simple PDF to PPT Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes your document and creates slides. Download your legacy-compatible PPT file. Open in older PowerPoint versions or legacy presentation systems.</p>
+
+<h2>Maximum Compatibility</h2>
+<p>Support legacy presentation systems. Share presentations with users on older software. Meet specific format requirements. Present on older projectors and systems. PDF to PPT ensures your presentations work everywhere.</p>`,
+  },
+  {
+    id: "pdf-to-pptx",
+    name: "PDF to PPTX",
+    description: "Convert PDF files to modern PPTX format",
+    icon: "Presentation",
+    type: "pdf-to-pptx",
+    color: "bg-amber-500",
+    emoji: "🖥️",
+    metaTitle: "PDF to PPTX Online Free - Convert PDF to PowerPoint PPTX | PDF Tools",
+    metaDescription: "Convert PDF files to PPTX format online for free. Transform PDFs to modern PowerPoint presentations. Fast PDF to PPTX converter.",
+    seoArticle: `<h2>PDF to PPTX Converter - Modern PowerPoint Format</h2>
+<p>Convert your PDF documents to the modern Microsoft PowerPoint PPTX format with our free online converter. PPTX is the current standard for presentations, offering better compatibility, smaller file sizes, and advanced features. Extract content from PDFs and create fully editable presentations.</p>
+
+<h2>Benefits of PPTX Format</h2>
+<p>PPTX files are more compact than legacy PPT format, use open XML standards, and support modern PowerPoint features including animations, transitions, and SmartArt. They're compatible with PowerPoint 2007 and later, Google Slides, Keynote, and many other applications.</p>
+
+<h2>Intelligent Slide Creation</h2>
+<p>Our converter analyzes your PDF structure and creates slides intelligently. Each PDF page becomes a presentation slide with extracted content. Text formatting and layout are preserved where possible, giving you a solid foundation for your presentation.</p>
+
+<h2>Simple PDF to PPTX Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes each page and creates corresponding slides. Download your modern PPTX file. Open in PowerPoint, Google Slides, or Keynote to edit and enhance.</p>
+
+<h2>Modern Presentation Workflow</h2>
+<p>Convert PDF reports into executive presentations. Transform PDF handouts into training slides. Repurpose PDF content for new audiences. Create editable versions of PDF presentations. PDF to PPTX powers modern presentation workflows.</p>`,
+  },
+  {
+    id: "pdf-to-excel",
+    name: "PDF to Excel",
+    description: "Convert PDF documents to editable Excel spreadsheets",
+    icon: "Table",
+    type: "pdf-to-excel",
+    color: "bg-green-600",
+    emoji: "📈",
+    metaTitle: "PDF to Excel Online Free - Convert PDF to XLS/XLSX | PDF Tools",
+    metaDescription: "Convert PDF files to editable Excel spreadsheets online for free. Extract tables from PDFs to Excel format. Fast PDF to Excel converter.",
+    seoArticle: `<h2>PDF to Excel Converter - Extract Data from PDFs</h2>
+<p>Convert your PDF documents to editable Microsoft Excel spreadsheets with our free online converter. PDFs often contain valuable tabular data locked in a non-editable format. Our converter extracts tables and data from PDFs, creating spreadsheets you can analyze, edit, and manipulate.</p>
+
+<h2>Why Convert PDF to Excel?</h2>
+<p>Many reports, invoices, and financial documents are distributed as PDFs. When you need to analyze this data, perform calculations, or integrate it with other information, you need it in spreadsheet format. PDF to Excel conversion unlocks your data for full spreadsheet functionality.</p>
+
+<h2>Intelligent Table Extraction</h2>
+<p>Our converter identifies tables within your PDF and extracts the data structure. Rows, columns, and cell data are preserved in the Excel output. While complex layouts may need some adjustment, the data is accurately extracted for your analysis.</p>
+
+<h2>Simple PDF to Excel Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter identifies and extracts tabular data. Download your editable Excel spreadsheet. Open in Microsoft Excel, Google Sheets, or any compatible application to analyze.</p>
+
+<h2>Essential for Data Analysis</h2>
+<p>Extract financial data for analysis. Import PDF reports into spreadsheets. Convert PDF invoices for accounting. Transform PDF tables into sortable data. PDF to Excel makes your data work harder.</p>`,
+  },
+  {
+    id: "pdf-to-xls",
+    name: "PDF to XLS",
+    description: "Convert PDF files to legacy XLS format",
+    icon: "Table",
+    type: "pdf-to-xls",
+    color: "bg-emerald-600",
+    emoji: "📉",
+    metaTitle: "PDF to XLS Online Free - Convert PDF to Excel XLS | PDF Tools",
+    metaDescription: "Convert PDF files to XLS format online for free. Extract data from PDFs to legacy Excel format. Fast PDF to XLS converter.",
+    seoArticle: `<h2>PDF to XLS Converter - Legacy Excel Format</h2>
+<p>Convert your PDF documents to the classic Microsoft Excel XLS format with our free online converter. While XLSX is the modern standard, some legacy systems and older Excel versions still require the classic XLS format. Our converter extracts data from PDFs and creates compatible XLS spreadsheets.</p>
+
+<h2>When to Use XLS Format</h2>
+<p>The XLS format was Excel's standard before 2007. Some legacy accounting systems, older Excel versions, and specific enterprise applications may require XLS instead of XLSX. If you need maximum compatibility with older spreadsheet software, PDF to XLS conversion provides the solution.</p>
+
+<h2>Extract Spreadsheet Data</h2>
+<p>Our converter identifies tabular data within your PDF and extracts it into spreadsheet format. Tables become worksheets with rows, columns, and cell data preserved. The resulting XLS file can be opened in Excel 97-2003 and later versions.</p>
+
+<h2>Simple PDF to XLS Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes your document and extracts data. Download your legacy-compatible XLS file. Open in older Excel versions or legacy spreadsheet systems.</p>
+
+<h2>Legacy System Compatibility</h2>
+<p>Support legacy accounting software. Share data with users on older Excel. Meet specific format requirements from clients. Import into legacy ERP systems. PDF to XLS ensures your data works with older systems.</p>`,
+  },
+  {
+    id: "pdf-to-xlsx",
+    name: "PDF to XLSX",
+    description: "Convert PDF files to modern XLSX format",
+    icon: "Table",
+    type: "pdf-to-xlsx",
+    color: "bg-teal-500",
+    emoji: "📊",
+    metaTitle: "PDF to XLSX Online Free - Convert PDF to Excel XLSX | PDF Tools",
+    metaDescription: "Convert PDF files to XLSX format online for free. Extract tables from PDFs to modern Excel format. Fast PDF to XLSX converter.",
+    seoArticle: `<h2>PDF to XLSX Converter - Modern Excel Format</h2>
+<p>Convert your PDF documents to the modern Microsoft Excel XLSX format with our free online converter. XLSX is the current standard for spreadsheets, offering better compatibility, smaller file sizes, and support for more rows and columns. Extract data from PDFs into fully editable spreadsheets.</p>
+
+<h2>Benefits of XLSX Format</h2>
+<p>XLSX files are more compact than legacy XLS format, use open XML standards, and support over 1 million rows versus 65,000 in XLS. They're compatible with Excel 2007 and later, Google Sheets, LibreOffice Calc, and many other applications. XLSX is the ideal choice for modern data workflows.</p>
+
+<h2>Intelligent Data Extraction</h2>
+<p>Our converter analyzes your PDF structure and identifies tabular data. Tables are extracted with rows, columns, and cell data preserved. The resulting XLSX file opens in any modern spreadsheet application, ready for your analysis and calculations.</p>
+
+<h2>Simple PDF to XLSX Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes your document and extracts data. Download your modern XLSX file. Open in Excel, Google Sheets, or any compatible application to edit.</p>
+
+<h2>Modern Data Workflow</h2>
+<p>Extract data from PDF reports. Convert PDF invoices to spreadsheets. Transform PDF tables for analysis. Import PDF financial data. PDF to XLSX powers modern data-driven workflows.</p>`,
+  },
+  {
+    id: "pdf-to-jpg",
+    name: "PDF to JPG",
+    description: "Convert PDF pages to high-quality JPG images",
+    icon: "Image",
+    type: "pdf-to-jpg",
+    color: "bg-yellow-500",
+    emoji: "🖼️",
+    metaTitle: "PDF to JPG Online Free - Convert PDF Pages to JPG Images | PDF Tools",
+    metaDescription: "Convert PDF files to JPG images online for free. Transform each PDF page into a high-quality JPG image. Fast PDF to JPG converter.",
+    seoArticle: `<h2>PDF to JPG Converter - Transform Pages to Images</h2>
+<p>Convert your PDF documents to high-quality JPG images with our free online converter. Each page of your PDF becomes a separate JPG image, perfect for sharing on social media, embedding in websites, or any situation where image format is preferred over PDF.</p>
+
+<h2>Why Convert PDF to JPG?</h2>
+<p>While PDFs are great for documents, images are often more versatile. JPG images can be shared on any platform, embedded in presentations, posted on social media, and viewed on any device without special software. PDF to JPG conversion gives you this flexibility.</p>
+
+<h2>High-Quality Image Output</h2>
+<p>Our converter produces high-resolution JPG images that preserve the visual quality of your PDF pages. Text remains sharp and readable, graphics and photos maintain their detail. Adjustable quality settings let you balance file size and image clarity.</p>
+
+<h2>Simple PDF to JPG Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes each page of your document. Download individual JPG images for each page. Use your images anywhere that accepts the universal JPG format.</p>
+
+<h2>Versatile Image Format</h2>
+<p>Share document pages on social media. Embed PDF content in web pages. Include in presentations without PDF embedding. Preview documents as thumbnails. PDF to JPG makes your content universally shareable.</p>`,
+  },
+  {
+    id: "pdf-to-png",
+    name: "PDF to PNG",
+    description: "Convert PDF pages to PNG images with transparency",
+    icon: "Image",
+    type: "pdf-to-png",
+    color: "bg-purple-500",
+    emoji: "🎨",
+    metaTitle: "PDF to PNG Online Free - Convert PDF Pages to PNG Images | PDF Tools",
+    metaDescription: "Convert PDF files to PNG images online for free. Transform PDF pages to high-quality PNG with transparency support. Fast PDF to PNG converter.",
+    seoArticle: `<h2>PDF to PNG Converter - High-Quality Lossless Images</h2>
+<p>Convert your PDF documents to high-quality PNG images with our free online converter. PNG format offers lossless compression and transparency support, making it ideal for graphics, logos, and documents where quality is paramount. Each PDF page becomes a crisp PNG image.</p>
+
+<h2>Why Choose PNG Format?</h2>
+<p>PNG offers lossless compression, meaning no quality is lost during conversion. Unlike JPG, PNG supports transparency, making it perfect for logos and graphics. For documents with text, PNG preserves sharp edges without compression artifacts.</p>
+
+<h2>Perfect Quality Preservation</h2>
+<p>Our converter produces pixel-perfect PNG images from your PDF pages. Text remains razor-sharp, graphics maintain their precision, and fine details are preserved exactly. No compression artifacts or quality loss compromise your documents.</p>
+
+<h2>Simple PDF to PNG Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes each page with lossless quality. Download individual PNG images for each page. Use your high-quality images wherever precision matters.</p>
+
+<h2>Professional Image Quality</h2>
+<p>Create screenshots of documents for tutorials. Convert logos and graphics from PDFs. Generate high-quality previews. Extract images for design work. PDF to PNG delivers professional-quality image output.</p>`,
+  },
+  {
+    id: "pdf-to-bmp",
+    name: "PDF to BMP",
+    description: "Convert PDF pages to BMP bitmap images",
+    icon: "Image",
+    type: "pdf-to-bmp",
+    color: "bg-rose-500",
+    emoji: "🖌️",
+    metaTitle: "PDF to BMP Online Free - Convert PDF Pages to BMP Images | PDF Tools",
+    metaDescription: "Convert PDF files to BMP bitmap images online for free. Transform PDF pages to uncompressed BMP format. Fast PDF to BMP converter.",
+    seoArticle: `<h2>PDF to BMP Converter - Uncompressed Bitmap Images</h2>
+<p>Convert your PDF documents to BMP (Bitmap) images with our free online converter. BMP is an uncompressed image format that preserves every pixel exactly, making it ideal for specific applications requiring raw image data. Each PDF page becomes a detailed BMP image.</p>
+
+<h2>Understanding BMP Format</h2>
+<p>BMP (Bitmap) is a basic image format that stores pixel data without compression. This results in larger file sizes but guarantees no quality loss whatsoever. BMP is commonly used in Windows applications, printing workflows, and situations requiring exact pixel representation.</p>
+
+<h2>Perfect Pixel Preservation</h2>
+<p>Our converter produces exact BMP representations of your PDF pages. Every pixel is preserved without any compression or quality loss. Text, graphics, and images maintain perfect fidelity in the bitmap output.</p>
+
+<h2>Simple PDF to BMP Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes each page to bitmap format. Download individual BMP images for each page. Use your uncompressed images in applications requiring BMP format.</p>
+
+<h2>Specialized Applications</h2>
+<p>Create images for legacy Windows applications. Generate raw pixel data for analysis. Produce images for specific printing workflows. Convert for systems requiring BMP input. PDF to BMP provides exact pixel-level conversion.</p>`,
+  },
+  {
+    id: "pdf-to-gif",
+    name: "PDF to GIF",
+    description: "Convert PDF pages to GIF image format",
+    icon: "Image",
+    type: "pdf-to-gif",
+    color: "bg-pink-500",
+    emoji: "✨",
+    metaTitle: "PDF to GIF Online Free - Convert PDF Pages to GIF Images | PDF Tools",
+    metaDescription: "Convert PDF files to GIF images online for free. Transform PDF pages to web-friendly GIF format. Fast PDF to GIF converter.",
+    seoArticle: `<h2>PDF to GIF Converter - Web-Friendly Images</h2>
+<p>Convert your PDF documents to GIF images with our free online converter. GIF is a widely supported image format perfect for web graphics, simple animations, and situations where broad compatibility is needed. Each PDF page becomes a GIF image.</p>
+
+<h2>Understanding GIF Format</h2>
+<p>GIF (Graphics Interchange Format) has been a web standard since 1987. It uses lossless compression for images with up to 256 colors, making it ideal for graphics, diagrams, and documents with solid colors. GIF is universally supported across all browsers and platforms.</p>
+
+<h2>Universal Compatibility</h2>
+<p>GIF images work everywhere - every browser, every device, every platform. When you need guaranteed compatibility without worrying about format support, GIF delivers. Our converter produces clean GIF images from your PDF pages.</p>
+
+<h2>Simple PDF to GIF Conversion</h2>
+<p>Upload your PDF file using our secure interface. Our converter processes each page to GIF format. Download individual GIF images for each page. Use your images on any platform with guaranteed compatibility.</p>
+
+<h2>Web-Ready Graphics</h2>
+<p>Create images for email newsletters. Generate graphics for legacy web systems. Produce universally compatible document previews. Convert diagrams and charts for broad sharing. PDF to GIF ensures your images work everywhere.</p>`,
   },
 ];

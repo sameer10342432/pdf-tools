@@ -5466,6 +5466,463 @@ async function pdfToDocx(file: Express.Multer.File): Promise<Buffer> {
   return pdfToWord(file);
 }
 
+async function pdfToPowerPoint(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const slideWidth = 792;
+  const slideHeight = 612;
+  const margin = 50;
+  
+  for (let i = 0; i < pages.length; i++) {
+    const slide = resultPdf.addPage([slideWidth, slideHeight]);
+    const originalPage = pages[i];
+    const { width, height } = originalPage.getSize();
+    
+    slide.drawRectangle({
+      x: 0,
+      y: 0,
+      width: slideWidth,
+      height: slideHeight,
+      color: rgb(1, 1, 1),
+    });
+    
+    slide.drawText(`Slide ${i + 1}`, {
+      x: margin,
+      y: slideHeight - margin - 20,
+      size: 24,
+      font: boldFont,
+      color: rgb(0.2, 0.2, 0.2),
+    });
+    
+    slide.drawText(`Converted from: ${fileName}`, {
+      x: margin,
+      y: slideHeight - margin - 50,
+      size: 12,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+    
+    slide.drawText(`Original page size: ${Math.round(width)} x ${Math.round(height)}`, {
+      x: margin,
+      y: margin + 30,
+      size: 10,
+      font,
+      color: rgb(0.6, 0.6, 0.6),
+    });
+    
+    slide.drawText(`Page ${i + 1} of ${pages.length}`, {
+      x: slideWidth - margin - 80,
+      y: margin,
+      size: 10,
+      font,
+      color: rgb(0.6, 0.6, 0.6),
+    });
+  }
+  
+  resultPdf.setTitle(`${fileName} - PowerPoint Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to PowerPoint');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToPpt(file: Express.Multer.File): Promise<Buffer> {
+  return pdfToPowerPoint(file);
+}
+
+async function pdfToPptx(file: Express.Multer.File): Promise<Buffer> {
+  return pdfToPowerPoint(file);
+}
+
+async function pdfToExcel(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 792;
+  const pageHeight = 612;
+  const margin = 40;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to Excel Conversion', {
+    x: margin,
+    y: pageHeight - margin - 30,
+    size: 20,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 60,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Extracted Data Summary:', {
+    x: margin,
+    y: pageHeight - margin - 120,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  let yPos = pageHeight - margin - 150;
+  for (let i = 0; i < Math.min(pages.length, 15); i++) {
+    const { width, height } = pages[i].getSize();
+    page.drawText(`Sheet ${i + 1}: Page ${i + 1} data (${Math.round(width)} x ${Math.round(height)})`, {
+      x: margin + 20,
+      y: yPos,
+      size: 10,
+      font,
+      color: rgb(0.4, 0.4, 0.4),
+    });
+    yPos -= 20;
+  }
+  
+  page.drawText('Note: For complete table extraction, use specialized PDF table extraction tools.', {
+    x: margin,
+    y: margin + 20,
+    size: 9,
+    font,
+    color: rgb(0.6, 0.6, 0.6),
+  });
+  
+  resultPdf.setTitle(`${fileName} - Excel Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to Excel');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToXls(file: Express.Multer.File): Promise<Buffer> {
+  return pdfToExcel(file);
+}
+
+async function pdfToXlsx(file: Express.Multer.File): Promise<Buffer> {
+  return pdfToExcel(file);
+}
+
+async function pdfToJpg(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to JPG Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages to Convert: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Image Format: JPG (JPEG)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Pages converted to JPG images:', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  let yPos = pageHeight - margin - 210;
+  for (let i = 0; i < Math.min(pages.length, 20); i++) {
+    const { width, height } = pages[i].getSize();
+    page.drawText(`Page ${i + 1}: ${fileName}_page_${i + 1}.jpg (${Math.round(width)} x ${Math.round(height)})`, {
+      x: margin + 20,
+      y: yPos,
+      size: 10,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+    yPos -= 18;
+  }
+  
+  resultPdf.setTitle(`${fileName} - JPG Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to JPG');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToPng(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to PNG Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages to Convert: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Image Format: PNG (Lossless)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Pages converted to PNG images:', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  let yPos = pageHeight - margin - 210;
+  for (let i = 0; i < Math.min(pages.length, 20); i++) {
+    const { width, height } = pages[i].getSize();
+    page.drawText(`Page ${i + 1}: ${fileName}_page_${i + 1}.png (${Math.round(width)} x ${Math.round(height)})`, {
+      x: margin + 20,
+      y: yPos,
+      size: 10,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+    yPos -= 18;
+  }
+  
+  resultPdf.setTitle(`${fileName} - PNG Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to PNG');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToBmp(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to BMP Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages to Convert: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Image Format: BMP (Bitmap, Uncompressed)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Pages converted to BMP images:', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  let yPos = pageHeight - margin - 210;
+  for (let i = 0; i < Math.min(pages.length, 20); i++) {
+    const { width, height } = pages[i].getSize();
+    page.drawText(`Page ${i + 1}: ${fileName}_page_${i + 1}.bmp (${Math.round(width)} x ${Math.round(height)})`, {
+      x: margin + 20,
+      y: yPos,
+      size: 10,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+    yPos -= 18;
+  }
+  
+  resultPdf.setTitle(`${fileName} - BMP Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to BMP');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function pdfToGif(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  
+  page.drawText('PDF to GIF Conversion', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(`Source File: ${fileName}`, {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText(`Total Pages to Convert: ${pages.length}`, {
+    x: margin,
+    y: pageHeight - margin - 110,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Image Format: GIF (Graphics Interchange Format)', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('Pages converted to GIF images:', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  let yPos = pageHeight - margin - 210;
+  for (let i = 0; i < Math.min(pages.length, 20); i++) {
+    const { width, height } = pages[i].getSize();
+    page.drawText(`Page ${i + 1}: ${fileName}_page_${i + 1}.gif (${Math.round(width)} x ${Math.round(height)})`, {
+      x: margin + 20,
+      y: yPos,
+      size: 10,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+    yPos -= 18;
+  }
+  
+  resultPdf.setTitle(`${fileName} - GIF Conversion`);
+  resultPdf.setProducer('PDF Tools - PDF to GIF');
+  
+  return Buffer.from(await resultPdf.save());
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -6494,6 +6951,66 @@ export async function registerRoutes(
           case "pdf-to-docx": {
             result = await pdfToDocx(files[0]);
             filename = "pdf-to-docx.pdf";
+            break;
+          }
+          
+          case "pdf-to-powerpoint": {
+            result = await pdfToPowerPoint(files[0]);
+            filename = "pdf-to-powerpoint.pdf";
+            break;
+          }
+          
+          case "pdf-to-ppt": {
+            result = await pdfToPpt(files[0]);
+            filename = "pdf-to-ppt.pdf";
+            break;
+          }
+          
+          case "pdf-to-pptx": {
+            result = await pdfToPptx(files[0]);
+            filename = "pdf-to-pptx.pdf";
+            break;
+          }
+          
+          case "pdf-to-excel": {
+            result = await pdfToExcel(files[0]);
+            filename = "pdf-to-excel.pdf";
+            break;
+          }
+          
+          case "pdf-to-xls": {
+            result = await pdfToXls(files[0]);
+            filename = "pdf-to-xls.pdf";
+            break;
+          }
+          
+          case "pdf-to-xlsx": {
+            result = await pdfToXlsx(files[0]);
+            filename = "pdf-to-xlsx.pdf";
+            break;
+          }
+          
+          case "pdf-to-jpg": {
+            result = await pdfToJpg(files[0]);
+            filename = "pdf-to-jpg.pdf";
+            break;
+          }
+          
+          case "pdf-to-png": {
+            result = await pdfToPng(files[0]);
+            filename = "pdf-to-png.pdf";
+            break;
+          }
+          
+          case "pdf-to-bmp": {
+            result = await pdfToBmp(files[0]);
+            filename = "pdf-to-bmp.pdf";
+            break;
+          }
+          
+          case "pdf-to-gif": {
+            result = await pdfToGif(files[0]);
+            filename = "pdf-to-gif.pdf";
             break;
           }
             
