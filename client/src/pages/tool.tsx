@@ -72,6 +72,10 @@ import {
   Combine,
   Pencil,
   Pen,
+  BookOpen,
+  Columns,
+  Palette,
+  Unlink,
   type LucideIcon,
 } from "lucide-react";
 
@@ -128,6 +132,10 @@ const iconMap: Record<string, LucideIcon> = {
   Combine,
   Pencil,
   Pen,
+  BookOpen,
+  Columns,
+  Palette,
+  Unlink,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";
