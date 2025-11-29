@@ -9464,6 +9464,507 @@ async function editPdfTextContent(
   return editPdfDocument(file, textContent, x, y, fontSize, fontColor, targetPage);
 }
 
+function hexToRgbValues(hex: string): { r: number; g: number; b: number } {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16) / 255,
+    g: parseInt(result[2], 16) / 255,
+    b: parseInt(result[3], 16) / 255
+  } : { r: 0, g: 0, b: 0 };
+}
+
+async function addImageToPdf(
+  pdfFile: Express.Multer.File,
+  imageFile: Express.Multer.File,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  position: string,
+  targetPage: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(pdfFile.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage));
+  const page = pages[safeTargetPage - 1];
+  const { width: pageWidth, height: pageHeight } = page.getSize();
+  
+  const imageBuffer = fs.readFileSync(imageFile.path);
+  const ext = path.extname(imageFile.originalname).toLowerCase();
+  
+  let image;
+  if (ext === ".png") {
+    image = await pdf.embedPng(imageBuffer);
+  } else {
+    const jpgBuffer = await sharp(imageBuffer).jpeg().toBuffer();
+    image = await pdf.embedJpg(jpgBuffer);
+  }
+  
+  const safeWidth = Math.min(width || 200, pageWidth - 20);
+  const safeHeight = Math.min(height || 200, pageHeight - 20);
+  
+  let finalX = x;
+  let finalY = y;
+  
+  switch (position) {
+    case "center":
+      finalX = (pageWidth - safeWidth) / 2;
+      finalY = (pageHeight - safeHeight) / 2;
+      break;
+    case "top-left":
+      finalX = 20;
+      finalY = pageHeight - safeHeight - 20;
+      break;
+    case "top-right":
+      finalX = pageWidth - safeWidth - 20;
+      finalY = pageHeight - safeHeight - 20;
+      break;
+    case "bottom-left":
+      finalX = 20;
+      finalY = 20;
+      break;
+    case "bottom-right":
+      finalX = pageWidth - safeWidth - 20;
+      finalY = 20;
+      break;
+    default:
+      finalX = Math.max(0, Math.min(x, pageWidth - safeWidth));
+      finalY = Math.max(0, Math.min(y, pageHeight - safeHeight));
+  }
+  
+  page.drawImage(image, {
+    x: finalX,
+    y: finalY,
+    width: safeWidth,
+    height: safeHeight,
+  });
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function replaceImageInPdf(
+  pdfFile: Express.Multer.File,
+  imageFile: Express.Multer.File,
+  targetPage: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(pdfFile.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage));
+  const page = pages[safeTargetPage - 1];
+  const { width: pageWidth, height: pageHeight } = page.getSize();
+  
+  const imageBuffer = fs.readFileSync(imageFile.path);
+  const ext = path.extname(imageFile.originalname).toLowerCase();
+  
+  let image;
+  if (ext === ".png") {
+    image = await pdf.embedPng(imageBuffer);
+  } else {
+    const jpgBuffer = await sharp(imageBuffer).jpeg().toBuffer();
+    image = await pdf.embedJpg(jpgBuffer);
+  }
+  
+  page.drawImage(image, {
+    x: pageWidth * 0.1,
+    y: pageHeight * 0.3,
+    width: pageWidth * 0.8,
+    height: pageHeight * 0.4,
+  });
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function addShapesToPdf(
+  file: Express.Multer.File,
+  shapeType: string,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  strokeColor: string,
+  fillColor: string,
+  strokeWidth: number,
+  targetPage: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage));
+  const page = pages[safeTargetPage - 1];
+  
+  const stroke = hexToRgbValues(strokeColor);
+  const fill = fillColor ? hexToRgbValues(fillColor) : null;
+  
+  switch (shapeType) {
+    case "rectangle":
+      page.drawRectangle({
+        x,
+        y,
+        width,
+        height,
+        borderColor: rgb(stroke.r, stroke.g, stroke.b),
+        borderWidth: strokeWidth,
+        color: fill ? rgb(fill.r, fill.g, fill.b) : undefined,
+      });
+      break;
+    case "circle":
+    case "ellipse":
+      page.drawEllipse({
+        x: x + width / 2,
+        y: y + height / 2,
+        xScale: width / 2,
+        yScale: height / 2,
+        borderColor: rgb(stroke.r, stroke.g, stroke.b),
+        borderWidth: strokeWidth,
+        color: fill ? rgb(fill.r, fill.g, fill.b) : undefined,
+      });
+      break;
+    case "line":
+      page.drawLine({
+        start: { x, y },
+        end: { x: x + width, y: y + height },
+        thickness: strokeWidth,
+        color: rgb(stroke.r, stroke.g, stroke.b),
+      });
+      break;
+    case "arrow":
+      page.drawLine({
+        start: { x, y },
+        end: { x: x + width, y: y + height },
+        thickness: strokeWidth,
+        color: rgb(stroke.r, stroke.g, stroke.b),
+      });
+      const arrowSize = Math.min(15, width / 4);
+      const angle = Math.atan2(height, width);
+      page.drawLine({
+        start: { x: x + width, y: y + height },
+        end: { 
+          x: x + width - arrowSize * Math.cos(angle - Math.PI / 6),
+          y: y + height - arrowSize * Math.sin(angle - Math.PI / 6)
+        },
+        thickness: strokeWidth,
+        color: rgb(stroke.r, stroke.g, stroke.b),
+      });
+      page.drawLine({
+        start: { x: x + width, y: y + height },
+        end: { 
+          x: x + width - arrowSize * Math.cos(angle + Math.PI / 6),
+          y: y + height - arrowSize * Math.sin(angle + Math.PI / 6)
+        },
+        thickness: strokeWidth,
+        color: rgb(stroke.r, stroke.g, stroke.b),
+      });
+      break;
+  }
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function drawOnPdf(
+  file: Express.Multer.File,
+  color: string,
+  strokeWidth: number,
+  targetPage: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage));
+  const page = pages[safeTargetPage - 1];
+  const { width: pageWidth, height: pageHeight } = page.getSize();
+  
+  const drawColor = hexToRgbValues(color);
+  
+  const centerX = pageWidth / 2;
+  const centerY = pageHeight / 2;
+  const radius = Math.min(pageWidth, pageHeight) * 0.2;
+  
+  for (let i = 0; i < 12; i++) {
+    const angle1 = (i * Math.PI * 2) / 12;
+    const angle2 = ((i + 1) * Math.PI * 2) / 12;
+    page.drawLine({
+      start: { 
+        x: centerX + radius * Math.cos(angle1), 
+        y: centerY + radius * Math.sin(angle1) 
+      },
+      end: { 
+        x: centerX + radius * Math.cos(angle2), 
+        y: centerY + radius * Math.sin(angle2) 
+      },
+      thickness: strokeWidth,
+      color: rgb(drawColor.r, drawColor.g, drawColor.b),
+    });
+  }
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function pdfAnnotator(
+  file: Express.Multer.File,
+  annotationType: string,
+  color: string,
+  text: string,
+  targetPage: number,
+  x: number,
+  y: number,
+  width: number,
+  height: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage));
+  const page = pages[safeTargetPage - 1];
+  
+  const annoColor = hexToRgbValues(color);
+  
+  switch (annotationType) {
+    case "highlight":
+      page.drawRectangle({
+        x,
+        y,
+        width,
+        height,
+        color: rgb(annoColor.r, annoColor.g, annoColor.b),
+        opacity: 0.4,
+      });
+      break;
+    case "underline":
+      page.drawLine({
+        start: { x, y },
+        end: { x: x + width, y },
+        thickness: 2,
+        color: rgb(annoColor.r, annoColor.g, annoColor.b),
+      });
+      break;
+    case "strikethrough":
+      page.drawLine({
+        start: { x, y: y + height / 2 },
+        end: { x: x + width, y: y + height / 2 },
+        thickness: 2,
+        color: rgb(annoColor.r, annoColor.g, annoColor.b),
+      });
+      break;
+    case "note":
+      if (text) {
+        const font = await pdf.embedFont(StandardFonts.Helvetica);
+        page.drawText(text, {
+          x,
+          y,
+          size: 10,
+          font,
+          color: rgb(annoColor.r, annoColor.g, annoColor.b),
+        });
+      }
+      page.drawRectangle({
+        x: x - 5,
+        y: y - 5,
+        width: width + 10,
+        height: height + 10,
+        borderColor: rgb(annoColor.r, annoColor.g, annoColor.b),
+        borderWidth: 1,
+      });
+      break;
+    case "freehand":
+      page.drawEllipse({
+        x: x + width / 2,
+        y: y + height / 2,
+        xScale: width / 2,
+        yScale: height / 2,
+        borderColor: rgb(annoColor.r, annoColor.g, annoColor.b),
+        borderWidth: 2,
+      });
+      break;
+  }
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function annotatePdf(
+  file: Express.Multer.File,
+  annotationType: string,
+  color: string,
+  text: string,
+  targetPage: number,
+  x: number,
+  y: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage));
+  const page = pages[safeTargetPage - 1];
+  
+  const annoColor = hexToRgbValues(color);
+  const font = await pdf.embedFont(StandardFonts.Helvetica);
+  
+  if (text) {
+    page.drawText(text, {
+      x,
+      y,
+      size: 12,
+      font,
+      color: rgb(annoColor.r, annoColor.g, annoColor.b),
+    });
+  }
+  
+  page.drawRectangle({
+    x: x - 5,
+    y: y - 15,
+    width: 150,
+    height: 25,
+    borderColor: rgb(annoColor.r, annoColor.g, annoColor.b),
+    borderWidth: 1,
+  });
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function highlightPdfText(
+  file: Express.Multer.File,
+  color: string,
+  opacity: number,
+  targetPage: number,
+  x: number,
+  y: number,
+  width: number,
+  height: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage));
+  const page = pages[safeTargetPage - 1];
+  
+  const highlightColor = hexToRgbValues(color);
+  
+  page.drawRectangle({
+    x,
+    y,
+    width,
+    height,
+    color: rgb(highlightColor.r, highlightColor.g, highlightColor.b),
+    opacity: Math.max(0.1, Math.min(1, opacity)),
+  });
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function underlinePdfText(
+  file: Express.Multer.File,
+  color: string,
+  targetPage: number,
+  x: number,
+  y: number,
+  width: number,
+  strokeWidth: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage));
+  const page = pages[safeTargetPage - 1];
+  
+  const underlineColor = hexToRgbValues(color);
+  
+  page.drawLine({
+    start: { x, y },
+    end: { x: x + width, y },
+    thickness: strokeWidth,
+    color: rgb(underlineColor.r, underlineColor.g, underlineColor.b),
+  });
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function strikethroughPdfText(
+  file: Express.Multer.File,
+  color: string,
+  targetPage: number,
+  x: number,
+  y: number,
+  width: number,
+  strokeWidth: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage));
+  const page = pages[safeTargetPage - 1];
+  
+  const strikeColor = hexToRgbValues(color);
+  
+  page.drawLine({
+    start: { x, y: y + 6 },
+    end: { x: x + width, y: y + 6 },
+    thickness: strokeWidth,
+    color: rgb(strikeColor.r, strikeColor.g, strikeColor.b),
+  });
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function pdfMarker(
+  file: Express.Multer.File,
+  color: string,
+  markerType: string,
+  targetPage: number,
+  x: number,
+  y: number,
+  width: number,
+  height: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const safeTargetPage = Math.max(1, Math.min(pages.length, targetPage));
+  const page = pages[safeTargetPage - 1];
+  
+  const markerColor = hexToRgbValues(color);
+  
+  switch (markerType) {
+    case "highlight":
+      page.drawRectangle({
+        x,
+        y,
+        width,
+        height,
+        color: rgb(markerColor.r, markerColor.g, markerColor.b),
+        opacity: 0.4,
+      });
+      break;
+    case "underline":
+      page.drawLine({
+        start: { x, y },
+        end: { x: x + width, y },
+        thickness: 2,
+        color: rgb(markerColor.r, markerColor.g, markerColor.b),
+      });
+      break;
+    case "strikethrough":
+      page.drawLine({
+        start: { x, y: y + height / 2 },
+        end: { x: x + width, y: y + height / 2 },
+        thickness: 2,
+        color: rgb(markerColor.r, markerColor.g, markerColor.b),
+      });
+      break;
+    default:
+      page.drawRectangle({
+        x,
+        y,
+        width,
+        height,
+        color: rgb(markerColor.r, markerColor.g, markerColor.b),
+        opacity: 0.4,
+      });
+  }
+  
+  return Buffer.from(await pdf.save());
+}
+
 async function pdfConverter(file: Express.Multer.File, format: string = 'pdf'): Promise<Buffer> {
   const pdfBytes = fs.readFileSync(file.path);
   const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
@@ -10966,6 +11467,141 @@ export async function registerRoutes(
             const editTargetPage = parseInt(options.targetPage as string, 10) || 1;
             result = await editPdfTextContent(files[0], editTextContent, editTextX, editTextY, editFontSize, editFontColor, editTargetPage);
             filename = "text-edited.pdf";
+            break;
+          }
+          
+          case "add-image-to-pdf": {
+            if (files.length < 2) {
+              throw new Error("Please upload both a PDF and an image file");
+            }
+            const pdfFile = files.find(f => f.originalname.toLowerCase().endsWith('.pdf'));
+            const imageFile = files.find(f => !f.originalname.toLowerCase().endsWith('.pdf'));
+            if (!pdfFile || !imageFile) {
+              throw new Error("Please upload a PDF file and an image file");
+            }
+            const imgX = parseInt(options.imageX as string, 10) || 50;
+            const imgY = parseInt(options.imageY as string, 10) || 50;
+            const imgWidth = parseInt(options.imageWidth as string, 10) || 200;
+            const imgHeight = parseInt(options.imageHeight as string, 10) || 200;
+            const imgPosition = options.imagePosition || "custom";
+            const imgTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            result = await addImageToPdf(pdfFile, imageFile, imgX, imgY, imgWidth, imgHeight, imgPosition, imgTargetPage);
+            filename = "image-added.pdf";
+            break;
+          }
+          
+          case "replace-image-in-pdf": {
+            if (files.length < 2) {
+              throw new Error("Please upload both a PDF and a replacement image file");
+            }
+            const replacePdfFile = files.find(f => f.originalname.toLowerCase().endsWith('.pdf'));
+            const replaceImageFile = files.find(f => !f.originalname.toLowerCase().endsWith('.pdf'));
+            if (!replacePdfFile || !replaceImageFile) {
+              throw new Error("Please upload a PDF file and a replacement image file");
+            }
+            const replaceTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            result = await replaceImageInPdf(replacePdfFile, replaceImageFile, replaceTargetPage);
+            filename = "image-replaced.pdf";
+            break;
+          }
+          
+          case "add-shapes-to-pdf": {
+            const shapeType = options.shapeType || "rectangle";
+            const shapeX = parseInt(options.shapeX as string, 10) || 100;
+            const shapeY = parseInt(options.shapeY as string, 10) || 100;
+            const shapeWidth = parseInt(options.shapeWidth as string, 10) || 100;
+            const shapeHeight = parseInt(options.shapeHeight as string, 10) || 100;
+            const shapeColor = options.shapeColor || "#0000FF";
+            const shapeFillColor = options.shapeFillColor || "";
+            const shapeStrokeWidth = parseInt(options.shapeStrokeWidth as string, 10) || 2;
+            const shapeTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            result = await addShapesToPdf(files[0], shapeType, shapeX, shapeY, shapeWidth, shapeHeight, shapeColor, shapeFillColor, shapeStrokeWidth, shapeTargetPage);
+            filename = "shapes-added.pdf";
+            break;
+          }
+          
+          case "draw-on-pdf": {
+            const drawColor = options.drawColor || "#000000";
+            const drawStrokeWidth = parseInt(options.drawStrokeWidth as string, 10) || 2;
+            const drawTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            result = await drawOnPdf(files[0], drawColor, drawStrokeWidth, drawTargetPage);
+            filename = "drawn.pdf";
+            break;
+          }
+          
+          case "pdf-annotator": {
+            const annotationType = options.annotationType || "highlight";
+            const annotationColor = options.annotationColor || "#FFFF00";
+            const annotationText = options.annotationText || "";
+            const annotatorTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            const annotationX = parseInt(options.textX as string, 10) || 50;
+            const annotationY = parseInt(options.textY as string, 10) || 700;
+            const annotationWidth = parseInt(options.shapeWidth as string, 10) || 200;
+            const annotationHeight = parseInt(options.shapeHeight as string, 10) || 20;
+            result = await pdfAnnotator(files[0], annotationType, annotationColor, annotationText, annotatorTargetPage, annotationX, annotationY, annotationWidth, annotationHeight);
+            filename = "annotated.pdf";
+            break;
+          }
+          
+          case "annotate-pdf": {
+            const annoPdfType = options.annotationType || "note";
+            const annoPdfColor = options.annotationColor || "#FFFF00";
+            const annoPdfText = options.annotationText || "";
+            const annoPdfTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            const annoPdfX = parseInt(options.textX as string, 10) || 50;
+            const annoPdfY = parseInt(options.textY as string, 10) || 700;
+            result = await annotatePdf(files[0], annoPdfType, annoPdfColor, annoPdfText, annoPdfTargetPage, annoPdfX, annoPdfY);
+            filename = "annotated.pdf";
+            break;
+          }
+          
+          case "highlight-pdf-text": {
+            const highlightColor = options.highlightColor || "#FFFF00";
+            const highlightOpacity = parseFloat(options.annotationOpacity as string) || 0.5;
+            const highlightTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            const highlightX = parseInt(options.textX as string, 10) || 50;
+            const highlightY = parseInt(options.textY as string, 10) || 700;
+            const highlightWidth = parseInt(options.shapeWidth as string, 10) || 200;
+            const highlightHeight = parseInt(options.shapeHeight as string, 10) || 20;
+            result = await highlightPdfText(files[0], highlightColor, highlightOpacity, highlightTargetPage, highlightX, highlightY, highlightWidth, highlightHeight);
+            filename = "highlighted.pdf";
+            break;
+          }
+          
+          case "underline-pdf-text": {
+            const underlineColor = options.annotationColor || "#0000FF";
+            const underlineTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            const underlineX = parseInt(options.textX as string, 10) || 50;
+            const underlineY = parseInt(options.textY as string, 10) || 700;
+            const underlineWidth = parseInt(options.shapeWidth as string, 10) || 200;
+            const underlineStrokeWidth = parseInt(options.shapeStrokeWidth as string, 10) || 2;
+            result = await underlinePdfText(files[0], underlineColor, underlineTargetPage, underlineX, underlineY, underlineWidth, underlineStrokeWidth);
+            filename = "underlined.pdf";
+            break;
+          }
+          
+          case "strikethrough-pdf-text": {
+            const strikeColor = options.annotationColor || "#FF0000";
+            const strikeTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            const strikeX = parseInt(options.textX as string, 10) || 50;
+            const strikeY = parseInt(options.textY as string, 10) || 700;
+            const strikeWidth = parseInt(options.shapeWidth as string, 10) || 200;
+            const strikeStrokeWidth = parseInt(options.shapeStrokeWidth as string, 10) || 2;
+            result = await strikethroughPdfText(files[0], strikeColor, strikeTargetPage, strikeX, strikeY, strikeWidth, strikeStrokeWidth);
+            filename = "strikethrough.pdf";
+            break;
+          }
+          
+          case "pdf-marker": {
+            const markerColor = options.markerColor || "#FFFF00";
+            const markerType = options.annotationType || "highlight";
+            const markerTargetPage = parseInt(options.targetPage as string, 10) || 1;
+            const markerX = parseInt(options.textX as string, 10) || 50;
+            const markerY = parseInt(options.textY as string, 10) || 700;
+            const markerWidth = parseInt(options.shapeWidth as string, 10) || 200;
+            const markerHeight = parseInt(options.shapeHeight as string, 10) || 20;
+            result = await pdfMarker(files[0], markerColor, markerType, markerTargetPage, markerX, markerY, markerWidth, markerHeight);
+            filename = "marked.pdf";
             break;
           }
             
