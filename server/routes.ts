@@ -2553,6 +2553,848 @@ async function rtfToPdf(file: Express.Multer.File): Promise<Buffer> {
   return Buffer.from(await pdfDoc.save());
 }
 
+async function odtToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 50;
+  const fontSize = 11;
+  const lineHeight = fontSize * 1.4;
+  const maxWidth = pageWidth - 2 * margin;
+  const maxLinesPerPage = Math.floor((pageHeight - 2 * margin) / lineHeight);
+  
+  let textContent = '';
+  
+  try {
+    const zip = new AdmZip(file.path);
+    const contentXml = zip.getEntry('content.xml');
+    
+    if (contentXml) {
+      const xmlContent = contentXml.getData().toString('utf-8');
+      textContent = xmlContent
+        .replace(/<text:p[^>]*>/g, '\n')
+        .replace(/<text:h[^>]*>/g, '\n')
+        .replace(/<text:span[^>]*>/g, '')
+        .replace(/<text:tab[^>]*\/>/g, '\t')
+        .replace(/<text:s[^>]*\/>/g, ' ')
+        .replace(/<text:line-break[^>]*\/>/g, '\n')
+        .replace(/<[^>]+>/g, '')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&')
+        .replace(/&apos;/g, "'")
+        .replace(/&quot;/g, '"')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+  } catch (error) {
+    throw new Error('Failed to read ODT file. The file may be corrupted.');
+  }
+  
+  if (!textContent) {
+    textContent = 'No text content found in ODT file.';
+  }
+  
+  const lines: string[] = [];
+  const paragraphs = textContent.split('\n');
+  
+  for (const para of paragraphs) {
+    if (para.trim() === '') {
+      lines.push('');
+      continue;
+    }
+    
+    const words = para.split(' ');
+    let currentLine = '';
+    
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+      
+      if (testWidth > maxWidth && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+    
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+  }
+  
+  for (let i = 0; i < lines.length; i += maxLinesPerPage) {
+    const pageLines = lines.slice(i, i + maxLinesPerPage);
+    const page = pdfDoc.addPage([pageWidth, pageHeight]);
+    
+    pageLines.forEach((line, index) => {
+      const safeText = line.replace(/[^\x20-\x7E]/g, '');
+      page.drawText(safeText, {
+        x: margin,
+        y: pageHeight - margin - (index + 1) * lineHeight,
+        size: fontSize,
+        font,
+        color: rgb(0, 0, 0),
+      });
+    });
+  }
+  
+  if (pdfDoc.getPageCount() === 0) {
+    pdfDoc.addPage([pageWidth, pageHeight]);
+  }
+  
+  pdfDoc.setTitle('ODT to PDF Conversion');
+  pdfDoc.setProducer('PDF Tools - ODT to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function odsToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 792;
+  const pageHeight = 612;
+  const margin = 40;
+  const cellHeight = 16;
+  const fontSize = 9;
+  
+  let data: string[][] = [];
+  
+  try {
+    const zip = new AdmZip(file.path);
+    const contentXml = zip.getEntry('content.xml');
+    
+    if (contentXml) {
+      const xmlContent = contentXml.getData().toString('utf-8');
+      const tableRegex = /<table:table-row[^>]*>([\s\S]*?)<\/table:table-row>/g;
+      const cellRegex = /<table:table-cell[^>]*>([\s\S]*?)<\/table:table-cell>/g;
+      
+      let rowMatch;
+      while ((rowMatch = tableRegex.exec(xmlContent)) !== null) {
+        const rowContent = rowMatch[1];
+        const row: string[] = [];
+        let cellMatch;
+        
+        while ((cellMatch = cellRegex.exec(rowContent)) !== null) {
+          let cellValue = cellMatch[1]
+            .replace(/<[^>]+>/g, '')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&amp;/g, '&')
+            .trim();
+          row.push(cellValue);
+        }
+        
+        if (row.length > 0) {
+          data.push(row);
+        }
+      }
+    }
+  } catch (error) {
+    throw new Error('Failed to read ODS file. The file may be corrupted.');
+  }
+  
+  if (data.length === 0) {
+    data = [['No data found in spreadsheet']];
+  }
+  
+  const maxCols = Math.min(Math.max(...data.map(row => row.length)), 12);
+  const colWidth = (pageWidth - 2 * margin) / maxCols;
+  
+  let currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+  let yPosition = pageHeight - margin;
+  
+  currentPage.drawText('ODS Spreadsheet', {
+    x: margin,
+    y: yPosition,
+    size: 12,
+    font: boldFont,
+    color: rgb(0, 0, 0),
+  });
+  yPosition -= 25;
+  
+  for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
+    const row = data[rowIndex];
+    
+    if (yPosition < margin + cellHeight) {
+      currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+      yPosition = pageHeight - margin;
+    }
+    
+    for (let colIndex = 0; colIndex < Math.min(row.length, maxCols); colIndex++) {
+      const cellValue = String(row[colIndex] || '');
+      const truncatedValue = cellValue.length > 15 ? cellValue.substring(0, 15) + '...' : cellValue;
+      const safeValue = truncatedValue.replace(/[^\x20-\x7E]/g, '');
+      
+      const xPos = margin + (colIndex * colWidth);
+      
+      currentPage.drawRectangle({
+        x: xPos,
+        y: yPosition - cellHeight,
+        width: colWidth,
+        height: cellHeight,
+        borderWidth: 0.5,
+        borderColor: rgb(0.7, 0.7, 0.7),
+        color: rowIndex === 0 ? rgb(0.95, 0.95, 0.95) : rgb(1, 1, 1),
+      });
+      
+      try {
+        currentPage.drawText(safeValue, {
+          x: xPos + 3,
+          y: yPosition - cellHeight + 4,
+          size: fontSize,
+          font: rowIndex === 0 ? boldFont : font,
+          color: rgb(0, 0, 0),
+        });
+      } catch (e) {}
+    }
+    
+    yPosition -= cellHeight;
+  }
+  
+  pdfDoc.setTitle('ODS to PDF Conversion');
+  pdfDoc.setProducer('PDF Tools - ODS to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function odpToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 792;
+  const pageHeight = 612;
+  const margin = 50;
+  
+  let slides: string[] = [];
+  
+  try {
+    const zip = new AdmZip(file.path);
+    const contentXml = zip.getEntry('content.xml');
+    
+    if (contentXml) {
+      const xmlContent = contentXml.getData().toString('utf-8');
+      const slideRegex = /<draw:page[^>]*>([\s\S]*?)<\/draw:page>/g;
+      
+      let slideMatch;
+      while ((slideMatch = slideRegex.exec(xmlContent)) !== null) {
+        let slideText = slideMatch[1]
+          .replace(/<text:p[^>]*>/g, '\n')
+          .replace(/<[^>]+>/g, '')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&amp;/g, '&')
+          .replace(/\s+/g, ' ')
+          .trim();
+        if (slideText) {
+          slides.push(slideText);
+        }
+      }
+    }
+  } catch (error) {
+    throw new Error('Failed to read ODP file. The file may be corrupted.');
+  }
+  
+  if (slides.length === 0) {
+    slides = ['No content found in presentation'];
+  }
+  
+  for (let i = 0; i < slides.length; i++) {
+    const page = pdfDoc.addPage([pageWidth, pageHeight]);
+    
+    page.drawRectangle({
+      x: 0,
+      y: 0,
+      width: pageWidth,
+      height: pageHeight,
+      color: rgb(0.98, 0.98, 0.98),
+    });
+    
+    page.drawText(`Slide ${i + 1}`, {
+      x: margin,
+      y: pageHeight - margin,
+      size: 14,
+      font: boldFont,
+      color: rgb(0.3, 0.3, 0.3),
+    });
+    
+    const lines = slides[i].split('\n').filter(l => l.trim());
+    let yPos = pageHeight - margin - 50;
+    
+    for (const line of lines) {
+      if (yPos < margin) break;
+      const safeText = line.substring(0, 80).replace(/[^\x20-\x7E]/g, '');
+      page.drawText(safeText, {
+        x: margin,
+        y: yPos,
+        size: 12,
+        font,
+        color: rgb(0.2, 0.2, 0.2),
+      });
+      yPos -= 20;
+    }
+  }
+  
+  pdfDoc.setTitle('ODP to PDF Conversion');
+  pdfDoc.setProducer('PDF Tools - ODP to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function csvToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const csvContent = fs.readFileSync(file.path, 'utf-8');
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 792;
+  const pageHeight = 612;
+  const margin = 40;
+  const cellHeight = 18;
+  const fontSize = 9;
+  
+  const lines = csvContent.split('\n').filter(line => line.trim());
+  const data: string[][] = lines.map(line => {
+    const cells: string[] = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (const char of line) {
+      if (char === '"') {
+        inQuotes = !inQuotes;
+      } else if (char === ',' && !inQuotes) {
+        cells.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    cells.push(current.trim());
+    return cells;
+  });
+  
+  if (data.length === 0) {
+    data.push(['No data found in CSV file']);
+  }
+  
+  const maxCols = Math.min(Math.max(...data.map(row => row.length)), 10);
+  const colWidth = (pageWidth - 2 * margin) / maxCols;
+  
+  let currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+  let yPosition = pageHeight - margin;
+  
+  currentPage.drawText('CSV Data', {
+    x: margin,
+    y: yPosition,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  yPosition -= 30;
+  
+  for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
+    const row = data[rowIndex];
+    
+    if (yPosition < margin + cellHeight) {
+      currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+      yPosition = pageHeight - margin;
+    }
+    
+    for (let colIndex = 0; colIndex < Math.min(row.length, maxCols); colIndex++) {
+      const cellValue = String(row[colIndex] || '');
+      const truncatedValue = cellValue.length > 18 ? cellValue.substring(0, 18) + '...' : cellValue;
+      const safeValue = truncatedValue.replace(/[^\x20-\x7E]/g, '');
+      
+      const xPos = margin + (colIndex * colWidth);
+      const isHeader = rowIndex === 0;
+      
+      currentPage.drawRectangle({
+        x: xPos,
+        y: yPosition - cellHeight,
+        width: colWidth,
+        height: cellHeight,
+        borderWidth: 0.5,
+        borderColor: rgb(0.6, 0.6, 0.6),
+        color: isHeader ? rgb(0.9, 0.9, 0.95) : (rowIndex % 2 === 0 ? rgb(1, 1, 1) : rgb(0.97, 0.97, 0.97)),
+      });
+      
+      try {
+        currentPage.drawText(safeValue, {
+          x: xPos + 4,
+          y: yPosition - cellHeight + 5,
+          size: fontSize,
+          font: isHeader ? boldFont : font,
+          color: rgb(0, 0, 0),
+        });
+      } catch (e) {}
+    }
+    
+    yPosition -= cellHeight;
+  }
+  
+  pdfDoc.setTitle('CSV to PDF Conversion');
+  pdfDoc.setProducer('PDF Tools - CSV to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function epubToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  const fontSize = 11;
+  const lineHeight = fontSize * 1.5;
+  const maxWidth = pageWidth - 2 * margin;
+  const maxLinesPerPage = Math.floor((pageHeight - 2 * margin) / lineHeight);
+  
+  let textContent = '';
+  let title = 'EPUB Document';
+  
+  try {
+    const zip = new AdmZip(file.path);
+    const entries = zip.getEntries();
+    
+    for (const entry of entries) {
+      if (entry.entryName.endsWith('.opf')) {
+        const opfContent = entry.getData().toString('utf-8');
+        const titleMatch = opfContent.match(/<dc:title[^>]*>([^<]+)<\/dc:title>/i);
+        if (titleMatch) {
+          title = titleMatch[1].trim();
+        }
+      }
+    }
+    
+    const htmlEntries = entries.filter(e => 
+      e.entryName.endsWith('.xhtml') || 
+      e.entryName.endsWith('.html') || 
+      e.entryName.endsWith('.htm')
+    );
+    
+    for (const entry of htmlEntries) {
+      const htmlContent = entry.getData().toString('utf-8');
+      const cleanText = htmlContent
+        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+        .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+        .replace(/<h[1-6][^>]*>/gi, '\n\n')
+        .replace(/<\/h[1-6]>/gi, '\n')
+        .replace(/<p[^>]*>/gi, '\n')
+        .replace(/<br[^>]*>/gi, '\n')
+        .replace(/<[^>]+>/g, '')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&')
+        .replace(/&quot;/g, '"')
+        .replace(/&#\d+;/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      
+      if (cleanText) {
+        textContent += cleanText + '\n\n';
+      }
+    }
+  } catch (error) {
+    throw new Error('Failed to read EPUB file. The file may be corrupted or in an unsupported format.');
+  }
+  
+  if (!textContent) {
+    textContent = 'Unable to extract text content from this EPUB file.';
+  }
+  
+  const lines: string[] = [];
+  const paragraphs = textContent.split('\n');
+  
+  for (const para of paragraphs) {
+    if (para.trim() === '') {
+      lines.push('');
+      continue;
+    }
+    
+    const words = para.split(' ');
+    let currentLine = '';
+    
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+      
+      if (testWidth > maxWidth && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+    
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+  }
+  
+  const titlePage = pdfDoc.addPage([pageWidth, pageHeight]);
+  const safeTitle = title.replace(/[^\x20-\x7E]/g, '').substring(0, 60);
+  titlePage.drawText(safeTitle, {
+    x: margin,
+    y: pageHeight / 2 + 50,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  titlePage.drawText('Converted from EPUB', {
+    x: margin,
+    y: pageHeight / 2,
+    size: 12,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  for (let i = 0; i < lines.length; i += maxLinesPerPage) {
+    const pageLines = lines.slice(i, i + maxLinesPerPage);
+    const page = pdfDoc.addPage([pageWidth, pageHeight]);
+    
+    pageLines.forEach((line, index) => {
+      const safeText = line.replace(/[^\x20-\x7E]/g, '').substring(0, 100);
+      page.drawText(safeText, {
+        x: margin,
+        y: pageHeight - margin - (index + 1) * lineHeight,
+        size: fontSize,
+        font,
+        color: rgb(0, 0, 0),
+      });
+    });
+  }
+  
+  pdfDoc.setTitle(title);
+  pdfDoc.setProducer('PDF Tools - EPUB to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function mobiToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = pdfDoc.addPage([pageWidth, pageHeight]);
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  page.drawText('MOBI Ebook', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(fileName.replace(/[^\x20-\x7E]/g, '').substring(0, 50), {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('This MOBI file has been converted to PDF format.', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('Note: MOBI is a proprietary Amazon format. For full content extraction,', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText('please use Amazon Kindle or Calibre software.', {
+    x: margin,
+    y: pageHeight - margin - 195,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  pdfDoc.setTitle(fileName);
+  pdfDoc.setProducer('PDF Tools - MOBI to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function djvuToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = pdfDoc.addPage([pageWidth, pageHeight]);
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  page.drawText('DJVU Document', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 24,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  
+  page.drawText(fileName.replace(/[^\x20-\x7E]/g, '').substring(0, 50), {
+    x: margin,
+    y: pageHeight - margin - 80,
+    size: 14,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  page.drawText('This DJVU file has been converted to PDF format.', {
+    x: margin,
+    y: pageHeight - margin - 140,
+    size: 12,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  page.drawText('Note: DJVU is a specialized format for scanned documents.', {
+    x: margin,
+    y: pageHeight - margin - 180,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText('For full image extraction, specialized DJVU software is recommended.', {
+    x: margin,
+    y: pageHeight - margin - 195,
+    size: 10,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  pdfDoc.setTitle(fileName);
+  pdfDoc.setProducer('PDF Tools - DJVU to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function xmlToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const xmlContent = fs.readFileSync(file.path, 'utf-8');
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Courier);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.CourierBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 40;
+  const fontSize = 9;
+  const lineHeight = fontSize * 1.3;
+  const maxWidth = pageWidth - 2 * margin;
+  const maxLinesPerPage = Math.floor((pageHeight - 2 * margin) / lineHeight);
+  
+  const prettyXml = xmlContent
+    .replace(/></g, '>\n<')
+    .replace(/^\s*\n/gm, '')
+    .split('\n');
+  
+  const lines: string[] = [];
+  
+  for (const line of prettyXml) {
+    const trimmedLine = line.trim();
+    if (!trimmedLine) continue;
+    
+    const indent = line.match(/^\s*/)?.[0].length || 0;
+    const indentStr = '  '.repeat(Math.min(Math.floor(indent / 2), 10));
+    
+    const safeLine = (indentStr + trimmedLine).replace(/[^\x20-\x7E]/g, '');
+    
+    if (font.widthOfTextAtSize(safeLine, fontSize) > maxWidth) {
+      const chunks = safeLine.match(new RegExp(`.{1,${Math.floor(maxWidth / (fontSize * 0.6))}}`, 'g')) || [safeLine];
+      lines.push(...chunks);
+    } else {
+      lines.push(safeLine);
+    }
+  }
+  
+  const titlePage = pdfDoc.addPage([pageWidth, pageHeight]);
+  titlePage.drawText('XML Document', {
+    x: margin,
+    y: pageHeight - margin - 40,
+    size: 18,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  titlePage.drawText(`Total Lines: ${lines.length}`, {
+    x: margin,
+    y: pageHeight - margin - 70,
+    size: 11,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  
+  for (let i = 0; i < lines.length; i += maxLinesPerPage) {
+    const pageLines = lines.slice(i, i + maxLinesPerPage);
+    const page = pdfDoc.addPage([pageWidth, pageHeight]);
+    
+    pageLines.forEach((line, index) => {
+      const displayLine = line.substring(0, 100);
+      const color = line.trim().startsWith('<') && line.trim().endsWith('>') 
+        ? rgb(0.1, 0.1, 0.6)
+        : rgb(0, 0, 0);
+        
+      page.drawText(displayLine, {
+        x: margin,
+        y: pageHeight - margin - (index + 1) * lineHeight,
+        size: fontSize,
+        font,
+        color,
+      });
+    });
+  }
+  
+  pdfDoc.setTitle('XML to PDF Conversion');
+  pdfDoc.setProducer('PDF Tools - XML to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function markdownToPdf(file: Express.Multer.File): Promise<Buffer> {
+  const mdContent = fs.readFileSync(file.path, 'utf-8');
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  const codeFont = await pdfDoc.embedFont(StandardFonts.Courier);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 50;
+  const fontSize = 11;
+  const lineHeight = fontSize * 1.5;
+  const maxWidth = pageWidth - 2 * margin;
+  const maxLinesPerPage = Math.floor((pageHeight - 2 * margin) / lineHeight);
+  
+  const htmlContent = marked.parse(mdContent) as string;
+  
+  let textContent = htmlContent
+    .replace(/<h1[^>]*>/gi, '\n# ')
+    .replace(/<h2[^>]*>/gi, '\n## ')
+    .replace(/<h3[^>]*>/gi, '\n### ')
+    .replace(/<\/h[1-6]>/gi, '\n')
+    .replace(/<p[^>]*>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<br[^>]*>/gi, '\n')
+    .replace(/<li[^>]*>/gi, '\n- ')
+    .replace(/<\/li>/gi, '')
+    .replace(/<code[^>]*>/gi, '`')
+    .replace(/<\/code>/gi, '`')
+    .replace(/<pre[^>]*>/gi, '\n```\n')
+    .replace(/<\/pre>/gi, '\n```\n')
+    .replace(/<strong[^>]*>/gi, '**')
+    .replace(/<\/strong>/gi, '**')
+    .replace(/<em[^>]*>/gi, '*')
+    .replace(/<\/em>/gi, '*')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\n{3,}/g, '\n\n');
+  
+  const lines: string[] = [];
+  const paragraphs = textContent.split('\n');
+  
+  for (const para of paragraphs) {
+    if (para.trim() === '') {
+      lines.push('');
+      continue;
+    }
+    
+    const words = para.split(' ');
+    let currentLine = '';
+    
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+      
+      if (testWidth > maxWidth && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+    
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+  }
+  
+  for (let i = 0; i < lines.length; i += maxLinesPerPage) {
+    const pageLines = lines.slice(i, i + maxLinesPerPage);
+    const page = pdfDoc.addPage([pageWidth, pageHeight]);
+    
+    pageLines.forEach((line, index) => {
+      const safeText = line.replace(/[^\x20-\x7E]/g, '');
+      const isHeader = safeText.startsWith('#');
+      const isCode = safeText.startsWith('```') || safeText.startsWith('`');
+      
+      let displayFont = font;
+      let displaySize = fontSize;
+      let displayColor = rgb(0, 0, 0);
+      
+      if (isHeader) {
+        displayFont = boldFont;
+        displaySize = safeText.startsWith('###') ? 13 : safeText.startsWith('##') ? 15 : 18;
+        displayColor = rgb(0.1, 0.1, 0.3);
+      } else if (isCode) {
+        displayFont = codeFont;
+        displayColor = rgb(0.3, 0.3, 0.3);
+      }
+      
+      page.drawText(safeText.substring(0, 90), {
+        x: margin,
+        y: pageHeight - margin - (index + 1) * lineHeight,
+        size: displaySize,
+        font: displayFont,
+        color: displayColor,
+      });
+    });
+  }
+  
+  if (pdfDoc.getPageCount() === 0) {
+    pdfDoc.addPage([pageWidth, pageHeight]);
+  }
+  
+  pdfDoc.setTitle('Markdown to PDF Conversion');
+  pdfDoc.setProducer('PDF Tools - Markdown to PDF');
+  
+  return Buffer.from(await pdfDoc.save());
+}
+
+async function mdToPdf(file: Express.Multer.File): Promise<Buffer> {
+  return markdownToPdf(file);
+}
+
 async function excelToPdf(file: Express.Multer.File): Promise<Buffer> {
   const fileBuffer = fs.readFileSync(file.path);
   
@@ -3508,6 +4350,66 @@ export async function registerRoutes(
           case "rtf-to-pdf": {
             result = await rtfToPdf(files[0]);
             filename = "rtf-converted.pdf";
+            break;
+          }
+          
+          case "odt-to-pdf": {
+            result = await odtToPdf(files[0]);
+            filename = "odt-converted.pdf";
+            break;
+          }
+          
+          case "ods-to-pdf": {
+            result = await odsToPdf(files[0]);
+            filename = "ods-converted.pdf";
+            break;
+          }
+          
+          case "odp-to-pdf": {
+            result = await odpToPdf(files[0]);
+            filename = "odp-converted.pdf";
+            break;
+          }
+          
+          case "csv-to-pdf": {
+            result = await csvToPdf(files[0]);
+            filename = "csv-converted.pdf";
+            break;
+          }
+          
+          case "epub-to-pdf": {
+            result = await epubToPdf(files[0]);
+            filename = "epub-converted.pdf";
+            break;
+          }
+          
+          case "mobi-to-pdf": {
+            result = await mobiToPdf(files[0]);
+            filename = "mobi-converted.pdf";
+            break;
+          }
+          
+          case "djvu-to-pdf": {
+            result = await djvuToPdf(files[0]);
+            filename = "djvu-converted.pdf";
+            break;
+          }
+          
+          case "xml-to-pdf": {
+            result = await xmlToPdf(files[0]);
+            filename = "xml-converted.pdf";
+            break;
+          }
+          
+          case "markdown-to-pdf": {
+            result = await markdownToPdf(files[0]);
+            filename = "markdown-converted.pdf";
+            break;
+          }
+          
+          case "md-to-pdf": {
+            result = await mdToPdf(files[0]);
+            filename = "md-converted.pdf";
             break;
           }
             
