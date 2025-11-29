@@ -10320,14 +10320,11 @@ async function sanitizePdf(
     sanitizedPdf.addPage(copiedPage);
   }
   
-  if (level !== "basic") {
-    sanitizedPdf.setTitle("");
-    sanitizedPdf.setAuthor("");
-    sanitizedPdf.setSubject("");
-    sanitizedPdf.setKeywords([]);
-    sanitizedPdf.setCreator("");
-  }
-  
+  sanitizedPdf.setTitle("");
+  sanitizedPdf.setAuthor("");
+  sanitizedPdf.setSubject("");
+  sanitizedPdf.setKeywords([]);
+  sanitizedPdf.setCreator("");
   sanitizedPdf.setProducer("PDF Tools - Sanitized");
   sanitizedPdf.setCreationDate(new Date());
   sanitizedPdf.setModificationDate(new Date());
