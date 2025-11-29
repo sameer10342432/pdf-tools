@@ -881,6 +881,825 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "add-image-to-pdf":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload a PDF and an image file together. The image will be added to the selected page.
+          </p>
+          <div className="space-y-2">
+            <Label>Image Position</Label>
+            <Select
+              value={options.imagePosition || "center"}
+              onValueChange={(value) => updateOption("imagePosition", value as ToolOptions["imagePosition"])}
+            >
+              <SelectTrigger data-testid="select-image-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+                <SelectItem value="custom">Custom Position</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.imagePosition === "custom" && (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="imageX">X Position (pixels)</Label>
+                <Input
+                  id="imageX"
+                  type="number"
+                  placeholder="50"
+                  value={options.imageX || ""}
+                  onChange={(e) => updateOption("imageX", parseInt(e.target.value) || undefined)}
+                  data-testid="input-image-x"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="imageY">Y Position (pixels)</Label>
+                <Input
+                  id="imageY"
+                  type="number"
+                  placeholder="50"
+                  value={options.imageY || ""}
+                  onChange={(e) => updateOption("imageY", parseInt(e.target.value) || undefined)}
+                  data-testid="input-image-y"
+                />
+              </div>
+            </div>
+          )}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="imageWidth">Width (pixels)</Label>
+              <Input
+                id="imageWidth"
+                type="number"
+                placeholder="200"
+                value={options.imageWidth || ""}
+                onChange={(e) => updateOption("imageWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-image-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="imageHeight">Height (pixels)</Label>
+              <Input
+                id="imageHeight"
+                type="number"
+                placeholder="200"
+                value={options.imageHeight || ""}
+                onChange={(e) => updateOption("imageHeight", parseInt(e.target.value) || undefined)}
+                data-testid="input-image-height"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="targetPage">Target Page</Label>
+            <Input
+              id="targetPage"
+              type="number"
+              placeholder="1"
+              min={1}
+              value={options.targetPage || ""}
+              onChange={(e) => updateOption("targetPage", parseInt(e.target.value) || undefined)}
+              data-testid="input-target-page"
+            />
+            <p className="text-sm text-muted-foreground">
+              Page number where the image will be added.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "replace-image-in-pdf":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload a PDF and a new image file. The new image will replace existing content on the selected page.
+          </p>
+          <div className="space-y-2">
+            <Label htmlFor="targetPage">Target Page</Label>
+            <Input
+              id="targetPage"
+              type="number"
+              placeholder="1"
+              min={1}
+              value={options.targetPage || ""}
+              onChange={(e) => updateOption("targetPage", parseInt(e.target.value) || undefined)}
+              data-testid="input-target-page"
+            />
+            <p className="text-sm text-muted-foreground">
+              Page number where the image will be placed.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "add-shapes-to-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Shape Type</Label>
+            <Select
+              value={options.shapeType || "rectangle"}
+              onValueChange={(value) => updateOption("shapeType", value as ToolOptions["shapeType"])}
+            >
+              <SelectTrigger data-testid="select-shape-type">
+                <SelectValue placeholder="Select shape" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="rectangle">Rectangle</SelectItem>
+                <SelectItem value="circle">Circle</SelectItem>
+                <SelectItem value="ellipse">Ellipse</SelectItem>
+                <SelectItem value="line">Line</SelectItem>
+                <SelectItem value="arrow">Arrow</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="shapeX">X Position</Label>
+              <Input
+                id="shapeX"
+                type="number"
+                placeholder="100"
+                value={options.shapeX || ""}
+                onChange={(e) => updateOption("shapeX", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-x"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="shapeY">Y Position</Label>
+              <Input
+                id="shapeY"
+                type="number"
+                placeholder="100"
+                value={options.shapeY || ""}
+                onChange={(e) => updateOption("shapeY", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-y"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="shapeWidth">Width</Label>
+              <Input
+                id="shapeWidth"
+                type="number"
+                placeholder="100"
+                value={options.shapeWidth || ""}
+                onChange={(e) => updateOption("shapeWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="shapeHeight">Height</Label>
+              <Input
+                id="shapeHeight"
+                type="number"
+                placeholder="100"
+                value={options.shapeHeight || ""}
+                onChange={(e) => updateOption("shapeHeight", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-height"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="shapeColor">Stroke Color</Label>
+              <Input
+                id="shapeColor"
+                type="color"
+                value={options.shapeColor || "#0000FF"}
+                onChange={(e) => updateOption("shapeColor", e.target.value)}
+                className="h-9 cursor-pointer"
+                data-testid="input-shape-color"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="shapeFillColor">Fill Color (optional)</Label>
+              <Input
+                id="shapeFillColor"
+                type="color"
+                value={options.shapeFillColor || "#ffffff"}
+                onChange={(e) => updateOption("shapeFillColor", e.target.value)}
+                className="h-9 cursor-pointer"
+                data-testid="input-shape-fill-color"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="shapeStrokeWidth">Stroke Width</Label>
+              <Input
+                id="shapeStrokeWidth"
+                type="number"
+                placeholder="2"
+                min={1}
+                max={10}
+                value={options.shapeStrokeWidth || ""}
+                onChange={(e) => updateOption("shapeStrokeWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-stroke-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="targetPage">Target Page</Label>
+              <Input
+                id="targetPage"
+                type="number"
+                placeholder="1"
+                min={1}
+                value={options.targetPage || ""}
+                onChange={(e) => updateOption("targetPage", parseInt(e.target.value) || undefined)}
+                data-testid="input-target-page"
+              />
+            </div>
+          </div>
+        </div>
+      );
+
+    case "draw-on-pdf":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Add a freehand drawing effect to your PDF. A sample circle will be drawn on the specified page.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="drawColor">Draw Color</Label>
+              <Input
+                id="drawColor"
+                type="color"
+                value={options.drawColor || "#000000"}
+                onChange={(e) => updateOption("drawColor", e.target.value)}
+                className="h-9 cursor-pointer"
+                data-testid="input-draw-color"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="drawStrokeWidth">Stroke Width</Label>
+              <Input
+                id="drawStrokeWidth"
+                type="number"
+                placeholder="2"
+                min={1}
+                max={10}
+                value={options.drawStrokeWidth || ""}
+                onChange={(e) => updateOption("drawStrokeWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-draw-stroke-width"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="targetPage">Target Page</Label>
+            <Input
+              id="targetPage"
+              type="number"
+              placeholder="1"
+              min={1}
+              value={options.targetPage || ""}
+              onChange={(e) => updateOption("targetPage", parseInt(e.target.value) || undefined)}
+              data-testid="input-target-page"
+            />
+            <p className="text-sm text-muted-foreground">
+              {pageCount && `Total pages: ${pageCount}`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "pdf-annotator":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Annotation Type</Label>
+            <Select
+              value={options.annotationType || "highlight"}
+              onValueChange={(value) => updateOption("annotationType", value as ToolOptions["annotationType"])}
+            >
+              <SelectTrigger data-testid="select-annotation-type">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="highlight">Highlight</SelectItem>
+                <SelectItem value="underline">Underline</SelectItem>
+                <SelectItem value="strikethrough">Strikethrough</SelectItem>
+                <SelectItem value="note">Note</SelectItem>
+                <SelectItem value="freehand">Freehand</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="annotationColor">Annotation Color</Label>
+              <Input
+                id="annotationColor"
+                type="color"
+                value={options.annotationColor || "#FFFF00"}
+                onChange={(e) => updateOption("annotationColor", e.target.value)}
+                className="h-9 cursor-pointer"
+                data-testid="input-annotation-color"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="targetPage">Target Page</Label>
+              <Input
+                id="targetPage"
+                type="number"
+                placeholder="1"
+                min={1}
+                value={options.targetPage || ""}
+                onChange={(e) => updateOption("targetPage", parseInt(e.target.value) || undefined)}
+                data-testid="input-target-page"
+              />
+            </div>
+          </div>
+          {options.annotationType === "note" && (
+            <div className="space-y-2">
+              <Label htmlFor="annotationText">Note Text</Label>
+              <Input
+                id="annotationText"
+                placeholder="Enter your note..."
+                value={options.annotationText || ""}
+                onChange={(e) => updateOption("annotationText", e.target.value)}
+                data-testid="input-annotation-text"
+              />
+            </div>
+          )}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="textX">X Position</Label>
+              <Input
+                id="textX"
+                type="number"
+                placeholder="50"
+                value={options.textX || ""}
+                onChange={(e) => updateOption("textX", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-x"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="textY">Y Position</Label>
+              <Input
+                id="textY"
+                type="number"
+                placeholder="700"
+                value={options.textY || ""}
+                onChange={(e) => updateOption("textY", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-y"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="shapeWidth">Width</Label>
+              <Input
+                id="shapeWidth"
+                type="number"
+                placeholder="200"
+                value={options.shapeWidth || ""}
+                onChange={(e) => updateOption("shapeWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="shapeHeight">Height</Label>
+              <Input
+                id="shapeHeight"
+                type="number"
+                placeholder="20"
+                value={options.shapeHeight || ""}
+                onChange={(e) => updateOption("shapeHeight", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-height"
+              />
+            </div>
+          </div>
+        </div>
+      );
+
+    case "annotate-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="annotationText">Annotation Text</Label>
+            <Input
+              id="annotationText"
+              placeholder="Enter your annotation..."
+              value={options.annotationText || ""}
+              onChange={(e) => updateOption("annotationText", e.target.value)}
+              data-testid="input-annotation-text"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="annotationColor">Annotation Color</Label>
+              <Input
+                id="annotationColor"
+                type="color"
+                value={options.annotationColor || "#FFFF00"}
+                onChange={(e) => updateOption("annotationColor", e.target.value)}
+                className="h-9 cursor-pointer"
+                data-testid="input-annotation-color"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="targetPage">Target Page</Label>
+              <Input
+                id="targetPage"
+                type="number"
+                placeholder="1"
+                min={1}
+                value={options.targetPage || ""}
+                onChange={(e) => updateOption("targetPage", parseInt(e.target.value) || undefined)}
+                data-testid="input-target-page"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="textX">X Position</Label>
+              <Input
+                id="textX"
+                type="number"
+                placeholder="50"
+                value={options.textX || ""}
+                onChange={(e) => updateOption("textX", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-x"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="textY">Y Position</Label>
+              <Input
+                id="textY"
+                type="number"
+                placeholder="700"
+                value={options.textY || ""}
+                onChange={(e) => updateOption("textY", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-y"
+              />
+            </div>
+          </div>
+        </div>
+      );
+
+    case "highlight-pdf-text":
+      return (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="highlightColor">Highlight Color</Label>
+              <Input
+                id="highlightColor"
+                type="color"
+                value={options.highlightColor || "#FFFF00"}
+                onChange={(e) => updateOption("highlightColor", e.target.value)}
+                className="h-9 cursor-pointer"
+                data-testid="input-highlight-color"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="annotationOpacity">Opacity (0.1 - 1.0)</Label>
+              <Input
+                id="annotationOpacity"
+                type="number"
+                placeholder="0.5"
+                min={0.1}
+                max={1}
+                step={0.1}
+                value={options.annotationOpacity || ""}
+                onChange={(e) => updateOption("annotationOpacity", parseFloat(e.target.value) || undefined)}
+                data-testid="input-annotation-opacity"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="textX">X Position</Label>
+              <Input
+                id="textX"
+                type="number"
+                placeholder="50"
+                value={options.textX || ""}
+                onChange={(e) => updateOption("textX", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-x"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="textY">Y Position</Label>
+              <Input
+                id="textY"
+                type="number"
+                placeholder="700"
+                value={options.textY || ""}
+                onChange={(e) => updateOption("textY", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-y"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="shapeWidth">Width</Label>
+              <Input
+                id="shapeWidth"
+                type="number"
+                placeholder="200"
+                value={options.shapeWidth || ""}
+                onChange={(e) => updateOption("shapeWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="shapeHeight">Height</Label>
+              <Input
+                id="shapeHeight"
+                type="number"
+                placeholder="20"
+                value={options.shapeHeight || ""}
+                onChange={(e) => updateOption("shapeHeight", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-height"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="targetPage">Target Page</Label>
+            <Input
+              id="targetPage"
+              type="number"
+              placeholder="1"
+              min={1}
+              value={options.targetPage || ""}
+              onChange={(e) => updateOption("targetPage", parseInt(e.target.value) || undefined)}
+              data-testid="input-target-page"
+            />
+            <p className="text-sm text-muted-foreground">
+              {pageCount && `Total pages: ${pageCount}`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "underline-pdf-text":
+      return (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="annotationColor">Underline Color</Label>
+              <Input
+                id="annotationColor"
+                type="color"
+                value={options.annotationColor || "#0000FF"}
+                onChange={(e) => updateOption("annotationColor", e.target.value)}
+                className="h-9 cursor-pointer"
+                data-testid="input-annotation-color"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="shapeStrokeWidth">Line Thickness</Label>
+              <Input
+                id="shapeStrokeWidth"
+                type="number"
+                placeholder="2"
+                min={1}
+                max={5}
+                value={options.shapeStrokeWidth || ""}
+                onChange={(e) => updateOption("shapeStrokeWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-stroke-width"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="textX">X Position</Label>
+              <Input
+                id="textX"
+                type="number"
+                placeholder="50"
+                value={options.textX || ""}
+                onChange={(e) => updateOption("textX", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-x"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="textY">Y Position</Label>
+              <Input
+                id="textY"
+                type="number"
+                placeholder="700"
+                value={options.textY || ""}
+                onChange={(e) => updateOption("textY", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-y"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="shapeWidth">Width</Label>
+              <Input
+                id="shapeWidth"
+                type="number"
+                placeholder="200"
+                value={options.shapeWidth || ""}
+                onChange={(e) => updateOption("shapeWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="targetPage">Target Page</Label>
+              <Input
+                id="targetPage"
+                type="number"
+                placeholder="1"
+                min={1}
+                value={options.targetPage || ""}
+                onChange={(e) => updateOption("targetPage", parseInt(e.target.value) || undefined)}
+                data-testid="input-target-page"
+              />
+            </div>
+          </div>
+        </div>
+      );
+
+    case "strikethrough-pdf-text":
+      return (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="annotationColor">Strikethrough Color</Label>
+              <Input
+                id="annotationColor"
+                type="color"
+                value={options.annotationColor || "#FF0000"}
+                onChange={(e) => updateOption("annotationColor", e.target.value)}
+                className="h-9 cursor-pointer"
+                data-testid="input-annotation-color"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="shapeStrokeWidth">Line Thickness</Label>
+              <Input
+                id="shapeStrokeWidth"
+                type="number"
+                placeholder="2"
+                min={1}
+                max={5}
+                value={options.shapeStrokeWidth || ""}
+                onChange={(e) => updateOption("shapeStrokeWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-stroke-width"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="textX">X Position</Label>
+              <Input
+                id="textX"
+                type="number"
+                placeholder="50"
+                value={options.textX || ""}
+                onChange={(e) => updateOption("textX", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-x"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="textY">Y Position</Label>
+              <Input
+                id="textY"
+                type="number"
+                placeholder="700"
+                value={options.textY || ""}
+                onChange={(e) => updateOption("textY", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-y"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="shapeWidth">Width</Label>
+              <Input
+                id="shapeWidth"
+                type="number"
+                placeholder="200"
+                value={options.shapeWidth || ""}
+                onChange={(e) => updateOption("shapeWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="targetPage">Target Page</Label>
+              <Input
+                id="targetPage"
+                type="number"
+                placeholder="1"
+                min={1}
+                value={options.targetPage || ""}
+                onChange={(e) => updateOption("targetPage", parseInt(e.target.value) || undefined)}
+                data-testid="input-target-page"
+              />
+            </div>
+          </div>
+        </div>
+      );
+
+    case "pdf-marker":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Marker Type</Label>
+            <Select
+              value={options.annotationType || "highlight"}
+              onValueChange={(value) => updateOption("annotationType", value as ToolOptions["annotationType"])}
+            >
+              <SelectTrigger data-testid="select-marker-type">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="highlight">Highlight</SelectItem>
+                <SelectItem value="underline">Underline</SelectItem>
+                <SelectItem value="strikethrough">Strikethrough</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="markerColor">Marker Color</Label>
+              <Input
+                id="markerColor"
+                type="color"
+                value={options.markerColor || "#FFFF00"}
+                onChange={(e) => updateOption("markerColor", e.target.value)}
+                className="h-9 cursor-pointer"
+                data-testid="input-marker-color"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="targetPage">Target Page</Label>
+              <Input
+                id="targetPage"
+                type="number"
+                placeholder="1"
+                min={1}
+                value={options.targetPage || ""}
+                onChange={(e) => updateOption("targetPage", parseInt(e.target.value) || undefined)}
+                data-testid="input-target-page"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="textX">X Position</Label>
+              <Input
+                id="textX"
+                type="number"
+                placeholder="50"
+                value={options.textX || ""}
+                onChange={(e) => updateOption("textX", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-x"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="textY">Y Position</Label>
+              <Input
+                id="textY"
+                type="number"
+                placeholder="700"
+                value={options.textY || ""}
+                onChange={(e) => updateOption("textY", parseInt(e.target.value) || undefined)}
+                data-testid="input-text-y"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="shapeWidth">Width</Label>
+              <Input
+                id="shapeWidth"
+                type="number"
+                placeholder="200"
+                value={options.shapeWidth || ""}
+                onChange={(e) => updateOption("shapeWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="shapeHeight">Height</Label>
+              <Input
+                id="shapeHeight"
+                type="number"
+                placeholder="20"
+                value={options.shapeHeight || ""}
+                onChange={(e) => updateOption("shapeHeight", parseInt(e.target.value) || undefined)}
+                data-testid="input-shape-height"
+              />
+            </div>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }
