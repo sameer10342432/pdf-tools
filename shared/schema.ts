@@ -101,6 +101,16 @@ export const pdfToolTypes = [
   "webpage-to-pdf",
   "txt-to-pdf",
   "rtf-to-pdf",
+  "odt-to-pdf",
+  "ods-to-pdf",
+  "odp-to-pdf",
+  "csv-to-pdf",
+  "epub-to-pdf",
+  "mobi-to-pdf",
+  "djvu-to-pdf",
+  "xml-to-pdf",
+  "markdown-to-pdf",
+  "md-to-pdf",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -2735,5 +2745,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Simple RTF to PDF Process</h2>
 <p>Upload your RTF document using drag-and-drop. Our converter processes all text formatting accurately. Download your professionally formatted PDF. Share documents in a universally accessible format. Preserve and modernize legacy RTF files effortlessly.</p>`,
+  },
+  {
+    id: "odt-to-pdf",
+    name: "ODT to PDF",
+    description: "Convert OpenDocument Text files to PDF",
+    icon: "FileText",
+    type: "odt-to-pdf",
+    color: "bg-blue-500",
+    emoji: "📘",
+    metaTitle: "ODT to PDF Online Free - Convert OpenDocument to PDF | PDF Tools",
+    metaDescription: "Convert ODT OpenDocument text files to PDF online for free. Transform LibreOffice Writer documents to PDF format. Fast, secure ODT to PDF converter.",
+    seoArticle: `<h2>ODT to PDF Converter - OpenDocument Text Conversion</h2>
+<p>Transform your ODT (OpenDocument Text) files into universally compatible PDF documents with our free online converter. ODT is the native format for LibreOffice Writer and OpenOffice Writer, and our converter creates professional PDFs while preserving all your document formatting.</p>
+
+<h2>Why Convert ODT to PDF?</h2>
+<p>While ODT is an excellent open-source document format, not everyone has LibreOffice or compatible software installed. Converting to PDF ensures your documents can be viewed by anyone, on any device, without requiring specific software. PDF maintains the exact appearance of your original document.</p>
+
+<h2>Preserve Document Formatting</h2>
+<p>Our ODT to PDF converter accurately handles text formatting, including fonts, styles, colors, and paragraph formatting. Tables, images, and other embedded elements are converted with precision. Your document looks exactly as you designed it in LibreOffice Writer.</p>
+
+<h2>Perfect for Open Source Users</h2>
+<p>LibreOffice and OpenOffice users frequently need to share documents with Microsoft Office users or others. Converting ODT to PDF bridges this compatibility gap. Recipients see your document exactly as intended, regardless of their installed software.</p>
+
+<h2>How to Convert ODT to PDF</h2>
+<p>Upload your ODT file using our simple drag-and-drop interface. Our converter processes the document, preserving all formatting elements. Download your professionally converted PDF instantly. Share your documents with confidence, knowing they'll display correctly everywhere.</p>`,
+  },
+  {
+    id: "ods-to-pdf",
+    name: "ODS to PDF",
+    description: "Convert OpenDocument Spreadsheet files to PDF",
+    icon: "Table",
+    type: "ods-to-pdf",
+    color: "bg-green-500",
+    emoji: "📊",
+    metaTitle: "ODS to PDF Online Free - Convert OpenDocument Spreadsheet to PDF | PDF Tools",
+    metaDescription: "Convert ODS OpenDocument spreadsheet files to PDF online for free. Transform LibreOffice Calc spreadsheets to PDF format. Fast, secure ODS to PDF converter.",
+    seoArticle: `<h2>ODS to PDF Converter - OpenDocument Spreadsheet Conversion</h2>
+<p>Convert your ODS (OpenDocument Spreadsheet) files to professional PDF documents with our free online converter. ODS is the native format for LibreOffice Calc and OpenOffice Calc spreadsheets. Our converter creates print-ready PDFs that preserve your data layout and formatting.</p>
+
+<h2>Why Convert ODS to PDF?</h2>
+<p>Spreadsheets in ODS format require compatible software to view and edit. Converting to PDF creates a universal document that anyone can open. PDF format is ideal for sharing financial reports, data summaries, and spreadsheet-based documents without risking accidental edits.</p>
+
+<h2>Preserve Spreadsheet Layout</h2>
+<p>Our converter maintains your spreadsheet's visual structure including cell borders, merged cells, column widths, and row heights. Colors, fonts, and number formatting are accurately converted. Charts and embedded objects are rendered clearly in the resulting PDF.</p>
+
+<h2>Perfect for Reporting</h2>
+<p>Business reports, financial statements, and data analysis often originate in spreadsheet form. Converting ODS to PDF creates professional documents suitable for presentations, archiving, and distribution. Recipients see a polished document rather than raw spreadsheet data.</p>
+
+<h2>How to Convert ODS to PDF</h2>
+<p>Upload your ODS spreadsheet using our easy interface. Our converter processes all sheets and formatting elements. Download your professionally formatted PDF document. Share spreadsheet data in a universally accessible format. Print with perfect page layout and scaling.</p>`,
+  },
+  {
+    id: "odp-to-pdf",
+    name: "ODP to PDF",
+    description: "Convert OpenDocument Presentation files to PDF",
+    icon: "Presentation",
+    type: "odp-to-pdf",
+    color: "bg-orange-500",
+    emoji: "📽️",
+    metaTitle: "ODP to PDF Online Free - Convert OpenDocument Presentation to PDF | PDF Tools",
+    metaDescription: "Convert ODP OpenDocument presentation files to PDF online for free. Transform LibreOffice Impress slides to PDF format. Fast, secure ODP to PDF converter.",
+    seoArticle: `<h2>ODP to PDF Converter - OpenDocument Presentation Conversion</h2>
+<p>Transform your ODP (OpenDocument Presentation) files into shareable PDF documents with our free online converter. ODP is the native format for LibreOffice Impress and OpenOffice Impress presentations. Our converter creates high-quality PDFs perfect for sharing and printing.</p>
+
+<h2>Why Convert ODP to PDF?</h2>
+<p>Presentations in ODP format require specific software to view properly. Converting to PDF ensures your slides can be viewed by anyone, anywhere. PDF presentations maintain their visual impact while being universally accessible on all devices and operating systems.</p>
+
+<h2>Preserve Slide Design</h2>
+<p>Our converter accurately renders all slide elements including text boxes, images, shapes, and backgrounds. Slide transitions become static pages, but all visual design elements are preserved. Your presentation's professional appearance translates perfectly to PDF format.</p>
+
+<h2>Perfect for Distribution</h2>
+<p>Share presentation handouts with conference attendees. Distribute training materials to remote teams. Archive completed presentations for future reference. Converting ODP to PDF creates documents that recipients can easily view, print, and save without needing presentation software.</p>
+
+<h2>How to Convert ODP to PDF</h2>
+<p>Upload your ODP presentation file using drag-and-drop. Our converter processes each slide with full formatting support. Download your presentation as a multi-page PDF. Each slide becomes a perfectly formatted PDF page. Share presentations in a universally viewable format.</p>`,
+  },
+  {
+    id: "csv-to-pdf",
+    name: "CSV to PDF",
+    description: "Convert CSV data files to formatted PDF tables",
+    icon: "Table",
+    type: "csv-to-pdf",
+    color: "bg-emerald-500",
+    emoji: "📋",
+    metaTitle: "CSV to PDF Online Free - Convert CSV Data to PDF Tables | PDF Tools",
+    metaDescription: "Convert CSV files to formatted PDF tables online for free. Transform comma-separated data into professional PDF documents. Fast, secure CSV to PDF converter.",
+    seoArticle: `<h2>CSV to PDF Converter - Data to Professional Documents</h2>
+<p>Transform your CSV (Comma-Separated Values) files into professionally formatted PDF tables with our free online converter. CSV files contain raw data that can be difficult to read. Our converter creates clean, organized PDF documents with proper table formatting.</p>
+
+<h2>Why Convert CSV to PDF?</h2>
+<p>Raw CSV files are plain text without visual formatting, making them hard to read and share professionally. Converting to PDF creates attractive, print-ready documents with proper table borders, headers, and formatting. Recipients see organized data rather than comma-separated text.</p>
+
+<h2>Professional Table Formatting</h2>
+<p>Our converter automatically creates formatted tables from your CSV data. Headers are distinguished from data rows. Column widths adjust to fit content. Cell borders and alternating row colors improve readability. The result is a professional-looking data table.</p>
+
+<h2>Perfect for Data Reporting</h2>
+<p>Export data from databases, spreadsheets, or applications as CSV, then convert to PDF for reporting. Create printable customer lists, inventory reports, or financial summaries. Share data exports in a format that's easy to read and professionally presented.</p>
+
+<h2>How to Convert CSV to PDF</h2>
+<p>Upload your CSV file using our simple interface. Our converter parses the data and creates formatted tables. Download your professionally styled PDF document. Share data in a format that's easy to read, print, and distribute. No spreadsheet software required for recipients.</p>`,
+  },
+  {
+    id: "epub-to-pdf",
+    name: "EPUB to PDF",
+    description: "Convert EPUB ebooks to PDF format",
+    icon: "BookOpen",
+    type: "epub-to-pdf",
+    color: "bg-purple-500",
+    emoji: "📚",
+    metaTitle: "EPUB to PDF Online Free - Convert EPUB Books to PDF | PDF Tools",
+    metaDescription: "Convert EPUB ebooks to PDF online for free. Transform digital books to PDF format for easy reading and printing. Fast, secure EPUB to PDF converter.",
+    seoArticle: `<h2>EPUB to PDF Converter - Digital Books to Universal Format</h2>
+<p>Convert your EPUB ebooks to universally readable PDF documents with our free online converter. EPUB is a popular ebook format, but not all devices support it natively. Our converter creates PDF versions that can be read on any device and easily printed.</p>
+
+<h2>Why Convert EPUB to PDF?</h2>
+<p>While EPUB readers are common, many people prefer reading on devices that handle PDF better. PDF is supported by virtually every device and operating system. Converting EPUB to PDF also enables easy printing of ebook content for those who prefer physical pages.</p>
+
+<h2>Preserve Book Formatting</h2>
+<p>Our converter maintains the text formatting, chapters, and structure of your EPUB file. Fonts, headings, and paragraph styling are preserved. Images and illustrations are properly embedded in the resulting PDF. Your ebook content remains organized and readable.</p>
+
+<h2>Perfect for Reading and Printing</h2>
+<p>Read ebooks on PDF-focused devices like Kindle DX or large monitors. Print book chapters for offline reading or study. Create PDF versions of textbooks for easier annotation. Converting EPUB to PDF opens new possibilities for how you consume digital books.</p>
+
+<h2>How to Convert EPUB to PDF</h2>
+<p>Upload your EPUB ebook file using drag-and-drop. Our converter processes all chapters and formatting. Download your ebook as a formatted PDF document. Read on any device or print for physical reading. Enjoy your ebooks in a truly universal format.</p>`,
+  },
+  {
+    id: "mobi-to-pdf",
+    name: "MOBI to PDF",
+    description: "Convert MOBI ebooks to PDF format",
+    icon: "BookOpen",
+    type: "mobi-to-pdf",
+    color: "bg-amber-500",
+    emoji: "📖",
+    metaTitle: "MOBI to PDF Online Free - Convert Kindle MOBI to PDF | PDF Tools",
+    metaDescription: "Convert MOBI Kindle ebooks to PDF online for free. Transform Amazon Kindle books to PDF format. Fast, secure MOBI to PDF converter.",
+    seoArticle: `<h2>MOBI to PDF Converter - Kindle Books to Universal Format</h2>
+<p>Transform your MOBI ebooks into universally readable PDF documents with our free online converter. MOBI is Amazon's older ebook format used by Kindle devices. Our converter creates PDF versions that can be read on any device, not just Kindle.</p>
+
+<h2>Why Convert MOBI to PDF?</h2>
+<p>MOBI files are designed primarily for Kindle devices and apps. Converting to PDF breaks this device restriction, allowing you to read your ebooks on any device with a PDF reader. PDF format also enables easy printing and annotation of ebook content.</p>
+
+<h2>Preserve Ebook Content</h2>
+<p>Our converter extracts and formats all content from your MOBI file. Text, chapters, and basic formatting are preserved. The resulting PDF maintains the reading experience while adding universal compatibility. Your ebook content remains intact and organized.</p>
+
+<h2>Break Free from Device Lock-in</h2>
+<p>Many readers have accumulated MOBI ebooks over years of Kindle usage. Converting to PDF liberates this content for use on any device. Read on tablets, computers, or e-readers that don't support MOBI format. Print chapters for offline study or reference.</p>
+
+<h2>How to Convert MOBI to PDF</h2>
+<p>Upload your MOBI ebook file using our simple interface. Our converter processes all content and chapters. Download your ebook as a readable PDF document. Access your Kindle books on any device. Enjoy ebooks without format restrictions.</p>`,
+  },
+  {
+    id: "djvu-to-pdf",
+    name: "DJVU to PDF",
+    description: "Convert DjVu documents to PDF format",
+    icon: "FileText",
+    type: "djvu-to-pdf",
+    color: "bg-indigo-500",
+    emoji: "📑",
+    metaTitle: "DJVU to PDF Online Free - Convert DjVu Documents to PDF | PDF Tools",
+    metaDescription: "Convert DJVU files to PDF online for free. Transform DjVu scanned documents to PDF format. Fast, secure DJVU to PDF converter.",
+    seoArticle: `<h2>DJVU to PDF Converter - Scanned Document Conversion</h2>
+<p>Convert your DJVU files to universally compatible PDF documents with our free online converter. DJVU (pronounced "deja vu") is a format designed for scanned documents and high-resolution images. Our converter creates standard PDF files that work on any device.</p>
+
+<h2>Why Convert DJVU to PDF?</h2>
+<p>DJVU offers excellent compression for scanned documents, but it's not widely supported. Many devices and applications don't have built-in DJVU viewers. Converting to PDF ensures your scanned documents, books, and archives can be opened by anyone using standard PDF readers.</p>
+
+<h2>Preserve Document Quality</h2>
+<p>DJVU's advanced compression maintains high quality for scanned content. Our converter preserves this quality when creating PDF files. Text remains sharp, images are clear, and multi-page documents maintain their structure. Your converted PDF looks as good as the original DJVU.</p>
+
+<h2>Perfect for Digital Archives</h2>
+<p>Many academic papers, historical documents, and technical manuals were distributed in DJVU format. Converting to PDF modernizes these archives for current-day use. Share converted documents with colleagues who lack DJVU readers. Print scanned documents for physical archives.</p>
+
+<h2>How to Convert DJVU to PDF</h2>
+<p>Upload your DJVU file using our secure interface. Our converter processes all pages while maintaining quality. Download your universally compatible PDF document. Open scanned documents on any device. Share digital archives in a format everyone can access.</p>`,
+  },
+  {
+    id: "xml-to-pdf",
+    name: "XML to PDF",
+    description: "Convert XML data files to formatted PDF documents",
+    icon: "Code",
+    type: "xml-to-pdf",
+    color: "bg-cyan-500",
+    emoji: "📄",
+    metaTitle: "XML to PDF Online Free - Convert XML Data to PDF | PDF Tools",
+    metaDescription: "Convert XML files to formatted PDF documents online for free. Transform XML data into readable PDF format. Fast, secure XML to PDF converter.",
+    seoArticle: `<h2>XML to PDF Converter - Structured Data to Documents</h2>
+<p>Transform your XML (Extensible Markup Language) files into readable PDF documents with our free online converter. XML files contain structured data that can be difficult to read in raw form. Our converter creates formatted, human-readable PDF documents from XML content.</p>
+
+<h2>Why Convert XML to PDF?</h2>
+<p>XML is designed for data exchange between systems, not human reading. Converting to PDF creates documents that are easy to review, share, and print. Technical teams can share XML data with non-technical stakeholders in a readable format.</p>
+
+<h2>Formatted Data Presentation</h2>
+<p>Our converter parses XML structure and presents it in a clean, organized format. Element hierarchy is visually represented. Attributes and values are clearly displayed. Long XML documents become navigable, readable PDF documents.</p>
+
+<h2>Perfect for Documentation</h2>
+<p>Create readable versions of configuration files for documentation. Convert XML data exports for reporting. Archive XML content in a format that's easy to review years later. Share structured data with team members who aren't comfortable reading raw XML.</p>
+
+<h2>How to Convert XML to PDF</h2>
+<p>Upload your XML file using drag-and-drop. Our converter parses and formats the XML structure. Download your readable PDF document. Review XML content without specialized software. Share structured data in a universally accessible format.</p>`,
+  },
+  {
+    id: "markdown-to-pdf",
+    name: "Markdown to PDF",
+    description: "Convert Markdown files to formatted PDF documents",
+    icon: "FileText",
+    type: "markdown-to-pdf",
+    color: "bg-slate-600",
+    emoji: "📝",
+    metaTitle: "Markdown to PDF Online Free - Convert MD to PDF | PDF Tools",
+    metaDescription: "Convert Markdown files to beautifully formatted PDF documents online for free. Transform MD files to PDF format. Fast, secure Markdown to PDF converter.",
+    seoArticle: `<h2>Markdown to PDF Converter - Plain Text to Beautiful Documents</h2>
+<p>Transform your Markdown (.md) files into professionally formatted PDF documents with our free online converter. Markdown is beloved by developers and writers for its simple syntax. Our converter renders Markdown into beautiful, print-ready PDF documents.</p>
+
+<h2>Why Convert Markdown to PDF?</h2>
+<p>Markdown is perfect for writing, but sharing raw .md files with non-technical readers isn't ideal. Converting to PDF creates polished documents that anyone can read. PDF preserves your intended formatting while adding professional presentation.</p>
+
+<h2>Beautiful Rendering</h2>
+<p>Our converter supports full Markdown syntax including headers, bold, italic, lists, code blocks, links, and images. Tables are properly formatted. Code blocks are syntax-highlighted for readability. The resulting PDF looks professionally typeset.</p>
+
+<h2>Perfect for Technical Documentation</h2>
+<p>Convert README files for distribution. Create PDF versions of technical documentation. Generate printable reports from Markdown notes. Share beautifully formatted documents with clients and stakeholders who prefer PDF over raw Markdown.</p>
+
+<h2>How to Convert Markdown to PDF</h2>
+<p>Upload your Markdown file using our simple interface. Our converter renders all Markdown syntax beautifully. Download your professionally formatted PDF document. Share documentation in a polished, universally readable format. Print Markdown content with perfect formatting.</p>`,
+  },
+  {
+    id: "md-to-pdf",
+    name: "MD to PDF",
+    description: "Convert .md files to PDF documents",
+    icon: "FileText",
+    type: "md-to-pdf",
+    color: "bg-gray-600",
+    emoji: "📃",
+    metaTitle: "MD to PDF Online Free - Convert MD Files to PDF | PDF Tools",
+    metaDescription: "Convert .md Markdown files to PDF online for free. Transform MD documentation to PDF format. Fast, secure MD to PDF converter.",
+    seoArticle: `<h2>MD to PDF Converter - Documentation Made Beautiful</h2>
+<p>Convert your .md files to professionally formatted PDF documents with our free online converter. MD (Markdown) files are the standard for documentation in software development. Our converter creates polished PDFs that preserve your content while adding visual appeal.</p>
+
+<h2>Why Convert MD Files to PDF?</h2>
+<p>While developers love Markdown, not everyone has tools to view .md files properly. Converting to PDF creates universally accessible documents. Project documentation, meeting notes, and technical specs become shareable with any audience regardless of their technical background.</p>
+
+<h2>Full Markdown Support</h2>
+<p>Our converter handles all standard Markdown elements: headers, emphasis, lists, code blocks, blockquotes, tables, and links. Images are embedded in the PDF. The resulting document maintains proper structure and hierarchy from your original Markdown.</p>
+
+<h2>Perfect for README Files</h2>
+<p>GitHub README files, project documentation, and API guides are typically written in Markdown. Converting to PDF creates professional versions suitable for client presentations, printed handouts, or offline reference. Share your documentation beyond the developer community.</p>
+
+<h2>How to Convert MD to PDF</h2>
+<p>Upload your .md file using drag-and-drop. Our converter processes all Markdown syntax. Download your beautifully formatted PDF document. Share technical documentation in a professional format. Print or distribute Markdown content to any audience.</p>`,
   },
 ];
