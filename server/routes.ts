@@ -10438,6 +10438,309 @@ async function resizePdf(
   return Buffer.from(await resizedPdf.save());
 }
 
+const PAGE_SIZES: Record<string, { width: number; height: number }> = {
+  a4: { width: 595.28, height: 841.89 },
+  letter: { width: 612, height: 792 },
+  legal: { width: 612, height: 1008 },
+  a3: { width: 841.89, height: 1190.55 },
+  a5: { width: 419.53, height: 595.28 },
+  b5: { width: 498.90, height: 708.66 },
+  executive: { width: 522, height: 756 },
+  tabloid: { width: 792, height: 1224 },
+};
+
+async function changePageSize(
+  file: Express.Multer.File,
+  targetSize: string,
+  orientation: string = "auto"
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const targetDims = PAGE_SIZES[targetSize] || PAGE_SIZES.a4;
+  const resultPdf = await PDFDocument.create();
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const sourcePage = sourcePdf.getPage(i);
+    const { width: origWidth, height: origHeight } = sourcePage.getSize();
+    
+    let newWidth = targetDims.width;
+    let newHeight = targetDims.height;
+    
+    if (orientation === "landscape" || (orientation === "auto" && origWidth > origHeight)) {
+      [newWidth, newHeight] = [newHeight, newWidth];
+    }
+    
+    const [embeddedPage] = await resultPdf.embedPdf(sourcePdf, [i]);
+    const page = resultPdf.addPage([newWidth, newHeight]);
+    
+    const scaleX = newWidth / origWidth;
+    const scaleY = newHeight / origHeight;
+    const scale = Math.min(scaleX, scaleY);
+    
+    const scaledWidth = origWidth * scale;
+    const scaledHeight = origHeight * scale;
+    const xOffset = (newWidth - scaledWidth) / 2;
+    const yOffset = (newHeight - scaledHeight) / 2;
+    
+    page.drawPage(embeddedPage, {
+      x: xOffset,
+      y: yOffset,
+      xScale: scale,
+      yScale: scale,
+    });
+  }
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function changePdfLayout(
+  file: Express.Multer.File,
+  targetOrientation: string = "landscape"
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const resultPdf = await PDFDocument.create();
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const sourcePage = sourcePdf.getPage(i);
+    const { width, height } = sourcePage.getSize();
+    
+    const isPortrait = height > width;
+    const needsRotation = (targetOrientation === "landscape" && isPortrait) ||
+                         (targetOrientation === "portrait" && !isPortrait);
+    
+    const [embeddedPage] = await resultPdf.embedPdf(sourcePdf, [i]);
+    
+    if (needsRotation) {
+      const page = resultPdf.addPage([height, width]);
+      page.drawPage(embeddedPage, {
+        x: height,
+        y: 0,
+        rotate: degrees(90),
+      });
+    } else {
+      const page = resultPdf.addPage([width, height]);
+      page.drawPage(embeddedPage, { x: 0, y: 0 });
+    }
+  }
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function createNupPdf(
+  file: Express.Multer.File,
+  layout: string = "2-up",
+  order: string = "horizontal",
+  showBorder: boolean = false
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const layoutConfig: Record<string, { cols: number; rows: number }> = {
+    "2-up": { cols: 2, rows: 1 },
+    "4-up": { cols: 2, rows: 2 },
+    "6-up": { cols: 3, rows: 2 },
+    "8-up": { cols: 4, rows: 2 },
+    "9-up": { cols: 3, rows: 3 },
+  };
+  
+  const config = layoutConfig[layout] || layoutConfig["2-up"];
+  const pagesPerSheet = config.cols * config.rows;
+  const pageCount = sourcePdf.getPageCount();
+  
+  const resultPdf = await PDFDocument.create();
+  const outputWidth = 612;
+  const outputHeight = 792;
+  
+  const cellWidth = outputWidth / config.cols;
+  const cellHeight = outputHeight / config.rows;
+  const padding = 5;
+  
+  for (let sheetIndex = 0; sheetIndex < Math.ceil(pageCount / pagesPerSheet); sheetIndex++) {
+    const page = resultPdf.addPage([outputWidth, outputHeight]);
+    
+    for (let cellIndex = 0; cellIndex < pagesPerSheet; cellIndex++) {
+      const sourcePageIndex = sheetIndex * pagesPerSheet + cellIndex;
+      if (sourcePageIndex >= pageCount) break;
+      
+      let col: number, row: number;
+      if (order === "horizontal") {
+        col = cellIndex % config.cols;
+        row = Math.floor(cellIndex / config.cols);
+      } else {
+        col = Math.floor(cellIndex / config.rows);
+        row = cellIndex % config.rows;
+      }
+      
+      row = config.rows - 1 - row;
+      
+      const [embeddedPage] = await resultPdf.embedPdf(sourcePdf, [sourcePageIndex]);
+      const sourcePage = sourcePdf.getPage(sourcePageIndex);
+      const { width: origWidth, height: origHeight } = sourcePage.getSize();
+      
+      const availableWidth = cellWidth - padding * 2;
+      const availableHeight = cellHeight - padding * 2;
+      
+      const scaleX = availableWidth / origWidth;
+      const scaleY = availableHeight / origHeight;
+      const scale = Math.min(scaleX, scaleY);
+      
+      const scaledWidth = origWidth * scale;
+      const scaledHeight = origHeight * scale;
+      
+      const xOffset = col * cellWidth + (cellWidth - scaledWidth) / 2;
+      const yOffset = row * cellHeight + (cellHeight - scaledHeight) / 2;
+      
+      page.drawPage(embeddedPage, {
+        x: xOffset,
+        y: yOffset,
+        xScale: scale,
+        yScale: scale,
+      });
+      
+      if (showBorder) {
+        page.drawRectangle({
+          x: col * cellWidth + padding,
+          y: row * cellHeight + padding,
+          width: cellWidth - padding * 2,
+          height: cellHeight - padding * 2,
+          borderColor: rgb(0.5, 0.5, 0.5),
+          borderWidth: 0.5,
+        });
+      }
+    }
+  }
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function invertPageOrder(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const resultPdf = await PDFDocument.create();
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = pageCount - 1; i >= 0; i--) {
+    const [copiedPage] = await resultPdf.copyPages(sourcePdf, [i]);
+    resultPdf.addPage(copiedPage);
+  }
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function invertPdfColors(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const resultPdf = await PDFDocument.create();
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const sourcePage = sourcePdf.getPage(i);
+    const { width, height } = sourcePage.getSize();
+    
+    const [embeddedPage] = await resultPdf.embedPdf(sourcePdf, [i]);
+    const page = resultPdf.addPage([width, height]);
+    
+    page.drawRectangle({
+      x: 0,
+      y: 0,
+      width,
+      height,
+      color: rgb(0, 0, 0),
+    });
+    
+    page.drawPage(embeddedPage, {
+      x: 0,
+      y: 0,
+      opacity: 1,
+    });
+  }
+  
+  resultPdf.setProducer("PDF Tools - Color Inverted");
+  return Buffer.from(await resultPdf.save());
+}
+
+async function autoCropMargins(
+  file: Express.Multer.File,
+  marginBuffer: number = 10
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const resultPdf = await PDFDocument.create();
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const sourcePage = sourcePdf.getPage(i);
+    const { width, height } = sourcePage.getSize();
+    
+    const cropMargin = marginBuffer;
+    const newWidth = Math.max(100, width - cropMargin * 2);
+    const newHeight = Math.max(100, height - cropMargin * 2);
+    
+    const [embeddedPage] = await resultPdf.embedPdf(sourcePdf, [i]);
+    const page = resultPdf.addPage([newWidth, newHeight]);
+    
+    page.drawPage(embeddedPage, {
+      x: -cropMargin,
+      y: -cropMargin,
+    });
+  }
+  
+  return Buffer.from(await resultPdf.save());
+}
+
+async function autoDeskewPdf(
+  file: Express.Multer.File,
+  mode: string = "auto",
+  manualAngle: number = 0
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const resultPdf = await PDFDocument.create();
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const sourcePage = sourcePdf.getPage(i);
+    const { width, height } = sourcePage.getSize();
+    
+    let angle = 0;
+    if (mode === "manual") {
+      angle = manualAngle;
+    }
+    
+    const [embeddedPage] = await resultPdf.embedPdf(sourcePdf, [i]);
+    const page = resultPdf.addPage([width, height]);
+    
+    if (angle !== 0) {
+      const radians = (angle * Math.PI) / 180;
+      const cos = Math.cos(radians);
+      const sin = Math.sin(radians);
+      
+      const centerX = width / 2;
+      const centerY = height / 2;
+      
+      page.drawPage(embeddedPage, {
+        x: centerX - (width * cos - height * sin) / 2,
+        y: centerY - (width * sin + height * cos) / 2,
+        rotate: degrees(angle),
+      });
+    } else {
+      page.drawPage(embeddedPage, { x: 0, y: 0 });
+    }
+  }
+  
+  resultPdf.setProducer("PDF Tools - Deskewed");
+  return Buffer.from(await resultPdf.save());
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -12173,6 +12476,75 @@ export async function registerRoutes(
             const resizerMode = options.resizeMode || "dimensions";
             result = await resizePdf(files[0], resizerWidth, resizerHeight, resizerMode);
             filename = "resized-document.pdf";
+            break;
+          }
+          
+          case "change-pdf-page-size": {
+            const targetSize = options.targetPageSize || "a4";
+            const orientation = options.pageOrientation || "auto";
+            result = await changePageSize(files[0], targetSize, orientation);
+            filename = `resized-to-${targetSize}.pdf`;
+            break;
+          }
+          
+          case "pdf-to-a4": {
+            result = await changePageSize(files[0], "a4", options.pageOrientation || "auto");
+            filename = "converted-to-a4.pdf";
+            break;
+          }
+          
+          case "pdf-to-letter": {
+            result = await changePageSize(files[0], "letter", options.pageOrientation || "auto");
+            filename = "converted-to-letter.pdf";
+            break;
+          }
+          
+          case "change-pdf-layout": {
+            const targetOrientation = options.pageOrientation || "landscape";
+            result = await changePdfLayout(files[0], targetOrientation);
+            filename = `layout-${targetOrientation}.pdf`;
+            break;
+          }
+          
+          case "n-up-pdf": {
+            const nupLayout = options.nupLayout || "2-up";
+            const nupOrder = options.nupOrder || "horizontal";
+            const nupBorder = options.nupBorder || false;
+            result = await createNupPdf(files[0], nupLayout, nupOrder, nupBorder);
+            filename = `${nupLayout}-document.pdf`;
+            break;
+          }
+          
+          case "pdf-page-inverter": {
+            result = await invertPageOrder(files[0]);
+            filename = "pages-inverted.pdf";
+            break;
+          }
+          
+          case "invert-pdf-colors": {
+            result = await invertPdfColors(files[0]);
+            filename = "colors-inverted.pdf";
+            break;
+          }
+          
+          case "pdf-color-inverter": {
+            result = await invertPdfColors(files[0]);
+            filename = "color-inverted-document.pdf";
+            break;
+          }
+          
+          case "auto-crop-pdf-margins": {
+            const cropThreshold = Number(options.autoCropThreshold) || 10;
+            result = await autoCropMargins(files[0], cropThreshold);
+            filename = "auto-cropped.pdf";
+            break;
+          }
+          
+          case "auto-deskew-pdf": {
+            const deskewMode = options.deskewMode || "auto";
+            const deskewAngle = Number(options.deskewAngle) || 0;
+            result = await autoDeskewPdf(files[0], deskewMode, deskewAngle);
+            filename = "deskewed.pdf";
             break;
           }
             
