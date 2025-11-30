@@ -281,6 +281,16 @@ export const pdfToolTypes = [
   "disable-pdf-copying",
   "pdf-security",
   "secure-pdf",
+  "sign-pdf",
+  "pdf-signer",
+  "esign-pdf",
+  "add-signature-to-pdf",
+  "request-pdf-signature",
+  "pdf-signature-tool",
+  "validate-pdf-signature",
+  "certify-pdf",
+  "pdf-locker",
+  "pdf-digital-signature-validator",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -463,6 +473,28 @@ export const toolOptionsSchema = z.object({
   transitionEffect: z.enum(["none", "fade", "wipe-left", "wipe-right", "wipe-up", "wipe-down", "dissolve", "box-in", "box-out", "blinds-horizontal", "blinds-vertical"]).optional(),
   transitionDuration: z.number().optional(),
   autoAdvanceTime: z.number().optional(),
+  signatureName: z.string().optional(),
+  signatureReason: z.string().optional(),
+  signatureLocation: z.string().optional(),
+  signatureContact: z.string().optional(),
+  signatureDate: z.string().optional(),
+  signaturePosition: z.enum(["bottom-right", "bottom-left", "top-right", "top-left", "center", "custom"]).optional(),
+  signaturePage: z.enum(["first", "last", "all", "custom"]).optional(),
+  signatureCustomPage: z.number().optional(),
+  signatureWidth: z.number().optional(),
+  signatureHeight: z.number().optional(),
+  signatureX: z.number().optional(),
+  signatureY: z.number().optional(),
+  signatureStyle: z.enum(["handwritten", "typed", "drawn", "image"]).optional(),
+  signatureText: z.string().optional(),
+  signatureColor: z.string().optional(),
+  signatureFontSize: z.number().optional(),
+  certifyPermissions: z.enum(["no-changes", "form-filling", "annotations", "all"]).optional(),
+  lockPassword: z.string().optional(),
+  lockType: z.enum(["user", "owner", "both"]).optional(),
+  requestEmail: z.string().optional(),
+  requestMessage: z.string().optional(),
+  requestDeadline: z.string().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -7524,5 +7556,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Future-Proof Security</h2>
 <p>Our tool uses current industry-standard security protocols that will remain secure for years to come. The encryption algorithms and permission systems we use are the same ones trusted by governments, corporations, and security-conscious individuals worldwide. Your documents are protected for the long term.</p>`,
+  },
+  {
+    id: "sign-pdf",
+    name: "Sign PDF",
+    description: "Add your signature to PDF documents electronically",
+    icon: "PenTool",
+    type: "sign-pdf",
+    color: "bg-indigo-600",
+    emoji: "✍️",
+    metaTitle: "Sign PDF Online Free - Add Electronic Signature to PDF | PDF Tools",
+    metaDescription: "Sign PDF documents online for free. Add your handwritten or typed signature to any PDF. Fast, secure, and legally compliant electronic signing.",
+    seoArticle: `<h2>Sign PDF Documents Online - Complete Guide</h2>
+<p>Adding your signature to PDF documents has never been easier. Our free online PDF signing tool allows you to electronically sign any PDF document in seconds. Whether you're signing contracts, agreements, forms, or any other document, this tool provides a quick, secure, and legally recognized way to add your signature.</p>
+
+<h2>Multiple Signature Styles</h2>
+<p>Choose from several signature options to match your preferences. Draw your signature using your mouse or touchscreen for a handwritten look. Type your name and select from elegant font styles. Upload an image of your actual signature for the most authentic appearance. Each method produces a professional result.</p>
+
+<h2>Precise Signature Placement</h2>
+<p>Position your signature exactly where you need it. Click anywhere on the document to place your signature, or use our precision controls for exact positioning. Resize your signature to fit the available space perfectly. Apply your signature to specific pages or all pages at once.</p>
+
+<h2>Legally Binding Electronic Signatures</h2>
+<p>Electronic signatures created with our tool meet legal standards for electronic signing in most jurisdictions. The ESIGN Act and UETA in the United States, eIDAS in Europe, and similar laws worldwide recognize electronic signatures as legally equivalent to handwritten signatures for most documents.</p>
+
+<h2>Secure and Private Signing</h2>
+<p>Your documents are processed securely and never stored on our servers beyond the time needed to complete the signing process. No one but you has access to your documents. Sign confidential contracts, personal documents, and sensitive materials with complete peace of mind.</p>`,
+  },
+  {
+    id: "pdf-signer",
+    name: "PDF Signer",
+    description: "Professional PDF signing tool with advanced options",
+    icon: "Signature",
+    type: "pdf-signer",
+    color: "bg-indigo-500",
+    emoji: "🖊️",
+    metaTitle: "PDF Signer Online Free - Professional Electronic Signature Tool | PDF Tools",
+    metaDescription: "Professional PDF signer tool online for free. Add signatures with custom styling, positioning, and metadata. Enterprise-grade electronic signing.",
+    seoArticle: `<h2>PDF Signer - Professional Document Signing</h2>
+<p>Our PDF Signer tool provides advanced electronic signing capabilities for professionals who need more than basic signature functionality. Add signatures with full control over appearance, positioning, and associated metadata. Perfect for business contracts, legal documents, and formal agreements.</p>
+
+<h2>Advanced Signature Customization</h2>
+<p>Create the perfect signature appearance with extensive customization options. Choose colors that match your brand or preference. Adjust size and proportions precisely. Add signature text below your signature for additional context. Configure transparency for subtle watermark-style signatures.</p>
+
+<h2>Signature Metadata</h2>
+<p>Include important metadata with your signature for enhanced document integrity. Add the signing reason to explain why the document was signed. Include location information to document where signing occurred. Attach contact information for follow-up. Each piece of metadata becomes part of the signature record.</p>
+
+<h2>Multi-Page Signing</h2>
+<p>Sign multiple pages efficiently with our batch signing feature. Apply your signature to every page of a document with a single action. Choose to sign only the first page, last page, or specific pages. Maintain consistent signature positioning across all signed pages.</p>
+
+<h2>Professional Output</h2>
+<p>Your signed documents look professional and polished. Signatures are embedded cleanly into the PDF structure. Document integrity is maintained throughout the signing process. The resulting files are ready for immediate use, sharing, or archiving.</p>`,
+  },
+  {
+    id: "esign-pdf",
+    name: "eSign PDF",
+    description: "Electronic signature solution for PDF documents",
+    icon: "FileSignature",
+    type: "esign-pdf",
+    color: "bg-purple-600",
+    emoji: "📝",
+    metaTitle: "eSign PDF Online Free - Electronic PDF Signature | PDF Tools",
+    metaDescription: "eSign PDF documents online for free. Modern electronic signature solution for all your PDF signing needs. Fast, secure, and legally compliant.",
+    seoArticle: `<h2>eSign PDF - Modern Electronic Signing</h2>
+<p>Electronic signing represents the modern approach to document signing. Our eSign PDF tool brings this convenience to everyone, allowing you to sign documents from anywhere with an internet connection. No printing, no scanning, no physical paperwork - just quick, efficient electronic signatures.</p>
+
+<h2>Paperless Workflow</h2>
+<p>Eliminate paper from your signing workflow entirely. Receive documents electronically, sign them online, and return them instantly. No need for printers, scanners, or physical delivery. Save time, reduce costs, and help the environment by going completely paperless with electronic signatures.</p>
+
+<h2>Sign From Any Device</h2>
+<p>Our eSign tool works on any device with a web browser. Sign documents on your computer, tablet, or smartphone. Whether you're in the office, working from home, or traveling, you can sign documents whenever needed. Your signature is always available when you need it.</p>
+
+<h2>Quick and Simple Process</h2>
+<p>The eSigning process takes just moments. Upload your PDF, create or select your signature, position it on the document, and download the signed version. The entire process can be completed in under a minute, even for first-time users. Experience the speed of electronic signing.</p>
+
+<h2>Audit Trail</h2>
+<p>Every electronic signature includes embedded information about when and how the signing occurred. This creates a verifiable record of the signing event that can be referenced later if needed. Maintain accountability and traceability for all your signed documents.</p>`,
+  },
+  {
+    id: "add-signature-to-pdf",
+    name: "Add Signature to PDF",
+    description: "Insert your signature into PDF files with ease",
+    icon: "FilePen",
+    type: "add-signature-to-pdf",
+    color: "bg-violet-600",
+    emoji: "✒️",
+    metaTitle: "Add Signature to PDF Online Free - Insert Signature in PDF | PDF Tools",
+    metaDescription: "Add your signature to PDF files online for free. Insert handwritten or typed signatures anywhere in your PDF documents. Quick and easy.",
+    seoArticle: `<h2>Add Signature to PDF - Simple and Effective</h2>
+<p>Sometimes you just need to add a signature to a PDF quickly without complex features. Our Add Signature to PDF tool does exactly that - it lets you insert your signature into any PDF document with minimal fuss. Perfect for quick signatures on forms, letters, and simple documents.</p>
+
+<h2>Three Ways to Create Your Signature</h2>
+<p>Create your signature the way that works best for you. Draw it freehand using your mouse or touchscreen. Type your name and choose from stylish signature fonts. Upload an image of your handwritten signature for the most authentic look. All methods produce professional results.</p>
+
+<h2>Easy Positioning</h2>
+<p>Place your signature exactly where it needs to go. Click directly on the signature line or field to position your signature. Drag to adjust placement. Resize to fit the available space. Our intuitive interface makes signature placement effortless.</p>
+
+<h2>Preserve Document Quality</h2>
+<p>Your signature is added without affecting the rest of the document. All text, images, and formatting remain exactly as they were. The file size increases minimally. Your original document quality is fully preserved with the signature seamlessly integrated.</p>
+
+<h2>Instant Download</h2>
+<p>Once you've placed your signature, download the signed PDF immediately. No waiting, no processing delays, no email verification required. Your signed document is ready for immediate use, whether you need to email it, print it, or archive it.</p>`,
+  },
+  {
+    id: "request-pdf-signature",
+    name: "Request PDF Signature",
+    description: "Send PDF documents for others to sign electronically",
+    icon: "Send",
+    type: "request-pdf-signature",
+    color: "bg-blue-600",
+    emoji: "📤",
+    metaTitle: "Request PDF Signature Online Free - Send PDFs for Signing | PDF Tools",
+    metaDescription: "Request signatures on PDF documents online for free. Send PDFs to others for electronic signing. Track signature requests easily.",
+    seoArticle: `<h2>Request PDF Signature - Get Documents Signed</h2>
+<p>Need someone else to sign a document? Our Request PDF Signature tool prepares your PDF for signature collection. Add signature fields where signers need to sign, include instructions, and prepare the document for a smooth signing experience for your recipients.</p>
+
+<h2>Add Signature Fields</h2>
+<p>Mark exactly where signatures are needed in your document. Add signature fields for each signer. Position fields precisely on signature lines. Include date fields, initials fields, and text fields as needed. Create a clear signing experience for your recipients.</p>
+
+<h2>Multiple Signers</h2>
+<p>Prepare documents that need signatures from multiple parties. Add separate signature fields for each signer. Specify signing order if needed. Each signer can clearly see where their signature is required. Handle complex multi-party documents with ease.</p>
+
+<h2>Clear Instructions</h2>
+<p>Include guidance to help signers complete the document correctly. Add notes near signature fields. Highlight required fields. Provide context for what's being signed. Clear instructions reduce confusion and speed up the signing process.</p>
+
+<h2>Professional Preparation</h2>
+<p>Documents prepared with our tool look professional and well-organized. Signature fields are clearly marked and properly sized. The document structure guides signers through the process logically. Present your documents in the best possible light while collecting signatures.</p>`,
+  },
+  {
+    id: "pdf-signature-tool",
+    name: "PDF Signature Tool",
+    description: "Comprehensive tool for all PDF signature needs",
+    icon: "Stamp",
+    type: "pdf-signature-tool",
+    color: "bg-teal-600",
+    emoji: "🔏",
+    metaTitle: "PDF Signature Tool Online Free - Complete Signature Solution | PDF Tools",
+    metaDescription: "Complete PDF signature tool online for free. Sign, verify, and manage signatures on PDF documents. All signature features in one place.",
+    seoArticle: `<h2>PDF Signature Tool - All-in-One Solution</h2>
+<p>Our comprehensive PDF Signature Tool combines all signature-related functionality in one convenient place. Sign documents, create signature fields, customize appearance, and manage all aspects of PDF signatures. Whether you're signing yourself or preparing documents for others, this tool has everything you need.</p>
+
+<h2>Complete Signature Suite</h2>
+<p>Access every signature feature from a single interface. Create new signatures using drawing, typing, or image upload. Apply signatures to documents with precise positioning. Add signature fields for others to sign. Customize every aspect of signature appearance. All signature functions are readily available.</p>
+
+<h2>Signature Library</h2>
+<p>Create and save multiple signature styles for different purposes. Use a formal signature for business documents. Keep a casual signature for personal correspondence. Have initials ready for quick signing. Access your saved signatures instantly whenever you need them.</p>
+
+<h2>Flexible Application</h2>
+<p>Apply signatures in multiple ways depending on your needs. Sign a single page or every page. Position signatures in corners, centers, or custom locations. Adjust size and opacity for different effects. The flexibility to handle any signing requirement is built in.</p>
+
+<h2>Consistent Results</h2>
+<p>Every signature you create and apply produces consistent, professional results. Signatures are embedded cleanly into documents. Quality is maintained regardless of document complexity. Your signed documents always look polished and properly executed.</p>`,
+  },
+  {
+    id: "validate-pdf-signature",
+    name: "Validate PDF Signature",
+    description: "Verify the authenticity of signatures on PDF documents",
+    icon: "ShieldCheck",
+    type: "validate-pdf-signature",
+    color: "bg-green-600",
+    emoji: "✅",
+    metaTitle: "Validate PDF Signature Online Free - Verify PDF Signatures | PDF Tools",
+    metaDescription: "Validate PDF signatures online for free. Verify the authenticity and integrity of electronically signed PDF documents. Trust but verify.",
+    seoArticle: `<h2>Validate PDF Signature - Verify Document Authenticity</h2>
+<p>When you receive a signed PDF, how do you know the signature is genuine? Our Validate PDF Signature tool checks electronic signatures to verify their authenticity and confirm document integrity. Trust your signed documents with confidence after validation.</p>
+
+<h2>Signature Verification</h2>
+<p>Our validation process checks multiple aspects of each signature. We verify that the signature was properly created using standard signing methods. We check that the signature data is intact and hasn't been corrupted. We confirm the signature is properly embedded in the document structure.</p>
+
+<h2>Document Integrity Check</h2>
+<p>Beyond validating the signature itself, we verify that the document hasn't been modified since signing. Any changes to the document content after signing would be detected. This ensures you're seeing exactly what the signer saw and approved when they signed.</p>
+
+<h2>Detailed Validation Report</h2>
+<p>Receive a comprehensive report on each signature's validity. See the signing date and time. View signer information if included. Check the signature's technical details. Understand exactly what was validated and the results of each check.</p>
+
+<h2>Multiple Signature Support</h2>
+<p>Documents with multiple signatures are fully supported. Each signature is validated independently. See which signatures are valid and which may have issues. Get a complete picture of signature validity across the entire document.</p>`,
+  },
+  {
+    id: "certify-pdf",
+    name: "Certify PDF",
+    description: "Add certification signature to authenticate PDF documents",
+    icon: "Award",
+    type: "certify-pdf",
+    color: "bg-amber-600",
+    emoji: "🏆",
+    metaTitle: "Certify PDF Online Free - Add PDF Certification Signature | PDF Tools",
+    metaDescription: "Certify PDF documents online for free. Add certification signatures to authenticate and control document modifications. Professional PDF certification.",
+    seoArticle: `<h2>Certify PDF - Official Document Authentication</h2>
+<p>PDF certification goes beyond regular signing to provide authoritative authentication. When you certify a PDF, you're declaring the document's authenticity and optionally controlling what modifications can be made after certification. This makes certification ideal for official documents, contracts, and authoritative publications.</p>
+
+<h2>Certification vs Regular Signing</h2>
+<p>Certification signatures differ from regular approval signatures in important ways. A certified document can only have one certification signature, which serves as the authoritative seal. The certifier can specify what changes are allowed after certification. Certification carries the weight of official authentication.</p>
+
+<h2>Control Post-Certification Changes</h2>
+<p>When certifying, choose what modifications are permitted after certification. Allow no changes for completely locked documents. Permit form filling only for interactive forms. Allow annotations and form filling for collaborative documents. Choose comments and form filling for review workflows.</p>
+
+<h2>Visible Certification</h2>
+<p>Add a visible certification stamp to your document. Clearly indicate that the document has been certified. Include certification details like date and certifier information. Make the certified status immediately apparent to anyone viewing the document.</p>
+
+<h2>Professional Authority</h2>
+<p>Certified documents carry professional authority. Use certification for official correspondence, legal documents, final versions of contracts, and any document that needs to convey authenticity. Recipients know they're viewing an authentic, authoritative version of the document.</p>`,
+  },
+  {
+    id: "pdf-locker",
+    name: "PDF Locker",
+    description: "Lock PDF documents with signature and password protection",
+    icon: "LockKeyhole",
+    type: "pdf-locker",
+    color: "bg-slate-600",
+    emoji: "🔐",
+    metaTitle: "PDF Locker Online Free - Lock PDF with Signature | PDF Tools",
+    metaDescription: "Lock PDF documents online for free. Combine signature authentication with password protection for maximum security. Secure your important PDFs.",
+    seoArticle: `<h2>PDF Locker - Complete Document Security</h2>
+<p>The PDF Locker combines signature authentication with password protection to create the most secure PDF documents possible. Sign your document to verify authenticity, then lock it with password protection to control access. Double security for your most important documents.</p>
+
+<h2>Dual Protection Layers</h2>
+<p>Two security measures work together to protect your documents. Your signature authenticates the document and proves it came from you. Password protection controls who can access and use the document. Together, they provide comprehensive security that addresses multiple threat vectors.</p>
+
+<h2>Sign Then Lock</h2>
+<p>The signing and locking process is streamlined into a single workflow. First, add your signature to authenticate the document. Then, apply password protection and permission settings. The result is a signed, locked document ready for secure distribution.</p>
+
+<h2>Flexible Access Control</h2>
+<p>Configure password protection to match your security needs. Set a password required just to open the document. Add an owner password for full access. Configure permissions for printing, copying, and editing. Control every aspect of how your locked document can be used.</p>
+
+<h2>Secure Distribution</h2>
+<p>Share your signed and locked documents confidently through any channel. The signature proves the document came from you. The password ensures only authorized recipients can access it. Permissions control what they can do with the content. Complete security for the complete document lifecycle.</p>`,
+  },
+  {
+    id: "pdf-digital-signature-validator",
+    name: "PDF Digital Signature Validator",
+    description: "Advanced validation of digital signatures on PDFs",
+    icon: "BadgeCheck",
+    type: "pdf-digital-signature-validator",
+    color: "bg-emerald-600",
+    emoji: "🛡️",
+    metaTitle: "PDF Digital Signature Validator Online Free - Verify Digital Signatures | PDF Tools",
+    metaDescription: "Validate PDF digital signatures online for free. Advanced verification of certificate-based digital signatures. Ensure signature authenticity and document integrity.",
+    seoArticle: `<h2>PDF Digital Signature Validator - Advanced Verification</h2>
+<p>Digital signatures provide the highest level of signature security through certificate-based cryptography. Our Digital Signature Validator performs comprehensive validation of these signatures, checking certificate validity, signature integrity, and document authenticity with professional-grade thoroughness.</p>
+
+<h2>Certificate Validation</h2>
+<p>Digital signatures rely on certificates for their security. Our validator checks certificate authenticity and validity. We verify the certificate chain up to trusted roots. Expiration dates and revocation status are checked. You get complete visibility into the certificate backing each signature.</p>
+
+<h2>Cryptographic Verification</h2>
+<p>The cryptographic integrity of each signature is thoroughly verified. We check that the signature was created using the certificate's private key. We verify the mathematical relationship between signature and document. Any tampering or corruption is detected and reported.</p>
+
+<h2>Document Integrity Analysis</h2>
+<p>Beyond validating the signature itself, we analyze the entire document for integrity. We check that no modifications occurred after signing. We identify any incremental updates to the document. We report exactly what content is covered by each signature.</p>
+
+<h2>Comprehensive Reporting</h2>
+<p>Receive detailed reports on every aspect of signature validation. See certificate details including issuer and validity period. View signature properties and metadata. Understand the complete security status of your signed document. Make informed decisions based on thorough validation.</p>`,
   },
 ];
