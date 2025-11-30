@@ -11024,7 +11024,11 @@ async function changePdfColors(
     } : { r: 0, g: 0, b: 0 };
   };
   
+  const sourceColor = hexToRgb(fromColor);
   const targetColor = hexToRgb(toColor);
+  
+  const isBlack = sourceColor.r < 0.1 && sourceColor.g < 0.1 && sourceColor.b < 0.1;
+  const isWhite = sourceColor.r > 0.9 && sourceColor.g > 0.9 && sourceColor.b > 0.9;
   
   for (let i = 0; i < pageCount; i++) {
     const sourcePage = sourcePdf.getPage(i);
@@ -11035,7 +11039,17 @@ async function changePdfColors(
     
     page.drawPage(embedded, { x: 0, y: 0 });
     
-    if (mode === "exact" || mode === "similar") {
+    if (isBlack && mode !== "range") {
+      page.drawRectangle({
+        x: 0,
+        y: 0,
+        width,
+        height,
+        color: rgb(targetColor.r, targetColor.g, targetColor.b),
+        opacity: 0.15,
+        blendMode: "Screen" as any,
+      });
+    } else if (isWhite && mode !== "range") {
       page.drawRectangle({
         x: 0,
         y: 0,
@@ -11045,10 +11059,21 @@ async function changePdfColors(
         opacity: 0.1,
         blendMode: "Multiply" as any,
       });
+    } else {
+      const blendOpacity = mode === "similar" ? 0.2 : 0.15;
+      page.drawRectangle({
+        x: 0,
+        y: 0,
+        width,
+        height,
+        color: rgb(targetColor.r, targetColor.g, targetColor.b),
+        opacity: blendOpacity,
+        blendMode: "Overlay" as any,
+      });
     }
   }
   
-  resultPdf.setProducer("PDF Tools - Color Changed");
+  resultPdf.setProducer(`PDF Tools - Color Changed (${fromColor} to ${toColor})`);
   return Buffer.from(await resultPdf.save());
 }
 
@@ -11060,14 +11085,49 @@ async function replacePdfFont(
   const pdfBytes = fs.readFileSync(file.path);
   const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
   
-  const resultPdf = await PDFDocument.create();
   const pageCount = sourcePdf.getPageCount();
+  const sourceFontLower = sourceFont.toLowerCase();
   
-  const copiedPages = await resultPdf.copyPages(sourcePdf, Array.from({ length: pageCount }, (_, i) => i));
-  copiedPages.forEach(page => resultPdf.addPage(page));
+  const standardFontMap: Record<string, typeof StandardFonts[keyof typeof StandardFonts]> = {
+    "Helvetica": StandardFonts.Helvetica,
+    "Times-Roman": StandardFonts.TimesRoman,
+    "Courier": StandardFonts.Courier,
+    "Symbol": StandardFonts.Symbol,
+    "ZapfDingbats": StandardFonts.ZapfDingbats,
+  };
   
-  resultPdf.setProducer(`PDF Tools - Font Replaced (${sourceFont} to ${targetFont})`);
-  return Buffer.from(await resultPdf.save());
+  const targetStandardFont = standardFontMap[targetFont] || StandardFonts.Helvetica;
+  const newFont = await sourcePdf.embedFont(targetStandardFont);
+  const newFontRef = (newFont as any).ref;
+  
+  for (let i = 0; i < pageCount; i++) {
+    const page = sourcePdf.getPage(i);
+    const resources = page.node.get(PDFName.of("Resources"));
+    
+    if (resources instanceof PDFDict) {
+      const fontDict = resources.get(PDFName.of("Font"));
+      if (fontDict instanceof PDFDict) {
+        const fontKeys = fontDict.keys();
+        for (const key of fontKeys) {
+          const fontEntry = fontDict.get(key);
+          if (fontEntry instanceof PDFDict) {
+            const baseFont = fontEntry.get(PDFName.of("BaseFont"));
+            if (baseFont) {
+              const fontName = baseFont.toString().replace("/", "").toLowerCase();
+              if (fontName.includes(sourceFontLower) || sourceFontLower === "" || sourceFontLower === "*") {
+                if (newFontRef) {
+                  fontDict.set(key, newFontRef);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  sourcePdf.setProducer(`PDF Tools - Font Replaced (${sourceFont} to ${targetFont})`);
+  return Buffer.from(await sourcePdf.save());
 }
 
 interface FontInfo {
