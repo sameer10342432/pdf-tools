@@ -1927,7 +1927,7 @@ export function ToolOptionsComponent({
             <Label htmlFor="bookletBinding">Binding Edge</Label>
             <Select
               value={options.bookletBinding || "left"}
-              onValueChange={(value) => updateOption("bookletBinding", value)}
+              onValueChange={(value) => updateOption("bookletBinding", value as "left" | "right" | "top")}
             >
               <SelectTrigger id="bookletBinding" data-testid="select-booklet-binding">
                 <SelectValue placeholder="Select binding edge" />
@@ -1943,7 +1943,7 @@ export function ToolOptionsComponent({
             <Label htmlFor="bookletPageSize">Page Size</Label>
             <Select
               value={options.bookletPageSize || "letter"}
-              onValueChange={(value) => updateOption("bookletPageSize", value)}
+              onValueChange={(value) => updateOption("bookletPageSize", value as "a4" | "letter" | "a3" | "tabloid")}
             >
               <SelectTrigger id="bookletPageSize" data-testid="select-booklet-page-size">
                 <SelectValue placeholder="Select page size" />
@@ -1969,7 +1969,7 @@ export function ToolOptionsComponent({
             <Label htmlFor="impositionLayout">Imposition Layout</Label>
             <Select
               value={options.impositionLayout || "2-up-saddle"}
-              onValueChange={(value) => updateOption("impositionLayout", value)}
+              onValueChange={(value) => updateOption("impositionLayout", value as "2-up-saddle" | "4-up-perfect" | "step-repeat" | "cut-stack")}
             >
               <SelectTrigger id="impositionLayout" data-testid="select-imposition-layout">
                 <SelectValue placeholder="Select layout" />
@@ -1985,7 +1985,7 @@ export function ToolOptionsComponent({
             <Label htmlFor="impositionSheetSize">Sheet Size</Label>
             <Select
               value={options.impositionSheetSize || "a3"}
-              onValueChange={(value) => updateOption("impositionSheetSize", value)}
+              onValueChange={(value) => updateOption("impositionSheetSize", value as "a4" | "a3" | "letter" | "tabloid" | "custom")}
             >
               <SelectTrigger id="impositionSheetSize" data-testid="select-imposition-sheet-size">
                 <SelectValue placeholder="Select sheet size" />
@@ -2028,7 +2028,7 @@ export function ToolOptionsComponent({
               min={1}
               max={144}
               value={options.gutterSize || ""}
-              onChange={(e) => updateOption("gutterSize", e.target.value)}
+              onChange={(e) => updateOption("gutterSize", parseInt(e.target.value) || undefined)}
               data-testid="input-gutter-size"
             />
             <p className="text-sm text-muted-foreground">
@@ -2039,7 +2039,7 @@ export function ToolOptionsComponent({
             <Label htmlFor="gutterPosition">Gutter Position</Label>
             <Select
               value={options.gutterPosition || "left"}
-              onValueChange={(value) => updateOption("gutterPosition", value)}
+              onValueChange={(value) => updateOption("gutterPosition", value as "left" | "right" | "both")}
             >
               <SelectTrigger id="gutterPosition" data-testid="select-gutter-position">
                 <SelectValue placeholder="Select position" />
@@ -2081,7 +2081,7 @@ export function ToolOptionsComponent({
             <Label htmlFor="colorChangeMode">Match Mode</Label>
             <Select
               value={options.colorChangeMode || "exact"}
-              onValueChange={(value) => updateOption("colorChangeMode", value)}
+              onValueChange={(value) => updateOption("colorChangeMode", value as "exact" | "similar" | "range")}
             >
               <SelectTrigger id="colorChangeMode" data-testid="select-color-mode">
                 <SelectValue placeholder="Select mode" />
@@ -2179,7 +2179,7 @@ export function ToolOptionsComponent({
             <Label htmlFor="annotationTypesToRemove">Annotations to Remove</Label>
             <Select
               value={options.annotationTypesToRemove || "all"}
-              onValueChange={(value) => updateOption("annotationTypesToRemove", value)}
+              onValueChange={(value) => updateOption("annotationTypesToRemove", value as "all" | "highlights" | "notes" | "drawings" | "stamps" | "links")}
             >
               <SelectTrigger id="annotationTypesToRemove" data-testid="select-annotation-type">
                 <SelectValue placeholder="Select type" />

@@ -45,6 +45,14 @@ import {
   Target,
   Globe,
   FileSpreadsheet,
+  BookOpen,
+  LayoutGrid,
+  Columns,
+  Palette,
+  Type,
+  Link as LinkIcon,
+  Unlink,
+  Search,
   type LucideIcon,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -73,6 +81,14 @@ const iconMap: Record<string, LucideIcon> = {
   Target,
   Globe,
   FileSpreadsheet,
+  BookOpen,
+  LayoutGrid,
+  Columns,
+  Palette,
+  Type,
+  Link: LinkIcon,
+  Unlink,
+  Search,
 };
 
 interface ToolDialogProps {
