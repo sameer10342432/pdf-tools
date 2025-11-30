@@ -442,6 +442,54 @@ async function unlockPdf(file: Express.Multer.File, password: string): Promise<B
   }
 }
 
+interface PermissionSettings {
+  ownerPassword: string;
+  userPassword?: string;
+  allowPrinting: boolean;
+  allowCopying: boolean;
+  allowEditing: boolean;
+  allowAnnotations: boolean;
+  allowFormFilling: boolean;
+}
+
+async function setPermissions(file: Express.Multer.File, settings: PermissionSettings): Promise<Buffer> {
+  const pdfBuffer = fs.readFileSync(file.path);
+  const inputStream = new muhammara.PDFRStreamForBuffer(pdfBuffer);
+  const outputStream = new muhammara.PDFWStreamForBuffer();
+  
+  let protectionFlag = 0;
+  
+  if (settings.allowPrinting) {
+    protectionFlag |= 4;
+    protectionFlag |= 2048;
+  }
+  if (settings.allowEditing) {
+    protectionFlag |= 8;
+  }
+  if (settings.allowCopying) {
+    protectionFlag |= 16;
+  }
+  if (settings.allowAnnotations) {
+    protectionFlag |= 32;
+  }
+  if (settings.allowFormFilling) {
+    protectionFlag |= 256;
+  }
+  
+  const encryptOptions: any = {
+    ownerPassword: settings.ownerPassword,
+    userProtectionFlag: protectionFlag
+  };
+  
+  if (settings.userPassword) {
+    encryptOptions.userPassword = settings.userPassword;
+  }
+  
+  muhammara.recrypt(inputStream, outputStream, encryptOptions);
+  
+  return outputStream.buffer;
+}
+
 async function mergePdfsWithBookmarks(files: Express.Multer.File[]): Promise<Buffer> {
   const mergedPdf = await PDFDocument.create();
   const font = await mergedPdf.embedFont(StandardFonts.HelveticaBold);
@@ -14320,6 +14368,98 @@ export async function registerRoutes(
             }
             result = await unlockPdf(files[0], options.unlockPassword);
             filename = "unlocked.pdf";
+            break;
+
+          case "remove-pdf-password":
+          case "decrypt-pdf":
+          case "pdf-password-remover":
+            if (!options.unlockPassword || options.unlockPassword.trim() === "") {
+              throw new Error("Please enter the current PDF password");
+            }
+            result = await unlockPdf(files[0], options.unlockPassword);
+            filename = toolType === "decrypt-pdf" ? "decrypted.pdf" : "password-removed.pdf";
+            break;
+
+          case "add-pdf-permissions":
+          case "set-pdf-permissions":
+            if (!options.ownerPassword || options.ownerPassword.trim() === "") {
+              throw new Error("Please enter an owner password to set permissions");
+            }
+            result = await setPermissions(files[0], {
+              ownerPassword: options.ownerPassword,
+              userPassword: options.userPassword || undefined,
+              allowPrinting: options.allowPrinting !== false,
+              allowCopying: options.allowCopying !== false,
+              allowEditing: options.allowEditing !== false,
+              allowAnnotations: options.allowAnnotations !== false,
+              allowFormFilling: options.allowFormFilling !== false,
+            });
+            filename = "permissions-set.pdf";
+            break;
+
+          case "disable-pdf-printing":
+            if (!options.ownerPassword || options.ownerPassword.trim() === "") {
+              throw new Error("Please enter an owner password to protect the PDF");
+            }
+            result = await setPermissions(files[0], {
+              ownerPassword: options.ownerPassword,
+              userPassword: options.userPassword || undefined,
+              allowPrinting: false,
+              allowCopying: true,
+              allowEditing: true,
+              allowAnnotations: true,
+              allowFormFilling: true,
+            });
+            filename = "print-disabled.pdf";
+            break;
+
+          case "disable-pdf-editing":
+            if (!options.ownerPassword || options.ownerPassword.trim() === "") {
+              throw new Error("Please enter an owner password to protect the PDF");
+            }
+            result = await setPermissions(files[0], {
+              ownerPassword: options.ownerPassword,
+              userPassword: options.userPassword || undefined,
+              allowPrinting: true,
+              allowCopying: true,
+              allowEditing: false,
+              allowAnnotations: false,
+              allowFormFilling: false,
+            });
+            filename = "edit-disabled.pdf";
+            break;
+
+          case "disable-pdf-copying":
+            if (!options.ownerPassword || options.ownerPassword.trim() === "") {
+              throw new Error("Please enter an owner password to protect the PDF");
+            }
+            result = await setPermissions(files[0], {
+              ownerPassword: options.ownerPassword,
+              userPassword: options.userPassword || undefined,
+              allowPrinting: true,
+              allowCopying: false,
+              allowEditing: true,
+              allowAnnotations: true,
+              allowFormFilling: true,
+            });
+            filename = "copy-disabled.pdf";
+            break;
+
+          case "pdf-security":
+          case "secure-pdf":
+            if (!options.password || options.password.trim() === "") {
+              throw new Error("Please enter a password to secure the PDF");
+            }
+            result = await setPermissions(files[0], {
+              ownerPassword: options.ownerPassword || options.password,
+              userPassword: options.password,
+              allowPrinting: options.allowPrinting !== false,
+              allowCopying: options.allowCopying !== false,
+              allowEditing: options.allowEditing !== false,
+              allowAnnotations: options.allowAnnotations !== false,
+              allowFormFilling: options.allowFormFilling !== false,
+            });
+            filename = "secured.pdf";
             break;
             
           default:

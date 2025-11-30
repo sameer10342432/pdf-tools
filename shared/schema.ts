@@ -271,6 +271,16 @@ export const pdfToolTypes = [
   "password-protect-pdf",
   "unlock-pdf-tool",
   "pdf-unlocker",
+  "remove-pdf-password",
+  "decrypt-pdf",
+  "pdf-password-remover",
+  "add-pdf-permissions",
+  "set-pdf-permissions",
+  "disable-pdf-printing",
+  "disable-pdf-editing",
+  "disable-pdf-copying",
+  "pdf-security",
+  "secure-pdf",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -7264,5 +7274,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Maintain Complete Control</h2>
 <p>Your documents should work for you, not against you. Password protection serves its purpose, but when that purpose is fulfilled, restrictions can become obstacles. The PDF Unlocker gives you control over your document security, allowing you to add or remove protection as your needs change.</p>`,
+  },
+  {
+    id: "remove-pdf-password",
+    name: "Remove PDF Password",
+    description: "Remove password protection from your PDF files instantly",
+    icon: "KeyOff",
+    type: "remove-pdf-password",
+    color: "bg-red-600",
+    emoji: "🔐",
+    metaTitle: "Remove PDF Password Online Free - Delete PDF Password | PDF Tools",
+    metaDescription: "Remove password from PDF files online for free. Delete password protection from PDFs you own. Fast, secure, and no software installation needed.",
+    seoArticle: `<h2>Remove PDF Password - Instant Password Deletion</h2>
+<p>Need to remove password protection from a PDF you own? Our Remove PDF Password tool makes it simple. Just upload your protected PDF, enter the current password, and download an unrestricted version. The process takes seconds and works with any password-protected PDF file you have legitimate access to.</p>
+
+<h2>Why Remove PDF Passwords</h2>
+<p>There are many legitimate reasons to remove PDF passwords. You might want to share documents with colleagues without requiring them to enter passwords. Perhaps you're archiving files and want to eliminate password dependencies. Or you're preparing documents for printing services that don't accept protected files. Whatever your reason, removing passwords from your own documents is straightforward.</p>
+
+<h2>How Password Removal Works</h2>
+<p>Our tool uses the password you provide to decrypt your PDF. Once decrypted, we create a new version of the document without the password requirement. All content, formatting, and interactive elements remain exactly the same. The only difference is that the new file opens without asking for a password.</p>
+
+<h2>Security and Privacy</h2>
+<p>Your documents are processed securely and deleted automatically after processing. We never store passwords or document contents. The password removal happens entirely on our secure servers, and your files are never accessible to anyone but you. Your privacy is protected throughout the entire process.</p>
+
+<h2>Maintain Document Quality</h2>
+<p>Removing a password doesn't affect your PDF's quality or content. Text stays sharp, images maintain their resolution, and all formatting is preserved perfectly. Interactive elements, form fields, bookmarks, and hyperlinks continue to work exactly as before. You get the same document, just without the password requirement.</p>`,
+  },
+  {
+    id: "decrypt-pdf",
+    name: "Decrypt PDF",
+    description: "Decrypt and remove encryption from password-protected PDFs",
+    icon: "ShieldOff",
+    type: "decrypt-pdf",
+    color: "bg-rose-600",
+    emoji: "🔓",
+    metaTitle: "Decrypt PDF Online Free - Remove PDF Encryption | PDF Tools",
+    metaDescription: "Decrypt PDF files online for free. Remove encryption from password-protected PDFs you own. Fast, secure decryption with no software needed.",
+    seoArticle: `<h2>Decrypt PDF - Remove Document Encryption</h2>
+<p>PDF encryption protects documents during transmission and storage, but sometimes you need to remove that protection. Our Decrypt PDF tool removes encryption from PDFs when you provide the correct password, creating an unencrypted version that's easier to work with and share.</p>
+
+<h2>Understanding PDF Encryption</h2>
+<p>PDF files use strong encryption algorithms to protect content. When you create a password-protected PDF, the content is encrypted so it can only be accessed with the correct password. Decryption reverses this process, converting the encrypted data back to readable content and removing the encryption layer entirely.</p>
+
+<h2>When to Decrypt PDFs</h2>
+<p>Decryption is useful in many scenarios. You might need to decrypt files before merging them with other documents. Some older software doesn't handle encrypted PDFs well. Decryption simplifies document management by removing password dependencies. It's also helpful when preparing files for long-term archiving.</p>
+
+<h2>Professional-Grade Decryption</h2>
+<p>Our decryption tool handles all standard PDF encryption types, including AES-128 and AES-256 encryption used by modern PDF creators. Whether your PDF was created by Adobe Acrobat, Microsoft Office, or any other application, our tool can decrypt it when you provide the correct password.</p>
+
+<h2>Preserve Everything</h2>
+<p>Decryption preserves every aspect of your document. All pages, images, fonts, colors, and layouts remain exactly as they were. Form fields continue to work, bookmarks stay in place, and hyperlinks remain active. The only change is the removal of encryption, giving you a fully accessible document.</p>`,
+  },
+  {
+    id: "pdf-password-remover",
+    name: "PDF Password Remover",
+    description: "Professional tool to remove passwords from PDF documents",
+    icon: "LockKeyhole",
+    type: "pdf-password-remover",
+    color: "bg-orange-600",
+    emoji: "🗝️",
+    metaTitle: "PDF Password Remover Online Free - Unlock PDF Files | PDF Tools",
+    metaDescription: "Remove passwords from PDF files online for free. Professional PDF password remover tool. Unlock your PDFs instantly without software.",
+    seoArticle: `<h2>PDF Password Remover - Professional Unlocking Tool</h2>
+<p>The PDF Password Remover provides professional-grade password removal for your PDF documents. Whether you're dealing with user passwords (required to open the file) or owner passwords (that restrict printing, copying, and editing), this tool removes them when you provide proper authentication.</p>
+
+<h2>Two Types of PDF Passwords</h2>
+<p>PDFs can have two different types of passwords. User passwords prevent anyone without the password from even opening the document. Owner passwords allow opening but restrict certain actions like printing, copying text, or editing. Our tool can remove either type when you provide the correct password.</p>
+
+<h2>Batch Processing Ready</h2>
+<p>Need to remove passwords from multiple PDFs? Our tool handles one file at a time with speed and efficiency. Each file is processed independently, ensuring your passwords are never mixed up and each document receives the proper treatment.</p>
+
+<h2>Compatible With All PDF Sources</h2>
+<p>No matter where your password-protected PDF came from, our remover can handle it. Documents from Adobe Acrobat, Microsoft Office, Mac Preview, online PDF creators, and any other PDF application are all supported. We work with the universal PDF standard to ensure compatibility.</p>
+
+<h2>Quick and Secure Process</h2>
+<p>Password removal happens in seconds. Upload your file, enter the password, and download the unlocked version. Your files are transmitted securely, processed in isolated environments, and automatically deleted after you download. The entire process is designed for both speed and security.</p>`,
+  },
+  {
+    id: "add-pdf-permissions",
+    name: "Add PDF Permissions",
+    description: "Set custom permissions and restrictions for your PDF files",
+    icon: "ShieldCheck",
+    type: "add-pdf-permissions",
+    color: "bg-blue-600",
+    emoji: "🛡️",
+    metaTitle: "Add PDF Permissions Online Free - Set PDF Restrictions | PDF Tools",
+    metaDescription: "Add custom permissions to PDF files online for free. Set printing, copying, and editing restrictions. Control how others use your documents.",
+    seoArticle: `<h2>Add PDF Permissions - Control Document Usage</h2>
+<p>Take control of how your PDF documents are used with our Add PDF Permissions tool. Set specific restrictions on printing, copying, editing, and other actions while still allowing recipients to view the content. Perfect for distributing documents you want seen but not modified or reproduced.</p>
+
+<h2>Available Permission Settings</h2>
+<p>Control multiple aspects of document usage. Allow or prevent printing (high quality or low quality only). Enable or disable text and image copying. Permit or block document editing and annotation. Control form filling, page extraction, and document assembly. Each permission can be set independently to match your exact requirements.</p>
+
+<h2>Password-Protected Permissions</h2>
+<p>Permissions are enforced through password protection. You'll set an owner password that controls the restrictions. Anyone with this password can modify permissions later. Optionally, add a user password required to open the document. This dual-password system provides flexible security options.</p>
+
+<h2>Perfect for Document Distribution</h2>
+<p>When sharing reports, proposals, contracts, or any documents you want protected, permissions provide the answer. Recipients can view and reference your content, but restrictions prevent unauthorized modifications or copying. Maintain control even after documents leave your hands.</p>
+
+<h2>Industry-Standard Security</h2>
+<p>Our tool applies permissions using industry-standard PDF security. These restrictions are recognized and enforced by Adobe Acrobat, all major PDF viewers, and compliant PDF applications. Your documents remain protected across platforms and devices.</p>`,
+  },
+  {
+    id: "set-pdf-permissions",
+    name: "Set PDF Permissions",
+    description: "Configure detailed permission settings for your PDF documents",
+    icon: "Settings2",
+    type: "set-pdf-permissions",
+    color: "bg-indigo-600",
+    emoji: "⚙️",
+    metaTitle: "Set PDF Permissions Online Free - Configure PDF Security | PDF Tools",
+    metaDescription: "Set detailed PDF permissions online for free. Configure printing, editing, and copying restrictions. Customize PDF security settings easily.",
+    seoArticle: `<h2>Set PDF Permissions - Detailed Security Configuration</h2>
+<p>Configure exactly how your PDF documents can be used with our Set PDF Permissions tool. This comprehensive tool lets you fine-tune every permission setting, giving you granular control over document security. Create custom permission profiles that match your exact requirements.</p>
+
+<h2>Granular Permission Control</h2>
+<p>Every permission setting is at your fingertips. Control printing quality (high resolution, low resolution, or none). Set content copying permissions for text and graphics independently. Configure modification permissions for content, annotations, form fields, and document structure. Manage page extraction and document assembly rights.</p>
+
+<h2>Permission Presets</h2>
+<p>Choose from common permission configurations or create your own. "View Only" prevents all modifications and copying. "Print Only" allows printing but blocks copying. "Fill Forms" enables form completion while blocking other changes. Custom settings let you create exactly the permission set you need.</p>
+
+<h2>Strong Encryption Options</h2>
+<p>Permissions are protected by encryption. Choose between AES-128 and AES-256 encryption for maximum security. Set owner passwords to control permission changes. Add optional user passwords for document access. The encryption level you choose affects compatibility with older PDF readers.</p>
+
+<h2>Maintain Professional Appearance</h2>
+<p>Adding permissions doesn't change how your document looks or functions for allowed operations. The PDF appears exactly the same to viewers. Only when they try a restricted action will they see that permission is denied. This maintains a professional, user-friendly experience.</p>`,
+  },
+  {
+    id: "disable-pdf-printing",
+    name: "Disable PDF Printing",
+    description: "Prevent your PDF documents from being printed",
+    icon: "PrinterOff",
+    type: "disable-pdf-printing",
+    color: "bg-purple-600",
+    emoji: "🖨️",
+    metaTitle: "Disable PDF Printing Online Free - Block PDF Print | PDF Tools",
+    metaDescription: "Disable printing in PDF files online for free. Prevent unauthorized printing of your documents. Add print restrictions to PDFs instantly.",
+    seoArticle: `<h2>Disable PDF Printing - Prevent Unauthorized Prints</h2>
+<p>Some documents should only be viewed on screen, not printed. Our Disable PDF Printing tool adds restrictions that prevent printing while still allowing full on-screen viewing. Perfect for digital-only publications, preview copies, and documents where print control is essential.</p>
+
+<h2>Why Disable Printing</h2>
+<p>There are many reasons to prevent printing. Preview documents before final sale should be viewable but not printable. Confidential information meant for screen viewing only needs print protection. Environmental policies may require reducing unnecessary printing. Draft documents can be shared for review without enabling print copies.</p>
+
+<h2>Complete Print Blocking</h2>
+<p>When printing is disabled, users cannot print the document through any standard means. The print menu becomes unavailable, keyboard shortcuts don't work, and print commands are rejected. This applies to both physical printers and virtual printers like "Print to PDF" options.</p>
+
+<h2>Maintained Viewing Experience</h2>
+<p>Disabling printing doesn't affect the viewing experience. Users can still open, read, navigate, zoom, and interact with your document normally. They can view it on any device, share the file, and reference it as needed. Only the print function is restricted.</p>
+
+<h2>Password Protection</h2>
+<p>Print restrictions are enforced through password protection. You'll set a permissions password that allows future modification of these settings. Keep this password secure - anyone with it can re-enable printing. The document itself can optionally require a separate password to open.</p>`,
+  },
+  {
+    id: "disable-pdf-editing",
+    name: "Disable PDF Editing",
+    description: "Prevent modifications to your PDF documents",
+    icon: "PenOff",
+    type: "disable-pdf-editing",
+    color: "bg-violet-600",
+    emoji: "✏️",
+    metaTitle: "Disable PDF Editing Online Free - Block PDF Modifications | PDF Tools",
+    metaDescription: "Disable editing in PDF files online for free. Prevent unauthorized modifications to your documents. Lock PDFs from changes instantly.",
+    seoArticle: `<h2>Disable PDF Editing - Protect Document Integrity</h2>
+<p>Keep your documents exactly as you created them with our Disable PDF Editing tool. This security feature prevents any modifications to your PDF content, ensuring that readers receive the document exactly as intended. Essential for contracts, official documents, and any content that must remain unchanged.</p>
+
+<h2>What Editing Restrictions Cover</h2>
+<p>Editing restrictions prevent changes to document content. Users cannot modify text, alter images, add or remove pages, or change the document structure. Annotations may or may not be allowed depending on your settings. The core document content remains locked and unchangeable.</p>
+
+<h2>Protect Document Authenticity</h2>
+<p>When you share contracts, agreements, specifications, or official documents, you need assurance they won't be altered. Editing restrictions maintain document authenticity. Recipients can view and print (if allowed), but they cannot change a single character of your content.</p>
+
+<h2>Legal and Compliance Uses</h2>
+<p>Many industries require document integrity protection. Legal documents need editing restrictions to prevent tampering. Financial reports must remain unchanged after distribution. Medical records require protection from modification. Editing restrictions help meet these compliance requirements.</p>
+
+<h2>Flexible Configuration</h2>
+<p>Choose exactly what to restrict. Block all content editing but allow form filling. Prevent page modifications but permit annotations. Configure settings to match your specific needs. The flexibility ensures you can protect what needs protection while enabling necessary functionality.</p>`,
+  },
+  {
+    id: "disable-pdf-copying",
+    name: "Disable PDF Copying",
+    description: "Prevent text and image copying from your PDFs",
+    icon: "ClipboardX",
+    type: "disable-pdf-copying",
+    color: "bg-fuchsia-600",
+    emoji: "📋",
+    metaTitle: "Disable PDF Copying Online Free - Block Copy & Paste | PDF Tools",
+    metaDescription: "Disable copying in PDF files online for free. Prevent text and image copying from your documents. Protect your content from extraction.",
+    seoArticle: `<h2>Disable PDF Copying - Protect Your Content</h2>
+<p>Protect your written content and images from unauthorized copying with our Disable PDF Copying tool. This restriction prevents users from selecting and copying text or extracting images from your PDF. Your content stays in the document where it belongs.</p>
+
+<h2>Content Protection for Creators</h2>
+<p>Writers, photographers, designers, and content creators invest significant effort in their work. Copying restrictions help protect that investment. While determined individuals might find workarounds, restrictions deter casual copying and make unauthorized reproduction more difficult.</p>
+
+<h2>How Copy Restrictions Work</h2>
+<p>When copying is disabled, text selection becomes unavailable or selected text cannot be copied to the clipboard. Image extraction through copy commands is blocked. This applies across PDF viewers that respect standard PDF security settings. The content remains visible but not extractable.</p>
+
+<h2>Combine With Other Protections</h2>
+<p>Copy restrictions work best as part of a comprehensive security strategy. Combine with editing restrictions to prevent modifications. Add print restrictions if you want screen-only viewing. Use password protection to control who can access the document. Layer these protections for maximum security.</p>
+
+<h2>Maintain Readability</h2>
+<p>Copy restrictions don't affect how your document looks or reads. Text remains perfectly readable, images display normally, and navigation works as expected. Users can read, scroll, zoom, and interact with content - they just can't copy it to other applications.</p>`,
+  },
+  {
+    id: "pdf-security",
+    name: "PDF Security",
+    description: "Comprehensive security settings for your PDF documents",
+    icon: "ShieldAlert",
+    type: "pdf-security",
+    color: "bg-slate-700",
+    emoji: "🔒",
+    metaTitle: "PDF Security Tool Online Free - Complete PDF Protection | PDF Tools",
+    metaDescription: "Apply comprehensive security to PDF files online for free. Set passwords, permissions, and encryption. Complete PDF protection solution.",
+    seoArticle: `<h2>PDF Security - Complete Document Protection</h2>
+<p>The PDF Security tool provides comprehensive protection for your documents. In one place, you can set passwords, configure permissions, choose encryption levels, and apply multiple security layers. This all-in-one solution ensures your PDFs are protected according to your exact requirements.</p>
+
+<h2>Multiple Security Layers</h2>
+<p>True document security involves multiple protective layers. Start with password protection to control access. Add permission restrictions to control usage. Apply strong encryption to protect content. Configure each layer independently to create the exact security profile your documents need.</p>
+
+<h2>Encryption Standards</h2>
+<p>Choose from multiple encryption standards based on your security needs and compatibility requirements. AES-256 provides maximum security for sensitive documents. AES-128 offers strong protection with broader compatibility. Each encryption level applies to both the document password and permissions password.</p>
+
+<h2>Permission Configuration</h2>
+<p>Set detailed permissions for document usage. Control printing (high quality, low quality, or none). Manage content copying for text and graphics. Configure editing permissions for content, annotations, and form fields. Set page extraction and assembly permissions. Every aspect of document usage is under your control.</p>
+
+<h2>Security Metadata</h2>
+<p>Beyond content protection, manage document metadata security. Control what information is visible in document properties. Encrypt metadata along with content. Ensure sensitive information about the document itself remains protected. Complete security covers every aspect of your PDF.</p>`,
+  },
+  {
+    id: "secure-pdf",
+    name: "Secure PDF",
+    description: "Apply robust security measures to protect your PDFs",
+    icon: "Lock",
+    type: "secure-pdf",
+    color: "bg-gray-700",
+    emoji: "🛡️",
+    metaTitle: "Secure PDF Online Free - Protect PDF Documents | PDF Tools",
+    metaDescription: "Secure your PDF files online for free. Apply password protection, encryption, and permissions. Keep your documents safe and controlled.",
+    seoArticle: `<h2>Secure PDF - Robust Document Protection</h2>
+<p>Make your PDF documents secure with our comprehensive protection tool. Apply passwords, encryption, and permissions in a single operation. Whether you're protecting confidential business documents, personal records, or sensitive communications, this tool provides the security you need.</p>
+
+<h2>One-Click Security</h2>
+<p>Our streamlined interface makes securing PDFs simple. Upload your document, set your desired password and permissions, and download the protected version. No complex configuration required - just straightforward security that works. Advanced options are available for those who need them.</p>
+
+<h2>Protect Any Document Type</h2>
+<p>Secure financial reports, legal contracts, medical records, personal documents, business proposals, and any other PDF content. Whether your document is one page or hundreds, contains text only or complex graphics, our security applies equally well. Every PDF can be protected.</p>
+
+<h2>Share With Confidence</h2>
+<p>Once secured, share your documents through any channel with confidence. Email attachments, cloud storage, file sharing services - your protection travels with the document. Recipients can only access and use the document according to the permissions you've set.</p>
+
+<h2>Future-Proof Security</h2>
+<p>Our tool uses current industry-standard security protocols that will remain secure for years to come. The encryption algorithms and permission systems we use are the same ones trusted by governments, corporations, and security-conscious individuals worldwide. Your documents are protected for the long term.</p>`,
   },
 ];

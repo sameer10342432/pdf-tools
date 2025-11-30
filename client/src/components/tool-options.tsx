@@ -2689,6 +2689,325 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "remove-pdf-password":
+    case "decrypt-pdf":
+    case "pdf-password-remover":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="unlockPassword">Current PDF Password</Label>
+            <Input
+              id="unlockPassword"
+              type="password"
+              placeholder="Enter the current PDF password"
+              value={options.unlockPassword || ""}
+              onChange={(e) => updateOption("unlockPassword", e.target.value)}
+              data-testid="input-unlock-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter the password currently protecting this PDF to remove it.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "add-pdf-permissions":
+    case "set-pdf-permissions":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="ownerPassword">Owner Password (Required)</Label>
+            <Input
+              id="ownerPassword"
+              type="password"
+              placeholder="Enter owner password"
+              value={options.ownerPassword || ""}
+              onChange={(e) => updateOption("ownerPassword", e.target.value)}
+              data-testid="input-owner-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              This password allows changing permissions later.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="userPassword">User Password (Optional)</Label>
+            <Input
+              id="userPassword"
+              type="password"
+              placeholder="Enter user password (optional)"
+              value={options.userPassword || ""}
+              onChange={(e) => updateOption("userPassword", e.target.value)}
+              data-testid="input-user-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              If set, this password will be required to open the PDF.
+            </p>
+          </div>
+          <div className="space-y-3 border-t pt-4">
+            <Label>Permissions</Label>
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={options.allowPrinting !== false}
+                  onChange={(e) => updateOption("allowPrinting", e.target.checked)}
+                  className="rounded border-gray-300"
+                  data-testid="checkbox-allow-printing"
+                />
+                <span className="text-sm">Allow Printing</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={options.allowCopying !== false}
+                  onChange={(e) => updateOption("allowCopying", e.target.checked)}
+                  className="rounded border-gray-300"
+                  data-testid="checkbox-allow-copying"
+                />
+                <span className="text-sm">Allow Copying Text and Images</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={options.allowEditing !== false}
+                  onChange={(e) => updateOption("allowEditing", e.target.checked)}
+                  className="rounded border-gray-300"
+                  data-testid="checkbox-allow-editing"
+                />
+                <span className="text-sm">Allow Editing</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={options.allowAnnotations !== false}
+                  onChange={(e) => updateOption("allowAnnotations", e.target.checked)}
+                  className="rounded border-gray-300"
+                  data-testid="checkbox-allow-annotations"
+                />
+                <span className="text-sm">Allow Annotations</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={options.allowFormFilling !== false}
+                  onChange={(e) => updateOption("allowFormFilling", e.target.checked)}
+                  className="rounded border-gray-300"
+                  data-testid="checkbox-allow-forms"
+                />
+                <span className="text-sm">Allow Form Filling</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "disable-pdf-printing":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="ownerPassword">Owner Password (Required)</Label>
+            <Input
+              id="ownerPassword"
+              type="password"
+              placeholder="Enter owner password"
+              value={options.ownerPassword || ""}
+              onChange={(e) => updateOption("ownerPassword", e.target.value)}
+              data-testid="input-owner-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              This password protects the print restriction and allows changes later.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="userPassword">User Password (Optional)</Label>
+            <Input
+              id="userPassword"
+              type="password"
+              placeholder="Enter user password (optional)"
+              value={options.userPassword || ""}
+              onChange={(e) => updateOption("userPassword", e.target.value)}
+              data-testid="input-user-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              If set, this password will be required to open the PDF.
+            </p>
+          </div>
+          <div className="p-3 bg-muted rounded-md">
+            <p className="text-sm text-muted-foreground">
+              This will disable printing while keeping other permissions (copying, editing) enabled.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "disable-pdf-editing":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="ownerPassword">Owner Password (Required)</Label>
+            <Input
+              id="ownerPassword"
+              type="password"
+              placeholder="Enter owner password"
+              value={options.ownerPassword || ""}
+              onChange={(e) => updateOption("ownerPassword", e.target.value)}
+              data-testid="input-owner-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              This password protects the edit restriction and allows changes later.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="userPassword">User Password (Optional)</Label>
+            <Input
+              id="userPassword"
+              type="password"
+              placeholder="Enter user password (optional)"
+              value={options.userPassword || ""}
+              onChange={(e) => updateOption("userPassword", e.target.value)}
+              data-testid="input-user-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              If set, this password will be required to open the PDF.
+            </p>
+          </div>
+          <div className="p-3 bg-muted rounded-md">
+            <p className="text-sm text-muted-foreground">
+              This will disable editing, annotations, and form filling while keeping printing and copying enabled.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "disable-pdf-copying":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="ownerPassword">Owner Password (Required)</Label>
+            <Input
+              id="ownerPassword"
+              type="password"
+              placeholder="Enter owner password"
+              value={options.ownerPassword || ""}
+              onChange={(e) => updateOption("ownerPassword", e.target.value)}
+              data-testid="input-owner-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              This password protects the copy restriction and allows changes later.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="userPassword">User Password (Optional)</Label>
+            <Input
+              id="userPassword"
+              type="password"
+              placeholder="Enter user password (optional)"
+              value={options.userPassword || ""}
+              onChange={(e) => updateOption("userPassword", e.target.value)}
+              data-testid="input-user-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              If set, this password will be required to open the PDF.
+            </p>
+          </div>
+          <div className="p-3 bg-muted rounded-md">
+            <p className="text-sm text-muted-foreground">
+              This will disable copying text and images while keeping printing and editing enabled.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "pdf-security":
+    case "secure-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="password">Document Password (Required)</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter password to secure the PDF"
+              value={options.password || ""}
+              onChange={(e) => updateOption("password", e.target.value)}
+              data-testid="input-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              This password will be required to open the PDF.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="ownerPassword">Owner Password (Optional)</Label>
+            <Input
+              id="ownerPassword"
+              type="password"
+              placeholder="Enter owner password (optional)"
+              value={options.ownerPassword || ""}
+              onChange={(e) => updateOption("ownerPassword", e.target.value)}
+              data-testid="input-owner-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              If different from document password, this allows changing permissions later.
+            </p>
+          </div>
+          <div className="space-y-3 border-t pt-4">
+            <Label>Permissions</Label>
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={options.allowPrinting !== false}
+                  onChange={(e) => updateOption("allowPrinting", e.target.checked)}
+                  className="rounded border-gray-300"
+                  data-testid="checkbox-allow-printing"
+                />
+                <span className="text-sm">Allow Printing</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={options.allowCopying !== false}
+                  onChange={(e) => updateOption("allowCopying", e.target.checked)}
+                  className="rounded border-gray-300"
+                  data-testid="checkbox-allow-copying"
+                />
+                <span className="text-sm">Allow Copying Text and Images</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={options.allowEditing !== false}
+                  onChange={(e) => updateOption("allowEditing", e.target.checked)}
+                  className="rounded border-gray-300"
+                  data-testid="checkbox-allow-editing"
+                />
+                <span className="text-sm">Allow Editing</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={options.allowAnnotations !== false}
+                  onChange={(e) => updateOption("allowAnnotations", e.target.checked)}
+                  className="rounded border-gray-300"
+                  data-testid="checkbox-allow-annotations"
+                />
+                <span className="text-sm">Allow Annotations</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={options.allowFormFilling !== false}
+                  onChange={(e) => updateOption("allowFormFilling", e.target.checked)}
+                  className="rounded border-gray-300"
+                  data-testid="checkbox-allow-forms"
+                />
+                <span className="text-sm">Allow Form Filling</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }
