@@ -2503,6 +2503,192 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "pdf-initial-view-editor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Initial Zoom Level</Label>
+            <Select
+              value={options.initialViewZoom || "fit-page"}
+              onValueChange={(value) => updateOption("initialViewZoom", value as ToolOptions["initialViewZoom"])}
+            >
+              <SelectTrigger data-testid="select-zoom">
+                <SelectValue placeholder="Select zoom level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="fit-page">Fit to Page</SelectItem>
+                <SelectItem value="fit-width">Fit to Width</SelectItem>
+                <SelectItem value="actual-size">Actual Size (100%)</SelectItem>
+                <SelectItem value="50">50%</SelectItem>
+                <SelectItem value="75">75%</SelectItem>
+                <SelectItem value="100">100%</SelectItem>
+                <SelectItem value="125">125%</SelectItem>
+                <SelectItem value="150">150%</SelectItem>
+                <SelectItem value="200">200%</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Page Mode (Panel Display)</Label>
+            <Select
+              value={options.initialViewPageMode || "none"}
+              onValueChange={(value) => updateOption("initialViewPageMode", value as ToolOptions["initialViewPageMode"])}
+            >
+              <SelectTrigger data-testid="select-page-mode">
+                <SelectValue placeholder="Select page mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">No Panel</SelectItem>
+                <SelectItem value="bookmarks">Show Bookmarks Panel</SelectItem>
+                <SelectItem value="thumbnails">Show Thumbnails Panel</SelectItem>
+                <SelectItem value="fullscreen">Open in Full Screen</SelectItem>
+                <SelectItem value="attachments">Show Attachments Panel</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Page Layout</Label>
+            <Select
+              value={options.initialViewPageLayout || "single"}
+              onValueChange={(value) => updateOption("initialViewPageLayout", value as ToolOptions["initialViewPageLayout"])}
+            >
+              <SelectTrigger data-testid="select-page-layout">
+                <SelectValue placeholder="Select page layout" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="single">Single Page</SelectItem>
+                <SelectItem value="continuous">Single Page Continuous</SelectItem>
+                <SelectItem value="two-column">Two-Column Continuous</SelectItem>
+                <SelectItem value="two-page">Two-Page View</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="startPage">Start Page</Label>
+            <Input
+              id="startPage"
+              type="number"
+              min={1}
+              placeholder="1"
+              value={options.initialViewStartPage || 1}
+              onChange={(e) => updateOption("initialViewStartPage", parseInt(e.target.value) || 1)}
+              data-testid="input-start-page"
+            />
+            <p className="text-sm text-muted-foreground">
+              The page to display when the PDF is opened.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "pdf-presentation-maker":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Page Transition Effect</Label>
+            <Select
+              value={options.transitionEffect || "fade"}
+              onValueChange={(value) => updateOption("transitionEffect", value as ToolOptions["transitionEffect"])}
+            >
+              <SelectTrigger data-testid="select-transition">
+                <SelectValue placeholder="Select transition" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">No Transition</SelectItem>
+                <SelectItem value="fade">Fade</SelectItem>
+                <SelectItem value="wipe-left">Wipe Left</SelectItem>
+                <SelectItem value="wipe-right">Wipe Right</SelectItem>
+                <SelectItem value="wipe-up">Wipe Up</SelectItem>
+                <SelectItem value="wipe-down">Wipe Down</SelectItem>
+                <SelectItem value="dissolve">Dissolve</SelectItem>
+                <SelectItem value="box-in">Box In</SelectItem>
+                <SelectItem value="box-out">Box Out</SelectItem>
+                <SelectItem value="blinds-horizontal">Horizontal Blinds</SelectItem>
+                <SelectItem value="blinds-vertical">Vertical Blinds</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="transitionDuration">Transition Duration (seconds)</Label>
+            <Input
+              id="transitionDuration"
+              type="number"
+              min={0.1}
+              max={5}
+              step={0.1}
+              placeholder="1"
+              value={options.transitionDuration || 1}
+              onChange={(e) => updateOption("transitionDuration", parseFloat(e.target.value) || 1)}
+              data-testid="input-transition-duration"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="autoAdvanceTime">Auto-Advance Time (seconds, 0 for manual)</Label>
+            <Input
+              id="autoAdvanceTime"
+              type="number"
+              min={0}
+              max={300}
+              step={1}
+              placeholder="0"
+              value={options.autoAdvanceTime || 0}
+              onChange={(e) => updateOption("autoAdvanceTime", parseInt(e.target.value) || 0)}
+              data-testid="input-auto-advance"
+            />
+            <p className="text-sm text-muted-foreground">
+              Set to 0 for manual navigation, or enter seconds to auto-advance slides.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "protect-pdf":
+    case "pdf-protector":
+    case "add-password-to-pdf":
+    case "encrypt-pdf":
+    case "pdf-encryptor":
+    case "password-protect-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter password to protect PDF"
+              value={options.password || ""}
+              onChange={(e) => updateOption("password", e.target.value)}
+              data-testid="input-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              This password will be required to open the PDF. Use a strong password with letters, numbers, and symbols.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "unlock-pdf-tool":
+    case "pdf-unlocker":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="unlockPassword">Current Password</Label>
+            <Input
+              id="unlockPassword"
+              type="password"
+              placeholder="Enter current PDF password"
+              value={options.unlockPassword || ""}
+              onChange={(e) => updateOption("unlockPassword", e.target.value)}
+              data-testid="input-unlock-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter the password used to protect this PDF to remove the protection.
+            </p>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }
