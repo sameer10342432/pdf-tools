@@ -261,6 +261,16 @@ export const pdfToolTypes = [
   "pdf-object-editor",
   "pdf-path-editor",
   "pdf-javascript-editor",
+  "pdf-initial-view-editor",
+  "pdf-presentation-maker",
+  "protect-pdf",
+  "pdf-protector",
+  "add-password-to-pdf",
+  "encrypt-pdf",
+  "pdf-encryptor",
+  "password-protect-pdf",
+  "unlock-pdf-tool",
+  "pdf-unlocker",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -435,6 +445,14 @@ export const toolOptionsSchema = z.object({
   pathStrokeWidth: z.number().optional(),
   pathStrokeColor: z.string().optional(),
   pathFillColor: z.string().optional(),
+  initialViewZoom: z.enum(["fit-page", "fit-width", "actual-size", "50", "75", "100", "125", "150", "200"]).optional(),
+  initialViewPageMode: z.enum(["none", "bookmarks", "thumbnails", "fullscreen", "attachments"]).optional(),
+  initialViewPageLayout: z.enum(["single", "continuous", "two-column", "two-page"]).optional(),
+  initialViewStartPage: z.number().optional(),
+  presentationMode: z.boolean().optional(),
+  transitionEffect: z.enum(["none", "fade", "wipe-left", "wipe-right", "wipe-up", "wipe-down", "dissolve", "box-in", "box-out", "blinds-horizontal", "blinds-vertical"]).optional(),
+  transitionDuration: z.number().optional(),
+  autoAdvanceTime: z.number().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -6996,5 +7014,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Test Script Behavior</h2>
 <p>Verify that scripts work correctly before distributing documents. Our tool validates JavaScript syntax and identifies common errors. Test scripts in the preview environment to see their effects. Debug problems by examining script execution. Ensure your interactive PDF works reliably for all users.</p>`,
+  },
+  {
+    id: "pdf-initial-view-editor",
+    name: "PDF Initial View Editor",
+    description: "Set how your PDF opens - zoom level, page mode, and display options",
+    icon: "Eye",
+    type: "pdf-initial-view-editor",
+    color: "bg-indigo-500",
+    emoji: "👁️",
+    metaTitle: "PDF Initial View Editor Online Free - Set PDF Opening Settings | PDF Tools",
+    metaDescription: "Set how your PDF opens with our free online tool. Control zoom level, page mode, display options, and initial view settings. No registration required.",
+    seoArticle: `<h2>PDF Initial View Editor - Control How Your PDF Opens</h2>
+<p>First impressions matter, and how your PDF opens is the first thing viewers experience. Our PDF Initial View Editor lets you control exactly how your document appears when first opened. Set the zoom level, choose the page display mode, determine whether bookmarks or thumbnails show, and configure many other opening behaviors. Create a polished, professional viewing experience from the moment your document opens.</p>
+
+<h2>Why Initial View Settings Matter</h2>
+<p>A PDF that opens at an awkward zoom level or in the wrong page mode creates a poor first impression. Readers may struggle to navigate or miss important features. Properly configured initial view settings ensure your document displays exactly as intended, whether viewed on desktop, tablet, or mobile devices. Professional documents deserve professional presentation.</p>
+
+<h2>Available Initial View Options</h2>
+<p>Control every aspect of how your PDF opens. Set page layout to single page, continuous, or two-page view. Choose zoom levels from fit-to-page to specific percentages. Show or hide bookmarks panel, thumbnails, or attachments on open. Specify the initial page where reading begins. Configure full-screen mode for presentations. These settings transform how recipients interact with your document.</p>
+
+<h2>Perfect for Business Documents</h2>
+<p>Proposals that open to the executive summary page. Presentations that start in full-screen mode. Reports with the navigation panel visible for easy chapter access. Catalogs that display in two-page spread mode. Our tool helps you create documents that guide viewers to engage with your content in the optimal way.</p>
+
+<h2>How to Set Initial View</h2>
+<p>Upload your PDF document using our secure uploader. Select your preferred opening settings from the intuitive options panel. Preview how the document will appear when opened. Download your configured PDF instantly. The original content remains unchanged - only the viewing preferences are updated. Share your document knowing it will display exactly as intended.</p>`,
+  },
+  {
+    id: "pdf-presentation-maker",
+    name: "PDF Presentation Maker",
+    description: "Transform your PDF into a full-screen presentation with transitions",
+    icon: "Presentation",
+    type: "pdf-presentation-maker",
+    color: "bg-purple-500",
+    emoji: "🎬",
+    metaTitle: "PDF Presentation Maker Online Free - Create PDF Slideshows | PDF Tools",
+    metaDescription: "Turn your PDF into a presentation with full-screen mode and page transitions. Free online PDF to slideshow converter. No software needed.",
+    seoArticle: `<h2>PDF Presentation Maker - Transform PDFs Into Slideshows</h2>
+<p>Turn any PDF document into a professional presentation with our free online PDF Presentation Maker. Add smooth page transitions, configure automatic page timing, and set full-screen mode for impressive presentations. Whether you're presenting reports, training materials, or visual portfolios, our tool helps you deliver content with impact.</p>
+
+<h2>Full-Screen Presentation Mode</h2>
+<p>Configure your PDF to open in full-screen presentation mode automatically. The PDF fills the entire screen, eliminating distractions and focusing attention on your content. Navigate with keyboard arrows or mouse clicks, just like traditional presentation software. Exit full-screen with a single keystroke when your presentation concludes.</p>
+
+<h2>Page Transition Effects</h2>
+<p>Add visual interest with page transition effects. Choose from classic transitions like fade, wipe, dissolve, or more dynamic effects like box-in or blinds. Set transition duration for perfectly timed effects. Consistent transitions create a polished, professional presentation experience that keeps audiences engaged.</p>
+
+<h2>Automatic Page Timing</h2>
+<p>Create self-running presentations with automatic page advancement. Set timing for each slide or apply uniform timing across all pages. Perfect for trade show displays, lobby presentations, or any unattended viewing scenario. Combine with transitions for a completely automated presentation experience.</p>
+
+<h2>Ideal Use Cases</h2>
+<p>Convert meeting handouts into presentation-ready materials. Transform design portfolios into engaging slideshows. Create training presentations from documentation. Build product catalogs that present beautifully. Any multi-page PDF can become a compelling presentation with the right settings applied.</p>`,
+  },
+  {
+    id: "protect-pdf",
+    name: "Protect PDF",
+    description: "Add password protection to secure your PDF documents",
+    icon: "Shield",
+    type: "protect-pdf",
+    color: "bg-green-600",
+    emoji: "🛡️",
+    metaTitle: "Protect PDF Online Free - Add Password to PDF Files | PDF Tools",
+    metaDescription: "Protect your PDF files with password encryption online for free. Secure sensitive documents instantly. No registration or software required.",
+    seoArticle: `<h2>Protect PDF Files - Secure Your Documents</h2>
+<p>Protect sensitive PDF documents with strong password encryption using our free online tool. Whether you're sharing confidential business reports, personal documents, or financial statements, adding password protection ensures only authorized recipients can access your content. Our protection tool creates military-grade encryption that keeps your information safe.</p>
+
+<h2>Why Protect Your PDFs</h2>
+<p>Unprotected PDFs can be opened, read, and shared by anyone who obtains the file. Email can be intercepted, cloud storage can be breached, and files can be forwarded without your knowledge. Password protection creates a barrier that prevents unauthorized access. Even if your file falls into the wrong hands, the content remains secure behind encryption.</p>
+
+<h2>Strong Encryption Standards</h2>
+<p>Our tool applies robust encryption algorithms used by governments and financial institutions. The password you choose becomes the key to unlocking your document. Without the correct password, the encrypted content is essentially unreadable. We use industry-standard encryption that resists brute-force attacks and protects against unauthorized decryption attempts.</p>
+
+<h2>Easy Protection Process</h2>
+<p>Upload your PDF document to our secure platform. Enter your chosen password - we recommend using a combination of letters, numbers, and symbols for maximum security. Optionally set different passwords for opening versus editing. Download your protected PDF and share confidently. The entire process takes just seconds.</p>
+
+<h2>Share Passwords Securely</h2>
+<p>Remember to share the password through a different channel than the document itself. If you email the PDF, send the password via text message or phone call. This separation ensures that intercepting one transmission doesn't compromise security. Our tool protects your document - proper password management maintains that protection.</p>`,
+  },
+  {
+    id: "pdf-protector",
+    name: "PDF Protector",
+    description: "Secure your PDF with encryption and access controls",
+    icon: "Lock",
+    type: "pdf-protector",
+    color: "bg-emerald-600",
+    emoji: "🔐",
+    metaTitle: "PDF Protector Online Free - Encrypt PDF Documents | PDF Tools",
+    metaDescription: "Encrypt and protect your PDF documents online for free. Add password security and access controls to any PDF file instantly.",
+    seoArticle: `<h2>PDF Protector - Comprehensive Document Security</h2>
+<p>Our PDF Protector provides comprehensive security for your PDF documents. Beyond simple password protection, you can control exactly what recipients can do with your document. Prevent printing, restrict copying, block editing, and control other permissions. Create documents that can be viewed but not altered, shared but not printed, or accessed only by those with the password.</p>
+
+<h2>Multiple Security Layers</h2>
+<p>PDF protection involves two types of passwords: document open password and permissions password. The open password prevents anyone without it from viewing the document. The permissions password controls what authorized viewers can do with the document. Use one or both to create the exact security level your document requires.</p>
+
+<h2>Control Document Permissions</h2>
+<p>Fine-tune exactly what recipients can do with your protected PDF. Allow viewing but prevent printing. Permit printing but block text copying. Enable form filling while preventing content changes. These granular controls let you share information while maintaining control over how it's used.</p>
+
+<h2>Protect Intellectual Property</h2>
+<p>Creative works, proprietary documents, and confidential materials need protection. Our PDF Protector ensures your intellectual property stays secure. Clients can review proposals without copying your content. Reviewers can read manuscripts without redistributing them. Partners can access technical documents without extracting trade secrets.</p>
+
+<h2>Business-Grade Security</h2>
+<p>Meet compliance requirements and security policies with properly protected documents. Financial reports, legal contracts, medical records, and other regulated documents often require encryption. Our tool provides the security standards necessary for professional and regulated environments.</p>`,
+  },
+  {
+    id: "add-password-to-pdf",
+    name: "Add Password to PDF",
+    description: "Password protect your PDF files with secure encryption",
+    icon: "KeyRound",
+    type: "add-password-to-pdf",
+    color: "bg-teal-600",
+    emoji: "🔑",
+    metaTitle: "Add Password to PDF Online Free - Password Protect PDF | PDF Tools",
+    metaDescription: "Add password protection to any PDF file online for free. Secure your documents with encryption in seconds. No software installation needed.",
+    seoArticle: `<h2>Add Password to PDF - Quick and Secure Protection</h2>
+<p>Adding a password to your PDF is the simplest way to protect sensitive information. Our free online tool lets you add password protection to any PDF file in seconds. Whether you're securing a single document or protecting multiple files, the process is quick, secure, and completely free. Your password-protected PDF maintains full quality while gaining essential security.</p>
+
+<h2>When to Add PDF Passwords</h2>
+<p>Tax documents before emailing to your accountant. Employment contracts before sending to new hires. Medical records shared with healthcare providers. Bank statements attached to loan applications. Legal documents exchanged between attorneys. Any time sensitive information travels electronically, password protection adds an essential security layer.</p>
+
+<h2>Choose Strong Passwords</h2>
+<p>The security of your protected PDF depends on password strength. Use at least 8 characters mixing uppercase, lowercase, numbers, and symbols. Avoid dictionary words, birthdays, or common phrases. Consider using a password phrase that's memorable but difficult to guess. Stronger passwords mean stronger protection for your documents.</p>
+
+<h2>Simple Three-Step Process</h2>
+<p>Upload your PDF document using our secure uploader. Enter your chosen password and confirm it. Download your password-protected PDF instantly. There's no waiting, no registration, and no file size limits. Your document is processed on secure servers and never stored after download.</p>
+
+<h2>Compatible With All PDF Readers</h2>
+<p>Password-protected PDFs created by our tool work with all standard PDF readers. Adobe Acrobat, Preview on Mac, Chrome's built-in PDF viewer, and mobile PDF apps all support password-protected documents. Recipients simply enter the password you provide to access the content.</p>`,
+  },
+  {
+    id: "encrypt-pdf",
+    name: "Encrypt PDF",
+    description: "Apply strong encryption to protect your PDF content",
+    icon: "ShieldCheck",
+    type: "encrypt-pdf",
+    color: "bg-cyan-600",
+    emoji: "🔒",
+    metaTitle: "Encrypt PDF Online Free - PDF Encryption Tool | PDF Tools",
+    metaDescription: "Encrypt PDF files with strong security online for free. Apply professional-grade encryption to protect sensitive documents. No registration required.",
+    seoArticle: `<h2>Encrypt PDF - Professional-Grade Document Security</h2>
+<p>PDF encryption transforms your document into an unreadable format that only authorized users can access. Our encryption tool applies strong cryptographic algorithms that protect your content from unauthorized access. Unlike simple password protection, encryption scrambles the actual document data, making it impossible to read without the correct decryption key.</p>
+
+<h2>How PDF Encryption Works</h2>
+<p>When you encrypt a PDF, the document content is converted using mathematical algorithms into encoded data. This encrypted data appears as random noise to anyone without the password. Only entering the correct password reverses the encryption, restoring the readable document. The encryption is applied to all content: text, images, forms, and metadata.</p>
+
+<h2>Encryption Strength Options</h2>
+<p>Our tool supports industry-standard encryption levels. 128-bit encryption provides excellent protection suitable for most business documents. 256-bit encryption offers the highest security level, used by financial institutions and government agencies. Both levels resist brute-force attacks and unauthorized decryption attempts.</p>
+
+<h2>Protect All Document Content</h2>
+<p>PDF encryption secures every element of your document. Text cannot be extracted or searched without decryption. Images cannot be viewed or copied. Form data remains hidden. Even document metadata like author name and creation date is protected. Complete encryption means complete protection.</p>
+
+<h2>Compliance and Regulations</h2>
+<p>Many industries require document encryption for regulatory compliance. Healthcare documents need HIPAA-compliant protection. Financial records require encryption under various banking regulations. Legal documents often mandate encryption for client confidentiality. Our encryption tool helps you meet these requirements with properly secured documents.</p>`,
+  },
+  {
+    id: "pdf-encryptor",
+    name: "PDF Encryptor",
+    description: "Advanced encryption tool for maximum PDF security",
+    icon: "ShieldAlert",
+    type: "pdf-encryptor",
+    color: "bg-blue-600",
+    emoji: "🛡️",
+    metaTitle: "PDF Encryptor Online Free - Advanced PDF Encryption | PDF Tools",
+    metaDescription: "Apply advanced encryption to PDF files online for free. Maximum security for sensitive documents with our professional PDF encryptor tool.",
+    seoArticle: `<h2>PDF Encryptor - Maximum Security for Your Documents</h2>
+<p>The PDF Encryptor delivers the highest level of security for your sensitive documents. Using advanced encryption algorithms and comprehensive protection options, this tool secures your PDFs against unauthorized access, copying, and modification. When standard protection isn't enough, the PDF Encryptor provides the security your most sensitive documents demand.</p>
+
+<h2>Advanced Security Features</h2>
+<p>Beyond basic password protection, our encryptor offers comprehensive security options. Set separate passwords for opening and editing. Control granular permissions for printing, copying, and modification. Apply metadata protection to hide document information. These advanced features give you complete control over document security.</p>
+
+<h2>Corporate Document Security</h2>
+<p>Businesses handle sensitive information daily: financial reports, strategic plans, personnel records, and client data. The PDF Encryptor provides the security level expected in corporate environments. Encrypt documents before distribution, ensure compliance with security policies, and protect your organization's confidential information.</p>
+
+<h2>Secure Document Distribution</h2>
+<p>When documents must travel outside your organization, encryption ensures they remain protected. Board meeting materials sent to directors. Proposals shared with prospective clients. Technical specifications provided to contractors. Encrypted documents maintain security regardless of how they're transmitted or stored.</p>
+
+<h2>Batch Encryption Capability</h2>
+<p>Encrypt multiple documents with consistent security settings. Apply the same encryption level and permissions across document sets. Ensure uniform security across all distributed materials. Batch processing saves time while maintaining security standards across your document library.</p>`,
+  },
+  {
+    id: "password-protect-pdf",
+    name: "Password Protect PDF",
+    description: "Lock your PDF files with a secure password",
+    icon: "LockKeyhole",
+    type: "password-protect-pdf",
+    color: "bg-violet-600",
+    emoji: "🔏",
+    metaTitle: "Password Protect PDF Online Free - Lock PDF Files | PDF Tools",
+    metaDescription: "Password protect your PDF files online for free. Lock documents with secure encryption. Easy, fast, and no software installation required.",
+    seoArticle: `<h2>Password Protect PDF - Lock Your Documents Securely</h2>
+<p>Locking your PDF with a password prevents unauthorized access to your content. Our free online tool makes password protection simple and accessible. Upload your document, set your password, and download a locked PDF that only authorized users can open. No software installation, no registration, and no limits on file size or number of documents.</p>
+
+<h2>When Password Protection Is Essential</h2>
+<p>Sending documents by email exposes them to potential interception. Storing files in cloud services means trusting third-party security. Sharing via file transfer makes controlling access difficult. Password protection adds a security layer that travels with your document, protecting it regardless of how it's transmitted or stored.</p>
+
+<h2>Create Memorable Yet Secure Passwords</h2>
+<p>Effective passwords balance memorability with security. Consider using a passphrase: several words combined with numbers or symbols. "Blue42Tiger!Mountain" is more secure than "password123" and easier to remember than random characters. Share passwords verbally or through a different channel than the document itself.</p>
+
+<h2>Universal Compatibility</h2>
+<p>Password-protected PDFs work with every major PDF viewer and application. Adobe Reader, browser-based PDF viewers, and mobile PDF apps all support password-protected documents. Recipients simply enter the password to access content. No special software or plugins required.</p>
+
+<h2>Maintain Document Quality</h2>
+<p>Password protection doesn't affect your document's appearance or quality. Text remains sharp and searchable (after unlocking). Images maintain their resolution. Formatting stays exactly as you created it. The only change is the added security that protects your content from unauthorized eyes.</p>`,
+  },
+  {
+    id: "unlock-pdf-tool",
+    name: "Unlock PDF",
+    description: "Remove password protection from PDF files you own",
+    icon: "Unlock",
+    type: "unlock-pdf-tool",
+    color: "bg-amber-600",
+    emoji: "🔓",
+    metaTitle: "Unlock PDF Online Free - Remove PDF Password | PDF Tools",
+    metaDescription: "Remove password protection from your PDF files online for free. Unlock PDFs you own instantly. No software installation needed.",
+    seoArticle: `<h2>Unlock PDF - Remove Password Protection</h2>
+<p>Sometimes you need to remove password protection from PDFs you own. Maybe you've forgotten the password but still have access, or you need to share a document without the password requirement. Our Unlock PDF tool removes password protection when you provide the current password, giving you an unrestricted version of your document.</p>
+
+<h2>When to Unlock Your PDFs</h2>
+<p>Documents created with passwords may need unlocking for various legitimate reasons. Combining protected files into a single document. Preparing documents for printing services. Sharing files with colleagues who need full access. Archiving documents without password dependencies. These common scenarios require password removal.</p>
+
+<h2>How PDF Unlocking Works</h2>
+<p>Our tool processes your protected PDF using the password you provide. Once authenticated, the encryption is removed, and a new unprotected version is created. The document content remains exactly the same - only the password requirement is removed. Your original encrypted file remains unchanged.</p>
+
+<h2>Legitimate Use Only</h2>
+<p>This tool is designed for unlocking documents you own or have authorization to modify. Use it for your own files or files where the password holder has authorized removal. Respect document security and copyright. Our tool helps manage your own document security, not bypass others' protection.</p>
+
+<h2>Preserve Document Integrity</h2>
+<p>Unlocked documents maintain complete fidelity with the original. All pages, images, fonts, and formatting remain exactly as they were. Interactive elements, forms, and bookmarks continue to function. The only change is the removal of the password requirement, making your document freely accessible.</p>`,
+  },
+  {
+    id: "pdf-unlocker",
+    name: "PDF Unlocker",
+    description: "Remove restrictions and passwords from your PDF documents",
+    icon: "KeySquare",
+    type: "pdf-unlocker",
+    color: "bg-orange-600",
+    emoji: "🗝️",
+    metaTitle: "PDF Unlocker Online Free - Remove PDF Restrictions | PDF Tools",
+    metaDescription: "Unlock and remove restrictions from your PDF files online for free. Remove passwords and access controls from PDFs you own instantly.",
+    seoArticle: `<h2>PDF Unlocker - Free Your Documents</h2>
+<p>The PDF Unlocker removes both password requirements and permission restrictions from your PDF documents. Whether you need to remove the password to open or lift restrictions on printing and copying, this comprehensive tool restores full access to PDFs you own. Unlock your documents to regain complete control over their use.</p>
+
+<h2>Remove Open Passwords</h2>
+<p>Documents requiring a password to open can be unlocked for unrestricted access. Provide the current password, and our tool creates an unprotected version that opens without authentication. Perfect for archiving documents, sharing with teams, or simply eliminating the need to remember passwords for your own files.</p>
+
+<h2>Remove Permission Restrictions</h2>
+<p>Some PDFs allow opening but restrict actions like printing, copying, or editing. These permissions restrictions often cause frustration when working with your own documents. The PDF Unlocker can remove these restrictions when you provide the permissions password, restoring full functionality.</p>
+
+<h2>Prepare Documents for Processing</h2>
+<p>Many PDF processing tools require unrestricted documents. Before merging, splitting, or converting protected PDFs, you may need to remove restrictions. Our unlocker prepares documents for further processing, enabling the next steps in your document workflow.</p>
+
+<h2>Maintain Complete Control</h2>
+<p>Your documents should work for you, not against you. Password protection serves its purpose, but when that purpose is fulfilled, restrictions can become obstacles. The PDF Unlocker gives you control over your document security, allowing you to add or remove protection as your needs change.</p>`,
   },
 ];

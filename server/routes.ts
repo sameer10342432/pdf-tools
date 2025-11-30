@@ -12111,6 +12111,216 @@ async function editJavaScript(
   return Buffer.from(await sourcePdf.save());
 }
 
+interface InitialViewSettings {
+  zoom: string;
+  pageMode: string;
+  pageLayout: string;
+  startPage: number;
+}
+
+async function setInitialView(
+  file: Express.Multer.File,
+  settings: InitialViewSettings
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const context = pdf.context;
+  const catalog = pdf.catalog;
+  
+  const pageCount = pdf.getPageCount();
+  const startPageIndex = Math.max(0, Math.min(settings.startPage - 1, pageCount - 1));
+  const startPage = pdf.getPage(startPageIndex);
+  
+  let zoomValue: number | null = null;
+  let fitType: string | null = null;
+  
+  switch (settings.zoom) {
+    case "fit-page":
+      fitType = "Fit";
+      break;
+    case "fit-width":
+      fitType = "FitH";
+      break;
+    case "actual-size":
+      zoomValue = 1;
+      break;
+    case "50":
+      zoomValue = 0.5;
+      break;
+    case "75":
+      zoomValue = 0.75;
+      break;
+    case "100":
+      zoomValue = 1;
+      break;
+    case "125":
+      zoomValue = 1.25;
+      break;
+    case "150":
+      zoomValue = 1.5;
+      break;
+    case "200":
+      zoomValue = 2;
+      break;
+    default:
+      fitType = "Fit";
+  }
+  
+  const pageRef = startPage.ref;
+  
+  if (fitType) {
+    const destArray = context.obj([pageRef, PDFName.of(fitType)]);
+    catalog.set(PDFName.of("OpenAction"), destArray);
+  } else if (zoomValue) {
+    const { height } = startPage.getSize();
+    const destArray = context.obj([
+      pageRef,
+      PDFName.of("XYZ"),
+      PDFNumber.of(0),
+      PDFNumber.of(height),
+      PDFNumber.of(zoomValue),
+    ]);
+    catalog.set(PDFName.of("OpenAction"), destArray);
+  }
+  
+  let pageModeValue: string;
+  switch (settings.pageMode) {
+    case "bookmarks":
+      pageModeValue = "UseOutlines";
+      break;
+    case "thumbnails":
+      pageModeValue = "UseThumbs";
+      break;
+    case "fullscreen":
+      pageModeValue = "FullScreen";
+      break;
+    case "attachments":
+      pageModeValue = "UseAttachments";
+      break;
+    case "none":
+    default:
+      pageModeValue = "UseNone";
+  }
+  catalog.set(PDFName.of("PageMode"), PDFName.of(pageModeValue));
+  
+  let pageLayoutValue: string;
+  switch (settings.pageLayout) {
+    case "continuous":
+      pageLayoutValue = "OneColumn";
+      break;
+    case "two-column":
+      pageLayoutValue = "TwoColumnLeft";
+      break;
+    case "two-page":
+      pageLayoutValue = "TwoPageLeft";
+      break;
+    case "single":
+    default:
+      pageLayoutValue = "SinglePage";
+  }
+  catalog.set(PDFName.of("PageLayout"), PDFName.of(pageLayoutValue));
+  
+  pdf.setProducer("PDF Tools - Initial View Editor");
+  return Buffer.from(await pdf.save());
+}
+
+interface PresentationSettings {
+  fullscreen: boolean;
+  transition: string;
+  transitionDuration: number;
+  autoAdvance: number;
+}
+
+async function makePresentationPdf(
+  file: Express.Multer.File,
+  settings: PresentationSettings
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const context = pdf.context;
+  const catalog = pdf.catalog;
+  
+  if (settings.fullscreen) {
+    catalog.set(PDFName.of("PageMode"), PDFName.of("FullScreen"));
+  }
+  
+  const pages = pdf.getPages();
+  
+  let transType: string = "Fade";
+  let transDirection: number | undefined;
+  let transMotion: string | undefined;
+  
+  switch (settings.transition) {
+    case "fade":
+      transType = "Fade";
+      break;
+    case "wipe-left":
+      transType = "Wipe";
+      transDirection = 180;
+      break;
+    case "wipe-right":
+      transType = "Wipe";
+      transDirection = 0;
+      break;
+    case "wipe-up":
+      transType = "Wipe";
+      transDirection = 90;
+      break;
+    case "wipe-down":
+      transType = "Wipe";
+      transDirection = 270;
+      break;
+    case "dissolve":
+      transType = "Dissolve";
+      break;
+    case "box-in":
+      transType = "Box";
+      transMotion = "I";
+      break;
+    case "box-out":
+      transType = "Box";
+      transMotion = "O";
+      break;
+    case "blinds-horizontal":
+      transType = "Blinds";
+      transDirection = 0;
+      break;
+    case "blinds-vertical":
+      transType = "Blinds";
+      transDirection = 90;
+      break;
+    case "none":
+    default:
+      transType = "";
+  }
+  
+  for (const page of pages) {
+    if (transType) {
+      const transDict: Record<string, unknown> = {
+        Type: PDFName.of("Trans"),
+        S: PDFName.of(transType),
+        D: PDFNumber.of(settings.transitionDuration),
+      };
+      
+      if (transDirection !== undefined) {
+        transDict.Di = PDFNumber.of(transDirection);
+      }
+      if (transMotion) {
+        transDict.M = PDFName.of(transMotion);
+      }
+      
+      page.node.set(PDFName.of("Trans"), context.obj(transDict));
+    }
+    
+    if (settings.autoAdvance > 0) {
+      page.node.set(PDFName.of("Dur"), PDFNumber.of(settings.autoAdvance));
+    }
+  }
+  
+  pdf.setProducer("PDF Tools - Presentation Maker");
+  return Buffer.from(await pdf.save());
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -14065,6 +14275,52 @@ export async function registerRoutes(
             filename = "javascript-edited.pdf";
             break;
           }
+          
+          case "pdf-initial-view-editor": {
+            const viewSettings = {
+              zoom: options.initialViewZoom || "fit-page",
+              pageMode: options.initialViewPageMode || "none",
+              pageLayout: options.initialViewPageLayout || "single",
+              startPage: options.initialViewStartPage || 1,
+            };
+            result = await setInitialView(files[0], viewSettings);
+            filename = "initial-view-set.pdf";
+            break;
+          }
+          
+          case "pdf-presentation-maker": {
+            const presentationSettings = {
+              fullscreen: options.presentationMode !== false,
+              transition: options.transitionEffect || "fade",
+              transitionDuration: options.transitionDuration || 1,
+              autoAdvance: options.autoAdvanceTime || 0,
+            };
+            result = await makePresentationPdf(files[0], presentationSettings);
+            filename = "presentation.pdf";
+            break;
+          }
+          
+          case "protect-pdf":
+          case "pdf-protector":
+          case "add-password-to-pdf":
+          case "encrypt-pdf":
+          case "pdf-encryptor":
+          case "password-protect-pdf":
+            if (!options.password || options.password.trim() === "") {
+              throw new Error("Please enter a password to protect the PDF");
+            }
+            result = await protectPdf(files[0], options.password);
+            filename = "protected.pdf";
+            break;
+          
+          case "unlock-pdf-tool":
+          case "pdf-unlocker":
+            if (!options.unlockPassword || options.unlockPassword.trim() === "") {
+              throw new Error("Please enter the PDF password to unlock");
+            }
+            result = await unlockPdf(files[0], options.unlockPassword);
+            filename = "unlocked.pdf";
+            break;
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
