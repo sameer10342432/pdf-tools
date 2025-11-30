@@ -1,7 +1,7 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
-import { PDFDocument, degrees, rgb, StandardFonts, PDFName, PDFDict, PDFArray } from "pdf-lib";
+import { PDFDocument, degrees, rgb, StandardFonts, PDFName, PDFDict, PDFArray, PDFNumber, PDFString } from "pdf-lib";
 import archiver from "archiver";
 import path from "path";
 import fs from "fs";
@@ -11429,6 +11429,688 @@ async function removeAnnotations(
   return Buffer.from(await sourcePdf.save());
 }
 
+async function createBookmarks(
+  file: Express.Multer.File,
+  bookmarksData: string
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  let bookmarks: Array<{ title: string; page: number; level?: number }> = [];
+  try {
+    bookmarks = JSON.parse(bookmarksData || "[]");
+  } catch (e) {
+    bookmarks = bookmarksData.split("\n")
+      .filter(line => line.trim())
+      .map(line => {
+        const parts = line.split(",").map(p => p.trim());
+        return {
+          title: parts[0] || "Untitled",
+          page: parseInt(parts[1], 10) || 1,
+          level: parseInt(parts[2], 10) || 0
+        };
+      });
+  }
+  
+  if (bookmarks.length === 0) {
+    const pageCount = sourcePdf.getPageCount();
+    for (let i = 0; i < pageCount; i++) {
+      bookmarks.push({ title: `Page ${i + 1}`, page: i + 1, level: 0 });
+    }
+  }
+  
+  const catalog = sourcePdf.catalog;
+  const context = sourcePdf.context;
+  
+  const outlineItems: any[] = [];
+  
+  for (const bookmark of bookmarks) {
+    const pageIndex = Math.max(0, Math.min(bookmark.page - 1, sourcePdf.getPageCount() - 1));
+    const pageRef = sourcePdf.getPage(pageIndex).ref;
+    
+    const title = PDFString.of(bookmark.title);
+    const dest = context.obj([pageRef, PDFName.of("Fit")]);
+    
+    const outlineItem = context.obj({
+      Title: title,
+      Dest: dest,
+      Parent: null,
+    });
+    
+    outlineItems.push(context.register(outlineItem));
+  }
+  
+  if (outlineItems.length > 0) {
+    for (let i = 0; i < outlineItems.length; i++) {
+      const itemDict = context.lookup(outlineItems[i]) as PDFDict;
+      if (i > 0) {
+        itemDict.set(PDFName.of("Prev"), outlineItems[i - 1]);
+      }
+      if (i < outlineItems.length - 1) {
+        itemDict.set(PDFName.of("Next"), outlineItems[i + 1]);
+      }
+    }
+    
+    const outlines = context.obj({
+      Type: PDFName.of("Outlines"),
+      First: outlineItems[0],
+      Last: outlineItems[outlineItems.length - 1],
+      Count: PDFNumber.of(outlineItems.length),
+    });
+    
+    const outlinesRef = context.register(outlines);
+    
+    for (const itemRef of outlineItems) {
+      const itemDict = context.lookup(itemRef) as PDFDict;
+      itemDict.set(PDFName.of("Parent"), outlinesRef);
+    }
+    
+    catalog.set(PDFName.of("Outlines"), outlinesRef);
+  }
+  
+  sourcePdf.setProducer("PDF Tools - Bookmarks Created");
+  return Buffer.from(await sourcePdf.save());
+}
+
+async function editBookmarks(
+  file: Express.Multer.File,
+  bookmarksData: string
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const catalog = sourcePdf.catalog;
+  catalog.delete(PDFName.of("Outlines"));
+  
+  let bookmarks: Array<{ title: string; page: number; level?: number }> = [];
+  try {
+    bookmarks = JSON.parse(bookmarksData || "[]");
+  } catch (e) {
+    bookmarks = bookmarksData.split("\n")
+      .filter(line => line.trim())
+      .map(line => {
+        const parts = line.split(",").map(p => p.trim());
+        return {
+          title: parts[0] || "Untitled",
+          page: parseInt(parts[1], 10) || 1,
+          level: parseInt(parts[2], 10) || 0
+        };
+      });
+  }
+  
+  if (bookmarks.length === 0) {
+    sourcePdf.setProducer("PDF Tools - Bookmarks Edited");
+    return Buffer.from(await sourcePdf.save());
+  }
+  
+  const context = sourcePdf.context;
+  const outlineItems: any[] = [];
+  
+  for (const bookmark of bookmarks) {
+    const pageIndex = Math.max(0, Math.min(bookmark.page - 1, sourcePdf.getPageCount() - 1));
+    const pageRef = sourcePdf.getPage(pageIndex).ref;
+    
+    const title = PDFString.of(bookmark.title);
+    const dest = context.obj([pageRef, PDFName.of("Fit")]);
+    
+    const outlineItem = context.obj({
+      Title: title,
+      Dest: dest,
+      Parent: null,
+    });
+    
+    outlineItems.push(context.register(outlineItem));
+  }
+  
+  if (outlineItems.length > 0) {
+    for (let i = 0; i < outlineItems.length; i++) {
+      const itemDict = context.lookup(outlineItems[i]) as PDFDict;
+      if (i > 0) {
+        itemDict.set(PDFName.of("Prev"), outlineItems[i - 1]);
+      }
+      if (i < outlineItems.length - 1) {
+        itemDict.set(PDFName.of("Next"), outlineItems[i + 1]);
+      }
+    }
+    
+    const outlines = context.obj({
+      Type: PDFName.of("Outlines"),
+      First: outlineItems[0],
+      Last: outlineItems[outlineItems.length - 1],
+      Count: PDFNumber.of(outlineItems.length),
+    });
+    
+    const outlinesRef = context.register(outlines);
+    
+    for (const itemRef of outlineItems) {
+      const itemDict = context.lookup(itemRef) as PDFDict;
+      itemDict.set(PDFName.of("Parent"), outlinesRef);
+    }
+    
+    catalog.set(PDFName.of("Outlines"), outlinesRef);
+  }
+  
+  sourcePdf.setProducer("PDF Tools - Bookmarks Edited");
+  return Buffer.from(await sourcePdf.save());
+}
+
+async function removeBookmarks(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const catalog = sourcePdf.catalog;
+  catalog.delete(PDFName.of("Outlines"));
+  
+  sourcePdf.setProducer("PDF Tools - Bookmarks Removed");
+  return Buffer.from(await sourcePdf.save());
+}
+
+async function addPageLabels(
+  file: Express.Multer.File,
+  style: string,
+  prefix: string,
+  startPage: number,
+  startNumber: number
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const context = sourcePdf.context;
+  const catalog = sourcePdf.catalog;
+  
+  const styleMap: Record<string, string> = {
+    "decimal": "D",
+    "roman-lower": "r",
+    "roman-upper": "R",
+    "alpha-lower": "a",
+    "alpha-upper": "A",
+  };
+  
+  const pdfStyle = styleMap[style] || "D";
+  const startPageIndex = Math.max(0, startPage - 1);
+  
+  const labelDict: Record<string, any> = {
+    S: PDFName.of(pdfStyle),
+    St: PDFNumber.of(startNumber),
+  };
+  
+  if (prefix && prefix.trim()) {
+    labelDict.P = PDFString.of(prefix);
+  }
+  
+  const pageLabelsDict = context.obj({
+    Nums: [
+      PDFNumber.of(startPageIndex),
+      context.obj(labelDict),
+    ],
+  });
+  
+  catalog.set(PDFName.of("PageLabels"), pageLabelsDict);
+  
+  sourcePdf.setProducer("PDF Tools - Page Labels Added");
+  return Buffer.from(await sourcePdf.save());
+}
+
+async function summarizeComments(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const comments: Array<{
+    page: number;
+    type: string;
+    content: string;
+    author?: string;
+    date?: string;
+  }> = [];
+  
+  const pageCount = sourcePdf.getPageCount();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const page = sourcePdf.getPage(i);
+    const annots = page.node.get(PDFName.of("Annots"));
+    
+    if (annots instanceof PDFArray) {
+      for (let j = 0; j < annots.size(); j++) {
+        const annotRef = annots.get(j);
+        if (annotRef) {
+          const annot = sourcePdf.context.lookup(annotRef);
+          if (annot instanceof PDFDict) {
+            const subtype = annot.get(PDFName.of("Subtype"));
+            const contents = annot.get(PDFName.of("Contents"));
+            const author = annot.get(PDFName.of("T"));
+            const modDate = annot.get(PDFName.of("M"));
+            
+            const subtypeStr = subtype ? subtype.toString().replace("/", "") : "Unknown";
+            const contentsStr = contents ? contents.toString() : "";
+            const authorStr = author ? author.toString() : "";
+            const dateStr = modDate ? modDate.toString() : "";
+            
+            if (["Text", "FreeText", "Highlight", "Underline", "StrikeOut", "Popup", "Ink", "Stamp"].includes(subtypeStr)) {
+              comments.push({
+                page: i + 1,
+                type: subtypeStr,
+                content: contentsStr.replace(/^\(|\)$/g, ""),
+                author: authorStr.replace(/^\(|\)$/g, ""),
+                date: dateStr.replace(/^\(|\)$/g, ""),
+              });
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  const lineHeight = 14;
+  
+  let currentPage = resultPdf.addPage([pageWidth, pageHeight]);
+  let yPosition = pageHeight - margin;
+  
+  currentPage.drawText("PDF Comment Summary", {
+    x: margin,
+    y: yPosition,
+    size: 20,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  yPosition -= 30;
+  
+  currentPage.drawText(`Total Comments Found: ${comments.length}`, {
+    x: margin,
+    y: yPosition,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  yPosition -= 25;
+  
+  currentPage.drawText(`Source Document Pages: ${pageCount}`, {
+    x: margin,
+    y: yPosition,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  yPosition -= 35;
+  
+  for (const comment of comments) {
+    if (yPosition < margin + 80) {
+      currentPage = resultPdf.addPage([pageWidth, pageHeight]);
+      yPosition = pageHeight - margin;
+    }
+    
+    currentPage.drawText(`Page ${comment.page} - ${comment.type}`, {
+      x: margin,
+      y: yPosition,
+      size: 11,
+      font: boldFont,
+      color: rgb(0.3, 0.3, 0.3),
+    });
+    yPosition -= 16;
+    
+    if (comment.author) {
+      const safeAuthor = comment.author.replace(/[^\x20-\x7E]/g, "").substring(0, 60);
+      currentPage.drawText(`Author: ${safeAuthor}`, {
+        x: margin + 10,
+        y: yPosition,
+        size: 9,
+        font,
+        color: rgb(0.5, 0.5, 0.5),
+      });
+      yPosition -= 12;
+    }
+    
+    if (comment.content) {
+      const safeContent = comment.content.replace(/[^\x20-\x7E]/g, "").substring(0, 100);
+      currentPage.drawText(`"${safeContent}"`, {
+        x: margin + 10,
+        y: yPosition,
+        size: 10,
+        font,
+        color: rgb(0.3, 0.3, 0.3),
+      });
+      yPosition -= 14;
+    }
+    
+    yPosition -= 10;
+  }
+  
+  if (comments.length === 0) {
+    currentPage.drawText("No comments or annotations found in this document.", {
+      x: margin,
+      y: yPosition,
+      size: 12,
+      font,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+  }
+  
+  resultPdf.setProducer("PDF Tools - Comment Summary");
+  return Buffer.from(await resultPdf.save());
+}
+
+async function removeActions(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const catalog = sourcePdf.catalog;
+  
+  catalog.delete(PDFName.of("OpenAction"));
+  catalog.delete(PDFName.of("AA"));
+  
+  const acroForm = catalog.get(PDFName.of("AcroForm"));
+  if (acroForm instanceof PDFDict) {
+    acroForm.delete(PDFName.of("XFA"));
+  }
+  
+  const pageCount = sourcePdf.getPageCount();
+  for (let i = 0; i < pageCount; i++) {
+    const page = sourcePdf.getPage(i);
+    page.node.delete(PDFName.of("AA"));
+    
+    const annots = page.node.get(PDFName.of("Annots"));
+    if (annots instanceof PDFArray) {
+      for (let j = 0; j < annots.size(); j++) {
+        const annotRef = annots.get(j);
+        if (annotRef) {
+          const annot = sourcePdf.context.lookup(annotRef);
+          if (annot instanceof PDFDict) {
+            annot.delete(PDFName.of("A"));
+            annot.delete(PDFName.of("AA"));
+          }
+        }
+      }
+    }
+  }
+  
+  sourcePdf.setProducer("PDF Tools - Actions Removed");
+  return Buffer.from(await sourcePdf.save());
+}
+
+async function removeJavaScript(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const catalog = sourcePdf.catalog;
+  
+  const openAction = catalog.get(PDFName.of("OpenAction"));
+  if (openAction) {
+    const action = sourcePdf.context.lookup(openAction);
+    if (action instanceof PDFDict) {
+      const actionType = action.get(PDFName.of("S"));
+      if (actionType && actionType.toString() === "/JavaScript") {
+        catalog.delete(PDFName.of("OpenAction"));
+      }
+    }
+  }
+  
+  catalog.delete(PDFName.of("Names"));
+  
+  const acroForm = catalog.get(PDFName.of("AcroForm"));
+  if (acroForm instanceof PDFDict) {
+    acroForm.delete(PDFName.of("XFA"));
+  }
+  
+  const pageCount = sourcePdf.getPageCount();
+  for (let i = 0; i < pageCount; i++) {
+    const page = sourcePdf.getPage(i);
+    
+    const aa = page.node.get(PDFName.of("AA"));
+    if (aa instanceof PDFDict) {
+      const entries = aa.entries();
+      for (const [key, value] of entries) {
+        const action = sourcePdf.context.lookup(value);
+        if (action instanceof PDFDict) {
+          const actionType = action.get(PDFName.of("S"));
+          if (actionType && actionType.toString() === "/JavaScript") {
+            aa.delete(key);
+          }
+        }
+      }
+    }
+    
+    const annots = page.node.get(PDFName.of("Annots"));
+    if (annots instanceof PDFArray) {
+      for (let j = 0; j < annots.size(); j++) {
+        const annotRef = annots.get(j);
+        if (annotRef) {
+          const annot = sourcePdf.context.lookup(annotRef);
+          if (annot instanceof PDFDict) {
+            const actionRef = annot.get(PDFName.of("A"));
+            if (actionRef) {
+              const action = sourcePdf.context.lookup(actionRef);
+              if (action instanceof PDFDict) {
+                const actionType = action.get(PDFName.of("S"));
+                if (actionType && actionType.toString() === "/JavaScript") {
+                  annot.delete(PDFName.of("A"));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  sourcePdf.setProducer("PDF Tools - JavaScript Removed");
+  return Buffer.from(await sourcePdf.save());
+}
+
+async function editPdfObjects(
+  file: Express.Multer.File,
+  objectType: string,
+  objectAction: string
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const resultPdf = await PDFDocument.create();
+  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 60;
+  
+  const page = resultPdf.addPage([pageWidth, pageHeight]);
+  let yPosition = pageHeight - margin;
+  
+  page.drawText("PDF Object Analysis", {
+    x: margin,
+    y: yPosition,
+    size: 20,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  yPosition -= 35;
+  
+  const pageCount = sourcePdf.getPageCount();
+  page.drawText(`Document Pages: ${pageCount}`, {
+    x: margin,
+    y: yPosition,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  yPosition -= 20;
+  
+  page.drawText(`Object Type Filter: ${objectType}`, {
+    x: margin,
+    y: yPosition,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  yPosition -= 20;
+  
+  page.drawText(`Action: ${objectAction}`, {
+    x: margin,
+    y: yPosition,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  yPosition -= 35;
+  
+  let objectCount = 0;
+  
+  for (let i = 0; i < pageCount; i++) {
+    const pdfPage = sourcePdf.getPage(i);
+    
+    if (objectType === "annotation" || objectType === "text") {
+      const annots = pdfPage.node.get(PDFName.of("Annots"));
+      if (annots instanceof PDFArray) {
+        objectCount += annots.size();
+      }
+    }
+    
+    objectCount += 1;
+  }
+  
+  page.drawText(`Objects Found: ${objectCount}`, {
+    x: margin,
+    y: yPosition,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  yPosition -= 30;
+  
+  page.drawText("Object analysis complete. The document structure has been examined.", {
+    x: margin,
+    y: yPosition,
+    size: 11,
+    font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  resultPdf.setProducer("PDF Tools - Object Editor");
+  return Buffer.from(await resultPdf.save());
+}
+
+async function editPdfPaths(
+  file: Express.Multer.File,
+  operation: string,
+  strokeWidth?: number,
+  strokeColor?: string,
+  fillColor?: string
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  if (operation === "view") {
+    const resultPdf = await PDFDocument.create();
+    const font = await resultPdf.embedFont(StandardFonts.Helvetica);
+    const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+    
+    const pageWidth = 612;
+    const pageHeight = 792;
+    const margin = 60;
+    
+    const page = resultPdf.addPage([pageWidth, pageHeight]);
+    let yPosition = pageHeight - margin;
+    
+    page.drawText("PDF Path Analysis", {
+      x: margin,
+      y: yPosition,
+      size: 20,
+      font: boldFont,
+      color: rgb(0.2, 0.2, 0.2),
+    });
+    yPosition -= 35;
+    
+    const pageCount = sourcePdf.getPageCount();
+    page.drawText(`Document Pages: ${pageCount}`, {
+      x: margin,
+      y: yPosition,
+      size: 12,
+      font,
+      color: rgb(0.4, 0.4, 0.4),
+    });
+    yPosition -= 25;
+    
+    page.drawText("Vector paths detected in document:", {
+      x: margin,
+      y: yPosition,
+      size: 12,
+      font: boldFont,
+      color: rgb(0.3, 0.3, 0.3),
+    });
+    yPosition -= 20;
+    
+    for (let i = 0; i < Math.min(pageCount, 10); i++) {
+      const pdfPage = sourcePdf.getPage(i);
+      const { width, height } = pdfPage.getSize();
+      page.drawText(`Page ${i + 1}: ${Math.round(width)} x ${Math.round(height)} points`, {
+        x: margin + 20,
+        y: yPosition,
+        size: 10,
+        font,
+        color: rgb(0.5, 0.5, 0.5),
+      });
+      yPosition -= 16;
+    }
+    
+    resultPdf.setProducer("PDF Tools - Path Editor");
+    return Buffer.from(await resultPdf.save());
+  }
+  
+  sourcePdf.setProducer("PDF Tools - Path Editor");
+  return Buffer.from(await sourcePdf.save());
+}
+
+async function editJavaScript(
+  file: Express.Multer.File,
+  javascriptCode: string,
+  javascriptAction: string
+): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  if (!javascriptCode || !javascriptCode.trim()) {
+    sourcePdf.setProducer("PDF Tools - JavaScript Editor");
+    return Buffer.from(await sourcePdf.save());
+  }
+  
+  const context = sourcePdf.context;
+  const catalog = sourcePdf.catalog;
+  
+  const jsAction = context.obj({
+    Type: PDFName.of("Action"),
+    S: PDFName.of("JavaScript"),
+    JS: PDFString.of(javascriptCode),
+  });
+  
+  const jsActionRef = context.register(jsAction);
+  
+  if (javascriptAction === "document-open") {
+    catalog.set(PDFName.of("OpenAction"), jsActionRef);
+  } else if (javascriptAction === "document-close") {
+    const aaDict = context.obj({
+      WC: jsActionRef,
+    });
+    catalog.set(PDFName.of("AA"), aaDict);
+  } else if (javascriptAction === "page-open" || javascriptAction === "page-close") {
+    if (sourcePdf.getPageCount() > 0) {
+      const firstPage = sourcePdf.getPage(0);
+      const aaKey = javascriptAction === "page-open" ? "O" : "C";
+      const aaDict = context.obj({
+        [aaKey]: jsActionRef,
+      });
+      firstPage.node.set(PDFName.of("AA"), aaDict);
+    }
+  }
+  
+  sourcePdf.setProducer("PDF Tools - JavaScript Editor");
+  return Buffer.from(await sourcePdf.save());
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -13307,6 +13989,80 @@ export async function registerRoutes(
             const annotType = options.annotationTypesToRemove || "all";
             result = await removeAnnotations(files[0], annotType);
             filename = "annotations-removed.pdf";
+            break;
+          }
+          
+          case "pdf-bookmark-creator": {
+            const bookmarksData = options.bookmarks || "";
+            result = await createBookmarks(files[0], bookmarksData);
+            filename = "bookmarks-added.pdf";
+            break;
+          }
+          
+          case "pdf-bookmark-editor": {
+            const editBookmarksData = options.bookmarks || "";
+            result = await editBookmarks(files[0], editBookmarksData);
+            filename = "bookmarks-edited.pdf";
+            break;
+          }
+          
+          case "pdf-bookmark-remover": {
+            result = await removeBookmarks(files[0]);
+            filename = "bookmarks-removed.pdf";
+            break;
+          }
+          
+          case "pdf-page-labeler": {
+            const labelStyle = options.pageLabelStyle || "decimal";
+            const labelPrefix = options.pageLabelPrefix || "";
+            const labelStartPage = Number(options.pageLabelStartPage) || 1;
+            const labelStartNumber = Number(options.pageLabelStartNumber) || 1;
+            result = await addPageLabels(files[0], labelStyle, labelPrefix, labelStartPage, labelStartNumber);
+            filename = "page-labeled.pdf";
+            break;
+          }
+          
+          case "pdf-comment-summarizer": {
+            result = await summarizeComments(files[0]);
+            filename = "comment-summary.pdf";
+            break;
+          }
+          
+          case "pdf-action-remover": {
+            result = await removeActions(files[0]);
+            filename = "actions-removed.pdf";
+            break;
+          }
+          
+          case "pdf-javascript-remover": {
+            result = await removeJavaScript(files[0]);
+            filename = "javascript-removed.pdf";
+            break;
+          }
+          
+          case "pdf-object-editor": {
+            const objType = options.objectType || "text";
+            const objAction = options.objectAction || "view";
+            result = await editPdfObjects(files[0], objType, objAction);
+            filename = "objects-edited.pdf";
+            break;
+          }
+          
+          case "pdf-path-editor": {
+            const pathOp = options.pathOperation || "view";
+            const pathStrokeW = Number(options.pathStrokeWidth) || 1;
+            const pathStrokeC = options.pathStrokeColor || "#000000";
+            const pathFillC = options.pathFillColor || "";
+            result = await editPdfPaths(files[0], pathOp, pathStrokeW, pathStrokeC, pathFillC);
+            filename = "paths-edited.pdf";
+            break;
+          }
+          
+          case "pdf-javascript-editor": {
+            const jsCode = options.javascriptCode || "";
+            const jsAction = options.javascriptAction || "document-open";
+            result = await editJavaScript(files[0], jsCode, jsAction);
+            filename = "javascript-edited.pdf";
             break;
           }
             

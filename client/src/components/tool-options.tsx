@@ -2203,6 +2203,306 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "pdf-bookmark-creator":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="bookmarks">Bookmarks (one per line)</Label>
+            <textarea
+              id="bookmarks"
+              className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder="Chapter 1, 1&#10;Chapter 2, 5&#10;Chapter 3, 10"
+              value={options.bookmarks || ""}
+              onChange={(e) => updateOption("bookmarks", e.target.value)}
+              data-testid="textarea-bookmarks"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter bookmarks as: Title, Page Number (one per line)
+            </p>
+          </div>
+        </div>
+      );
+
+    case "pdf-bookmark-editor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="bookmarks">Edit Bookmarks (one per line)</Label>
+            <textarea
+              id="bookmarks"
+              className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder="Introduction, 1&#10;Main Content, 3&#10;Conclusion, 15"
+              value={options.bookmarks || ""}
+              onChange={(e) => updateOption("bookmarks", e.target.value)}
+              data-testid="textarea-bookmarks"
+            />
+            <p className="text-sm text-muted-foreground">
+              Modify bookmarks: Title, Page Number. Leave empty to remove all bookmarks.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "pdf-bookmark-remover":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Removes all bookmarks and navigation structure from your PDF document.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            The document content remains unchanged - only the bookmark panel is cleared.
+          </p>
+        </div>
+      );
+
+    case "pdf-page-labeler":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="pageLabelStyle">Numbering Style</Label>
+            <Select
+              value={options.pageLabelStyle || "decimal"}
+              onValueChange={(value) => updateOption("pageLabelStyle", value as ToolOptions["pageLabelStyle"])}
+            >
+              <SelectTrigger id="pageLabelStyle" data-testid="select-page-label-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="decimal">Arabic (1, 2, 3...)</SelectItem>
+                <SelectItem value="roman-lower">Roman Lowercase (i, ii, iii...)</SelectItem>
+                <SelectItem value="roman-upper">Roman Uppercase (I, II, III...)</SelectItem>
+                <SelectItem value="alpha-lower">Alphabetic Lowercase (a, b, c...)</SelectItem>
+                <SelectItem value="alpha-upper">Alphabetic Uppercase (A, B, C...)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="pageLabelPrefix">Page Label Prefix</Label>
+            <Input
+              id="pageLabelPrefix"
+              placeholder="e.g., Page, Appendix-"
+              value={options.pageLabelPrefix || ""}
+              onChange={(e) => updateOption("pageLabelPrefix", e.target.value)}
+              data-testid="input-page-label-prefix"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="pageLabelStartPage">Start from Page</Label>
+            <Input
+              id="pageLabelStartPage"
+              type="number"
+              min={1}
+              placeholder="1"
+              value={options.pageLabelStartPage || 1}
+              onChange={(e) => updateOption("pageLabelStartPage", parseInt(e.target.value) || 1)}
+              data-testid="input-start-page"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="pageLabelStartNumber">Start Numbering at</Label>
+            <Input
+              id="pageLabelStartNumber"
+              type="number"
+              min={1}
+              placeholder="1"
+              value={options.pageLabelStartNumber || 1}
+              onChange={(e) => updateOption("pageLabelStartNumber", parseInt(e.target.value) || 1)}
+              data-testid="input-start-number"
+            />
+          </div>
+        </div>
+      );
+
+    case "pdf-comment-summarizer":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Extracts all comments and annotations from your PDF and generates a summary report including:
+          </p>
+          <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1">
+            <li>Text comments and sticky notes</li>
+            <li>Highlights and underlines</li>
+            <li>Author and timestamp information</li>
+            <li>Page locations</li>
+          </ul>
+        </div>
+      );
+
+    case "pdf-action-remover":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Removes all interactive actions and triggers from your PDF, including:
+          </p>
+          <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1">
+            <li>Document open/close actions</li>
+            <li>Button click actions</li>
+            <li>Form submission actions</li>
+            <li>Navigation actions</li>
+          </ul>
+          <p className="text-sm text-muted-foreground">
+            Creates a static, safe version of your document.
+          </p>
+        </div>
+      );
+
+    case "pdf-javascript-remover":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Removes all JavaScript code from your PDF document for security. This eliminates:
+          </p>
+          <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1">
+            <li>Document-level scripts</li>
+            <li>Form field scripts</li>
+            <li>Action-based JavaScript</li>
+            <li>XFA form scripting</li>
+          </ul>
+          <p className="text-sm text-muted-foreground">
+            Document content and appearance are preserved.
+          </p>
+        </div>
+      );
+
+    case "pdf-object-editor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="objectType">Object Type</Label>
+            <Select
+              value={options.objectType || "text"}
+              onValueChange={(value) => updateOption("objectType", value as ToolOptions["objectType"])}
+            >
+              <SelectTrigger id="objectType" data-testid="select-object-type">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="text">Text Objects</SelectItem>
+                <SelectItem value="image">Image Objects</SelectItem>
+                <SelectItem value="path">Path/Vector Objects</SelectItem>
+                <SelectItem value="annotation">Annotations</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="objectAction">Action</Label>
+            <Select
+              value={options.objectAction || "view"}
+              onValueChange={(value) => updateOption("objectAction", value as ToolOptions["objectAction"])}
+            >
+              <SelectTrigger id="objectAction" data-testid="select-object-action">
+                <SelectValue placeholder="Select action" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="view">View/Analyze</SelectItem>
+                <SelectItem value="delete">Remove Objects</SelectItem>
+                <SelectItem value="modify">Modify Properties</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "pdf-path-editor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="pathOperation">Operation</Label>
+            <Select
+              value={options.pathOperation || "view"}
+              onValueChange={(value) => updateOption("pathOperation", value as ToolOptions["pathOperation"])}
+            >
+              <SelectTrigger id="pathOperation" data-testid="select-path-operation">
+                <SelectValue placeholder="Select operation" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="view">View Paths</SelectItem>
+                <SelectItem value="simplify">Simplify Paths</SelectItem>
+                <SelectItem value="remove">Remove Paths</SelectItem>
+                <SelectItem value="modify-stroke">Modify Stroke</SelectItem>
+                <SelectItem value="modify-fill">Modify Fill</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {(options.pathOperation === "modify-stroke" || options.pathOperation === "modify-fill") && (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="pathStrokeColor">Stroke Color</Label>
+                <Input
+                  id="pathStrokeColor"
+                  type="color"
+                  value={options.pathStrokeColor || "#000000"}
+                  onChange={(e) => updateOption("pathStrokeColor", e.target.value)}
+                  data-testid="input-stroke-color"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="pathFillColor">Fill Color</Label>
+                <Input
+                  id="pathFillColor"
+                  type="color"
+                  value={options.pathFillColor || "#FFFFFF"}
+                  onChange={(e) => updateOption("pathFillColor", e.target.value)}
+                  data-testid="input-fill-color"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="pathStrokeWidth">Stroke Width</Label>
+                <Input
+                  id="pathStrokeWidth"
+                  type="number"
+                  min={0}
+                  max={10}
+                  step={0.5}
+                  placeholder="1"
+                  value={options.pathStrokeWidth || 1}
+                  onChange={(e) => updateOption("pathStrokeWidth", parseFloat(e.target.value) || 1)}
+                  data-testid="input-stroke-width"
+                />
+              </div>
+            </>
+          )}
+        </div>
+      );
+
+    case "pdf-javascript-editor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="javascriptAction">JavaScript Trigger</Label>
+            <Select
+              value={options.javascriptAction || "document-open"}
+              onValueChange={(value) => updateOption("javascriptAction", value as ToolOptions["javascriptAction"])}
+            >
+              <SelectTrigger id="javascriptAction" data-testid="select-js-action">
+                <SelectValue placeholder="Select trigger" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="document-open">Document Open</SelectItem>
+                <SelectItem value="document-close">Document Close</SelectItem>
+                <SelectItem value="page-open">Page Open</SelectItem>
+                <SelectItem value="page-close">Page Close</SelectItem>
+                <SelectItem value="form-submit">Form Submit</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="javascriptCode">JavaScript Code</Label>
+            <textarea
+              id="javascriptCode"
+              className="flex min-h-[150px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-mono ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder="app.alert('Hello World!');"
+              value={options.javascriptCode || ""}
+              onChange={(e) => updateOption("javascriptCode", e.target.value)}
+              data-testid="textarea-javascript-code"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter JavaScript code to embed in the PDF document.
+            </p>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }

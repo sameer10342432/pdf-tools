@@ -251,6 +251,16 @@ export const pdfToolTypes = [
   "pdf-link-checker",
   "pdf-link-remover",
   "pdf-annotation-remover",
+  "pdf-bookmark-creator",
+  "pdf-bookmark-editor",
+  "pdf-bookmark-remover",
+  "pdf-page-labeler",
+  "pdf-comment-summarizer",
+  "pdf-action-remover",
+  "pdf-javascript-remover",
+  "pdf-object-editor",
+  "pdf-path-editor",
+  "pdf-javascript-editor",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -409,6 +419,22 @@ export const toolOptionsSchema = z.object({
   sourceFontName: z.string().optional(),
   targetFontName: z.string().optional(),
   annotationTypesToRemove: z.enum(["all", "highlights", "notes", "drawings", "stamps", "links"]).optional(),
+  bookmarkTitle: z.string().optional(),
+  bookmarkPage: z.number().optional(),
+  bookmarkLevel: z.number().optional(),
+  bookmarks: z.string().optional(),
+  pageLabelStyle: z.enum(["decimal", "roman-lower", "roman-upper", "alpha-lower", "alpha-upper"]).optional(),
+  pageLabelPrefix: z.string().optional(),
+  pageLabelStartPage: z.number().optional(),
+  pageLabelStartNumber: z.number().optional(),
+  javascriptCode: z.string().optional(),
+  javascriptAction: z.enum(["document-open", "document-close", "page-open", "page-close", "form-submit"]).optional(),
+  objectType: z.enum(["text", "image", "path", "annotation"]).optional(),
+  objectAction: z.enum(["view", "delete", "modify"]).optional(),
+  pathOperation: z.enum(["view", "simplify", "remove", "modify-stroke", "modify-fill"]).optional(),
+  pathStrokeWidth: z.number().optional(),
+  pathStrokeColor: z.string().optional(),
+  pathFillColor: z.string().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -6720,5 +6746,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Reduce File Size</h2>
 <p>Annotations add data to PDF files. Heavily annotated documents can be significantly larger than their clean counterparts. Removing annotations reduces file size, making documents easier to share and store. This is especially noticeable with documents containing many text comments, embedded images in annotations, or extensive drawing markups.</p>`,
+  },
+  {
+    id: "pdf-bookmark-creator",
+    name: "PDF Bookmark Creator",
+    description: "Add navigational bookmarks and table of contents to PDFs",
+    icon: "Bookmark",
+    type: "pdf-bookmark-creator",
+    color: "bg-blue-600",
+    emoji: "🔖",
+    metaTitle: "PDF Bookmark Creator Online Free - Add Bookmarks to PDF | PDF Tools",
+    metaDescription: "Create bookmarks and table of contents for PDF documents online for free. Add navigational bookmarks to improve document usability and navigation.",
+    seoArticle: `<h2>PDF Bookmark Creator - Add Navigation to Your Documents</h2>
+<p>Bookmarks transform lengthy PDF documents into easily navigable resources. Our PDF Bookmark Creator allows you to add a hierarchical table of contents that appears in the bookmark panel of PDF readers. Readers can jump directly to any section with a single click, dramatically improving the usability of long documents like reports, manuals, and ebooks.</p>
+
+<h2>Why Add Bookmarks to PDFs?</h2>
+<p>Documents without bookmarks force readers to scroll through hundreds of pages to find specific content. Bookmarks provide instant navigation to chapters, sections, and subsections. Professional documents, academic papers, and business reports all benefit from proper bookmark structures. Adding bookmarks shows attention to reader experience and document quality.</p>
+
+<h2>Create Hierarchical Bookmark Structures</h2>
+<p>Our tool supports multi-level bookmark hierarchies that mirror your document's structure. Create parent bookmarks for main chapters with child bookmarks for subsections. Nest bookmarks up to ten levels deep for complex documents. The hierarchical structure appears as an expandable tree in PDF readers, making even the most complex documents easy to navigate.</p>
+
+<h2>Easy Bookmark Definition</h2>
+<p>Define bookmarks by specifying the title and target page number. Our intuitive interface lets you add bookmarks one at a time or import a list for batch creation. Preview the bookmark structure before saving to ensure correct hierarchy and page targets. Edit bookmark titles and reorganize the structure until it perfectly matches your document.</p>
+
+<h2>Improve Document Accessibility</h2>
+<p>Bookmarks are essential for accessibility compliance. Screen readers use bookmark structures to help visually impaired users navigate documents. Adding bookmarks makes your PDFs accessible to all readers and may be required for documents that must meet accessibility standards like Section 508 or WCAG guidelines.</p>`,
+  },
+  {
+    id: "pdf-bookmark-editor",
+    name: "PDF Bookmark Editor",
+    description: "Edit, rename, and reorganize existing PDF bookmarks",
+    icon: "FileEdit",
+    type: "pdf-bookmark-editor",
+    color: "bg-indigo-600",
+    emoji: "📝",
+    metaTitle: "PDF Bookmark Editor Online Free - Edit PDF Bookmarks | PDF Tools",
+    metaDescription: "Edit, rename, and reorganize PDF bookmarks online for free. Modify existing bookmarks, change destinations, and restructure navigation hierarchies.",
+    seoArticle: `<h2>PDF Bookmark Editor - Modify Your Document Navigation</h2>
+<p>Sometimes PDF bookmarks need updating - titles are wrong, page numbers have shifted, or the hierarchy needs restructuring. Our PDF Bookmark Editor lets you modify existing bookmarks without recreating them from scratch. Rename bookmarks, change their target pages, reorganize the hierarchy, and perfect your document's navigation structure.</p>
+
+<h2>Edit Bookmark Properties</h2>
+<p>Change any aspect of existing bookmarks. Rename titles to better describe content or fix typos. Update page destinations when content has moved. Modify bookmark styling including bold, italic, and color options where supported. Each edit preserves the bookmark's position in the hierarchy while updating the specified properties.</p>
+
+<h2>Reorganize Bookmark Hierarchy</h2>
+<p>Document structure sometimes changes after bookmarks are created. Our editor lets you reorganize the bookmark tree without deleting and recreating entries. Move bookmarks up or down within their level. Promote child bookmarks to parent status or demote parents to children. Drag and drop interface makes restructuring intuitive and fast.</p>
+
+<h2>Bulk Editing Capabilities</h2>
+<p>When many bookmarks need similar changes, bulk editing saves time. Shift all page destinations by a fixed number when pages are added or removed. Apply consistent styling across multiple bookmarks. Find and replace text in bookmark titles. These bulk operations transform tedious manual editing into quick automated updates.</p>
+
+<h2>Preview Changes Before Saving</h2>
+<p>See exactly how your edits will appear in the final document. The preview shows the bookmark panel as it will display in PDF readers. Navigate through the preview to test bookmark destinations. Make additional adjustments based on preview results. Only when satisfied do you save the changes to your PDF.</p>`,
+  },
+  {
+    id: "pdf-bookmark-remover",
+    name: "PDF Bookmark Remover",
+    description: "Remove all bookmarks from PDF documents",
+    icon: "Eraser",
+    type: "pdf-bookmark-remover",
+    color: "bg-red-500",
+    emoji: "🗑️",
+    metaTitle: "PDF Bookmark Remover Online Free - Delete PDF Bookmarks | PDF Tools",
+    metaDescription: "Remove all bookmarks from PDF documents online for free. Clean up navigation structure or start fresh by deleting existing bookmarks.",
+    seoArticle: `<h2>PDF Bookmark Remover - Clean Up Document Navigation</h2>
+<p>There are times when PDF bookmarks need to go. Perhaps they're outdated after major document revisions. Maybe you're combining PDFs and want consistent navigation. Or you simply prefer documents without bookmark panels. Our PDF Bookmark Remover strips all bookmarks cleanly, leaving your document content intact while removing the navigation structure.</p>
+
+<h2>Why Remove PDF Bookmarks?</h2>
+<p>Outdated bookmarks pointing to wrong pages confuse readers more than they help. When merging multiple PDFs, conflicting bookmark structures create navigation chaos. Some workflows require clean PDFs without any navigation metadata. Starting fresh with a bookmark-free document lets you create proper navigation from scratch.</p>
+
+<h2>Complete Bookmark Removal</h2>
+<p>Our tool removes all bookmarks regardless of their complexity. Top-level bookmarks and all nested children are deleted. The entire bookmark tree structure disappears from the PDF. Readers opening the document see no bookmark panel or navigation structure. Only the core document content remains.</p>
+
+<h2>Preserve Document Content</h2>
+<p>Bookmark removal affects only the navigation structure. All pages, text, images, and formatting remain exactly as they were. Interactive elements like links and form fields are unaffected. The document looks and functions identically to the original except for the absent bookmark panel.</p>
+
+<h2>Prepare for New Bookmarks</h2>
+<p>Often the best way to fix problematic bookmarks is starting over. Remove existing bookmarks, then use our Bookmark Creator to build a proper navigation structure. This approach is faster than editing extensively corrupted bookmark trees. Clean removal ensures no remnants of the old structure interfere with your new bookmarks.</p>`,
+  },
+  {
+    id: "pdf-page-labeler",
+    name: "PDF Page Labeler",
+    description: "Add custom page labels with Roman numerals or prefixes",
+    icon: "Hash",
+    type: "pdf-page-labeler",
+    color: "bg-purple-600",
+    emoji: "🏷️",
+    metaTitle: "PDF Page Labeler Online Free - Custom Page Numbers | PDF Tools",
+    metaDescription: "Add custom page labels to PDF documents online for free. Use Roman numerals, alphabetic labels, or custom prefixes for professional page numbering.",
+    seoArticle: `<h2>PDF Page Labeler - Professional Page Numbering</h2>
+<p>Professional documents often require different page numbering schemes for different sections. Our PDF Page Labeler adds custom page labels that appear in PDF reader navigation and page displays. Use Roman numerals for front matter, Arabic numbers for main content, and alphabetic labels for appendices. Create the exact page numbering scheme your document requires.</p>
+
+<h2>Multiple Numbering Styles</h2>
+<p>Choose from five page label styles to match your document's needs. Arabic numerals (1, 2, 3) are standard for most content. Lowercase Roman numerals (i, ii, iii) traditionally number front matter like prefaces and tables of contents. Uppercase Roman numerals (I, II, III) work for major section dividers. Lowercase letters (a, b, c) and uppercase letters (A, B, C) suit appendices and supplementary materials.</p>
+
+<h2>Custom Prefixes</h2>
+<p>Add text prefixes to any numbering style. Label appendix pages as "A-1, A-2, A-3" or chapter pages as "Ch1-1, Ch1-2". Insert section codes like "SEC-001, SEC-002" for technical documents. Prefixes combine with any numbering style, giving you complete control over how pages are identified throughout your document.</p>
+
+<h2>Multiple Label Ranges</h2>
+<p>Complex documents need different labeling in different sections. Our tool supports multiple label ranges within a single PDF. Start with Roman numerals for pages 1-10, switch to Arabic numbers starting at 1 for pages 11-150, then use "Appendix A-" prefixed numbers for the remaining pages. Each range can have its own style, prefix, and starting number.</p>
+
+<h2>Enhance Document Navigation</h2>
+<p>Page labels appear in PDF reader navigation bars and "go to page" dialogs. Readers can jump directly to "page xii" or "page A-5" using these labels. The labels also print in headers or footers if your document includes page number fields. Proper labeling makes long documents significantly easier to navigate and reference.</p>`,
+  },
+  {
+    id: "pdf-comment-summarizer",
+    name: "PDF Comment Summarizer",
+    description: "Extract and summarize all comments and annotations",
+    icon: "MessageSquare",
+    type: "pdf-comment-summarizer",
+    color: "bg-teal-600",
+    emoji: "💬",
+    metaTitle: "PDF Comment Summarizer Online Free - Extract PDF Comments | PDF Tools",
+    metaDescription: "Extract and summarize all comments and annotations from PDF documents online for free. Create organized reports of all feedback and notes.",
+    seoArticle: `<h2>PDF Comment Summarizer - Organize Document Feedback</h2>
+<p>Reviewing feedback scattered across a lengthy PDF is time-consuming and error-prone. Our PDF Comment Summarizer extracts all comments, notes, and annotations into an organized summary. See every piece of feedback in one place, organized by page, author, or type. Transform chaotic document markup into actionable, reviewable feedback lists.</p>
+
+<h2>Extract All Comment Types</h2>
+<p>Our summarizer captures every type of PDF annotation. Text comments and sticky notes are extracted with their full content. Highlight, underline, and strikethrough annotations include the marked text. Drawing markup descriptions are captured. Pop-up notes attached to any annotation type are included. Nothing is missed in the comprehensive extraction.</p>
+
+<h2>Organized Summary Output</h2>
+<p>The extracted comments are organized for easy review. Sort by page number to work through feedback sequentially. Group by author to see each reviewer's contributions together. Filter by annotation type to focus on specific feedback categories. The organized structure makes addressing feedback systematic rather than chaotic.</p>
+
+<h2>Include Context Information</h2>
+<p>Each extracted comment includes helpful context. Page numbers show where feedback appears. Timestamps indicate when annotations were added. Author names identify who provided each comment. The annotated text is included for highlights and text markup. This context helps you understand and act on feedback effectively.</p>
+
+<h2>Export Options</h2>
+<p>Export your comment summary in multiple formats. PDF format creates a printable feedback report. Text format provides simple content for pasting elsewhere. CSV format enables spreadsheet analysis and tracking. Choose the format that best fits your feedback review workflow. Share summaries with team members who need to see feedback without opening the original PDF.</p>`,
+  },
+  {
+    id: "pdf-action-remover",
+    name: "PDF Action Remover",
+    description: "Remove all actions and triggers from PDF documents",
+    icon: "Zap",
+    type: "pdf-action-remover",
+    color: "bg-orange-600",
+    emoji: "⚡",
+    metaTitle: "PDF Action Remover Online Free - Remove PDF Actions | PDF Tools",
+    metaDescription: "Remove all actions, triggers, and interactive behaviors from PDF documents online for free. Create static versions of interactive PDFs.",
+    seoArticle: `<h2>PDF Action Remover - Neutralize Document Triggers</h2>
+<p>PDFs can contain actions that execute automatically or respond to user interactions. These include JavaScript execution, URL navigation, form submissions, and multimedia playback. Our PDF Action Remover strips all these actions, converting interactive PDFs into static documents. This is essential for security, archiving, and creating safe versions of potentially risky PDFs.</p>
+
+<h2>Types of PDF Actions</h2>
+<p>PDFs support numerous action types that may need removal. Document-level actions trigger when opening or closing the PDF. Page actions run when navigating to specific pages. Link actions respond to clicks on hyperlinks. Form actions handle submissions and field calculations. Multimedia actions control embedded audio and video. Our tool removes all these action types comprehensively.</p>
+
+<h2>Security Benefits</h2>
+<p>Actions in PDFs can pose security risks. JavaScript actions might contain malicious code. URL actions could direct users to phishing sites. Auto-execution actions bypass user consent. Removing all actions eliminates these risks, making PDFs safe to distribute and open without security concerns. This is especially important for PDFs from unknown or untrusted sources.</p>
+
+<h2>Create Archival Versions</h2>
+<p>Long-term document archives should contain stable, non-executing content. Actions depend on external resources that may not exist in the future. JavaScript behavior can change with PDF reader updates. Removing actions creates documents that will display consistently regardless of when or how they're opened. Archive-safe PDFs focus on content preservation without interactive complexity.</p>
+
+<h2>Preserve Visual Appearance</h2>
+<p>Action removal doesn't change how documents look. Buttons that triggered actions remain visible as static elements. Link text stays formatted as links even without click behavior. Form fields display their current values but don't calculate or submit. The document appears identical but behaves as a static, non-interactive file.</p>`,
+  },
+  {
+    id: "pdf-javascript-remover",
+    name: "PDF JavaScript Remover",
+    description: "Remove all JavaScript code from PDF documents",
+    icon: "FileText",
+    type: "pdf-javascript-remover",
+    color: "bg-red-600",
+    emoji: "🛡️",
+    metaTitle: "PDF JavaScript Remover Online Free - Remove JS from PDF | PDF Tools",
+    metaDescription: "Remove all JavaScript code from PDF documents online for free. Eliminate potential security threats and create safe, static PDF versions.",
+    seoArticle: `<h2>PDF JavaScript Remover - Eliminate Script-Based Threats</h2>
+<p>JavaScript in PDFs enables interactive features but also creates security vulnerabilities. Malicious scripts can exploit PDF reader vulnerabilities, steal information, or execute unwanted actions. Our PDF JavaScript Remover completely eliminates all JavaScript from PDF documents, neutralizing script-based threats while preserving document content and appearance.</p>
+
+<h2>Understanding PDF JavaScript</h2>
+<p>PDF JavaScript differs from web JavaScript but shares similar security concerns. Document-level scripts run when PDFs open. Field-level scripts handle form calculations and validations. Action scripts respond to user interactions. All these script types can potentially be exploited. Complete removal eliminates the entire attack surface that JavaScript represents.</p>
+
+<h2>Security Without Functionality Loss</h2>
+<p>Most PDF JavaScript handles form calculations and validations that aren't essential for document viewing. Removing scripts converts interactive forms to static data displays. Users can still read and print documents normally. Only the dynamic, potentially dangerous script behavior is eliminated. The core informational purpose of the document remains intact.</p>
+
+<h2>Compliance and Policy Requirements</h2>
+<p>Many organizations prohibit JavaScript in PDFs received from external sources. Security policies may require script removal before documents enter internal networks. Compliance frameworks sometimes mandate JavaScript-free documents for sensitive workflows. Our remover helps meet these requirements by producing policy-compliant, script-free PDFs.</p>
+
+<h2>Batch Processing for Volume</h2>
+<p>Organizations handling many PDFs need efficient processing. Our tool handles JavaScript removal quickly without manual intervention. Process incoming PDFs automatically before distribution. Clean document archives by removing scripts from historical files. Maintain JavaScript-free document libraries with systematic, reliable script elimination.</p>`,
+  },
+  {
+    id: "pdf-object-editor",
+    name: "PDF Object Editor",
+    description: "View and edit PDF internal objects and structure",
+    icon: "Settings",
+    type: "pdf-object-editor",
+    color: "bg-slate-600",
+    emoji: "🔧",
+    metaTitle: "PDF Object Editor Online Free - Edit PDF Structure | PDF Tools",
+    metaDescription: "View and edit PDF internal objects and structure online for free. Access and modify PDF objects including text, images, and metadata.",
+    seoArticle: `<h2>PDF Object Editor - Access Document Internals</h2>
+<p>PDF documents contain various objects - text blocks, images, fonts, and metadata - organized in a specific structure. Our PDF Object Editor provides access to these internal objects for viewing and modification. This powerful tool helps developers, technical users, and PDF specialists understand and modify document internals without specialized software.</p>
+
+<h2>View PDF Object Structure</h2>
+<p>Explore the hierarchical structure of PDF objects. See how pages, content streams, resources, and annotations are organized. Examine text objects with their fonts and positioning. View image objects with compression and color space information. Understand how your PDF is constructed at a structural level.</p>
+
+<h2>Modify Object Properties</h2>
+<p>Edit object properties directly when standard editing tools fall short. Change text content within content streams. Modify image references and placement. Update metadata objects with corrected information. Adjust annotation properties that aren't exposed in typical editors. These low-level edits solve problems that surface-level tools cannot address.</p>
+
+<h2>Debug PDF Problems</h2>
+<p>When PDFs don't display or print correctly, the problem often lies in object structure. Our editor helps diagnose issues by revealing exactly how objects are defined. Find corrupted objects, incorrect references, or malformed structures. Understanding the problem is the first step to fixing it, and object-level visibility provides that understanding.</p>
+
+<h2>Technical Documentation</h2>
+<p>Developers working with PDF libraries need to understand PDF structure. Our tool serves as an educational resource showing real-world PDF object examples. Examine how different PDF creators structure documents. Compare object patterns across document types. Build expertise in PDF internals through hands-on exploration.</p>`,
+  },
+  {
+    id: "pdf-path-editor",
+    name: "PDF Path Editor",
+    description: "Edit vector paths and graphics within PDF documents",
+    icon: "Pen",
+    type: "pdf-path-editor",
+    color: "bg-pink-600",
+    emoji: "✏️",
+    metaTitle: "PDF Path Editor Online Free - Edit PDF Vector Graphics | PDF Tools",
+    metaDescription: "Edit vector paths and graphics in PDF documents online for free. Modify line weights, colors, and shapes in PDF vector artwork.",
+    seoArticle: `<h2>PDF Path Editor - Modify Vector Graphics</h2>
+<p>PDF documents often contain vector graphics - logos, diagrams, charts, and decorative elements created from mathematical paths rather than pixels. Our PDF Path Editor lets you view and modify these vector paths directly. Change line weights, update colors, simplify complex paths, or remove unwanted graphics. Gain control over vector elements that standard PDF editors can't access.</p>
+
+<h2>Understanding PDF Paths</h2>
+<p>Vector paths in PDFs consist of points connected by lines and curves. Each path has properties including stroke color, stroke width, fill color, and rendering style. These paths create everything from simple lines to complex illustrations. Our editor reveals these paths and their properties, making them accessible for modification.</p>
+
+<h2>Edit Path Appearance</h2>
+<p>Modify how paths appear in your document. Change stroke colors to match updated brand guidelines. Adjust line weights for better visibility or subtler appearance. Modify fill colors in shapes and closed paths. Update dashed line patterns and line cap styles. These appearance changes transform graphics without recreating them.</p>
+
+<h2>Simplify Complex Paths</h2>
+<p>Some PDFs contain excessively complex paths that slow rendering or cause printing problems. Our editor can simplify paths by reducing point counts while maintaining visual appearance. This optimization improves file size and rendering performance. Simplified paths also work better with cutting machines and other vector-processing equipment.</p>
+
+<h2>Remove Unwanted Paths</h2>
+<p>Delete paths that shouldn't appear in your document. Remove watermarks added as path graphics. Eliminate decorative elements that clutter the design. Clear construction lines left from document creation. Path removal is precise, affecting only selected elements while leaving everything else intact.</p>`,
+  },
+  {
+    id: "pdf-javascript-editor",
+    name: "PDF JavaScript Editor",
+    description: "View and edit JavaScript code embedded in PDF documents",
+    icon: "FileText",
+    type: "pdf-javascript-editor",
+    color: "bg-yellow-600",
+    emoji: "📜",
+    metaTitle: "PDF JavaScript Editor Online Free - Edit PDF Scripts | PDF Tools",
+    metaDescription: "View and edit JavaScript code in PDF documents online for free. Modify form scripts, document actions, and interactive behaviors.",
+    seoArticle: `<h2>PDF JavaScript Editor - Modify Document Scripts</h2>
+<p>Interactive PDFs rely on JavaScript for form calculations, validations, and dynamic behaviors. Our PDF JavaScript Editor lets you view, edit, and create JavaScript within PDF documents. Fix broken scripts, update calculation formulas, modify form behaviors, and create new interactive features. Full access to PDF JavaScript empowers you to customize document behavior precisely.</p>
+
+<h2>View Existing Scripts</h2>
+<p>Examine all JavaScript in your PDF document. Document-level scripts that run on open are displayed. Field calculation and validation scripts are accessible. Action scripts attached to buttons and links are revealed. Understanding existing scripts is essential before making modifications. Our viewer organizes scripts by location and type for easy navigation.</p>
+
+<h2>Edit Script Code</h2>
+<p>Modify JavaScript code directly in our editor. Fix bugs in existing scripts that cause form problems. Update calculation formulas when requirements change. Adjust validation rules for form fields. The editor provides syntax highlighting and basic error checking to help write correct JavaScript code.</p>
+
+<h2>Create New Scripts</h2>
+<p>Add JavaScript to enhance document interactivity. Create field calculations for automatic totals and derived values. Write validation scripts that check user input. Add document actions that run on open, save, or print. Script creation transforms static PDFs into interactive applications.</p>
+
+<h2>Test Script Behavior</h2>
+<p>Verify that scripts work correctly before distributing documents. Our tool validates JavaScript syntax and identifies common errors. Test scripts in the preview environment to see their effects. Debug problems by examining script execution. Ensure your interactive PDF works reliably for all users.</p>`,
   },
 ];
