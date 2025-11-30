@@ -76,6 +76,16 @@ import {
   Columns,
   Palette,
   Unlink,
+  PenTool,
+  PenLine,
+  FileSignature,
+  FilePen,
+  Send,
+  ShieldCheck,
+  Award,
+  LockKeyhole,
+  BadgeCheck,
+  ShieldAlert,
   type LucideIcon,
 } from "lucide-react";
 
@@ -136,6 +146,16 @@ const iconMap: Record<string, LucideIcon> = {
   Columns,
   Palette,
   Unlink,
+  PenTool,
+  Signature: PenLine,
+  FileSignature,
+  FilePen,
+  Send,
+  ShieldCheck,
+  Award,
+  LockKeyhole,
+  BadgeCheck,
+  ShieldAlert,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";

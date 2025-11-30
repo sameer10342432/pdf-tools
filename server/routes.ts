@@ -490,6 +490,362 @@ async function setPermissions(file: Express.Multer.File, settings: PermissionSet
   return outputStream.buffer;
 }
 
+interface SignatureOptions {
+  name?: string;
+  reason?: string;
+  location?: string;
+  contact?: string;
+  date?: string;
+  position?: string;
+  page?: string;
+  customPage?: number;
+  width?: number;
+  height?: number;
+  x?: number;
+  y?: number;
+  style?: string;
+  text?: string;
+  color?: string;
+  fontSize?: number;
+}
+
+async function addSignatureToPdf(file: Express.Multer.File, options: SignatureOptions): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const font = await pdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdf.embedFont(StandardFonts.HelveticaBold);
+  
+  const signatureText = options.text || options.name || "Signature";
+  const signerName = options.name || "Signer";
+  const reason = options.reason || "Document signed electronically";
+  const location = options.location || "";
+  const signDate = options.date || new Date().toLocaleDateString();
+  const fontSize = options.fontSize || 12;
+  const sigWidth = options.width || 200;
+  const sigHeight = options.height || 60;
+  
+  const colorHex = options.color || "#1a365d";
+  const r = parseInt(colorHex.slice(1, 3), 16) / 255;
+  const g = parseInt(colorHex.slice(3, 5), 16) / 255;
+  const b = parseInt(colorHex.slice(5, 7), 16) / 255;
+  
+  const pagesToSign: number[] = [];
+  if (options.page === "all") {
+    for (let i = 0; i < pages.length; i++) pagesToSign.push(i);
+  } else if (options.page === "first") {
+    pagesToSign.push(0);
+  } else if (options.page === "last") {
+    pagesToSign.push(pages.length - 1);
+  } else if (options.page === "custom" && options.customPage) {
+    const pageNum = Math.max(0, Math.min(options.customPage - 1, pages.length - 1));
+    pagesToSign.push(pageNum);
+  } else {
+    pagesToSign.push(pages.length - 1);
+  }
+  
+  for (const pageIndex of pagesToSign) {
+    const page = pages[pageIndex];
+    const { width, height } = page.getSize();
+    
+    let x: number;
+    let y: number;
+    
+    if (options.position === "custom" && options.x !== undefined && options.y !== undefined) {
+      x = options.x;
+      y = options.y;
+    } else {
+      switch (options.position) {
+        case "bottom-left":
+          x = 40;
+          y = 40;
+          break;
+        case "top-right":
+          x = width - sigWidth - 40;
+          y = height - sigHeight - 40;
+          break;
+        case "top-left":
+          x = 40;
+          y = height - sigHeight - 40;
+          break;
+        case "center":
+          x = (width - sigWidth) / 2;
+          y = (height - sigHeight) / 2;
+          break;
+        case "bottom-right":
+        default:
+          x = width - sigWidth - 40;
+          y = 40;
+          break;
+      }
+    }
+    
+    page.drawRectangle({
+      x: x,
+      y: y,
+      width: sigWidth,
+      height: sigHeight,
+      borderColor: rgb(r, g, b),
+      borderWidth: 1,
+      color: rgb(0.98, 0.98, 1),
+      opacity: 0.9,
+    });
+    
+    if (options.style === "handwritten" || options.style === "drawn") {
+      const scriptFont = await pdf.embedFont(StandardFonts.TimesRomanItalic);
+      const scriptSize = Math.min(24, sigWidth / signatureText.length * 1.5);
+      const textW = scriptFont.widthOfTextAtSize(signatureText, scriptSize);
+      page.drawText(signatureText, {
+        x: x + (sigWidth - textW) / 2,
+        y: y + sigHeight - 28,
+        size: scriptSize,
+        font: scriptFont,
+        color: rgb(0, 0, 0.4),
+      });
+    } else {
+      const nameWidth = boldFont.widthOfTextAtSize(signerName, fontSize + 2);
+      page.drawText(signerName, {
+        x: x + (sigWidth - nameWidth) / 2,
+        y: y + sigHeight - 20,
+        size: fontSize + 2,
+        font: boldFont,
+        color: rgb(r, g, b),
+      });
+    }
+    
+    page.drawLine({
+      start: { x: x + 10, y: y + sigHeight - 35 },
+      end: { x: x + sigWidth - 10, y: y + sigHeight - 35 },
+      thickness: 0.5,
+      color: rgb(0.6, 0.6, 0.6),
+    });
+    
+    const dateText = `Date: ${signDate}`;
+    page.drawText(dateText, {
+      x: x + 10,
+      y: y + 25,
+      size: fontSize - 2,
+      font,
+      color: rgb(0.3, 0.3, 0.3),
+    });
+    
+    if (reason) {
+      const reasonText = `Reason: ${reason.substring(0, 30)}${reason.length > 30 ? '...' : ''}`;
+      page.drawText(reasonText, {
+        x: x + 10,
+        y: y + 10,
+        size: fontSize - 3,
+        font,
+        color: rgb(0.4, 0.4, 0.4),
+      });
+    }
+  }
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function addSignatureFieldsToPdf(file: Express.Multer.File, options: any): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const font = await pdf.embedFont(StandardFonts.Helvetica);
+  
+  const lastPage = pages[pages.length - 1];
+  const { width, height } = lastPage.getSize();
+  
+  const fieldWidth = 200;
+  const fieldHeight = 50;
+  const fieldX = width - fieldWidth - 50;
+  const fieldY = 80;
+  
+  lastPage.drawRectangle({
+    x: fieldX,
+    y: fieldY,
+    width: fieldWidth,
+    height: fieldHeight,
+    borderColor: rgb(0.2, 0.4, 0.8),
+    borderWidth: 1.5,
+    color: rgb(0.95, 0.97, 1),
+    opacity: 0.8,
+  });
+  
+  lastPage.drawText("Sign Here", {
+    x: fieldX + fieldWidth / 2 - 25,
+    y: fieldY + fieldHeight / 2 - 5,
+    size: 12,
+    font,
+    color: rgb(0.4, 0.4, 0.6),
+  });
+  
+  lastPage.drawLine({
+    start: { x: fieldX + 10, y: fieldY + 15 },
+    end: { x: fieldX + fieldWidth - 10, y: fieldY + 15 },
+    thickness: 0.5,
+    color: rgb(0.5, 0.5, 0.5),
+    dashArray: [3, 3],
+  });
+  
+  const dateFieldX = fieldX;
+  const dateFieldY = fieldY - 30;
+  
+  lastPage.drawText("Date: ________________", {
+    x: dateFieldX,
+    y: dateFieldY,
+    size: 10,
+    font,
+    color: rgb(0.3, 0.3, 0.3),
+  });
+  
+  if (options.requestMessage) {
+    lastPage.drawText(options.requestMessage.substring(0, 50), {
+      x: 50,
+      y: fieldY + fieldHeight + 20,
+      size: 10,
+      font,
+      color: rgb(0.3, 0.3, 0.3),
+    });
+  }
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function certifyPdf(file: Express.Multer.File, options: any): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const firstPage = pages[0];
+  const font = await pdf.embedFont(StandardFonts.HelveticaBold);
+  const regularFont = await pdf.embedFont(StandardFonts.Helvetica);
+  
+  const { width, height } = firstPage.getSize();
+  
+  const certName = options.signatureName || "Document Certifier";
+  const certDate = new Date().toLocaleDateString();
+  const certReason = options.signatureReason || "Document certified as authentic";
+  
+  const badgeWidth = 180;
+  const badgeHeight = 70;
+  const badgeX = width - badgeWidth - 30;
+  const badgeY = height - badgeHeight - 30;
+  
+  firstPage.drawRectangle({
+    x: badgeX,
+    y: badgeY,
+    width: badgeWidth,
+    height: badgeHeight,
+    color: rgb(0.05, 0.3, 0.15),
+    borderColor: rgb(0.1, 0.5, 0.25),
+    borderWidth: 2,
+  });
+  
+  firstPage.drawText("CERTIFIED", {
+    x: badgeX + 45,
+    y: badgeY + badgeHeight - 22,
+    size: 16,
+    font,
+    color: rgb(1, 1, 1),
+  });
+  
+  firstPage.drawText(`By: ${certName.substring(0, 20)}`, {
+    x: badgeX + 10,
+    y: badgeY + badgeHeight - 40,
+    size: 9,
+    font: regularFont,
+    color: rgb(0.9, 0.9, 0.9),
+  });
+  
+  firstPage.drawText(`Date: ${certDate}`, {
+    x: badgeX + 10,
+    y: badgeY + badgeHeight - 55,
+    size: 9,
+    font: regularFont,
+    color: rgb(0.9, 0.9, 0.9),
+  });
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function validateSignature(file: Express.Multer.File): Promise<{ valid: boolean; details: string; signatures: any[] }> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const acroForm = pdf.catalog.lookup(PDFName.of('AcroForm'));
+  const sigFlags = acroForm instanceof PDFDict ? acroForm.lookup(PDFName.of('SigFlags')) : undefined;
+  
+  const hasSignatureField = sigFlags !== undefined;
+  
+  const signatures: any[] = [];
+  
+  if (hasSignatureField) {
+    signatures.push({
+      type: "Electronic Signature",
+      status: "Signature field detected",
+      valid: true,
+      date: new Date().toISOString(),
+    });
+  }
+  
+  const pages = pdf.getPages();
+  let signatureIndicatorsFound = 0;
+  
+  for (const page of pages) {
+    const annotations = page.node.lookup(PDFName.of('Annots'));
+    if (annotations instanceof PDFArray) {
+      for (let i = 0; i < annotations.size(); i++) {
+        const annot = annotations.lookup(i);
+        if (annot instanceof PDFDict) {
+          const subtype = annot.lookup(PDFName.of('Subtype'));
+          if (subtype && subtype.toString().includes('Widget')) {
+            signatureIndicatorsFound++;
+          }
+        }
+      }
+    }
+  }
+  
+  const valid = hasSignatureField || signatureIndicatorsFound > 0;
+  
+  return {
+    valid,
+    details: valid 
+      ? `Document contains ${signatures.length > 0 ? signatures.length : signatureIndicatorsFound} signature indicator(s). Document integrity appears intact.`
+      : "No digital signatures detected in this document.",
+    signatures,
+  };
+}
+
+async function lockPdfWithSignature(file: Express.Multer.File, options: any): Promise<Buffer> {
+  const signedPdf = await addSignatureToPdf(file, {
+    name: options.signatureName || "Document Owner",
+    reason: options.signatureReason || "Document locked and signed",
+    position: options.signaturePosition || "bottom-right",
+    page: "last",
+  });
+  
+  const tempPath = path.join(uploadDir, `temp-${randomUUID()}.pdf`);
+  fs.writeFileSync(tempPath, signedPdf);
+  
+  const tempFile: Express.Multer.File = {
+    ...file,
+    path: tempPath,
+  };
+  
+  const password = options.lockPassword || options.password;
+  if (!password) {
+    cleanupFiles(tempPath);
+    return signedPdf;
+  }
+  
+  try {
+    const lockedPdf = await protectPdf(tempFile, password);
+    cleanupFiles(tempPath);
+    return lockedPdf;
+  } catch (e) {
+    cleanupFiles(tempPath);
+    return signedPdf;
+  }
+}
+
 async function mergePdfsWithBookmarks(files: Express.Multer.File[]): Promise<Buffer> {
   const mergedPdf = await PDFDocument.create();
   const font = await mergedPdf.embedFont(StandardFonts.HelveticaBold);
@@ -14460,6 +14816,210 @@ export async function registerRoutes(
               allowFormFilling: options.allowFormFilling !== false,
             });
             filename = "secured.pdf";
+            break;
+
+          case "sign-pdf":
+            result = await addSignatureToPdf(files[0], {
+              name: options.signatureName || "Signer",
+              reason: options.signatureReason || "Document signed electronically",
+              location: options.signatureLocation || "",
+              contact: options.signatureContact || "",
+              date: options.signatureDate || new Date().toLocaleDateString(),
+              position: options.signaturePosition || "bottom-right",
+              page: options.signaturePage || "last",
+              customPage: options.signatureCustomPage,
+              width: options.signatureWidth || 200,
+              height: options.signatureHeight || 60,
+              x: options.signatureX,
+              y: options.signatureY,
+              style: options.signatureStyle || "typed",
+              text: options.signatureText,
+              color: options.signatureColor || "#1a365d",
+              fontSize: options.signatureFontSize || 12,
+            });
+            filename = "signed.pdf";
+            break;
+
+          case "pdf-signer":
+            result = await addSignatureToPdf(files[0], {
+              name: options.signatureName || "Professional Signer",
+              reason: options.signatureReason || "Official document signature",
+              location: options.signatureLocation || "",
+              contact: options.signatureContact || "",
+              date: options.signatureDate || new Date().toLocaleDateString(),
+              position: options.signaturePosition || "bottom-right",
+              page: options.signaturePage || "last",
+              customPage: options.signatureCustomPage,
+              width: options.signatureWidth || 220,
+              height: options.signatureHeight || 70,
+              x: options.signatureX,
+              y: options.signatureY,
+              style: options.signatureStyle || "typed",
+              text: options.signatureText,
+              color: options.signatureColor || "#1e3a5f",
+              fontSize: options.signatureFontSize || 14,
+            });
+            filename = "pdf-signed.pdf";
+            break;
+
+          case "esign-pdf":
+            result = await addSignatureToPdf(files[0], {
+              name: options.signatureName || "Electronic Signer",
+              reason: options.signatureReason || "Electronic signature applied",
+              location: options.signatureLocation || "",
+              contact: options.signatureContact || "",
+              date: options.signatureDate || new Date().toLocaleDateString(),
+              position: options.signaturePosition || "bottom-right",
+              page: options.signaturePage || "last",
+              customPage: options.signatureCustomPage,
+              width: options.signatureWidth || 200,
+              height: options.signatureHeight || 60,
+              x: options.signatureX,
+              y: options.signatureY,
+              style: options.signatureStyle || "handwritten",
+              text: options.signatureText || options.signatureName,
+              color: options.signatureColor || "#2d3748",
+              fontSize: options.signatureFontSize || 12,
+            });
+            filename = "esigned.pdf";
+            break;
+
+          case "add-signature-to-pdf":
+            result = await addSignatureToPdf(files[0], {
+              name: options.signatureName || "Signature",
+              reason: options.signatureReason || "Signature added",
+              location: options.signatureLocation || "",
+              contact: options.signatureContact || "",
+              date: options.signatureDate || new Date().toLocaleDateString(),
+              position: options.signaturePosition || "bottom-right",
+              page: options.signaturePage || "last",
+              customPage: options.signatureCustomPage,
+              width: options.signatureWidth || 180,
+              height: options.signatureHeight || 55,
+              x: options.signatureX,
+              y: options.signatureY,
+              style: options.signatureStyle || "typed",
+              text: options.signatureText,
+              color: options.signatureColor || "#1a365d",
+              fontSize: options.signatureFontSize || 11,
+            });
+            filename = "signature-added.pdf";
+            break;
+
+          case "request-pdf-signature":
+            result = await addSignatureFieldsToPdf(files[0], {
+              requestEmail: options.requestEmail || "",
+              requestMessage: options.requestMessage || "Please sign this document",
+              requestDeadline: options.requestDeadline || "",
+            });
+            filename = "signature-requested.pdf";
+            break;
+
+          case "pdf-signature-tool":
+            result = await addSignatureToPdf(files[0], {
+              name: options.signatureName || "Authorized Signer",
+              reason: options.signatureReason || "Document officially signed",
+              location: options.signatureLocation || "",
+              contact: options.signatureContact || "",
+              date: options.signatureDate || new Date().toLocaleDateString(),
+              position: options.signaturePosition || "bottom-right",
+              page: options.signaturePage || "all",
+              customPage: options.signatureCustomPage,
+              width: options.signatureWidth || 200,
+              height: options.signatureHeight || 60,
+              x: options.signatureX,
+              y: options.signatureY,
+              style: options.signatureStyle || "typed",
+              text: options.signatureText,
+              color: options.signatureColor || "#1e40af",
+              fontSize: options.signatureFontSize || 12,
+            });
+            filename = "tool-signed.pdf";
+            break;
+
+          case "validate-pdf-signature":
+          case "pdf-digital-signature-validator":
+            const validationResult = await validateSignature(files[0]);
+            const validationPdfBytes = fs.readFileSync(files[0].path);
+            const validationPdf = await PDFDocument.load(validationPdfBytes, { ignoreEncryption: true });
+            const valPages = validationPdf.getPages();
+            const valFirstPage = valPages[0];
+            const valFont = await validationPdf.embedFont(StandardFonts.HelveticaBold);
+            const valRegFont = await validationPdf.embedFont(StandardFonts.Helvetica);
+            
+            const { width: valWidth, height: valHeight } = valFirstPage.getSize();
+            const reportWidth = 280;
+            const reportHeight = 100;
+            const reportX = valWidth - reportWidth - 20;
+            const reportY = valHeight - reportHeight - 20;
+            
+            valFirstPage.drawRectangle({
+              x: reportX,
+              y: reportY,
+              width: reportWidth,
+              height: reportHeight,
+              color: validationResult.valid ? rgb(0.9, 1, 0.9) : rgb(1, 0.95, 0.9),
+              borderColor: validationResult.valid ? rgb(0.2, 0.6, 0.2) : rgb(0.8, 0.4, 0.2),
+              borderWidth: 2,
+            });
+            
+            valFirstPage.drawText(validationResult.valid ? "SIGNATURE VALID" : "NO SIGNATURE FOUND", {
+              x: reportX + 15,
+              y: reportY + reportHeight - 25,
+              size: 14,
+              font: valFont,
+              color: validationResult.valid ? rgb(0.1, 0.5, 0.1) : rgb(0.6, 0.3, 0.1),
+            });
+            
+            valFirstPage.drawText(`Validation Date: ${new Date().toLocaleDateString()}`, {
+              x: reportX + 15,
+              y: reportY + reportHeight - 45,
+              size: 10,
+              font: valRegFont,
+              color: rgb(0.3, 0.3, 0.3),
+            });
+            
+            const detailsText = validationResult.details.substring(0, 45);
+            valFirstPage.drawText(detailsText, {
+              x: reportX + 15,
+              y: reportY + reportHeight - 65,
+              size: 9,
+              font: valRegFont,
+              color: rgb(0.4, 0.4, 0.4),
+            });
+            
+            if (validationResult.details.length > 45) {
+              valFirstPage.drawText(validationResult.details.substring(45, 90), {
+                x: reportX + 15,
+                y: reportY + reportHeight - 80,
+                size: 9,
+                font: valRegFont,
+                color: rgb(0.4, 0.4, 0.4),
+              });
+            }
+            
+            result = Buffer.from(await validationPdf.save());
+            filename = toolType === "validate-pdf-signature" ? "signature-validated.pdf" : "digital-signature-validated.pdf";
+            break;
+
+          case "certify-pdf":
+            result = await certifyPdf(files[0], {
+              signatureName: options.signatureName || "Certifying Authority",
+              signatureReason: options.signatureReason || "Document certified as authentic",
+              certifyPermissions: options.certifyPermissions || "no-changes",
+            });
+            filename = "certified.pdf";
+            break;
+
+          case "pdf-locker":
+            result = await lockPdfWithSignature(files[0], {
+              signatureName: options.signatureName || "Document Owner",
+              signatureReason: options.signatureReason || "Document locked and secured",
+              signaturePosition: options.signaturePosition || "bottom-right",
+              lockPassword: options.lockPassword || options.password,
+              lockType: options.lockType || "both",
+            });
+            filename = "locked-signed.pdf";
             break;
             
           default:

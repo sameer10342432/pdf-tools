@@ -53,6 +53,16 @@ import {
   Link as LinkIcon,
   Unlink,
   Search,
+  PenTool,
+  PenLine,
+  FileSignature,
+  FilePen,
+  Send,
+  ShieldCheck,
+  Award,
+  LockKeyhole,
+  BadgeCheck,
+  ShieldAlert,
   type LucideIcon,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -89,6 +99,16 @@ const iconMap: Record<string, LucideIcon> = {
   Link: LinkIcon,
   Unlink,
   Search,
+  PenTool,
+  Signature: PenLine,
+  FileSignature,
+  FilePen,
+  Send,
+  ShieldCheck,
+  Award,
+  LockKeyhole,
+  BadgeCheck,
+  ShieldAlert,
 };
 
 interface ToolDialogProps {
