@@ -319,6 +319,16 @@ export const pdfToolTypes = [
   "remove-pdf-footer",
   "pdf-watermark-overlay",
   "pdf-page-overlay",
+  "pdf-underlay",
+  "pdf-stamp-datetime",
+  "pdf-stamp-username",
+  "pdf-bates-advanced",
+  "extract-text-from-pdf",
+  "pdf-text-extractor",
+  "extract-images-from-pdf",
+  "pdf-image-extractor",
+  "extract-tables-from-pdf",
+  "pdf-table-extractor",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -601,6 +611,24 @@ export const toolOptionsSchema = z.object({
   overlayCustomPages: z.string().optional(),
   headerRemovalMargin: z.number().optional(),
   footerRemovalMargin: z.number().optional(),
+  underlayPdfFile: z.string().optional(),
+  underlayPosition: z.enum(["center", "top-left", "top-right", "bottom-left", "bottom-right", "tile"]).optional(),
+  underlayOpacity: z.number().optional(),
+  underlayScale: z.number().optional(),
+  underlayPages: z.enum(["all", "first", "last", "odd", "even", "custom"]).optional(),
+  underlayCustomPages: z.string().optional(),
+  userName: z.string().optional(),
+  userDateFormat: z.enum(["MM/DD/YYYY", "DD/MM/YYYY", "YYYY-MM-DD", "MMMM D, YYYY", "D MMMM YYYY"]).optional(),
+  userTimeFormat: z.enum(["12-hour", "24-hour"]).optional(),
+  includeDate: z.boolean().optional(),
+  includeTime: z.boolean().optional(),
+  batesIncludeDate: z.boolean().optional(),
+  batesIncludeTime: z.boolean().optional(),
+  batesDateFormat: z.enum(["MM/DD/YYYY", "DD/MM/YYYY", "YYYY-MM-DD"]).optional(),
+  batesIncludeDocName: z.boolean().optional(),
+  tableOutputFormat: z.enum(["csv", "xlsx", "json"]).optional(),
+  extractionMode: z.enum(["all-pages", "specific-pages"]).optional(),
+  extractionPages: z.string().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -8663,5 +8691,291 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Batch Overlay Processing</h2>
 <p>Apply the same overlay to multiple documents. Process entire document sets with consistent overlays. Maintain branding across document productions. Handle large volumes efficiently. Batch processing extends overlay capabilities to any project scale.</p>`,
+  },
+  {
+    id: "pdf-underlay",
+    name: "PDF Underlay",
+    description: "Add a PDF page as a background layer beneath your document content",
+    icon: "Layers",
+    type: "pdf-underlay",
+    color: "bg-cyan-600",
+    emoji: "📄",
+    metaTitle: "PDF Underlay - Add Background to PDF | PDF Tools",
+    metaDescription: "Add PDF pages as background underlay to your documents. Create letterheads, templates, and branded documents. Free online PDF underlay tool.",
+    seoArticle: `<h2>PDF Underlay - Professional Background Layers</h2>
+<p>PDF underlay places content behind your existing document pages, creating professional backgrounds, letterheads, and branded templates. Unlike overlays that sit on top, underlays provide subtle background elements that enhance without obstructing your main content.</p>
+
+<h2>How PDF Underlay Works</h2>
+<p>Upload your main document and select a PDF to use as the underlay. The underlay content appears behind your document pages, visible through any transparent or white areas. Perfect for adding company letterhead, decorative borders, or watermark backgrounds that don't interfere with readability.</p>
+
+<h2>Common Underlay Applications</h2>
+<p>Create professional letterheads by underlaying company branding beneath correspondence. Add decorative borders to certificates and awards. Place subtle watermark backgrounds on confidential documents. Transform plain documents into branded materials with consistent background designs.</p>
+
+<h2>Precise Positioning Control</h2>
+<p>Position your underlay exactly where needed. Center backgrounds for consistent framing. Use corner positions for logo placement. Scale underlays to fit page dimensions perfectly. Adjust opacity to achieve the right balance between visibility and subtlety.</p>
+
+<h2>Page Selection Options</h2>
+<p>Apply underlays to all pages for consistent branding. Use first-page-only for cover letter styling. Apply to odd or even pages for duplex printing scenarios. Select specific pages for targeted background application. Flexible page selection meets any document requirement.</p>
+
+<h2>Professional Results</h2>
+<p>Underlay quality matches your source PDF resolution. Vector graphics scale cleanly without pixelation. Transparent elements blend seamlessly. Results display correctly across all PDF readers and platforms. Create professional documents with polished background layers.</p>`,
+  },
+  {
+    id: "pdf-stamp-datetime",
+    name: "PDF Stamp (Date/Time)",
+    description: "Add dynamic date and time stamps to your PDF documents",
+    icon: "Clock",
+    type: "pdf-stamp-datetime",
+    color: "bg-amber-600",
+    emoji: "🕐",
+    metaTitle: "PDF Date Time Stamp - Add Dynamic Timestamps | PDF Tools",
+    metaDescription: "Add current date and time stamps to PDF documents. Dynamic timestamp stamping with customizable formats. Free online PDF date stamping tool.",
+    seoArticle: `<h2>PDF Date/Time Stamp - Dynamic Document Timestamping</h2>
+<p>Document timestamps serve critical purposes: establishing creation dates, tracking versions, and providing audit trails. Our PDF date/time stamp tool adds the current date and time to your documents in customizable formats, creating permanent records of when documents were processed.</p>
+
+<h2>Dynamic Timestamping</h2>
+<p>Timestamps are generated at the moment of processing, ensuring accuracy. Choose from multiple date formats: MM/DD/YYYY, DD/MM/YYYY, YYYY-MM-DD, or spelled-out formats. Include time in 12-hour or 24-hour format. The timestamp reflects the exact processing moment.</p>
+
+<h2>Flexible Positioning</h2>
+<p>Place timestamps where they're most useful. Header positions for prominent visibility. Footer positions for subtle documentation. Choose left, center, or right alignment. Stamps appear consistently across all pages or on selected pages only.</p>
+
+<h2>Customization Options</h2>
+<p>Adjust font size for visibility preferences. Select colors that complement your document design. Control opacity for subtle or prominent stamps. Include date only, time only, or both together. Create timestamps that match your documentation standards.</p>
+
+<h2>Business Applications</h2>
+<p>Legal documents require precise timestamping for validity. Financial records benefit from processing date documentation. Contract versions need clear date identification. Compliance documents often mandate timestamp inclusion. Our tool meets professional timestamping requirements.</p>
+
+<h2>Audit Trail Creation</h2>
+<p>Timestamps create permanent records in your documents. Track when documents were generated or modified. Establish chronological ordering of document versions. Provide evidence of processing timing for legal purposes. Build reliable audit trails with automatic timestamping.</p>`,
+  },
+  {
+    id: "pdf-stamp-username",
+    name: "PDF Stamp (User Name)",
+    description: "Add personalized name stamps to your PDF documents",
+    icon: "User",
+    type: "pdf-stamp-username",
+    color: "bg-emerald-600",
+    emoji: "👤",
+    metaTitle: "PDF User Name Stamp - Add Name to PDF | PDF Tools",
+    metaDescription: "Add personalized name stamps to PDF documents. Stamp your name, department, or custom text. Free online PDF name stamping tool.",
+    seoArticle: `<h2>PDF User Name Stamp - Personalized Document Marking</h2>
+<p>Adding your name to documents establishes ownership, responsibility, and accountability. Our PDF user name stamp tool places customizable name stamps on your documents, creating clear identification of who processed, reviewed, or approved the content.</p>
+
+<h2>Personalized Stamps</h2>
+<p>Enter your name, title, department, or any identifying text. The stamp appears consistently across your document. Combine with date/time stamps for complete identification. Create professional-looking attribution stamps that identify document handlers.</p>
+
+<h2>Positioning Control</h2>
+<p>Place name stamps where visibility matters most. Header placement for prominent identification. Footer placement for subtle documentation. Corner positions for watermark-style marking. Center placement for approval-stamp aesthetics.</p>
+
+<h2>Customization Features</h2>
+<p>Adjust font size to match document styling. Select colors that complement or contrast for visibility. Control opacity for prominent or subtle appearance. Add optional date and time alongside your name. Create stamps that match your organizational standards.</p>
+
+<h2>Professional Use Cases</h2>
+<p>Document reviewers stamp their names to indicate completion. Approvers add identification to authorized documents. Processors mark documents they've handled. Department heads identify their oversight. Name stamps create accountability trails.</p>
+
+<h2>Compliance and Tracking</h2>
+<p>Many workflows require personnel identification on documents. Audit requirements often mandate handler identification. Quality control processes need reviewer stamps. Our tool provides the identification features professional workflows demand.</p>`,
+  },
+  {
+    id: "pdf-bates-advanced",
+    name: "PDF Bates Numbering (Advanced)",
+    description: "Add advanced Bates numbering with prefix, suffix, dates, and custom formatting",
+    icon: "Hash",
+    type: "pdf-bates-advanced",
+    color: "bg-rose-600",
+    emoji: "🔢",
+    metaTitle: "Advanced Bates Numbering - Professional PDF Stamping | PDF Tools",
+    metaDescription: "Add advanced Bates numbering to PDFs with prefixes, suffixes, dates, and custom formats. Professional legal document numbering. Free online tool.",
+    seoArticle: `<h2>Advanced Bates Numbering - Professional Document Identification</h2>
+<p>Bates numbering is the gold standard for legal document identification, providing unique sequential identifiers for every page. Our advanced Bates numbering tool offers comprehensive customization for professional legal, medical, and business document management.</p>
+
+<h2>Comprehensive Number Formatting</h2>
+<p>Configure every aspect of your Bates numbers. Set starting numbers for continuation across document sets. Define the number of digits for consistent formatting. Add prefixes for case or project identification. Include suffixes for document categorization.</p>
+
+<h2>Date and Time Integration</h2>
+<p>Include processing dates in your Bates stamps for timeline documentation. Choose from multiple date formats to match your standards. Add time stamps for precise processing records. Combined date/number stamps provide complete documentation.</p>
+
+<h2>Document Name Inclusion</h2>
+<p>Optionally include document names in Bates stamps. This aids identification when pages are separated from their source documents. Combined with sequential numbering, document names provide complete page identification.</p>
+
+<h2>Position and Style Control</h2>
+<p>Place Bates numbers in standard positions: header corners, footer corners, or centered. Adjust font sizes for readability requirements. Select colors that provide visibility without overwhelming content. Match your organizational styling preferences.</p>
+
+<h2>Legal Industry Standard</h2>
+<p>Law firms rely on Bates numbering for case document management. Courts require consistent page identification for evidence. Discovery processes mandate sequential numbering. Our tool meets the strict requirements of legal document handling.</p>
+
+<h2>Multi-Document Processing</h2>
+<p>Process multiple documents with continuous numbering. Maintain sequence across entire case files. Create consistent identification systems for large document productions. Handle any volume of documents with professional numbering.</p>`,
+  },
+  {
+    id: "extract-text-from-pdf",
+    name: "Extract Text from PDF",
+    description: "Extract all text content from your PDF document",
+    icon: "FileText",
+    type: "extract-text-from-pdf",
+    color: "bg-blue-600",
+    emoji: "📝",
+    metaTitle: "Extract Text from PDF Online Free - PDF to Text | PDF Tools",
+    metaDescription: "Extract all text content from PDF files online for free. Convert PDF to plain text. Fast and accurate text extraction tool.",
+    seoArticle: `<h2>Extract Text from PDF - Complete Content Extraction</h2>
+<p>Need the text content from a PDF without formatting? Our text extraction tool pulls all text from your PDF documents, delivering clean, editable content ready for use in word processors, spreadsheets, or any text-based application.</p>
+
+<h2>Comprehensive Text Extraction</h2>
+<p>Our tool extracts all text content from every page of your PDF. Headers, body text, footers, and captions are all captured. Text appears in reading order, maintaining logical flow. The result is clean text ready for immediate use.</p>
+
+<h2>Use Cases for Text Extraction</h2>
+<p>Convert PDF reports to editable documents for revision. Extract article content for quotation and citation. Pull data from PDF forms for database entry. Gather text for translation services. Make PDF content accessible for screen readers.</p>
+
+<h2>Simple Extraction Process</h2>
+<p>Upload your PDF document using our secure uploader. Our tool processes all pages automatically. Download the extracted text as a plain text file. Copy and paste into any application immediately.</p>
+
+<h2>Preserving Content Accuracy</h2>
+<p>Text extraction maintains spelling and punctuation. Special characters and symbols are preserved. Paragraph breaks are detected and maintained. The extracted text accurately represents your document content.</p>
+
+<h2>Handling Complex Documents</h2>
+<p>Multi-column layouts are processed logically. Headers and footers are identified and included. Tables are converted to text-based representations. Even complex PDF layouts yield usable extracted text.</p>`,
+  },
+  {
+    id: "pdf-text-extractor",
+    name: "PDF Text Extractor",
+    description: "Professional text extraction with page selection and format options",
+    icon: "ScanText",
+    type: "pdf-text-extractor",
+    color: "bg-indigo-600",
+    emoji: "📋",
+    metaTitle: "PDF Text Extractor - Advanced Text Extraction | PDF Tools",
+    metaDescription: "Professional PDF text extraction with page selection. Extract text from specific pages with formatting options. Free online PDF text extractor.",
+    seoArticle: `<h2>PDF Text Extractor - Professional Text Extraction</h2>
+<p>Our professional text extractor offers advanced options for precise text extraction. Select specific pages, choose extraction modes, and get formatted output tailored to your needs. Perfect for researchers, data analysts, and content professionals.</p>
+
+<h2>Page Selection Options</h2>
+<p>Extract text from all pages or specify exact page ranges. Select individual pages for targeted extraction. Use range notation for multiple sections. Process only the pages you need without extracting entire documents.</p>
+
+<h2>Extraction Modes</h2>
+<p>Choose extraction approaches that match your content type. Standard mode captures text in reading order. Layout-preserving mode maintains spatial relationships. Raw mode extracts all text elements for maximum completeness.</p>
+
+<h2>Format Options</h2>
+<p>Get extracted text in formats that suit your workflow. Plain text for simple content transfer. Structured format with page markers and section breaks. CSV-ready format for data import. JSON format for programmatic processing.</p>
+
+<h2>Quality Results</h2>
+<p>Our extraction engine handles fonts and encodings accurately. Unicode characters are properly decoded. Ligatures and special typography are resolved. Get accurate text that matches your original document content.</p>
+
+<h2>Professional Applications</h2>
+<p>Legal professionals extract text for case preparation. Researchers gather content for analysis and citation. Content managers repurpose PDF materials for web publishing. Data analysts convert PDF reports for database entry.</p>`,
+  },
+  {
+    id: "extract-images-from-pdf",
+    name: "Extract Images from PDF",
+    description: "Extract all embedded images from your PDF document",
+    icon: "Image",
+    type: "extract-images-from-pdf",
+    color: "bg-purple-600",
+    emoji: "🖼️",
+    metaTitle: "Extract Images from PDF Online Free - PDF Image Extractor | PDF Tools",
+    metaDescription: "Extract all embedded images from PDF files online for free. Download images in original quality. Fast and easy PDF image extraction tool.",
+    seoArticle: `<h2>Extract Images from PDF - Complete Image Retrieval</h2>
+<p>PDFs often contain valuable images that you need separately: photos, diagrams, charts, and graphics. Our image extraction tool pulls all embedded images from your PDF documents, delivering them in their original quality for reuse in any project.</p>
+
+<h2>Preserve Original Quality</h2>
+<p>Extracted images maintain their original resolution and quality. JPEGs retain their compression settings. PNGs preserve transparency. The images you extract are identical to those embedded in the PDF.</p>
+
+<h2>Comprehensive Extraction</h2>
+<p>Our tool finds and extracts every image in your PDF. Photos, illustrations, logos, and graphics are all captured. Images from all pages are included automatically. You receive a complete collection of every embedded image.</p>
+
+<h2>Common Use Cases</h2>
+<p>Recover photos from old PDF documents. Extract charts for presentation reuse. Retrieve diagrams for technical documentation. Pull product images from catalogs. Gather graphics for website content.</p>
+
+<h2>Easy Download</h2>
+<p>Extracted images are packaged in a convenient ZIP archive. Each image is named systematically for easy identification. Download the complete archive and access images immediately. Individual files are ready for use in any image editor.</p>
+
+<h2>Handling Various Image Types</h2>
+<p>Our tool handles all common image formats embedded in PDFs. JPEG photographs extract perfectly. PNG graphics maintain transparency. Vector images where possible are converted to high-quality rasters. Whatever your PDF contains, we extract it.</p>`,
+  },
+  {
+    id: "pdf-image-extractor",
+    name: "PDF Image Extractor",
+    description: "Advanced image extraction with quality and format options",
+    icon: "ImageDown",
+    type: "pdf-image-extractor",
+    color: "bg-fuchsia-600",
+    emoji: "🎨",
+    metaTitle: "PDF Image Extractor - Advanced Image Extraction | PDF Tools",
+    metaDescription: "Professional PDF image extraction with format selection. Extract images in JPG, PNG, or original format. Free online PDF image extractor.",
+    seoArticle: `<h2>PDF Image Extractor - Professional Image Extraction</h2>
+<p>Our professional image extractor provides advanced options for extracting images from PDFs. Choose output formats, select specific pages, and control quality settings. Get exactly the images you need in the format you want.</p>
+
+<h2>Output Format Selection</h2>
+<p>Choose the format that suits your needs. Original format preserves embedded quality exactly. JPEG format for universal compatibility and smaller files. PNG format when transparency matters. Select the right format for your intended use.</p>
+
+<h2>Page Selection</h2>
+<p>Extract images from all pages or target specific sections. Specify page ranges for focused extraction. Select individual pages for precise control. Process only what you need efficiently.</p>
+
+<h2>Quality Control</h2>
+<p>When converting formats, control compression and quality. High quality for archival and print purposes. Medium quality for web use with smaller files. Optimized settings for email sharing. Balance quality and file size for your needs.</p>
+
+<h2>Professional Features</h2>
+<p>Batch extraction handles documents of any size. Systematic naming identifies image sources. ZIP packaging organizes extracted files. Metadata preservation where supported. Professional tools for professional needs.</p>
+
+<h2>Applications</h2>
+<p>Designers extract assets from PDF layouts. Publishers recover images for repurposing. Researchers gather visual content for analysis. Archivists preserve embedded images separately. Any workflow requiring PDF images benefits from our extractor.</p>`,
+  },
+  {
+    id: "extract-tables-from-pdf",
+    name: "Extract Tables from PDF",
+    description: "Extract tabular data from PDF documents to spreadsheet formats",
+    icon: "Table",
+    type: "extract-tables-from-pdf",
+    color: "bg-teal-600",
+    emoji: "📊",
+    metaTitle: "Extract Tables from PDF Online Free - PDF Table Extractor | PDF Tools",
+    metaDescription: "Extract tables from PDF files to Excel or CSV online for free. Convert PDF tables to editable spreadsheet data. Fast table extraction tool.",
+    seoArticle: `<h2>Extract Tables from PDF - Data Liberation</h2>
+<p>Tables in PDFs contain valuable data trapped in a non-editable format. Our table extraction tool liberates this data, converting PDF tables into spreadsheet-ready formats. Transform static tables into dynamic, editable data for analysis and processing.</p>
+
+<h2>Smart Table Detection</h2>
+<p>Our tool automatically identifies tables within your PDF pages. Row and column structures are detected accurately. Cell boundaries are recognized and preserved. Even complex tables with merged cells are handled intelligently.</p>
+
+<h2>Multiple Output Formats</h2>
+<p>Choose the format that fits your workflow. CSV for universal compatibility and simple data. Excel (XLSX) for spreadsheet editing with formatting. JSON for programmatic processing and database import. Each format preserves your table structure.</p>
+
+<h2>Data Accuracy</h2>
+<p>Cell content is extracted precisely as it appears. Numbers, text, and special characters are preserved. Decimal formats and currencies remain intact. The extracted data matches your source tables exactly.</p>
+
+<h2>Use Cases</h2>
+<p>Financial analysts extract data from PDF reports for modeling. Researchers gather tabular data from published studies. Business users convert PDF invoices to spreadsheets. Accountants extract statement data for reconciliation.</p>
+
+<h2>Handling Complex Tables</h2>
+<p>Multi-row headers are identified and handled appropriately. Spanning cells are managed intelligently. Tables split across pages are combined. Even challenging table layouts yield usable extracted data.</p>`,
+  },
+  {
+    id: "pdf-table-extractor",
+    name: "PDF Table Extractor",
+    description: "Professional table extraction with advanced detection and formatting",
+    icon: "FileSpreadsheet",
+    type: "pdf-table-extractor",
+    color: "bg-green-600",
+    emoji: "📈",
+    metaTitle: "PDF Table Extractor - Advanced Table Extraction | PDF Tools",
+    metaDescription: "Professional PDF table extraction with advanced detection. Extract tables to Excel, CSV, or JSON with formatting options. Free online tool.",
+    seoArticle: `<h2>PDF Table Extractor - Advanced Tabular Data Extraction</h2>
+<p>Our professional table extractor offers advanced features for precise data extraction. Enhanced table detection, page selection, and output formatting options give you complete control over extracting tabular data from PDFs.</p>
+
+<h2>Enhanced Table Detection</h2>
+<p>Advanced algorithms identify tables with high accuracy. Border-less tables are detected by content alignment. Complex nested tables are parsed correctly. Multiple tables per page are separated and extracted individually.</p>
+
+<h2>Page Selection</h2>
+<p>Target specific pages containing the tables you need. Extract from all pages for comprehensive data capture. Specify page ranges for focused extraction. Select individual pages for precise control over output.</p>
+
+<h2>Output Formatting</h2>
+<p>CSV output with customizable delimiters for data processing. Excel output with cell formatting preserved where possible. JSON output with structured data for API integration. Choose the format that matches your downstream workflow.</p>
+
+<h2>Batch Processing</h2>
+<p>Process multi-page documents with numerous tables efficiently. Each table is extracted and identified separately. Output is organized for easy processing. Handle large documents with complex table structures.</p>
+
+<h2>Quality Assurance</h2>
+<p>Preview detected tables before extraction. Verify table boundaries are correctly identified. Confirm data accuracy before downloading. Get extraction results you can trust.</p>
+
+<h2>Professional Applications</h2>
+<p>Data engineers extract structured data for ETL pipelines. Business analysts convert PDF reports to analytical datasets. Compliance teams extract regulatory data for review. Any role requiring PDF table data benefits from professional extraction.</p>`,
   },
 ];
