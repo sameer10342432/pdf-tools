@@ -5950,73 +5950,64 @@ async function pdfToExcel(file: Express.Multer.File): Promise<Buffer> {
   const pages = pdf.getPages();
   const fileName = path.basename(file.originalname, path.extname(file.originalname));
   
-  const resultPdf = await PDFDocument.create();
-  const font = await resultPdf.embedFont(StandardFonts.Helvetica);
-  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
+  const workbook = XLSX.utils.book_new();
   
-  const pageWidth = 792;
-  const pageHeight = 612;
-  const margin = 40;
+  const summaryData = [
+    ['PDF Data Extraction Report'],
+    [''],
+    ['Document Information'],
+    ['Source File', fileName],
+    ['Total Pages', pages.length],
+    ['Title', pdf.getTitle() || 'N/A'],
+    ['Author', pdf.getAuthor() || 'N/A'],
+    ['Creator', pdf.getCreator() || 'N/A'],
+    ['Producer', pdf.getProducer() || 'N/A'],
+    ['Creation Date', pdf.getCreationDate()?.toISOString() || 'N/A'],
+    ['Modification Date', pdf.getModificationDate()?.toISOString() || 'N/A'],
+    [''],
+    ['Page Details'],
+    ['Page Number', 'Width (pt)', 'Height (pt)', 'Rotation', 'Orientation'],
+  ];
   
-  const page = resultPdf.addPage([pageWidth, pageHeight]);
-  
-  page.drawText('PDF to Excel Conversion', {
-    x: margin,
-    y: pageHeight - margin - 30,
-    size: 20,
-    font: boldFont,
-    color: rgb(0.2, 0.2, 0.2),
-  });
-  
-  page.drawText(`Source: ${fileName}`, {
-    x: margin,
-    y: pageHeight - margin - 60,
-    size: 12,
-    font,
-    color: rgb(0.4, 0.4, 0.4),
-  });
-  
-  page.drawText(`Total Pages: ${pages.length}`, {
-    x: margin,
-    y: pageHeight - margin - 80,
-    size: 12,
-    font,
-    color: rgb(0.4, 0.4, 0.4),
-  });
-  
-  page.drawText('Extracted Data Summary:', {
-    x: margin,
-    y: pageHeight - margin - 120,
-    size: 14,
-    font: boldFont,
-    color: rgb(0.3, 0.3, 0.3),
-  });
-  
-  let yPos = pageHeight - margin - 150;
-  for (let i = 0; i < Math.min(pages.length, 15); i++) {
-    const { width, height } = pages[i].getSize();
-    page.drawText(`Sheet ${i + 1}: Page ${i + 1} data (${Math.round(width)} x ${Math.round(height)})`, {
-      x: margin + 20,
-      y: yPos,
-      size: 10,
-      font,
-      color: rgb(0.4, 0.4, 0.4),
-    });
-    yPos -= 20;
+  for (let i = 0; i < pages.length; i++) {
+    const page = pages[i];
+    const { width, height } = page.getSize();
+    const rotation = page.getRotation().angle;
+    const orientation = width > height ? 'Landscape' : 'Portrait';
+    summaryData.push([i + 1, Math.round(width), Math.round(height), rotation, orientation]);
   }
   
-  page.drawText('Note: For complete table extraction, use specialized PDF table extraction tools.', {
-    x: margin,
-    y: margin + 20,
-    size: 9,
-    font,
-    color: rgb(0.6, 0.6, 0.6),
-  });
+  const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+  summarySheet['!cols'] = [{ wch: 20 }, { wch: 15 }, { wch: 15 }, { wch: 10 }, { wch: 12 }];
+  XLSX.utils.book_append_sheet(workbook, summarySheet, 'Document Summary');
   
-  resultPdf.setTitle(`${fileName} - Excel Conversion`);
-  resultPdf.setProducer('PDF Tools - PDF to Excel');
+  for (let i = 0; i < Math.min(pages.length, 50); i++) {
+    const page = pages[i];
+    const { width, height } = page.getSize();
+    const rotation = page.getRotation().angle;
+    
+    const pageData = [
+      [`Page ${i + 1} Data`],
+      [''],
+      ['Property', 'Value'],
+      ['Page Number', i + 1],
+      ['Width (points)', Math.round(width)],
+      ['Height (points)', Math.round(height)],
+      ['Width (inches)', (width / 72).toFixed(2)],
+      ['Height (inches)', (height / 72).toFixed(2)],
+      ['Rotation', `${rotation} degrees`],
+      ['Orientation', width > height ? 'Landscape' : 'Portrait'],
+      [''],
+      ['Note: Text content extraction requires OCR for scanned documents.'],
+    ];
+    
+    const pageSheet = XLSX.utils.aoa_to_sheet(pageData);
+    pageSheet['!cols'] = [{ wch: 20 }, { wch: 30 }];
+    XLSX.utils.book_append_sheet(workbook, pageSheet, `Page ${i + 1}`);
+  }
   
-  return Buffer.from(await resultPdf.save());
+  const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+  return Buffer.from(buffer);
 }
 
 async function pdfToXls(file: Express.Multer.File): Promise<Buffer> {
@@ -7412,88 +7403,79 @@ async function pdfToJson(file: Express.Multer.File): Promise<Buffer> {
   const pages = pdf.getPages();
   const fileName = path.basename(file.originalname, path.extname(file.originalname));
   
+  let fields: any[] = [];
+  try {
+    const form = pdf.getForm();
+    fields = form.getFields();
+  } catch (e) {
+    fields = [];
+  }
+  
+  const formFieldsData = fields.map(field => {
+    const fieldType = field.constructor.name;
+    let value: any = null;
+    
+    try {
+      if (fieldType === 'PDFTextField') {
+        value = (field as any).getText?.() || null;
+      } else if (fieldType === 'PDFCheckBox') {
+        value = (field as any).isChecked?.() || false;
+      } else if (fieldType === 'PDFDropdown') {
+        value = (field as any).getSelected?.() || [];
+      } else if (fieldType === 'PDFRadioGroup') {
+        value = (field as any).getSelected?.() || null;
+      }
+    } catch (e) {
+      value = null;
+    }
+    
+    return {
+      name: field.getName(),
+      type: fieldType.replace('PDF', '').replace('Field', ''),
+      value: value,
+      isReadOnly: field.isReadOnly(),
+    };
+  });
+  
   const jsonData = {
     document: {
       filename: fileName,
+      extractedAt: new Date().toISOString(),
       metadata: {
         title: pdf.getTitle() || fileName,
         author: pdf.getAuthor() || null,
         subject: pdf.getSubject() || null,
+        keywords: pdf.getKeywords() || null,
         creator: pdf.getCreator() || null,
         producer: pdf.getProducer() || null,
         creationDate: pdf.getCreationDate()?.toISOString() || null,
         modificationDate: pdf.getModificationDate()?.toISOString() || null,
       },
-      pageCount: pages.length,
+      statistics: {
+        pageCount: pages.length,
+        formFieldCount: fields.length,
+        hasEncryption: false,
+      },
       pages: pages.map((page, index) => {
         const { width, height } = page.getSize();
         return {
           pageNumber: index + 1,
-          width: Math.round(width),
-          height: Math.round(height),
+          dimensions: {
+            width: Math.round(width),
+            height: Math.round(height),
+            widthInches: parseFloat((width / 72).toFixed(2)),
+            heightInches: parseFloat((height / 72).toFixed(2)),
+          },
           rotation: page.getRotation().angle,
-          content: `[Text content from page ${index + 1}]`
+          orientation: width > height ? 'landscape' : 'portrait',
         };
-      })
+      }),
+      formFields: formFieldsData.length > 0 ? formFieldsData : null,
     }
   };
   
   const jsonString = JSON.stringify(jsonData, null, 2);
-  
-  const resultPdf = await PDFDocument.create();
-  const font = await resultPdf.embedFont(StandardFonts.Courier);
-  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
-  
-  const pageWidth = 612;
-  const pageHeight = 792;
-  const margin = 50;
-  const lineHeight = 11;
-  
-  let currentPage = resultPdf.addPage([pageWidth, pageHeight]);
-  let yPosition = pageHeight - margin;
-  
-  currentPage.drawText('PDF to JSON Conversion', {
-    x: margin,
-    y: yPosition,
-    size: 18,
-    font: boldFont,
-    color: rgb(0.2, 0.2, 0.2),
-  });
-  yPosition -= 30;
-  
-  currentPage.drawText(`Source: ${fileName} | Pages: ${pages.length}`, {
-    x: margin,
-    y: yPosition,
-    size: 10,
-    font,
-    color: rgb(0.4, 0.4, 0.4),
-  });
-  yPosition -= 25;
-  
-  const lines = jsonString.split('\n');
-  for (const line of lines) {
-    if (yPosition < margin + lineHeight) {
-      currentPage = resultPdf.addPage([pageWidth, pageHeight]);
-      yPosition = pageHeight - margin;
-    }
-    
-    const safeLine = line.substring(0, 85);
-    try {
-      currentPage.drawText(safeLine || ' ', {
-        x: margin,
-        y: yPosition,
-        size: 8,
-        font,
-        color: rgb(0.2, 0.2, 0.2),
-      });
-    } catch (e) {}
-    yPosition -= lineHeight;
-  }
-  
-  resultPdf.setTitle(`${fileName} - JSON Export`);
-  resultPdf.setProducer('PDF Tools - PDF to JSON');
-  
-  return Buffer.from(await resultPdf.save());
+  return Buffer.from(jsonString, 'utf-8');
 }
 
 async function pdfToCsv(file: Express.Multer.File): Promise<Buffer> {
@@ -7502,84 +7484,77 @@ async function pdfToCsv(file: Express.Multer.File): Promise<Buffer> {
   const pages = pdf.getPages();
   const fileName = path.basename(file.originalname, path.extname(file.originalname));
   
-  let csvContent = 'Page,Width,Height,Rotation,Content\n';
+  let fields: any[] = [];
+  try {
+    const form = pdf.getForm();
+    fields = form.getFields();
+  } catch (e) {
+    fields = [];
+  }
+  
+  const csvLines: string[] = [];
+  
+  csvLines.push('# PDF Data Extraction Report');
+  csvLines.push(`# Source File: ${fileName}`);
+  csvLines.push(`# Extraction Date: ${new Date().toISOString()}`);
+  csvLines.push('');
+  
+  csvLines.push('# Document Metadata');
+  csvLines.push('Property,Value');
+  csvLines.push(`Title,"${(pdf.getTitle() || fileName).replace(/"/g, '""')}"`);
+  csvLines.push(`Author,"${(pdf.getAuthor() || 'N/A').replace(/"/g, '""')}"`);
+  csvLines.push(`Subject,"${(pdf.getSubject() || 'N/A').replace(/"/g, '""')}"`);
+  csvLines.push(`Creator,"${(pdf.getCreator() || 'N/A').replace(/"/g, '""')}"`);
+  csvLines.push(`Producer,"${(pdf.getProducer() || 'N/A').replace(/"/g, '""')}"`);
+  csvLines.push(`Creation Date,"${pdf.getCreationDate()?.toISOString() || 'N/A'}"`);
+  csvLines.push(`Modification Date,"${pdf.getModificationDate()?.toISOString() || 'N/A'}"`);
+  csvLines.push(`Page Count,${pages.length}`);
+  csvLines.push('');
+  
+  csvLines.push('# Page Details');
+  csvLines.push('Page Number,Width (pt),Height (pt),Width (in),Height (in),Rotation,Orientation');
   
   for (let i = 0; i < pages.length; i++) {
     const page = pages[i];
     const { width, height } = page.getSize();
     const rotation = page.getRotation().angle;
-    csvContent += `${i + 1},${Math.round(width)},${Math.round(height)},${rotation},"[Content from page ${i + 1}]"\n`;
+    const orientation = width > height ? 'Landscape' : 'Portrait';
+    const widthIn = (width / 72).toFixed(2);
+    const heightIn = (height / 72).toFixed(2);
+    csvLines.push(`${i + 1},${Math.round(width)},${Math.round(height)},${widthIn},${heightIn},${rotation},${orientation}`);
   }
   
-  const resultPdf = await PDFDocument.create();
-  const font = await resultPdf.embedFont(StandardFonts.Courier);
-  const boldFont = await resultPdf.embedFont(StandardFonts.HelveticaBold);
-  
-  const pageWidth = 612;
-  const pageHeight = 792;
-  const margin = 50;
-  
-  const resultPage = resultPdf.addPage([pageWidth, pageHeight]);
-  
-  resultPage.drawText('PDF to CSV Conversion', {
-    x: margin,
-    y: pageHeight - margin - 40,
-    size: 24,
-    font: boldFont,
-    color: rgb(0.2, 0.2, 0.2),
-  });
-  
-  resultPage.drawText(`Source File: ${fileName}`, {
-    x: margin,
-    y: pageHeight - margin - 80,
-    size: 14,
-    font,
-    color: rgb(0.4, 0.4, 0.4),
-  });
-  
-  resultPage.drawText(`Rows Extracted: ${pages.length}`, {
-    x: margin,
-    y: pageHeight - margin - 110,
-    size: 12,
-    font,
-    color: rgb(0.4, 0.4, 0.4),
-  });
-  
-  resultPage.drawText('Output Format: CSV (Comma-Separated Values)', {
-    x: margin,
-    y: pageHeight - margin - 140,
-    size: 12,
-    font,
-    color: rgb(0.4, 0.4, 0.4),
-  });
-  
-  resultPage.drawText('CSV Preview:', {
-    x: margin,
-    y: pageHeight - margin - 180,
-    size: 12,
-    font: boldFont,
-    color: rgb(0.3, 0.3, 0.3),
-  });
-  
-  const lines = csvContent.split('\n').slice(0, 10);
-  let yPos = pageHeight - margin - 210;
-  for (const line of lines) {
-    try {
-      resultPage.drawText(line.substring(0, 70), {
-        x: margin,
-        y: yPos,
-        size: 9,
-        font,
-        color: rgb(0.2, 0.2, 0.2),
-      });
-    } catch (e) {}
-    yPos -= 14;
+  if (fields.length > 0) {
+    csvLines.push('');
+    csvLines.push('# Form Fields');
+    csvLines.push('Field Name,Field Type,Value,Read Only');
+    
+    for (const field of fields) {
+      const fieldName = field.getName().replace(/"/g, '""');
+      const fieldType = field.constructor.name.replace('PDF', '').replace('Field', '');
+      let value = '';
+      
+      try {
+        if (field.constructor.name === 'PDFTextField') {
+          value = (field as any).getText?.() || '';
+        } else if (field.constructor.name === 'PDFCheckBox') {
+          value = (field as any).isChecked?.() ? 'Checked' : 'Unchecked';
+        } else if (field.constructor.name === 'PDFDropdown') {
+          const selected = (field as any).getSelected?.();
+          value = Array.isArray(selected) ? selected.join('; ') : (selected || '');
+        } else if (field.constructor.name === 'PDFRadioGroup') {
+          value = (field as any).getSelected?.() || '';
+        }
+      } catch (e) {
+        value = '';
+      }
+      
+      const isReadOnly = field.isReadOnly() ? 'Yes' : 'No';
+      csvLines.push(`"${fieldName}",${fieldType},"${value.replace(/"/g, '""')}",${isReadOnly}`);
+    }
   }
   
-  resultPdf.setTitle(`${fileName} - CSV Export`);
-  resultPdf.setProducer('PDF Tools - PDF to CSV');
-  
-  return Buffer.from(await resultPdf.save());
+  return Buffer.from(csvLines.join('\n'), 'utf-8');
 }
 
 async function pdfToGrayscale(file: Express.Multer.File): Promise<Buffer> {
@@ -10665,6 +10640,344 @@ async function pdfConverter(file: Express.Multer.File, format: string = 'pdf'): 
   resultPdf.setProducer('PDF Tools - Universal PDF Converter');
   
   return Buffer.from(await resultPdf.save());
+}
+
+async function extractDataFromPdf(file: Express.Multer.File, outputFormat: string = 'xlsx'): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pages = pdf.getPages();
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  let fields: any[] = [];
+  try {
+    const form = pdf.getForm();
+    fields = form.getFields();
+  } catch (e) {
+    fields = [];
+  }
+  
+  const extractedData = {
+    document: {
+      filename: fileName,
+      extractedAt: new Date().toISOString(),
+      metadata: {
+        title: pdf.getTitle() || fileName,
+        author: pdf.getAuthor() || null,
+        subject: pdf.getSubject() || null,
+        creator: pdf.getCreator() || null,
+        producer: pdf.getProducer() || null,
+        creationDate: pdf.getCreationDate()?.toISOString() || null,
+        modificationDate: pdf.getModificationDate()?.toISOString() || null,
+      },
+      pageCount: pages.length,
+      pages: pages.map((page, index) => {
+        const { width, height } = page.getSize();
+        return {
+          pageNumber: index + 1,
+          width: Math.round(width),
+          height: Math.round(height),
+          rotation: page.getRotation().angle,
+        };
+      }),
+      formFields: fields.map(field => ({
+        name: field.getName(),
+        type: field.constructor.name.replace('PDF', '').replace('Field', ''),
+        isReadOnly: field.isReadOnly(),
+      })),
+    }
+  };
+  
+  if (outputFormat === 'json') {
+    return Buffer.from(JSON.stringify(extractedData, null, 2), 'utf-8');
+  } else if (outputFormat === 'csv') {
+    const csvLines: string[] = [];
+    csvLines.push('Property,Value');
+    csvLines.push(`Filename,"${fileName}"`);
+    csvLines.push(`Page Count,${pages.length}`);
+    csvLines.push(`Form Fields,${fields.length}`);
+    csvLines.push('');
+    csvLines.push('Page,Width,Height,Rotation');
+    for (const pageData of extractedData.document.pages) {
+      csvLines.push(`${pageData.pageNumber},${pageData.width},${pageData.height},${pageData.rotation}`);
+    }
+    return Buffer.from(csvLines.join('\n'), 'utf-8');
+  } else {
+    const workbook = XLSX.utils.book_new();
+    
+    const summaryData = [
+      ['PDF Data Extraction'],
+      [''],
+      ['Document Information'],
+      ['Filename', fileName],
+      ['Page Count', pages.length],
+      ['Form Fields', fields.length],
+      ['Title', extractedData.document.metadata.title || ''],
+      ['Author', extractedData.document.metadata.author || ''],
+    ];
+    const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+    XLSX.utils.book_append_sheet(workbook, summarySheet, 'Summary');
+    
+    const pagesData = [['Page', 'Width', 'Height', 'Rotation']];
+    for (const pageData of extractedData.document.pages) {
+      pagesData.push([pageData.pageNumber, pageData.width, pageData.height, pageData.rotation]);
+    }
+    const pagesSheet = XLSX.utils.aoa_to_sheet(pagesData);
+    XLSX.utils.book_append_sheet(workbook, pagesSheet, 'Pages');
+    
+    if (fields.length > 0) {
+      const fieldsData = [['Field Name', 'Type', 'Read Only']];
+      for (const fieldData of extractedData.document.formFields) {
+        fieldsData.push([fieldData.name, fieldData.type, fieldData.isReadOnly ? 'Yes' : 'No']);
+      }
+      const fieldsSheet = XLSX.utils.aoa_to_sheet(fieldsData);
+      XLSX.utils.book_append_sheet(workbook, fieldsSheet, 'Form Fields');
+    }
+    
+    return Buffer.from(XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }));
+  }
+}
+
+async function pdfDataExtractor(file: Express.Multer.File, outputFormat: string = 'xlsx'): Promise<Buffer> {
+  return extractDataFromPdf(file, outputFormat);
+}
+
+async function fillPdfForms(file: Express.Multer.File, formData: string): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  let form;
+  try {
+    form = pdf.getForm();
+  } catch (e) {
+    return Buffer.from(await pdf.save());
+  }
+  
+  let fieldsData: Record<string, any> = {};
+  try {
+    fieldsData = JSON.parse(formData || '{}');
+  } catch (e) {
+    fieldsData = {};
+  }
+  
+  for (const [fieldName, value] of Object.entries(fieldsData)) {
+    try {
+      const field = form.getField(fieldName);
+      if (!field) continue;
+      
+      const fieldType = field.constructor.name;
+      
+      if (fieldType === 'PDFTextField') {
+        (field as any).setText(String(value));
+      } else if (fieldType === 'PDFCheckBox') {
+        if (value === true || value === 'true' || value === 'checked' || value === 1) {
+          (field as any).check();
+        } else {
+          (field as any).uncheck();
+        }
+      } else if (fieldType === 'PDFDropdown') {
+        (field as any).select(String(value));
+      } else if (fieldType === 'PDFRadioGroup') {
+        (field as any).select(String(value));
+      }
+    } catch (e) {
+      console.error(`Error filling field ${fieldName}:`, e);
+    }
+  }
+  
+  return Buffer.from(await pdf.save());
+}
+
+async function pdfFormFiller(file: Express.Multer.File, formData: string): Promise<Buffer> {
+  return fillPdfForms(file, formData);
+}
+
+async function createFillablePdf(file: Express.Multer.File, fieldsConfig: string): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  
+  const form = pdf.getForm();
+  const font = await pdf.embedFont(StandardFonts.Helvetica);
+  
+  let fields: Array<{
+    name: string;
+    type: string;
+    page: number;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    label?: string;
+    options?: string[];
+  }> = [];
+  
+  try {
+    fields = JSON.parse(fieldsConfig || '[]');
+  } catch (e) {
+    fields = [
+      { name: 'name', type: 'text', page: 1, x: 50, y: 700, width: 200, height: 20, label: 'Name' },
+      { name: 'email', type: 'text', page: 1, x: 50, y: 650, width: 200, height: 20, label: 'Email' },
+    ];
+  }
+  
+  const pages = pdf.getPages();
+  
+  for (const fieldConfig of fields) {
+    const pageIndex = Math.max(0, Math.min(pages.length - 1, (fieldConfig.page || 1) - 1));
+    const page = pages[pageIndex];
+    
+    const fieldName = fieldConfig.name || `field_${Date.now()}`;
+    const x = fieldConfig.x || 50;
+    const y = fieldConfig.y || 700;
+    const width = fieldConfig.width || 150;
+    const height = fieldConfig.height || 20;
+    
+    if (fieldConfig.label) {
+      page.drawText(fieldConfig.label, {
+        x: x,
+        y: y + height + 5,
+        size: 10,
+        font,
+        color: rgb(0.2, 0.2, 0.2),
+      });
+    }
+    
+    try {
+      if (fieldConfig.type === 'text') {
+        const textField = form.createTextField(fieldName);
+        textField.addToPage(page, { x, y, width, height });
+      } else if (fieldConfig.type === 'checkbox') {
+        const checkbox = form.createCheckBox(fieldName);
+        checkbox.addToPage(page, { x, y, width: 15, height: 15 });
+      } else if (fieldConfig.type === 'dropdown' && fieldConfig.options) {
+        const dropdown = form.createDropdown(fieldName);
+        dropdown.addOptions(fieldConfig.options);
+        dropdown.addToPage(page, { x, y, width, height });
+      } else if (fieldConfig.type === 'radio' && fieldConfig.options) {
+        const radioGroup = form.createRadioGroup(fieldName);
+        let radioY = y;
+        for (const option of fieldConfig.options) {
+          radioGroup.addOptionToPage(option, page, { x, y: radioY, width: 15, height: 15 });
+          page.drawText(option, {
+            x: x + 20,
+            y: radioY + 2,
+            size: 10,
+            font,
+            color: rgb(0.3, 0.3, 0.3),
+          });
+          radioY -= 20;
+        }
+      }
+    } catch (e) {
+      console.error(`Error creating field ${fieldName}:`, e);
+    }
+  }
+  
+  pdf.setProducer('PDF Tools - Create Fillable PDF');
+  return Buffer.from(await pdf.save());
+}
+
+async function pdfFormCreator(file: Express.Multer.File, fieldsConfig: string): Promise<Buffer> {
+  return createFillablePdf(file, fieldsConfig);
+}
+
+async function extractPdfFormData(file: Express.Multer.File, outputFormat: string = 'json'): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const fileName = path.basename(file.originalname, path.extname(file.originalname));
+  
+  let fields: any[] = [];
+  try {
+    const form = pdf.getForm();
+    fields = form.getFields();
+  } catch (e) {
+    fields = [];
+  }
+  
+  const formData: Record<string, any> = {};
+  const fieldsMetadata: Array<{
+    name: string;
+    type: string;
+    value: any;
+    isReadOnly: boolean;
+  }> = [];
+  
+  for (const field of fields) {
+    const fieldName = field.getName();
+    const fieldType = field.constructor.name;
+    let value: any = null;
+    
+    try {
+      if (fieldType === 'PDFTextField') {
+        value = (field as any).getText?.() || '';
+      } else if (fieldType === 'PDFCheckBox') {
+        value = (field as any).isChecked?.() || false;
+      } else if (fieldType === 'PDFDropdown') {
+        const selected = (field as any).getSelected?.();
+        value = Array.isArray(selected) ? selected : [selected].filter(Boolean);
+      } else if (fieldType === 'PDFRadioGroup') {
+        value = (field as any).getSelected?.() || null;
+      } else if (fieldType === 'PDFSignature') {
+        value = '[Signature Field]';
+      }
+    } catch (e) {
+      value = null;
+    }
+    
+    formData[fieldName] = value;
+    fieldsMetadata.push({
+      name: fieldName,
+      type: fieldType.replace('PDF', '').replace('Field', ''),
+      value: value,
+      isReadOnly: field.isReadOnly(),
+    });
+  }
+  
+  if (outputFormat === 'csv') {
+    const csvLines: string[] = [];
+    csvLines.push('Field Name,Field Type,Value,Read Only');
+    for (const field of fieldsMetadata) {
+      const valueStr = typeof field.value === 'object' 
+        ? JSON.stringify(field.value) 
+        : String(field.value || '');
+      csvLines.push(`"${field.name}","${field.type}","${valueStr.replace(/"/g, '""')}","${field.isReadOnly ? 'Yes' : 'No'}"`);
+    }
+    return Buffer.from(csvLines.join('\n'), 'utf-8');
+  } else if (outputFormat === 'xlsx') {
+    const workbook = XLSX.utils.book_new();
+    
+    const summaryData = [
+      ['PDF Form Data Extraction'],
+      [''],
+      ['Source File', fileName],
+      ['Extraction Date', new Date().toISOString()],
+      ['Total Fields', fields.length],
+    ];
+    const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+    XLSX.utils.book_append_sheet(workbook, summarySheet, 'Summary');
+    
+    const fieldsData = [['Field Name', 'Field Type', 'Value', 'Read Only']];
+    for (const field of fieldsMetadata) {
+      const valueStr = typeof field.value === 'object' 
+        ? JSON.stringify(field.value) 
+        : String(field.value || '');
+      fieldsData.push([field.name, field.type, valueStr, field.isReadOnly ? 'Yes' : 'No']);
+    }
+    const fieldsSheet = XLSX.utils.aoa_to_sheet(fieldsData);
+    XLSX.utils.book_append_sheet(workbook, fieldsSheet, 'Form Fields');
+    
+    return Buffer.from(XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }));
+  } else {
+    const jsonData = {
+      document: {
+        filename: fileName,
+        extractedAt: new Date().toISOString(),
+        fieldCount: fields.length,
+      },
+      formData: formData,
+      fieldsMetadata: fieldsMetadata,
+    };
+    return Buffer.from(JSON.stringify(jsonData, null, 2), 'utf-8');
+  }
 }
 
 async function redactPdf(
@@ -13776,19 +14089,22 @@ export async function registerRoutes(
           
           case "pdf-to-excel": {
             result = await pdfToExcel(files[0]);
-            filename = "pdf-to-excel.pdf";
+            filename = "extracted-data.xlsx";
+            contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             break;
           }
           
           case "pdf-to-xls": {
             result = await pdfToXls(files[0]);
-            filename = "pdf-to-xls.pdf";
+            filename = "extracted-data.xlsx";
+            contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             break;
           }
           
           case "pdf-to-xlsx": {
             result = await pdfToXlsx(files[0]);
-            filename = "pdf-to-xlsx.pdf";
+            filename = "extracted-data.xlsx";
+            contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             break;
           }
           
@@ -13902,13 +14218,15 @@ export async function registerRoutes(
           
           case "pdf-to-json": {
             result = await pdfToJson(files[0]);
-            filename = "pdf-to-json.pdf";
+            filename = "extracted-data.json";
+            contentType = "application/json";
             break;
           }
           
           case "pdf-to-csv": {
             result = await pdfToCsv(files[0]);
-            filename = "pdf-to-csv.pdf";
+            filename = "extracted-data.csv";
+            contentType = "text/csv";
             break;
           }
           
@@ -17136,6 +17454,55 @@ ${Array.from({ length: imageCount }, (_, i) => `- page-${i + 1}.pdf`).join('\n')
               result = Buffer.from(tableContent, 'utf-8');
             }
             break;
+
+          case "extract-data-from-pdf":
+          case "pdf-data-extractor": {
+            const dataOutputFormat = options.tableOutputFormat || options.formOutputFormat || "xlsx";
+            result = await extractDataFromPdf(files[0], dataOutputFormat);
+            if (dataOutputFormat === "json") {
+              filename = "extracted-data.json";
+              contentType = "application/json";
+            } else if (dataOutputFormat === "csv") {
+              filename = "extracted-data.csv";
+              contentType = "text/csv";
+            } else {
+              filename = "extracted-data.xlsx";
+              contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            }
+            break;
+          }
+
+          case "fill-pdf-forms":
+          case "pdf-form-filler": {
+            const formFieldsData = options.formFieldsData || "{}";
+            result = await fillPdfForms(files[0], formFieldsData);
+            filename = "filled-form.pdf";
+            break;
+          }
+
+          case "create-fillable-pdf":
+          case "pdf-form-creator": {
+            const fieldsConfig = options.formFieldsData || "[]";
+            result = await createFillablePdf(files[0], fieldsConfig);
+            filename = "fillable-form.pdf";
+            break;
+          }
+
+          case "extract-pdf-form-data": {
+            const formOutputFormat = options.formOutputFormat || options.tableOutputFormat || "json";
+            result = await extractPdfFormData(files[0], formOutputFormat);
+            if (formOutputFormat === "csv") {
+              filename = "form-data.csv";
+              contentType = "text/csv";
+            } else if (formOutputFormat === "xlsx") {
+              filename = "form-data.xlsx";
+              contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            } else {
+              filename = "form-data.json";
+              contentType = "application/json";
+            }
+            break;
+          }
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);

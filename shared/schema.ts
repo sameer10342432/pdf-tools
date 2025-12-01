@@ -329,6 +329,13 @@ export const pdfToolTypes = [
   "pdf-image-extractor",
   "extract-tables-from-pdf",
   "pdf-table-extractor",
+  "extract-data-from-pdf",
+  "pdf-data-extractor",
+  "fill-pdf-forms",
+  "pdf-form-filler",
+  "create-fillable-pdf",
+  "pdf-form-creator",
+  "extract-pdf-form-data",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -629,6 +636,19 @@ export const toolOptionsSchema = z.object({
   tableOutputFormat: z.enum(["csv", "xlsx", "json"]).optional(),
   extractionMode: z.enum(["all-pages", "specific-pages"]).optional(),
   extractionPages: z.string().optional(),
+  formFieldsData: z.string().optional(),
+  formFieldName: z.string().optional(),
+  formFieldValue: z.string().optional(),
+  formFieldType: z.enum(["text", "checkbox", "radio", "dropdown", "date", "signature"]).optional(),
+  formFieldX: z.number().optional(),
+  formFieldY: z.number().optional(),
+  formFieldWidth: z.number().optional(),
+  formFieldHeight: z.number().optional(),
+  formFieldPage: z.number().optional(),
+  formFieldRequired: z.boolean().optional(),
+  formFieldLabel: z.string().optional(),
+  formOutputFormat: z.enum(["json", "csv", "xlsx"]).optional(),
+  dataExtractionMode: z.enum(["tables", "text", "all"]).optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -8977,5 +8997,201 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Professional Applications</h2>
 <p>Data engineers extract structured data for ETL pipelines. Business analysts convert PDF reports to analytical datasets. Compliance teams extract regulatory data for review. Any role requiring PDF table data benefits from professional extraction.</p>`,
+  },
+  {
+    id: "extract-data-from-pdf",
+    name: "Extract Data from PDF",
+    description: "Extract all structured data including tables, text, and metadata from PDFs",
+    icon: "Database",
+    type: "extract-data-from-pdf",
+    color: "bg-blue-600",
+    emoji: "📤",
+    metaTitle: "Extract Data from PDF Online Free - PDF Data Extraction Tool | PDF Tools",
+    metaDescription: "Extract all data from PDF files including tables, text, and metadata online for free. Powerful PDF data extraction to Excel, CSV, or JSON format.",
+    seoArticle: `<h2>Extract Data from PDF - Complete Data Extraction Solution</h2>
+<p>Our comprehensive PDF data extraction tool captures all structured information from your documents. Extract tables, text content, metadata, and form data in one operation. Transform your PDFs into usable datasets for analysis, processing, and integration with other systems.</p>
+
+<h2>Complete Data Capture</h2>
+<p>Unlike simple table extractors, our tool captures everything: tabular data with precise cell positioning, flowing text with paragraph structure, document metadata including author and dates, and embedded form field values. Get the complete picture of your document's content.</p>
+
+<h2>Multiple Output Formats</h2>
+<p>Export your extracted data in the format that works best for your needs. Choose Excel (XLSX) for spreadsheet analysis with multiple worksheets. Select CSV for simple, universal data exchange. Pick JSON for programmatic processing and API integration. Each format preserves the structure of your data.</p>
+
+<h2>Intelligent Structure Recognition</h2>
+<p>Our extraction engine analyzes document layout to identify data relationships. Tables are recognized and reconstructed accurately. Text blocks maintain their logical grouping. Headers and labels are associated with their data values. The extracted data reflects the original document's organization.</p>
+
+<h2>How to Extract PDF Data</h2>
+<p>Upload your PDF document using our secure uploader. Select your preferred output format (Excel, CSV, or JSON). Choose extraction options for tables, text, or all content. Download your extracted data file ready for use in any application.</p>
+
+<h2>Business Applications</h2>
+<p>Financial teams extract invoice data for automated processing. Researchers gather study data from published PDFs. HR departments extract resume information for applicant tracking. Operations teams pull data from scanned forms. Any workflow requiring PDF data benefits from comprehensive extraction.</p>`,
+  },
+  {
+    id: "pdf-data-extractor",
+    name: "PDF Data Extractor",
+    description: "Professional data extraction with advanced parsing and export options",
+    icon: "FileOutput",
+    type: "pdf-data-extractor",
+    color: "bg-indigo-600",
+    emoji: "🔍",
+    metaTitle: "PDF Data Extractor - Professional Data Extraction Tool | PDF Tools",
+    metaDescription: "Professional PDF data extraction with advanced parsing. Extract tables, text, and structured data to Excel, CSV, or JSON. Free online tool.",
+    seoArticle: `<h2>PDF Data Extractor - Professional-Grade Data Mining</h2>
+<p>Our professional PDF data extractor provides enterprise-level data extraction capabilities. Advanced parsing algorithms identify and extract structured data with high accuracy. Perfect for bulk data extraction, automated workflows, and integration with business systems.</p>
+
+<h2>Advanced Parsing Technology</h2>
+<p>State-of-the-art algorithms analyze PDF structure at multiple levels. Visual layout analysis identifies data regions. Content stream parsing extracts raw data precisely. Heuristic analysis determines data types and relationships. The result is clean, accurate extracted data.</p>
+
+<h2>Flexible Export Options</h2>
+<p>Export to Excel with multiple worksheets for different data types. Generate CSV files with customizable delimiters for any system. Create JSON output with nested structures for complex data. Combine formats in a single extraction for maximum flexibility.</p>
+
+<h2>Batch Processing Support</h2>
+<p>Process multiple pages or documents in a single operation. Consistent formatting across all extracted data. Automated naming and organization of output files. Efficient handling of large document collections.</p>
+
+<h2>Data Quality Features</h2>
+<p>Built-in validation ensures data accuracy. Type detection identifies numbers, dates, and currency values. Missing value handling maintains data structure integrity. Quality reports help verify extraction completeness.</p>
+
+<h2>Integration Ready</h2>
+<p>Extracted data is formatted for easy system integration. Standard file formats work with any database or application. Clean data structures simplify import processes. Reduce manual data entry and processing time significantly.</p>`,
+  },
+  {
+    id: "fill-pdf-forms",
+    name: "Fill PDF Forms",
+    description: "Fill out PDF form fields with your data automatically",
+    icon: "FileEdit",
+    type: "fill-pdf-forms",
+    color: "bg-emerald-600",
+    emoji: "✍️",
+    metaTitle: "Fill PDF Forms Online Free - PDF Form Filler Tool | PDF Tools",
+    metaDescription: "Fill PDF forms online for free. Enter data into PDF form fields automatically. Complete fillable PDFs without printing or scanning.",
+    seoArticle: `<h2>Fill PDF Forms Online - Digital Form Completion</h2>
+<p>Our PDF form filling tool lets you complete any fillable PDF form digitally. Enter text, check boxes, select options, and add signatures without printing. Save time and paper with efficient digital form completion. Perfect for applications, contracts, and official documents.</p>
+
+<h2>Complete Form Support</h2>
+<p>Our tool handles all types of PDF form fields. Text fields accept any text input with proper formatting. Checkboxes toggle on and off cleanly. Radio buttons select single options from groups. Dropdown menus display and select from available choices. Date fields format dates properly.</p>
+
+<h2>Interactive Form Editing</h2>
+<p>Click directly on form fields to enter your data. Navigate between fields using tab or mouse. Preview your completed form before saving. Make changes anytime before downloading. The interactive experience mirrors working with paper forms, but faster.</p>
+
+<h2>How to Fill PDF Forms</h2>
+<p>Upload your fillable PDF form using our secure uploader. The tool automatically detects all form fields. Click each field to enter your information. Review your completed form in the preview. Download your filled PDF ready for submission.</p>
+
+<h2>Data Import Options</h2>
+<p>Manually fill each field interactively. Import data from JSON files for batch filling. Pre-populate fields from CSV data sources. Use templates to fill multiple forms with common data. Flexible input methods suit any workflow.</p>
+
+<h2>Perfect for Business</h2>
+<p>Complete employment applications and onboarding forms. Fill out insurance claims and medical forms. Submit tax documents and financial applications. Sign contracts and legal agreements digitally. Streamline any process that requires form completion.</p>`,
+  },
+  {
+    id: "pdf-form-filler",
+    name: "PDF Form Filler",
+    description: "Advanced form filling with data import and batch processing",
+    icon: "FilePen",
+    type: "pdf-form-filler",
+    color: "bg-green-600",
+    emoji: "📝",
+    metaTitle: "PDF Form Filler - Advanced PDF Form Filling Tool | PDF Tools",
+    metaDescription: "Advanced PDF form filler with data import. Fill multiple PDF forms from CSV or JSON data. Batch form filling for efficient processing.",
+    seoArticle: `<h2>PDF Form Filler - Professional Form Completion</h2>
+<p>Our advanced PDF form filler goes beyond basic form filling. Import data from external sources, process multiple forms efficiently, and automate repetitive form completion tasks. Perfect for businesses handling high volumes of form-based documents.</p>
+
+<h2>Data-Driven Form Filling</h2>
+<p>Import form data from CSV spreadsheets for batch processing. Load JSON data files with complete form field mappings. Connect form fields to data sources automatically. Transform data-heavy workflows into efficient automated processes.</p>
+
+<h2>Batch Form Processing</h2>
+<p>Fill multiple copies of the same form with different data. Process entire spreadsheets of form submissions. Generate batches of completed forms for distribution. Save hours of manual form filling with automated processing.</p>
+
+<h2>Field Mapping Intelligence</h2>
+<p>Automatic field detection identifies all form fields. Smart mapping suggests connections between data and fields. Manual override allows precise field-to-data assignment. Save mappings for reuse with identical forms.</p>
+
+<h2>Quality Assurance</h2>
+<p>Validation checks ensure data fits field requirements. Preview each filled form before final generation. Error highlighting identifies incomplete or invalid entries. Batch reports summarize processing results.</p>
+
+<h2>Enterprise Applications</h2>
+<p>HR departments process employee forms in bulk. Finance teams generate multiple financial documents. Legal offices prepare contract packages efficiently. Operations departments streamline document workflows. Any high-volume form process benefits from our form filler.</p>`,
+  },
+  {
+    id: "create-fillable-pdf",
+    name: "Create Fillable PDF",
+    description: "Add interactive form fields to any PDF document",
+    icon: "FilePlus",
+    type: "create-fillable-pdf",
+    color: "bg-purple-600",
+    emoji: "📋",
+    metaTitle: "Create Fillable PDF Online Free - PDF Form Creator | PDF Tools",
+    metaDescription: "Create fillable PDF forms online for free. Add text fields, checkboxes, dropdowns, and signature fields to any PDF. Easy PDF form creation.",
+    seoArticle: `<h2>Create Fillable PDF Forms - Transform Documents into Interactive Forms</h2>
+<p>Turn any static PDF into an interactive fillable form. Our form creation tool lets you add text fields, checkboxes, radio buttons, dropdown menus, and signature fields to existing PDF documents. Create professional forms without starting from scratch.</p>
+
+<h2>Comprehensive Field Types</h2>
+<p>Text fields for names, addresses, and free-form input. Checkboxes for yes/no and multiple-selection options. Radio buttons for single-selection question groups. Dropdown menus for predefined choice lists. Date fields with calendar selection. Signature fields for electronic signing.</p>
+
+<h2>Precise Field Placement</h2>
+<p>Position form fields exactly where you need them. Drag and resize fields to fit your document layout. Align fields professionally with snap-to-grid. Layer fields over existing PDF content seamlessly. Create forms that look professionally designed.</p>
+
+<h2>How to Create Fillable PDFs</h2>
+<p>Upload your static PDF document. Select the form field type you want to add. Click on the PDF to place the field. Resize and position each field as needed. Configure field properties like name and validation. Download your new fillable PDF form.</p>
+
+<h2>Field Configuration Options</h2>
+<p>Set field names for data identification. Mark fields as required or optional. Add placeholder text for user guidance. Configure validation rules for proper input. Set default values for common responses. Customize appearance with fonts and colors.</p>
+
+<h2>Professional Form Design</h2>
+<p>Create intake forms for clinics and offices. Build application forms for jobs and programs. Design surveys and questionnaires. Develop contracts with signature fields. Transform any document into an interactive experience.</p>`,
+  },
+  {
+    id: "pdf-form-creator",
+    name: "PDF Form Creator",
+    description: "Professional form creation with advanced field types and validation",
+    icon: "FileSignature",
+    type: "pdf-form-creator",
+    color: "bg-violet-600",
+    emoji: "🛠️",
+    metaTitle: "PDF Form Creator - Professional PDF Form Builder | PDF Tools",
+    metaDescription: "Professional PDF form creator with advanced field types. Build interactive PDF forms with validation, calculations, and dynamic fields. Free online tool.",
+    seoArticle: `<h2>PDF Form Creator - Professional Form Building</h2>
+<p>Our professional PDF form creator provides advanced capabilities for building sophisticated interactive forms. Add complex field types, configure validation rules, and create forms that guide users through proper completion. Perfect for creating forms that need to work reliably across different PDF readers.</p>
+
+<h2>Advanced Field Types</h2>
+<p>All standard field types plus advanced options. Multi-line text areas for extended input. Formatted fields for phone numbers and SSNs. List boxes for multiple visible selections. Button fields for form actions. Digital signature fields for secure signing.</p>
+
+<h2>Validation and Logic</h2>
+<p>Required field validation ensures complete submissions. Format validation for emails, dates, and numbers. Range validation for numeric inputs. Conditional visibility shows fields based on other responses. Calculation fields compute values automatically.</p>
+
+<h2>Form Actions</h2>
+<p>Submit buttons for form submission. Reset buttons to clear all fields. Print buttons for hardcopy creation. Custom JavaScript actions for advanced functionality. Email integration for form routing.</p>
+
+<h2>Cross-Platform Compatibility</h2>
+<p>Forms work in Adobe Reader and other PDF readers. Mobile-compatible form design. Accessible forms for screen readers. Consistent behavior across operating systems. Professional forms that work everywhere.</p>
+
+<h2>Enterprise Form Solutions</h2>
+<p>Build complex application forms with multiple sections. Create approval workflows with signature chains. Design inspection checklists with required fields. Develop compliance forms with validation. Create any form your organization needs.</p>`,
+  },
+  {
+    id: "extract-pdf-form-data",
+    name: "Extract PDF Form Data",
+    description: "Extract filled form field values from completed PDF forms",
+    icon: "FileOutput",
+    type: "extract-pdf-form-data",
+    color: "bg-cyan-600",
+    emoji: "📊",
+    metaTitle: "Extract PDF Form Data Online Free - PDF Form Data Extractor | PDF Tools",
+    metaDescription: "Extract form data from filled PDF forms online for free. Export form field values to JSON, CSV, or Excel. Easy PDF form data extraction.",
+    seoArticle: `<h2>Extract PDF Form Data - Capture Form Submissions</h2>
+<p>Extract all filled data from completed PDF forms. Our form data extractor reads form field values and exports them to structured formats like JSON, CSV, or Excel. Perfect for processing form submissions, importing data to databases, or analyzing form responses.</p>
+
+<h2>Complete Field Extraction</h2>
+<p>Capture values from all form field types. Text fields extract their entered content. Checkboxes report checked or unchecked state. Radio buttons identify selected options. Dropdowns record chosen values. Signatures confirm signing status. Every field value is captured accurately.</p>
+
+<h2>Multiple Export Formats</h2>
+<p>Export to JSON for application integration. Generate CSV for spreadsheet import. Create Excel files with formatted data. Choose the format that fits your data workflow. All formats preserve field names and values completely.</p>
+
+<h2>How to Extract Form Data</h2>
+<p>Upload your filled PDF form. Our tool automatically detects all form fields. Review the extracted field names and values. Select your preferred export format. Download your extracted data file. Import into your database or application.</p>
+
+<h2>Batch Extraction</h2>
+<p>Process multiple completed forms at once. Combine data from all forms into a single export. Consistent field mapping across forms. Efficient processing of large submission volumes. Perfect for survey or application processing.</p>
+
+<h2>Data Integration</h2>
+<p>Import extracted data directly to databases. Feed form data to CRM systems. Connect to spreadsheet applications. Integrate with document management systems. Automate data capture from paper-to-digital workflows.</p>`,
   },
 ];
