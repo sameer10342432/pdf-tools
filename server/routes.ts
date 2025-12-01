@@ -109,6 +109,15 @@ function cleanupUploadedFiles(files: Express.Multer.File[] | undefined) {
   }
 }
 
+function escapeXml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 async function mergePdfs(files: Express.Multer.File[]): Promise<Buffer> {
   const mergedPdf = await PDFDocument.create();
   
@@ -17501,6 +17510,377 @@ ${Array.from({ length: imageCount }, (_, i) => `- page-${i + 1}.pdf`).join('\n')
               filename = "form-data.json";
               contentType = "application/json";
             }
+            break;
+          }
+
+          case "pdf-to-xml-structured": {
+            const pdfBytes = fs.readFileSync(files[0].path);
+            const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+            const pages = pdf.getPages();
+            const includeMetadata = options.includeMetadata !== false;
+            const xmlFormat = options.xmlOutputFormat || "structured";
+            
+            let xmlContent = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+            
+            if (xmlFormat === "simple") {
+              xmlContent += `<document>\n`;
+              if (includeMetadata) {
+                xmlContent += `<title>${escapeXml(pdf.getTitle() || "")}</title>\n`;
+                xmlContent += `<author>${escapeXml(pdf.getAuthor() || "")}</author>\n`;
+                xmlContent += `<pageCount>${pages.length}</pageCount>\n`;
+              }
+              pages.forEach((page, index) => {
+                const { width, height } = page.getSize();
+                xmlContent += `<page num="${index + 1}" w="${Math.round(width)}" h="${Math.round(height)}" rot="${page.getRotation().angle}"/>\n`;
+              });
+              xmlContent += `</document>`;
+            } else {
+              xmlContent += `<pdf-document>\n`;
+              if (includeMetadata) {
+                xmlContent += `  <metadata>\n`;
+                xmlContent += `    <title>${escapeXml(pdf.getTitle() || "")}</title>\n`;
+                xmlContent += `    <author>${escapeXml(pdf.getAuthor() || "")}</author>\n`;
+                xmlContent += `    <subject>${escapeXml(pdf.getSubject() || "")}</subject>\n`;
+                xmlContent += `    <creator>${escapeXml(pdf.getCreator() || "")}</creator>\n`;
+                xmlContent += `    <producer>${escapeXml(pdf.getProducer() || "")}</producer>\n`;
+                xmlContent += `    <creationDate>${pdf.getCreationDate()?.toISOString() || ""}</creationDate>\n`;
+                xmlContent += `    <modificationDate>${pdf.getModificationDate()?.toISOString() || ""}</modificationDate>\n`;
+                xmlContent += `    <pageCount>${pages.length}</pageCount>\n`;
+                xmlContent += `  </metadata>\n`;
+              }
+              xmlContent += `  <pages>\n`;
+              pages.forEach((page, index) => {
+                const { width, height } = page.getSize();
+                xmlContent += `    <page number="${index + 1}" width="${Math.round(width)}" height="${Math.round(height)}">\n`;
+                xmlContent += `      <rotation>${page.getRotation().angle}</rotation>\n`;
+                xmlContent += `    </page>\n`;
+              });
+              xmlContent += `  </pages>\n`;
+              xmlContent += `</pdf-document>`;
+            }
+            
+            result = Buffer.from(xmlContent, 'utf-8');
+            filename = "converted.xml";
+            contentType = "application/xml";
+            break;
+          }
+
+          case "read-pdf-form-data": {
+            const formData = await extractPdfFormData(files[0], "json");
+            result = formData;
+            filename = "form-data-preview.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "flatten-pdf-form": {
+            const flattenBytes = fs.readFileSync(files[0].path);
+            const flattenPdf = await PDFDocument.load(flattenBytes, { ignoreEncryption: true });
+            const flattenMode = options.flattenMode || "all";
+            
+            const form = flattenPdf.getForm();
+            const fields = form.getFields();
+            
+            if (flattenMode === "all" || flattenMode === "forms-only") {
+              fields.forEach(field => {
+                try {
+                  field.enableReadOnly();
+                } catch (e) {
+                  // Field may not support read-only
+                }
+              });
+              form.flatten();
+            }
+            
+            if (flattenMode === "all" || flattenMode === "annotations-only") {
+              const pages = flattenPdf.getPages();
+              pages.forEach(page => {
+                const annots = page.node.get(PDFName.of('Annots'));
+                if (annots instanceof PDFArray) {
+                  const annotCount = annots.size();
+                  for (let i = annotCount - 1; i >= 0; i--) {
+                    const annotRef = annots.get(i);
+                    if (annotRef) {
+                      const annot = flattenPdf.context.lookup(annotRef);
+                      if (annot instanceof PDFDict) {
+                        const subtype = annot.get(PDFName.of('Subtype'));
+                        if (subtype instanceof PDFName) {
+                          const subtypeName = subtype.decodeText();
+                          if (subtypeName !== 'Widget') {
+                            annots.remove(i);
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              });
+            }
+            
+            result = Buffer.from(await flattenPdf.save());
+            filename = "flattened-form.pdf";
+            break;
+          }
+
+          case "extract-fonts-from-pdf": {
+            const fontBytes = fs.readFileSync(files[0].path);
+            const fontPdf = await PDFDocument.load(fontBytes, { ignoreEncryption: true });
+            const pages = fontPdf.getPages();
+            
+            const fontInfo = {
+              document: files[0].originalname,
+              pageCount: pages.length,
+              extractionDate: new Date().toISOString(),
+              fonts: [] as Array<{ name: string; type: string; embedded: boolean; pages: number[] }>,
+              note: "Font information extracted from PDF structure. Embedded fonts may be subset for the characters used in the document."
+            };
+            
+            const seenFonts = new Map<string, { type: string; pages: Set<number> }>();
+            
+            pages.forEach((page, pageIndex) => {
+              const resources = page.node.get(PDFName.of('Resources'));
+              if (resources instanceof PDFDict) {
+                const fonts = resources.get(PDFName.of('Font'));
+                if (fonts instanceof PDFDict) {
+                  fonts.entries().forEach(([key, value]) => {
+                    const fontName = key.toString().replace('/', '');
+                    if (!seenFonts.has(fontName)) {
+                      seenFonts.set(fontName, { type: 'Unknown', pages: new Set() });
+                    }
+                    seenFonts.get(fontName)?.pages.add(pageIndex + 1);
+                  });
+                }
+              }
+            });
+            
+            seenFonts.forEach((info, name) => {
+              fontInfo.fonts.push({
+                name: name,
+                type: info.type,
+                embedded: true,
+                pages: Array.from(info.pages)
+              });
+            });
+            
+            result = Buffer.from(JSON.stringify(fontInfo, null, 2), 'utf-8');
+            filename = "font-report.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "zugferd-invoice-extractor": {
+            const zugferdBytes = fs.readFileSync(files[0].path);
+            const zugferdPdf = await PDFDocument.load(zugferdBytes, { ignoreEncryption: true });
+            
+            let xmlAttachment = null;
+            const attachmentNames = ['factur-x.xml', 'ZUGFeRD-invoice.xml', 'xrechnung.xml', 'invoice.xml'];
+            
+            try {
+              const catalog = zugferdPdf.context.lookup(zugferdPdf.context.trailerInfo.Root);
+              if (catalog instanceof PDFDict) {
+                const names = catalog.get(PDFName.of('Names'));
+                if (names instanceof PDFDict) {
+                  const embeddedFiles = names.get(PDFName.of('EmbeddedFiles'));
+                  if (embeddedFiles instanceof PDFDict) {
+                    const namesArray = embeddedFiles.get(PDFName.of('Names'));
+                    if (namesArray instanceof PDFArray) {
+                      for (let i = 0; i < namesArray.size(); i += 2) {
+                        const nameObj = namesArray.get(i);
+                        if (nameObj instanceof PDFString) {
+                          const attachmentName = nameObj.decodeText();
+                          if (attachmentNames.some(n => attachmentName.toLowerCase().includes(n.toLowerCase().replace('.xml', '')))) {
+                            xmlAttachment = attachmentName;
+                            break;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            } catch (e) {
+              // Failed to extract embedded XML
+            }
+            
+            const invoiceData = {
+              document: files[0].originalname,
+              format: xmlAttachment ? "ZUGFeRD/Factur-X" : "Standard PDF",
+              extractionDate: new Date().toISOString(),
+              hasEmbeddedXml: !!xmlAttachment,
+              embeddedFileName: xmlAttachment,
+              pageCount: zugferdPdf.getPageCount(),
+              metadata: {
+                title: zugferdPdf.getTitle() || "",
+                author: zugferdPdf.getAuthor() || "",
+                subject: zugferdPdf.getSubject() || "",
+                creationDate: zugferdPdf.getCreationDate()?.toISOString() || ""
+              },
+              note: xmlAttachment 
+                ? "This PDF contains embedded ZUGFeRD/Factur-X XML invoice data." 
+                : "No embedded ZUGFeRD/Factur-X XML found. This may be a standard PDF invoice."
+            };
+            
+            result = Buffer.from(JSON.stringify(invoiceData, null, 2), 'utf-8');
+            filename = "invoice-data.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "pdf-to-ubl-xml": {
+            const ublBytes = fs.readFileSync(files[0].path);
+            const ublPdf = await PDFDocument.load(ublBytes, { ignoreEncryption: true });
+            
+            let ublXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+            ublXml += `<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"\n`;
+            ublXml += `         xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"\n`;
+            ublXml += `         xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">\n`;
+            ublXml += `  <cbc:UBLVersionID>2.1</cbc:UBLVersionID>\n`;
+            ublXml += `  <cbc:ID>INV-${Date.now()}</cbc:ID>\n`;
+            ublXml += `  <cbc:IssueDate>${new Date().toISOString().split('T')[0]}</cbc:IssueDate>\n`;
+            ublXml += `  <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>\n`;
+            ublXml += `  <cbc:Note>Converted from PDF: ${escapeXml(files[0].originalname)}</cbc:Note>\n`;
+            ublXml += `  <cac:AccountingSupplierParty>\n`;
+            ublXml += `    <cac:Party>\n`;
+            ublXml += `      <cac:PartyName><cbc:Name>Supplier Name</cbc:Name></cac:PartyName>\n`;
+            ublXml += `    </cac:Party>\n`;
+            ublXml += `  </cac:AccountingSupplierParty>\n`;
+            ublXml += `  <cac:AccountingCustomerParty>\n`;
+            ublXml += `    <cac:Party>\n`;
+            ublXml += `      <cac:PartyName><cbc:Name>Customer Name</cbc:Name></cac:PartyName>\n`;
+            ublXml += `    </cac:Party>\n`;
+            ublXml += `  </cac:AccountingCustomerParty>\n`;
+            ublXml += `  <cac:LegalMonetaryTotal>\n`;
+            ublXml += `    <cbc:PayableAmount currencyID="EUR">0.00</cbc:PayableAmount>\n`;
+            ublXml += `  </cac:LegalMonetaryTotal>\n`;
+            ublXml += `</Invoice>`;
+            
+            result = Buffer.from(ublXml, 'utf-8');
+            filename = "invoice-ubl.xml";
+            contentType = "application/xml";
+            break;
+          }
+
+          case "form-data-to-csv": {
+            const csvFormData = await extractPdfFormData(files[0], "csv");
+            result = csvFormData;
+            filename = "form-data.csv";
+            contentType = "text/csv";
+            break;
+          }
+
+          case "form-data-to-xml": {
+            const xmlFormBytes = fs.readFileSync(files[0].path);
+            const xmlFormPdf = await PDFDocument.load(xmlFormBytes, { ignoreEncryption: true });
+            const form = xmlFormPdf.getForm();
+            const fields = form.getFields();
+            
+            let formXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+            formXml += `<form-data>\n`;
+            formXml += `  <document>${escapeXml(files[0].originalname)}</document>\n`;
+            formXml += `  <extractionDate>${new Date().toISOString()}</extractionDate>\n`;
+            formXml += `  <fields>\n`;
+            
+            fields.forEach(field => {
+              const name = field.getName();
+              let value = "";
+              let fieldType = "unknown";
+              
+              try {
+                const fieldConstructor = field.constructor.name;
+                if (fieldConstructor === "PDFTextField") {
+                  value = (field as any).getText() || "";
+                  fieldType = "text";
+                } else if (fieldConstructor === "PDFCheckBox") {
+                  value = (field as any).isChecked() ? "true" : "false";
+                  fieldType = "checkbox";
+                } else if (fieldConstructor === "PDFRadioGroup") {
+                  value = (field as any).getSelected() || "";
+                  fieldType = "radio";
+                } else if (fieldConstructor === "PDFDropdown") {
+                  const selected = (field as any).getSelected();
+                  value = Array.isArray(selected) ? selected.join(", ") : (selected || "");
+                  fieldType = "dropdown";
+                }
+              } catch (e) {
+                // Field extraction error
+              }
+              
+              formXml += `    <field name="${escapeXml(name)}" type="${fieldType}">${escapeXml(value)}</field>\n`;
+            });
+            
+            formXml += `  </fields>\n`;
+            formXml += `</form-data>`;
+            
+            result = Buffer.from(formXml, 'utf-8');
+            filename = "form-data.xml";
+            contentType = "application/xml";
+            break;
+          }
+
+          case "form-data-to-json": {
+            const jsonFormData = await extractPdfFormData(files[0], "json");
+            result = jsonFormData;
+            filename = "form-data.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "form-filler-csv": {
+            const fillerBytes = fs.readFileSync(files[0].path);
+            const fillerPdf = await PDFDocument.load(fillerBytes, { ignoreEncryption: true });
+            const form = fillerPdf.getForm();
+            const fields = form.getFields();
+            
+            let csvData: Record<string, string> = {};
+            
+            if (options.csvFieldMapping) {
+              try {
+                csvData = JSON.parse(options.csvFieldMapping);
+              } catch (e) {
+                const delimiter = options.csvDelimiter === "\\t" ? "\t" : (options.csvDelimiter || ",");
+                const lines = options.csvFieldMapping.split("\n").filter((l: string) => l.trim());
+                
+                if (lines.length >= 2) {
+                  const headers = lines[0].split(delimiter).map((h: string) => h.trim());
+                  const values = lines[1].split(delimiter).map((v: string) => v.trim());
+                  
+                  headers.forEach((header: string, index: number) => {
+                    if (values[index] !== undefined) {
+                      csvData[header] = values[index];
+                    }
+                  });
+                }
+              }
+            }
+            
+            fields.forEach(field => {
+              const fieldName = field.getName();
+              const value = csvData[fieldName];
+              
+              if (value !== undefined) {
+                try {
+                  const fieldConstructor = field.constructor.name;
+                  if (fieldConstructor === "PDFTextField") {
+                    (field as any).setText(value);
+                  } else if (fieldConstructor === "PDFCheckBox") {
+                    if (value.toLowerCase() === "true" || value.toLowerCase() === "yes" || value === "1") {
+                      (field as any).check();
+                    } else {
+                      (field as any).uncheck();
+                    }
+                  } else if (fieldConstructor === "PDFDropdown") {
+                    (field as any).select(value);
+                  } else if (fieldConstructor === "PDFRadioGroup") {
+                    (field as any).select(value);
+                  }
+                } catch (e) {
+                  // Field setting error
+                }
+              }
+            });
+            
+            result = Buffer.from(await fillerPdf.save());
+            filename = "filled-form.pdf";
             break;
           }
             

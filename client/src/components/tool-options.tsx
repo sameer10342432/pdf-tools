@@ -4727,6 +4727,252 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "pdf-to-xml-structured":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>XML Output Format</Label>
+            <Select
+              value={options.xmlOutputFormat || "structured"}
+              onValueChange={(value) => updateOption("xmlOutputFormat", value as ToolOptions["xmlOutputFormat"])}
+            >
+              <SelectTrigger data-testid="select-xml-format">
+                <SelectValue placeholder="Select XML format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="structured">Structured (Hierarchical)</SelectItem>
+                <SelectItem value="simple">Simple (Flat)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="includeMetadata"
+              checked={options.includeMetadata !== false}
+              onCheckedChange={(checked) => updateOption("includeMetadata", checked)}
+              data-testid="switch-include-metadata"
+            />
+            <Label htmlFor="includeMetadata">Include Document Metadata</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert your PDF to well-structured XML format for data integration.
+          </p>
+        </div>
+      );
+
+    case "read-pdf-form-data":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload a filled PDF form to read and display all form field names and values.
+            The extracted data will be shown in JSON format for easy review.
+          </p>
+        </div>
+      );
+
+    case "flatten-pdf-form":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Flatten Mode</Label>
+            <Select
+              value={options.flattenMode || "all"}
+              onValueChange={(value) => updateOption("flattenMode", value as ToolOptions["flattenMode"])}
+            >
+              <SelectTrigger data-testid="select-flatten-mode">
+                <SelectValue placeholder="Select flatten mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All (Forms and Annotations)</SelectItem>
+                <SelectItem value="forms-only">Forms Only</SelectItem>
+                <SelectItem value="annotations-only">Annotations Only</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Flattening converts interactive form fields into static content that cannot be edited.
+          </p>
+        </div>
+      );
+
+    case "extract-fonts-from-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Font Extraction Mode</Label>
+            <Select
+              value={options.fontExtractionMode || "all"}
+              onValueChange={(value) => updateOption("fontExtractionMode", value as ToolOptions["fontExtractionMode"])}
+            >
+              <SelectTrigger data-testid="select-font-mode">
+                <SelectValue placeholder="Select extraction mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Fonts</SelectItem>
+                <SelectItem value="embedded">Embedded Only</SelectItem>
+                <SelectItem value="subset">Subset Information</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Extract information about fonts used in your PDF document.
+          </p>
+        </div>
+      );
+
+    case "zugferd-invoice-extractor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Invoice Format</Label>
+            <Select
+              value={options.invoiceFormat || "zugferd"}
+              onValueChange={(value) => updateOption("invoiceFormat", value as ToolOptions["invoiceFormat"])}
+            >
+              <SelectTrigger data-testid="select-invoice-format">
+                <SelectValue placeholder="Select invoice format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="zugferd">ZUGFeRD</SelectItem>
+                <SelectItem value="factur-x">Factur-X</SelectItem>
+                <SelectItem value="xrechnung">XRechnung</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Extract structured invoice data from ZUGFeRD/Factur-X electronic invoices.
+          </p>
+        </div>
+      );
+
+    case "pdf-to-ubl-xml":
+      return (
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="includeMetadata"
+              checked={options.includeMetadata !== false}
+              onCheckedChange={(checked) => updateOption("includeMetadata", checked)}
+              data-testid="switch-include-metadata"
+            />
+            <Label htmlFor="includeMetadata">Include Document Metadata</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert your PDF invoice to Universal Business Language (UBL) XML format
+            for seamless B2B electronic exchange.
+          </p>
+        </div>
+      );
+
+    case "form-data-to-csv":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>CSV Delimiter</Label>
+            <Select
+              value={options.csvDelimiter || ","}
+              onValueChange={(value) => updateOption("csvDelimiter", value as ToolOptions["csvDelimiter"])}
+            >
+              <SelectTrigger data-testid="select-csv-delimiter">
+                <SelectValue placeholder="Select delimiter" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value=",">Comma (,)</SelectItem>
+                <SelectItem value=";">Semicolon (;)</SelectItem>
+                <SelectItem value="|">Pipe (|)</SelectItem>
+                <SelectItem value="\t">Tab</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="csvHasHeader"
+              checked={options.csvHasHeader !== false}
+              onCheckedChange={(checked) => updateOption("csvHasHeader", checked)}
+              data-testid="switch-csv-header"
+            />
+            <Label htmlFor="csvHasHeader">Include Header Row</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Export form field data to CSV format for spreadsheet applications.
+          </p>
+        </div>
+      );
+
+    case "form-data-to-xml":
+      return (
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="includeMetadata"
+              checked={options.includeMetadata !== false}
+              onCheckedChange={(checked) => updateOption("includeMetadata", checked)}
+              data-testid="switch-include-metadata"
+            />
+            <Label htmlFor="includeMetadata">Include Field Types</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Export form field data to structured XML format for system integration.
+          </p>
+        </div>
+      );
+
+    case "form-data-to-json":
+      return (
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="includeMetadata"
+              checked={options.includeMetadata !== false}
+              onCheckedChange={(checked) => updateOption("includeMetadata", checked)}
+              data-testid="switch-include-metadata"
+            />
+            <Label htmlFor="includeMetadata">Include Field Metadata</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Export form field data to JSON format for web applications.
+          </p>
+        </div>
+      );
+
+    case "form-filler-csv":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="csvFieldMapping">CSV Data (Field Name, Value)</Label>
+            <textarea
+              id="csvFieldMapping"
+              className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder="FirstName,LastName,Email&#10;John,Doe,john@example.com"
+              value={options.csvFieldMapping || ""}
+              onChange={(e) => updateOption("csvFieldMapping", e.target.value)}
+              data-testid="input-csv-mapping"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>CSV Delimiter</Label>
+            <Select
+              value={options.csvDelimiter || ","}
+              onValueChange={(value) => updateOption("csvDelimiter", value as ToolOptions["csvDelimiter"])}
+            >
+              <SelectTrigger data-testid="select-csv-delimiter">
+                <SelectValue placeholder="Select delimiter" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value=",">Comma (,)</SelectItem>
+                <SelectItem value=";">Semicolon (;)</SelectItem>
+                <SelectItem value="|">Pipe (|)</SelectItem>
+                <SelectItem value="\t">Tab</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Enter CSV data where the first row contains form field names and
+            subsequent rows contain values to fill in the form.
+          </p>
+        </div>
+      );
+
     default:
       return null;
   }

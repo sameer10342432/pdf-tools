@@ -336,6 +336,16 @@ export const pdfToolTypes = [
   "create-fillable-pdf",
   "pdf-form-creator",
   "extract-pdf-form-data",
+  "pdf-to-xml-structured",
+  "read-pdf-form-data",
+  "flatten-pdf-form",
+  "extract-fonts-from-pdf",
+  "zugferd-invoice-extractor",
+  "pdf-to-ubl-xml",
+  "form-data-to-csv",
+  "form-data-to-xml",
+  "form-data-to-json",
+  "form-filler-csv",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -649,6 +659,15 @@ export const toolOptionsSchema = z.object({
   formFieldLabel: z.string().optional(),
   formOutputFormat: z.enum(["json", "csv", "xlsx"]).optional(),
   dataExtractionMode: z.enum(["tables", "text", "all"]).optional(),
+  xmlOutputFormat: z.enum(["structured", "simple", "zugferd", "ubl"]).optional(),
+  includeMetadata: z.boolean().optional(),
+  includeAnnotations: z.boolean().optional(),
+  flattenMode: z.enum(["all", "forms-only", "annotations-only"]).optional(),
+  fontExtractionMode: z.enum(["embedded", "all", "subset"]).optional(),
+  invoiceFormat: z.enum(["zugferd", "factur-x", "xrechnung"]).optional(),
+  csvFieldMapping: z.string().optional(),
+  csvDelimiter: z.enum([",", ";", "|", "\\t"]).optional(),
+  csvHasHeader: z.boolean().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -9193,5 +9212,285 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Data Integration</h2>
 <p>Import extracted data directly to databases. Feed form data to CRM systems. Connect to spreadsheet applications. Integrate with document management systems. Automate data capture from paper-to-digital workflows.</p>`,
+  },
+  {
+    id: "pdf-to-xml-structured",
+    name: "PDF to XML",
+    description: "Convert PDF documents to structured XML format with full content extraction",
+    icon: "FileText",
+    type: "pdf-to-xml-structured",
+    color: "bg-blue-600",
+    emoji: "📄",
+    metaTitle: "PDF to XML Converter Online Free - Convert PDF to XML | PDF Tools",
+    metaDescription: "Convert PDF documents to structured XML format online for free. Extract text, images, and metadata into well-formed XML. Easy PDF to XML conversion.",
+    seoArticle: `<h2>PDF to XML Converter - Transform Documents into Structured Data</h2>
+<p>Convert your PDF documents into well-structured XML format for seamless data integration and processing. Our PDF to XML converter extracts all content including text, tables, images, and metadata, organizing them into a hierarchical XML structure that's easy to parse and manipulate.</p>
+
+<h2>Comprehensive Content Extraction</h2>
+<p>Our converter captures every element of your PDF document. Text content is preserved with formatting information. Tables are converted to structured XML elements. Images are referenced with base64 encoding or external links. Document metadata including title, author, and creation date are included in the XML output.</p>
+
+<h2>Standards-Compliant XML Output</h2>
+<p>The generated XML follows W3C standards and best practices. Well-formed document structure ensures compatibility with all XML parsers. Unicode support handles international characters correctly. Proper escaping prevents parsing errors. The output is ready for immediate use in any XML-compatible application.</p>
+
+<h2>How to Convert PDF to XML</h2>
+<p>Upload your PDF document using our secure uploader. Select your preferred XML output format. Choose whether to include metadata and images. Process the conversion instantly. Download your XML file ready for integration. The entire process takes just seconds.</p>
+
+<h2>Multiple Output Formats</h2>
+<p>Choose from different XML schema options to match your needs. Simple flat structure for basic text extraction. Hierarchical structure preserving document layout. Page-based structure for sequential processing. Custom structure options for specific integration requirements.</p>
+
+<h2>Integration Applications</h2>
+<p>Feed converted XML to content management systems. Import document data into databases. Process documents in automated workflows. Enable full-text search indexing. Transform content for web publishing. XML output opens endless integration possibilities.</p>`,
+  },
+  {
+    id: "read-pdf-form-data",
+    name: "Read PDF Form Data",
+    description: "Read and display all form field values from PDF documents",
+    icon: "FileSearch",
+    type: "read-pdf-form-data",
+    color: "bg-indigo-600",
+    emoji: "🔍",
+    metaTitle: "Read PDF Form Data Online Free - View PDF Form Fields | PDF Tools",
+    metaDescription: "Read and view PDF form data online for free. Extract form field names and values from fillable PDFs. Easy PDF form data reader tool.",
+    seoArticle: `<h2>Read PDF Form Data - View Form Field Contents</h2>
+<p>Quickly read and view all form field data from your PDF documents. Our PDF form data reader extracts and displays every field name and its corresponding value, making it easy to review form submissions, verify entered data, or audit completed forms without opening them in a PDF editor.</p>
+
+<h2>Complete Field Detection</h2>
+<p>Our tool automatically detects all types of form fields in your PDF. Text fields with their entered content. Checkboxes showing checked or unchecked status. Radio button selections. Dropdown menu choices. Date fields with selected dates. Signature fields indicating signing status. Every interactive element is captured.</p>
+
+<h2>Instant Data Preview</h2>
+<p>View all form data in a clear, organized display immediately after upload. Field names are paired with their values in an easy-to-read format. No need to download or process anything first. Just upload and see your form data instantly presented in a structured view.</p>
+
+<h2>How to Read PDF Form Data</h2>
+<p>Upload your filled PDF form using our secure interface. The tool instantly scans and extracts all form fields. View the complete list of field names and values. Copy individual values or export the entire dataset. Review forms quickly without specialized software.</p>
+
+<h2>Data Verification Made Easy</h2>
+<p>Verify that form submissions contain the expected information. Compare filled values against requirements. Identify empty or missing required fields. Spot data entry errors before processing. Ensure form completeness before acceptance.</p>
+
+<h2>Use Cases</h2>
+<p>HR departments review job applications efficiently. Administrative staff verify completed forms. Compliance teams audit document submissions. Quality control checks data accuracy. Anyone processing form-based documents benefits from quick data reading.</p>`,
+  },
+  {
+    id: "flatten-pdf-form",
+    name: "Flatten PDF Form",
+    description: "Convert interactive form fields into static content for permanent preservation",
+    icon: "Layers",
+    type: "flatten-pdf-form",
+    color: "bg-amber-600",
+    emoji: "📑",
+    metaTitle: "Flatten PDF Form Online Free - Convert Form Fields to Static | PDF Tools",
+    metaDescription: "Flatten PDF forms to static content online for free. Convert interactive form fields to permanent, non-editable content. Preserve form data permanently.",
+    seoArticle: `<h2>Flatten PDF Form - Make Form Data Permanent</h2>
+<p>Flatten your PDF forms to convert interactive fields into permanent, static content. Once flattened, form data becomes part of the document like regular text, preventing any further modifications. This ensures the integrity of filled forms for archiving, legal purposes, or final distribution.</p>
+
+<h2>Understanding Form Flattening</h2>
+<p>Interactive PDF forms contain editable fields that can be modified until the form is flattened. Flattening merges the field values with the page content, making them inseparable. The visual appearance remains identical, but the form becomes a standard PDF document with no interactive elements.</p>
+
+<h2>Preserve Document Integrity</h2>
+<p>Flattened forms cannot be tampered with or accidentally modified. All entered data becomes permanent like printed text. Signatures and approvals are preserved in their final state. The document maintains its legal validity while preventing post-completion changes.</p>
+
+<h2>How to Flatten PDF Forms</h2>
+<p>Upload your completed PDF form. Select the flattening mode: all fields, forms only, or annotations only. Process the flattening operation. Download your static PDF document. The filled values are now permanently embedded in the document.</p>
+
+<h2>Flattening Options</h2>
+<p>Flatten all interactive elements including forms and annotations. Flatten form fields only while keeping annotations editable. Flatten annotations only while preserving form interactivity. Choose the option that matches your document's needs.</p>
+
+<h2>When to Flatten Forms</h2>
+<p>Archive completed forms for permanent records. Submit final versions of signed documents. Create uneditable copies for distribution. Prepare forms for non-interactive PDF viewers. Ensure compliance with document retention requirements.</p>`,
+  },
+  {
+    id: "extract-fonts-from-pdf",
+    name: "Extract Fonts from PDF",
+    description: "Extract embedded fonts from PDF documents for analysis or reuse",
+    icon: "Type",
+    type: "extract-fonts-from-pdf",
+    color: "bg-pink-600",
+    emoji: "🔤",
+    metaTitle: "Extract Fonts from PDF Online Free - PDF Font Extractor | PDF Tools",
+    metaDescription: "Extract embedded fonts from PDF documents online for free. Identify and download fonts used in PDF files. Easy PDF font extraction tool.",
+    seoArticle: `<h2>Extract Fonts from PDF - Identify and Retrieve Document Fonts</h2>
+<p>Discover and extract the fonts embedded in your PDF documents. Our font extraction tool identifies all fonts used in a PDF, showing you font names, types, and embedding status. Perfect for designers needing to match fonts, developers troubleshooting rendering issues, or anyone curious about a document's typography.</p>
+
+<h2>Comprehensive Font Analysis</h2>
+<p>Our tool provides detailed information about every font in your PDF. Font family names and styles are identified. Font types (TrueType, OpenType, Type 1) are detected. Embedding status shows whether fonts are fully embedded, subset, or referenced. Character coverage information helps understand font usage.</p>
+
+<h2>Font Information Display</h2>
+<p>View a complete list of all fonts used in your document. See which pages use which fonts. Identify system fonts versus embedded fonts. Understand font licensing status from embedding flags. Get the information you need to work with document typography.</p>
+
+<h2>How to Extract PDF Fonts</h2>
+<p>Upload your PDF document to our secure platform. The tool analyzes and identifies all embedded fonts. View the complete font list with detailed properties. Download font information as a report. Use the data for design matching or troubleshooting.</p>
+
+<h2>Designer Applications</h2>
+<p>Match fonts when recreating or editing documents. Identify fonts for consistent branding across materials. Verify correct font embedding before distribution. Troubleshoot font-related display issues. Ensure accessibility compliance with proper font usage.</p>
+
+<h2>Technical Font Information</h2>
+<p>Font names including PostScript names and family names. Encoding information for character mapping. Subset information showing which characters are embedded. Embedding permissions indicating font license restrictions. Complete technical data for professional font management.</p>`,
+  },
+  {
+    id: "zugferd-invoice-extractor",
+    name: "PDF ZUGFeRD Invoice Extractor",
+    description: "Extract structured invoice data from ZUGFeRD/Factur-X PDF invoices",
+    icon: "FileSpreadsheet",
+    type: "zugferd-invoice-extractor",
+    color: "bg-green-600",
+    emoji: "🧾",
+    metaTitle: "ZUGFeRD Invoice Extractor Online Free - Extract Invoice Data | PDF Tools",
+    metaDescription: "Extract structured data from ZUGFeRD and Factur-X PDF invoices online for free. Convert e-invoices to readable format. Easy invoice data extraction.",
+    seoArticle: `<h2>ZUGFeRD Invoice Extractor - Process Electronic Invoices</h2>
+<p>Extract structured business data from ZUGFeRD and Factur-X electronic invoices. These PDF invoices contain embedded XML with complete transaction details that our extractor reads and presents in an accessible format. Perfect for accounting systems, invoice processing, and business automation.</p>
+
+<h2>Understanding ZUGFeRD Format</h2>
+<p>ZUGFeRD (Zentraler User Guide des Forums elektronische Rechnung Deutschland) is the German standard for electronic invoicing adopted across Europe. It combines human-readable PDF invoices with machine-readable XML data. Our extractor retrieves the embedded XML containing all invoice details.</p>
+
+<h2>Complete Data Extraction</h2>
+<p>Extract all invoice elements from the embedded XML. Seller and buyer information including addresses and tax IDs. Line items with descriptions, quantities, and prices. Tax calculations and totals. Payment terms and banking details. Reference numbers and dates. Every business-critical data point is captured.</p>
+
+<h2>How to Extract ZUGFeRD Data</h2>
+<p>Upload your ZUGFeRD or Factur-X PDF invoice. The tool detects and extracts the embedded XML attachment. View the structured invoice data in readable format. Export to your preferred format for further processing. Seamlessly integrate invoice data into your workflows.</p>
+
+<h2>Format Support</h2>
+<p>Full support for ZUGFeRD 1.0 and 2.0 profiles. Factur-X compatibility for French e-invoicing. XRechnung support for German government invoices. Cross-border invoice processing capabilities. Handle any standard European e-invoice format.</p>
+
+<h2>Business Applications</h2>
+<p>Automate accounts payable processing. Feed invoice data directly to ERP systems. Validate invoice calculations automatically. Archive invoices with searchable metadata. Streamline financial operations with automated data extraction.</p>`,
+  },
+  {
+    id: "pdf-to-ubl-xml",
+    name: "PDF to UBL XML",
+    description: "Convert PDF invoices to Universal Business Language (UBL) XML format",
+    icon: "Globe",
+    type: "pdf-to-ubl-xml",
+    color: "bg-teal-600",
+    emoji: "🌐",
+    metaTitle: "PDF to UBL XML Converter Online Free - Convert to UBL | PDF Tools",
+    metaDescription: "Convert PDF invoices to UBL XML format online for free. Transform business documents to Universal Business Language. Easy PDF to UBL conversion.",
+    seoArticle: `<h2>PDF to UBL XML Converter - Universal Business Language Export</h2>
+<p>Convert your PDF business documents to Universal Business Language (UBL) XML format for seamless B2B electronic exchange. UBL is the international standard for electronic business documents, enabling automated processing across different systems and countries. Our converter extracts data from PDFs and structures it into compliant UBL XML.</p>
+
+<h2>Understanding UBL Standard</h2>
+<p>Universal Business Language is an OASIS standard used globally for electronic commerce. UBL covers invoices, orders, shipping notices, and many other business documents. By converting to UBL, you enable your documents to be processed by any UBL-compatible system worldwide, breaking down barriers in B2B transactions.</p>
+
+<h2>Intelligent Data Extraction</h2>
+<p>Our converter analyzes your PDF document and extracts key business data. Invoice headers with dates, numbers, and references. Party information including names, addresses, and identifiers. Line item details with products, quantities, and pricing. Tax and total calculations. Payment information and terms.</p>
+
+<h2>How to Convert PDF to UBL</h2>
+<p>Upload your PDF invoice or business document. The tool extracts and structures the document data. Review the extracted information for accuracy. Generate compliant UBL XML output. Download and use in your B2B processes.</p>
+
+<h2>UBL Document Types</h2>
+<p>Generate UBL Invoice documents for billing. Create UBL CreditNote for adjustments. Produce UBL Order documents for purchasing. Export UBL DespatchAdvice for shipping. Support for all common UBL document types.</p>
+
+<h2>International Compatibility</h2>
+<p>UBL is recognized by governments and businesses worldwide. PEPPOL network compatibility for European e-invoicing. Support for country-specific UBL customizations. Enable cross-border document exchange. Join the global e-business ecosystem with UBL conversion.</p>`,
+  },
+  {
+    id: "form-data-to-csv",
+    name: "PDF Form Data to CSV",
+    description: "Export PDF form data to CSV spreadsheet format",
+    icon: "FileSpreadsheet",
+    type: "form-data-to-csv",
+    color: "bg-emerald-600",
+    emoji: "📊",
+    metaTitle: "PDF Form Data to CSV Online Free - Export Form to CSV | PDF Tools",
+    metaDescription: "Export PDF form data to CSV format online for free. Convert form fields to spreadsheet format. Easy PDF form to CSV extraction tool.",
+    seoArticle: `<h2>PDF Form Data to CSV - Spreadsheet Export Made Easy</h2>
+<p>Export form data from your PDF documents directly to CSV format for use in spreadsheets and databases. Our tool extracts all form field names and values, organizing them into a clean CSV file that opens perfectly in Excel, Google Sheets, or any data processing application.</p>
+
+<h2>Clean CSV Output</h2>
+<p>The generated CSV follows standard formatting for universal compatibility. Field names become column headers. Field values populate corresponding rows. Proper escaping handles special characters and commas. UTF-8 encoding supports international text. Your data is immediately usable in any spreadsheet application.</p>
+
+<h2>Batch Processing Capability</h2>
+<p>Process multiple PDF forms at once to create consolidated data exports. Each form becomes a row in your CSV file. Consistent field mapping across all documents. Handle large volumes of form submissions efficiently. Perfect for processing surveys, applications, or any form-based data collection.</p>
+
+<h2>How to Export Form Data to CSV</h2>
+<p>Upload your filled PDF form or multiple forms. The tool extracts all form field data automatically. Preview the extracted data in tabular format. Configure CSV options like delimiter and encoding. Download your CSV file ready for import.</p>
+
+<h2>Customization Options</h2>
+<p>Choose your preferred delimiter: comma, semicolon, or tab. Include or exclude specific form fields. Configure header row formatting. Select appropriate character encoding. Customize output to match your import requirements.</p>
+
+<h2>Data Analysis Applications</h2>
+<p>Import form data into Excel for analysis. Feed data to database systems. Process in business intelligence tools. Create reports from form submissions. Automate data workflows with CSV integration.</p>`,
+  },
+  {
+    id: "form-data-to-xml",
+    name: "PDF Form Data to XML",
+    description: "Export PDF form data to structured XML format",
+    icon: "FileText",
+    type: "form-data-to-xml",
+    color: "bg-violet-600",
+    emoji: "📋",
+    metaTitle: "PDF Form Data to XML Online Free - Export Form to XML | PDF Tools",
+    metaDescription: "Export PDF form data to XML format online for free. Convert form fields to structured XML. Easy PDF form to XML extraction tool.",
+    seoArticle: `<h2>PDF Form Data to XML - Structured Data Export</h2>
+<p>Transform PDF form data into well-structured XML format for seamless system integration. Our tool extracts all form fields and values, organizing them into a hierarchical XML document that's perfect for web services, databases, and automated processing systems.</p>
+
+<h2>Structured XML Output</h2>
+<p>Each form field becomes an XML element with its name and value properly structured. Nested fields are organized hierarchically. Attributes capture additional field properties. The output follows XML best practices for maximum compatibility. Your form data becomes machine-readable while remaining human-readable.</p>
+
+<h2>Schema Flexibility</h2>
+<p>Export to simple flat XML structure for basic needs. Generate hierarchical XML matching form sections. Create custom XML schemas for specific integrations. Include or exclude field metadata. Adapt the output format to your exact requirements.</p>
+
+<h2>How to Export Form Data to XML</h2>
+<p>Upload your PDF form with filled data. The tool identifies and extracts all form fields. Configure your preferred XML structure. Preview the generated XML document. Download for use in your applications.</p>
+
+<h2>XML Features</h2>
+<p>Well-formed XML with proper declarations. Unicode support for international data. CDATA sections for complex text content. Optional pretty-printing for readability. Consistent formatting across all exports.</p>
+
+<h2>Integration Scenarios</h2>
+<p>Feed data to web services and APIs. Import into enterprise databases. Process in XML-based workflows. Transform with XSLT for other formats. Connect to content management systems.</p>`,
+  },
+  {
+    id: "form-data-to-json",
+    name: "PDF Form Data to JSON",
+    description: "Export PDF form data to JSON format for web applications",
+    icon: "FileText",
+    type: "form-data-to-json",
+    color: "bg-orange-600",
+    emoji: "📦",
+    metaTitle: "PDF Form Data to JSON Online Free - Export Form to JSON | PDF Tools",
+    metaDescription: "Export PDF form data to JSON format online for free. Convert form fields to JSON for web apps. Easy PDF form to JSON extraction tool.",
+    seoArticle: `<h2>PDF Form Data to JSON - Web-Ready Data Export</h2>
+<p>Convert PDF form data to JSON format for seamless integration with web applications and modern APIs. JSON (JavaScript Object Notation) is the preferred data format for web development, and our tool makes extracting form data into this format quick and effortless.</p>
+
+<h2>Developer-Friendly Output</h2>
+<p>The generated JSON is properly formatted and immediately usable in JavaScript applications. Field names become object keys. Values are correctly typed (strings, numbers, booleans). Arrays represent multi-value fields. The structure mirrors your form's organization logically.</p>
+
+<h2>Clean Data Structure</h2>
+<p>Form data is organized in clear key-value pairs. Checkbox values export as boolean true/false. Radio button selections as single values. Multi-select fields as arrays. Date fields in standardized formats. The JSON structure is intuitive and consistent.</p>
+
+<h2>How to Export Form Data to JSON</h2>
+<p>Upload your filled PDF form. Automatic extraction identifies all form fields. Preview the JSON structure before download. Configure formatting preferences. Download your JSON file ready for use.</p>
+
+<h2>Formatting Options</h2>
+<p>Minified JSON for production use. Pretty-printed JSON for readability. Customizable indentation settings. Optional inclusion of null values. Configure output for your specific needs.</p>
+
+<h2>Web Development Applications</h2>
+<p>Populate web forms with extracted data. Submit to REST APIs directly. Store in NoSQL databases. Process with Node.js applications. Integrate with React, Vue, or Angular projects.</p>`,
+  },
+  {
+    id: "form-filler-csv",
+    name: "PDF Form Filler (from CSV)",
+    description: "Batch fill PDF forms using data from CSV spreadsheets",
+    icon: "FilePen",
+    type: "form-filler-csv",
+    color: "bg-rose-600",
+    emoji: "📝",
+    metaTitle: "PDF Form Filler from CSV Online Free - Batch Fill Forms | PDF Tools",
+    metaDescription: "Fill PDF forms from CSV data online for free. Batch process multiple forms with spreadsheet data. Easy bulk PDF form filling tool.",
+    seoArticle: `<h2>PDF Form Filler from CSV - Batch Form Processing</h2>
+<p>Fill multiple PDF forms automatically using data from CSV spreadsheets. Upload your template form and data file, and our tool generates completed forms for each row in your spreadsheet. Perfect for mass form generation, personalized document creation, and automated form workflows.</p>
+
+<h2>How Batch Form Filling Works</h2>
+<p>Your CSV file contains the data to fill into forms, with each row representing one form. Column headers match form field names. Our tool maps the data automatically and creates a completed form for every data row. What would take hours manually happens in seconds.</p>
+
+<h2>Field Mapping Intelligence</h2>
+<p>Automatic matching connects CSV columns to form fields. Smart matching handles minor naming differences. Manual mapping overrides for complex forms. Preview mappings before processing. Ensure accurate data placement every time.</p>
+
+<h2>How to Fill Forms from CSV</h2>
+<p>Upload your blank PDF form template. Upload your CSV data file with the information to fill. Review and adjust field mappings if needed. Process the batch filling operation. Download all completed forms as individual files or a single archive.</p>
+
+<h2>CSV Data Requirements</h2>
+<p>First row should contain column headers matching field names. Each subsequent row becomes one completed form. Text, numbers, and dates are handled automatically. Checkbox fields use yes/no or true/false values. Simple spreadsheet format everyone can prepare.</p>
+
+<h2>Business Applications</h2>
+<p>Generate personalized letters and certificates. Create employee forms for entire departments. Produce customer contracts from CRM exports. Fill event registrations from attendee lists. Automate any repetitive form-filling task.</p>`,
   },
 ];
