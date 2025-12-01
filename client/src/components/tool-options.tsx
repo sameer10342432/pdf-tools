@@ -3008,6 +3008,359 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "sign-pdf":
+    case "pdf-signer":
+    case "esign-pdf":
+    case "add-signature-to-pdf":
+    case "pdf-signature-tool":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="signatureName">Signer Name</Label>
+            <Input
+              id="signatureName"
+              placeholder="Enter your name"
+              value={options.signatureName || ""}
+              onChange={(e) => updateOption("signatureName", e.target.value)}
+              data-testid="input-signature-name"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="signatureText">Signature Text (optional)</Label>
+            <Input
+              id="signatureText"
+              placeholder="Custom signature text"
+              value={options.signatureText || ""}
+              onChange={(e) => updateOption("signatureText", e.target.value)}
+              data-testid="input-signature-text"
+            />
+            <p className="text-sm text-muted-foreground">
+              Leave empty to use your name as the signature.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label>Signature Style</Label>
+            <Select
+              value={options.signatureStyle || "typed"}
+              onValueChange={(value) => updateOption("signatureStyle", value as ToolOptions["signatureStyle"])}
+            >
+              <SelectTrigger data-testid="select-signature-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="typed">Typed (Professional)</SelectItem>
+                <SelectItem value="handwritten">Handwritten (Script)</SelectItem>
+                <SelectItem value="drawn">Drawn Style</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Signature Position</Label>
+            <Select
+              value={options.signaturePosition || "bottom-right"}
+              onValueChange={(value) => updateOption("signaturePosition", value as ToolOptions["signaturePosition"])}
+            >
+              <SelectTrigger data-testid="select-signature-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="center">Center</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Sign Which Pages</Label>
+            <Select
+              value={options.signaturePage || "last"}
+              onValueChange={(value) => updateOption("signaturePage", value as ToolOptions["signaturePage"])}
+            >
+              <SelectTrigger data-testid="select-signature-page">
+                <SelectValue placeholder="Select pages" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="last">Last Page Only</SelectItem>
+                <SelectItem value="first">First Page Only</SelectItem>
+                <SelectItem value="all">All Pages</SelectItem>
+                <SelectItem value="custom">Custom Page</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.signaturePage === "custom" && (
+            <div className="space-y-2">
+              <Label htmlFor="signatureCustomPage">Page Number</Label>
+              <Input
+                id="signatureCustomPage"
+                type="number"
+                min={1}
+                placeholder="Enter page number"
+                value={options.signatureCustomPage || 1}
+                onChange={(e) => updateOption("signatureCustomPage", parseInt(e.target.value) || 1)}
+                data-testid="input-signature-custom-page"
+              />
+            </div>
+          )}
+          <div className="space-y-2">
+            <Label htmlFor="signatureReason">Reason for Signing (optional)</Label>
+            <Input
+              id="signatureReason"
+              placeholder="e.g., Document approval, Contract agreement"
+              value={options.signatureReason || ""}
+              onChange={(e) => updateOption("signatureReason", e.target.value)}
+              data-testid="input-signature-reason"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="signatureLocation">Location (optional)</Label>
+            <Input
+              id="signatureLocation"
+              placeholder="e.g., New York, USA"
+              value={options.signatureLocation || ""}
+              onChange={(e) => updateOption("signatureLocation", e.target.value)}
+              data-testid="input-signature-location"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="signatureColor">Signature Color</Label>
+            <Input
+              id="signatureColor"
+              type="color"
+              value={options.signatureColor || "#1a365d"}
+              onChange={(e) => updateOption("signatureColor", e.target.value)}
+              className="h-10 w-20"
+              data-testid="input-signature-color"
+            />
+          </div>
+        </div>
+      );
+
+    case "request-pdf-signature":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="requestEmail">Recipient Email</Label>
+            <Input
+              id="requestEmail"
+              type="email"
+              placeholder="Enter recipient's email"
+              value={options.requestEmail || ""}
+              onChange={(e) => updateOption("requestEmail", e.target.value)}
+              data-testid="input-request-email"
+            />
+            <p className="text-sm text-muted-foreground">
+              The prepared document will include signature fields for this recipient.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="requestMessage">Message to Signer (optional)</Label>
+            <Input
+              id="requestMessage"
+              placeholder="e.g., Please sign and return by Friday"
+              value={options.requestMessage || ""}
+              onChange={(e) => updateOption("requestMessage", e.target.value)}
+              data-testid="input-request-message"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="requestDeadline">Deadline (optional)</Label>
+            <Input
+              id="requestDeadline"
+              type="date"
+              value={options.requestDeadline || ""}
+              onChange={(e) => updateOption("requestDeadline", e.target.value)}
+              data-testid="input-request-deadline"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Signature Field Position</Label>
+            <Select
+              value={options.signaturePosition || "bottom-right"}
+              onValueChange={(value) => updateOption("signaturePosition", value as ToolOptions["signaturePosition"])}
+            >
+              <SelectTrigger data-testid="select-signature-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="center">Center</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "validate-pdf-signature":
+    case "pdf-digital-signature-validator":
+      return (
+        <div className="space-y-4">
+          <div className="p-4 bg-muted rounded-md">
+            <p className="text-sm text-muted-foreground">
+              Upload a signed PDF to validate its signatures. The validation will check:
+            </p>
+            <ul className="text-sm text-muted-foreground mt-2 list-disc list-inside space-y-1">
+              <li>Signature authenticity and integrity</li>
+              <li>Document modification status since signing</li>
+              <li>Signature details and metadata</li>
+              <li>Certificate information (if applicable)</li>
+            </ul>
+          </div>
+        </div>
+      );
+
+    case "certify-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="signatureName">Certifier Name</Label>
+            <Input
+              id="signatureName"
+              placeholder="Enter your name"
+              value={options.signatureName || ""}
+              onChange={(e) => updateOption("signatureName", e.target.value)}
+              data-testid="input-signature-name"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="signatureReason">Certification Reason</Label>
+            <Input
+              id="signatureReason"
+              placeholder="e.g., Official document certification"
+              value={options.signatureReason || ""}
+              onChange={(e) => updateOption("signatureReason", e.target.value)}
+              data-testid="input-signature-reason"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Post-Certification Permissions</Label>
+            <Select
+              value={options.certifyPermissions || "no-changes"}
+              onValueChange={(value) => updateOption("certifyPermissions", value as ToolOptions["certifyPermissions"])}
+            >
+              <SelectTrigger data-testid="select-certify-permissions">
+                <SelectValue placeholder="Select permissions" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="no-changes">No Changes Allowed</SelectItem>
+                <SelectItem value="form-filling">Form Filling Only</SelectItem>
+                <SelectItem value="annotations">Annotations and Form Filling</SelectItem>
+                <SelectItem value="all">All Changes Allowed</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Choose what modifications are allowed after certification.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label>Certification Position</Label>
+            <Select
+              value={options.signaturePosition || "top-right"}
+              onValueChange={(value) => updateOption("signaturePosition", value as ToolOptions["signaturePosition"])}
+            >
+              <SelectTrigger data-testid="select-signature-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="center">Center</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="signatureLocation">Location (optional)</Label>
+            <Input
+              id="signatureLocation"
+              placeholder="e.g., Corporate Headquarters"
+              value={options.signatureLocation || ""}
+              onChange={(e) => updateOption("signatureLocation", e.target.value)}
+              data-testid="input-signature-location"
+            />
+          </div>
+        </div>
+      );
+
+    case "pdf-locker":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="signatureName">Signer Name</Label>
+            <Input
+              id="signatureName"
+              placeholder="Enter your name"
+              value={options.signatureName || ""}
+              onChange={(e) => updateOption("signatureName", e.target.value)}
+              data-testid="input-signature-name"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="lockPassword">Lock Password</Label>
+            <Input
+              id="lockPassword"
+              type="password"
+              placeholder="Enter password to lock the PDF"
+              value={options.lockPassword || ""}
+              onChange={(e) => updateOption("lockPassword", e.target.value)}
+              data-testid="input-lock-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              This password will be required to open the locked PDF.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label>Lock Type</Label>
+            <Select
+              value={options.lockType || "both"}
+              onValueChange={(value) => updateOption("lockType", value as ToolOptions["lockType"])}
+            >
+              <SelectTrigger data-testid="select-lock-type">
+                <SelectValue placeholder="Select lock type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="user">User Password Only (Open Protection)</SelectItem>
+                <SelectItem value="owner">Owner Password Only (Edit Protection)</SelectItem>
+                <SelectItem value="both">Both User and Owner Protection</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Signature Position</Label>
+            <Select
+              value={options.signaturePosition || "bottom-right"}
+              onValueChange={(value) => updateOption("signaturePosition", value as ToolOptions["signaturePosition"])}
+            >
+              <SelectTrigger data-testid="select-signature-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="center">Center</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="signatureReason">Reason (optional)</Label>
+            <Input
+              id="signatureReason"
+              placeholder="e.g., Document secured for distribution"
+              value={options.signatureReason || ""}
+              onChange={(e) => updateOption("signatureReason", e.target.value)}
+              data-testid="input-signature-reason"
+            />
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }

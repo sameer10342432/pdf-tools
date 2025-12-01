@@ -495,6 +495,13 @@ export const toolOptionsSchema = z.object({
   requestEmail: z.string().optional(),
   requestMessage: z.string().optional(),
   requestDeadline: z.string().optional(),
+  ownerPassword: z.string().optional(),
+  userPassword: z.string().optional(),
+  allowPrinting: z.boolean().optional(),
+  allowCopying: z.boolean().optional(),
+  allowEditing: z.boolean().optional(),
+  allowAnnotations: z.boolean().optional(),
+  allowFormFilling: z.boolean().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
