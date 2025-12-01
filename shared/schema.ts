@@ -291,6 +291,16 @@ export const pdfToolTypes = [
   "certify-pdf",
   "pdf-locker",
   "pdf-digital-signature-validator",
+  "add-timestamp-to-pdf",
+  "pdf-certificate-adder",
+  "pdf-signature-remover",
+  "watermark-pdf",
+  "pdf-watermarker",
+  "add-text-watermark",
+  "add-image-watermark",
+  "add-tiled-watermark",
+  "stamp-pdf",
+  "pdf-stamper",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -7813,5 +7823,258 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Comprehensive Reporting</h2>
 <p>Receive detailed reports on every aspect of signature validation. See certificate details including issuer and validity period. View signature properties and metadata. Understand the complete security status of your signed document. Make informed decisions based on thorough validation.</p>`,
+  },
+  {
+    id: "add-timestamp-to-pdf",
+    name: "Add Timestamp to PDF",
+    description: "Add date and time stamps to PDF documents",
+    icon: "Clock",
+    type: "add-timestamp-to-pdf",
+    color: "bg-blue-500",
+    emoji: "🕐",
+    metaTitle: "Add Timestamp to PDF Online Free - Date Stamp PDF Documents | PDF Tools",
+    metaDescription: "Add timestamps to PDF files online for free. Insert date, time, and custom text stamps. Position timestamps anywhere on your documents. No registration required.",
+    seoArticle: `<h2>Add Timestamp to PDF - Document Dating Made Easy</h2>
+<p>Timestamping documents is essential for tracking versions, establishing creation dates, and maintaining proper document records. Our free online timestamp tool adds professional date and time stamps to any PDF document with complete customization options. Whether you need simple date stamps or detailed timestamp metadata, this tool delivers precision results.</p>
+
+<h2>Why Timestamp Your PDFs?</h2>
+<p>Timestamps serve multiple critical purposes in document management. They establish when a document was created or modified, provide audit trails for compliance, and help organize files chronologically. Legal documents, contracts, reports, and official correspondence all benefit from clear timestamping.</p>
+
+<h2>Flexible Timestamp Formats</h2>
+<p>Choose from multiple timestamp formats to match your needs. Use standard date formats like MM/DD/YYYY or DD/MM/YYYY. Add time in 12-hour or 24-hour format. Include timezone information for international documents. Create custom formats with any combination of date and time elements.</p>
+
+<h2>Precise Positioning Options</h2>
+<p>Place your timestamp exactly where you need it. Position in corners, headers, or footers. Center on the page or use custom coordinates. Apply to all pages, specific page ranges, or single pages. The timestamp appears consistently and professionally on every selected page.</p>
+
+<h2>Professional Appearance</h2>
+<p>Customize the look of your timestamps to match your documents. Select from various fonts and sizes. Choose colors that complement your design. Adjust opacity for subtle or prominent stamps. The result is a professional timestamp that enhances rather than detracts from your document.</p>`,
+  },
+  {
+    id: "pdf-certificate-adder",
+    name: "PDF Certificate Adder",
+    description: "Add digital certificates and authentication to PDFs",
+    icon: "Award",
+    type: "pdf-certificate-adder",
+    color: "bg-amber-500",
+    emoji: "🏆",
+    metaTitle: "PDF Certificate Adder Online Free - Add Certificates to PDF | PDF Tools",
+    metaDescription: "Add digital certificates to PDF files online for free. Embed authentication certificates, add certification badges, and enhance document credibility. Professional PDF certification tool.",
+    seoArticle: `<h2>PDF Certificate Adder - Enhance Document Authenticity</h2>
+<p>Adding certificates to your PDF documents elevates their credibility and provides visual authentication. Our free online certificate adder embeds professional certification elements, badges, and authentication markers that instantly communicate document legitimacy. Perfect for official documents, awards, and certified content.</p>
+
+<h2>Types of Certificates</h2>
+<p>Add various types of certification elements to your documents. Embed completion certificates for training materials. Add authentication badges for official documents. Include verification stamps for approved content. Create custom certification graphics that match your branding.</p>
+
+<h2>Professional Certificate Designs</h2>
+<p>Choose from professionally designed certificate templates. Elegant borders and frames enhance visual appeal. Gold, silver, and bronze seal options convey different levels. Modern minimalist designs suit contemporary documents. Traditional ornate styles work for formal certificates.</p>
+
+<h2>Customization Options</h2>
+<p>Personalize certificates to match your needs. Add recipient names and achievement details. Include dates and issuing authority information. Embed unique certificate numbers for tracking. Customize colors, fonts, and layouts to match organizational branding.</p>
+
+<h2>Applications and Use Cases</h2>
+<p>Certificate additions serve many purposes. Training completion certificates verify skill acquisition. Official document stamps indicate approval status. Quality assurance badges confirm review processes. Membership certificates authenticate organization affiliation. Whatever your certification need, our tool delivers professional results.</p>`,
+  },
+  {
+    id: "pdf-signature-remover",
+    name: "PDF Signature Remover",
+    description: "Remove signatures and sign fields from PDF documents",
+    icon: "Eraser",
+    type: "pdf-signature-remover",
+    color: "bg-red-500",
+    emoji: "🗑️",
+    metaTitle: "PDF Signature Remover Online Free - Remove Signatures from PDF | PDF Tools",
+    metaDescription: "Remove signatures from PDF files online for free. Delete signature fields, clear signed areas, and prepare documents for re-signing. Secure signature removal tool.",
+    seoArticle: `<h2>PDF Signature Remover - Clean Documents for Re-signing</h2>
+<p>Need to remove signatures from a PDF document? Our free online signature remover cleanly eliminates signature elements while preserving the underlying document. Whether you need to correct errors, update documents, or prepare files for new signatures, this tool handles the task with precision.</p>
+
+<h2>Complete Signature Removal</h2>
+<p>Our tool removes all types of signature elements from PDFs. Delete drawn or typed signature images. Remove digital signature fields and form elements. Clear signature annotations and markups. Eliminate signature-related metadata. The result is a clean document ready for new signatures or distribution.</p>
+
+<h2>Preserve Document Integrity</h2>
+<p>Removing signatures does not damage your underlying document. All text, images, and formatting remain intact. Page layouts are preserved exactly. Only signature elements are removed. Your document emerges clean and ready for whatever comes next.</p>
+
+<h2>Selective or Complete Removal</h2>
+<p>Choose which signatures to remove. Delete all signatures across the entire document. Remove signatures from specific pages only. Select individual signatures for removal while keeping others. Complete control over what stays and what goes.</p>
+
+<h2>Common Use Cases</h2>
+<p>Signature removal serves many legitimate purposes. Correct documents signed with errors. Update contracts that need new terms. Prepare templates from previously signed documents. Remove outdated approvals for document revision. Clean documents for proper re-signing workflows.</p>`,
+  },
+  {
+    id: "watermark-pdf",
+    name: "Watermark PDF",
+    description: "Add custom watermarks to protect your PDF documents",
+    icon: "Droplet",
+    type: "watermark-pdf",
+    color: "bg-cyan-500",
+    emoji: "💧",
+    metaTitle: "Watermark PDF Online Free - Add Watermarks to PDF | PDF Tools",
+    metaDescription: "Add watermarks to PDF files online for free. Protect documents with text or image watermarks. Customize position, opacity, and rotation. Professional watermarking tool.",
+    seoArticle: `<h2>Watermark PDF - Professional Document Protection</h2>
+<p>Watermarking your PDF documents adds a layer of protection and branding that travels with your content. Our free online watermarking tool embeds customizable watermarks that deter unauthorized use while maintaining document readability. Protect your intellectual property with professional-grade watermarks.</p>
+
+<h2>Text and Image Watermarks</h2>
+<p>Choose the watermark type that best suits your needs. Text watermarks display custom messages like CONFIDENTIAL, DRAFT, or your company name. Image watermarks embed logos or graphics for branding purposes. Combine both for comprehensive protection that identifies both source and status.</p>
+
+<h2>Complete Customization</h2>
+<p>Every aspect of your watermark is customizable. Adjust opacity from subtle to prominent. Rotate text to diagonal or any angle. Choose fonts, sizes, and colors. Position anywhere on the page. Scale to cover specific areas or the entire page. Create the exact watermark you envision.</p>
+
+<h2>Consistent Application</h2>
+<p>Watermarks apply consistently across your entire document. Every page receives the same watermark in the same position. Multi-page documents maintain uniform protection. The result is professional consistency that protects every page equally.</p>
+
+<h2>Protection Without Obstruction</h2>
+<p>Well-designed watermarks protect without hindering use. Proper opacity settings allow content to remain readable. Strategic positioning avoids covering critical information. The watermark is visible enough to deter misuse while allowing legitimate use of the document.</p>`,
+  },
+  {
+    id: "pdf-watermarker",
+    name: "PDF Watermarker",
+    description: "Professional PDF watermarking with advanced options",
+    icon: "Waves",
+    type: "pdf-watermarker",
+    color: "bg-teal-500",
+    emoji: "🌊",
+    metaTitle: "PDF Watermarker Online Free - Professional Watermarking Tool | PDF Tools",
+    metaDescription: "Watermark PDF documents online for free with professional options. Add text, image, or combined watermarks. Advanced positioning and styling. Secure your PDFs.",
+    seoArticle: `<h2>PDF Watermarker - Advanced Watermarking Solution</h2>
+<p>The PDF Watermarker provides comprehensive watermarking capabilities for professional document protection. Go beyond basic watermarks with advanced features including multi-layer watermarks, dynamic text, and precise positioning controls. Create watermarks that truly protect your documents.</p>
+
+<h2>Multi-Layer Watermarking</h2>
+<p>Apply multiple watermark layers for comprehensive protection. Combine background and foreground watermarks. Layer text over images for complex designs. Create watermarks that appear both behind and in front of content. Multi-layer protection is harder to remove or circumvent.</p>
+
+<h2>Dynamic Text Options</h2>
+<p>Include dynamic information in your watermarks automatically. Add current date and time stamps. Include page numbers or document names. Insert custom fields that update automatically. Dynamic watermarks provide both protection and useful information.</p>
+
+<h2>Precise Positioning Controls</h2>
+<p>Position watermarks with pixel-perfect precision. Use percentage-based positioning for consistent placement across different page sizes. Set margins and offsets for exact placement. Preview positions before applying. Achieve exactly the layout you need.</p>
+
+<h2>Batch Processing</h2>
+<p>Watermark multiple documents efficiently with consistent settings. Apply the same watermark across entire document sets. Maintain uniform protection for all your PDFs. Save time while ensuring comprehensive coverage of all your materials.</p>`,
+  },
+  {
+    id: "add-text-watermark",
+    name: "Add Text Watermark",
+    description: "Add customizable text watermarks to PDF pages",
+    icon: "Type",
+    type: "add-text-watermark",
+    color: "bg-indigo-500",
+    emoji: "📝",
+    metaTitle: "Add Text Watermark to PDF Online Free - Text Watermark Tool | PDF Tools",
+    metaDescription: "Add text watermarks to PDF files online for free. Customize font, size, color, and position. Create professional text-based watermarks. Easy and secure.",
+    seoArticle: `<h2>Add Text Watermark to PDF - Custom Text Protection</h2>
+<p>Text watermarks are the most versatile and widely used method of protecting PDF documents. Our free text watermark tool lets you add any text message as a watermark with complete control over appearance and placement. From simple status indicators to detailed copyright notices, text watermarks communicate clearly.</p>
+
+<h2>Any Text Message</h2>
+<p>Add whatever text serves your purpose. Common options include CONFIDENTIAL, DRAFT, SAMPLE, and company names. Add copyright notices with year and owner information. Include website URLs for source identification. Create multi-line messages for detailed watermarks. Your text, your message.</p>
+
+<h2>Typography Controls</h2>
+<p>Fine-tune the typography of your text watermark. Select from professional font families. Adjust size from subtle to prominent. Apply bold, italic, or underline styles. Choose colors that complement your document. Typography matters for both readability and aesthetics.</p>
+
+<h2>Rotation and Angle</h2>
+<p>Position text at any angle for visual impact. Diagonal watermarks are classic and effective. Horizontal text works for header or footer placement. Vertical text suits side margins. Custom angles create unique looks. Rotation adds visual interest while maintaining protection.</p>
+
+<h2>Opacity Settings</h2>
+<p>Balance visibility against content readability. Low opacity creates subtle, unobtrusive watermarks. Higher opacity makes watermarks more prominent. Preview different settings to find the right balance. The goal is protection without sacrificing usability.</p>`,
+  },
+  {
+    id: "add-image-watermark",
+    name: "Add Image Watermark",
+    description: "Embed image or logo watermarks on PDF pages",
+    icon: "Image",
+    type: "add-image-watermark",
+    color: "bg-purple-500",
+    emoji: "🖼️",
+    metaTitle: "Add Image Watermark to PDF Online Free - Logo Watermark Tool | PDF Tools",
+    metaDescription: "Add image watermarks to PDF files online for free. Embed logos, graphics, or photos as watermarks. Scale and position precisely. Professional image watermarking.",
+    seoArticle: `<h2>Add Image Watermark to PDF - Visual Branding Protection</h2>
+<p>Image watermarks embed your logo or graphics directly into PDF documents for powerful branding and protection. Our free image watermark tool supports various image formats and provides precise control over size, position, and opacity. Brand your documents while protecting your content.</p>
+
+<h2>Logo Watermarking</h2>
+<p>Embed your company logo as a watermark for instant brand recognition. Logos identify document source clearly. Watermarked documents carry your brand everywhere they travel. Recipients immediately recognize the document origin. Logo watermarks combine protection with marketing.</p>
+
+<h2>Image Format Support</h2>
+<p>Use images in common formats for your watermarks. PNG files with transparency work beautifully. JPEG images are perfect for photos. SVG vectors scale perfectly at any size. Upload your image and our tool handles format conversion automatically.</p>
+
+<h2>Size and Scale Control</h2>
+<p>Size your image watermark precisely. Specify exact dimensions in pixels or percentages. Scale proportionally to maintain aspect ratios. Create large background watermarks or small corner logos. Size options accommodate any design need.</p>
+
+<h2>Transparency and Blending</h2>
+<p>Control how your image watermark interacts with document content. Adjust opacity for subtle or prominent appearance. Images with built-in transparency are supported. Blend modes control how watermarks overlay content. Achieve the exact visual effect you want.</p>`,
+  },
+  {
+    id: "add-tiled-watermark",
+    name: "Add Tiled Watermark",
+    description: "Apply repeating tiled watermark patterns across pages",
+    icon: "Grid3X3",
+    type: "add-tiled-watermark",
+    color: "bg-rose-500",
+    emoji: "🔲",
+    metaTitle: "Add Tiled Watermark to PDF Online Free - Repeating Pattern Watermark | PDF Tools",
+    metaDescription: "Add tiled watermarks to PDF files online for free. Create repeating watermark patterns across pages. Diagonal grids, regular spacing, and more. Maximum protection.",
+    seoArticle: `<h2>Add Tiled Watermark to PDF - Maximum Coverage Protection</h2>
+<p>Tiled watermarks repeat across the entire page surface, making document protection nearly impossible to remove. Our free tiled watermark tool creates repeating patterns that cover every inch of your pages while maintaining readability. The ultimate protection for sensitive documents.</p>
+
+<h2>Complete Page Coverage</h2>
+<p>Unlike single watermarks, tiled patterns cover the entire page. No area is left unprotected. Cropping cannot remove protection since the pattern extends everywhere. Complete coverage means complete protection from unauthorized use.</p>
+
+<h2>Pattern Options</h2>
+<p>Choose how your watermark tiles across pages. Regular grids create orderly patterns. Diagonal tiling adds visual interest. Offset rows create dynamic layouts. Control spacing between tiles for density adjustment. Create the pattern that works for your documents.</p>
+
+<h2>Text and Image Tiles</h2>
+<p>Tile text messages or images across your pages. Repeat company names, CONFIDENTIAL stamps, or custom text. Tile logos for branded coverage. Combine text and images in the same tiled pattern. Whatever you want repeated, our tool handles it.</p>
+
+<h2>Adjustable Density</h2>
+<p>Control how closely watermarks tile together. Tight spacing creates dense, prominent patterns. Wider spacing allows more content visibility. Preview different densities before applying. Find the balance between protection and usability for your needs.</p>`,
+  },
+  {
+    id: "stamp-pdf",
+    name: "Stamp PDF",
+    description: "Add official stamps and seals to PDF documents",
+    icon: "Stamp",
+    type: "stamp-pdf",
+    color: "bg-orange-500",
+    emoji: "📮",
+    metaTitle: "Stamp PDF Online Free - Add Stamps and Seals to PDF | PDF Tools",
+    metaDescription: "Add stamps to PDF files online for free. Insert official stamps, seals, and approval marks. Choose from templates or upload custom stamps. Professional stamping tool.",
+    seoArticle: `<h2>Stamp PDF - Official Document Stamping</h2>
+<p>Digital stamps bring the authority of traditional rubber stamps to your PDF documents. Our free PDF stamping tool adds official-looking stamps, seals, and approval marks that convey document status instantly. From APPROVED to CONFIDENTIAL, stamps communicate clearly and professionally.</p>
+
+<h2>Pre-Built Stamp Library</h2>
+<p>Choose from a variety of pre-designed stamp templates. APPROVED, REJECTED, and PENDING stamps for review workflows. CONFIDENTIAL, SECRET, and CLASSIFIED stamps for security levels. DRAFT, FINAL, and COPY stamps for document status. PAID, RECEIVED, and PROCESSED stamps for business use.</p>
+
+<h2>Custom Stamp Creation</h2>
+<p>Create stamps that match your exact needs. Design text-based stamps with custom messages. Upload image stamps for unique graphics. Create organizational stamps with logos and text. Build a library of custom stamps for repeated use.</p>
+
+<h2>Professional Appearance</h2>
+<p>Stamps look authentically official. Circular seal designs convey authority. Rectangular stamps suit official notices. Distressed textures add realistic appearance. Color options match organizational standards. Stamps look like they belong on important documents.</p>
+
+<h2>Precise Placement</h2>
+<p>Position stamps exactly where they belong. Common locations include signature areas and headers. Drag to position anywhere on the page. Stamp specific pages or entire documents. Multiple stamps can be added as needed. Place stamps where they have maximum impact.</p>`,
+  },
+  {
+    id: "pdf-stamper",
+    name: "PDF Stamper",
+    description: "Advanced PDF stamping with templates and batch processing",
+    icon: "BadgeCheck",
+    type: "pdf-stamper",
+    color: "bg-green-500",
+    emoji: "✅",
+    metaTitle: "PDF Stamper Online Free - Advanced Stamping Tool | PDF Tools",
+    metaDescription: "Stamp PDF documents online for free with advanced options. Use templates, create custom stamps, and batch process multiple files. Professional PDF stamping solution.",
+    seoArticle: `<h2>PDF Stamper - Professional Stamping Solution</h2>
+<p>The PDF Stamper provides comprehensive stamping capabilities for professional document workflows. Beyond simple stamps, access advanced features including dynamic stamps, batch processing, and template management. Handle high-volume stamping needs with ease.</p>
+
+<h2>Dynamic Stamp Content</h2>
+<p>Create stamps with automatically updating content. Include current date and time in stamps. Add user information for accountability. Insert document-specific data dynamically. Dynamic stamps provide both official marking and useful metadata.</p>
+
+<h2>Template Management</h2>
+<p>Save stamp configurations for repeated use. Create templates for different document types. Share templates across team members. Maintain consistency across all stamped documents. Template management streamlines high-volume workflows.</p>
+
+<h2>Batch Stamping</h2>
+<p>Apply stamps to multiple documents simultaneously. Process entire folders of PDFs at once. Maintain consistent stamp placement across all files. Save hours of manual stamping work. Batch processing handles enterprise-scale needs.</p>
+
+<h2>Approval Workflow Integration</h2>
+<p>Stamps fit naturally into approval workflows. Mark documents as they progress through review. Use different stamps for different approval stages. Create visual records of the approval process. Stamps make workflow status immediately visible.</p>
+
+<h2>Quality and Security</h2>
+<p>Stamps are embedded securely in documents. High-resolution graphics look professional when printed. Stamps integrate seamlessly with document content. Security features prevent unauthorized stamp removal. Professional quality meets security requirements.</p>`,
   },
 ];
