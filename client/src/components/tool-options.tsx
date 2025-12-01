@@ -4200,6 +4200,533 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "pdf-underlay":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload the main PDF first, then upload the underlay PDF second.
+          </p>
+          <div className="space-y-2">
+            <Label>Underlay Position</Label>
+            <Select
+              value={options.underlayPosition || "center"}
+              onValueChange={(value) => updateOption("underlayPosition", value as ToolOptions["underlayPosition"])}
+            >
+              <SelectTrigger data-testid="select-underlay-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+                <SelectItem value="tile">Tile (Repeat)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Scale: {options.underlayScale || 100}%</Label>
+            <Slider
+              value={[options.underlayScale || 100]}
+              min={10}
+              max={200}
+              step={10}
+              onValueChange={([value]) => updateOption("underlayScale", value)}
+              data-testid="slider-underlay-scale"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Opacity: {options.underlayOpacity || 100}%</Label>
+            <Slider
+              value={[options.underlayOpacity || 100]}
+              min={10}
+              max={100}
+              step={10}
+              onValueChange={([value]) => updateOption("underlayOpacity", value)}
+              data-testid="slider-underlay-opacity"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Apply to Pages</Label>
+            <Select
+              value={options.underlayPages || "all"}
+              onValueChange={(value) => updateOption("underlayPages", value as ToolOptions["underlayPages"])}
+            >
+              <SelectTrigger data-testid="select-underlay-pages">
+                <SelectValue placeholder="Select pages" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Pages</SelectItem>
+                <SelectItem value="first">First Page Only</SelectItem>
+                <SelectItem value="last">Last Page Only</SelectItem>
+                <SelectItem value="odd">Odd Pages</SelectItem>
+                <SelectItem value="even">Even Pages</SelectItem>
+                <SelectItem value="custom">Custom Range</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.underlayPages === "custom" && (
+            <div className="space-y-2">
+              <Label htmlFor="underlayCustomPages">Page Range</Label>
+              <Input
+                id="underlayCustomPages"
+                placeholder="e.g., 1,3,5-10"
+                value={options.underlayCustomPages || ""}
+                onChange={(e) => updateOption("underlayCustomPages", e.target.value)}
+                data-testid="input-underlay-custom-pages"
+              />
+            </div>
+          )}
+        </div>
+      );
+
+    case "pdf-stamp-datetime":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Date Format</Label>
+            <Select
+              value={options.userDateFormat || "MM/DD/YYYY"}
+              onValueChange={(value) => updateOption("userDateFormat", value as ToolOptions["userDateFormat"])}
+            >
+              <SelectTrigger data-testid="select-date-format">
+                <SelectValue placeholder="Select date format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="MM/DD/YYYY">MM/DD/YYYY (12/01/2025)</SelectItem>
+                <SelectItem value="DD/MM/YYYY">DD/MM/YYYY (01/12/2025)</SelectItem>
+                <SelectItem value="YYYY-MM-DD">YYYY-MM-DD (2025-12-01)</SelectItem>
+                <SelectItem value="MMMM D, YYYY">December 1, 2025</SelectItem>
+                <SelectItem value="D MMMM YYYY">1 December 2025</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Time Format</Label>
+            <Select
+              value={options.userTimeFormat || "12-hour"}
+              onValueChange={(value) => updateOption("userTimeFormat", value as ToolOptions["userTimeFormat"])}
+            >
+              <SelectTrigger data-testid="select-time-format">
+                <SelectValue placeholder="Select time format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="12-hour">12-hour (3:45 PM)</SelectItem>
+                <SelectItem value="24-hour">24-hour (15:45)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="includeDate"
+              checked={options.includeDate !== false}
+              onCheckedChange={(checked) => updateOption("includeDate", checked)}
+              data-testid="switch-include-date"
+            />
+            <Label htmlFor="includeDate">Include Date</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="includeTime"
+              checked={options.includeTime !== false}
+              onCheckedChange={(checked) => updateOption("includeTime", checked)}
+              data-testid="switch-include-time"
+            />
+            <Label htmlFor="includeTime">Include Time</Label>
+          </div>
+          <div className="space-y-2">
+            <Label>Position</Label>
+            <Select
+              value={options.batesPosition || "bottom-right"}
+              onValueChange={(value) => updateOption("batesPosition", value as ToolOptions["batesPosition"])}
+            >
+              <SelectTrigger data-testid="select-stamp-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-center">Top Center</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-center">Bottom Center</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Font Size: {options.batesFontSize || 10}pt</Label>
+            <Slider
+              value={[options.batesFontSize || 10]}
+              min={6}
+              max={24}
+              step={1}
+              onValueChange={([value]) => updateOption("batesFontSize", value)}
+              data-testid="slider-font-size"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="stampColor">Text Color</Label>
+            <Input
+              id="stampColor"
+              type="color"
+              value={options.batesColor || "#000000"}
+              onChange={(e) => updateOption("batesColor", e.target.value)}
+              className="w-20 h-10"
+              data-testid="input-stamp-color"
+            />
+          </div>
+        </div>
+      );
+
+    case "pdf-stamp-username":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="userName">Your Name</Label>
+            <Input
+              id="userName"
+              placeholder="e.g., John Smith"
+              value={options.userName || ""}
+              onChange={(e) => updateOption("userName", e.target.value)}
+              data-testid="input-user-name"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="includeDate"
+              checked={options.includeDate || false}
+              onCheckedChange={(checked) => updateOption("includeDate", checked)}
+              data-testid="switch-include-date"
+            />
+            <Label htmlFor="includeDate">Include Date</Label>
+          </div>
+          {options.includeDate && (
+            <div className="space-y-2">
+              <Label>Date Format</Label>
+              <Select
+                value={options.userDateFormat || "MM/DD/YYYY"}
+                onValueChange={(value) => updateOption("userDateFormat", value as ToolOptions["userDateFormat"])}
+              >
+                <SelectTrigger data-testid="select-date-format">
+                  <SelectValue placeholder="Select date format" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
+                  <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
+                  <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          <div className="space-y-2">
+            <Label>Position</Label>
+            <Select
+              value={options.batesPosition || "bottom-right"}
+              onValueChange={(value) => updateOption("batesPosition", value as ToolOptions["batesPosition"])}
+            >
+              <SelectTrigger data-testid="select-stamp-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-center">Top Center</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-center">Bottom Center</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Font Size: {options.batesFontSize || 10}pt</Label>
+            <Slider
+              value={[options.batesFontSize || 10]}
+              min={6}
+              max={24}
+              step={1}
+              onValueChange={([value]) => updateOption("batesFontSize", value)}
+              data-testid="slider-font-size"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="textColor">Text Color</Label>
+            <Input
+              id="textColor"
+              type="color"
+              value={options.batesColor || "#000000"}
+              onChange={(e) => updateOption("batesColor", e.target.value)}
+              className="w-20 h-10"
+              data-testid="input-text-color"
+            />
+          </div>
+        </div>
+      );
+
+    case "pdf-bates-advanced":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="batesPrefix">Prefix</Label>
+            <Input
+              id="batesPrefix"
+              placeholder="e.g., ABC-"
+              value={options.batesPrefix || ""}
+              onChange={(e) => updateOption("batesPrefix", e.target.value)}
+              data-testid="input-bates-prefix"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="batesSuffix">Suffix</Label>
+            <Input
+              id="batesSuffix"
+              placeholder="e.g., -2025"
+              value={options.batesSuffix || ""}
+              onChange={(e) => updateOption("batesSuffix", e.target.value)}
+              data-testid="input-bates-suffix"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="batesStartNumber">Starting Number</Label>
+            <Input
+              id="batesStartNumber"
+              type="number"
+              min="1"
+              value={options.batesStartNumber || 1}
+              onChange={(e) => updateOption("batesStartNumber", parseInt(e.target.value) || 1)}
+              data-testid="input-bates-start"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Number of Digits: {options.batesDigits || 6}</Label>
+            <Slider
+              value={[options.batesDigits || 6]}
+              min={3}
+              max={10}
+              step={1}
+              onValueChange={([value]) => updateOption("batesDigits", value)}
+              data-testid="slider-bates-digits"
+            />
+            <p className="text-xs text-muted-foreground">
+              Example: {(options.batesPrefix || "") + String(options.batesStartNumber || 1).padStart(options.batesDigits || 6, '0') + (options.batesSuffix || "")}
+            </p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="batesIncludeDocName"
+              checked={options.batesIncludeDocName || false}
+              onCheckedChange={(checked) => updateOption("batesIncludeDocName", checked)}
+              data-testid="switch-include-docname"
+            />
+            <Label htmlFor="batesIncludeDocName">Include Document Name</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="batesIncludeDate"
+              checked={options.batesIncludeDate || false}
+              onCheckedChange={(checked) => updateOption("batesIncludeDate", checked)}
+              data-testid="switch-include-bates-date"
+            />
+            <Label htmlFor="batesIncludeDate">Include Date</Label>
+          </div>
+          {options.batesIncludeDate && (
+            <div className="space-y-2">
+              <Label>Date Format</Label>
+              <Select
+                value={options.batesDateFormat || "MM/DD/YYYY"}
+                onValueChange={(value) => updateOption("batesDateFormat", value as ToolOptions["batesDateFormat"])}
+              >
+                <SelectTrigger data-testid="select-bates-date-format">
+                  <SelectValue placeholder="Select date format" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
+                  <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
+                  <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="batesIncludeTime"
+              checked={options.batesIncludeTime || false}
+              onCheckedChange={(checked) => updateOption("batesIncludeTime", checked)}
+              data-testid="switch-include-bates-time"
+            />
+            <Label htmlFor="batesIncludeTime">Include Time</Label>
+          </div>
+          <div className="space-y-2">
+            <Label>Position</Label>
+            <Select
+              value={options.batesPosition || "bottom-right"}
+              onValueChange={(value) => updateOption("batesPosition", value as ToolOptions["batesPosition"])}
+            >
+              <SelectTrigger data-testid="select-bates-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-center">Top Center</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-center">Bottom Center</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Font Size: {options.batesFontSize || 10}pt</Label>
+            <Slider
+              value={[options.batesFontSize || 10]}
+              min={6}
+              max={24}
+              step={1}
+              onValueChange={([value]) => updateOption("batesFontSize", value)}
+              data-testid="slider-bates-font-size"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="batesColor">Text Color</Label>
+            <Input
+              id="batesColor"
+              type="color"
+              value={options.batesColor || "#000000"}
+              onChange={(e) => updateOption("batesColor", e.target.value)}
+              className="w-20 h-10"
+              data-testid="input-bates-color"
+            />
+          </div>
+        </div>
+      );
+
+    case "extract-text-from-pdf":
+    case "pdf-text-extractor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Extraction Mode</Label>
+            <Select
+              value={options.extractionMode || "all-pages"}
+              onValueChange={(value) => updateOption("extractionMode", value as ToolOptions["extractionMode"])}
+            >
+              <SelectTrigger data-testid="select-extraction-mode">
+                <SelectValue placeholder="Select extraction mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all-pages">All Pages</SelectItem>
+                <SelectItem value="specific-pages">Specific Pages</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.extractionMode === "specific-pages" && (
+            <div className="space-y-2">
+              <Label htmlFor="extractionPages">Page Range</Label>
+              <Input
+                id="extractionPages"
+                placeholder="e.g., 1,3,5-10"
+                value={options.extractionPages || ""}
+                onChange={(e) => updateOption("extractionPages", e.target.value)}
+                data-testid="input-extraction-pages"
+              />
+            </div>
+          )}
+          <p className="text-sm text-muted-foreground">
+            Text will be extracted and saved as a plain text (.txt) file.
+          </p>
+        </div>
+      );
+
+    case "extract-images-from-pdf":
+    case "pdf-image-extractor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Extraction Mode</Label>
+            <Select
+              value={options.extractionMode || "all-pages"}
+              onValueChange={(value) => updateOption("extractionMode", value as ToolOptions["extractionMode"])}
+            >
+              <SelectTrigger data-testid="select-extraction-mode">
+                <SelectValue placeholder="Select extraction mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all-pages">All Pages</SelectItem>
+                <SelectItem value="specific-pages">Specific Pages</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.extractionMode === "specific-pages" && (
+            <div className="space-y-2">
+              <Label htmlFor="extractionPages">Page Range</Label>
+              <Input
+                id="extractionPages"
+                placeholder="e.g., 1,3,5-10"
+                value={options.extractionPages || ""}
+                onChange={(e) => updateOption("extractionPages", e.target.value)}
+                data-testid="input-extraction-pages"
+              />
+            </div>
+          )}
+          <p className="text-sm text-muted-foreground">
+            Images will be extracted and saved as a ZIP archive.
+          </p>
+        </div>
+      );
+
+    case "extract-tables-from-pdf":
+    case "pdf-table-extractor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.tableOutputFormat || "csv"}
+              onValueChange={(value) => updateOption("tableOutputFormat", value as ToolOptions["tableOutputFormat"])}
+            >
+              <SelectTrigger data-testid="select-output-format">
+                <SelectValue placeholder="Select output format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="csv">CSV (Comma-Separated Values)</SelectItem>
+                <SelectItem value="xlsx">Excel (XLSX)</SelectItem>
+                <SelectItem value="json">JSON</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Extraction Mode</Label>
+            <Select
+              value={options.extractionMode || "all-pages"}
+              onValueChange={(value) => updateOption("extractionMode", value as ToolOptions["extractionMode"])}
+            >
+              <SelectTrigger data-testid="select-extraction-mode">
+                <SelectValue placeholder="Select extraction mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all-pages">All Pages</SelectItem>
+                <SelectItem value="specific-pages">Specific Pages</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.extractionMode === "specific-pages" && (
+            <div className="space-y-2">
+              <Label htmlFor="extractionPages">Page Range</Label>
+              <Input
+                id="extractionPages"
+                placeholder="e.g., 1,3,5-10"
+                value={options.extractionPages || ""}
+                onChange={(e) => updateOption("extractionPages", e.target.value)}
+                data-testid="input-extraction-pages"
+              />
+            </div>
+          )}
+          <p className="text-sm text-muted-foreground">
+            Tables will be detected and extracted to the selected format.
+          </p>
+        </div>
+      );
+
     default:
       return null;
   }

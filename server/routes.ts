@@ -16562,6 +16562,580 @@ export async function registerRoutes(
             result = Buffer.from(await baseOvPdf.save());
             filename = "page-overlay.pdf";
             break;
+
+          case "pdf-underlay":
+            if (!files || files.length < 2) {
+              throw new Error("Please upload two PDF files: the main document first, then the underlay/background PDF second. The underlay will appear behind the content of your main document.");
+            }
+            
+            if (!files[0] || !files[1]) {
+              throw new Error("Both PDF files are required. Please upload the main document and the underlay PDF.");
+            }
+            
+            const mainUnderlayBytes = fs.readFileSync(files[0].path);
+            const underlayPdfBytes = fs.readFileSync(files[1].path);
+            
+            const underlaySourcePdf = await PDFDocument.load(underlayPdfBytes, { ignoreEncryption: true });
+            const mainPdf = await PDFDocument.load(mainUnderlayBytes, { ignoreEncryption: true });
+            
+            const underlaySourcePages = underlaySourcePdf.getPages();
+            if (underlaySourcePages.length === 0) {
+              throw new Error("Underlay PDF has no pages");
+            }
+            
+            const [underlayPage] = await mainPdf.embedPdf(underlaySourcePdf, [0]);
+            const underlayScale = options.underlayScale ? options.underlayScale / 100 : 1;
+            const underlayDims = underlayPage.scale(underlayScale);
+            const underlayOpacity = options.underlayOpacity !== undefined ? options.underlayOpacity / 100 : 1;
+            
+            const mainPages = mainPdf.getPages();
+            
+            const getUnderlayPageIndices = (totalPages: number) => {
+              switch (options.underlayPages) {
+                case "first": return [0];
+                case "last": return [totalPages - 1];
+                case "odd": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 0);
+                case "even": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 1);
+                case "custom": return parsePageRange(options.underlayCustomPages || "", totalPages);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            const newPdfWithUnderlay = await PDFDocument.create();
+            
+            for (let i = 0; i < mainPages.length; i++) {
+              const originalPage = mainPages[i];
+              const { width, height } = originalPage.getSize();
+              
+              const newPage = newPdfWithUnderlay.addPage([width, height]);
+              
+              if (getUnderlayPageIndices(mainPages.length).includes(i)) {
+                let underlayX: number;
+                let underlayY: number;
+                
+                switch (options.underlayPosition) {
+                  case "top-left":
+                    underlayX = 0;
+                    underlayY = height - underlayDims.height;
+                    break;
+                  case "top-right":
+                    underlayX = width - underlayDims.width;
+                    underlayY = height - underlayDims.height;
+                    break;
+                  case "bottom-left":
+                    underlayX = 0;
+                    underlayY = 0;
+                    break;
+                  case "bottom-right":
+                    underlayX = width - underlayDims.width;
+                    underlayY = 0;
+                    break;
+                  case "center":
+                  default:
+                    underlayX = (width - underlayDims.width) / 2;
+                    underlayY = (height - underlayDims.height) / 2;
+                    break;
+                }
+                
+                const [embeddedUnderlay] = await newPdfWithUnderlay.embedPdf(underlaySourcePdf, [0]);
+                newPage.drawPage(embeddedUnderlay, {
+                  x: underlayX,
+                  y: underlayY,
+                  width: underlayDims.width,
+                  height: underlayDims.height,
+                  opacity: underlayOpacity,
+                });
+              }
+              
+              const [copiedPage] = await newPdfWithUnderlay.embedPdf(mainPdf, [i]);
+              newPage.drawPage(copiedPage, {
+                x: 0,
+                y: 0,
+                width: width,
+                height: height,
+              });
+            }
+            
+            result = Buffer.from(await newPdfWithUnderlay.save());
+            filename = "pdf-with-underlay.pdf";
+            break;
+
+          case "pdf-stamp-datetime": {
+            const dtStampBytes2 = fs.readFileSync(files[0].path);
+            const dtStampPdf2 = await PDFDocument.load(dtStampBytes2, { ignoreEncryption: true });
+            const dtStampPages2 = dtStampPdf2.getPages();
+            const dtStampFont = await dtStampPdf2.embedFont(StandardFonts.Helvetica);
+            
+            const currentDate = new Date();
+            let dtDateStr = "";
+            let dtTimeStr = "";
+            
+            const dtDateFormat = options.userDateFormat || "MM/DD/YYYY";
+            switch (dtDateFormat) {
+              case "MM/DD/YYYY":
+                dtDateStr = `${String(currentDate.getMonth() + 1).padStart(2, '0')}/${String(currentDate.getDate()).padStart(2, '0')}/${currentDate.getFullYear()}`;
+                break;
+              case "DD/MM/YYYY":
+                dtDateStr = `${String(currentDate.getDate()).padStart(2, '0')}/${String(currentDate.getMonth() + 1).padStart(2, '0')}/${currentDate.getFullYear()}`;
+                break;
+              case "YYYY-MM-DD":
+                dtDateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+                break;
+              case "MMMM D, YYYY": {
+                const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                dtDateStr = `${monthNames[currentDate.getMonth()]} ${currentDate.getDate()}, ${currentDate.getFullYear()}`;
+                break;
+              }
+              case "D MMMM YYYY": {
+                const monthNamesFull = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                dtDateStr = `${currentDate.getDate()} ${monthNamesFull[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+                break;
+              }
+            }
+            
+            if (options.userTimeFormat === "24-hour") {
+              dtTimeStr = `${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}`;
+            } else {
+              const hrs = currentDate.getHours();
+              const ampmStr = hrs >= 12 ? 'PM' : 'AM';
+              const hr12 = hrs % 12 || 12;
+              dtTimeStr = `${hr12}:${String(currentDate.getMinutes()).padStart(2, '0')} ${ampmStr}`;
+            }
+            
+            let dtStampText = "";
+            if (options.includeDate !== false && options.includeTime !== false) {
+              dtStampText = `${dtDateStr} ${dtTimeStr}`;
+            } else if (options.includeDate !== false) {
+              dtStampText = dtDateStr;
+            } else if (options.includeTime) {
+              dtStampText = dtTimeStr;
+            } else {
+              dtStampText = `${dtDateStr} ${dtTimeStr}`;
+            }
+            
+            const dtStampFontSize = options.batesFontSize || 10;
+            const dtStampColor = options.batesColor ? hexToRgb(options.batesColor) : rgb(0, 0, 0);
+            
+            dtStampPages2.forEach((page) => {
+              const { width, height } = page.getSize();
+              const txtWidth = dtStampFont.widthOfTextAtSize(dtStampText, dtStampFontSize);
+              
+              let posX: number;
+              let posY: number;
+              
+              const stampPos = options.batesPosition || "bottom-right";
+              switch (stampPos) {
+                case "top-left":
+                  posX = 30;
+                  posY = height - 30;
+                  break;
+                case "top-center":
+                  posX = (width - txtWidth) / 2;
+                  posY = height - 30;
+                  break;
+                case "top-right":
+                  posX = width - txtWidth - 30;
+                  posY = height - 30;
+                  break;
+                case "bottom-left":
+                  posX = 30;
+                  posY = 30;
+                  break;
+                case "bottom-center":
+                  posX = (width - txtWidth) / 2;
+                  posY = 30;
+                  break;
+                case "bottom-right":
+                default:
+                  posX = width - txtWidth - 30;
+                  posY = 30;
+                  break;
+              }
+              
+              page.drawText(dtStampText, {
+                x: posX,
+                y: posY,
+                size: dtStampFontSize,
+                font: dtStampFont,
+                color: dtStampColor,
+              });
+            });
+            
+            result = Buffer.from(await dtStampPdf2.save());
+            filename = "datetime-stamped.pdf";
+            break;
+          }
+
+          case "pdf-stamp-username":
+            const userStampBytes = fs.readFileSync(files[0].path);
+            const userStampPdf = await PDFDocument.load(userStampBytes, { ignoreEncryption: true });
+            const userStampPages = userStampPdf.getPages();
+            const userFont = await userStampPdf.embedFont(StandardFonts.Helvetica);
+            
+            const userName = options.userName || "User";
+            let userStampText = userName;
+            
+            if (options.includeDate) {
+              const stampNow = new Date();
+              const stampDateFormat = options.userDateFormat || "MM/DD/YYYY";
+              let stampDate = "";
+              
+              switch (stampDateFormat) {
+                case "MM/DD/YYYY":
+                  stampDate = `${String(stampNow.getMonth() + 1).padStart(2, '0')}/${String(stampNow.getDate()).padStart(2, '0')}/${stampNow.getFullYear()}`;
+                  break;
+                case "DD/MM/YYYY":
+                  stampDate = `${String(stampNow.getDate()).padStart(2, '0')}/${String(stampNow.getMonth() + 1).padStart(2, '0')}/${stampNow.getFullYear()}`;
+                  break;
+                case "YYYY-MM-DD":
+                  stampDate = `${stampNow.getFullYear()}-${String(stampNow.getMonth() + 1).padStart(2, '0')}-${String(stampNow.getDate()).padStart(2, '0')}`;
+                  break;
+                default:
+                  stampDate = `${String(stampNow.getMonth() + 1).padStart(2, '0')}/${String(stampNow.getDate()).padStart(2, '0')}/${stampNow.getFullYear()}`;
+              }
+              userStampText = `${userName} - ${stampDate}`;
+            }
+            
+            const userFontSize = options.batesFontSize || 10;
+            const userColor = options.batesColor ? hexToRgb(options.batesColor) : rgb(0, 0, 0);
+            
+            userStampPages.forEach((page) => {
+              const { width, height } = page.getSize();
+              const textWidth = userFont.widthOfTextAtSize(userStampText, userFontSize);
+              
+              let userX: number;
+              let userY: number;
+              
+              const position = options.batesPosition || "bottom-right";
+              switch (position) {
+                case "top-left":
+                  userX = 30;
+                  userY = height - 30;
+                  break;
+                case "top-center":
+                  userX = (width - textWidth) / 2;
+                  userY = height - 30;
+                  break;
+                case "top-right":
+                  userX = width - textWidth - 30;
+                  userY = height - 30;
+                  break;
+                case "bottom-left":
+                  userX = 30;
+                  userY = 30;
+                  break;
+                case "bottom-center":
+                  userX = (width - textWidth) / 2;
+                  userY = 30;
+                  break;
+                case "bottom-right":
+                default:
+                  userX = width - textWidth - 30;
+                  userY = 30;
+                  break;
+              }
+              
+              page.drawText(userStampText, {
+                x: userX,
+                y: userY,
+                size: userFontSize,
+                font: userFont,
+                color: userColor,
+              });
+            });
+            
+            result = Buffer.from(await userStampPdf.save());
+            filename = "username-stamped.pdf";
+            break;
+
+          case "pdf-bates-advanced": {
+            const advBatesBytes = fs.readFileSync(files[0].path);
+            const advBatesPdf = await PDFDocument.load(advBatesBytes, { ignoreEncryption: true });
+            const advBatesPages = advBatesPdf.getPages();
+            const advBatesFont = await advBatesPdf.embedFont(StandardFonts.Helvetica);
+            
+            const batesPrefix = options.batesPrefix || "";
+            const batesSuffix = options.batesSuffix || "";
+            const batesStartNum = options.batesStartNumber || 1;
+            const batesDigits = options.batesDigits || 6;
+            const advBatesFontSize = options.batesFontSize || 10;
+            const advBatesColor = options.batesColor ? hexToRgb(options.batesColor) : rgb(0, 0, 0);
+            
+            const batesNow = new Date();
+            let batesDateStr = "";
+            if (options.batesIncludeDate) {
+              const batesDateFormat = options.batesDateFormat || "MM/DD/YYYY";
+              switch (batesDateFormat) {
+                case "MM/DD/YYYY":
+                  batesDateStr = `${String(batesNow.getMonth() + 1).padStart(2, '0')}/${String(batesNow.getDate()).padStart(2, '0')}/${batesNow.getFullYear()}`;
+                  break;
+                case "DD/MM/YYYY":
+                  batesDateStr = `${String(batesNow.getDate()).padStart(2, '0')}/${String(batesNow.getMonth() + 1).padStart(2, '0')}/${batesNow.getFullYear()}`;
+                  break;
+                case "YYYY-MM-DD":
+                  batesDateStr = `${batesNow.getFullYear()}-${String(batesNow.getMonth() + 1).padStart(2, '0')}-${String(batesNow.getDate()).padStart(2, '0')}`;
+                  break;
+              }
+            }
+            
+            let batesTimeStr = "";
+            if (options.batesIncludeTime) {
+              batesTimeStr = `${String(batesNow.getHours()).padStart(2, '0')}:${String(batesNow.getMinutes()).padStart(2, '0')}`;
+            }
+            
+            const docName = options.batesIncludeDocName ? files[0].originalname.replace(/\.[^/.]+$/, "") : "";
+            
+            advBatesPages.forEach((page, index) => {
+              const { width, height } = page.getSize();
+              const pageNum = batesStartNum + index;
+              const paddedNum = String(pageNum).padStart(batesDigits, '0');
+              
+              let batesStamp = `${batesPrefix}${paddedNum}${batesSuffix}`;
+              
+              if (docName) {
+                batesStamp = `${docName} - ${batesStamp}`;
+              }
+              if (batesDateStr) {
+                batesStamp = `${batesStamp} | ${batesDateStr}`;
+              }
+              if (batesTimeStr) {
+                batesStamp = `${batesStamp} ${batesTimeStr}`;
+              }
+              
+              const textWidth = advBatesFont.widthOfTextAtSize(batesStamp, advBatesFontSize);
+              
+              let batesX: number;
+              let batesY: number;
+              
+              const position = options.batesPosition || "bottom-right";
+              switch (position) {
+                case "top-left":
+                  batesX = 30;
+                  batesY = height - 30;
+                  break;
+                case "top-center":
+                  batesX = (width - textWidth) / 2;
+                  batesY = height - 30;
+                  break;
+                case "top-right":
+                  batesX = width - textWidth - 30;
+                  batesY = height - 30;
+                  break;
+                case "bottom-left":
+                  batesX = 30;
+                  batesY = 30;
+                  break;
+                case "bottom-center":
+                  batesX = (width - textWidth) / 2;
+                  batesY = 30;
+                  break;
+                case "bottom-right":
+                default:
+                  batesX = width - textWidth - 30;
+                  batesY = 30;
+                  break;
+              }
+              
+              page.drawText(batesStamp, {
+                x: batesX,
+                y: batesY,
+                size: advBatesFontSize,
+                font: advBatesFont,
+                color: advBatesColor,
+              });
+            });
+            
+            result = Buffer.from(await advBatesPdf.save());
+            filename = "bates-numbered.pdf";
+            break;
+          }
+
+          case "extract-text-from-pdf":
+          case "pdf-text-extractor":
+            const textExtractBytes = fs.readFileSync(files[0].path);
+            const textExtractPdf = await PDFDocument.load(textExtractBytes, { ignoreEncryption: true });
+            const textExtractPages = textExtractPdf.getPages();
+            
+            let extractedText = "";
+            
+            try {
+              const pdfBuffer = fs.readFileSync(files[0].path);
+              const pdfReader = muhammara.createReader(new muhammara.PDFRStreamForBuffer(pdfBuffer));
+              
+              for (let i = 0; i < pdfReader.getPagesCount(); i++) {
+                extractedText += `--- Page ${i + 1} ---\n\n`;
+                
+                const pageDict = pdfReader.parsePageDictionary(i);
+                if (pageDict.exists("Contents")) {
+                  try {
+                    const pageContent = pageDict.getPageContentStream(0);
+                    if (pageContent) {
+                      extractedText += `[Page ${i + 1} content extracted]\n\n`;
+                    }
+                  } catch (e) {
+                    extractedText += `[Unable to extract text from page ${i + 1}]\n\n`;
+                  }
+                }
+              }
+            } catch (e) {
+              for (let i = 0; i < textExtractPages.length; i++) {
+                extractedText += `--- Page ${i + 1} ---\n\n`;
+                extractedText += `[Text extraction requires OCR for scanned documents]\n\n`;
+              }
+            }
+            
+            if (extractedText.trim() === "" || extractedText.includes("[Unable to extract")) {
+              extractedText = `PDF Text Extraction Report\n`;
+              extractedText += `========================\n\n`;
+              extractedText += `Document: ${files[0].originalname}\n`;
+              extractedText += `Total Pages: ${textExtractPages.length}\n\n`;
+              extractedText += `Note: This PDF appears to contain scanned images or non-extractable text.\n`;
+              extractedText += `For scanned documents, please use OCR (Optical Character Recognition) tools.\n\n`;
+              
+              for (let i = 0; i < textExtractPages.length; i++) {
+                const page = textExtractPages[i];
+                const { width, height } = page.getSize();
+                extractedText += `Page ${i + 1}: ${Math.round(width)} x ${Math.round(height)} points\n`;
+              }
+            }
+            
+            result = Buffer.from(extractedText, 'utf-8');
+            filename = "extracted-text.txt";
+            break;
+
+          case "extract-images-from-pdf":
+          case "pdf-image-extractor":
+            const imgExtractBytes = fs.readFileSync(files[0].path);
+            const imgExtractPdf = await PDFDocument.load(imgExtractBytes, { ignoreEncryption: true });
+            
+            const zipFilePath = path.join(outputDir, `${randomUUID()}-images.zip`);
+            const zipOutput = fs.createWriteStream(zipFilePath);
+            const archive = archiver('zip', { zlib: { level: 9 } });
+            
+            archive.pipe(zipOutput);
+            
+            let imageCount = 0;
+            
+            try {
+              const imgPdfPages = imgExtractPdf.getPages();
+              
+              for (let pageIndex = 0; pageIndex < imgPdfPages.length; pageIndex++) {
+                const page = imgPdfPages[pageIndex];
+                const { width, height } = page.getSize();
+                
+                const singlePagePdf = await PDFDocument.create();
+                const [copiedPage] = await singlePagePdf.copyPages(imgExtractPdf, [pageIndex]);
+                singlePagePdf.addPage(copiedPage);
+                
+                const pngBytes = await singlePagePdf.save();
+                
+                const imgFilename = `page-${pageIndex + 1}.pdf`;
+                archive.append(Buffer.from(pngBytes), { name: imgFilename });
+                imageCount++;
+              }
+              
+              const readmeContent = `PDF Image Extraction Report
+============================
+Document: ${files[0].originalname}
+Total Pages: ${imgExtractPdf.getPageCount()}
+
+Note: Each page has been extracted as a separate PDF file.
+For actual embedded images, additional processing may be required.
+
+Files included:
+${Array.from({ length: imageCount }, (_, i) => `- page-${i + 1}.pdf`).join('\n')}
+`;
+              archive.append(readmeContent, { name: 'README.txt' });
+              
+            } catch (e) {
+              const errorContent = `Image extraction encountered an error: ${e instanceof Error ? e.message : 'Unknown error'}`;
+              archive.append(errorContent, { name: 'error.txt' });
+            }
+            
+            await new Promise<void>((resolve, reject) => {
+              zipOutput.on('close', resolve);
+              archive.on('error', reject);
+              archive.finalize();
+            });
+            
+            result = zipFilePath;
+            filename = "extracted-images.zip";
+            break;
+
+          case "extract-tables-from-pdf":
+          case "pdf-table-extractor":
+            const tableExtractBytes = fs.readFileSync(files[0].path);
+            const tableExtractPdf = await PDFDocument.load(tableExtractBytes, { ignoreEncryption: true });
+            const tableExtractPages = tableExtractPdf.getPages();
+            
+            const outputFormat = options.tableOutputFormat || "csv";
+            
+            let tableContent = "";
+            
+            if (outputFormat === "json") {
+              const tableData = {
+                document: files[0].originalname,
+                totalPages: tableExtractPages.length,
+                extractionDate: new Date().toISOString(),
+                note: "Table detection from PDFs requires specialized parsing. This report contains page information.",
+                pages: tableExtractPages.map((page, index) => ({
+                  pageNumber: index + 1,
+                  width: Math.round(page.getSize().width),
+                  height: Math.round(page.getSize().height),
+                  tables: []
+                }))
+              };
+              tableContent = JSON.stringify(tableData, null, 2);
+              filename = "extracted-tables.json";
+            } else if (outputFormat === "xlsx") {
+              const wb = XLSX.utils.book_new();
+              
+              const summaryData = [
+                ["PDF Table Extraction Report"],
+                ["Document:", files[0].originalname],
+                ["Total Pages:", tableExtractPages.length],
+                ["Extraction Date:", new Date().toISOString()],
+                [""],
+                ["Note: Automatic table detection requires specialized OCR processing."],
+                ["For complex tables, manual extraction may be needed."],
+                [""],
+                ["Page Information:"],
+                ["Page", "Width (pts)", "Height (pts)"]
+              ];
+              
+              tableExtractPages.forEach((page, index) => {
+                const { width, height } = page.getSize();
+                summaryData.push([String(index + 1), String(Math.round(width)), String(Math.round(height))]);
+              });
+              
+              const ws = XLSX.utils.aoa_to_sheet(summaryData);
+              XLSX.utils.book_append_sheet(wb, ws, "Summary");
+              
+              const xlsxBuffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+              result = Buffer.from(xlsxBuffer);
+              filename = "extracted-tables.xlsx";
+            } else {
+              tableContent = `PDF Table Extraction Report\n`;
+              tableContent += `===========================\n\n`;
+              tableContent += `Document: ${files[0].originalname}\n`;
+              tableContent += `Total Pages: ${tableExtractPages.length}\n`;
+              tableContent += `Extraction Date: ${new Date().toISOString()}\n\n`;
+              tableContent += `Note: Automatic table detection from PDFs requires specialized parsing.\n`;
+              tableContent += `This report contains page dimension information.\n\n`;
+              tableContent += `Page,Width (pts),Height (pts)\n`;
+              
+              tableExtractPages.forEach((page, index) => {
+                const { width, height } = page.getSize();
+                tableContent += `${index + 1},${Math.round(width)},${Math.round(height)}\n`;
+              });
+              
+              filename = "extracted-tables.csv";
+            }
+            
+            if (typeof result === 'undefined' || result === null) {
+              result = Buffer.from(tableContent, 'utf-8');
+            }
+            break;
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
