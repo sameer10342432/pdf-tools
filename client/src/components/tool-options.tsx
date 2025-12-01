@@ -3361,6 +3361,843 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "add-timestamp-to-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Timestamp Format</Label>
+            <Select
+              value={options.timestampFormat || "date-time"}
+              onValueChange={(value) => updateOption("timestampFormat", value as ToolOptions["timestampFormat"])}
+            >
+              <SelectTrigger data-testid="select-timestamp-format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="date-only">Date Only (MM/DD/YYYY)</SelectItem>
+                <SelectItem value="time-only">Time Only (HH:MM:SS)</SelectItem>
+                <SelectItem value="date-time">Date and Time</SelectItem>
+                <SelectItem value="iso-8601">ISO 8601 Format</SelectItem>
+                <SelectItem value="custom">Custom Format</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.timestampFormat === "custom" && (
+            <div className="space-y-2">
+              <Label htmlFor="timestampCustomFormat">Custom Format</Label>
+              <Input
+                id="timestampCustomFormat"
+                placeholder="e.g., YYYY-MM-DD HH:mm"
+                value={options.timestampCustomFormat || ""}
+                onChange={(e) => updateOption("timestampCustomFormat", e.target.value)}
+                data-testid="input-timestamp-custom-format"
+              />
+            </div>
+          )}
+          <div className="space-y-2">
+            <Label>Position</Label>
+            <Select
+              value={options.timestampPosition || "bottom-right"}
+              onValueChange={(value) => updateOption("timestampPosition", value as ToolOptions["timestampPosition"])}
+            >
+              <SelectTrigger data-testid="select-timestamp-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-center">Top Center</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-center">Bottom Center</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Font Size: {options.timestampFontSize || 12}pt</Label>
+            <Slider
+              value={[options.timestampFontSize || 12]}
+              min={8}
+              max={24}
+              step={1}
+              onValueChange={([value]) => updateOption("timestampFontSize", value)}
+              data-testid="slider-timestamp-font-size"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="timestampColor">Color</Label>
+            <Input
+              id="timestampColor"
+              type="color"
+              value={options.timestampColor || "#000000"}
+              onChange={(e) => updateOption("timestampColor", e.target.value)}
+              className="w-20 h-10"
+              data-testid="input-timestamp-color"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Opacity: {Math.round((options.timestampOpacity || 100))}%</Label>
+            <Slider
+              value={[options.timestampOpacity || 100]}
+              min={10}
+              max={100}
+              step={5}
+              onValueChange={([value]) => updateOption("timestampOpacity", value)}
+              data-testid="slider-timestamp-opacity"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Apply to Pages</Label>
+            <Select
+              value={options.timestampPages || "all"}
+              onValueChange={(value) => updateOption("timestampPages", value as ToolOptions["timestampPages"])}
+            >
+              <SelectTrigger data-testid="select-timestamp-pages">
+                <SelectValue placeholder="Select pages" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Pages</SelectItem>
+                <SelectItem value="first">First Page Only</SelectItem>
+                <SelectItem value="last">Last Page Only</SelectItem>
+                <SelectItem value="odd">Odd Pages</SelectItem>
+                <SelectItem value="even">Even Pages</SelectItem>
+                <SelectItem value="custom">Custom Range</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.timestampPages === "custom" && (
+            <div className="space-y-2">
+              <Label htmlFor="timestampCustomPages">Page Range</Label>
+              <Input
+                id="timestampCustomPages"
+                placeholder="e.g., 1,3,5-10"
+                value={options.timestampCustomPages || ""}
+                onChange={(e) => updateOption("timestampCustomPages", e.target.value)}
+                data-testid="input-timestamp-custom-pages"
+              />
+            </div>
+          )}
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="timestampIncludeTimezone"
+              checked={options.timestampIncludeTimezone || false}
+              onCheckedChange={(checked) => updateOption("timestampIncludeTimezone", checked)}
+              data-testid="switch-timestamp-timezone"
+            />
+            <Label htmlFor="timestampIncludeTimezone">Include Timezone</Label>
+          </div>
+        </div>
+      );
+
+    case "pdf-certificate-adder":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Certificate Type</Label>
+            <Select
+              value={options.certificateType || "completion"}
+              onValueChange={(value) => updateOption("certificateType", value as ToolOptions["certificateType"])}
+            >
+              <SelectTrigger data-testid="select-certificate-type">
+                <SelectValue placeholder="Select certificate type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="completion">Completion Certificate</SelectItem>
+                <SelectItem value="authenticity">Authenticity Certificate</SelectItem>
+                <SelectItem value="approval">Approval Certificate</SelectItem>
+                <SelectItem value="membership">Membership Certificate</SelectItem>
+                <SelectItem value="custom">Custom Certificate</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="certificateName">Recipient/Subject Name</Label>
+            <Input
+              id="certificateName"
+              placeholder="Enter name"
+              value={options.certificateName || ""}
+              onChange={(e) => updateOption("certificateName", e.target.value)}
+              data-testid="input-certificate-name"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="certificateIssuer">Issuing Authority</Label>
+            <Input
+              id="certificateIssuer"
+              placeholder="Enter issuer name"
+              value={options.certificateIssuer || ""}
+              onChange={(e) => updateOption("certificateIssuer", e.target.value)}
+              data-testid="input-certificate-issuer"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="certificateDate">Issue Date</Label>
+            <Input
+              id="certificateDate"
+              type="date"
+              value={options.certificateDate || ""}
+              onChange={(e) => updateOption("certificateDate", e.target.value)}
+              data-testid="input-certificate-date"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="certificateNumber">Certificate Number (optional)</Label>
+            <Input
+              id="certificateNumber"
+              placeholder="e.g., CERT-2024-001"
+              value={options.certificateNumber || ""}
+              onChange={(e) => updateOption("certificateNumber", e.target.value)}
+              data-testid="input-certificate-number"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Certificate Style</Label>
+            <Select
+              value={options.certificateStyle || "classic"}
+              onValueChange={(value) => updateOption("certificateStyle", value as ToolOptions["certificateStyle"])}
+            >
+              <SelectTrigger data-testid="select-certificate-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="classic">Classic</SelectItem>
+                <SelectItem value="modern">Modern</SelectItem>
+                <SelectItem value="minimal">Minimal</SelectItem>
+                <SelectItem value="ornate">Ornate</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Position</Label>
+            <Select
+              value={options.certificatePosition || "center"}
+              onValueChange={(value) => updateOption("certificatePosition", value as ToolOptions["certificatePosition"])}
+            >
+              <SelectTrigger data-testid="select-certificate-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="top-center">Top Center</SelectItem>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="bottom-center">Bottom Center</SelectItem>
+                <SelectItem value="custom">Custom Position</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "pdf-signature-remover":
+      return (
+        <div className="space-y-4">
+          <div className="p-4 bg-muted rounded-md">
+            <p className="text-sm text-muted-foreground">
+              This tool will scan your PDF and remove signature elements. Options include:
+            </p>
+            <ul className="text-sm text-muted-foreground mt-2 list-disc list-inside space-y-1">
+              <li>Remove all visual signature images</li>
+              <li>Clear signature form fields</li>
+              <li>Delete signature annotations</li>
+              <li>Remove digital signature metadata</li>
+            </ul>
+          </div>
+          <div className="space-y-2">
+            <Label>Pages to Process</Label>
+            <Select
+              value={options.pageRange || "all"}
+              onValueChange={(value) => updateOption("pageRange", value as ToolOptions["pageRange"])}
+            >
+              <SelectTrigger data-testid="select-page-range">
+                <SelectValue placeholder="Select pages" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Pages</SelectItem>
+                <SelectItem value="custom">Custom Range</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.pageRange === "custom" && (
+            <div className="space-y-2">
+              <Label htmlFor="customPages">Page Range</Label>
+              <Input
+                id="customPages"
+                placeholder="e.g., 1,3,5-10"
+                value={options.customPages || ""}
+                onChange={(e) => updateOption("customPages", e.target.value)}
+                data-testid="input-custom-pages"
+              />
+            </div>
+          )}
+        </div>
+      );
+
+    case "watermark-pdf":
+    case "pdf-watermarker":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Watermark Type</Label>
+            <Select
+              value={options.watermarkType || "text"}
+              onValueChange={(value) => updateOption("watermarkType", value as ToolOptions["watermarkType"])}
+            >
+              <SelectTrigger data-testid="select-watermark-type">
+                <SelectValue placeholder="Select watermark type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="text">Text Watermark</SelectItem>
+                <SelectItem value="image">Image Watermark</SelectItem>
+                <SelectItem value="combined">Text + Image</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {(options.watermarkType === "text" || options.watermarkType === "combined" || !options.watermarkType) && (
+            <div className="space-y-2">
+              <Label htmlFor="watermarkText">Watermark Text</Label>
+              <Input
+                id="watermarkText"
+                placeholder="e.g., CONFIDENTIAL"
+                value={options.watermarkText || ""}
+                onChange={(e) => updateOption("watermarkText", e.target.value)}
+                data-testid="input-watermark-text"
+              />
+            </div>
+          )}
+          <div className="space-y-2">
+            <Label>Position</Label>
+            <Select
+              value={options.watermarkPosition || "center"}
+              onValueChange={(value) => updateOption("watermarkPosition", value as ToolOptions["watermarkPosition"])}
+            >
+              <SelectTrigger data-testid="select-watermark-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+                <SelectItem value="diagonal">Diagonal (Full Page)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Opacity: {Math.round((options.watermarkOpacity || 30))}%</Label>
+            <Slider
+              value={[options.watermarkOpacity || 30]}
+              min={5}
+              max={100}
+              step={5}
+              onValueChange={([value]) => updateOption("watermarkOpacity", value)}
+              data-testid="slider-watermark-opacity"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Rotation: {options.watermarkRotation || 0} degrees</Label>
+            <Slider
+              value={[options.watermarkRotation || 0]}
+              min={-90}
+              max={90}
+              step={15}
+              onValueChange={([value]) => updateOption("watermarkRotation", value)}
+              data-testid="slider-watermark-rotation"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Layer</Label>
+            <Select
+              value={options.watermarkLayer || "foreground"}
+              onValueChange={(value) => updateOption("watermarkLayer", value as ToolOptions["watermarkLayer"])}
+            >
+              <SelectTrigger data-testid="select-watermark-layer">
+                <SelectValue placeholder="Select layer" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="foreground">Foreground (Over Content)</SelectItem>
+                <SelectItem value="background">Background (Behind Content)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Apply to Pages</Label>
+            <Select
+              value={options.watermarkPages || "all"}
+              onValueChange={(value) => updateOption("watermarkPages", value as ToolOptions["watermarkPages"])}
+            >
+              <SelectTrigger data-testid="select-watermark-pages">
+                <SelectValue placeholder="Select pages" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Pages</SelectItem>
+                <SelectItem value="first">First Page Only</SelectItem>
+                <SelectItem value="last">Last Page Only</SelectItem>
+                <SelectItem value="odd">Odd Pages</SelectItem>
+                <SelectItem value="even">Even Pages</SelectItem>
+                <SelectItem value="custom">Custom Range</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.watermarkPages === "custom" && (
+            <div className="space-y-2">
+              <Label htmlFor="watermarkCustomPages">Page Range</Label>
+              <Input
+                id="watermarkCustomPages"
+                placeholder="e.g., 1,3,5-10"
+                value={options.watermarkCustomPages || ""}
+                onChange={(e) => updateOption("watermarkCustomPages", e.target.value)}
+                data-testid="input-watermark-custom-pages"
+              />
+            </div>
+          )}
+        </div>
+      );
+
+    case "add-text-watermark":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="watermarkText">Watermark Text</Label>
+            <Input
+              id="watermarkText"
+              placeholder="e.g., CONFIDENTIAL, DRAFT, DO NOT COPY"
+              value={options.watermarkText || ""}
+              onChange={(e) => updateOption("watermarkText", e.target.value)}
+              data-testid="input-watermark-text"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Font Size: {options.fontSize || 48}pt</Label>
+            <Slider
+              value={[options.fontSize || 48]}
+              min={12}
+              max={120}
+              step={4}
+              onValueChange={([value]) => updateOption("fontSize", value)}
+              data-testid="slider-font-size"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="watermarkColor">Color</Label>
+            <Input
+              id="watermarkColor"
+              type="color"
+              value={options.color || "#808080"}
+              onChange={(e) => updateOption("color", e.target.value)}
+              className="w-20 h-10"
+              data-testid="input-watermark-color"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Opacity: {Math.round((options.watermarkOpacity || 30))}%</Label>
+            <Slider
+              value={[options.watermarkOpacity || 30]}
+              min={5}
+              max={100}
+              step={5}
+              onValueChange={([value]) => updateOption("watermarkOpacity", value)}
+              data-testid="slider-opacity"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Rotation: {options.watermarkRotation || 45} degrees</Label>
+            <Slider
+              value={[options.watermarkRotation || 45]}
+              min={-90}
+              max={90}
+              step={15}
+              onValueChange={([value]) => updateOption("watermarkRotation", value)}
+              data-testid="slider-rotation"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Position</Label>
+            <Select
+              value={options.watermarkPosition || "center"}
+              onValueChange={(value) => updateOption("watermarkPosition", value as ToolOptions["watermarkPosition"])}
+            >
+              <SelectTrigger data-testid="select-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+                <SelectItem value="diagonal">Diagonal</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Apply to Pages</Label>
+            <Select
+              value={options.watermarkPages || "all"}
+              onValueChange={(value) => updateOption("watermarkPages", value as ToolOptions["watermarkPages"])}
+            >
+              <SelectTrigger data-testid="select-pages">
+                <SelectValue placeholder="Select pages" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Pages</SelectItem>
+                <SelectItem value="first">First Page Only</SelectItem>
+                <SelectItem value="last">Last Page Only</SelectItem>
+                <SelectItem value="odd">Odd Pages</SelectItem>
+                <SelectItem value="even">Even Pages</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "add-image-watermark":
+      return (
+        <div className="space-y-4">
+          <div className="p-4 bg-muted rounded-md">
+            <p className="text-sm text-muted-foreground">
+              Upload your PDF first, then upload a watermark image (PNG, JPG recommended). The image will be embedded as a watermark on your PDF pages.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label>Scale: {options.watermarkScale || 50}%</Label>
+            <Slider
+              value={[options.watermarkScale || 50]}
+              min={10}
+              max={200}
+              step={10}
+              onValueChange={([value]) => updateOption("watermarkScale", value)}
+              data-testid="slider-scale"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Opacity: {Math.round((options.watermarkOpacity || 30))}%</Label>
+            <Slider
+              value={[options.watermarkOpacity || 30]}
+              min={5}
+              max={100}
+              step={5}
+              onValueChange={([value]) => updateOption("watermarkOpacity", value)}
+              data-testid="slider-opacity"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Rotation: {options.watermarkRotation || 0} degrees</Label>
+            <Slider
+              value={[options.watermarkRotation || 0]}
+              min={-180}
+              max={180}
+              step={15}
+              onValueChange={([value]) => updateOption("watermarkRotation", value)}
+              data-testid="slider-rotation"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Position</Label>
+            <Select
+              value={options.watermarkPosition || "center"}
+              onValueChange={(value) => updateOption("watermarkPosition", value as ToolOptions["watermarkPosition"])}
+            >
+              <SelectTrigger data-testid="select-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Layer</Label>
+            <Select
+              value={options.watermarkLayer || "foreground"}
+              onValueChange={(value) => updateOption("watermarkLayer", value as ToolOptions["watermarkLayer"])}
+            >
+              <SelectTrigger data-testid="select-layer">
+                <SelectValue placeholder="Select layer" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="foreground">Foreground (Over Content)</SelectItem>
+                <SelectItem value="background">Background (Behind Content)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Apply to Pages</Label>
+            <Select
+              value={options.watermarkPages || "all"}
+              onValueChange={(value) => updateOption("watermarkPages", value as ToolOptions["watermarkPages"])}
+            >
+              <SelectTrigger data-testid="select-pages">
+                <SelectValue placeholder="Select pages" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Pages</SelectItem>
+                <SelectItem value="first">First Page Only</SelectItem>
+                <SelectItem value="last">Last Page Only</SelectItem>
+                <SelectItem value="odd">Odd Pages</SelectItem>
+                <SelectItem value="even">Even Pages</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "add-tiled-watermark":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="watermarkText">Watermark Text</Label>
+            <Input
+              id="watermarkText"
+              placeholder="e.g., CONFIDENTIAL"
+              value={options.watermarkText || ""}
+              onChange={(e) => updateOption("watermarkText", e.target.value)}
+              data-testid="input-watermark-text"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Font Size: {options.fontSize || 24}pt</Label>
+            <Slider
+              value={[options.fontSize || 24]}
+              min={8}
+              max={72}
+              step={2}
+              onValueChange={([value]) => updateOption("fontSize", value)}
+              data-testid="slider-font-size"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="tileColor">Color</Label>
+            <Input
+              id="tileColor"
+              type="color"
+              value={options.color || "#808080"}
+              onChange={(e) => updateOption("color", e.target.value)}
+              className="w-20 h-10"
+              data-testid="input-color"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Opacity: {Math.round((options.watermarkOpacity || 20))}%</Label>
+            <Slider
+              value={[options.watermarkOpacity || 20]}
+              min={5}
+              max={80}
+              step={5}
+              onValueChange={([value]) => updateOption("watermarkOpacity", value)}
+              data-testid="slider-opacity"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Tile Spacing: {options.watermarkTileSpacing || 100}px</Label>
+            <Slider
+              value={[options.watermarkTileSpacing || 100]}
+              min={50}
+              max={300}
+              step={25}
+              onValueChange={([value]) => updateOption("watermarkTileSpacing", value)}
+              data-testid="slider-tile-spacing"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Rotation: {options.watermarkRotation || 45} degrees</Label>
+            <Slider
+              value={[options.watermarkRotation || 45]}
+              min={-90}
+              max={90}
+              step={15}
+              onValueChange={([value]) => updateOption("watermarkRotation", value)}
+              data-testid="slider-rotation"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Apply to Pages</Label>
+            <Select
+              value={options.watermarkPages || "all"}
+              onValueChange={(value) => updateOption("watermarkPages", value as ToolOptions["watermarkPages"])}
+            >
+              <SelectTrigger data-testid="select-pages">
+                <SelectValue placeholder="Select pages" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Pages</SelectItem>
+                <SelectItem value="first">First Page Only</SelectItem>
+                <SelectItem value="last">Last Page Only</SelectItem>
+                <SelectItem value="odd">Odd Pages</SelectItem>
+                <SelectItem value="even">Even Pages</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "stamp-pdf":
+    case "pdf-stamper":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Stamp Type</Label>
+            <Select
+              value={options.stampType || "approved"}
+              onValueChange={(value) => updateOption("stampType", value as ToolOptions["stampType"])}
+            >
+              <SelectTrigger data-testid="select-stamp-type">
+                <SelectValue placeholder="Select stamp type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="approved">APPROVED</SelectItem>
+                <SelectItem value="rejected">REJECTED</SelectItem>
+                <SelectItem value="pending">PENDING</SelectItem>
+                <SelectItem value="confidential">CONFIDENTIAL</SelectItem>
+                <SelectItem value="draft">DRAFT</SelectItem>
+                <SelectItem value="final">FINAL</SelectItem>
+                <SelectItem value="copy">COPY</SelectItem>
+                <SelectItem value="paid">PAID</SelectItem>
+                <SelectItem value="received">RECEIVED</SelectItem>
+                <SelectItem value="custom">Custom Text</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.stampType === "custom" && (
+            <div className="space-y-2">
+              <Label htmlFor="stampText">Custom Stamp Text</Label>
+              <Input
+                id="stampText"
+                placeholder="Enter custom stamp text"
+                value={options.stampText || ""}
+                onChange={(e) => updateOption("stampText", e.target.value)}
+                data-testid="input-stamp-text"
+              />
+            </div>
+          )}
+          <div className="space-y-2">
+            <Label>Stamp Style</Label>
+            <Select
+              value={options.stampStyle || "rectangle"}
+              onValueChange={(value) => updateOption("stampStyle", value as ToolOptions["stampStyle"])}
+            >
+              <SelectTrigger data-testid="select-stamp-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="circle">Circle Seal</SelectItem>
+                <SelectItem value="rectangle">Rectangle</SelectItem>
+                <SelectItem value="banner">Banner</SelectItem>
+                <SelectItem value="seal">Official Seal</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Size</Label>
+            <Select
+              value={options.stampSize || "medium"}
+              onValueChange={(value) => updateOption("stampSize", value as ToolOptions["stampSize"])}
+            >
+              <SelectTrigger data-testid="select-stamp-size">
+                <SelectValue placeholder="Select size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="small">Small</SelectItem>
+                <SelectItem value="medium">Medium</SelectItem>
+                <SelectItem value="large">Large</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Position</Label>
+            <Select
+              value={options.stampPosition || "center"}
+              onValueChange={(value) => updateOption("stampPosition", value as ToolOptions["stampPosition"])}
+            >
+              <SelectTrigger data-testid="select-stamp-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="stampColor">Stamp Color</Label>
+            <Input
+              id="stampColor"
+              type="color"
+              value={options.stampColor || "#dc2626"}
+              onChange={(e) => updateOption("stampColor", e.target.value)}
+              className="w-20 h-10"
+              data-testid="input-stamp-color"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Opacity: {Math.round((options.stampOpacity || 80))}%</Label>
+            <Slider
+              value={[options.stampOpacity || 80]}
+              min={20}
+              max={100}
+              step={10}
+              onValueChange={([value]) => updateOption("stampOpacity", value)}
+              data-testid="slider-stamp-opacity"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Rotation: {options.stampRotation || 0} degrees</Label>
+            <Slider
+              value={[options.stampRotation || 0]}
+              min={-45}
+              max={45}
+              step={5}
+              onValueChange={([value]) => updateOption("stampRotation", value)}
+              data-testid="slider-stamp-rotation"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="stampDate"
+              checked={options.stampDate || false}
+              onCheckedChange={(checked) => updateOption("stampDate", checked)}
+              data-testid="switch-stamp-date"
+            />
+            <Label htmlFor="stampDate">Include Current Date</Label>
+          </div>
+          <div className="space-y-2">
+            <Label>Apply to Pages</Label>
+            <Select
+              value={options.stampPages || "first"}
+              onValueChange={(value) => updateOption("stampPages", value as ToolOptions["stampPages"])}
+            >
+              <SelectTrigger data-testid="select-stamp-pages">
+                <SelectValue placeholder="Select pages" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Pages</SelectItem>
+                <SelectItem value="first">First Page Only</SelectItem>
+                <SelectItem value="last">Last Page Only</SelectItem>
+                <SelectItem value="custom">Custom Range</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.stampPages === "custom" && (
+            <div className="space-y-2">
+              <Label htmlFor="stampCustomPages">Page Range</Label>
+              <Input
+                id="stampCustomPages"
+                placeholder="e.g., 1,3,5-10"
+                value={options.stampCustomPages || ""}
+                onChange={(e) => updateOption("stampCustomPages", e.target.value)}
+                data-testid="input-stamp-custom-pages"
+              />
+            </div>
+          )}
+        </div>
+      );
+
     default:
       return null;
   }
