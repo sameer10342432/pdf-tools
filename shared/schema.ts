@@ -301,6 +301,15 @@ export const pdfToolTypes = [
   "add-tiled-watermark",
   "stamp-pdf",
   "pdf-stamper",
+  "add-confidential-stamp",
+  "add-draft-stamp",
+  "custom-pdf-stamp",
+  "remove-watermark",
+  "pdf-watermark-remover",
+  "pdf-page-numbering",
+  "add-bates-numbering",
+  "add-header-to-pdf",
+  "add-footer-to-pdf",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -552,6 +561,25 @@ export const toolOptionsSchema = z.object({
   stampDate: z.boolean().optional(),
   stampPages: z.enum(["all", "first", "last", "custom"]).optional(),
   stampCustomPages: z.string().optional(),
+  headerText: z.string().optional(),
+  headerPosition: z.enum(["left", "center", "right"]).optional(),
+  headerFontSize: z.number().optional(),
+  headerColor: z.string().optional(),
+  headerPages: z.enum(["all", "first", "odd", "even", "custom"]).optional(),
+  headerCustomPages: z.string().optional(),
+  footerText: z.string().optional(),
+  footerPosition: z.enum(["left", "center", "right"]).optional(),
+  footerFontSize: z.number().optional(),
+  footerColor: z.string().optional(),
+  footerPages: z.enum(["all", "first", "odd", "even", "custom"]).optional(),
+  footerCustomPages: z.string().optional(),
+  batesPrefix: z.string().optional(),
+  batesSuffix: z.string().optional(),
+  batesStartNumber: z.number().optional(),
+  batesDigits: z.number().optional(),
+  batesPosition: z.enum(["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"]).optional(),
+  batesFontSize: z.number().optional(),
+  batesColor: z.string().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -8116,5 +8144,251 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Quality and Security</h2>
 <p>Stamps are embedded securely in documents. High-resolution graphics look professional when printed. Stamps integrate seamlessly with document content. Security features prevent unauthorized stamp removal. Professional quality meets security requirements.</p>`,
+  },
+  {
+    id: "add-confidential-stamp",
+    name: "Add Confidential Stamp",
+    description: "Add a CONFIDENTIAL stamp to your PDF documents",
+    icon: "ShieldAlert",
+    type: "add-confidential-stamp",
+    color: "bg-red-600",
+    emoji: "🔐",
+    metaTitle: "Add Confidential Stamp to PDF Online Free - Mark Documents Private | PDF Tools",
+    metaDescription: "Add CONFIDENTIAL stamps to PDF files online for free. Mark sensitive documents with professional confidential seals. Protect your private information with visible stamps.",
+    seoArticle: `<h2>Add Confidential Stamp to PDF - Protect Sensitive Documents</h2>
+<p>Marking documents as confidential is essential for protecting sensitive information in business, legal, and personal contexts. Our free online tool adds professional CONFIDENTIAL stamps to your PDF documents instantly. Whether you're handling financial records, legal briefs, or proprietary business information, a clear confidential stamp signals the document's sensitive nature.</p>
+
+<h2>Why Use Confidential Stamps</h2>
+<p>Confidential stamps serve as a visual warning to anyone who encounters your document. They clearly communicate that the contents are sensitive and should not be shared, copied, or distributed without authorization. This simple visual marker can help prevent accidental disclosure of private information and establish clear expectations for document handling.</p>
+
+<h2>Professional Stamp Designs</h2>
+<p>Our confidential stamps feature professional designs that convey authority and seriousness. Choose from classic rectangular stamps, circular seals, or diagonal watermark-style placements. Red coloring stands out clearly against document backgrounds while maintaining readability of underlying content.</p>
+
+<h2>Flexible Placement Options</h2>
+<p>Position your confidential stamp exactly where it will have the most impact. Place stamps in corners for subtle but clear marking, center them prominently on each page, or apply diagonal stamps that span across content. Apply to all pages or select specific pages that contain sensitive information.</p>
+
+<h2>Legal and Business Applications</h2>
+<p>Law firms use confidential stamps on privileged communications and case files. Healthcare providers mark patient records appropriately. Businesses protect trade secrets and internal memos. Financial institutions secure sensitive client data. Whatever your industry, confidential stamps help maintain document security protocols.</p>`,
+  },
+  {
+    id: "add-draft-stamp",
+    name: "Add Draft Stamp",
+    description: "Mark PDF documents as DRAFT versions",
+    icon: "FileEdit",
+    type: "add-draft-stamp",
+    color: "bg-amber-500",
+    emoji: "📝",
+    metaTitle: "Add Draft Stamp to PDF Online Free - Mark Documents as Draft | PDF Tools",
+    metaDescription: "Add DRAFT stamps to PDF files online for free. Mark documents as work-in-progress with professional draft watermarks. Prevent confusion with clear draft indicators.",
+    seoArticle: `<h2>Add Draft Stamp to PDF - Clear Version Identification</h2>
+<p>Clearly identifying draft documents prevents costly mistakes in document workflows. Our free online draft stamp tool adds prominent DRAFT markings to your PDF files, ensuring recipients know the document is not final. Whether sharing preliminary reports, reviewing contracts, or circulating proposals for feedback, draft stamps prevent premature action on unfinished work.</p>
+
+<h2>Prevent Document Confusion</h2>
+<p>Without clear draft identification, recipients may act on preliminary versions as if they were final. Draft stamps eliminate this confusion by providing an unmistakable visual indicator of document status. Red or gray draft stamps stand out clearly, ensuring no one mistakes a work-in-progress for an approved final version.</p>
+
+<h2>Professional Draft Markings</h2>
+<p>Our draft stamps look professional while being impossible to miss. Traditional diagonal watermark styles span the page without obscuring content. Corner stamps provide clear marking with minimal interference. Bold typography ensures the DRAFT message is clearly readable at any zoom level.</p>
+
+<h2>Review Workflow Integration</h2>
+<p>Draft stamps fit naturally into document review processes. Mark initial versions for internal review. Add draft stamps before sending for external feedback. Remove stamps only when documents are finalized and approved. Clear status indicators keep review workflows organized and efficient.</p>
+
+<h2>Version Control Benefits</h2>
+<p>When combined with dates or version numbers, draft stamps help track document evolution. Recipients can immediately identify which version they're viewing. Multiple drafts remain distinguishable throughout the review process. Clear versioning prevents outdated drafts from being mistakenly distributed.</p>`,
+  },
+  {
+    id: "custom-pdf-stamp",
+    name: "Custom PDF Stamp",
+    description: "Create and apply custom stamps with your own text and design",
+    icon: "PenTool",
+    type: "custom-pdf-stamp",
+    color: "bg-purple-600",
+    emoji: "🎨",
+    metaTitle: "Custom PDF Stamp Online Free - Create Personalized Stamps | PDF Tools",
+    metaDescription: "Create custom stamps for PDF files online for free. Design personalized stamps with your text, colors, and styles. Professional custom stamping for any purpose.",
+    seoArticle: `<h2>Custom PDF Stamp - Design Your Own Stamps</h2>
+<p>Sometimes standard stamps don't meet your specific needs. Our custom PDF stamp tool lets you create personalized stamps with your own text, colors, and designs. Whether you need organizational stamps, project-specific markers, or unique approval seals, custom stamps give you complete creative control.</p>
+
+<h2>Complete Text Customization</h2>
+<p>Enter any text for your custom stamp. Create organizational stamps with company names. Add project codes or reference numbers. Include dates, names, or any relevant information. Multi-line text options accommodate detailed stamp content. Your message appears exactly as you design it.</p>
+
+<h2>Design Flexibility</h2>
+<p>Choose from multiple stamp styles to match your needs. Rectangular stamps work for formal notices. Circular seals add official authority. Banner styles suit announcement purposes. Adjust border width, colors, and fonts to match your organization's visual identity.</p>
+
+<h2>Color and Style Options</h2>
+<p>Select colors that convey the right message. Red for urgent or confidential stamps. Blue for informational markers. Green for approvals and confirmations. Custom hex colors match brand guidelines exactly. Opacity controls balance visibility with content readability.</p>
+
+<h2>Reusable Stamp Templates</h2>
+<p>Save your custom stamp designs for repeated use. Build a library of stamps for different purposes. Share stamp specifications with team members for consistency. Apply the same custom stamp across multiple documents efficiently. Custom stamps become as easy to use as standard templates.</p>
+
+<h2>Professional Applications</h2>
+<p>Businesses create branded approval stamps. Legal firms design case-specific markers. Schools use custom stamps for grading and feedback. Project managers mark documents by phase or status. Any workflow benefits from customized stamp solutions.</p>`,
+  },
+  {
+    id: "remove-watermark",
+    name: "Remove Watermark from PDF",
+    description: "Remove watermarks and stamps from PDF documents",
+    icon: "Eraser",
+    type: "remove-watermark",
+    color: "bg-slate-600",
+    emoji: "🧹",
+    metaTitle: "Remove Watermark from PDF Online Free - Clean PDF Documents | PDF Tools",
+    metaDescription: "Remove watermarks from PDF files online for free. Clean up documents by removing text and image watermarks. Professional watermark removal tool.",
+    seoArticle: `<h2>Remove Watermark from PDF - Clean Document Restoration</h2>
+<p>Watermarks can obstruct document readability or become outdated. Our watermark removal tool helps clean up PDF documents by removing unwanted watermarks. Whether dealing with trial version watermarks, outdated branding, or unnecessary stamps, restore your documents to clean, professional condition.</p>
+
+<h2>Text Watermark Removal</h2>
+<p>Remove text-based watermarks that overlay your document content. DRAFT, SAMPLE, or CONFIDENTIAL watermarks that are no longer needed can be eliminated. The tool identifies and removes text layers positioned as watermarks while preserving the underlying document content.</p>
+
+<h2>Image Watermark Handling</h2>
+<p>Image watermarks including logos and graphics can be targeted for removal. Background images applied as watermarks are identified and removed. Semi-transparent overlays are processed to restore original document appearance. Clean results without affecting document formatting.</p>
+
+<h2>Document Content Preservation</h2>
+<p>Our removal process focuses on watermarks while protecting original content. Text, images, and formatting in your document remain intact. Links, bookmarks, and interactive elements are preserved. The result is a clean document that looks professional and reads clearly.</p>
+
+<h2>Important Considerations</h2>
+<p>This tool is intended for legitimate use on documents you own or have rights to modify. Removing watermarks from copyrighted or licensed content may violate terms of use. Always ensure you have proper authorization before modifying documents. Use responsibly to clean up your own documents.</p>
+
+<h2>Common Use Cases</h2>
+<p>Remove trial watermarks after purchasing software licenses. Update documents with outdated company branding. Clean up scanned documents with unwanted marks. Prepare documents for professional presentation. Restore documents to original appearance.</p>`,
+  },
+  {
+    id: "pdf-watermark-remover",
+    name: "PDF Watermark Remover",
+    description: "Advanced watermark detection and removal tool",
+    icon: "Trash2",
+    type: "pdf-watermark-remover",
+    color: "bg-gray-600",
+    emoji: "🗑️",
+    metaTitle: "PDF Watermark Remover Online Free - Advanced Removal Tool | PDF Tools",
+    metaDescription: "Remove watermarks from PDF documents online for free. Advanced detection removes text, image, and hidden watermarks. Professional document cleaning tool.",
+    seoArticle: `<h2>PDF Watermark Remover - Advanced Document Cleaning</h2>
+<p>The PDF Watermark Remover provides advanced capabilities for detecting and removing various types of watermarks from PDF documents. Beyond simple text watermarks, this tool handles complex watermark implementations including layered graphics, repeated patterns, and embedded image watermarks.</p>
+
+<h2>Intelligent Watermark Detection</h2>
+<p>Advanced algorithms analyze your PDF to identify watermark elements. Text positioned as overlays is detected regardless of opacity settings. Image elements serving as watermarks are identified and flagged. Multi-layer documents are processed to find watermarks at any depth.</p>
+
+<h2>Multiple Watermark Types</h2>
+<p>Handle various watermark implementations effectively. Diagonal text watermarks spanning pages. Corner positioned stamps and seals. Tiled pattern watermarks covering entire pages. Background image watermarks behind content. Each type receives appropriate processing.</p>
+
+<h2>Selective Removal Options</h2>
+<p>Choose which watermarks to remove when multiple are present. Preview watermarks before removal to ensure correct targeting. Remove all watermarks automatically or select specific ones. Control the cleaning process for optimal results.</p>
+
+<h2>Quality Preservation</h2>
+<p>Document quality remains high after watermark removal. Original fonts and formatting are maintained. Images retain their resolution and appearance. Interactive PDF features continue to function. Clean documents are ready for immediate professional use.</p>
+
+<h2>Batch Processing Capability</h2>
+<p>Process multiple documents with similar watermarks efficiently. Apply the same removal settings across document sets. Clean entire folders of watermarked PDFs. Save time when dealing with bulk document processing needs.</p>`,
+  },
+  {
+    id: "pdf-page-numbering",
+    name: "PDF Page Numbering",
+    description: "Advanced page numbering with custom formats and styles",
+    icon: "ListOrdered",
+    type: "pdf-page-numbering",
+    color: "bg-blue-600",
+    emoji: "1️⃣",
+    metaTitle: "PDF Page Numbering Online Free - Advanced Number Formatting | PDF Tools",
+    metaDescription: "Add page numbers to PDF with advanced formatting options. Roman numerals, custom prefixes, selective numbering. Professional page numbering tool.",
+    seoArticle: `<h2>PDF Page Numbering - Advanced Formatting Options</h2>
+<p>Professional documents often require sophisticated page numbering beyond simple sequential numbers. Our advanced PDF page numbering tool provides comprehensive formatting options including Roman numerals, custom prefixes, and selective numbering. Create documents with professional-grade pagination.</p>
+
+<h2>Multiple Number Formats</h2>
+<p>Choose the numbering format that suits your document type. Arabic numerals (1, 2, 3) for standard documents. Roman numerals (i, ii, iii or I, II, III) for front matter. Alphabetic sequences (A, B, C) for appendices. Mix formats within a single document for proper sectioning.</p>
+
+<h2>Custom Prefixes and Suffixes</h2>
+<p>Add context to page numbers with prefixes and suffixes. Include section identifiers like "Chapter 2 - Page 15". Add document codes for tracking purposes. Include total page count in format "Page 5 of 20". Customize number appearance to match document requirements.</p>
+
+<h2>Position and Style Control</h2>
+<p>Place page numbers in your preferred location. Six standard positions accommodate different document layouts. Adjust margins to avoid content overlap. Choose fonts, sizes, and colors that complement your document design. Consistent styling throughout maintains professional appearance.</p>
+
+<h2>Selective Page Numbering</h2>
+<p>Apply numbers to specific page ranges. Skip cover pages and title pages. Start numbering from a specific page. Exclude certain pages from the sequence. Number only odd or even pages for double-sided printing.</p>
+
+<h2>Professional Document Preparation</h2>
+<p>Academic papers require specific pagination formats. Business reports need clear page references. Legal documents must have traceable page numbers. Publishing workflows depend on proper pagination. Our tool handles all these requirements professionally.</p>`,
+  },
+  {
+    id: "add-bates-numbering",
+    name: "Add Bates Numbering",
+    description: "Apply legal Bates numbering to PDF documents",
+    icon: "FileDigit",
+    type: "add-bates-numbering",
+    color: "bg-indigo-600",
+    emoji: "🔢",
+    metaTitle: "Add Bates Numbering to PDF Online Free - Legal Document Numbering | PDF Tools",
+    metaDescription: "Add Bates numbers to PDF files online for free. Apply legal document numbering with prefixes and suffixes. Professional Bates stamping for legal workflows.",
+    seoArticle: `<h2>Add Bates Numbering - Legal Document Identification</h2>
+<p>Bates numbering provides unique identification for each page in legal document sets. Essential for litigation, discovery, and legal proceedings, Bates numbers ensure every page can be precisely referenced. Our tool applies professional Bates numbering to PDF documents following legal industry standards.</p>
+
+<h2>Understanding Bates Numbers</h2>
+<p>Bates numbering assigns unique sequential identifiers to each document page. Unlike simple page numbers, Bates numbers include prefixes identifying the document set and fixed-digit sequential numbers. This system ensures no two pages share the same identifier, even across multiple documents in a case.</p>
+
+<h2>Customizable Format Options</h2>
+<p>Configure Bates numbers to match your organization's requirements. Add case-specific prefixes like "SMITH001". Include suffixes for additional identification. Set the number of digits for consistent formatting. Specify starting numbers for multi-volume document sets.</p>
+
+<h2>Precise Positioning</h2>
+<p>Place Bates numbers where they're easily visible yet unobtrusive. Standard positions include page corners and margins. Consistent placement across all pages maintains professional appearance. Avoid content areas to ensure numbers don't obscure important information.</p>
+
+<h2>Legal Industry Compliance</h2>
+<p>Bates numbering meets legal discovery requirements. Courts and opposing counsel can reference specific pages precisely. Document authenticity is supported by consistent numbering. Proper Bates stamping demonstrates professional document handling.</p>
+
+<h2>Multi-Document Processing</h2>
+<p>Process multiple documents with continuous Bates numbering. Maintain sequence across entire document productions. Each document receives unique identifiers within the overall numbering scheme. Large discovery productions are handled efficiently.</p>`,
+  },
+  {
+    id: "add-header-to-pdf",
+    name: "Add Header to PDF",
+    description: "Insert custom headers at the top of PDF pages",
+    icon: "ArrowUpFromLine",
+    type: "add-header-to-pdf",
+    color: "bg-cyan-600",
+    emoji: "📋",
+    metaTitle: "Add Header to PDF Online Free - Insert Page Headers | PDF Tools",
+    metaDescription: "Add custom headers to PDF files online for free. Insert titles, dates, and document information at the top of every page. Professional header tool.",
+    seoArticle: `<h2>Add Header to PDF - Professional Document Formatting</h2>
+<p>Headers add professionalism and functionality to PDF documents. Display document titles, chapter names, dates, or author information at the top of every page. Our free online tool makes adding consistent, attractive headers simple and fast.</p>
+
+<h2>Custom Header Content</h2>
+<p>Enter any text for your document headers. Include document titles for clear identification. Add dates that automatically update. Display author names or organization details. Insert page numbers within headers. Create the informational header your document needs.</p>
+
+<h2>Positioning Options</h2>
+<p>Align headers left, center, or right to match your document design. Left-aligned headers suit technical documents. Centered headers work well for formal reports. Right-aligned placement accommodates specific formatting requirements. Choose the alignment that complements your content.</p>
+
+<h2>Style Customization</h2>
+<p>Match header appearance to your document's visual design. Select font sizes appropriate for readability. Choose colors that complement your document theme. Adjust opacity for subtle or prominent headers. Create headers that enhance rather than distract from content.</p>
+
+<h2>Selective Application</h2>
+<p>Apply headers to all pages or select specific ones. Skip cover pages and section dividers. Apply different headers to odd and even pages. Number only content pages while preserving front matter. Flexible application options accommodate complex documents.</p>
+
+<h2>Common Header Uses</h2>
+<p>Academic papers display running titles in headers. Corporate documents show company branding. Reports include dates and version numbers. Legal documents display case identifiers. Any document benefits from well-designed headers.</p>`,
+  },
+  {
+    id: "add-footer-to-pdf",
+    name: "Add Footer to PDF",
+    description: "Insert custom footers at the bottom of PDF pages",
+    icon: "ArrowDownFromLine",
+    type: "add-footer-to-pdf",
+    color: "bg-teal-600",
+    emoji: "📄",
+    metaTitle: "Add Footer to PDF Online Free - Insert Page Footers | PDF Tools",
+    metaDescription: "Add custom footers to PDF files online for free. Insert page numbers, dates, and copyright notices at the bottom of pages. Professional footer tool.",
+    seoArticle: `<h2>Add Footer to PDF - Complete Document Formatting</h2>
+<p>Footers provide essential information at the bottom of every page. Page numbers, copyright notices, confidentiality statements, and document identifiers all find their home in footers. Our free online tool adds professional footers to your PDF documents with full customization options.</p>
+
+<h2>Essential Footer Content</h2>
+<p>Include information your readers need on every page. Page numbers for easy navigation and reference. Copyright notices protecting intellectual property. Confidentiality statements for sensitive documents. Company contact information for branded materials. Version numbers for document control.</p>
+
+<h2>Flexible Positioning</h2>
+<p>Position footer content exactly where you need it. Left, center, and right alignment options. Multiple elements can appear in different positions. Balance information across the footer area. Create visually appealing footer layouts.</p>
+
+<h2>Professional Styling</h2>
+<p>Style footers to match your document's design language. Select appropriate font sizes for readability. Choose colors that coordinate with document themes. Separator lines above footers add visual definition. Consistent styling creates polished documents.</p>
+
+<h2>Page Selection Options</h2>
+<p>Control which pages receive footers. Apply to all pages for comprehensive coverage. Skip specific pages like covers and dividers. Different footers for odd and even pages enable book-style formatting. Start footers from a specific page for documents with front matter.</p>
+
+<h2>Professional Applications</h2>
+<p>Legal documents require consistent footer information. Academic papers need running page numbers. Corporate reports display branding in footers. Published materials include copyright protection. Well-designed footers complete professional document presentation.</p>`,
   },
 ];

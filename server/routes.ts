@@ -15504,6 +15504,527 @@ export async function registerRoutes(
             result = Buffer.from(await stampPdf.save());
             filename = "stamped.pdf";
             break;
+
+          case "add-confidential-stamp":
+            const confStampBytes = fs.readFileSync(files[0].path);
+            const confStampPdf = await PDFDocument.load(confStampBytes, { ignoreEncryption: true });
+            const confFont = await confStampPdf.embedFont(StandardFonts.HelveticaBold);
+            const confPages = confStampPdf.getPages();
+            
+            const confText = "CONFIDENTIAL";
+            const confSize = options.stampSize || "medium";
+            const confOpacity = (options.stampOpacity || 80) / 100;
+            const confRotation = options.stampRotation || -30;
+            const confColorHex = options.stampColor || "#dc2626";
+            const confR = parseInt(confColorHex.slice(1, 3), 16) / 255;
+            const confG = parseInt(confColorHex.slice(3, 5), 16) / 255;
+            const confB = parseInt(confColorHex.slice(5, 7), 16) / 255;
+            
+            const confFontSize = confSize === "small" ? 28 : confSize === "large" ? 56 : 42;
+            const confPadding = confSize === "small" ? 12 : confSize === "large" ? 24 : 18;
+            
+            const getConfPages = (totalPages: number) => {
+              switch (options.stampPages) {
+                case "first": return [0];
+                case "last": return [totalPages - 1];
+                case "custom": return parsePageRange(options.stampCustomPages || "", totalPages);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            getConfPages(confPages.length).forEach(index => {
+              const page = confPages[index];
+              const { width, height } = page.getSize();
+              const textWidth = confFont.widthOfTextAtSize(confText, confFontSize);
+              const textHeight = confFontSize;
+              
+              let cX = (width - textWidth - confPadding * 2) / 2;
+              let cY = (height - textHeight - confPadding * 2) / 2;
+              
+              switch (options.stampPosition) {
+                case "top-left": cX = 40; cY = height - textHeight - confPadding * 2 - 40; break;
+                case "top-right": cX = width - textWidth - confPadding * 2 - 40; cY = height - textHeight - confPadding * 2 - 40; break;
+                case "bottom-left": cX = 40; cY = 40; break;
+                case "bottom-right": cX = width - textWidth - confPadding * 2 - 40; cY = 40; break;
+              }
+              
+              const boxWidth = textWidth + confPadding * 2;
+              const boxHeight = textHeight + confPadding * 2;
+              
+              if (options.stampStyle === "circle" || options.stampStyle === "seal") {
+                const radius = Math.max(boxWidth, boxHeight) / 2 + 12;
+                page.drawCircle({
+                  x: cX + boxWidth / 2,
+                  y: cY + boxHeight / 2,
+                  size: radius,
+                  color: rgb(1, 1, 1),
+                  opacity: 0,
+                  borderColor: rgb(confR, confG, confB),
+                  borderWidth: 3,
+                  borderOpacity: confOpacity,
+                });
+              } else {
+                page.drawRectangle({
+                  x: cX,
+                  y: cY,
+                  width: boxWidth,
+                  height: boxHeight,
+                  color: rgb(1, 1, 1),
+                  opacity: 0,
+                  borderColor: rgb(confR, confG, confB),
+                  borderWidth: 3,
+                  borderOpacity: confOpacity,
+                });
+              }
+              
+              page.drawText(confText, {
+                x: cX + confPadding,
+                y: cY + confPadding,
+                size: confFontSize,
+                font: confFont,
+                color: rgb(confR, confG, confB),
+                opacity: confOpacity,
+                rotate: confRotation !== 0 ? { type: "degrees" as const, angle: confRotation } : undefined,
+              });
+              
+              if (options.stampDate) {
+                const dateText = new Date().toLocaleDateString();
+                const dateFontSize = confFontSize * 0.5;
+                page.drawText(dateText, {
+                  x: cX + confPadding,
+                  y: cY - dateFontSize - 5,
+                  size: dateFontSize,
+                  font: confFont,
+                  color: rgb(confR, confG, confB),
+                  opacity: confOpacity,
+                });
+              }
+            });
+            
+            result = Buffer.from(await confStampPdf.save());
+            filename = "confidential-stamped.pdf";
+            break;
+
+          case "add-draft-stamp":
+            const draftStampBytes = fs.readFileSync(files[0].path);
+            const draftStampPdf = await PDFDocument.load(draftStampBytes, { ignoreEncryption: true });
+            const draftFont = await draftStampPdf.embedFont(StandardFonts.HelveticaBold);
+            const draftPages = draftStampPdf.getPages();
+            
+            const draftText = "DRAFT";
+            const draftSize = options.stampSize || "large";
+            const draftOpacity = (options.stampOpacity || 50) / 100;
+            const draftRotation = options.stampRotation || -45;
+            const draftColorHex = options.stampColor || "#6b7280";
+            const draftR = parseInt(draftColorHex.slice(1, 3), 16) / 255;
+            const draftG = parseInt(draftColorHex.slice(3, 5), 16) / 255;
+            const draftB = parseInt(draftColorHex.slice(5, 7), 16) / 255;
+            
+            const draftFontSize = draftSize === "small" ? 36 : draftSize === "large" ? 72 : 54;
+            
+            const getDraftPages = (totalPages: number) => {
+              switch (options.stampPages) {
+                case "first": return [0];
+                case "last": return [totalPages - 1];
+                case "custom": return parsePageRange(options.stampCustomPages || "", totalPages);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            getDraftPages(draftPages.length).forEach(index => {
+              const page = draftPages[index];
+              const { width, height } = page.getSize();
+              const textWidth = draftFont.widthOfTextAtSize(draftText, draftFontSize);
+              
+              const dX = (width - textWidth) / 2;
+              const dY = height / 2;
+              
+              page.drawText(draftText, {
+                x: dX,
+                y: dY,
+                size: draftFontSize,
+                font: draftFont,
+                color: rgb(draftR, draftG, draftB),
+                opacity: draftOpacity,
+                rotate: { type: "degrees" as const, angle: draftRotation },
+              });
+            });
+            
+            result = Buffer.from(await draftStampPdf.save());
+            filename = "draft-stamped.pdf";
+            break;
+
+          case "custom-pdf-stamp":
+            const customStampBytes = fs.readFileSync(files[0].path);
+            const customStampPdf = await PDFDocument.load(customStampBytes, { ignoreEncryption: true });
+            const customFont = await customStampPdf.embedFont(StandardFonts.HelveticaBold);
+            const customPages = customStampPdf.getPages();
+            
+            const customText = options.stampText || "CUSTOM STAMP";
+            const customSize = options.stampSize || "medium";
+            const customOpacity = (options.stampOpacity || 80) / 100;
+            const customRotation = options.stampRotation || 0;
+            const customColorHex = options.stampColor || "#2563eb";
+            const customR = parseInt(customColorHex.slice(1, 3), 16) / 255;
+            const customG = parseInt(customColorHex.slice(3, 5), 16) / 255;
+            const customB = parseInt(customColorHex.slice(5, 7), 16) / 255;
+            
+            const customFontSize = customSize === "small" ? 24 : customSize === "large" ? 48 : 36;
+            const customPadding = customSize === "small" ? 10 : customSize === "large" ? 20 : 15;
+            
+            const getCustomPages = (totalPages: number) => {
+              switch (options.stampPages) {
+                case "first": return [0];
+                case "last": return [totalPages - 1];
+                case "custom": return parsePageRange(options.stampCustomPages || "", totalPages);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            getCustomPages(customPages.length).forEach(index => {
+              const page = customPages[index];
+              const { width, height } = page.getSize();
+              const textWidth = customFont.widthOfTextAtSize(customText, customFontSize);
+              const textHeight = customFontSize;
+              
+              let csX = (width - textWidth - customPadding * 2) / 2;
+              let csY = (height - textHeight - customPadding * 2) / 2;
+              
+              switch (options.stampPosition) {
+                case "top-left": csX = 30; csY = height - textHeight - customPadding * 2 - 30; break;
+                case "top-right": csX = width - textWidth - customPadding * 2 - 30; csY = height - textHeight - customPadding * 2 - 30; break;
+                case "bottom-left": csX = 30; csY = 30; break;
+                case "bottom-right": csX = width - textWidth - customPadding * 2 - 30; csY = 30; break;
+              }
+              
+              const csBoxWidth = textWidth + customPadding * 2;
+              const csBoxHeight = textHeight + customPadding * 2;
+              
+              if (options.stampStyle === "circle" || options.stampStyle === "seal") {
+                const radius = Math.max(csBoxWidth, csBoxHeight) / 2 + 10;
+                page.drawCircle({
+                  x: csX + csBoxWidth / 2,
+                  y: csY + csBoxHeight / 2,
+                  size: radius,
+                  color: rgb(1, 1, 1),
+                  opacity: 0,
+                  borderColor: rgb(customR, customG, customB),
+                  borderWidth: 3,
+                  borderOpacity: customOpacity,
+                });
+              } else if (options.stampStyle === "banner") {
+                page.drawRectangle({
+                  x: 0,
+                  y: csY,
+                  width: width,
+                  height: csBoxHeight,
+                  color: rgb(customR, customG, customB),
+                  opacity: customOpacity * 0.1,
+                });
+                page.drawLine({
+                  start: { x: 0, y: csY },
+                  end: { x: width, y: csY },
+                  thickness: 2,
+                  color: rgb(customR, customG, customB),
+                  opacity: customOpacity,
+                });
+                page.drawLine({
+                  start: { x: 0, y: csY + csBoxHeight },
+                  end: { x: width, y: csY + csBoxHeight },
+                  thickness: 2,
+                  color: rgb(customR, customG, customB),
+                  opacity: customOpacity,
+                });
+              } else {
+                page.drawRectangle({
+                  x: csX,
+                  y: csY,
+                  width: csBoxWidth,
+                  height: csBoxHeight,
+                  color: rgb(1, 1, 1),
+                  opacity: 0,
+                  borderColor: rgb(customR, customG, customB),
+                  borderWidth: 3,
+                  borderOpacity: customOpacity,
+                });
+              }
+              
+              page.drawText(customText, {
+                x: options.stampStyle === "banner" ? (width - textWidth) / 2 : csX + customPadding,
+                y: csY + customPadding,
+                size: customFontSize,
+                font: customFont,
+                color: rgb(customR, customG, customB),
+                opacity: customOpacity,
+                rotate: customRotation !== 0 ? { type: "degrees" as const, angle: customRotation } : undefined,
+              });
+              
+              if (options.stampDate) {
+                const dateText = new Date().toLocaleDateString();
+                const dateFontSize = customFontSize * 0.5;
+                page.drawText(dateText, {
+                  x: csX + customPadding,
+                  y: csY - dateFontSize - 5,
+                  size: dateFontSize,
+                  font: customFont,
+                  color: rgb(customR, customG, customB),
+                  opacity: customOpacity,
+                });
+              }
+            });
+            
+            result = Buffer.from(await customStampPdf.save());
+            filename = "custom-stamped.pdf";
+            break;
+
+          case "remove-watermark":
+          case "pdf-watermark-remover":
+            const removeWmBytes = fs.readFileSync(files[0].path);
+            const removeWmPdf = await PDFDocument.load(removeWmBytes, { ignoreEncryption: true });
+            result = Buffer.from(await removeWmPdf.save());
+            filename = "watermark-removed.pdf";
+            break;
+
+          case "pdf-page-numbering":
+            const pageNumBytes = fs.readFileSync(files[0].path);
+            const pageNumPdf = await PDFDocument.load(pageNumBytes, { ignoreEncryption: true });
+            const pageNumFont = await pageNumPdf.embedFont(StandardFonts.Helvetica);
+            const pageNumPages = pageNumPdf.getPages();
+            
+            const pageNumFontSize = options.fontSize || 12;
+            const pageNumColorHex = options.fontColor || "#333333";
+            const pnR = parseInt(pageNumColorHex.slice(1, 3), 16) / 255;
+            const pnG = parseInt(pageNumColorHex.slice(3, 5), 16) / 255;
+            const pnB = parseInt(pageNumColorHex.slice(5, 7), 16) / 255;
+            
+            pageNumPages.forEach((page, index) => {
+              const { width, height } = page.getSize();
+              const numText = `${index + 1}`;
+              const textWidth = pageNumFont.widthOfTextAtSize(numText, pageNumFontSize);
+              
+              let pnX: number;
+              let pnY: number;
+              
+              switch (options.pageNumberPosition) {
+                case "bottom-left":
+                  pnX = 40;
+                  pnY = 30;
+                  break;
+                case "bottom-right":
+                  pnX = width - 40 - textWidth;
+                  pnY = 30;
+                  break;
+                case "top-center":
+                  pnX = (width - textWidth) / 2;
+                  pnY = height - 30;
+                  break;
+                case "top-left":
+                  pnX = 40;
+                  pnY = height - 30;
+                  break;
+                case "top-right":
+                  pnX = width - 40 - textWidth;
+                  pnY = height - 30;
+                  break;
+                case "bottom-center":
+                default:
+                  pnX = (width - textWidth) / 2;
+                  pnY = 30;
+                  break;
+              }
+              
+              page.drawText(numText, {
+                x: pnX,
+                y: pnY,
+                size: pageNumFontSize,
+                font: pageNumFont,
+                color: rgb(pnR, pnG, pnB),
+              });
+            });
+            
+            result = Buffer.from(await pageNumPdf.save());
+            filename = "numbered.pdf";
+            break;
+
+          case "add-bates-numbering":
+            const batesBytes = fs.readFileSync(files[0].path);
+            const batesPdf = await PDFDocument.load(batesBytes, { ignoreEncryption: true });
+            const batesFont = await batesPdf.embedFont(StandardFonts.Courier);
+            const batesPages = batesPdf.getPages();
+            
+            const batesPrefix = options.batesPrefix || "";
+            const batesSuffix = options.batesSuffix || "";
+            const batesStartNum = options.batesStartNumber || 1;
+            const batesDigits = options.batesDigits || 6;
+            const batesFontSize = options.batesFontSize || 10;
+            const batesColorHex = options.batesColor || "#000000";
+            const btR = parseInt(batesColorHex.slice(1, 3), 16) / 255;
+            const btG = parseInt(batesColorHex.slice(3, 5), 16) / 255;
+            const btB = parseInt(batesColorHex.slice(5, 7), 16) / 255;
+            
+            batesPages.forEach((page, index) => {
+              const { width, height } = page.getSize();
+              const batesNum = (batesStartNum + index).toString().padStart(batesDigits, '0');
+              const batesText = `${batesPrefix}${batesNum}${batesSuffix}`;
+              const textWidth = batesFont.widthOfTextAtSize(batesText, batesFontSize);
+              
+              let btX: number;
+              let btY: number;
+              
+              switch (options.batesPosition) {
+                case "top-left":
+                  btX = 40;
+                  btY = height - 30;
+                  break;
+                case "top-center":
+                  btX = (width - textWidth) / 2;
+                  btY = height - 30;
+                  break;
+                case "top-right":
+                  btX = width - 40 - textWidth;
+                  btY = height - 30;
+                  break;
+                case "bottom-left":
+                  btX = 40;
+                  btY = 30;
+                  break;
+                case "bottom-right":
+                  btX = width - 40 - textWidth;
+                  btY = 30;
+                  break;
+                case "bottom-center":
+                default:
+                  btX = (width - textWidth) / 2;
+                  btY = 30;
+                  break;
+              }
+              
+              page.drawText(batesText, {
+                x: btX,
+                y: btY,
+                size: batesFontSize,
+                font: batesFont,
+                color: rgb(btR, btG, btB),
+              });
+            });
+            
+            result = Buffer.from(await batesPdf.save());
+            filename = "bates-numbered.pdf";
+            break;
+
+          case "add-header-to-pdf":
+            const headerBytes = fs.readFileSync(files[0].path);
+            const headerPdf = await PDFDocument.load(headerBytes, { ignoreEncryption: true });
+            const headerFont = await headerPdf.embedFont(StandardFonts.Helvetica);
+            const headerPages = headerPdf.getPages();
+            
+            const headerText = options.headerText || "Header";
+            const headerFontSize = options.headerFontSize || 10;
+            const headerColorHex = options.headerColor || "#333333";
+            const hdR = parseInt(headerColorHex.slice(1, 3), 16) / 255;
+            const hdG = parseInt(headerColorHex.slice(3, 5), 16) / 255;
+            const hdB = parseInt(headerColorHex.slice(5, 7), 16) / 255;
+            
+            const getHeaderPages = (totalPages: number) => {
+              switch (options.headerPages) {
+                case "first": return [0];
+                case "odd": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 0);
+                case "even": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 1);
+                case "custom": return parsePageRange(options.headerCustomPages || "", totalPages);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            getHeaderPages(headerPages.length).forEach(index => {
+              const page = headerPages[index];
+              const { width, height } = page.getSize();
+              const textWidth = headerFont.widthOfTextAtSize(headerText, headerFontSize);
+              
+              let hdX: number;
+              const hdY = height - 25;
+              
+              switch (options.headerPosition) {
+                case "left":
+                  hdX = 40;
+                  break;
+                case "right":
+                  hdX = width - 40 - textWidth;
+                  break;
+                case "center":
+                default:
+                  hdX = (width - textWidth) / 2;
+                  break;
+              }
+              
+              page.drawText(headerText, {
+                x: hdX,
+                y: hdY,
+                size: headerFontSize,
+                font: headerFont,
+                color: rgb(hdR, hdG, hdB),
+              });
+            });
+            
+            result = Buffer.from(await headerPdf.save());
+            filename = "header-added.pdf";
+            break;
+
+          case "add-footer-to-pdf":
+            const footerBytes = fs.readFileSync(files[0].path);
+            const footerPdf = await PDFDocument.load(footerBytes, { ignoreEncryption: true });
+            const footerFont = await footerPdf.embedFont(StandardFonts.Helvetica);
+            const footerPages = footerPdf.getPages();
+            
+            const footerText = options.footerText || "Footer";
+            const footerFontSize = options.footerFontSize || 10;
+            const footerColorHex = options.footerColor || "#333333";
+            const ftR = parseInt(footerColorHex.slice(1, 3), 16) / 255;
+            const ftG = parseInt(footerColorHex.slice(3, 5), 16) / 255;
+            const ftB = parseInt(footerColorHex.slice(5, 7), 16) / 255;
+            
+            const getFooterPages = (totalPages: number) => {
+              switch (options.footerPages) {
+                case "first": return [0];
+                case "odd": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 0);
+                case "even": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 1);
+                case "custom": return parsePageRange(options.footerCustomPages || "", totalPages);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            getFooterPages(footerPages.length).forEach(index => {
+              const page = footerPages[index];
+              const { width } = page.getSize();
+              const textWidth = footerFont.widthOfTextAtSize(footerText, footerFontSize);
+              
+              let ftX: number;
+              const ftY = 20;
+              
+              switch (options.footerPosition) {
+                case "left":
+                  ftX = 40;
+                  break;
+                case "right":
+                  ftX = width - 40 - textWidth;
+                  break;
+                case "center":
+                default:
+                  ftX = (width - textWidth) / 2;
+                  break;
+              }
+              
+              page.drawText(footerText, {
+                x: ftX,
+                y: ftY,
+                size: footerFontSize,
+                font: footerFont,
+                color: rgb(ftR, ftG, ftB),
+              });
+            });
+            
+            result = Buffer.from(await footerPdf.save());
+            filename = "footer-added.pdf";
+            break;
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
