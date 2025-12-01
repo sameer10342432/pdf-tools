@@ -16025,6 +16025,543 @@ export async function registerRoutes(
             result = Buffer.from(await footerPdf.save());
             filename = "footer-added.pdf";
             break;
+
+          case "add-bates-stamp":
+            const batesStampBytes = fs.readFileSync(files[0].path);
+            const batesStampPdf = await PDFDocument.load(batesStampBytes, { ignoreEncryption: true });
+            const batesStampFont = await batesStampPdf.embedFont(StandardFonts.Courier);
+            const batesStampPages = batesStampPdf.getPages();
+            
+            const bsPrefix = options.batesPrefix || "DOC";
+            const bsSuffix = options.batesSuffix || "";
+            const bsStartNum = options.batesStartNumber || 1;
+            const bsDigits = options.batesDigits || 6;
+            const bsFontSize = options.batesFontSize || 10;
+            const bsColorHex = options.batesColor || "#000000";
+            const bsR = parseInt(bsColorHex.slice(1, 3), 16) / 255;
+            const bsG = parseInt(bsColorHex.slice(3, 5), 16) / 255;
+            const bsB = parseInt(bsColorHex.slice(5, 7), 16) / 255;
+            
+            batesStampPages.forEach((page, index) => {
+              const { width, height } = page.getSize();
+              const bsNum = (bsStartNum + index).toString().padStart(bsDigits, '0');
+              const bsText = `${bsPrefix}${bsNum}${bsSuffix}`;
+              const textWidth = batesStampFont.widthOfTextAtSize(bsText, bsFontSize);
+              
+              let bsX: number;
+              let bsY: number;
+              
+              switch (options.batesPosition) {
+                case "top-left":
+                  bsX = 40;
+                  bsY = height - 30;
+                  break;
+                case "top-center":
+                  bsX = (width - textWidth) / 2;
+                  bsY = height - 30;
+                  break;
+                case "top-right":
+                  bsX = width - 40 - textWidth;
+                  bsY = height - 30;
+                  break;
+                case "bottom-left":
+                  bsX = 40;
+                  bsY = 30;
+                  break;
+                case "bottom-right":
+                  bsX = width - 40 - textWidth;
+                  bsY = 30;
+                  break;
+                case "bottom-center":
+                default:
+                  bsX = (width - textWidth) / 2;
+                  bsY = 30;
+                  break;
+              }
+              
+              page.drawRectangle({
+                x: bsX - 5,
+                y: bsY - 3,
+                width: textWidth + 10,
+                height: bsFontSize + 6,
+                color: rgb(1, 1, 1),
+                opacity: 0.8,
+              });
+              
+              page.drawText(bsText, {
+                x: bsX,
+                y: bsY,
+                size: bsFontSize,
+                font: batesStampFont,
+                color: rgb(bsR, bsG, bsB),
+              });
+            });
+            
+            result = Buffer.from(await batesStampPdf.save());
+            filename = "bates-stamped.pdf";
+            break;
+
+          case "add-page-numbers-start-at":
+            const startAtBytes = fs.readFileSync(files[0].path);
+            const startAtPdf = await PDFDocument.load(startAtBytes, { ignoreEncryption: true });
+            const startAtFont = await startAtPdf.embedFont(StandardFonts.Helvetica);
+            const startAtPages = startAtPdf.getPages();
+            
+            const startNum = options.pageNumberStartAt || 1;
+            const startAtFontSize = options.fontSize || 12;
+            const startAtColorHex = options.fontColor || "#333333";
+            const saR = parseInt(startAtColorHex.slice(1, 3), 16) / 255;
+            const saG = parseInt(startAtColorHex.slice(3, 5), 16) / 255;
+            const saB = parseInt(startAtColorHex.slice(5, 7), 16) / 255;
+            
+            startAtPages.forEach((page, index) => {
+              const { width, height } = page.getSize();
+              const numText = `${startNum + index}`;
+              const textWidth = startAtFont.widthOfTextAtSize(numText, startAtFontSize);
+              
+              let saX: number;
+              let saY: number;
+              
+              switch (options.pageNumberPosition) {
+                case "bottom-left":
+                  saX = 40;
+                  saY = 30;
+                  break;
+                case "bottom-right":
+                  saX = width - 40 - textWidth;
+                  saY = 30;
+                  break;
+                case "top-center":
+                  saX = (width - textWidth) / 2;
+                  saY = height - 30;
+                  break;
+                case "top-left":
+                  saX = 40;
+                  saY = height - 30;
+                  break;
+                case "top-right":
+                  saX = width - 40 - textWidth;
+                  saY = height - 30;
+                  break;
+                case "bottom-center":
+                default:
+                  saX = (width - textWidth) / 2;
+                  saY = 30;
+                  break;
+              }
+              
+              page.drawText(numText, {
+                x: saX,
+                y: saY,
+                size: startAtFontSize,
+                font: startAtFont,
+                color: rgb(saR, saG, saB),
+              });
+            });
+            
+            result = Buffer.from(await startAtPdf.save());
+            filename = "numbered-start-at.pdf";
+            break;
+
+          case "add-roman-page-numbers":
+            const romanBytes = fs.readFileSync(files[0].path);
+            const romanPdf = await PDFDocument.load(romanBytes, { ignoreEncryption: true });
+            const romanFont = await romanPdf.embedFont(StandardFonts.TimesRoman);
+            const romanPages = romanPdf.getPages();
+            
+            const romanFormat = options.pageNumberFormat || "roman-lower";
+            const romanFontSize = options.fontSize || 12;
+            const romanColorHex = options.fontColor || "#333333";
+            const rmR = parseInt(romanColorHex.slice(1, 3), 16) / 255;
+            const rmG = parseInt(romanColorHex.slice(3, 5), 16) / 255;
+            const rmB = parseInt(romanColorHex.slice(5, 7), 16) / 255;
+            
+            const toRoman = (num: number, uppercase: boolean): string => {
+              const romanNumerals = [
+                { value: 1000, numeral: 'm' },
+                { value: 900, numeral: 'cm' },
+                { value: 500, numeral: 'd' },
+                { value: 400, numeral: 'cd' },
+                { value: 100, numeral: 'c' },
+                { value: 90, numeral: 'xc' },
+                { value: 50, numeral: 'l' },
+                { value: 40, numeral: 'xl' },
+                { value: 10, numeral: 'x' },
+                { value: 9, numeral: 'ix' },
+                { value: 5, numeral: 'v' },
+                { value: 4, numeral: 'iv' },
+                { value: 1, numeral: 'i' }
+              ];
+              
+              let result = '';
+              for (const { value, numeral } of romanNumerals) {
+                while (num >= value) {
+                  result += numeral;
+                  num -= value;
+                }
+              }
+              return uppercase ? result.toUpperCase() : result;
+            };
+            
+            romanPages.forEach((page, index) => {
+              const { width, height } = page.getSize();
+              const numText = toRoman(index + 1, romanFormat === "roman-upper");
+              const textWidth = romanFont.widthOfTextAtSize(numText, romanFontSize);
+              
+              let rmX: number;
+              let rmY: number;
+              
+              switch (options.pageNumberPosition) {
+                case "bottom-left":
+                  rmX = 40;
+                  rmY = 30;
+                  break;
+                case "bottom-right":
+                  rmX = width - 40 - textWidth;
+                  rmY = 30;
+                  break;
+                case "top-center":
+                  rmX = (width - textWidth) / 2;
+                  rmY = height - 30;
+                  break;
+                case "top-left":
+                  rmX = 40;
+                  rmY = height - 30;
+                  break;
+                case "top-right":
+                  rmX = width - 40 - textWidth;
+                  rmY = height - 30;
+                  break;
+                case "bottom-center":
+                default:
+                  rmX = (width - textWidth) / 2;
+                  rmY = 30;
+                  break;
+              }
+              
+              page.drawText(numText, {
+                x: rmX,
+                y: rmY,
+                size: romanFontSize,
+                font: romanFont,
+                color: rgb(rmR, rmG, rmB),
+              });
+            });
+            
+            result = Buffer.from(await romanPdf.save());
+            filename = "roman-numbered.pdf";
+            break;
+
+          case "add-datetime-header":
+            const dtBytes = fs.readFileSync(files[0].path);
+            const dtPdf = await PDFDocument.load(dtBytes, { ignoreEncryption: true });
+            const dtFont = await dtPdf.embedFont(StandardFonts.Helvetica);
+            const dtPages = dtPdf.getPages();
+            
+            const dtFormat = options.dateTimeFormat || "date-time";
+            const dtFontSize = options.headerFontSize || 10;
+            const dtColorHex = options.headerColor || "#333333";
+            const dtR = parseInt(dtColorHex.slice(1, 3), 16) / 255;
+            const dtG = parseInt(dtColorHex.slice(3, 5), 16) / 255;
+            const dtB = parseInt(dtColorHex.slice(5, 7), 16) / 255;
+            
+            const dtNow = new Date();
+            let dtText: string;
+            switch (dtFormat) {
+              case "date-only":
+                dtText = dtNow.toLocaleDateString();
+                break;
+              case "time-only":
+                dtText = dtNow.toLocaleTimeString();
+                break;
+              case "custom":
+                dtText = options.dateTimeCustomFormat || dtNow.toLocaleString();
+                break;
+              case "date-time":
+              default:
+                dtText = dtNow.toLocaleString();
+                break;
+            }
+            
+            dtPages.forEach((page) => {
+              const { width, height } = page.getSize();
+              const textWidth = dtFont.widthOfTextAtSize(dtText, dtFontSize);
+              
+              let dtX: number;
+              const dtY = height - 25;
+              
+              switch (options.headerPosition) {
+                case "left":
+                  dtX = 40;
+                  break;
+                case "right":
+                  dtX = width - 40 - textWidth;
+                  break;
+                case "center":
+                default:
+                  dtX = (width - textWidth) / 2;
+                  break;
+              }
+              
+              page.drawText(dtText, {
+                x: dtX,
+                y: dtY,
+                size: dtFontSize,
+                font: dtFont,
+                color: rgb(dtR, dtG, dtB),
+              });
+            });
+            
+            result = Buffer.from(await dtPdf.save());
+            filename = "datetime-header.pdf";
+            break;
+
+          case "add-page-x-of-y-footer":
+            const xoyBytes = fs.readFileSync(files[0].path);
+            const xoyPdf = await PDFDocument.load(xoyBytes, { ignoreEncryption: true });
+            const xoyFont = await xoyPdf.embedFont(StandardFonts.Helvetica);
+            const xoyPages = xoyPdf.getPages();
+            const totalXoyPages = xoyPages.length;
+            
+            const xoyFontSize = options.footerFontSize || 10;
+            const xoyColorHex = options.footerColor || "#333333";
+            const xoyR = parseInt(xoyColorHex.slice(1, 3), 16) / 255;
+            const xoyG = parseInt(xoyColorHex.slice(3, 5), 16) / 255;
+            const xoyB = parseInt(xoyColorHex.slice(5, 7), 16) / 255;
+            
+            xoyPages.forEach((page, index) => {
+              const { width } = page.getSize();
+              const xoyText = `Page ${index + 1} of ${totalXoyPages}`;
+              const textWidth = xoyFont.widthOfTextAtSize(xoyText, xoyFontSize);
+              
+              let xoyX: number;
+              const xoyY = 20;
+              
+              switch (options.footerPosition) {
+                case "left":
+                  xoyX = 40;
+                  break;
+                case "right":
+                  xoyX = width - 40 - textWidth;
+                  break;
+                case "center":
+                default:
+                  xoyX = (width - textWidth) / 2;
+                  break;
+              }
+              
+              page.drawText(xoyText, {
+                x: xoyX,
+                y: xoyY,
+                size: xoyFontSize,
+                font: xoyFont,
+                color: rgb(xoyR, xoyG, xoyB),
+              });
+            });
+            
+            result = Buffer.from(await xoyPdf.save());
+            filename = "page-x-of-y.pdf";
+            break;
+
+          case "remove-pdf-header":
+            const rmHdrBytes = fs.readFileSync(files[0].path);
+            const rmHdrPdf = await PDFDocument.load(rmHdrBytes, { ignoreEncryption: true });
+            const rmHdrPages = rmHdrPdf.getPages();
+            
+            const headerMargin = options.headerRemovalMargin || 50;
+            
+            rmHdrPages.forEach((page) => {
+              const { width, height } = page.getSize();
+              page.drawRectangle({
+                x: 0,
+                y: height - headerMargin,
+                width: width,
+                height: headerMargin,
+                color: rgb(1, 1, 1),
+                opacity: 1,
+              });
+            });
+            
+            result = Buffer.from(await rmHdrPdf.save());
+            filename = "header-removed.pdf";
+            break;
+
+          case "remove-pdf-footer":
+            const rmFtrBytes = fs.readFileSync(files[0].path);
+            const rmFtrPdf = await PDFDocument.load(rmFtrBytes, { ignoreEncryption: true });
+            const rmFtrPages = rmFtrPdf.getPages();
+            
+            const footerMargin = options.footerRemovalMargin || 50;
+            
+            rmFtrPages.forEach((page) => {
+              const { width } = page.getSize();
+              page.drawRectangle({
+                x: 0,
+                y: 0,
+                width: width,
+                height: footerMargin,
+                color: rgb(1, 1, 1),
+                opacity: 1,
+              });
+            });
+            
+            result = Buffer.from(await rmFtrPdf.save());
+            filename = "footer-removed.pdf";
+            break;
+
+          case "pdf-watermark-overlay":
+            if (files.length < 2) {
+              throw new Error("Please upload both the base PDF and the watermark PDF");
+            }
+            
+            const baseWmBytes = fs.readFileSync(files[0].path);
+            const wmOverlayPdfBytes = fs.readFileSync(files[1].path);
+            
+            const baseWmPdf = await PDFDocument.load(baseWmBytes, { ignoreEncryption: true });
+            const wmSourcePdf = await PDFDocument.load(wmOverlayPdfBytes, { ignoreEncryption: true });
+            
+            const wmSourcePages = wmSourcePdf.getPages();
+            if (wmSourcePages.length === 0) {
+              throw new Error("Watermark PDF has no pages");
+            }
+            
+            const [wmPage] = await baseWmPdf.embedPdf(wmSourcePdf, [0]);
+            const wmDims = wmPage.scale(options.overlayScale ? options.overlayScale / 100 : 0.5);
+            const wmOpacityVal = options.overlayOpacity !== undefined ? options.overlayOpacity / 100 : 0.3;
+            
+            const baseWmPages = baseWmPdf.getPages();
+            
+            const getWmPageIndices = (totalPages: number) => {
+              switch (options.overlayPages) {
+                case "first": return [0];
+                case "last": return [totalPages - 1];
+                case "odd": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 0);
+                case "even": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 1);
+                case "custom": return parsePageRange(options.overlayCustomPages || "", totalPages);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            getWmPageIndices(baseWmPages.length).forEach(index => {
+              const page = baseWmPages[index];
+              const { width, height } = page.getSize();
+              
+              let wmX: number;
+              let wmY: number;
+              
+              switch (options.overlayPosition) {
+                case "top-left":
+                  wmX = 0;
+                  wmY = height - wmDims.height;
+                  break;
+                case "top-right":
+                  wmX = width - wmDims.width;
+                  wmY = height - wmDims.height;
+                  break;
+                case "bottom-left":
+                  wmX = 0;
+                  wmY = 0;
+                  break;
+                case "bottom-right":
+                  wmX = width - wmDims.width;
+                  wmY = 0;
+                  break;
+                case "center":
+                default:
+                  wmX = (width - wmDims.width) / 2;
+                  wmY = (height - wmDims.height) / 2;
+                  break;
+              }
+              
+              page.drawPage(wmPage, {
+                x: wmX,
+                y: wmY,
+                width: wmDims.width,
+                height: wmDims.height,
+                opacity: wmOpacityVal,
+              });
+            });
+            
+            result = Buffer.from(await baseWmPdf.save());
+            filename = "pdf-watermarked.pdf";
+            break;
+
+          case "pdf-page-overlay":
+            if (files.length < 2) {
+              throw new Error("Please upload both the base PDF and the overlay PDF");
+            }
+            
+            const baseOvBytes = fs.readFileSync(files[0].path);
+            const ovPdfBytes = fs.readFileSync(files[1].path);
+            
+            const baseOvPdf = await PDFDocument.load(baseOvBytes, { ignoreEncryption: true });
+            const ovSourcePdf = await PDFDocument.load(ovPdfBytes, { ignoreEncryption: true });
+            
+            const ovSourcePages = ovSourcePdf.getPages();
+            if (ovSourcePages.length === 0) {
+              throw new Error("Overlay PDF has no pages");
+            }
+            
+            const [ovPage] = await baseOvPdf.embedPdf(ovSourcePdf, [0]);
+            const ovDims = ovPage.scale(options.overlayScale ? options.overlayScale / 100 : 1);
+            const ovOpacityVal = options.overlayOpacity !== undefined ? options.overlayOpacity / 100 : 1;
+            
+            const baseOvPages = baseOvPdf.getPages();
+            
+            const getOvPageIndices = (totalPages: number) => {
+              switch (options.overlayPages) {
+                case "first": return [0];
+                case "last": return [totalPages - 1];
+                case "odd": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 0);
+                case "even": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 1);
+                case "custom": return parsePageRange(options.overlayCustomPages || "", totalPages);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            getOvPageIndices(baseOvPages.length).forEach(index => {
+              const page = baseOvPages[index];
+              const { width, height } = page.getSize();
+              
+              let ovX: number;
+              let ovY: number;
+              
+              switch (options.overlayPosition) {
+                case "top-left":
+                  ovX = 0;
+                  ovY = height - ovDims.height;
+                  break;
+                case "top-right":
+                  ovX = width - ovDims.width;
+                  ovY = height - ovDims.height;
+                  break;
+                case "bottom-left":
+                  ovX = 0;
+                  ovY = 0;
+                  break;
+                case "bottom-right":
+                  ovX = width - ovDims.width;
+                  ovY = 0;
+                  break;
+                case "center":
+                default:
+                  ovX = (width - ovDims.width) / 2;
+                  ovY = (height - ovDims.height) / 2;
+                  break;
+              }
+              
+              page.drawPage(ovPage, {
+                x: ovX,
+                y: ovY,
+                width: ovDims.width,
+                height: ovDims.height,
+                opacity: ovOpacityVal,
+              });
+            });
+            
+            result = Buffer.from(await baseOvPdf.save());
+            filename = "page-overlay.pdf";
+            break;
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);

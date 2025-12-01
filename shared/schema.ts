@@ -310,6 +310,15 @@ export const pdfToolTypes = [
   "add-bates-numbering",
   "add-header-to-pdf",
   "add-footer-to-pdf",
+  "add-bates-stamp",
+  "add-page-numbers-start-at",
+  "add-roman-page-numbers",
+  "add-datetime-header",
+  "add-page-x-of-y-footer",
+  "remove-pdf-header",
+  "remove-pdf-footer",
+  "pdf-watermark-overlay",
+  "pdf-page-overlay",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -580,6 +589,18 @@ export const toolOptionsSchema = z.object({
   batesPosition: z.enum(["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"]).optional(),
   batesFontSize: z.number().optional(),
   batesColor: z.string().optional(),
+  pageNumberStartAt: z.number().optional(),
+  pageNumberFormat: z.enum(["decimal", "roman-lower", "roman-upper"]).optional(),
+  dateTimeFormat: z.enum(["date-only", "time-only", "date-time", "custom"]).optional(),
+  dateTimeCustomFormat: z.string().optional(),
+  overlayPdfFile: z.string().optional(),
+  overlayPosition: z.enum(["center", "top-left", "top-right", "bottom-left", "bottom-right", "tile"]).optional(),
+  overlayOpacity: z.number().optional(),
+  overlayScale: z.number().optional(),
+  overlayPages: z.enum(["all", "first", "last", "odd", "even", "custom"]).optional(),
+  overlayCustomPages: z.string().optional(),
+  headerRemovalMargin: z.number().optional(),
+  footerRemovalMargin: z.number().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -8390,5 +8411,257 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Professional Applications</h2>
 <p>Legal documents require consistent footer information. Academic papers need running page numbers. Corporate reports display branding in footers. Published materials include copyright protection. Well-designed footers complete professional document presentation.</p>`,
+  },
+  {
+    id: "add-bates-stamp",
+    name: "Add Bates Stamp",
+    description: "Apply Bates numbering stamps for legal document management",
+    icon: "Stamp",
+    type: "add-bates-stamp",
+    color: "bg-slate-700",
+    emoji: "🔢",
+    metaTitle: "Add Bates Stamp to PDF Online Free - Legal Document Numbering | PDF Tools",
+    metaDescription: "Add professional Bates stamps to PDF documents online for free. Essential legal document numbering with prefix, suffix, and sequential stamping. No registration required.",
+    seoArticle: `<h2>Bates Stamping - Essential Legal Document Management</h2>
+<p>Bates stamping is the cornerstone of legal document organization. Every page receives a unique identifier that makes referencing, tracking, and organizing documents systematic and reliable. Our free online Bates stamp tool provides professional-grade stamping for legal professionals, businesses, and individuals managing important documents.</p>
+
+<h2>What is Bates Stamping?</h2>
+<p>Bates numbering creates a sequential identification system across documents. Each page gets a unique number, often combined with prefixes and suffixes. Legal proceedings depend on Bates numbers for document discovery. Business document control uses Bates stamps for version tracking. Any organization managing large document volumes benefits from this systematic approach.</p>
+
+<h2>Professional Stamp Configuration</h2>
+<p>Customize every aspect of your Bates stamps. Add prefixes identifying document sets or case numbers. Include suffixes for classification or confidentiality levels. Set starting numbers for continuous numbering across multiple documents. Control digit padding for consistent stamp formatting. Create stamps that meet your specific organizational requirements.</p>
+
+<h2>Positioning and Formatting</h2>
+<p>Place Bates stamps where they work best for your documents. Headers or footers for traditional placement. Corners for minimal content interference. Consistent positioning across all pages ensures easy document navigation. Font size and color options match your document aesthetic while maintaining visibility.</p>
+
+<h2>Legal Compliance and Accuracy</h2>
+<p>Our Bates stamp tool maintains the precision legal proceedings demand. Sequential numbering never skips or duplicates. Stamps remain permanent within the PDF structure. Documents meet court and regulatory requirements for numbered discovery materials. Trust your stamped documents in any legal setting.</p>
+
+<h2>Multi-Document Processing</h2>
+<p>Process multiple documents while maintaining sequential Bates numbers. Production sets receive continuous numbering across all pages. Track where each document falls in the overall sequence. Large discovery productions are handled efficiently without numbering gaps.</p>`,
+  },
+  {
+    id: "add-page-numbers-start-at",
+    name: "Add Page Numbers (Start at X)",
+    description: "Add page numbers starting from any specified number",
+    icon: "ListOrdered",
+    type: "add-page-numbers-start-at",
+    color: "bg-blue-600",
+    emoji: "1️⃣",
+    metaTitle: "Add Page Numbers Starting at X - Custom Start Number | PDF Tools",
+    metaDescription: "Add page numbers to PDF starting from any number you choose. Perfect for documents with front matter or continuing numbered sections. Free online tool.",
+    seoArticle: `<h2>Custom Starting Page Numbers - Flexible Document Numbering</h2>
+<p>Not every document starts at page one. Front matter, appendices, and continued documents all require page numbering that starts at specific numbers. Our free tool lets you begin page numbers from any starting point, ensuring seamless integration with existing numbering schemes.</p>
+
+<h2>Why Custom Start Numbers Matter</h2>
+<p>Academic documents often number front matter separately from content. Multi-part reports continue numbering across sections. Appendices may start fresh or continue from main documents. Legal briefs follow specific page numbering conventions. Whatever your requirement, custom starting numbers accommodate complex document structures.</p>
+
+<h2>Simple Configuration</h2>
+<p>Enter your desired starting number and apply. Page numbers increment automatically from your starting point. No complex calculations or manual adjustments required. Preview your numbering before finalizing. Get exactly the page sequence your document needs.</p>
+
+<h2>Position and Style Options</h2>
+<p>Place page numbers where they work best. Bottom center for traditional book-style formatting. Corners for modern document layouts. Headers for alternative positioning. Choose font sizes and colors that complement your document design while maintaining readability.</p>
+
+<h2>Professional Use Cases</h2>
+<p>Publishers use custom start numbers for chapters and sections. Legal teams number court filings from specific starting points. Corporate reports maintain consistent numbering across document sets. Academic papers separate preliminary material from main content. Any scenario requiring non-sequential starting points is supported.</p>
+
+<h2>Batch Processing Capability</h2>
+<p>Number multiple documents with sequential starting points. Calculate starting numbers for document series. Maintain consistent numbering schemes across entire productions. Process large document sets efficiently while preserving your numbering logic.</p>`,
+  },
+  {
+    id: "add-roman-page-numbers",
+    name: "Add Page Numbers (Roman)",
+    description: "Add Roman numeral page numbers (i, ii, iii or I, II, III)",
+    icon: "Hash",
+    type: "add-roman-page-numbers",
+    color: "bg-purple-600",
+    emoji: "🏛️",
+    metaTitle: "Add Roman Numeral Page Numbers to PDF Online Free | PDF Tools",
+    metaDescription: "Add Roman numeral page numbers to PDF documents online for free. Choose lowercase (i, ii, iii) or uppercase (I, II, III) for professional formatting.",
+    seoArticle: `<h2>Roman Numeral Page Numbers - Classic Document Formatting</h2>
+<p>Roman numerals bring traditional elegance to document page numbering. Academic papers, books, and formal documents use Roman numerals for preliminary sections before switching to Arabic numbers. Our free tool adds Roman numeral page numbers with both uppercase and lowercase options.</p>
+
+<h2>Lowercase vs Uppercase Romans</h2>
+<p>Lowercase Roman numerals (i, ii, iii, iv) traditionally mark front matter and preliminary pages. Uppercase numerals (I, II, III, IV) appear in formal chapter headings and main sections. Choose the style that matches your document's conventions. Both options produce professional, correctly formatted numerals.</p>
+
+<h2>Academic and Publishing Standards</h2>
+<p>Dissertations and theses require Roman numerals for acknowledgments and table of contents. Book publishers use Romans for prefaces and introductions. Legal briefs may number preliminary statements separately. Following these conventions ensures your document meets professional standards.</p>
+
+<h2>Automatic Conversion</h2>
+<p>Enter page ranges and watch numbers convert automatically. No manual Roman numeral knowledge required. The tool handles conversions up to thousands correctly. Proper subtraction notation (IV, IX, XL) is applied automatically. Get accurate Roman numerals without the complexity.</p>
+
+<h2>Position and Style Control</h2>
+<p>Place Roman numerals in headers or footers. Center, left, or right alignment options. Select font styles that complement Roman characters. Adjust size for optimal visibility. Create numbering that enhances your document's professional appearance.</p>
+
+<h2>Combined Numbering Schemes</h2>
+<p>Many documents combine Roman and Arabic numerals. Number front matter with Romans, then switch to Arabic for main content. Our tool supports applying Roman numerals to specific page ranges. Achieve the multi-style numbering professional documents require.</p>`,
+  },
+  {
+    id: "add-datetime-header",
+    name: "Add Header (Date, Time)",
+    description: "Add headers with current date and time stamps",
+    icon: "Clock",
+    type: "add-datetime-header",
+    color: "bg-orange-600",
+    emoji: "📅",
+    metaTitle: "Add Date and Time Header to PDF Online Free | PDF Tools",
+    metaDescription: "Add automatic date and time headers to PDF documents online for free. Insert timestamps, current dates, and formatted time information. Professional document dating.",
+    seoArticle: `<h2>Date and Time Headers - Document Timestamp Solution</h2>
+<p>Adding date and time information to document headers provides essential context for readers. Know exactly when documents were created, modified, or printed. Our free tool inserts formatted date and time stamps into PDF headers automatically, ensuring every page carries temporal context.</p>
+
+<h2>Format Options</h2>
+<p>Choose from multiple date and time formats. Date-only stamps for general document dating. Time-only stamps for time-sensitive materials. Combined date-time for complete temporal records. Custom format strings for specific organizational requirements. Get timestamps formatted exactly how you need them.</p>
+
+<h2>Automatic Generation</h2>
+<p>Current date and time are captured when you process your document. No manual entry of dates required. Timestamps reflect processing time accurately. Eliminate the risk of incorrect or forgotten date entry. Every document gets precise temporal marking.</p>
+
+<h2>Professional Applications</h2>
+<p>Legal documents require clear dating for court submissions. Financial reports must show preparation dates. Contracts benefit from dated headers indicating version timing. Internal memos display creation dates for reference. Any document requiring temporal context benefits from automatic date headers.</p>
+
+<h2>Positioning and Styling</h2>
+<p>Place date-time stamps in left, center, or right header positions. Combine with other header elements like titles or page numbers. Select font sizes that balance visibility with document aesthetics. Choose colors that complement your document design.</p>
+
+<h2>Version Control Support</h2>
+<p>Date-time headers support document version management. Track when specific versions were generated. Identify the most recent document in a set. Create audit trails for document production. Manage document lifecycles with clear temporal markers.</p>`,
+  },
+  {
+    id: "add-page-x-of-y-footer",
+    name: "Add Footer (Page X of Y)",
+    description: "Add footers with 'Page X of Y' format showing total pages",
+    icon: "FileDigit",
+    type: "add-page-x-of-y-footer",
+    color: "bg-green-600",
+    emoji: "📊",
+    metaTitle: "Add Page X of Y Footer to PDF Online Free | PDF Tools",
+    metaDescription: "Add 'Page X of Y' footers to PDF documents showing current page and total pages. Professional pagination with total page count. Free online tool.",
+    seoArticle: `<h2>Page X of Y Footers - Complete Pagination Information</h2>
+<p>Readers want to know their progress through documents. 'Page X of Y' footers provide both current position and total length at a glance. Our free tool adds this comprehensive pagination format to your PDF footers, enhancing navigation and professional appearance.</p>
+
+<h2>Why Page X of Y?</h2>
+<p>Simple page numbers show position but not context. 'Page 15' means little without knowing total pages. 'Page 15 of 48' tells readers exactly where they are and how much remains. This format improves document usability significantly. Readers can estimate reading time and track their progress effectively.</p>
+
+<h2>Automatic Calculation</h2>
+<p>Total page count is calculated automatically. No manual counting or entry required. Page numbers and totals update correctly across all pages. Split or merge documents and totals adjust accordingly. Get accurate pagination without the manual effort.</p>
+
+<h2>Format Customization</h2>
+<p>Choose your preferred format text. 'Page 1 of 10', '1/10', or 'Sheet 1 - Total 10'. Multiple format templates available. Custom text wrappers supported. Match organizational standards or personal preferences with flexible formatting.</p>
+
+<h2>Positioning Options</h2>
+<p>Center footers for traditional document formatting. Left or right alignment for specific requirements. Adjust vertical position within footer area. Combine with other footer elements like dates or document titles. Create balanced, informative footer layouts.</p>
+
+<h2>Professional Document Enhancement</h2>
+<p>Reports become more navigable with complete pagination. Presentations show progress through materials. Manuals help readers find their place. Any multi-page document benefits from this enhanced page numbering format.</p>`,
+  },
+  {
+    id: "remove-pdf-header",
+    name: "Remove PDF Header",
+    description: "Remove existing headers from PDF pages",
+    icon: "ArrowUpToLine",
+    type: "remove-pdf-header",
+    color: "bg-red-600",
+    emoji: "🚫",
+    metaTitle: "Remove PDF Header Online Free - Delete Page Headers | PDF Tools",
+    metaDescription: "Remove headers from PDF documents online for free. Delete unwanted header text, images, and elements. Clean up documents by removing top margins.",
+    seoArticle: `<h2>Remove PDF Headers - Clean Document Presentation</h2>
+<p>Existing headers sometimes need removal. Rebranding documents, removing outdated information, or preparing clean versions all require header deletion. Our free tool removes header content from PDF pages, giving you control over document appearance.</p>
+
+<h2>Why Remove Headers?</h2>
+<p>Company rebranding makes old headers obsolete. Repurposing documents requires removing identifying information. Converting templates means clearing placeholder headers. Preparing print-ready versions may require header removal. Whatever your reason, header removal restores clean page tops.</p>
+
+<h2>Margin-Based Removal</h2>
+<p>Set the header margin area for removal. Content within the specified top margin gets cleared. Adjust margin depth to target only header areas. Preserve main content below the header zone. Precise control prevents accidental content deletion.</p>
+
+<h2>Preserve Document Integrity</h2>
+<p>Main document content remains untouched. Formatting below header areas stays intact. Page layouts maintain their structure. Only targeted header zones are affected. Get clean results without disrupting your documents.</p>
+
+<h2>Batch Processing</h2>
+<p>Remove headers from multiple documents simultaneously. Apply consistent margin settings across document sets. Process large volumes efficiently. Maintain uniform header removal across productions. Handle any volume of header removal tasks.</p>
+
+<h2>Prepare for New Headers</h2>
+<p>Clear existing headers before adding new ones. Avoid overlapping or conflicting header information. Create blank canvases for fresh header content. Streamline rebranding and document updates. Removal is often the first step in header replacement workflows.</p>`,
+  },
+  {
+    id: "remove-pdf-footer",
+    name: "Remove PDF Footer",
+    description: "Remove existing footers from PDF pages",
+    icon: "ArrowDownToLine",
+    type: "remove-pdf-footer",
+    color: "bg-red-500",
+    emoji: "🗑️",
+    metaTitle: "Remove PDF Footer Online Free - Delete Page Footers | PDF Tools",
+    metaDescription: "Remove footers from PDF documents online for free. Delete unwanted footer text, page numbers, and elements. Clean up document bottoms easily.",
+    seoArticle: `<h2>Remove PDF Footers - Clean Document Bottoms</h2>
+<p>Footer removal cleans up documents for repurposing, rebranding, or presentation. Old copyright notices, outdated page numbers, or unwanted branding can be eliminated. Our free tool removes footer content from PDF pages, giving you clean documents ready for any use.</p>
+
+<h2>Common Footer Removal Needs</h2>
+<p>Rebranding removes old company information. Template preparation clears placeholder footers. Print preparation may require footer deletion. Combining documents needs consistent footer handling. Any scenario requiring clean page bottoms benefits from footer removal.</p>
+
+<h2>Precise Margin Control</h2>
+<p>Define the footer area depth for removal. Content within bottom margins is cleared. Main document content remains protected. Adjust settings to match your specific footer sizes. Get complete removal without affecting body content.</p>
+
+<h2>Bulk Document Processing</h2>
+<p>Process entire document sets with consistent settings. Remove footers from hundreds of pages quickly. Apply uniform margin definitions across files. Handle production volumes efficiently. Batch processing saves time on large projects.</p>
+
+<h2>Maintain Document Quality</h2>
+<p>Page content above footer zones stays perfect. Formatting and layouts remain unchanged. Links and interactive elements work normally. Only targeted footer areas are affected. Professional results with preserved document integrity.</p>
+
+<h2>Prepare for New Footers</h2>
+<p>Clear old footers before adding new ones. Prevent overlapping or cluttered page bottoms. Create clean spaces for updated footer content. Streamline document rebranding workflows. Footer removal prepares documents for fresh customization.</p>`,
+  },
+  {
+    id: "pdf-watermark-overlay",
+    name: "PDF Watermark (using PDF)",
+    description: "Use a PDF file as a watermark overlay on documents",
+    icon: "Layers2",
+    type: "pdf-watermark-overlay",
+    color: "bg-indigo-600",
+    emoji: "🎨",
+    metaTitle: "PDF Watermark Overlay - Use PDF as Watermark | PDF Tools",
+    metaDescription: "Use any PDF as a watermark overlay on your documents. Combine logos, graphics, and complex designs as watermarks. Free online PDF watermarking tool.",
+    seoArticle: `<h2>PDF Watermark Overlay - Advanced Document Branding</h2>
+<p>Sometimes text watermarks are not enough. Complex logos, graphical elements, and multi-color designs require PDF-based watermarks. Our free tool uses entire PDF pages as watermark overlays, bringing professional branding and security marking to your documents.</p>
+
+<h2>Why PDF Watermarks?</h2>
+<p>PDF watermarks preserve vector quality at any size. Complex logos with multiple elements render perfectly. Transparent backgrounds allow content visibility. Color gradients and effects display correctly. Get watermark quality that matches professional design standards.</p>
+
+<h2>Overlay Configuration</h2>
+<p>Position your PDF watermark precisely on target pages. Center for prominent placement. Corners for subtle branding. Tile across pages for comprehensive coverage. Scale watermarks to fit your document dimensions. Adjust opacity for the right balance between visibility and content clarity.</p>
+
+<h2>Multi-Page Watermark Sources</h2>
+<p>Use any page from multi-page PDF watermark sources. Select specific pages for different watermark effects. Rotate between watermark pages across document sections. Flexible page selection meets complex branding requirements.</p>
+
+<h2>Professional Applications</h2>
+<p>Corporate documents display company logos and branding. Confidential materials show security graphics. Draft documents display comprehensive status markings. Photography portfolios carry watermark protection. Any document requiring graphical watermarks benefits from this tool.</p>
+
+<h2>Quality and Compatibility</h2>
+<p>Watermark quality matches original PDF resolution. Vector elements scale without quality loss. Transparent elements overlay correctly. Results work across all PDF readers and platforms. Professional watermarking that looks right everywhere.</p>`,
+  },
+  {
+    id: "pdf-page-overlay",
+    name: "PDF Overlay (Page on Page)",
+    description: "Overlay one PDF page onto another for combining content",
+    icon: "Combine",
+    type: "pdf-page-overlay",
+    color: "bg-violet-600",
+    emoji: "📑",
+    metaTitle: "PDF Page Overlay - Combine PDF Pages | PDF Tools",
+    metaDescription: "Overlay PDF pages on top of each other to combine content. Layer documents, add stamps, and merge visual elements. Free online PDF overlay tool.",
+    seoArticle: `<h2>PDF Page Overlay - Layer Documents Together</h2>
+<p>Combining PDF content by overlaying pages opens creative and practical possibilities. Add letterhead to documents, combine forms with filled data, or layer graphical elements. Our free tool overlays PDF pages precisely, merging content from multiple sources into unified documents.</p>
+
+<h2>How Page Overlay Works</h2>
+<p>Select your base document and overlay PDF. Overlay pages are layered on top of base pages. Transparent areas in overlays show base content through. Adjust positioning, scaling, and opacity for perfect combinations. The result is a single PDF with merged visual content.</p>
+
+<h2>Common Overlay Applications</h2>
+<p>Add company letterhead to plain documents. Combine form templates with filled data. Layer approval stamps onto documents. Add graphical borders or frames. Merge header and footer templates with content. Any scenario requiring layered content benefits from overlay functionality.</p>
+
+<h2>Precise Positioning Control</h2>
+<p>Position overlays exactly where needed. Center for stamp-style applications. Corners for watermark placements. Full page for template combinations. Adjust horizontal and vertical offsets precisely. Get overlays exactly where your design requires.</p>
+
+<h2>Opacity and Blending</h2>
+<p>Control overlay visibility with opacity settings. Full opacity for solid additions. Reduced opacity for watermark effects. Layer multiple overlays with different opacities. Create sophisticated visual combinations with transparency control.</p>
+
+<h2>Batch Overlay Processing</h2>
+<p>Apply the same overlay to multiple documents. Process entire document sets with consistent overlays. Maintain branding across document productions. Handle large volumes efficiently. Batch processing extends overlay capabilities to any project scale.</p>`,
   },
 ];
