@@ -15021,6 +15021,489 @@ export async function registerRoutes(
             });
             filename = "locked-signed.pdf";
             break;
+
+          case "add-timestamp-to-pdf":
+            const timestampPdfBytes = fs.readFileSync(files[0].path);
+            const timestampPdf = await PDFDocument.load(timestampPdfBytes, { ignoreEncryption: true });
+            const timestampFont = await timestampPdf.embedFont(StandardFonts.Helvetica);
+            const timestampPages = timestampPdf.getPages();
+            
+            const now = new Date();
+            let timestampText = "";
+            switch (options.timestampFormat) {
+              case "date-only":
+                timestampText = now.toLocaleDateString();
+                break;
+              case "time-only":
+                timestampText = now.toLocaleTimeString();
+                break;
+              case "iso-8601":
+                timestampText = now.toISOString();
+                break;
+              case "custom":
+                timestampText = options.timestampCustomFormat ? 
+                  now.toLocaleDateString() + " " + now.toLocaleTimeString() : 
+                  now.toLocaleString();
+                break;
+              default:
+                timestampText = now.toLocaleString();
+            }
+            if (options.timestampIncludeTimezone) {
+              timestampText += " " + Intl.DateTimeFormat().resolvedOptions().timeZone;
+            }
+            
+            const tsFontSize = options.timestampFontSize || 12;
+            const tsOpacity = (options.timestampOpacity || 100) / 100;
+            const tsColorHex = options.timestampColor || "#000000";
+            const tsR = parseInt(tsColorHex.slice(1, 3), 16) / 255;
+            const tsG = parseInt(tsColorHex.slice(3, 5), 16) / 255;
+            const tsB = parseInt(tsColorHex.slice(5, 7), 16) / 255;
+            
+            const getTimestampPosition = (page: any, position: string) => {
+              const { width, height } = page.getSize();
+              const textWidth = timestampFont.widthOfTextAtSize(timestampText, tsFontSize);
+              switch (position) {
+                case "top-left": return { x: 20, y: height - 30 };
+                case "top-center": return { x: (width - textWidth) / 2, y: height - 30 };
+                case "top-right": return { x: width - textWidth - 20, y: height - 30 };
+                case "bottom-left": return { x: 20, y: 20 };
+                case "bottom-center": return { x: (width - textWidth) / 2, y: 20 };
+                default: return { x: width - textWidth - 20, y: 20 };
+              }
+            };
+            
+            const shouldApplyTimestamp = (pageIndex: number, totalPages: number) => {
+              switch (options.timestampPages) {
+                case "first": return pageIndex === 0;
+                case "last": return pageIndex === totalPages - 1;
+                case "odd": return pageIndex % 2 === 0;
+                case "even": return pageIndex % 2 === 1;
+                case "custom": return parsePageRange(options.timestampCustomPages || "", totalPages).includes(pageIndex);
+                default: return true;
+              }
+            };
+            
+            timestampPages.forEach((page, index) => {
+              if (shouldApplyTimestamp(index, timestampPages.length)) {
+                const pos = getTimestampPosition(page, options.timestampPosition || "bottom-right");
+                page.drawText(timestampText, {
+                  x: pos.x,
+                  y: pos.y,
+                  size: tsFontSize,
+                  font: timestampFont,
+                  color: rgb(tsR, tsG, tsB),
+                  opacity: tsOpacity,
+                });
+              }
+            });
+            
+            result = Buffer.from(await timestampPdf.save());
+            filename = "timestamped.pdf";
+            break;
+
+          case "pdf-certificate-adder":
+            const certPdfBytes = fs.readFileSync(files[0].path);
+            const certPdf = await PDFDocument.load(certPdfBytes, { ignoreEncryption: true });
+            const certFont = await certPdf.embedFont(StandardFonts.HelveticaBold);
+            const certRegFont = await certPdf.embedFont(StandardFonts.Helvetica);
+            const certPages = certPdf.getPages();
+            const certFirstPage = certPages[0];
+            const { width: certWidth, height: certHeight } = certFirstPage.getSize();
+            
+            const certType = options.certificateType || "completion";
+            const certName = options.certificateName || "Certificate Holder";
+            const certIssuer = options.certificateIssuer || "Issuing Authority";
+            const certDate = options.certificateDate || new Date().toLocaleDateString();
+            const certNumber = options.certificateNumber || `CERT-${Date.now()}`;
+            
+            const certBoxWidth = 320;
+            const certBoxHeight = 120;
+            let certX = (certWidth - certBoxWidth) / 2;
+            let certY = (certHeight - certBoxHeight) / 2;
+            
+            if (options.certificatePosition === "top-center") {
+              certY = certHeight - certBoxHeight - 40;
+            } else if (options.certificatePosition === "bottom-center") {
+              certY = 40;
+            }
+            
+            certFirstPage.drawRectangle({
+              x: certX,
+              y: certY,
+              width: certBoxWidth,
+              height: certBoxHeight,
+              color: rgb(1, 0.98, 0.9),
+              borderColor: rgb(0.7, 0.55, 0.2),
+              borderWidth: 3,
+            });
+            
+            const certTitle = certType === "completion" ? "CERTIFICATE OF COMPLETION" :
+                             certType === "authenticity" ? "CERTIFICATE OF AUTHENTICITY" :
+                             certType === "approval" ? "CERTIFICATE OF APPROVAL" :
+                             certType === "membership" ? "MEMBERSHIP CERTIFICATE" : "CERTIFICATE";
+            
+            certFirstPage.drawText(certTitle, {
+              x: certX + (certBoxWidth - certFont.widthOfTextAtSize(certTitle, 14)) / 2,
+              y: certY + certBoxHeight - 25,
+              size: 14,
+              font: certFont,
+              color: rgb(0.4, 0.3, 0.1),
+            });
+            
+            certFirstPage.drawText(certName, {
+              x: certX + (certBoxWidth - certFont.widthOfTextAtSize(certName, 12)) / 2,
+              y: certY + certBoxHeight - 50,
+              size: 12,
+              font: certFont,
+              color: rgb(0.2, 0.2, 0.2),
+            });
+            
+            certFirstPage.drawText(`Issued by: ${certIssuer}`, {
+              x: certX + 15,
+              y: certY + certBoxHeight - 75,
+              size: 10,
+              font: certRegFont,
+              color: rgb(0.4, 0.4, 0.4),
+            });
+            
+            certFirstPage.drawText(`Date: ${certDate}  |  No: ${certNumber}`, {
+              x: certX + 15,
+              y: certY + certBoxHeight - 95,
+              size: 9,
+              font: certRegFont,
+              color: rgb(0.5, 0.5, 0.5),
+            });
+            
+            result = Buffer.from(await certPdf.save());
+            filename = "certified.pdf";
+            break;
+
+          case "pdf-signature-remover":
+            const removerPdfBytes = fs.readFileSync(files[0].path);
+            const removerPdf = await PDFDocument.load(removerPdfBytes, { ignoreEncryption: true });
+            const removerPages = removerPdf.getPages();
+            
+            removerPages.forEach(page => {
+              const annotations = page.node.lookup(page.node.Annots);
+              if (annotations) {
+                page.node.delete(page.node.Annots);
+              }
+            });
+            
+            result = Buffer.from(await removerPdf.save());
+            filename = "signatures-removed.pdf";
+            break;
+
+          case "watermark-pdf":
+          case "pdf-watermarker":
+            const wmPdfBytes = fs.readFileSync(files[0].path);
+            const wmPdf = await PDFDocument.load(wmPdfBytes, { ignoreEncryption: true });
+            const wmFont = await wmPdf.embedFont(StandardFonts.HelveticaBold);
+            const wmPages = wmPdf.getPages();
+            
+            const wmText = options.watermarkText || "WATERMARK";
+            const wmOpacity = (options.watermarkOpacity || 30) / 100;
+            const wmRotation = (options.watermarkRotation || 0) * Math.PI / 180;
+            
+            const getWmPages = (totalPages: number) => {
+              switch (options.watermarkPages) {
+                case "first": return [0];
+                case "last": return [totalPages - 1];
+                case "odd": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 0);
+                case "even": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 1);
+                case "custom": return parsePageRange(options.watermarkCustomPages || "", totalPages);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            const wmPageIndices = getWmPages(wmPages.length);
+            
+            wmPageIndices.forEach(index => {
+              const page = wmPages[index];
+              const { width, height } = page.getSize();
+              const fontSize = 72;
+              const textWidth = wmFont.widthOfTextAtSize(wmText, fontSize);
+              
+              let wmX = (width - textWidth) / 2;
+              let wmY = height / 2;
+              
+              switch (options.watermarkPosition) {
+                case "top-left": wmX = 50; wmY = height - 100; break;
+                case "top-right": wmX = width - textWidth - 50; wmY = height - 100; break;
+                case "bottom-left": wmX = 50; wmY = 50; break;
+                case "bottom-right": wmX = width - textWidth - 50; wmY = 50; break;
+                case "diagonal": wmX = 50; wmY = 50; break;
+              }
+              
+              page.drawText(wmText, {
+                x: wmX,
+                y: wmY,
+                size: fontSize,
+                font: wmFont,
+                color: rgb(0.5, 0.5, 0.5),
+                opacity: wmOpacity,
+                rotate: options.watermarkPosition === "diagonal" ? { type: "degrees" as const, angle: 45 } : 
+                        wmRotation !== 0 ? { type: "degrees" as const, angle: options.watermarkRotation || 0 } : undefined,
+              });
+            });
+            
+            result = Buffer.from(await wmPdf.save());
+            filename = "watermarked.pdf";
+            break;
+
+          case "add-text-watermark":
+            const txtWmPdfBytes = fs.readFileSync(files[0].path);
+            const txtWmPdf = await PDFDocument.load(txtWmPdfBytes, { ignoreEncryption: true });
+            const txtWmFont = await txtWmPdf.embedFont(StandardFonts.HelveticaBold);
+            const txtWmPages = txtWmPdf.getPages();
+            
+            const txtWmText = options.watermarkText || "CONFIDENTIAL";
+            const txtWmFontSize = options.fontSize || 48;
+            const txtWmOpacity = (options.watermarkOpacity || 30) / 100;
+            const txtWmRotation = options.watermarkRotation || 45;
+            const txtWmColorHex = options.color || "#808080";
+            const txtWmR = parseInt(txtWmColorHex.slice(1, 3), 16) / 255;
+            const txtWmG = parseInt(txtWmColorHex.slice(3, 5), 16) / 255;
+            const txtWmB = parseInt(txtWmColorHex.slice(5, 7), 16) / 255;
+            
+            const getTxtWmPageIndices = (totalPages: number) => {
+              switch (options.watermarkPages) {
+                case "first": return [0];
+                case "last": return [totalPages - 1];
+                case "odd": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 0);
+                case "even": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 1);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            getTxtWmPageIndices(txtWmPages.length).forEach(index => {
+              const page = txtWmPages[index];
+              const { width, height } = page.getSize();
+              const textWidth = txtWmFont.widthOfTextAtSize(txtWmText, txtWmFontSize);
+              
+              let x = (width - textWidth) / 2;
+              let y = height / 2;
+              
+              switch (options.watermarkPosition) {
+                case "top-left": x = 50; y = height - 80; break;
+                case "top-right": x = width - textWidth - 50; y = height - 80; break;
+                case "bottom-left": x = 50; y = 50; break;
+                case "bottom-right": x = width - textWidth - 50; y = 50; break;
+              }
+              
+              page.drawText(txtWmText, {
+                x,
+                y,
+                size: txtWmFontSize,
+                font: txtWmFont,
+                color: rgb(txtWmR, txtWmG, txtWmB),
+                opacity: txtWmOpacity,
+                rotate: { type: "degrees" as const, angle: txtWmRotation },
+              });
+            });
+            
+            result = Buffer.from(await txtWmPdf.save());
+            filename = "text-watermarked.pdf";
+            break;
+
+          case "add-image-watermark":
+            const imgWmPdfBytes = fs[0] ? fs.readFileSync(files[0].path) : Buffer.from([]);
+            const imgWmPdf = await PDFDocument.load(imgWmPdfBytes, { ignoreEncryption: true });
+            const imgWmPages = imgWmPdf.getPages();
+            const imgWmOpacity = (options.watermarkOpacity || 30) / 100;
+            const imgWmScale = (options.watermarkScale || 50) / 100;
+            
+            const getImgWmPageIndices = (totalPages: number) => {
+              switch (options.watermarkPages) {
+                case "first": return [0];
+                case "last": return [totalPages - 1];
+                case "odd": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 0);
+                case "even": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 1);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            getImgWmPageIndices(imgWmPages.length).forEach(index => {
+              const page = imgWmPages[index];
+              const { width, height } = page.getSize();
+              
+              const placeholderSize = 100 * imgWmScale;
+              let imgX = (width - placeholderSize) / 2;
+              let imgY = (height - placeholderSize) / 2;
+              
+              switch (options.watermarkPosition) {
+                case "top-left": imgX = 50; imgY = height - placeholderSize - 50; break;
+                case "top-right": imgX = width - placeholderSize - 50; imgY = height - placeholderSize - 50; break;
+                case "bottom-left": imgX = 50; imgY = 50; break;
+                case "bottom-right": imgX = width - placeholderSize - 50; imgY = 50; break;
+              }
+              
+              page.drawRectangle({
+                x: imgX,
+                y: imgY,
+                width: placeholderSize,
+                height: placeholderSize,
+                color: rgb(0.7, 0.7, 0.7),
+                opacity: imgWmOpacity,
+                borderColor: rgb(0.5, 0.5, 0.5),
+                borderWidth: 1,
+              });
+            });
+            
+            result = Buffer.from(await imgWmPdf.save());
+            filename = "image-watermarked.pdf";
+            break;
+
+          case "add-tiled-watermark":
+            const tiledPdfBytes = fs.readFileSync(files[0].path);
+            const tiledPdf = await PDFDocument.load(tiledPdfBytes, { ignoreEncryption: true });
+            const tiledFont = await tiledPdf.embedFont(StandardFonts.HelveticaBold);
+            const tiledPages = tiledPdf.getPages();
+            
+            const tiledText = options.watermarkText || "CONFIDENTIAL";
+            const tiledFontSize = options.fontSize || 24;
+            const tiledOpacity = (options.watermarkOpacity || 20) / 100;
+            const tiledSpacing = options.watermarkTileSpacing || 100;
+            const tiledRotation = options.watermarkRotation || 45;
+            const tiledColorHex = options.color || "#808080";
+            const tiledR = parseInt(tiledColorHex.slice(1, 3), 16) / 255;
+            const tiledG = parseInt(tiledColorHex.slice(3, 5), 16) / 255;
+            const tiledB = parseInt(tiledColorHex.slice(5, 7), 16) / 255;
+            
+            const getTiledPageIndices = (totalPages: number) => {
+              switch (options.watermarkPages) {
+                case "first": return [0];
+                case "last": return [totalPages - 1];
+                case "odd": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 0);
+                case "even": return Array.from({ length: totalPages }, (_, i) => i).filter(i => i % 2 === 1);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            getTiledPageIndices(tiledPages.length).forEach(index => {
+              const page = tiledPages[index];
+              const { width, height } = page.getSize();
+              
+              for (let y = 50; y < height; y += tiledSpacing) {
+                for (let x = 50; x < width; x += tiledSpacing + tiledFont.widthOfTextAtSize(tiledText, tiledFontSize)) {
+                  page.drawText(tiledText, {
+                    x,
+                    y,
+                    size: tiledFontSize,
+                    font: tiledFont,
+                    color: rgb(tiledR, tiledG, tiledB),
+                    opacity: tiledOpacity,
+                    rotate: { type: "degrees" as const, angle: tiledRotation },
+                  });
+                }
+              }
+            });
+            
+            result = Buffer.from(await tiledPdf.save());
+            filename = "tiled-watermarked.pdf";
+            break;
+
+          case "stamp-pdf":
+          case "pdf-stamper":
+            const stampPdfBytes = fs.readFileSync(files[0].path);
+            const stampPdf = await PDFDocument.load(stampPdfBytes, { ignoreEncryption: true });
+            const stampFont = await stampPdf.embedFont(StandardFonts.HelveticaBold);
+            const stampPages = stampPdf.getPages();
+            
+            const stampType = options.stampType || "approved";
+            const stampText = stampType === "custom" ? (options.stampText || "STAMP") : stampType.toUpperCase();
+            const stampSize = options.stampSize || "medium";
+            const stampOpacity = (options.stampOpacity || 80) / 100;
+            const stampRotation = options.stampRotation || 0;
+            const stampColorHex = options.stampColor || "#dc2626";
+            const stampR = parseInt(stampColorHex.slice(1, 3), 16) / 255;
+            const stampG = parseInt(stampColorHex.slice(3, 5), 16) / 255;
+            const stampB = parseInt(stampColorHex.slice(5, 7), 16) / 255;
+            
+            const stampFontSize = stampSize === "small" ? 24 : stampSize === "large" ? 48 : 36;
+            const stampPadding = stampSize === "small" ? 10 : stampSize === "large" ? 20 : 15;
+            
+            const getStampPages = (totalPages: number) => {
+              switch (options.stampPages) {
+                case "first": return [0];
+                case "last": return [totalPages - 1];
+                case "custom": return parsePageRange(options.stampCustomPages || "", totalPages);
+                default: return Array.from({ length: totalPages }, (_, i) => i);
+              }
+            };
+            
+            getStampPages(stampPages.length).forEach(index => {
+              const page = stampPages[index];
+              const { width, height } = page.getSize();
+              const textWidth = stampFont.widthOfTextAtSize(stampText, stampFontSize);
+              const textHeight = stampFontSize;
+              
+              let sX = (width - textWidth - stampPadding * 2) / 2;
+              let sY = (height - textHeight - stampPadding * 2) / 2;
+              
+              switch (options.stampPosition) {
+                case "top-left": sX = 30; sY = height - textHeight - stampPadding * 2 - 30; break;
+                case "top-right": sX = width - textWidth - stampPadding * 2 - 30; sY = height - textHeight - stampPadding * 2 - 30; break;
+                case "bottom-left": sX = 30; sY = 30; break;
+                case "bottom-right": sX = width - textWidth - stampPadding * 2 - 30; sY = 30; break;
+              }
+              
+              const boxWidth = textWidth + stampPadding * 2;
+              const boxHeight = textHeight + stampPadding * 2;
+              
+              if (options.stampStyle === "circle" || options.stampStyle === "seal") {
+                const radius = Math.max(boxWidth, boxHeight) / 2 + 10;
+                page.drawCircle({
+                  x: sX + boxWidth / 2,
+                  y: sY + boxHeight / 2,
+                  size: radius,
+                  color: rgb(1, 1, 1),
+                  opacity: 0,
+                  borderColor: rgb(stampR, stampG, stampB),
+                  borderWidth: 3,
+                  borderOpacity: stampOpacity,
+                });
+              } else {
+                page.drawRectangle({
+                  x: sX,
+                  y: sY,
+                  width: boxWidth,
+                  height: boxHeight,
+                  color: rgb(1, 1, 1),
+                  opacity: 0,
+                  borderColor: rgb(stampR, stampG, stampB),
+                  borderWidth: 3,
+                  borderOpacity: stampOpacity,
+                });
+              }
+              
+              page.drawText(stampText, {
+                x: sX + stampPadding,
+                y: sY + stampPadding,
+                size: stampFontSize,
+                font: stampFont,
+                color: rgb(stampR, stampG, stampB),
+                opacity: stampOpacity,
+                rotate: stampRotation !== 0 ? { type: "degrees" as const, angle: stampRotation } : undefined,
+              });
+              
+              if (options.stampDate) {
+                const dateText = new Date().toLocaleDateString();
+                const dateFontSize = stampFontSize * 0.5;
+                page.drawText(dateText, {
+                  x: sX + stampPadding,
+                  y: sY - dateFontSize - 5,
+                  size: dateFontSize,
+                  font: stampFont,
+                  color: rgb(stampR, stampG, stampB),
+                  opacity: stampOpacity,
+                });
+              }
+            });
+            
+            result = Buffer.from(await stampPdf.save());
+            filename = "stamped.pdf";
+            break;
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);

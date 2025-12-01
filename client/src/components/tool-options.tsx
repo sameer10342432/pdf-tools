@@ -7,6 +7,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 import { type PdfToolType, type ToolOptions } from "@shared/schema";
 
 interface ToolOptionsProps {
