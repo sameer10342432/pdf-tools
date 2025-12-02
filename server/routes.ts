@@ -81,11 +81,12 @@ const upload = multer({
     const isCbr = ext.endsWith(".cbr") || ext.endsWith(".cbz");
     const isLatex = ext.endsWith(".tex") || ext.endsWith(".latex");
     const isPostScript = ext.endsWith(".ps") || ext.endsWith(".eps");
+    const isRaw = [".raw", ".cr2", ".nef", ".arw", ".dng", ".orf", ".rw2", ".pef", ".srw", ".raf"].some(e => ext.endsWith(e));
     
     if (isPdf || isImage || isVideo || isDocx || isExcel || isPowerPoint || isHtml || isTxt || isRtf || isSvg || 
         isOdt || isOds || isOdp || isCsv || isEpub || isMobi || isDjvu || isXml || isMarkdown ||
         isPublisher || isVisio || isProject || isPages || isNumbers || isKeynote || isEmail || isMsg ||
-        isPsd || isAi || isIndd || isDwg || isDxf || isXps || isOxps || isWpd || isCbr || isLatex || isPostScript) {
+        isPsd || isAi || isIndd || isDwg || isDxf || isXps || isOxps || isWpd || isCbr || isLatex || isPostScript || isRaw) {
       cb(null, true);
     } else {
       cb(new Error("Invalid file type"));
@@ -21797,6 +21798,234 @@ ${paths.join('\n')}
             
             filename = files[0].originalname.replace(/\.(jfif)$/i, '') + '.jpg';
             contentType = 'image/jpeg';
+            break;
+          }
+            
+          case "raw-to-jpg":
+          case "cr2-to-jpg":
+          case "nef-to-jpg":
+          case "arw-to-jpg":
+          case "dng-to-jpg": {
+            const rawFile = files[0];
+            const rawBuffer = fs.readFileSync(rawFile.path);
+            const rawQuality = parseInt(options.quality) || 90;
+            
+            try {
+              const rawOutput = await sharp(rawBuffer)
+                .jpeg({ quality: rawQuality, mozjpeg: true })
+                .toBuffer();
+              
+              result = rawOutput;
+            } catch (sharpError) {
+              const { execSync } = require('child_process');
+              const tempOutputPath = path.join(outputDir, `raw-${randomUUID()}.jpg`);
+              
+              try {
+                execSync(`convert "${rawFile.path}" -quality ${rawQuality} "${tempOutputPath}"`, { 
+                  timeout: 120000,
+                  stdio: 'pipe'
+                });
+                
+                if (fs.existsSync(tempOutputPath)) {
+                  result = fs.readFileSync(tempOutputPath);
+                  fs.unlinkSync(tempOutputPath);
+                } else {
+                  throw new Error('ImageMagick conversion failed');
+                }
+              } catch (imError) {
+                throw new Error(`Failed to convert RAW file. Please ensure the file is a valid camera RAW format.`);
+              }
+            }
+            
+            filename = rawFile.originalname.replace(/\.[^/.]+$/, '.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+
+          case "svg-to-jpg": {
+            const svgFile = files[0];
+            const svgBuffer = fs.readFileSync(svgFile.path);
+            const svgQuality = parseInt(options.quality) || 90;
+            const svgWidth = parseInt(options.width) || 1920;
+            const bgColor = options.backgroundColor || "#ffffff";
+            
+            const svgToJpgOutput = await sharp(svgBuffer)
+              .resize({ width: svgWidth, withoutEnlargement: false })
+              .flatten({ background: bgColor })
+              .jpeg({ quality: svgQuality, mozjpeg: true })
+              .toBuffer();
+            
+            result = svgToJpgOutput;
+            filename = svgFile.originalname.replace(/\.svg$/i, '.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+
+          case "eps-to-png": {
+            const epsFile = files[0];
+            const epsWidth = parseInt(options.width) || 1920;
+            const { execSync } = require('child_process');
+            const tempPngPath = path.join(outputDir, `eps-${randomUUID()}.png`);
+            
+            try {
+              execSync(`gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pngalpha -r300 -dDownScaleFactor=1 -sOutputFile="${tempPngPath}" "${epsFile.path}"`, {
+                timeout: 120000,
+                stdio: 'pipe'
+              });
+              
+              if (fs.existsSync(tempPngPath)) {
+                let sharpInstance = sharp(tempPngPath);
+                if (epsWidth) {
+                  sharpInstance = sharpInstance.resize({ width: epsWidth, withoutEnlargement: true });
+                }
+                result = await sharpInstance.png({ compressionLevel: 9 }).toBuffer();
+                fs.unlinkSync(tempPngPath);
+              } else {
+                throw new Error('Ghostscript conversion failed');
+              }
+            } catch (gsError) {
+              try {
+                execSync(`convert -density 300 "${epsFile.path}" -resize ${epsWidth}x "${tempPngPath}"`, {
+                  timeout: 120000,
+                  stdio: 'pipe'
+                });
+                
+                if (fs.existsSync(tempPngPath)) {
+                  result = fs.readFileSync(tempPngPath);
+                  fs.unlinkSync(tempPngPath);
+                } else {
+                  throw new Error('ImageMagick conversion failed');
+                }
+              } catch (imError) {
+                throw new Error('Failed to convert EPS file. Please ensure the file is a valid EPS format.');
+              }
+            }
+            
+            filename = epsFile.originalname.replace(/\.eps$/i, '.png');
+            contentType = 'image/png';
+            pageCount = 1;
+            break;
+          }
+
+          case "eps-to-jpg": {
+            const epsJpgFile = files[0];
+            const epsJpgQuality = parseInt(options.quality) || 90;
+            const epsJpgWidth = parseInt(options.width) || 1920;
+            const epsJpgBg = options.backgroundColor || "#ffffff";
+            const { execSync } = require('child_process');
+            const tempJpgPath = path.join(outputDir, `eps-${randomUUID()}.jpg`);
+            
+            try {
+              execSync(`gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg -dJPEGQ=${epsJpgQuality} -r300 -sOutputFile="${tempJpgPath}" "${epsJpgFile.path}"`, {
+                timeout: 120000,
+                stdio: 'pipe'
+              });
+              
+              if (fs.existsSync(tempJpgPath)) {
+                let jpgSharp = sharp(tempJpgPath);
+                if (epsJpgWidth) {
+                  jpgSharp = jpgSharp.resize({ width: epsJpgWidth, withoutEnlargement: true });
+                }
+                jpgSharp = jpgSharp.flatten({ background: epsJpgBg });
+                result = await jpgSharp.jpeg({ quality: epsJpgQuality, mozjpeg: true }).toBuffer();
+                fs.unlinkSync(tempJpgPath);
+              } else {
+                throw new Error('Ghostscript conversion failed');
+              }
+            } catch (gsError) {
+              try {
+                execSync(`convert -density 300 "${epsJpgFile.path}" -resize ${epsJpgWidth}x -background "${epsJpgBg}" -flatten -quality ${epsJpgQuality} "${tempJpgPath}"`, {
+                  timeout: 120000,
+                  stdio: 'pipe'
+                });
+                
+                if (fs.existsSync(tempJpgPath)) {
+                  result = fs.readFileSync(tempJpgPath);
+                  fs.unlinkSync(tempJpgPath);
+                } else {
+                  throw new Error('ImageMagick conversion failed');
+                }
+              } catch (imError) {
+                throw new Error('Failed to convert EPS file. Please ensure the file is a valid EPS format.');
+              }
+            }
+            
+            filename = epsJpgFile.originalname.replace(/\.eps$/i, '.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+
+          case "psd-to-jpg": {
+            const psdJpgFile = files[0];
+            const psdJpgQuality = parseInt(options.quality) || 90;
+            const psdJpgBg = options.backgroundColor || "#ffffff";
+            const { execSync } = require('child_process');
+            const tempPsdJpgPath = path.join(outputDir, `psd-${randomUUID()}.jpg`);
+            
+            try {
+              execSync(`convert "${psdJpgFile.path}[0]" -flatten -background "${psdJpgBg}" -quality ${psdJpgQuality} "${tempPsdJpgPath}"`, {
+                timeout: 120000,
+                stdio: 'pipe'
+              });
+              
+              if (fs.existsSync(tempPsdJpgPath)) {
+                result = fs.readFileSync(tempPsdJpgPath);
+                fs.unlinkSync(tempPsdJpgPath);
+              } else {
+                throw new Error('ImageMagick conversion failed');
+              }
+            } catch (imError) {
+              try {
+                const psdBuffer = fs.readFileSync(psdJpgFile.path);
+                result = await sharp(psdBuffer)
+                  .flatten({ background: psdJpgBg })
+                  .jpeg({ quality: psdJpgQuality, mozjpeg: true })
+                  .toBuffer();
+              } catch (sharpError) {
+                throw new Error('Failed to convert PSD file. Please ensure the file is a valid Photoshop document.');
+              }
+            }
+            
+            filename = psdJpgFile.originalname.replace(/\.psd$/i, '.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+
+          case "psd-to-png": {
+            const psdPngFile = files[0];
+            const { execSync } = require('child_process');
+            const tempPsdPngPath = path.join(outputDir, `psd-${randomUUID()}.png`);
+            
+            try {
+              execSync(`convert "${psdPngFile.path}[0]" -alpha on "${tempPsdPngPath}"`, {
+                timeout: 120000,
+                stdio: 'pipe'
+              });
+              
+              if (fs.existsSync(tempPsdPngPath)) {
+                result = fs.readFileSync(tempPsdPngPath);
+                fs.unlinkSync(tempPsdPngPath);
+              } else {
+                throw new Error('ImageMagick conversion failed');
+              }
+            } catch (imError) {
+              try {
+                const psdPngBuffer = fs.readFileSync(psdPngFile.path);
+                result = await sharp(psdPngBuffer)
+                  .png({ compressionLevel: 9 })
+                  .toBuffer();
+              } catch (sharpError) {
+                throw new Error('Failed to convert PSD file. Please ensure the file is a valid Photoshop document.');
+              }
+            }
+            
+            filename = psdPngFile.originalname.replace(/\.psd$/i, '.png');
+            contentType = 'image/png';
+            pageCount = 1;
             break;
           }
             

@@ -8419,6 +8419,147 @@ export function ToolOptionsComponent({
       );
     }
 
+    case "raw-to-jpg":
+    case "cr2-to-jpg":
+    case "nef-to-jpg":
+    case "arw-to-jpg":
+    case "dng-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 90}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 90]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-raw-quality"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert RAW camera files to high-quality JPG images. Supports Canon CR2, Nikon NEF, Sony ARW, Adobe DNG, and other RAW formats.
+          </p>
+        </div>
+      );
+    }
+
+    case "svg-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 90}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 90]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-svg-jpg-quality"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Width: {options.width || 1920}px</Label>
+            <Slider
+              min={100}
+              max={4000}
+              step={100}
+              value={[options.width || 1920]}
+              onValueChange={([value]) => updateOption("width", value)}
+              data-testid="slider-svg-jpg-width"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert SVG vector graphics to JPG raster images with customizable quality and resolution.
+          </p>
+        </div>
+      );
+    }
+
+    case "eps-to-png": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Width: {options.width || 1920}px</Label>
+            <Slider
+              min={100}
+              max={4000}
+              step={100}
+              value={[options.width || 1920]}
+              onValueChange={([value]) => updateOption("width", value)}
+              data-testid="slider-eps-png-width"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert EPS vector files to PNG format with transparency support.
+          </p>
+        </div>
+      );
+    }
+
+    case "eps-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 90}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 90]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-eps-jpg-quality"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Width: {options.width || 1920}px</Label>
+            <Slider
+              min={100}
+              max={4000}
+              step={100}
+              value={[options.width || 1920]}
+              onValueChange={([value]) => updateOption("width", value)}
+              data-testid="slider-eps-jpg-width"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert EPS vector files to JPG raster format with customizable quality and resolution.
+          </p>
+        </div>
+      );
+    }
+
+    case "psd-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 90}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 90]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-psd-jpg-quality"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert Photoshop PSD files to JPG format. All layers will be flattened into a single image.
+          </p>
+        </div>
+      );
+    }
+
+    case "psd-to-png": {
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert Photoshop PSD files to PNG format with transparency support. All visible layers will be flattened while preserving transparency.
+          </p>
+        </div>
+      );
+    }
+
     default:
       return null;
   }
