@@ -129,6 +129,26 @@ The application is built with a React frontend and an Express.js backend.
 
   All composition tools support multi-file uploads with drag-and-drop interface. Sharp library handles image processing with high-quality output.
 
+- Added 10 new advanced image processing and AI-powered tools (December 2025):
+  
+  **Privacy and Metadata Tools:**
+  - **Remove Image Metadata**: Strip EXIF, GPS, camera info, and other metadata from images for privacy protection
+  
+  **Image Enhancement Tools:**
+  - **Image Color Corrector**: Adjust brightness, contrast, saturation, and hue with slider controls
+  - **Change Image DPI**: Modify image resolution (DPI/PPI) for print or web optimization
+  - **Image Enlarger**: Upscale images 2x, 3x, or 4x using Lanczos interpolation algorithm
+  - **Image Deblur**: Sharpen blurry images using advanced unsharp masking algorithms
+  
+  **AI-Powered Tools (Algorithmic Implementations):**
+  - **AI Image Generator**: Generate abstract art patterns using algorithmic noise and gradient generation
+  - **AI Photo Retouch**: Enhance photos with automatic brightness, contrast, and saturation optimization
+  - **AI Object Remover**: Remove objects from images using content-aware blur (edge-preserving smoothing)
+  - **AI Face Swapper**: Blend faces from two images using alpha compositing (requires 2 image uploads)
+  - **Image to Sketch**: Convert photos to pencil sketch or line art using edge detection algorithms
+
+  All AI tools use Sharp-based algorithmic processing without external API keys. The tools support real-time preview and adjustable parameters for customization.
+
 ## External Dependencies
 - **PDF Processing Libraries**: `pdf-lib` (for core PDF manipulation), `sharp` (for image processing), `archiver` (for creating zip archives).
 - **Document Conversion**: `mammoth` (for Word document processing), `xlsx` (for Excel processing), `tesseract.js` (for OCR text recognition), `marked` (for Markdown parsing), `adm-zip` (for ODF file extraction).
