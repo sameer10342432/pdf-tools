@@ -446,6 +446,16 @@ export const pdfToolTypes = [
   "video-to-gif",
   "gif-to-mp4",
   "apng-maker",
+  "gif-to-png",
+  "gif-to-jpg",
+  "png-to-gif",
+  "jpg-to-gif",
+  "bmp-to-jpg",
+  "jpg-to-bmp",
+  "tiff-to-jpg",
+  "jpg-to-tiff",
+  "webp-to-png",
+  "png-to-webp",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -12680,5 +12690,285 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Wide Compatibility</h2>
 <p>APNG is supported by all modern browsers including Chrome, Firefox, Safari, and Edge. Falls back gracefully to the first frame in older software. Reliable format for contemporary web development.</p>`,
+  },
+  {
+    id: "gif-to-png",
+    name: "GIF to PNG",
+    description: "Convert GIF images to high-quality PNG format with transparency",
+    icon: "Image",
+    type: "gif-to-png",
+    color: "bg-emerald-500",
+    emoji: "🖼️",
+    metaTitle: "GIF to PNG Converter Online Free - Convert GIF to PNG | Image Tools",
+    metaDescription: "Convert GIF images to PNG format online for free. Extract frames from animated GIFs or convert static GIFs to high-quality PNG with transparency support.",
+    seoArticle: `<h2>GIF to PNG Converter - High-Quality Format Conversion</h2>
+<p>Convert your GIF images to PNG format with our free online converter. PNG offers superior image quality with lossless compression and full transparency support, making it ideal for graphics, logos, and images that require crisp, clear output.</p>
+
+<h2>Why Convert GIF to PNG?</h2>
+<p>PNG format supports millions of colors compared to GIF's 256-color limit. This means smoother gradients, more accurate color reproduction, and no dithering artifacts. PNG also offers better compression for most images while maintaining perfect quality.</p>
+
+<h2>Transparency Preservation</h2>
+<p>Both GIF and PNG support transparency, but PNG handles it better. While GIF only supports binary transparency (fully transparent or fully opaque), PNG supports alpha channel transparency with 256 levels of opacity. Your converted images will have smooth, anti-aliased edges.</p>
+
+<h2>Extract Frames from Animated GIFs</h2>
+<p>For animated GIFs, you can extract individual frames as separate PNG images. Perfect for capturing specific moments from animations, creating thumbnails, or repurposing animated content as static images.</p>
+
+<h2>Lossless Quality</h2>
+<p>PNG uses lossless compression, meaning no quality is lost during conversion. Every pixel from your original GIF is preserved exactly. Ideal for graphics, screenshots, and images where quality matters most.</p>
+
+<h2>Web-Ready Output</h2>
+<p>PNG files are universally supported across all web browsers, operating systems, and applications. Use your converted images anywhere without compatibility concerns. Perfect for web design, documents, and presentations.</p>`,
+  },
+  {
+    id: "gif-to-jpg",
+    name: "GIF to JPG",
+    description: "Convert GIF images to compressed JPG format for smaller files",
+    icon: "FileImage",
+    type: "gif-to-jpg",
+    color: "bg-amber-500",
+    emoji: "📸",
+    metaTitle: "GIF to JPG Converter Online Free - Convert GIF to JPEG | Image Tools",
+    metaDescription: "Convert GIF images to JPG/JPEG format online for free. Reduce file size with efficient compression while maintaining good visual quality.",
+    seoArticle: `<h2>GIF to JPG Converter - Efficient Image Compression</h2>
+<p>Convert your GIF images to JPG format for significantly smaller file sizes. JPG uses lossy compression that's optimized for photographs and complex images, making it perfect for web use, email attachments, and storage optimization.</p>
+
+<h2>Dramatic File Size Reduction</h2>
+<p>JPG compression can reduce file sizes by 80-90% compared to uncompressed formats. Convert large GIF files to compact JPG images that load faster and take up less storage space. Ideal for optimizing images for web performance.</p>
+
+<h2>Quality Control</h2>
+<p>Adjust the compression quality to balance file size and visual fidelity. Higher quality settings preserve more detail but create larger files. Lower quality settings minimize file size for maximum efficiency. Find the perfect balance for your needs.</p>
+
+<h2>Universal Compatibility</h2>
+<p>JPG is the most widely supported image format, compatible with virtually every device, browser, and application. Share your converted images anywhere without worrying about format support. Perfect for cross-platform use.</p>
+
+<h2>Background Color Options</h2>
+<p>Since JPG doesn't support transparency, any transparent areas in your GIF will be filled with a background color. Choose white, black, or any custom color to match your design requirements.</p>
+
+<h2>Batch Conversion</h2>
+<p>Convert multiple GIF files to JPG simultaneously. Process entire folders of images in one go. Consistent quality settings applied across all files for uniform results.</p>`,
+  },
+  {
+    id: "png-to-gif",
+    name: "PNG to GIF",
+    description: "Convert PNG images to GIF format with color optimization",
+    icon: "Palette",
+    type: "png-to-gif",
+    color: "bg-pink-500",
+    emoji: "🎨",
+    metaTitle: "PNG to GIF Converter Online Free - Convert PNG to GIF | Image Tools",
+    metaDescription: "Convert PNG images to GIF format online for free. Optimize colors and create web-ready GIF files with transparency support.",
+    seoArticle: `<h2>PNG to GIF Converter - Optimized Format Conversion</h2>
+<p>Convert your PNG images to GIF format with intelligent color optimization. GIF's smaller color palette can result in compact file sizes, making it useful for simple graphics, icons, and images with limited colors.</p>
+
+<h2>Smart Color Reduction</h2>
+<p>GIF supports up to 256 colors. Our converter intelligently selects the optimal color palette from your PNG image, preserving the most important colors while minimizing visual differences. Best results with graphics, logos, and illustrations.</p>
+
+<h2>Transparency Support</h2>
+<p>Preserve transparency from your PNG images in the converted GIF. While GIF only supports binary transparency (fully transparent or opaque), our converter handles the conversion intelligently to maintain clean edges.</p>
+
+<h2>Perfect for Simple Graphics</h2>
+<p>GIF excels with images that have solid colors and sharp edges. Convert logos, icons, diagrams, and illustrations for optimal results. The limited color palette actually benefits these types of images with smaller file sizes.</p>
+
+<h2>Web Compatibility</h2>
+<p>GIF files are supported everywhere and load quickly due to their compact size. Convert images for use on websites, in emails, and across all platforms. Maximum compatibility with minimum file size.</p>
+
+<h2>Dithering Options</h2>
+<p>Control how colors are handled during conversion. Enable dithering for smoother gradients in photographs, or disable it for crisp, solid colors in graphics. Customize the output to match your image type.</p>`,
+  },
+  {
+    id: "jpg-to-gif",
+    name: "JPG to GIF",
+    description: "Convert JPG/JPEG images to GIF format with color palette optimization",
+    icon: "ImageDown",
+    type: "jpg-to-gif",
+    color: "bg-violet-500",
+    emoji: "🔄",
+    metaTitle: "JPG to GIF Converter Online Free - Convert JPEG to GIF | Image Tools",
+    metaDescription: "Convert JPG/JPEG images to GIF format online for free. Optimize color palettes and create compact GIF files from your photographs.",
+    seoArticle: `<h2>JPG to GIF Converter - Photo to GIF Conversion</h2>
+<p>Convert your JPG photographs to GIF format with our intelligent converter. While GIF's 256-color limit isn't ideal for photos, it can work well for simple images or when you need maximum compatibility.</p>
+
+<h2>Intelligent Color Mapping</h2>
+<p>Our converter analyzes your JPG image and selects the optimal 256-color palette. The algorithm prioritizes the most visually important colors to minimize quality loss during conversion.</p>
+
+<h2>Dithering for Better Quality</h2>
+<p>Enable dithering to simulate additional colors through pixel patterns. This technique can make photographs look better in GIF format by creating the illusion of more colors than the 256 limit allows.</p>
+
+<h2>Compact File Sizes</h2>
+<p>GIF files can be very compact, especially for images with limited color ranges. Convert images for use in environments where file size is critical or where GIF is the required format.</p>
+
+<h2>Best Use Cases</h2>
+<p>JPG to GIF conversion works best for simple photographs, graphics with limited colors, or when you need to create a base frame for animation. For complex photos, consider keeping them in JPG format.</p>
+
+<h2>Quality Settings</h2>
+<p>Adjust color count and dithering settings to find the right balance between quality and file size. Preview your converted image before downloading to ensure it meets your requirements.</p>`,
+  },
+  {
+    id: "bmp-to-jpg",
+    name: "BMP to JPG",
+    description: "Convert BMP bitmap images to compressed JPG format",
+    icon: "Archive",
+    type: "bmp-to-jpg",
+    color: "bg-blue-600",
+    emoji: "📦",
+    metaTitle: "BMP to JPG Converter Online Free - Convert Bitmap to JPEG | Image Tools",
+    metaDescription: "Convert BMP bitmap images to JPG/JPEG format online for free. Dramatically reduce file size while maintaining visual quality.",
+    seoArticle: `<h2>BMP to JPG Converter - Compress Bitmap Images</h2>
+<p>Convert your large BMP bitmap files to compact JPG format. BMP files are uncompressed and can be enormous, while JPG offers excellent compression that can reduce file sizes by 90% or more with minimal quality loss.</p>
+
+<h2>Massive Size Reduction</h2>
+<p>BMP files store every pixel without compression, resulting in very large files. A 10MB BMP might become a 500KB JPG with virtually no visible difference. Perfect for freeing up storage space and speeding up file transfers.</p>
+
+<h2>Quality Control</h2>
+<p>Adjust JPG compression quality from 1-100%. Higher values preserve more detail, lower values create smaller files. For most images, 80-90% quality provides an excellent balance between size and appearance.</p>
+
+<h2>Full Color Support</h2>
+<p>Both BMP and JPG support millions of colors. Your photographs and complex images will retain their full color depth after conversion. No color reduction or palette limitations.</p>
+
+<h2>Universal Format</h2>
+<p>JPG is the most widely used image format in the world. Convert BMP files for easy sharing via email, social media, and web. Maximum compatibility across all devices and applications.</p>
+
+<h2>Batch Processing</h2>
+<p>Convert multiple BMP files at once. Process entire folders of bitmap images in one operation. Consistent quality settings ensure uniform output across all converted files.</p>`,
+  },
+  {
+    id: "jpg-to-bmp",
+    name: "JPG to BMP",
+    description: "Convert JPG images to uncompressed BMP bitmap format",
+    icon: "FileOutput",
+    type: "jpg-to-bmp",
+    color: "bg-slate-600",
+    emoji: "🗃️",
+    metaTitle: "JPG to BMP Converter Online Free - Convert JPEG to Bitmap | Image Tools",
+    metaDescription: "Convert JPG/JPEG images to BMP bitmap format online for free. Create uncompressed bitmap files for editing or legacy system compatibility.",
+    seoArticle: `<h2>JPG to BMP Converter - Create Uncompressed Bitmaps</h2>
+<p>Convert your JPG images to BMP bitmap format for maximum quality and compatibility with legacy systems. BMP stores images without compression, preserving every pixel exactly as intended.</p>
+
+<h2>Why Convert to BMP?</h2>
+<p>While BMP files are larger, they offer certain advantages. Some legacy software and systems require BMP format. BMP is also useful for further editing where you want to avoid additional compression artifacts.</p>
+
+<h2>Lossless Conversion</h2>
+<p>Converting to BMP is lossless - no additional quality is lost during conversion. The original JPG quality is preserved exactly. Any compression artifacts from the original JPG remain, but no new ones are added.</p>
+
+<h2>Editing Friendly</h2>
+<p>BMP is ideal for images you plan to edit extensively. Without compression, each save doesn't degrade quality further. Make multiple edits without worrying about generation loss.</p>
+
+<h2>Color Depth Options</h2>
+<p>Choose between 24-bit or 32-bit color depth for your BMP output. 24-bit covers full RGB color, while 32-bit adds an alpha channel for transparency support (though filled from JPG's white background).</p>
+
+<h2>Legacy Compatibility</h2>
+<p>BMP is one of the oldest image formats and is supported by virtually every image application ever created. Convert to BMP for maximum compatibility with older software and systems.</p>`,
+  },
+  {
+    id: "tiff-to-jpg",
+    name: "TIFF to JPG",
+    description: "Convert TIFF images to compressed JPG format for easy sharing",
+    icon: "Shrink",
+    type: "tiff-to-jpg",
+    color: "bg-orange-500",
+    emoji: "📋",
+    metaTitle: "TIFF to JPG Converter Online Free - Convert TIFF to JPEG | Image Tools",
+    metaDescription: "Convert TIFF images to JPG/JPEG format online for free. Compress large TIFF files into web-friendly JPG format while maintaining quality.",
+    seoArticle: `<h2>TIFF to JPG Converter - Make TIFF Files Web-Ready</h2>
+<p>Convert your TIFF images to JPG format for easy sharing and web use. TIFF files, often used in professional photography and printing, can be very large. JPG compression makes them practical for everyday use.</p>
+
+<h2>Professional to Practical</h2>
+<p>TIFF is the format of choice for professional photographers and print production, but the large file sizes make them impractical for web use or email. Convert to JPG for sharing while keeping originals for professional work.</p>
+
+<h2>Significant Size Reduction</h2>
+<p>TIFF files can be tens or hundreds of megabytes. JPG compression reduces this dramatically while maintaining excellent visual quality. A 50MB TIFF might become a 2MB JPG with no visible difference on screen.</p>
+
+<h2>Multi-Page TIFF Support</h2>
+<p>TIFF files can contain multiple pages or images. Our converter handles multi-page TIFFs, allowing you to convert all pages or select specific ones. Each page becomes a separate JPG file.</p>
+
+<h2>Quality Preservation</h2>
+<p>While JPG is lossy, high-quality settings preserve virtually all the detail from your TIFF. For web and screen viewing, the difference is imperceptible. Use quality settings of 90%+ for best results.</p>
+
+<h2>Color Space Handling</h2>
+<p>TIFFs may use various color spaces including CMYK for print. Our converter automatically handles color space conversion to RGB for proper JPG output. Colors appear correctly on all screens.</p>`,
+  },
+  {
+    id: "jpg-to-tiff",
+    name: "JPG to TIFF",
+    description: "Convert JPG images to high-quality TIFF format for printing",
+    icon: "FilePlus2",
+    type: "jpg-to-tiff",
+    color: "bg-teal-600",
+    emoji: "🖨️",
+    metaTitle: "JPG to TIFF Converter Online Free - Convert JPEG to TIFF | Image Tools",
+    metaDescription: "Convert JPG/JPEG images to TIFF format online for free. Create print-ready TIFF files with professional quality and compatibility.",
+    seoArticle: `<h2>JPG to TIFF Converter - Create Print-Ready Files</h2>
+<p>Convert your JPG images to TIFF format for professional printing and archival purposes. TIFF is the industry standard for print production, offering maximum compatibility with professional software and printing equipment.</p>
+
+<h2>Professional Print Format</h2>
+<p>TIFF is required by many print shops and publishing houses. Convert your JPGs to TIFF for submission to professional printers, publishers, and for inclusion in print-ready documents.</p>
+
+<h2>Lossless Quality</h2>
+<p>Converting to TIFF doesn't add compression artifacts. The quality from your original JPG is preserved exactly. TIFF supports lossless compression options that maintain perfect quality while reducing file size somewhat.</p>
+
+<h2>Compression Options</h2>
+<p>Choose from several TIFF compression methods: uncompressed for maximum compatibility, LZW for lossless size reduction, or ZIP compression. Each option has its use cases depending on your needs.</p>
+
+<h2>Color Space Support</h2>
+<p>TIFF supports multiple color spaces including RGB and CMYK. While JPGs are typically RGB, you can convert and then adjust color space in professional software for print production.</p>
+
+<h2>Archival Quality</h2>
+<p>TIFF is an excellent format for long-term image storage. Its wide support and lossless options make it ideal for archiving important images. Convert JPGs to TIFF for your permanent collection.</p>`,
+  },
+  {
+    id: "webp-to-png",
+    name: "WebP to PNG",
+    description: "Convert WebP images to widely compatible PNG format",
+    icon: "RefreshCcw",
+    type: "webp-to-png",
+    color: "bg-indigo-500",
+    emoji: "🔁",
+    metaTitle: "WebP to PNG Converter Online Free - Convert WebP to PNG | Image Tools",
+    metaDescription: "Convert WebP images to PNG format online for free. Transform modern WebP files into universally compatible PNG with lossless quality.",
+    seoArticle: `<h2>WebP to PNG Converter - Universal Compatibility</h2>
+<p>Convert WebP images to the universally supported PNG format. While WebP offers excellent compression, PNG provides maximum compatibility with all software, browsers, and devices.</p>
+
+<h2>Why Convert WebP to PNG?</h2>
+<p>WebP is a modern format not supported by all applications. Older software, some image editors, and legacy systems may not open WebP files. PNG ensures your images work everywhere.</p>
+
+<h2>Lossless Conversion</h2>
+<p>PNG uses lossless compression, so no quality is lost during conversion. Every pixel from your WebP image is preserved exactly. Perfect for images where quality is paramount.</p>
+
+<h2>Transparency Preservation</h2>
+<p>Both WebP and PNG support transparency with alpha channels. Transparent areas in your WebP images are preserved perfectly in the PNG output. Smooth anti-aliased edges are maintained.</p>
+
+<h2>Editing Friendly</h2>
+<p>PNG is widely supported by image editing software. Convert WebP to PNG for easy editing in Photoshop, GIMP, or any other image editor. No compatibility issues or plugin requirements.</p>
+
+<h2>Print Ready</h2>
+<p>Many print services don't accept WebP files. Convert to PNG for print submissions, document creation, and professional publishing. PNG is accepted virtually everywhere.</p>`,
+  },
+  {
+    id: "png-to-webp",
+    name: "PNG to WebP",
+    description: "Convert PNG images to modern WebP format for smaller files",
+    icon: "Zap",
+    type: "png-to-webp",
+    color: "bg-lime-600",
+    emoji: "⚡",
+    metaTitle: "PNG to WebP Converter Online Free - Convert PNG to WebP | Image Tools",
+    metaDescription: "Convert PNG images to WebP format online for free. Reduce file sizes significantly while maintaining quality with modern WebP compression.",
+    seoArticle: `<h2>PNG to WebP Converter - Modern Web Optimization</h2>
+<p>Convert your PNG images to WebP format for dramatically smaller file sizes. WebP, developed by Google, offers superior compression that can reduce file sizes by 25-35% compared to PNG while maintaining the same visual quality.</p>
+
+<h2>Significant Size Reduction</h2>
+<p>WebP uses advanced compression techniques that outperform PNG. A 1MB PNG might become a 650KB WebP with no visible difference. Perfect for optimizing websites, reducing bandwidth, and speeding up load times.</p>
+
+<h2>Lossless or Lossy</h2>
+<p>Choose between lossless WebP (perfect quality, good compression) or lossy WebP (excellent quality, maximum compression). Lossless mode preserves every pixel like PNG, while lossy mode offers even smaller files.</p>
+
+<h2>Full Transparency Support</h2>
+<p>WebP fully supports alpha channel transparency, just like PNG. Convert transparent PNGs to WebP without losing smooth edges or semi-transparent effects. Perfect for logos, icons, and graphics.</p>
+
+<h2>Modern Web Standard</h2>
+<p>WebP is supported by all modern browsers including Chrome, Firefox, Safari, and Edge. Using WebP on your website improves performance scores and user experience through faster loading.</p>
+
+<h2>Quality Control</h2>
+<p>Adjust compression settings to find the perfect balance between file size and quality. Preview the output before downloading to ensure it meets your standards. Optimal settings for every use case.</p>`,
   },
 ];
