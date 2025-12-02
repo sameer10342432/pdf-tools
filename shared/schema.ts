@@ -386,6 +386,16 @@ export const pdfToolTypes = [
   "pdf-to-pdfe",
   "pdf-to-pdfua",
   "pdf-accessibility-checker",
+  "pdf-tagger",
+  "pdf-read-order-editor",
+  "pdf-alt-text-editor",
+  "pdf-language-setter",
+  "pdf-to-tagged-pdf",
+  "pdf-color-separations-viewer",
+  "pdf-ink-coverage-calculator",
+  "pdf-transparency-flattener",
+  "pdf-overprint-preview",
+  "pdf-hairline-fixer",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -712,6 +722,56 @@ export const toolOptionsSchema = z.object({
   comparisonMode: z.enum(["visual", "text", "detailed"]).optional(),
   highlightDifferences: z.boolean().optional(),
   comparisonSensitivity: z.enum(["low", "medium", "high"]).optional(),
+  // PDF Tagger options
+  tagStructure: z.enum(["document", "heading", "paragraph", "list", "table", "figure", "auto"]).optional(),
+  autoTagHeadings: z.boolean().optional(),
+  autoTagLists: z.boolean().optional(),
+  autoTagTables: z.boolean().optional(),
+  autoTagFigures: z.boolean().optional(),
+  // PDF Read Order Editor options
+  readOrderMode: z.enum(["left-to-right", "right-to-left", "top-to-bottom", "custom"]).optional(),
+  readOrderData: z.string().optional(),
+  // PDF Alt-Text Editor options
+  altTextMode: z.enum(["add", "edit", "remove", "auto-generate"]).optional(),
+  altTextContent: z.string().optional(),
+  targetElement: z.number().optional(),
+  // PDF Language Setter options
+  documentLanguage: z.enum(["en", "en-US", "en-GB", "es", "fr", "de", "it", "pt", "nl", "ru", "ja", "zh", "ko", "ar", "hi"]).optional(),
+  applyToAll: z.boolean().optional(),
+  // PDF to Tagged PDF options
+  tagConversionMode: z.enum(["basic", "advanced", "semantic"]).optional(),
+  preserveExistingTags: z.boolean().optional(),
+  generateRoleMap: z.boolean().optional(),
+  // PDF Color Separations Viewer options
+  separationMode: z.enum(["cmyk", "spot-colors", "all"]).optional(),
+  showCyan: z.boolean().optional(),
+  showMagenta: z.boolean().optional(),
+  showYellow: z.boolean().optional(),
+  showBlack: z.boolean().optional(),
+  showSpotColors: z.boolean().optional(),
+  // PDF Ink Coverage Calculator options
+  inkCoverageMode: z.enum(["per-page", "total", "detailed"]).optional(),
+  inkCoverageThreshold: z.number().optional(),
+  includeSpotColors: z.boolean().optional(),
+  exportReport: z.boolean().optional(),
+  // PDF Transparency Flattener options
+  flattenResolution: z.enum(["72", "150", "300", "600"]).optional(),
+  lineArtResolution: z.number().optional(),
+  gradientResolution: z.number().optional(),
+  convertTextToOutlines: z.boolean().optional(),
+  convertStrokesToOutlines: z.boolean().optional(),
+  clipComplexRegions: z.boolean().optional(),
+  preserveOverprintSettings: z.boolean().optional(),
+  // PDF Overprint Preview options
+  overprintSimulation: z.enum(["on", "off", "simulate-overprint"]).optional(),
+  showOverprintAreas: z.boolean().optional(),
+  highlightOverprint: z.boolean().optional(),
+  // PDF Hairline Fixer options
+  minimumStrokeWidth: z.number().optional(),
+  targetStrokeWidth: z.number().optional(),
+  fixMode: z.enum(["auto", "manual", "threshold"]).optional(),
+  applyToAllStrokes: z.boolean().optional(),
+  strokeThreshold: z.number().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -10716,5 +10776,315 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Why Check Accessibility</h2>
 <p>Legal compliance often requires accessible documents. Inclusive communication reaches everyone. Better SEO from structured content. Professional quality improves. User experience enhances for all. Organizational values are demonstrated.</p>`,
+  },
+  {
+    id: "pdf-tagger",
+    name: "PDF Tagger",
+    description: "Add accessibility tags to make PDFs accessible for screen readers",
+    icon: "FileCheck",
+    type: "pdf-tagger",
+    color: "bg-violet-500",
+    emoji: "🏷️",
+    metaTitle: "PDF Tagger Online Free - Add Accessibility Tags to PDF | PDF Tools",
+    metaDescription: "Add accessibility tags to PDF documents online for free. Make PDFs accessible for screen readers and assistive technologies. No installation required.",
+    seoArticle: `<h2>PDF Tagger - Add Accessibility Tags to Your Documents</h2>
+<p>Making PDFs accessible starts with proper tagging. Our PDF Tagger tool adds structured tags to your documents, enabling screen readers and assistive technologies to properly interpret content. Transform inaccessible PDFs into fully compliant accessible documents that everyone can read and understand.</p>
+
+<h2>What Are PDF Tags</h2>
+<p>PDF tags are invisible markers that define document structure. They identify headings, paragraphs, lists, tables, and images. Tags create a logical reading order that assistive technologies follow. Without proper tagging, screen readers cannot make sense of PDF content, leaving visually impaired users unable to access the information.</p>
+
+<h2>Automatic Structure Detection</h2>
+<p>Our intelligent tagger analyzes your PDF content automatically. Headings are identified by size, weight, and positioning. Paragraphs are recognized and tagged appropriately. Lists are detected whether numbered or bulleted. Tables are structured with header and data cell relationships. Images are marked for alternative text addition.</p>
+
+<h2>How PDF Tagging Works</h2>
+<p>Upload your untagged PDF document. Select your preferred tagging options. Our engine processes the document structure. Tags are inserted following PDF/UA standards. Review the tagged output. Download your accessible PDF ready for distribution.</p>
+
+<h2>Tag Types and Their Purpose</h2>
+<p>Document tags establish the root structure. Heading tags (H1-H6) define hierarchy. Paragraph tags wrap text blocks. List tags organize items logically. Table tags create accessible data grids. Figure tags mark images for alt text. Each tag type serves a specific accessibility purpose.</p>
+
+<h2>Benefits of Tagged PDFs</h2>
+<p>Screen readers can navigate content logically. Text reflow works properly on mobile devices. Search engines index content more accurately. Document structure aids all readers. Legal accessibility requirements are met. Content can be repurposed effectively.</p>
+
+<h2>Who Needs PDF Tagging</h2>
+<p>Government agencies must publish accessible documents. Educational institutions need compliant course materials. Businesses serving diverse customers require accessible communications. Publishers reaching wider audiences benefit from tagging. Anyone committed to inclusive content needs properly tagged PDFs.</p>`,
+  },
+  {
+    id: "pdf-read-order-editor",
+    name: "PDF Read Order Editor",
+    description: "Edit and fix the reading order of PDF content for accessibility",
+    icon: "ArrowDownUp",
+    type: "pdf-read-order-editor",
+    color: "bg-teal-500",
+    emoji: "📖",
+    metaTitle: "PDF Read Order Editor Online Free - Fix PDF Reading Order | PDF Tools",
+    metaDescription: "Edit PDF reading order online for free. Fix content flow for screen readers and accessibility compliance. Ensure correct document reading sequence.",
+    seoArticle: `<h2>PDF Read Order Editor - Control How Content is Read</h2>
+<p>Reading order determines how assistive technologies present your PDF content. When documents have multiple columns, sidebars, or complex layouts, the reading order can become jumbled. Our Read Order Editor lets you define exactly how content should be read, ensuring logical flow for all users.</p>
+
+<h2>Why Reading Order Matters</h2>
+<p>Screen readers follow the internal reading order, not visual layout. A two-column layout might read left column then right, or it might interleave lines incorrectly. Sidebars and callouts can interrupt main content flow. Without proper reading order, documents become confusing or completely incomprehensible to screen reader users.</p>
+
+<h2>Visual Reading Order Tool</h2>
+<p>Our editor displays content blocks with numbered indicators. See exactly how your document will be read. Drag and drop to reorder content elements. Preview the reading sequence before saving. Make adjustments until the flow is perfect. Save your corrected reading order permanently.</p>
+
+<h2>How to Fix Reading Order</h2>
+<p>Upload your PDF document. View the current reading order visualization. Identify elements in incorrect sequence. Drag elements to their proper position. Verify the new order makes sense. Download your PDF with corrected reading order.</p>
+
+<h2>Common Reading Order Issues</h2>
+<p>Multi-column layouts often have mixed-up order. Headers and footers interrupt main content. Sidebars break the flow mid-paragraph. Floating images disrupt text sequence. Tables may read cell by cell incorrectly. Our editor fixes all these common problems.</p>
+
+<h2>Reading Order and Accessibility Compliance</h2>
+<p>WCAG 1.3.2 requires meaningful reading sequence. PDF/UA mandates logical reading order. Section 508 compliance depends on proper order. Our tool helps you meet all these requirements. Compliance checking verifies your corrections. Documented reading order aids auditing.</p>
+
+<h2>Best Practices for Reading Order</h2>
+<p>Main content should flow continuously. Sidebars belong after related content. Page numbers and headers come last. Tables read header then data. Footnotes follow their references. Our editor makes implementing best practices straightforward.</p>`,
+  },
+  {
+    id: "pdf-alt-text-editor",
+    name: "PDF Alt-Text Editor",
+    description: "Add and edit alternative text for images in PDFs",
+    icon: "MessageSquare",
+    type: "pdf-alt-text-editor",
+    color: "bg-cyan-500",
+    emoji: "💬",
+    metaTitle: "PDF Alt-Text Editor Online Free - Add Image Descriptions | PDF Tools",
+    metaDescription: "Add alternative text to PDF images online for free. Make images accessible for screen readers. Edit existing alt text descriptions easily.",
+    seoArticle: `<h2>PDF Alt-Text Editor - Make Images Accessible</h2>
+<p>Images without alternative text are invisible to screen reader users. Our Alt-Text Editor identifies all images in your PDF and lets you add or edit descriptive text. Transform visual content into accessible information that everyone can understand, regardless of how they access your document.</p>
+
+<h2>Why Alternative Text is Essential</h2>
+<p>Screen readers announce images by reading their alt text. Without descriptions, users only hear "image" with no context. Charts and graphs convey no information. Diagrams become meaningless. Decorative images unnecessarily interrupt reading. Proper alt text makes all visual content accessible.</p>
+
+<h2>Writing Effective Alt Text</h2>
+<p>Describe the image's purpose, not just its appearance. For charts, explain what the data shows. For photos, describe relevant details. Keep descriptions concise but complete. Avoid starting with "image of" or "picture of". Focus on information the image conveys.</p>
+
+<h2>How the Alt-Text Editor Works</h2>
+<p>Upload your PDF document. All images are identified and displayed. Click any image to add or edit alt text. See existing alt text if present. Enter your descriptive text. Save changes to the PDF. Download your accessible document.</p>
+
+<h2>Handling Different Image Types</h2>
+<p>Informative images need full descriptions. Decorative images should be marked as such. Complex charts may need longer descriptions. Logos need brand identification. Buttons and icons need action descriptions. Our editor handles all image types appropriately.</p>
+
+<h2>Accessibility Standards for Alt Text</h2>
+<p>WCAG 1.1.1 requires text alternatives for all images. PDF/UA specifies alt text implementation. Section 508 mandates image accessibility. Our editor ensures standards compliance. Proper alt text satisfies all major accessibility requirements.</p>
+
+<h2>Bulk Alt Text Management</h2>
+<p>Add alt text to multiple images efficiently. Copy similar descriptions quickly. Mark decorative images in batches. Review all alt text in one view. Export alt text inventory. Import prepared descriptions. Manage large documents effectively.</p>`,
+  },
+  {
+    id: "pdf-language-setter",
+    name: "PDF Language Setter",
+    description: "Set the document language for proper screen reader pronunciation",
+    icon: "Globe",
+    type: "pdf-language-setter",
+    color: "bg-blue-600",
+    emoji: "🌐",
+    metaTitle: "PDF Language Setter Online Free - Set Document Language | PDF Tools",
+    metaDescription: "Set PDF document language online for free. Ensure correct screen reader pronunciation. Specify language for accessibility compliance.",
+    seoArticle: `<h2>PDF Language Setter - Ensure Correct Pronunciation</h2>
+<p>Document language tells screen readers how to pronounce text. Without proper language settings, assistive technologies guess at pronunciation, often incorrectly. Our Language Setter tool lets you specify the document language and language changes within content, ensuring accurate reading for all users.</p>
+
+<h2>Why Language Settings Matter</h2>
+<p>Screen readers use language to select pronunciation rules. English text read with French rules sounds wrong. Technical terms need correct language context. Multilingual documents require language switches. Without settings, screen readers default to system language, often incorrectly.</p>
+
+<h2>Document-Level Language</h2>
+<p>Set the primary language for your entire document. This becomes the default for all content. Screen readers use this for pronunciation. Search engines use it for indexing. Accessibility checkers verify its presence. One setting improves the entire document.</p>
+
+<h2>How Language Setting Works</h2>
+<p>Upload your PDF document. Select the primary document language. Optionally identify multilingual sections. Apply language tags throughout. Verify correct settings. Download your properly tagged document.</p>
+
+<h2>Supported Languages</h2>
+<p>All major languages are supported. Language codes follow BCP-47 standards. Regional variants like en-US and en-GB are available. Right-to-left languages are handled correctly. Asian language support includes proper script identification. Choose the precise language for your content.</p>
+
+<h2>Multilingual Document Handling</h2>
+<p>Documents often contain multiple languages. Quotes in foreign languages need marking. Technical terms may be in other languages. Our tool lets you tag language changes. Screen readers switch pronunciation appropriately. The reading experience remains natural throughout.</p>
+
+<h2>Language and Accessibility Compliance</h2>
+<p>WCAG 3.1.1 requires document language identification. WCAG 3.1.2 addresses language of parts. PDF/UA mandates language tagging. Section 508 requires proper language settings. Our tool ensures comprehensive compliance.</p>`,
+  },
+  {
+    id: "pdf-to-tagged-pdf",
+    name: "PDF to Tagged PDF",
+    description: "Convert untagged PDFs to fully tagged accessible documents",
+    icon: "FileSignature",
+    type: "pdf-to-tagged-pdf",
+    color: "bg-purple-600",
+    emoji: "📝",
+    metaTitle: "Convert to Tagged PDF Online Free - Create Accessible PDF | PDF Tools",
+    metaDescription: "Convert untagged PDF to tagged PDF online for free. Create accessible documents automatically. Full structure tagging for screen readers.",
+    seoArticle: `<h2>Convert to Tagged PDF - Complete Accessibility Transformation</h2>
+<p>Many PDFs lack the tagging structure required for accessibility. Our converter transforms untagged documents into fully tagged accessible PDFs. The process analyzes content, identifies structure, adds appropriate tags, and creates a document that screen readers and assistive technologies can properly interpret.</p>
+
+<h2>What Makes a PDF Tagged</h2>
+<p>Tagged PDFs contain a structure tree defining content hierarchy. Each element receives appropriate semantic tags. Reading order is explicitly defined. Relationships between elements are established. Alternative text is linked to images. The document becomes navigable and comprehensible for assistive technology users.</p>
+
+<h2>Automatic Structure Recognition</h2>
+<p>Our converter intelligently analyzes your PDF. Headings are identified by visual characteristics. Paragraphs are recognized and grouped. Lists are detected and structured. Tables receive proper header associations. Images are marked for alt text. The structure reflects the document's logical organization.</p>
+
+<h2>How Conversion Works</h2>
+<p>Upload your untagged PDF. Select conversion options if desired. Our engine analyzes document structure. Tags are added following PDF/UA standards. Structure tree is built completely. Download your tagged accessible PDF.</p>
+
+<h2>Quality of Automatic Tagging</h2>
+<p>Simple documents convert with high accuracy. Complex layouts may need review. Our converter uses advanced algorithms for detection. Results compare favorably to manual tagging. Time savings are substantial. Quality meets accessibility standards.</p>
+
+<h2>After Conversion Steps</h2>
+<p>Review the tagged structure. Add alternative text to images. Verify reading order correctness. Check table header associations. Confirm list structure accuracy. Make any needed adjustments. Your document is ready for accessible distribution.</p>
+
+<h2>When to Use Tagged PDF Conversion</h2>
+<p>Legacy documents needing accessibility updates. Scanned documents after OCR processing. PDFs created without accessibility in mind. Bulk conversion of document libraries. Quick accessibility improvements. Preparing documents for compliance audits.</p>`,
+  },
+  {
+    id: "pdf-color-separations-viewer",
+    name: "PDF Color Separations Viewer",
+    description: "View CMYK and spot color separations in PDF documents",
+    icon: "Palette",
+    type: "pdf-color-separations-viewer",
+    color: "bg-pink-500",
+    emoji: "🎨",
+    metaTitle: "PDF Color Separations Viewer Online Free - View CMYK Separations | PDF Tools",
+    metaDescription: "View PDF color separations online for free. Check CMYK and spot colors before printing. Professional prepress color analysis tool.",
+    seoArticle: `<h2>PDF Color Separations Viewer - Professional Prepress Analysis</h2>
+<p>Before sending documents to print, understanding color composition is essential. Our Color Separations Viewer displays each color channel separately, showing exactly how your PDF will print. Identify issues before they become costly printing problems. Verify spot colors, check CMYK values, and ensure print-ready quality.</p>
+
+<h2>Understanding Color Separations</h2>
+<p>Printing uses separate plates for each ink color. CMYK process printing requires four separations. Spot colors add additional plates. Each separation shows where that ink will print. Viewing separations reveals potential printing issues before production.</p>
+
+<h2>CMYK Channel Viewing</h2>
+<p>Toggle individual CMYK channels on and off. See cyan contribution to the image. View magenta coverage separately. Examine yellow distribution. Analyze black (key) usage. Combinations show how colors interact. Understanding channels prevents printing surprises.</p>
+
+<h2>How to View Separations</h2>
+<p>Upload your PDF document. View default CMYK separation display. Toggle channels individually or in combinations. Examine spot colors separately. Zoom into areas of concern. Download separation previews if needed.</p>
+
+<h2>Spot Color Analysis</h2>
+<p>Spot colors appear as separate channels. Verify spot colors are correctly defined. Check for unintended spot color usage. See where spot inks will print. Identify spot to process conversion needs. Ensure color fidelity for brand colors.</p>
+
+<h2>Common Issues Revealed</h2>
+<p>Registration problems show as color fringes. Overinking appears as excessive coverage. Missing colors become immediately visible. Unexpected spot colors are identified. Rich black composition is verified. Trap issues become apparent.</p>
+
+<h2>Professional Print Preparation</h2>
+<p>Printers use separations for plate making. Viewing separations catches problems early. Changes are cheaper before printing. Color accuracy is verified visually. Confidence in print quality increases. Professional results are ensured.</p>`,
+  },
+  {
+    id: "pdf-ink-coverage-calculator",
+    name: "PDF Ink Coverage Calculator",
+    description: "Calculate ink coverage percentages for print cost estimation",
+    icon: "Gauge",
+    type: "pdf-ink-coverage-calculator",
+    color: "bg-orange-600",
+    emoji: "📊",
+    metaTitle: "PDF Ink Coverage Calculator Online Free - Calculate Print Costs | PDF Tools",
+    metaDescription: "Calculate PDF ink coverage online for free. Estimate printing costs accurately. Analyze CMYK and spot color usage per page.",
+    seoArticle: `<h2>PDF Ink Coverage Calculator - Accurate Print Cost Estimation</h2>
+<p>Ink costs represent a significant portion of printing expenses. Our Ink Coverage Calculator analyzes your PDF to determine exactly how much ink each page requires. Get precise percentages for each color channel, enabling accurate cost estimation and helping identify pages that may need adjustment for printing efficiency.</p>
+
+<h2>How Ink Coverage is Measured</h2>
+<p>Ink coverage expresses the percentage of a page covered by ink. 100% coverage means solid ink across the entire page. Typical documents range from 5% to 30% coverage. Each color channel is measured separately. Total area coverage (TAC) sums all channels. These measurements directly relate to ink consumption.</p>
+
+<h2>Per-Channel Analysis</h2>
+<p>Cyan coverage is calculated separately. Magenta usage is measured independently. Yellow ink consumption is determined. Black coverage is analyzed. Spot colors are tracked individually. Complete picture of ink usage emerges.</p>
+
+<h2>How to Calculate Coverage</h2>
+<p>Upload your PDF document. Analysis runs automatically on all pages. View coverage for each page. See breakdown by color channel. Total coverage is calculated. Download detailed coverage report.</p>
+
+<h2>Understanding Coverage Results</h2>
+<p>Low coverage indicates text-heavy pages. High coverage suggests image-intensive content. Very high coverage may cause printing issues. Coverage above 300% TAC risks ink problems. Comparison between pages reveals outliers. Results guide printing decisions.</p>
+
+<h2>Cost Estimation Benefits</h2>
+<p>Ink costs directly correlate to coverage. Estimate expenses before printing. Compare different document versions. Identify high-cost pages. Optimize designs for efficiency. Budget printing projects accurately.</p>
+
+<h2>Print Quality Considerations</h2>
+<p>Excessive ink coverage causes problems. Paper can't absorb too much ink. Drying times increase dramatically. Set-off and smearing risks grow. Coverage analysis prevents issues. Optimal coverage ensures quality.</p>`,
+  },
+  {
+    id: "pdf-transparency-flattener",
+    name: "PDF Transparency Flattener",
+    description: "Flatten transparency effects for reliable printing",
+    icon: "Layers",
+    type: "pdf-transparency-flattener",
+    color: "bg-slate-600",
+    emoji: "📄",
+    metaTitle: "PDF Transparency Flattener Online Free - Flatten PDF for Print | PDF Tools",
+    metaDescription: "Flatten PDF transparency online for free. Prepare documents for reliable printing. Remove transparency effects for older RIPs.",
+    seoArticle: `<h2>PDF Transparency Flattener - Reliable Print Output</h2>
+<p>Transparency effects in PDFs can cause printing problems with older equipment. Our Transparency Flattener converts these effects to reliable, flat artwork that prints correctly on any device. Eliminate unexpected printing issues while maintaining visual appearance of your documents.</p>
+
+<h2>What is PDF Transparency</h2>
+<p>Transparency allows objects to show through other objects. Drop shadows use transparency effects. Opacity settings create see-through elements. Blending modes combine colors creatively. These features enhance design but can complicate printing.</p>
+
+<h2>Why Flatten Transparency</h2>
+<p>Older RIPs cannot process transparency directly. Some printers produce unexpected results. Variable data printing often requires flat files. Certain workflows demand flattened PDFs. Predictable output requires predictable input. Flattening ensures consistent results.</p>
+
+<h2>How Flattening Works</h2>
+<p>Upload your PDF with transparency effects. Select resolution for rasterized areas. Choose flattening quality settings. Process converts transparency to flat art. Vector elements remain vectors where possible. Download your print-ready flattened PDF.</p>
+
+<h2>Flattening Quality Settings</h2>
+<p>Resolution controls image quality in complex areas. Higher resolution means larger files but better quality. Line art resolution affects vector conversion. Balance quality against file size. Our defaults work for most printing needs. Customize for special requirements.</p>
+
+<h2>What Gets Flattened</h2>
+<p>Overlapping transparent objects merge. Drop shadows become rasterized. Opacity effects are calculated and applied. Blending modes are simulated. The visual result matches the original. The file structure becomes simpler.</p>
+
+<h2>When to Flatten</h2>
+<p>Before sending to older print equipment. When experiencing output problems. For archival PDF creation. When workflow requires flat files. For maximum printing compatibility. When predictability matters most.</p>`,
+  },
+  {
+    id: "pdf-overprint-preview",
+    name: "PDF Overprint Preview",
+    description: "Preview how overprint settings will appear when printed",
+    icon: "Eye",
+    type: "pdf-overprint-preview",
+    color: "bg-emerald-600",
+    emoji: "👁️",
+    metaTitle: "PDF Overprint Preview Online Free - See Print Results | PDF Tools",
+    metaDescription: "Preview PDF overprint settings online for free. See how documents will actually print. Catch overprint issues before production.",
+    seoArticle: `<h2>PDF Overprint Preview - See Your Printed Result</h2>
+<p>Overprint settings control how colors interact when printed over each other. Without preview, overprint problems only appear on the press. Our Overprint Preview tool simulates printed output, showing exactly how overprints will appear. Catch issues before they become expensive mistakes.</p>
+
+<h2>Understanding Overprint</h2>
+<p>Normally, top colors knock out colors beneath them. Overprint makes inks print on top of each other. Black text often overprints for registration tolerance. Overprinting can create unexpected color combinations. Preview reveals these interactions before printing.</p>
+
+<h2>Common Overprint Issues</h2>
+<p>White objects set to overprint disappear. Black objects not overprinting show knockouts. Wrong overprint settings create color shifts. Unexpected backgrounds show through. These problems are invisible until printing. Preview catches them early.</p>
+
+<h2>How Overprint Preview Works</h2>
+<p>Upload your PDF document. Enable overprint simulation. View the document as it will print. Compare to normal view. Identify any overprint issues. Make corrections in your design software. Verify fixes with another preview.</p>
+
+<h2>What Preview Shows</h2>
+<p>Overprinting black text displays correctly. Knocked-out areas appear white. Color combinations from overprints are visible. Transparency interactions are simulated. The preview matches printed output. Confidence in final result increases.</p>
+
+<h2>Best Practices for Overprint</h2>
+<p>Black text should usually overprint. White elements should never overprint. Check overprint settings for all elements. Preview before final approval. Document overprint intentions. Communicate with your printer.</p>
+
+<h2>Professional Print Preparation</h2>
+<p>Printers assume you've verified overprints. Corrections on press are extremely expensive. Preview is essential quality control. Professional workflows include overprint checking. Our tool enables professional preparation. Confident printing starts with preview.</p>`,
+  },
+  {
+    id: "pdf-hairline-fixer",
+    name: "PDF Hairline Fixer",
+    description: "Fix thin hairline strokes that may not print correctly",
+    icon: "PenTool",
+    type: "pdf-hairline-fixer",
+    color: "bg-red-600",
+    emoji: "✏️",
+    metaTitle: "PDF Hairline Fixer Online Free - Fix Thin Lines for Print | PDF Tools",
+    metaDescription: "Fix PDF hairlines online for free. Thicken thin strokes for reliable printing. Prevent missing lines in printed output.",
+    seoArticle: `<h2>PDF Hairline Fixer - Ensure Visible Lines</h2>
+<p>Hairlines are strokes so thin they may not print visibly. Our Hairline Fixer identifies these problematic lines and thickens them to printable widths. Prevent the frustration of missing lines in your printed documents. Ensure every line appears as intended in the final output.</p>
+
+<h2>What Are Hairlines</h2>
+<p>Hairlines are typically 0.25 points or thinner. Design software may default to hairline strokes. Some conversions create unintentionally thin lines. These lines may be invisible when printed. Screen display doesn't reveal the problem. Only printing exposes the issue.</p>
+
+<h2>Why Hairlines Don't Print</h2>
+<p>Printing devices have minimum resolution limits. A line thinner than one device pixel may vanish. Different printers have different minimums. What prints on one device may not on another. The only safe approach is adequate line weight.</p>
+
+<h2>How Hairline Detection Works</h2>
+<p>Upload your PDF document. Our analyzer finds all strokes. Lines below threshold are identified. Review the list of hairlines. Apply automatic fixing. Download your corrected PDF.</p>
+
+<h2>Fixing Options</h2>
+<p>Set minimum acceptable line weight. Choose between automatic and manual fixing. Apply fixes to all pages or selected pages. Preview changes before saving. Maintain original appearance while ensuring printability. Fine-tune results as needed.</p>
+
+<h2>Recommended Minimum Weights</h2>
+<p>For offset printing, 0.25 points minimum. For digital printing, 0.5 points safer. For screen printing, 1 point or more. Consider your specific printing method. When in doubt, go thicker. Visible lines are always better than missing ones.</p>
+
+<h2>Common Hairline Sources</h2>
+<p>CAD software often creates hairlines. Some PDF converters introduce them. Table borders may default to hairlines. Design templates sometimes include them. Our fixer handles all sources. Your documents become print-ready.</p>`,
   },
 ];

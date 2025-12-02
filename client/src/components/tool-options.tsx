@@ -5087,6 +5087,497 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "pdf-tagger": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Tag Structure</Label>
+            <Select
+              value={options.tagStructure || "auto"}
+              onValueChange={(value) => updateOption("tagStructure", value as ToolOptions["tagStructure"])}
+            >
+              <SelectTrigger data-testid="select-tag-structure">
+                <SelectValue placeholder="Select tag structure" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Automatic Detection</SelectItem>
+                <SelectItem value="document">Document Structure</SelectItem>
+                <SelectItem value="heading">Headings Only</SelectItem>
+                <SelectItem value="paragraph">Paragraphs</SelectItem>
+                <SelectItem value="list">Lists</SelectItem>
+                <SelectItem value="table">Tables</SelectItem>
+                <SelectItem value="figure">Figures</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="autoTagHeadings"
+              checked={options.autoTagHeadings !== false}
+              onCheckedChange={(checked) => updateOption("autoTagHeadings", checked)}
+              data-testid="switch-auto-tag-headings"
+            />
+            <Label htmlFor="autoTagHeadings">Auto-tag Headings</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="autoTagLists"
+              checked={options.autoTagLists !== false}
+              onCheckedChange={(checked) => updateOption("autoTagLists", checked)}
+              data-testid="switch-auto-tag-lists"
+            />
+            <Label htmlFor="autoTagLists">Auto-tag Lists</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="autoTagTables"
+              checked={options.autoTagTables !== false}
+              onCheckedChange={(checked) => updateOption("autoTagTables", checked)}
+              data-testid="switch-auto-tag-tables"
+            />
+            <Label htmlFor="autoTagTables">Auto-tag Tables</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Add accessibility tags to make your PDF accessible for screen readers.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-read-order-editor": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Reading Order Mode</Label>
+            <Select
+              value={options.readOrderMode || "left-to-right"}
+              onValueChange={(value) => updateOption("readOrderMode", value as ToolOptions["readOrderMode"])}
+            >
+              <SelectTrigger data-testid="select-read-order-mode">
+                <SelectValue placeholder="Select reading order" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="left-to-right">Left to Right</SelectItem>
+                <SelectItem value="right-to-left">Right to Left</SelectItem>
+                <SelectItem value="top-to-bottom">Top to Bottom</SelectItem>
+                <SelectItem value="custom">Custom Order</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Define the reading order for screen readers and assistive technologies.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-alt-text-editor": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Alt Text Mode</Label>
+            <Select
+              value={options.altTextMode || "add"}
+              onValueChange={(value) => updateOption("altTextMode", value as ToolOptions["altTextMode"])}
+            >
+              <SelectTrigger data-testid="select-alt-text-mode">
+                <SelectValue placeholder="Select mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="add">Add Alt Text</SelectItem>
+                <SelectItem value="edit">Edit Existing</SelectItem>
+                <SelectItem value="remove">Remove Alt Text</SelectItem>
+                <SelectItem value="auto-generate">Auto-Generate</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="altTextContent">Default Alt Text</Label>
+            <Input
+              id="altTextContent"
+              placeholder="Enter default alt text for images"
+              value={options.altTextContent || ""}
+              onChange={(e) => updateOption("altTextContent", e.target.value)}
+              data-testid="input-alt-text-content"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Add or edit alternative text for images in your PDF for accessibility.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-language-setter": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Document Language</Label>
+            <Select
+              value={options.documentLanguage || "en"}
+              onValueChange={(value) => updateOption("documentLanguage", value as ToolOptions["documentLanguage"])}
+            >
+              <SelectTrigger data-testid="select-document-language">
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="en">English</SelectItem>
+                <SelectItem value="en-US">English (US)</SelectItem>
+                <SelectItem value="en-GB">English (UK)</SelectItem>
+                <SelectItem value="es">Spanish</SelectItem>
+                <SelectItem value="fr">French</SelectItem>
+                <SelectItem value="de">German</SelectItem>
+                <SelectItem value="it">Italian</SelectItem>
+                <SelectItem value="pt">Portuguese</SelectItem>
+                <SelectItem value="nl">Dutch</SelectItem>
+                <SelectItem value="ru">Russian</SelectItem>
+                <SelectItem value="ja">Japanese</SelectItem>
+                <SelectItem value="zh">Chinese</SelectItem>
+                <SelectItem value="ko">Korean</SelectItem>
+                <SelectItem value="ar">Arabic</SelectItem>
+                <SelectItem value="hi">Hindi</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="applyToAll"
+              checked={options.applyToAll !== false}
+              onCheckedChange={(checked) => updateOption("applyToAll", checked)}
+              data-testid="switch-apply-to-all"
+            />
+            <Label htmlFor="applyToAll">Apply to All Content</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Set the document language for proper screen reader pronunciation.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-to-tagged-pdf": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Tag Conversion Mode</Label>
+            <Select
+              value={options.tagConversionMode || "basic"}
+              onValueChange={(value) => updateOption("tagConversionMode", value as ToolOptions["tagConversionMode"])}
+            >
+              <SelectTrigger data-testid="select-tag-conversion-mode">
+                <SelectValue placeholder="Select conversion mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="basic">Basic Tagging</SelectItem>
+                <SelectItem value="advanced">Advanced Structure</SelectItem>
+                <SelectItem value="semantic">Semantic Tagging</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="preserveExistingTags"
+              checked={options.preserveExistingTags !== false}
+              onCheckedChange={(checked) => updateOption("preserveExistingTags", checked)}
+              data-testid="switch-preserve-existing-tags"
+            />
+            <Label htmlFor="preserveExistingTags">Preserve Existing Tags</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="generateRoleMap"
+              checked={options.generateRoleMap === true}
+              onCheckedChange={(checked) => updateOption("generateRoleMap", checked)}
+              data-testid="switch-generate-role-map"
+            />
+            <Label htmlFor="generateRoleMap">Generate Role Map</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert untagged PDF to a fully tagged accessible document.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-color-separations-viewer": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Separation Mode</Label>
+            <Select
+              value={options.separationMode || "cmyk"}
+              onValueChange={(value) => updateOption("separationMode", value as ToolOptions["separationMode"])}
+            >
+              <SelectTrigger data-testid="select-separation-mode">
+                <SelectValue placeholder="Select separation mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="cmyk">CMYK Only</SelectItem>
+                <SelectItem value="spot-colors">Spot Colors Only</SelectItem>
+                <SelectItem value="all">All Separations</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="showCyan"
+              checked={options.showCyan !== false}
+              onCheckedChange={(checked) => updateOption("showCyan", checked)}
+              data-testid="switch-show-cyan"
+            />
+            <Label htmlFor="showCyan">Show Cyan</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="showMagenta"
+              checked={options.showMagenta !== false}
+              onCheckedChange={(checked) => updateOption("showMagenta", checked)}
+              data-testid="switch-show-magenta"
+            />
+            <Label htmlFor="showMagenta">Show Magenta</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="showYellow"
+              checked={options.showYellow !== false}
+              onCheckedChange={(checked) => updateOption("showYellow", checked)}
+              data-testid="switch-show-yellow"
+            />
+            <Label htmlFor="showYellow">Show Yellow</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="showBlack"
+              checked={options.showBlack !== false}
+              onCheckedChange={(checked) => updateOption("showBlack", checked)}
+              data-testid="switch-show-black"
+            />
+            <Label htmlFor="showBlack">Show Black (Key)</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            View CMYK and spot color separations for prepress analysis.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-ink-coverage-calculator": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Coverage Mode</Label>
+            <Select
+              value={options.inkCoverageMode || "per-page"}
+              onValueChange={(value) => updateOption("inkCoverageMode", value as ToolOptions["inkCoverageMode"])}
+            >
+              <SelectTrigger data-testid="select-ink-coverage-mode">
+                <SelectValue placeholder="Select coverage mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="per-page">Per Page Analysis</SelectItem>
+                <SelectItem value="total">Total Document</SelectItem>
+                <SelectItem value="detailed">Detailed Breakdown</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="includeSpotColors"
+              checked={options.includeSpotColors === true}
+              onCheckedChange={(checked) => updateOption("includeSpotColors", checked)}
+              data-testid="switch-include-spot-colors"
+            />
+            <Label htmlFor="includeSpotColors">Include Spot Colors</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="exportReport"
+              checked={options.exportReport !== false}
+              onCheckedChange={(checked) => updateOption("exportReport", checked)}
+              data-testid="switch-export-report"
+            />
+            <Label htmlFor="exportReport">Export Report</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Calculate ink coverage percentages for print cost estimation.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-transparency-flattener": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Flatten Resolution</Label>
+            <Select
+              value={options.flattenResolution || "300"}
+              onValueChange={(value) => updateOption("flattenResolution", value as ToolOptions["flattenResolution"])}
+            >
+              <SelectTrigger data-testid="select-flatten-resolution">
+                <SelectValue placeholder="Select resolution" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="72">72 DPI (Screen)</SelectItem>
+                <SelectItem value="150">150 DPI (Low Quality)</SelectItem>
+                <SelectItem value="300">300 DPI (High Quality)</SelectItem>
+                <SelectItem value="600">600 DPI (Maximum)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="convertTextToOutlines"
+              checked={options.convertTextToOutlines === true}
+              onCheckedChange={(checked) => updateOption("convertTextToOutlines", checked)}
+              data-testid="switch-convert-text-to-outlines"
+            />
+            <Label htmlFor="convertTextToOutlines">Convert Text to Outlines</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="convertStrokesToOutlines"
+              checked={options.convertStrokesToOutlines === true}
+              onCheckedChange={(checked) => updateOption("convertStrokesToOutlines", checked)}
+              data-testid="switch-convert-strokes-to-outlines"
+            />
+            <Label htmlFor="convertStrokesToOutlines">Convert Strokes to Outlines</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="preserveOverprintSettings"
+              checked={options.preserveOverprintSettings !== false}
+              onCheckedChange={(checked) => updateOption("preserveOverprintSettings", checked)}
+              data-testid="switch-preserve-overprint"
+            />
+            <Label htmlFor="preserveOverprintSettings">Preserve Overprint</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Flatten transparency effects for reliable printing on older equipment.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-overprint-preview": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Overprint Simulation</Label>
+            <Select
+              value={options.overprintSimulation || "on"}
+              onValueChange={(value) => updateOption("overprintSimulation", value as ToolOptions["overprintSimulation"])}
+            >
+              <SelectTrigger data-testid="select-overprint-simulation">
+                <SelectValue placeholder="Select simulation mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="on">Overprint On</SelectItem>
+                <SelectItem value="off">Overprint Off</SelectItem>
+                <SelectItem value="simulate-overprint">Simulate Overprint</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="showOverprintAreas"
+              checked={options.showOverprintAreas !== false}
+              onCheckedChange={(checked) => updateOption("showOverprintAreas", checked)}
+              data-testid="switch-show-overprint-areas"
+            />
+            <Label htmlFor="showOverprintAreas">Show Overprint Areas</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="highlightOverprint"
+              checked={options.highlightOverprint === true}
+              onCheckedChange={(checked) => updateOption("highlightOverprint", checked)}
+              data-testid="switch-highlight-overprint"
+            />
+            <Label htmlFor="highlightOverprint">Highlight Overprint</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Preview how overprint settings will appear when printed.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-hairline-fixer": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Fix Mode</Label>
+            <Select
+              value={options.fixMode || "auto"}
+              onValueChange={(value) => updateOption("fixMode", value as ToolOptions["fixMode"])}
+            >
+              <SelectTrigger data-testid="select-fix-mode">
+                <SelectValue placeholder="Select fix mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Automatic</SelectItem>
+                <SelectItem value="manual">Manual Threshold</SelectItem>
+                <SelectItem value="threshold">Custom Threshold</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="minimumStrokeWidth">Minimum Stroke Width (pt)</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="minimumStrokeWidth"
+                min={0.1}
+                max={2}
+                step={0.1}
+                value={[options.minimumStrokeWidth || 0.25]}
+                onValueChange={([value]) => updateOption("minimumStrokeWidth", value)}
+                className="flex-1"
+                data-testid="slider-minimum-stroke-width"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.minimumStrokeWidth || 0.25}pt
+              </span>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="targetStrokeWidth">Target Stroke Width (pt)</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="targetStrokeWidth"
+                min={0.25}
+                max={3}
+                step={0.25}
+                value={[options.targetStrokeWidth || 0.5]}
+                onValueChange={([value]) => updateOption("targetStrokeWidth", value)}
+                className="flex-1"
+                data-testid="slider-target-stroke-width"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.targetStrokeWidth || 0.5}pt
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="applyToAllStrokes"
+              checked={options.applyToAllStrokes === true}
+              onCheckedChange={(checked) => updateOption("applyToAllStrokes", checked)}
+              data-testid="switch-apply-to-all-strokes"
+            />
+            <Label htmlFor="applyToAllStrokes">Apply to All Strokes</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Fix thin hairline strokes that may not print correctly.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-to-pdfua":
+    case "pdf-accessibility-checker":
+      return null;
+
     default:
       return null;
   }
