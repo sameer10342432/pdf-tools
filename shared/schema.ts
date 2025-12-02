@@ -436,6 +436,16 @@ export const pdfToolTypes = [
   "image-background-remover",
   "convert-to-ico",
   "ico-converter",
+  "image-to-svg",
+  "svg-to-png",
+  "upscale-image",
+  "ai-image-upscaler",
+  "colorize-photo",
+  "image-color-picker",
+  "gif-maker",
+  "video-to-gif",
+  "gif-to-mp4",
+  "apng-maker",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -910,6 +920,52 @@ export const toolOptionsSchema = z.object({
   // Background Remover options
   bgRemoveThreshold: z.number().optional(),
   bgRemoveColor: z.string().optional(),
+  // Image to SVG options
+  svgColorMode: z.enum(["color", "grayscale", "monochrome"]).optional(),
+  svgPathSimplify: z.number().optional(),
+  svgTurdSize: z.number().optional(),
+  svgOptCurve: z.boolean().optional(),
+  // SVG to PNG options
+  svgToPngWidth: z.number().optional(),
+  svgToPngHeight: z.number().optional(),
+  svgToPngScale: z.number().optional(),
+  svgToPngBackground: z.string().optional(),
+  // Upscale Image options
+  upscaleScale: z.enum(["2", "3", "4"]).optional(),
+  upscaleMode: z.enum(["standard", "quality", "fast"]).optional(),
+  // AI Image Upscaler options
+  aiUpscaleScale: z.enum(["2", "4", "8"]).optional(),
+  aiUpscaleEnhance: z.boolean().optional(),
+  aiUpscaleDenoising: z.number().optional(),
+  // Colorize Photo options
+  colorizeIntensity: z.number().optional(),
+  colorizeSaturation: z.number().optional(),
+  // Image Color Picker options
+  colorPickerX: z.number().optional(),
+  colorPickerY: z.number().optional(),
+  extractPalette: z.boolean().optional(),
+  paletteColors: z.number().optional(),
+  // GIF Maker options
+  gifFrameDelay: z.number().optional(),
+  gifLoop: z.boolean().optional(),
+  gifLoopCount: z.number().optional(),
+  gifQuality: z.number().optional(),
+  gifWidth: z.number().optional(),
+  gifHeight: z.number().optional(),
+  // Video to GIF options
+  videoStartTime: z.number().optional(),
+  videoDuration: z.number().optional(),
+  videoFps: z.number().optional(),
+  videoGifWidth: z.number().optional(),
+  videoGifQuality: z.number().optional(),
+  // GIF to MP4 options
+  gifToMp4Quality: z.enum(["low", "medium", "high"]).optional(),
+  gifToMp4Loop: z.boolean().optional(),
+  // APNG Maker options
+  apngFrameDelay: z.number().optional(),
+  apngLoop: z.boolean().optional(),
+  apngLoopCount: z.number().optional(),
+  apngOptimize: z.boolean().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -12344,5 +12400,285 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Batch Operations</h2>
 <p>Process multiple ICO files simultaneously. Convert entire icon sets at once. Consistent output across all files. Efficient workflow for icon management.</p>`,
+  },
+  {
+    id: "image-to-svg",
+    name: "Image to SVG",
+    description: "Convert raster images to scalable vector graphics (SVG) format",
+    icon: "PenTool",
+    type: "image-to-svg",
+    color: "bg-violet-500",
+    emoji: "🎨",
+    metaTitle: "Image to SVG Converter Online Free - Convert PNG/JPG to Vector | Image Tools",
+    metaDescription: "Convert PNG, JPG, and other raster images to SVG vector format online for free. Create scalable vector graphics from any image instantly.",
+    seoArticle: `<h2>Image to SVG Converter - Transform Raster to Vector</h2>
+<p>Convert your raster images (PNG, JPG, BMP) into scalable vector graphics (SVG) with our powerful online converter. SVG files maintain perfect quality at any size, making them ideal for logos, icons, and graphics that need to scale.</p>
+
+<h2>Why Convert to SVG?</h2>
+<p>SVG (Scalable Vector Graphics) offers significant advantages over raster formats. Vector graphics can be scaled infinitely without losing quality, making them perfect for responsive web design, print materials, and branding. SVG files are also typically smaller than high-resolution raster images.</p>
+
+<h2>Advanced Tracing Technology</h2>
+<p>Our converter uses sophisticated image tracing algorithms to analyze your image and create accurate vector paths. The technology identifies edges, colors, and shapes to produce clean, professional vector output. Adjust settings to fine-tune the conversion for your specific needs.</p>
+
+<h2>Color Mode Options</h2>
+<p>Choose between full color, grayscale, or monochrome output. Full color preserves all the hues in your original image. Grayscale converts to shades of gray for a classic look. Monochrome creates a two-tone black and white result, perfect for logos and icons.</p>
+
+<h2>Path Optimization</h2>
+<p>Control the level of detail in your vector output with path simplification settings. Higher simplification reduces file size and creates smoother curves, while lower simplification preserves more detail from the original image. Find the perfect balance for your use case.</p>
+
+<h2>Perfect for Logos and Icons</h2>
+<p>Transform your logo designs into scalable vectors that look crisp on business cards and billboards alike. Create icon sets that display perfectly on any screen resolution. Build graphics that adapt seamlessly to any context.</p>`,
+  },
+  {
+    id: "svg-to-png",
+    name: "SVG to PNG",
+    description: "Convert SVG vector graphics to high-quality PNG images",
+    icon: "Image",
+    type: "svg-to-png",
+    color: "bg-blue-500",
+    emoji: "🖼️",
+    metaTitle: "SVG to PNG Converter Online Free - Convert Vector to Raster | Image Tools",
+    metaDescription: "Convert SVG vector graphics to PNG images online for free. Export SVG files as high-quality PNG with custom dimensions and transparent backgrounds.",
+    seoArticle: `<h2>SVG to PNG Converter - Vector to Raster Made Easy</h2>
+<p>Convert your SVG vector graphics to high-quality PNG images with our free online converter. Whether you need images for social media, presentations, or web use, this tool delivers crisp PNG output at any resolution you specify.</p>
+
+<h2>Custom Output Dimensions</h2>
+<p>Specify exact width and height for your PNG output, or use a scale multiplier for proportional sizing. Create tiny thumbnails or massive high-resolution exports from the same SVG source. The vector nature of SVG means perfect quality at any size.</p>
+
+<h2>Transparent Background Support</h2>
+<p>Preserve transparency from your SVG files or add a custom background color. PNG format fully supports alpha transparency, making it ideal for logos and graphics that need to blend with different backgrounds. Choose white, black, or any color you need.</p>
+
+<h2>Perfect Rasterization</h2>
+<p>Our converter renders SVG elements with anti-aliasing for smooth edges and professional results. Text, curves, and gradients are all rendered beautifully. The output is indistinguishable from professionally designed raster graphics.</p>
+
+<h2>Web-Ready Output</h2>
+<p>PNG files are universally supported across all web browsers and platforms. Use your converted images directly on websites, in email campaigns, or in digital documents. No compatibility concerns, just reliable results.</p>
+
+<h2>Batch Processing</h2>
+<p>Convert multiple SVG files at once to save time. Process entire icon sets or graphic collections in one go. Consistent settings are applied across all files for uniform output quality.</p>`,
+  },
+  {
+    id: "upscale-image",
+    name: "Upscale Image",
+    description: "Enlarge images while maintaining quality and sharpness",
+    icon: "Maximize",
+    type: "upscale-image",
+    color: "bg-green-500",
+    emoji: "🔍",
+    metaTitle: "Upscale Image Online Free - Enlarge Photos Without Quality Loss | Image Tools",
+    metaDescription: "Upscale and enlarge images online for free while maintaining quality. Increase image resolution by 2x, 3x, or 4x with smart upscaling technology.",
+    seoArticle: `<h2>Image Upscaler - Enlarge Photos Without Quality Loss</h2>
+<p>Increase the resolution of your images while maintaining clarity and sharpness with our advanced upscaling tool. Whether you're preparing images for print, enlarging old photos, or increasing resolution for professional use, our upscaler delivers impressive results.</p>
+
+<h2>Smart Upscaling Technology</h2>
+<p>Our upscaler uses sophisticated interpolation algorithms to intelligently add pixels while preserving edges and details. Unlike simple resizing that creates blurry results, smart upscaling analyzes the image content to generate natural-looking detail.</p>
+
+<h2>Multiple Scale Options</h2>
+<p>Choose to upscale your images by 2x, 3x, or 4x their original dimensions. A 500x500 image becomes 1000x1000 at 2x, or up to 2000x2000 at 4x. Select the scale that meets your needs while balancing file size considerations.</p>
+
+<h2>Quality Modes</h2>
+<p>Select between different upscaling modes optimized for various content types. Standard mode works well for most images. Quality mode takes more time but produces superior results for detailed photos. Fast mode prioritizes speed for batch processing.</p>
+
+<h2>Preserve Image Details</h2>
+<p>The upscaling algorithm specifically works to maintain sharp edges, fine textures, and subtle details. Text in images remains readable, facial features stay natural, and architectural elements keep their clean lines.</p>
+
+<h2>Perfect for Print</h2>
+<p>Prepare low-resolution images for high-quality printing. Transform web graphics into print-ready artwork. Rescue old digital photos that were saved at small sizes. Get the resolution you need for any output medium.</p>`,
+  },
+  {
+    id: "ai-image-upscaler",
+    name: "AI Image Upscaler",
+    description: "Use AI-powered technology to enhance and upscale images intelligently",
+    icon: "Sparkles",
+    type: "ai-image-upscaler",
+    color: "bg-purple-500",
+    emoji: "🤖",
+    metaTitle: "AI Image Upscaler Online Free - Smart Photo Enhancement | Image Tools",
+    metaDescription: "Upscale images with AI technology online for free. Enhance photos, reduce noise, and increase resolution using intelligent upscaling algorithms.",
+    seoArticle: `<h2>AI Image Upscaler - Intelligent Photo Enhancement</h2>
+<p>Experience the power of AI-driven image upscaling that goes beyond simple interpolation. Our AI upscaler analyzes image content to generate realistic details, reduce noise, and produce stunning high-resolution results.</p>
+
+<h2>AI-Powered Enhancement</h2>
+<p>Machine learning algorithms trained on millions of images understand how to enhance different types of content. Faces are enhanced naturally, textures are preserved realistically, and edges remain sharp. The AI adds detail that traditional upscaling cannot.</p>
+
+<h2>Noise Reduction</h2>
+<p>Built-in denoising removes grain and artifacts common in low-resolution or compressed images. The AI distinguishes between noise and actual image detail, removing the former while preserving the latter. Clean, professional results every time.</p>
+
+<h2>Scale Up to 8x</h2>
+<p>Push the boundaries with up to 8x upscaling for dramatic resolution increases. Transform a 200x200 thumbnail into a 1600x1600 detailed image. The AI fills in missing information intelligently, creating results that look naturally high-resolution.</p>
+
+<h2>Photo Enhancement</h2>
+<p>Beyond upscaling, the AI can enhance overall image quality. Improve color balance, increase sharpness, and restore faded photos. Turn aging family photos into vibrant memories. Give new life to compressed or degraded images.</p>
+
+<h2>Works on Any Image</h2>
+<p>Whether it's portraits, landscapes, products, or graphics, the AI adapts its enhancement strategy to the content. Each image receives personalized processing for optimal results. Upload any image and see the AI work its magic.</p>`,
+  },
+  {
+    id: "colorize-photo",
+    name: "Colorize Photo",
+    description: "Add realistic colors to black and white or grayscale photos",
+    icon: "Palette",
+    type: "colorize-photo",
+    color: "bg-pink-500",
+    emoji: "🌈",
+    metaTitle: "Colorize Black and White Photos Online Free - AI Photo Colorization | Image Tools",
+    metaDescription: "Add realistic colors to black and white photos online for free. Transform grayscale images into vibrant color pictures using advanced colorization.",
+    seoArticle: `<h2>Photo Colorization - Bring Black and White Photos to Life</h2>
+<p>Transform your black and white photographs into vivid color images with our advanced colorization tool. Whether you're restoring family history, enhancing archival photos, or adding color to artistic shots, our tool delivers natural-looking results.</p>
+
+<h2>Intelligent Color Mapping</h2>
+<p>Our colorization technology analyzes image content to determine appropriate colors. Skies become blue, grass turns green, and skin tones look natural. The algorithm understands context to apply colors that make sense for the subject matter.</p>
+
+<h2>Natural Skin Tones</h2>
+<p>Portrait colorization is particularly challenging, requiring accurate skin tones across different ethnicities and lighting conditions. Our tool handles faces with care, producing natural-looking colorization that respects the original photograph.</p>
+
+<h2>Adjustable Intensity</h2>
+<p>Control how saturated the colorization appears. Choose subtle, vintage-style coloring for a classic look, or boost intensity for vibrant modern results. Fine-tune the output to match your artistic vision or historical accuracy needs.</p>
+
+<h2>Historical Photo Restoration</h2>
+<p>Breathe new life into family archives and historical documents. See your grandparents' wedding photo in color for the first time. Visualize historical events with added realism. Connect with the past in a new way.</p>
+
+<h2>Easy to Use</h2>
+<p>Simply upload your black and white image and let the tool work its magic. No manual color selection required, though you can adjust results to your preference. Professional colorization in seconds, not hours.</p>`,
+  },
+  {
+    id: "image-color-picker",
+    name: "Image Color Picker",
+    description: "Extract colors from images and generate color palettes",
+    icon: "Pipette",
+    type: "image-color-picker",
+    color: "bg-orange-500",
+    emoji: "🎯",
+    metaTitle: "Image Color Picker Online Free - Extract Colors from Pictures | Image Tools",
+    metaDescription: "Pick colors from any image online for free. Extract hex codes, RGB values, and generate color palettes from your photos and graphics.",
+    seoArticle: `<h2>Image Color Picker - Extract Colors from Any Image</h2>
+<p>Easily extract exact colors from any image with our precision color picker tool. Get hex codes, RGB values, and HSL information for any pixel. Generate harmonious color palettes from photographs for design projects.</p>
+
+<h2>Pixel-Perfect Accuracy</h2>
+<p>Click anywhere on your image to get the exact color at that point. Zoom in for precision selection of small areas. The tool displays the color along with its hex code, RGB values, and other color space representations.</p>
+
+<h2>Color Palette Generation</h2>
+<p>Automatically extract a cohesive color palette from any image. Our algorithm identifies the dominant colors and key accent hues. Get 5, 8, or more colors that work together harmoniously based on your image.</p>
+
+<h2>Multiple Color Formats</h2>
+<p>Copy colors in the format you need: HEX for web design, RGB for digital graphics, HSL for programmatic color manipulation, or CMYK for print work. One-click copying makes it easy to use colors in your projects.</p>
+
+<h2>Design Inspiration</h2>
+<p>Use photographs as inspiration for your design color schemes. Extract colors from nature photos, fashion images, or artwork. Build palettes based on real-world color combinations that naturally work well together.</p>
+
+<h2>Branding and Marketing</h2>
+<p>Analyze competitor colors or industry trends by extracting palettes from existing materials. Ensure color consistency across your brand by sampling from approved assets. Build style guides with precise color specifications.</p>`,
+  },
+  {
+    id: "gif-maker",
+    name: "GIF Maker",
+    description: "Create animated GIFs from multiple images with custom settings",
+    icon: "Film",
+    type: "gif-maker",
+    color: "bg-red-500",
+    emoji: "🎬",
+    metaTitle: "GIF Maker Online Free - Create Animated GIFs from Images | Image Tools",
+    metaDescription: "Create animated GIFs from multiple images online for free. Customize frame delay, loop settings, and quality for perfect animated GIFs.",
+    seoArticle: `<h2>GIF Maker - Create Animated GIFs from Images</h2>
+<p>Transform a series of images into eye-catching animated GIFs with our easy-to-use GIF maker. Perfect for creating memes, product showcases, tutorials, or social media content. Full control over timing, size, and quality.</p>
+
+<h2>Simple Frame Assembly</h2>
+<p>Upload multiple images and arrange them in the order you want them to appear. Drag and drop to reorder frames easily. Each image becomes a frame in your final animated GIF. Add as many frames as you need.</p>
+
+<h2>Customizable Timing</h2>
+<p>Control the delay between frames in milliseconds. Create fast-paced animations with short delays, or slow, dramatic sequences with longer pauses. Set consistent timing across all frames or customize each one individually.</p>
+
+<h2>Loop Controls</h2>
+<p>Choose whether your GIF loops infinitely or plays a specific number of times. Infinite loops work great for social media, while limited plays suit certain presentation uses. Complete control over playback behavior.</p>
+
+<h2>Size Optimization</h2>
+<p>Set the output dimensions to balance quality and file size. Reduce colors for smaller files or keep full color for highest quality. Our optimization ensures your GIFs load quickly while looking great.</p>
+
+<h2>Perfect for Social Media</h2>
+<p>Create GIFs sized perfectly for Twitter, Facebook, or Instagram. Share reactions, tutorials, or promotional content. GIFs auto-play in most social feeds, capturing attention better than static images.</p>`,
+  },
+  {
+    id: "video-to-gif",
+    name: "Video to GIF",
+    description: "Convert video clips to animated GIF format with custom options",
+    icon: "Video",
+    type: "video-to-gif",
+    color: "bg-teal-500",
+    emoji: "📹",
+    metaTitle: "Video to GIF Converter Online Free - Convert MP4 to GIF | Image Tools",
+    metaDescription: "Convert video clips to animated GIFs online for free. Extract segments from MP4, WebM, and other videos with customizable quality and size.",
+    seoArticle: `<h2>Video to GIF Converter - Turn Videos into Animated GIFs</h2>
+<p>Convert your favorite video moments into shareable animated GIFs with our powerful converter. Extract the perfect clip, adjust quality settings, and create GIFs that play anywhere without video player requirements.</p>
+
+<h2>Precise Clip Selection</h2>
+<p>Specify exact start time and duration to extract just the portion you want. Preview your selection before converting. Create short, punchy GIFs or longer animated sequences up to several seconds.</p>
+
+<h2>Frame Rate Control</h2>
+<p>Adjust the frames per second (FPS) of your output GIF. Higher FPS creates smoother animation but larger files. Lower FPS reduces size while still conveying motion. Find the sweet spot for your needs.</p>
+
+<h2>Size Optimization</h2>
+<p>Set output width to control file size. The height adjusts proportionally to maintain aspect ratio. Reduce dimensions for smaller files suitable for web use. Keep larger sizes for high-quality presentations.</p>
+
+<h2>Quality Settings</h2>
+<p>Balance between visual quality and file size with our quality controls. Higher quality preserves more colors and detail. Lower quality creates smaller files for faster loading. Optimize for your specific use case.</p>
+
+<h2>Universal Compatibility</h2>
+<p>GIFs work everywhere: social media, messaging apps, websites, and email. No video player required - they play automatically. Share moments, reactions, and highlights in the most compatible animated format.</p>`,
+  },
+  {
+    id: "gif-to-mp4",
+    name: "GIF to MP4",
+    description: "Convert animated GIFs to efficient MP4 video format",
+    icon: "FileVideo",
+    type: "gif-to-mp4",
+    color: "bg-indigo-500",
+    emoji: "🎥",
+    metaTitle: "GIF to MP4 Converter Online Free - Convert GIF to Video | Image Tools",
+    metaDescription: "Convert animated GIFs to MP4 video format online for free. Reduce file size while maintaining quality. Perfect for web and social media.",
+    seoArticle: `<h2>GIF to MP4 Converter - Efficient Video Conversion</h2>
+<p>Convert your animated GIFs to MP4 video format for dramatically smaller file sizes and better quality. MP4 files can be up to 90% smaller than equivalent GIFs while looking even better. Perfect for web performance and social media sharing.</p>
+
+<h2>Massive Size Reduction</h2>
+<p>MP4 uses modern video compression that's far more efficient than GIF's outdated format. A 10MB GIF might become a 1MB MP4 with better visual quality. Save bandwidth and storage without sacrificing appearance.</p>
+
+<h2>Better Visual Quality</h2>
+<p>GIFs are limited to 256 colors, causing banding and dithering. MP4 supports millions of colors for smooth gradients and accurate color reproduction. Your animations look more professional in video format.</p>
+
+<h2>Social Media Ready</h2>
+<p>Many social platforms actually prefer MP4 over GIF. Twitter, Facebook, and others often convert GIFs to video anyway. Start with MP4 for optimal quality and faster uploads.</p>
+
+<h2>Quality Options</h2>
+<p>Choose between quality presets to balance file size and visual fidelity. High quality preserves maximum detail. Medium provides a good balance. Low quality prioritizes minimum file size.</p>
+
+<h2>Loop Settings</h2>
+<p>Configure whether your MP4 should loop like the original GIF. Create videos that repeat seamlessly for continuous playback. Or produce single-play videos for specific presentation needs.</p>`,
+  },
+  {
+    id: "apng-maker",
+    name: "APNG Maker",
+    description: "Create animated PNG files with full transparency support",
+    icon: "Layers",
+    type: "apng-maker",
+    color: "bg-cyan-500",
+    emoji: "✨",
+    metaTitle: "APNG Maker Online Free - Create Animated PNG Files | Image Tools",
+    metaDescription: "Create animated PNG (APNG) files from multiple images online for free. Full transparency support with smooth animation and smaller file sizes.",
+    seoArticle: `<h2>APNG Maker - Animated PNG with Full Transparency</h2>
+<p>Create high-quality animated PNG files that support full alpha transparency. APNG offers better quality than GIF with support for millions of colors and smooth transparency gradients. Perfect for web graphics, logos, and UI elements.</p>
+
+<h2>Full Transparency Support</h2>
+<p>Unlike GIF's limited transparency (on or off per pixel), APNG supports smooth semi-transparency. Create animations that blend seamlessly with any background. Perfect for logos and UI elements that need to overlay varying backgrounds.</p>
+
+<h2>Better Than GIF</h2>
+<p>APNG supports 24-bit color (16.7 million colors) versus GIF's 256. No color banding or dithering artifacts. Smaller file sizes for equivalent quality. The superior choice for high-quality animated graphics.</p>
+
+<h2>Frame Control</h2>
+<p>Set individual frame delays for precise timing control. Create smooth animations or deliberate pauses. Control loop count or set infinite looping. Full control over animation playback.</p>
+
+<h2>File Optimization</h2>
+<p>Our tool optimizes APNG output for minimum file size. Intelligent compression reduces bytes without visible quality loss. Create efficient animations that load quickly on any connection.</p>
+
+<h2>Wide Compatibility</h2>
+<p>APNG is supported by all modern browsers including Chrome, Firefox, Safari, and Edge. Falls back gracefully to the first frame in older software. Reliable format for contemporary web development.</p>`,
   },
 ];
