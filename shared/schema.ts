@@ -406,6 +406,16 @@ export const pdfToolTypes = [
   "compress-image",
   "compress-jpg",
   "compress-png",
+  "compress-gif",
+  "compress-svg",
+  "compress-webp",
+  "compress-heic",
+  "resize-image",
+  "resize-jpg",
+  "resize-png",
+  "resize-gif",
+  "resize-svg",
+  "resize-webp",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -11407,5 +11417,285 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Advanced Optimization</h2>
 <p>Remove unnecessary metadata that inflates file size. Optimize the compression filters for each image. Choose between maximum compression and fastest processing. Our tool applies the right techniques for each PNG automatically.</p>`,
+  },
+  {
+    id: "compress-gif",
+    name: "Compress GIF",
+    description: "Reduce GIF file size while preserving animation",
+    icon: "FileImage",
+    type: "compress-gif",
+    color: "bg-purple-600",
+    emoji: "🎬",
+    metaTitle: "Compress GIF Online Free - Reduce Animated GIF Size | PDF Tools",
+    metaDescription: "Compress GIF files online for free. Reduce animated GIF file size up to 70% while preserving animation quality. Fast, secure processing.",
+    seoArticle: `<h2>Compress GIF - Optimize Animated Images</h2>
+<p>GIF files can grow large due to multiple animation frames. Our GIF compressor reduces file sizes significantly while maintaining smooth animation. Perfect for memes, reaction images, tutorials, and any animated content that needs optimization.</p>
+
+<h2>How GIF Compression Works</h2>
+<p>Our optimizer analyzes each frame and removes redundant color information. We reduce the color palette intelligently, eliminate duplicate frames, and optimize the timing for smoother playback at smaller sizes. The result looks identical to the original at a fraction of the file size.</p>
+
+<h2>Lossy vs Lossless GIF Compression</h2>
+<p>Lossless compression maintains exact visual quality with modest size reduction. Lossy compression achieves dramatic size reduction with minimal visible quality loss. Choose based on whether pixel-perfect accuracy or smallest file size matters more.</p>
+
+<h2>Animation Frame Optimization</h2>
+<p>Our tool analyzes frame differences and stores only changes between frames. Similar consecutive frames are consolidated. Unused portions of frames are optimized. This inter-frame optimization dramatically reduces file size.</p>
+
+<h2>Color Palette Reduction</h2>
+<p>GIFs support up to 256 colors. Many animations don't need all of them. Our compressor identifies the optimal palette size for each GIF. Fewer colors mean smaller files. Visual quality remains excellent with intelligent color selection.</p>
+
+<h2>Ideal Use Cases</h2>
+<p>Website animations that need fast loading. Social media GIFs optimized for each platform. Messaging app stickers within size limits. Email animations that load instantly. Tutorial recordings compressed for sharing.</p>`,
+  },
+  {
+    id: "compress-svg",
+    name: "Compress SVG",
+    description: "Optimize SVG files by removing unnecessary code",
+    icon: "FileImage",
+    type: "compress-svg",
+    color: "bg-indigo-600",
+    emoji: "🎨",
+    metaTitle: "Compress SVG Online Free - Optimize SVG File Size | PDF Tools",
+    metaDescription: "Compress SVG files online for free. Remove unnecessary code, optimize paths, and reduce SVG file size up to 90%. Perfect for web graphics.",
+    seoArticle: `<h2>Compress SVG - Optimize Vector Graphics</h2>
+<p>SVG files often contain bloated code from design software. Our SVG compressor removes unnecessary elements, optimizes paths, and minifies code while preserving perfect vector quality. Essential for web developers and designers who need efficient, scalable graphics.</p>
+
+<h2>SVG Optimization Techniques</h2>
+<p>We remove editor metadata, empty groups, and unused definitions. Path commands are simplified and combined. Coordinates are rounded to optimal precision. Transform matrices are consolidated. The result is clean, minimal SVG code.</p>
+
+<h2>Lossless Vector Compression</h2>
+<p>Unlike raster images, SVG compression is truly lossless. The visual output is mathematically identical to the original. Only the underlying code is cleaned and optimized. Your vectors scale perfectly at any size.</p>
+
+<h2>Code Minification</h2>
+<p>Whitespace, comments, and unnecessary attributes are stripped. Element IDs are shortened when safe. Style definitions are consolidated and optimized. The result is production-ready SVG code at minimal file size.</p>
+
+<h2>Preserving Important Features</h2>
+<p>Animation code remains intact and functional. Interactive elements and links are preserved. Accessibility attributes are maintained. CSS classes you need are kept. Only truly unnecessary code is removed.</p>
+
+<h2>Web Performance Benefits</h2>
+<p>Smaller SVGs mean faster page loads. Reduced HTTP payload size. Better Core Web Vitals scores. Lower bandwidth costs. Improved mobile performance. Essential for modern web optimization.</p>`,
+  },
+  {
+    id: "compress-webp",
+    name: "Compress WebP",
+    description: "Optimize WebP images for even smaller file sizes",
+    icon: "FileImage",
+    type: "compress-webp",
+    color: "bg-green-600",
+    emoji: "🌐",
+    metaTitle: "Compress WebP Online Free - Reduce WebP File Size | PDF Tools",
+    metaDescription: "Compress WebP images online for free. Further reduce WebP file size while maintaining quality. Modern format optimization made easy.",
+    seoArticle: `<h2>Compress WebP - Modern Image Optimization</h2>
+<p>WebP already offers superior compression, but there's often room to optimize further. Our WebP compressor fine-tunes quality settings and removes unnecessary data for the smallest possible files. Perfect for maximizing the benefits of this modern format.</p>
+
+<h2>WebP Format Advantages</h2>
+<p>WebP provides better compression than both JPEG and PNG. It supports transparency like PNG with sizes closer to JPEG. Animation support rivals GIF quality at smaller sizes. Modern browsers provide excellent support.</p>
+
+<h2>Lossy WebP Compression</h2>
+<p>Our lossy compression finds the optimal quality level for each image. Advanced prediction algorithms minimize visible artifacts. File sizes shrink dramatically while images remain sharp. Perfect for photos and complex graphics.</p>
+
+<h2>Lossless WebP Optimization</h2>
+<p>Lossless WebP maintains perfect quality with excellent compression. Our optimizer applies advanced techniques to reduce sizes further. Ideal for graphics, screenshots, and images requiring pixel-perfect accuracy.</p>
+
+<h2>Animated WebP Support</h2>
+<p>Animated WebP files receive the same optimization treatment. Frame optimization reduces redundancy. Color palettes are analyzed and optimized. Animation quality remains smooth at reduced file sizes.</p>
+
+<h2>Why Choose WebP</h2>
+<p>Smaller files mean faster websites. Google recommends WebP for better rankings. Users experience quicker load times. Bandwidth costs decrease significantly. The modern choice for image-heavy sites.</p>`,
+  },
+  {
+    id: "compress-heic",
+    name: "Compress HEIC",
+    description: "Reduce HEIC/HEIF image file size",
+    icon: "FileImage",
+    type: "compress-heic",
+    color: "bg-rose-600",
+    emoji: "📱",
+    metaTitle: "Compress HEIC Online Free - Reduce HEIC File Size | PDF Tools",
+    metaDescription: "Compress HEIC/HEIF images online for free. Reduce Apple format image sizes while maintaining quality. No software installation needed.",
+    seoArticle: `<h2>Compress HEIC - Optimize Apple Format Images</h2>
+<p>HEIC (High Efficiency Image Coding) is Apple's advanced image format. While already efficient, our compressor can reduce HEIC file sizes further or convert to optimized JPEG for broader compatibility. Perfect for managing iPhone and iPad photo libraries.</p>
+
+<h2>Understanding HEIC Format</h2>
+<p>HEIC uses advanced compression algorithms from the HEVC video standard. It stores images at half the size of JPEG with equivalent quality. Apple devices use it by default. Our tool optimizes these files for any purpose.</p>
+
+<h2>Compression Options</h2>
+<p>Keep the HEIC format for maximum quality and smallest size. Convert to optimized JPEG for universal compatibility. Choose quality levels based on your needs. Batch process entire photo libraries efficiently.</p>
+
+<h2>Metadata Handling</h2>
+<p>HEIC files often contain extensive metadata. Location data, camera settings, and editing history add to file size. Our compressor can strip unnecessary metadata while preserving what you need.</p>
+
+<h2>Compatibility Solutions</h2>
+<p>Not all devices and applications support HEIC. Our tool can convert to widely-supported formats during compression. Choose JPEG for universal compatibility. Keep HEIC for Apple ecosystem use.</p>
+
+<h2>Batch Processing</h2>
+<p>Process multiple HEIC files at once. Apply consistent compression settings. Download all optimized images together. Perfect for managing large photo collections from iPhone backups.</p>`,
+  },
+  {
+    id: "resize-image",
+    name: "Resize Image",
+    description: "Resize any image to custom dimensions",
+    icon: "Maximize",
+    type: "resize-image",
+    color: "bg-blue-600",
+    emoji: "📐",
+    metaTitle: "Resize Image Online Free - Change Image Dimensions | PDF Tools",
+    metaDescription: "Resize any image online for free. Change dimensions, scale by percentage, or fit to specific sizes. Supports JPG, PNG, GIF, WebP and more.",
+    seoArticle: `<h2>Resize Image - Universal Image Scaling Tool</h2>
+<p>Need to change image dimensions? Our universal image resizer handles all popular formats including JPG, PNG, GIF, WebP, and more. Set exact pixel dimensions, scale by percentage, or fit within maximum bounds. Professional resizing made simple.</p>
+
+<h2>Precise Dimension Control</h2>
+<p>Enter exact width and height in pixels. Scale proportionally by entering just one dimension. Maintain aspect ratio automatically or crop to exact sizes. Perfect control over your final image dimensions.</p>
+
+<h2>Percentage Scaling</h2>
+<p>Scale images by percentage for consistent resizing. 50% creates half-size images. 200% doubles the dimensions. Apply the same scaling to multiple images. Quick and intuitive size adjustments.</p>
+
+<h2>Aspect Ratio Options</h2>
+<p>Lock aspect ratio to prevent distortion. Force specific ratios like 16:9 or 1:1. Crop to fit social media requirements. Our tool handles the math automatically. Never stretch or squish images again.</p>
+
+<h2>Quality Preservation</h2>
+<p>Smart resampling algorithms maintain sharpness. Downscaling uses anti-aliasing for smooth results. Upscaling applies intelligent interpolation. Your resized images look professional at any size.</p>
+
+<h2>Common Use Cases</h2>
+<p>Prepare images for website uploads. Create thumbnails for galleries. Resize for social media profiles. Fit images into presentation slides. Optimize for email attachments. Handle any resizing need quickly.</p>`,
+  },
+  {
+    id: "resize-jpg",
+    name: "Resize JPG",
+    description: "Resize JPEG images to any dimension",
+    icon: "Maximize",
+    type: "resize-jpg",
+    color: "bg-amber-600",
+    emoji: "📏",
+    metaTitle: "Resize JPG Online Free - Change JPEG Dimensions | PDF Tools",
+    metaDescription: "Resize JPG images online for free. Scale JPEG photos to exact dimensions while maintaining quality. Fast and easy to use.",
+    seoArticle: `<h2>Resize JPG - Scale JPEG Images Perfectly</h2>
+<p>JPEG is the world's most common photo format. Our JPG resizer lets you change dimensions while preserving the quality you expect from your photographs. Whether scaling down for web use or preparing prints, get perfect results every time.</p>
+
+<h2>Optimal JPG Resizing</h2>
+<p>JPEG uses lossy compression, making proper resizing technique crucial. Our tool resamples intelligently to minimize quality loss. The resized image maintains sharpness and color accuracy. No visible degradation from the resize process.</p>
+
+<h2>Dimension Presets</h2>
+<p>Common sizes for social media profiles and covers. Standard web image dimensions. Print sizes in pixels per inch. Mobile-optimized dimensions. Quick selection saves time on repetitive tasks.</p>
+
+<h2>Batch JPG Resizing</h2>
+<p>Upload multiple JPG files at once. Apply the same resize settings to all. Process entire photo albums efficiently. Download all resized images together. Essential for photographers and content creators.</p>
+
+<h2>Quality Settings</h2>
+<p>Choose output quality level after resizing. Higher quality means larger files. Lower quality for web thumbnails. Balance file size and visual quality. Control over the final result.</p>
+
+<h2>Professional Results</h2>
+<p>Anti-aliasing prevents jagged edges. Color profiles are preserved correctly. EXIF data handling options available. Output matches professional editing software. Reliable results for any purpose.</p>`,
+  },
+  {
+    id: "resize-png",
+    name: "Resize PNG",
+    description: "Resize PNG images while preserving transparency",
+    icon: "Maximize",
+    type: "resize-png",
+    color: "bg-teal-600",
+    emoji: "🔲",
+    metaTitle: "Resize PNG Online Free - Scale PNG with Transparency | PDF Tools",
+    metaDescription: "Resize PNG images online for free. Scale with full transparency preservation. Perfect for logos, graphics, and design assets.",
+    seoArticle: `<h2>Resize PNG - Scale with Perfect Transparency</h2>
+<p>PNG's transparency makes it essential for logos and graphics, and resizing must preserve that transparency perfectly. Our PNG resizer maintains alpha channels while scaling to any dimension. Your graphics overlay flawlessly at any size.</p>
+
+<h2>Transparency Preservation</h2>
+<p>Full alpha channel support during resizing. Semi-transparent pixels scale correctly. No white halos or fringing. Edge smoothing maintains clean boundaries. Your transparent PNGs remain production-ready.</p>
+
+<h2>Scaling Algorithms</h2>
+<p>Bicubic resampling for smooth results. Nearest-neighbor for pixel art. Lanczos for maximum sharpness. Choose the algorithm that matches your image type. Optimal results for any graphic style.</p>
+
+<h2>Logo and Icon Resizing</h2>
+<p>Create favicon sizes from master logos. Generate social media icon dimensions. Prepare app icons at required sizes. Multiple output sizes from one source. Professional design workflow support.</p>
+
+<h2>Lossless PNG Output</h2>
+<p>Resized PNGs maintain lossless quality. No compression artifacts introduced. Text remains crisp and readable. Fine details preserved at all sizes. Perfect for graphics requiring exact reproduction.</p>
+
+<h2>Web Design Workflow</h2>
+<p>Create responsive image sizes efficiently. Generate retina @2x versions. Prepare sprites at multiple scales. Output optimized PNGs automatically. Streamline your design-to-development process.</p>`,
+  },
+  {
+    id: "resize-gif",
+    name: "Resize GIF",
+    description: "Resize animated GIFs while preserving animation",
+    icon: "Maximize",
+    type: "resize-gif",
+    color: "bg-purple-600",
+    emoji: "🎞️",
+    metaTitle: "Resize GIF Online Free - Scale Animated GIFs | PDF Tools",
+    metaDescription: "Resize animated GIF images online for free. Scale dimensions while preserving smooth animation. Perfect for social media and messaging.",
+    seoArticle: `<h2>Resize GIF - Scale Animations Smoothly</h2>
+<p>Animated GIFs require special handling during resizing. Our tool scales all frames proportionally while maintaining smooth animation timing. Whether preparing for social media or messaging apps, get perfectly sized animations every time.</p>
+
+<h2>Animation Frame Scaling</h2>
+<p>Every frame resizes consistently for smooth playback. Timing between frames is preserved exactly. Animation loops continue seamlessly. No jumps, stutters, or artifacts introduced. Professional animation quality maintained.</p>
+
+<h2>Dimension Options</h2>
+<p>Set exact pixel dimensions for precise sizing. Scale by percentage for proportional changes. Fit within maximum dimensions while keeping ratio. Common social media sizes as presets. Flexible control over output size.</p>
+
+<h2>File Size Considerations</h2>
+<p>Smaller dimensions mean smaller file sizes. Reduce GIF size for faster loading. Maintain dimensions for quality. Balance between size and visual impact. Optimize for your specific use case.</p>
+
+<h2>Quality Preservation</h2>
+<p>Anti-aliasing smooths resized edges. Color palettes are optimized for new dimensions. Dithering maintains smooth gradients. Your animations look great at any size. Professional results without artifacts.</p>
+
+<h2>Social Media Optimization</h2>
+<p>Resize for Twitter's GIF requirements. Fit Facebook's recommended dimensions. Prepare for Discord and Slack limits. Meet Reddit's upload requirements. Platform-ready animations in seconds.</p>`,
+  },
+  {
+    id: "resize-svg",
+    name: "Resize SVG",
+    description: "Set SVG viewport and dimensions",
+    icon: "Maximize",
+    type: "resize-svg",
+    color: "bg-indigo-600",
+    emoji: "📊",
+    metaTitle: "Resize SVG Online Free - Change SVG Dimensions | PDF Tools",
+    metaDescription: "Resize SVG files online for free. Modify viewport and dimensions while maintaining perfect scalability. Vector graphics at any size.",
+    seoArticle: `<h2>Resize SVG - Vector Dimension Control</h2>
+<p>SVG graphics scale infinitely, but sometimes you need to set specific dimensions. Our tool modifies SVG viewport and dimensions while preserving the vector paths inside. Perfect for integrating SVGs into layouts with specific size requirements.</p>
+
+<h2>Understanding SVG Dimensions</h2>
+<p>SVG has both viewport dimensions and internal coordinates. Width and height attributes set the default display size. ViewBox defines the internal coordinate system. Our tool handles both correctly for proper scaling.</p>
+
+<h2>Viewport Modification</h2>
+<p>Set explicit width and height attributes. Define viewBox for responsive scaling. Preserve or modify aspect ratios. Control how SVGs behave in web layouts. Flexible dimension handling for any need.</p>
+
+<h2>Maintaining Vector Quality</h2>
+<p>Vector paths remain mathematically precise. No pixelation or quality loss. Infinite scalability preserved. Clean edges at any display size. True vector graphics advantages maintained.</p>
+
+<h2>Web Integration</h2>
+<p>Set dimensions for specific layout requirements. Prepare SVGs for CMS uploads. Standardize icon dimensions. Create consistently-sized logo variations. Streamline web development workflows.</p>
+
+<h2>Export Options</h2>
+<p>Output as modified SVG for vector use. Convert to PNG at specific dimensions. Generate multiple sizes from one source. Maintain editability or create rasterized versions. Flexible output for various needs.</p>`,
+  },
+  {
+    id: "resize-webp",
+    name: "Resize WebP",
+    description: "Resize WebP images to custom dimensions",
+    icon: "Maximize",
+    type: "resize-webp",
+    color: "bg-green-600",
+    emoji: "🖼️",
+    metaTitle: "Resize WebP Online Free - Scale WebP Images | PDF Tools",
+    metaDescription: "Resize WebP images online for free. Scale modern format images while maintaining quality and transparency. Fast processing.",
+    seoArticle: `<h2>Resize WebP - Modern Format Scaling</h2>
+<p>WebP offers the best of both worlds with excellent compression and transparency support. Our resizer handles both lossy and lossless WebP, scaling to your exact requirements while maintaining the format's quality advantages.</p>
+
+<h2>WebP Format Benefits</h2>
+<p>Smaller files than JPEG at equivalent quality. Full transparency support like PNG. Animation capability like GIF. Modern browser support across platforms. The smart choice for web images.</p>
+
+<h2>Scaling with Quality</h2>
+<p>Our algorithms preserve WebP's compression advantages. Resized images maintain small file sizes. Quality settings optimize the output. Transparency channels scale correctly. All WebP features supported.</p>
+
+<h2>Dimension Controls</h2>
+<p>Set exact pixel dimensions. Scale by percentage. Maintain or modify aspect ratios. Fit within maximum bounds. Complete control over output size.</p>
+
+<h2>Animated WebP Resizing</h2>
+<p>Animated WebP files resize all frames. Animation timing is preserved. Smooth playback at new dimensions. Modern alternative to GIF. Smaller files, better quality.</p>
+
+<h2>Web Optimization</h2>
+<p>Create responsive image sizes. Generate thumbnails for galleries. Prepare images for lazy loading. Optimize for Core Web Vitals. Performance-focused resizing workflow.</p>`,
   },
 ];
