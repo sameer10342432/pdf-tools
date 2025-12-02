@@ -356,6 +356,16 @@ export const pdfToolTypes = [
   "compare-pdf",
   "pdf-comparer",
   "pdf-difference-checker",
+  "compare-pdf-text",
+  "compare-pdf-visual",
+  "pdf-analyzer",
+  "get-pdf-info",
+  "count-pdf-pages",
+  "pdf-word-counter",
+  "pdf-character-counter",
+  "detect-pdf-fonts",
+  "check-pdfa-compliance",
+  "validate-pdfa",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -9786,5 +9796,285 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Verification Features</h2>
 <p>Text content comparison with precision. Page count and structure verification. Image and graphic change detection. Annotation and comment comparison. Complete document integrity checking.</p>`,
+  },
+  {
+    id: "compare-pdf-text",
+    name: "Compare PDF Text",
+    description: "Compare text content between two PDF documents",
+    icon: "FileText",
+    type: "compare-pdf-text",
+    color: "bg-blue-600",
+    emoji: "📝",
+    metaTitle: "Compare PDF Text Online Free - Text Comparison Tool | PDF Tools",
+    metaDescription: "Compare text content between two PDF files online for free. Find text differences, additions, and deletions. Fast and accurate PDF text comparison.",
+    seoArticle: `<h2>Compare PDF Text - Accurate Text Difference Detection</h2>
+<p>Our PDF text comparison tool extracts and compares the text content from two PDF documents, highlighting every difference with precision. Whether you're reviewing document revisions, checking translations, or verifying content accuracy, this tool provides detailed text-level comparison that catches every change.</p>
+
+<h2>How Text Comparison Works</h2>
+<p>The tool extracts all text content from both PDF files and performs a line-by-line comparison. Additions are highlighted in green, deletions in red, and modifications are clearly marked. You get a comprehensive view of exactly what changed between the two documents, down to individual words and characters.</p>
+
+<h2>Key Features of PDF Text Comparison</h2>
+<p>Our text comparison engine handles complex documents with multiple columns, tables, and various text formatting. It preserves the reading order of the original documents and identifies changes even in reformatted content. The tool ignores visual formatting changes and focuses purely on text content differences.</p>
+
+<h2>Step-by-Step Guide</h2>
+<p>Upload your original PDF document first, then upload the document you want to compare. Click the compare button and wait for the analysis. The results show a side-by-side comparison with all differences highlighted. You can download a detailed comparison report for your records.</p>
+
+<h2>Perfect for Professional Use</h2>
+<p>Legal professionals use this tool to compare contract versions and identify clause changes. Editors rely on it to track revisions in manuscripts and publications. Quality assurance teams verify that document processing hasn't altered content. Translators compare original and translated documents for accuracy.</p>
+
+<h2>Secure and Private</h2>
+<p>All uploaded documents are processed securely and automatically deleted after comparison. Your sensitive documents remain confidential throughout the comparison process. No registration required, and your data is never stored permanently on our servers.</p>`,
+  },
+  {
+    id: "compare-pdf-visual",
+    name: "Compare PDF Visual",
+    description: "Visual comparison of PDF documents side by side",
+    icon: "Eye",
+    type: "compare-pdf-visual",
+    color: "bg-purple-600",
+    emoji: "👁️",
+    metaTitle: "Compare PDF Visual Online Free - Visual PDF Comparison | PDF Tools",
+    metaDescription: "Visual comparison of PDF files online for free. See layout, image, and formatting differences between PDFs. Side-by-side PDF visual comparison.",
+    seoArticle: `<h2>Visual PDF Comparison - See Every Difference</h2>
+<p>Our visual PDF comparison tool goes beyond text to analyze the complete visual appearance of your documents. Compare layouts, images, graphics, and formatting between two PDF files. Perfect for designers, publishers, and quality control professionals who need to verify visual accuracy.</p>
+
+<h2>Comprehensive Visual Analysis</h2>
+<p>The tool renders both PDFs and performs a pixel-by-pixel comparison of each page. Differences in layout, colors, images, and positioning are highlighted with colored overlays. You can see exactly where visual changes occur, whether it's a moved element, color shift, or image modification.</p>
+
+<h2>Advanced Comparison Features</h2>
+<p>Adjust comparison sensitivity to focus on significant changes or catch every minor difference. Toggle between overlay view, side-by-side view, and difference-only view. Navigate page by page with synchronized scrolling. Zoom in on specific areas for detailed inspection.</p>
+
+<h2>How to Compare PDFs Visually</h2>
+<p>Upload your reference PDF document. Upload the PDF you want to compare against it. Select your comparison settings and sensitivity level. Run the visual comparison analysis. Review the results with our interactive comparison viewer.</p>
+
+<h2>Ideal Use Cases</h2>
+<p>Print production teams verify proofs against approved designs. Marketing departments check brand consistency across materials. Legal teams ensure document formatting hasn't been tampered with. Publishers compare printed and digital versions. Designers validate export quality.</p>
+
+<h2>Detailed Difference Reports</h2>
+<p>Generate comprehensive reports showing all visual differences. Reports include thumbnail images of changed areas. Difference percentages for each page. Summary statistics for the entire document. Export reports as PDF or HTML for documentation.</p>`,
+  },
+  {
+    id: "pdf-analyzer",
+    name: "PDF Analyzer",
+    description: "Comprehensive analysis of PDF document structure and content",
+    icon: "Search",
+    type: "pdf-analyzer",
+    color: "bg-indigo-600",
+    emoji: "🔬",
+    metaTitle: "PDF Analyzer Online Free - Analyze PDF Structure | PDF Tools",
+    metaDescription: "Analyze PDF document structure and content online for free. Get detailed insights into PDF composition, metadata, fonts, images, and more.",
+    seoArticle: `<h2>PDF Analyzer - Deep Document Insights</h2>
+<p>Our PDF Analyzer provides comprehensive insights into your PDF documents. Discover detailed information about document structure, content composition, embedded resources, and technical specifications. Perfect for developers, publishers, and anyone who needs to understand what's inside a PDF file.</p>
+
+<h2>Complete Document Analysis</h2>
+<p>The analyzer examines every aspect of your PDF: page dimensions, fonts used, images embedded, color spaces, annotations, form fields, bookmarks, and metadata. You get a complete picture of your document's composition and technical characteristics in one comprehensive report.</p>
+
+<h2>What Gets Analyzed</h2>
+<p>Document metadata including title, author, creation date, and modification history. Page-by-page breakdown of dimensions, rotation, and content. Complete font inventory with embedding status. Image catalog with formats, dimensions, and compression. Security settings and encryption status. PDF version and compliance information.</p>
+
+<h2>How to Analyze Your PDF</h2>
+<p>Upload your PDF document using the upload area. The analyzer processes the file and extracts all information. View the comprehensive analysis report organized by category. Explore detailed breakdowns for each aspect of the document. Download the analysis report for your records.</p>
+
+<h2>Professional Applications</h2>
+<p>Prepress professionals verify print-readiness of documents. Developers debug PDF generation issues. Archivists assess document preservation requirements. Compliance officers verify document specifications. Quality assurance teams validate PDF production.</p>
+
+<h2>Actionable Insights</h2>
+<p>Identify missing fonts that could cause display issues. Discover oversized images that inflate file size. Find security settings that may restrict document use. Detect non-compliant elements for archival standards. Understand document complexity for processing requirements.</p>`,
+  },
+  {
+    id: "get-pdf-info",
+    name: "Get PDF Info",
+    description: "Extract detailed information and metadata from PDF files",
+    icon: "FileSearch",
+    type: "get-pdf-info",
+    color: "bg-teal-600",
+    emoji: "ℹ️",
+    metaTitle: "Get PDF Info Online Free - Extract PDF Information | PDF Tools",
+    metaDescription: "Get detailed PDF information and metadata online for free. Extract page count, file size, author, creation date, and more from any PDF.",
+    seoArticle: `<h2>Get PDF Info - Extract Document Details</h2>
+<p>Quickly extract all essential information from any PDF document. Our PDF Info tool reveals metadata, document properties, and technical specifications in seconds. Whether you need to check the page count, verify the author, or understand file characteristics, this tool provides instant answers.</p>
+
+<h2>Information Extracted</h2>
+<p>Document title, author, subject, and keywords. Creation and modification dates with timestamps. PDF version and producer software. Page count and individual page dimensions. File size and compression details. Security settings and restrictions. Font information and image count.</p>
+
+<h2>Why Extract PDF Information</h2>
+<p>Understanding your PDF's properties helps with organization, troubleshooting, and processing decisions. Check document authenticity through metadata. Verify page counts before printing. Understand file size for email and upload limits. Identify the software used to create the document.</p>
+
+<h2>How to Get PDF Information</h2>
+<p>Upload your PDF file through our secure interface. The tool instantly analyzes the document structure. View all extracted information in an organized display. Copy specific details or download a complete info report. No registration or software installation required.</p>
+
+<h2>Common Use Cases</h2>
+<p>Verify document authenticity for legal purposes. Check page counts before ordering prints. Understand file characteristics for archiving. Troubleshoot display or compatibility issues. Audit documents for compliance requirements.</p>
+
+<h2>Quick and Reliable</h2>
+<p>Information extraction takes just seconds. Works with all PDF versions and types. Handles encrypted PDFs (displays security status). Processes large files efficiently. Accurate results you can depend on.</p>`,
+  },
+  {
+    id: "count-pdf-pages",
+    name: "Count PDF Pages",
+    description: "Count the total number of pages in a PDF document",
+    icon: "Hash",
+    type: "count-pdf-pages",
+    color: "bg-green-600",
+    emoji: "🔢",
+    metaTitle: "Count PDF Pages Online Free - PDF Page Counter | PDF Tools",
+    metaDescription: "Count the number of pages in a PDF file online for free. Fast and accurate PDF page counter. No registration or software needed.",
+    seoArticle: `<h2>Count PDF Pages - Instant Page Count</h2>
+<p>Need to know how many pages are in a PDF? Our page counter provides instant, accurate results for any PDF document. Whether you're preparing for printing, calculating costs, or organizing documents, get your page count in seconds without opening the file in a PDF reader.</p>
+
+<h2>Why Count PDF Pages Online</h2>
+<p>Print shops charge by the page - know your costs before ordering. Document management requires accurate page counts. Merge operations need page count verification. Academic submissions often have page limits. Publishing workflows depend on accurate page tracking.</p>
+
+<h2>Fast and Accurate Results</h2>
+<p>Upload your PDF and get the page count instantly. Works with all PDF types including scanned documents. Handles multi-hundred page documents efficiently. Provides accurate counts regardless of file complexity. No software installation or account creation needed.</p>
+
+<h2>How to Count PDF Pages</h2>
+<p>Drag and drop your PDF file to the upload area, or click to browse and select. The tool processes the file immediately. Your total page count is displayed instantly. Additional file information is shown for reference. Process multiple files if needed.</p>
+
+<h2>Additional Information Provided</h2>
+<p>Along with the page count, you'll see file size, PDF version, and page dimensions. This additional context helps you understand your document better. Useful for printing calculations and document preparation.</p>
+
+<h2>Reliable for All Documents</h2>
+<p>Works with standard and encrypted PDFs. Handles scanned documents accurately. Processes PDF portfolios correctly. Compatible with all PDF versions. Provides consistent, reliable results every time.</p>`,
+  },
+  {
+    id: "pdf-word-counter",
+    name: "PDF Word Counter",
+    description: "Count the total number of words in a PDF document",
+    icon: "Type",
+    type: "pdf-word-counter",
+    color: "bg-amber-600",
+    emoji: "📊",
+    metaTitle: "PDF Word Counter Online Free - Count Words in PDF | PDF Tools",
+    metaDescription: "Count the number of words in a PDF file online for free. Accurate PDF word counter for writers, students, and professionals. No software needed.",
+    seoArticle: `<h2>PDF Word Counter - Accurate Word Count</h2>
+<p>Count every word in your PDF document with precision. Our PDF word counter extracts all text content and provides an accurate word count, essential for writers, students, translators, and anyone who needs to know the exact length of their document.</p>
+
+<h2>Why Word Count Matters</h2>
+<p>Academic papers have strict word limits. Translation services price by the word. Content writing contracts specify word counts. Publishing guidelines require specific lengths. SEO content needs word count optimization.</p>
+
+<h2>Comprehensive Text Analysis</h2>
+<p>Beyond the total word count, our tool provides character count, sentence count, and paragraph count. Understand your document's composition at every level. Get average word length and reading time estimates. Perfect for content analysis and optimization.</p>
+
+<h2>How to Count Words in PDF</h2>
+<p>Upload your PDF document using the upload interface. Our tool extracts all text from every page. The word count and additional statistics are displayed. View page-by-page breakdown if needed. Export the count for your records.</p>
+
+<h2>Accurate Text Extraction</h2>
+<p>Our advanced text extraction handles complex layouts. Multi-column documents are processed correctly. Text in headers, footers, and text boxes is included. Tables and lists are counted appropriately. Hyphenated words are handled intelligently.</p>
+
+<h2>Perfect for Professionals</h2>
+<p>Writers track manuscript progress against targets. Students verify assignment word limits. Translators calculate project scope and pricing. Editors assess content length for publication. Marketers measure content for SEO purposes.</p>`,
+  },
+  {
+    id: "pdf-character-counter",
+    name: "PDF Character Counter",
+    description: "Count characters and analyze text in PDF documents",
+    icon: "Type",
+    type: "pdf-character-counter",
+    color: "bg-rose-600",
+    emoji: "🔤",
+    metaTitle: "PDF Character Counter Online Free - Count Characters in PDF | PDF Tools",
+    metaDescription: "Count characters in a PDF file online for free. Get character count with and without spaces. Accurate PDF character counting tool.",
+    seoArticle: `<h2>PDF Character Counter - Precise Character Count</h2>
+<p>Get an exact character count from your PDF documents. Our character counter provides both character count with spaces and without, plus additional text statistics. Essential for translators, copywriters, and anyone working with character-based requirements.</p>
+
+<h2>Why Count Characters</h2>
+<p>Social media posts have character limits. Translation pricing often uses character count. SMS and messaging have character restrictions. Some academic requirements specify characters. Database fields have character limitations.</p>
+
+<h2>Complete Character Analysis</h2>
+<p>Total characters including spaces. Characters excluding spaces. Letter count separate from numbers and symbols. Space count for formatting analysis. Special character identification. Line and paragraph counts included.</p>
+
+<h2>How to Count Characters</h2>
+<p>Upload your PDF file through our secure uploader. Text is extracted from all pages automatically. Character counts are calculated and displayed. View detailed breakdown of character types. Download the analysis if needed.</p>
+
+<h2>Handles Complex Documents</h2>
+<p>Multi-language documents are counted accurately. Special characters and symbols are included. Mathematical formulas are processed. Text from all document areas is captured. Accurate counts for any PDF format.</p>
+
+<h2>Professional Applications</h2>
+<p>Translators calculate project costs precisely. Copywriters verify character limits. Developers validate data extraction. Publishers assess content specifications. Marketers optimize for platform requirements.</p>`,
+  },
+  {
+    id: "detect-pdf-fonts",
+    name: "Detect PDF Fonts",
+    description: "Identify all fonts used in a PDF document",
+    icon: "Type",
+    type: "detect-pdf-fonts",
+    color: "bg-cyan-600",
+    emoji: "🔠",
+    metaTitle: "Detect PDF Fonts Online Free - Find Fonts in PDF | PDF Tools",
+    metaDescription: "Detect and identify all fonts used in a PDF file online for free. Find font names, types, and embedding status. PDF font detection tool.",
+    seoArticle: `<h2>Detect PDF Fonts - Complete Font Identification</h2>
+<p>Discover every font used in your PDF document. Our font detection tool identifies all fonts, their types, embedding status, and usage throughout the document. Essential for designers, printers, and anyone who needs to ensure font compatibility and availability.</p>
+
+<h2>What Font Information Is Revealed</h2>
+<p>Font family names and specific font styles. Font types (TrueType, Type 1, OpenType, CID). Embedding status (embedded, subset, not embedded). Font encoding and character set information. Pages where each font appears. Approximate usage percentage per font.</p>
+
+<h2>Why Detect Fonts in PDFs</h2>
+<p>Ensure fonts are properly embedded for printing. Identify fonts for design recreation. Troubleshoot display and substitution issues. Verify compliance with publishing requirements. Understand document typography for editing.</p>
+
+<h2>How to Detect Fonts</h2>
+<p>Upload your PDF document to the analyzer. Our tool scans the entire document structure. All fonts are listed with complete details. View embedding status and recommendations. Download the font report for reference.</p>
+
+<h2>Prepress and Print Applications</h2>
+<p>Verify all fonts are embedded before sending to print. Identify missing fonts that could cause issues. Check for font substitutions that may affect appearance. Ensure consistent typography across document versions. Meet print provider font requirements.</p>
+
+<h2>Design and Development Uses</h2>
+<p>Identify fonts for design matching and recreation. Troubleshoot PDF generation font issues. Verify font licensing compliance. Understand document typography requirements. Plan font acquisition for project needs.</p>`,
+  },
+  {
+    id: "check-pdfa-compliance",
+    name: "Check PDF/A Compliance",
+    description: "Verify if a PDF meets PDF/A archival standards",
+    icon: "ShieldCheck",
+    type: "check-pdfa-compliance",
+    color: "bg-emerald-600",
+    emoji: "✅",
+    metaTitle: "Check PDF/A Compliance Online Free - PDF/A Validator | PDF Tools",
+    metaDescription: "Check if your PDF meets PDF/A archival standards online for free. Verify PDF/A-1, PDF/A-2, and PDF/A-3 compliance. PDF/A validation tool.",
+    seoArticle: `<h2>Check PDF/A Compliance - Archival Standard Verification</h2>
+<p>Verify whether your PDF documents meet PDF/A archival standards. Our compliance checker analyzes your PDF against PDF/A-1, PDF/A-2, and PDF/A-3 specifications, identifying any issues that prevent long-term archival compliance. Essential for organizations with document retention requirements.</p>
+
+<h2>Understanding PDF/A Standards</h2>
+<p>PDF/A is an ISO-standardized version of PDF designed for long-term digital preservation. PDF/A-1 is based on PDF 1.4 with strict requirements. PDF/A-2 adds JPEG2000 compression and optional content. PDF/A-3 allows embedding of any file format. Each level (a, b, u) has different conformance requirements.</p>
+
+<h2>What Gets Checked</h2>
+<p>Font embedding and subsetting requirements. Color space specifications and ICC profiles. Metadata XMP requirements. Encryption and security restrictions. JavaScript and multimedia content. External references and dependencies. Transparency and annotation requirements.</p>
+
+<h2>How to Check Compliance</h2>
+<p>Upload your PDF document for analysis. Select the PDF/A version to check against (or check all). Our tool performs comprehensive compliance analysis. View detailed results with pass/fail for each requirement. Get recommendations for fixing non-compliant elements.</p>
+
+<h2>Industries That Require PDF/A</h2>
+<p>Government agencies for official records. Legal firms for case documents. Healthcare for patient records. Financial services for transaction records. Manufacturing for quality documentation. Any organization with long-term retention requirements.</p>
+
+<h2>Detailed Compliance Reports</h2>
+<p>Overall compliance status with specific standard level. List of all requirements checked. Detailed explanations of failures. Recommendations for achieving compliance. Report export for documentation purposes.</p>`,
+  },
+  {
+    id: "validate-pdfa",
+    name: "Validate PDF/A",
+    description: "Full validation of PDF/A documents with detailed reports",
+    icon: "BadgeCheck",
+    type: "validate-pdfa",
+    color: "bg-lime-600",
+    emoji: "🏆",
+    metaTitle: "Validate PDF/A Online Free - PDF/A Validation Tool | PDF Tools",
+    metaDescription: "Validate PDF/A documents online for free. Full validation against PDF/A-1, PDF/A-2, PDF/A-3 standards with detailed reports. Professional PDF/A validator.",
+    seoArticle: `<h2>Validate PDF/A - Professional Document Validation</h2>
+<p>Our PDF/A validator performs thorough validation of your documents against ISO 19005 standards. Get detailed validation reports that identify every compliance issue, with specific references to standard requirements and recommendations for resolution. Essential for archival workflows and compliance verification.</p>
+
+<h2>Comprehensive Validation Process</h2>
+<p>The validator checks every aspect of PDF/A compliance. File structure and object validation. Required metadata verification. Font embedding completeness. Color management requirements. Content stream validation. Annotation and action restrictions. Encryption and security compliance.</p>
+
+<h2>PDF/A Versions Supported</h2>
+<p>PDF/A-1a and PDF/A-1b (based on PDF 1.4). PDF/A-2a, PDF/A-2b, and PDF/A-2u (based on PDF 1.7). PDF/A-3a, PDF/A-3b, and PDF/A-3u (with embedded files). Automatic detection of declared conformance level. Cross-validation against claimed compliance.</p>
+
+<h2>How to Validate Your PDF/A</h2>
+<p>Upload your PDF document for validation. The validator analyzes against all applicable requirements. View comprehensive validation results. Examine detailed failure descriptions. Download validation report for compliance records.</p>
+
+<h2>Validation Report Contents</h2>
+<p>Conformance level determination. Complete list of validation checks performed. Detailed error messages with ISO references. Warning for potential issues. Suggestions for remediation. XML validation report option for automated workflows.</p>
+
+<h2>Professional Compliance Workflow</h2>
+<p>Use our validator as part of your document processing pipeline. Verify incoming documents meet requirements. Validate converted documents before archiving. Generate compliance documentation for audits. Ensure long-term preservation standards are met.</p>`,
   },
 ];
