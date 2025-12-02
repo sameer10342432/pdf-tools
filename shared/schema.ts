@@ -456,6 +456,16 @@ export const pdfToolTypes = [
   "jpg-to-tiff",
   "webp-to-png",
   "png-to-webp",
+  "webp-to-gif",
+  "gif-to-webp",
+  "heic-to-png",
+  "heic-to-gif",
+  "avif-to-jpg",
+  "jpg-to-avif",
+  "avif-to-png",
+  "png-to-avif",
+  "jpe-to-jpg",
+  "jfif-to-jpg",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -12978,5 +12988,285 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Quality Control</h2>
 <p>Adjust compression settings to find the perfect balance between file size and quality. Preview the output before downloading to ensure it meets your standards. Optimal settings for every use case.</p>`,
+  },
+  {
+    id: "webp-to-gif",
+    name: "WebP to GIF",
+    description: "Convert WebP images to animated or static GIF format",
+    icon: "RefreshCcw",
+    type: "webp-to-gif",
+    color: "bg-purple-600",
+    emoji: "🎬",
+    metaTitle: "WebP to GIF Converter Online Free - Convert WebP to GIF | Image Tools",
+    metaDescription: "Convert WebP images to GIF format online for free. Transform static and animated WebP files into universally compatible GIF format with perfect quality.",
+    seoArticle: `<h2>WebP to GIF Converter - Universal Animation Format</h2>
+<p>Convert your WebP images and animations to the universally supported GIF format. While WebP offers excellent compression and animation support, GIF remains the most widely compatible format for animated images across all platforms, messaging apps, and social media.</p>
+
+<h2>Why Convert WebP to GIF?</h2>
+<p>WebP is a modern format that isn't supported everywhere. Many older applications, email clients, and messaging platforms don't display WebP animations. GIF works virtually everywhere - from vintage software to the latest smartphones, ensuring your animations reach every viewer.</p>
+
+<h2>Animation Preservation</h2>
+<p>Our converter maintains all animation frames, timing, and loop settings from your WebP source. Each frame is carefully extracted and reassembled into a smooth GIF animation that plays exactly like the original.</p>
+
+<h2>Static Image Support</h2>
+<p>Not all WebP files are animated - our converter handles static WebP images too. Convert single-frame WebP images to static GIF format for use in legacy applications or platforms that require GIF format.</p>
+
+<h2>Social Media Ready</h2>
+<p>GIF is the universal format for sharing animations on social media, forums, and messaging apps. Convert your WebP animations to GIF for guaranteed compatibility on Twitter, Facebook, Discord, Slack, and more.</p>
+
+<h2>File Optimization</h2>
+<p>While GIF files may be larger than WebP, our converter optimizes the output for best quality-to-size ratio. Color palette optimization and frame reduction options help keep file sizes manageable.</p>`,
+  },
+  {
+    id: "gif-to-webp",
+    name: "GIF to WebP",
+    description: "Convert GIF images to modern WebP format for smaller files",
+    icon: "Zap",
+    type: "gif-to-webp",
+    color: "bg-green-600",
+    emoji: "⚡",
+    metaTitle: "GIF to WebP Converter Online Free - Convert GIF to WebP | Image Tools",
+    metaDescription: "Convert GIF animations to WebP format online for free. Reduce file sizes significantly while maintaining animation quality with modern WebP compression.",
+    seoArticle: `<h2>GIF to WebP Converter - Modern Animation Compression</h2>
+<p>Transform your GIF animations into the modern WebP format for dramatically smaller file sizes. WebP typically produces files 25-50% smaller than GIF while maintaining the same visual quality and smooth animation playback.</p>
+
+<h2>Significant Size Reduction</h2>
+<p>GIF uses a 256-color palette and lossless compression that often results in large files. WebP's advanced compression algorithms can reduce file sizes by half or more, making animations load faster on websites and use less bandwidth.</p>
+
+<h2>Better Quality Options</h2>
+<p>WebP supports both lossless and lossy compression for animations. Choose lossless for perfect quality preservation, or lossy compression for maximum size reduction. Either way, you'll get smaller files than GIF.</p>
+
+<h2>Full Animation Support</h2>
+<p>WebP handles animations just as well as GIF, preserving all frames, timing, and loop settings. Your animated content plays smoothly with perfect synchronization in all modern browsers.</p>
+
+<h2>Web Performance Optimization</h2>
+<p>WebP is specifically designed for web use. Converting GIF animations to WebP improves page load times, reduces server bandwidth costs, and provides better user experience on websites and web applications.</p>
+
+<h2>Modern Browser Support</h2>
+<p>All modern browsers including Chrome, Firefox, Safari, and Edge support animated WebP. Use WebP for your website animations to benefit from smaller files and faster loading while maintaining broad compatibility.</p>`,
+  },
+  {
+    id: "heic-to-png",
+    name: "HEIC to PNG",
+    description: "Convert Apple HEIC/HEIF images to lossless PNG format",
+    icon: "Image",
+    type: "heic-to-png",
+    color: "bg-blue-600",
+    emoji: "📱",
+    metaTitle: "HEIC to PNG Converter Online Free - Convert HEIC to PNG | Image Tools",
+    metaDescription: "Convert HEIC/HEIF images from iPhone to PNG format online for free. Transform Apple photos to lossless PNG with transparency support.",
+    seoArticle: `<h2>HEIC to PNG Converter - Lossless Apple Image Conversion</h2>
+<p>Convert your iPhone and iPad HEIC/HEIF photos to the universally compatible PNG format. PNG offers lossless compression, meaning no quality is lost during conversion - every detail from your Apple photos is preserved perfectly.</p>
+
+<h2>Why Convert HEIC to PNG?</h2>
+<p>HEIC is Apple's default photo format since iOS 11, offering great compression but limited compatibility. Many Windows applications, websites, and image editors don't support HEIC. PNG works everywhere while maintaining perfect quality.</p>
+
+<h2>Lossless Quality</h2>
+<p>Unlike JPG conversion which introduces compression artifacts, PNG preserves every pixel exactly. Your photos maintain full detail, color accuracy, and sharpness. Ideal for images where quality is paramount.</p>
+
+<h2>Transparency Support</h2>
+<p>PNG supports full alpha channel transparency. If your HEIC contains transparent areas (like Live Photos or certain edits), the transparency is preserved in the PNG output with smooth anti-aliased edges.</p>
+
+<h2>Professional Editing Ready</h2>
+<p>PNG is widely supported by professional image editing software. Convert HEIC to PNG for editing in Photoshop, Lightroom, GIMP, or any other image editor without compatibility issues.</p>
+
+<h2>Batch Processing</h2>
+<p>Convert multiple HEIC files at once. Perfect for transferring entire photo albums from your iPhone to other devices or platforms that don't support Apple's format.</p>`,
+  },
+  {
+    id: "heic-to-gif",
+    name: "HEIC to GIF",
+    description: "Convert Apple HEIC photos to universal GIF format",
+    icon: "Film",
+    type: "heic-to-gif",
+    color: "bg-pink-600",
+    emoji: "🎞️",
+    metaTitle: "HEIC to GIF Converter Online Free - Convert HEIC to GIF | Image Tools",
+    metaDescription: "Convert HEIC/HEIF images from iPhone to GIF format online for free. Transform Apple photos to universally compatible GIF for sharing.",
+    seoArticle: `<h2>HEIC to GIF Converter - Apple Photos to Universal Format</h2>
+<p>Convert your iPhone HEIC photos to the universally compatible GIF format. GIF is supported everywhere - from vintage software to modern messaging apps, ensuring your images can be viewed and shared on any platform.</p>
+
+<h2>Maximum Compatibility</h2>
+<p>GIF is the most universally supported image format in existence. Convert your Apple HEIC photos to GIF for guaranteed compatibility with any application, device, or platform you encounter.</p>
+
+<h2>Perfect for Sharing</h2>
+<p>Many messaging apps and email clients don't handle HEIC well. Converting to GIF ensures your photos display correctly when shared via text, email, or social media, regardless of the recipient's device.</p>
+
+<h2>Live Photo Conversion</h2>
+<p>iPhone Live Photos stored in HEIC format can be converted to animated GIFs, preserving the motion capture. Share your Live Photos as animations that work on any platform.</p>
+
+<h2>Color Optimization</h2>
+<p>Our converter intelligently handles GIF's 256-color limitation. Advanced dithering and palette optimization preserve the visual quality of your photos despite the color constraints.</p>
+
+<h2>Web Ready</h2>
+<p>GIF images load quickly and work on any website without special handling. Convert HEIC photos to GIF for use on blogs, forums, and websites where other formats might not be supported.</p>`,
+  },
+  {
+    id: "avif-to-jpg",
+    name: "AVIF to JPG",
+    description: "Convert AVIF images to widely compatible JPG/JPEG format",
+    icon: "ImageDown",
+    type: "avif-to-jpg",
+    color: "bg-orange-600",
+    emoji: "🖼️",
+    metaTitle: "AVIF to JPG Converter Online Free - Convert AVIF to JPEG | Image Tools",
+    metaDescription: "Convert AVIF images to JPG/JPEG format online for free. Transform next-gen AVIF files into universally compatible JPEG with excellent quality.",
+    seoArticle: `<h2>AVIF to JPG Converter - Universal Compatibility</h2>
+<p>Convert AVIF images to the universally supported JPG format. While AVIF offers superior compression, JPG remains the most compatible image format, working on every device, browser, and application ever made.</p>
+
+<h2>What is AVIF?</h2>
+<p>AVIF (AV1 Image File Format) is a next-generation image format based on the AV1 video codec. It offers excellent compression, often 50% smaller than JPEG at the same quality. However, support is still limited compared to traditional formats.</p>
+
+<h2>Why Convert to JPG?</h2>
+<p>JPG is the universal standard for photographs. Every image viewer, browser, phone, and camera supports JPG. Convert AVIF to JPG when you need guaranteed compatibility or when working with software that doesn't support modern formats.</p>
+
+<h2>Quality Preservation</h2>
+<p>Our converter uses high-quality settings to preserve as much detail as possible from your AVIF images. The resulting JPG files look excellent while gaining universal compatibility.</p>
+
+<h2>Adjustable Quality</h2>
+<p>Choose your preferred quality level - higher quality for printing and archival, or lower quality for web and email sharing. Find the perfect balance between file size and image quality.</p>
+
+<h2>Batch Processing</h2>
+<p>Convert multiple AVIF files simultaneously. Perfect for photographers, designers, and content creators who need to convert entire collections to JPG format quickly.</p>`,
+  },
+  {
+    id: "jpg-to-avif",
+    name: "JPG to AVIF",
+    description: "Convert JPG images to next-gen AVIF format for superior compression",
+    icon: "Zap",
+    type: "jpg-to-avif",
+    color: "bg-violet-600",
+    emoji: "🚀",
+    metaTitle: "JPG to AVIF Converter Online Free - Convert JPEG to AVIF | Image Tools",
+    metaDescription: "Convert JPG/JPEG images to AVIF format online for free. Reduce file sizes by up to 50% with next-generation AVIF compression technology.",
+    seoArticle: `<h2>JPG to AVIF Converter - Next-Generation Compression</h2>
+<p>Convert your JPG images to AVIF format for dramatically smaller file sizes. AVIF (AV1 Image File Format) typically produces files 30-50% smaller than JPEG while maintaining equivalent or better visual quality.</p>
+
+<h2>Revolutionary Compression</h2>
+<p>AVIF uses the AV1 video codec for image compression, representing the cutting edge of compression technology. A 1MB JPG might become a 400KB AVIF with no visible quality difference - sometimes even looking better.</p>
+
+<h2>Superior Quality</h2>
+<p>At the same file size, AVIF looks noticeably better than JPG. Less blocking artifacts, smoother gradients, and better preservation of fine details. It's especially effective for photographs with subtle color variations.</p>
+
+<h2>HDR and Wide Color</h2>
+<p>AVIF supports HDR (High Dynamic Range) and wide color gamuts that JPG cannot handle. Future-proof your images with a format that supports modern display technologies.</p>
+
+<h2>Growing Browser Support</h2>
+<p>AVIF is supported in Chrome, Firefox, Safari, and Edge. While not yet universal, browser support continues to grow. Use AVIF for modern websites with JPG fallback for older browsers.</p>
+
+<h2>Web Optimization</h2>
+<p>AVIF's smaller file sizes mean faster page loads and lower bandwidth costs. Convert your website's JPG images to AVIF for improved performance and better user experience.</p>`,
+  },
+  {
+    id: "avif-to-png",
+    name: "AVIF to PNG",
+    description: "Convert AVIF images to lossless PNG format",
+    icon: "RefreshCcw",
+    type: "avif-to-png",
+    color: "bg-cyan-600",
+    emoji: "🔄",
+    metaTitle: "AVIF to PNG Converter Online Free - Convert AVIF to PNG | Image Tools",
+    metaDescription: "Convert AVIF images to PNG format online for free. Transform next-gen AVIF files to lossless PNG with transparency support.",
+    seoArticle: `<h2>AVIF to PNG Converter - Lossless Conversion</h2>
+<p>Convert AVIF images to lossless PNG format. PNG preserves every detail from your AVIF source with no quality loss, making it perfect for graphics, screenshots, and images requiring pixel-perfect accuracy.</p>
+
+<h2>Lossless Quality</h2>
+<p>PNG uses lossless compression - every pixel is preserved exactly as it appears in the original. Convert AVIF to PNG when you need perfect quality for editing, printing, or archival purposes.</p>
+
+<h2>Transparency Support</h2>
+<p>PNG fully supports alpha channel transparency, including semi-transparent pixels. If your AVIF has transparent areas, they're preserved perfectly in the PNG output with smooth anti-aliased edges.</p>
+
+<h2>Universal Compatibility</h2>
+<p>While AVIF support is still growing, PNG works everywhere. Convert AVIF to PNG for use in applications, websites, or platforms that don't yet support next-generation image formats.</p>
+
+<h2>Professional Workflow</h2>
+<p>PNG is widely supported by professional design software. Convert AVIF images to PNG for editing in Photoshop, Illustrator, Figma, and other creative applications.</p>
+
+<h2>Graphics and Screenshots</h2>
+<p>PNG is ideal for graphics with text, sharp edges, and solid colors. Convert AVIF screenshots, diagrams, and graphics to PNG for optimal quality in these use cases.</p>`,
+  },
+  {
+    id: "png-to-avif",
+    name: "PNG to AVIF",
+    description: "Convert PNG images to AVIF format for maximum compression",
+    icon: "Shrink",
+    type: "png-to-avif",
+    color: "bg-emerald-600",
+    emoji: "📦",
+    metaTitle: "PNG to AVIF Converter Online Free - Convert PNG to AVIF | Image Tools",
+    metaDescription: "Convert PNG images to AVIF format online for free. Achieve maximum compression with next-gen AVIF while preserving quality and transparency.",
+    seoArticle: `<h2>PNG to AVIF Converter - Maximum Compression</h2>
+<p>Convert your PNG images to AVIF format for significantly smaller file sizes. AVIF can reduce PNG file sizes by 50-80% while maintaining excellent visual quality, including full transparency support.</p>
+
+<h2>Dramatic Size Reduction</h2>
+<p>PNG files can be quite large, especially for detailed images. AVIF's advanced compression can reduce a 5MB PNG to under 1MB with virtually no visible quality loss. Perfect for web optimization.</p>
+
+<h2>Transparency Preserved</h2>
+<p>AVIF supports full alpha channel transparency just like PNG. Convert transparent PNGs to AVIF without losing smooth edges, semi-transparent effects, or any transparency data.</p>
+
+<h2>Lossless Option</h2>
+<p>AVIF supports both lossy and lossless compression. Choose lossless for pixel-perfect conversion that matches your PNG exactly, or lossy for maximum size reduction.</p>
+
+<h2>Modern Web Format</h2>
+<p>Use AVIF on modern websites for faster loading times and lower bandwidth costs. The dramatic size reduction improves page speed scores and user experience.</p>
+
+<h2>Quality Control</h2>
+<p>Fine-tune the compression quality to find your ideal balance between file size and image quality. Preview the output to ensure it meets your standards before downloading.</p>`,
+  },
+  {
+    id: "jpe-to-jpg",
+    name: "JPE to JPG",
+    description: "Convert JPE images to standard JPG/JPEG format",
+    icon: "FileImage",
+    type: "jpe-to-jpg",
+    color: "bg-amber-600",
+    emoji: "📷",
+    metaTitle: "JPE to JPG Converter Online Free - Convert JPE to JPEG | Image Tools",
+    metaDescription: "Convert JPE images to standard JPG/JPEG format online for free. Transform JPE files for universal compatibility and easy sharing.",
+    seoArticle: `<h2>JPE to JPG Converter - Standardize Your Images</h2>
+<p>Convert JPE files to the standard JPG format. JPE is simply an alternative file extension for JPEG images - our converter renames and optimizes them for maximum compatibility with all devices and software.</p>
+
+<h2>What is JPE?</h2>
+<p>JPE files are identical to JPG/JPEG files internally - only the file extension differs. Some older software and systems used the .jpe extension instead of .jpg. This can cause compatibility issues with modern applications.</p>
+
+<h2>Why Convert to JPG?</h2>
+<p>While technically the same format, some applications don't recognize the .jpe extension. Converting to .jpg ensures your images work correctly in all image viewers, browsers, and software applications.</p>
+
+<h2>Lossless Process</h2>
+<p>Since JPE and JPG are the same format internally, conversion is completely lossless. No quality is lost - your image data remains exactly the same with just the file extension changed.</p>
+
+<h2>File Organization</h2>
+<p>Standardizing all your JPEG images to use the .jpg extension makes organization easier. No more confusion about whether files are compatible or what format they're in.</p>
+
+<h2>Batch Processing</h2>
+<p>Convert multiple JPE files at once. Perfect for cleaning up image libraries with mixed file extensions or preparing files for systems that require standard .jpg extension.</p>`,
+  },
+  {
+    id: "jfif-to-jpg",
+    name: "JFIF to JPG",
+    description: "Convert JFIF images to standard JPG/JPEG format",
+    icon: "FileImage",
+    type: "jfif-to-jpg",
+    color: "bg-rose-600",
+    emoji: "🖼️",
+    metaTitle: "JFIF to JPG Converter Online Free - Convert JFIF to JPEG | Image Tools",
+    metaDescription: "Convert JFIF images to standard JPG/JPEG format online for free. Transform JFIF files for universal compatibility across all devices.",
+    seoArticle: `<h2>JFIF to JPG Converter - Universal Format Conversion</h2>
+<p>Convert JFIF files to standard JPG format for maximum compatibility. JFIF (JPEG File Interchange Format) files sometimes aren't recognized by all software. Converting to JPG ensures your images work everywhere.</p>
+
+<h2>What is JFIF?</h2>
+<p>JFIF is a file format for storing JPEG-compressed images. It defines how JPEG data should be stored in a file. While technically standard, the .jfif extension isn't recognized by all applications.</p>
+
+<h2>Compatibility Issues</h2>
+<p>Some image viewers, websites, and applications don't handle .jfif files correctly. Converting to .jpg solves these issues, making your images universally compatible.</p>
+
+<h2>Quality Preservation</h2>
+<p>JFIF and JPG use the same internal compression. Our converter preserves all image data during conversion - there's no quality loss, just a format standardization that ensures compatibility.</p>
+
+<h2>Web Ready</h2>
+<p>Websites and content management systems expect .jpg or .jpeg files. Convert JFIF images to JPG for easy uploading to any website, blog, or social media platform.</p>
+
+<h2>Professional Use</h2>
+<p>Standardize your image collection by converting all JFIF files to JPG. This ensures consistent file naming and eliminates any potential compatibility issues in professional workflows.</p>`,
   },
 ];

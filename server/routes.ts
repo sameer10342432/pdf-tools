@@ -21649,6 +21649,156 @@ ${paths.join('\n')}
             contentType = 'image/webp';
             break;
           }
+
+          case "webp-to-gif": {
+            const buffer = fs.readFileSync(files[0].path);
+            
+            result = await sharp(buffer)
+              .gif()
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(webp)$/i, '') + '.gif';
+            contentType = 'image/gif';
+            break;
+          }
+
+          case "gif-to-webp": {
+            const buffer = fs.readFileSync(files[0].path);
+            const quality = parseInt(options.quality) || 80;
+            
+            result = await sharp(buffer, { animated: true })
+              .webp({
+                quality: quality,
+                effort: 6,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(gif)$/i, '') + '.webp';
+            contentType = 'image/webp';
+            break;
+          }
+
+          case "heic-to-png": {
+            const buffer = fs.readFileSync(files[0].path);
+            
+            result = await sharp(buffer)
+              .png({
+                compressionLevel: 9,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(heic|heif)$/i, '') + '.png';
+            contentType = 'image/png';
+            break;
+          }
+
+          case "heic-to-gif": {
+            const buffer = fs.readFileSync(files[0].path);
+            
+            result = await sharp(buffer)
+              .gif()
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(heic|heif)$/i, '') + '.gif';
+            contentType = 'image/gif';
+            break;
+          }
+
+          case "avif-to-jpg": {
+            const buffer = fs.readFileSync(files[0].path);
+            const quality = parseInt(options.quality) || 90;
+            
+            result = await sharp(buffer)
+              .jpeg({
+                quality: quality,
+                mozjpeg: true,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(avif)$/i, '') + '.jpg';
+            contentType = 'image/jpeg';
+            break;
+          }
+
+          case "jpg-to-avif": {
+            const buffer = fs.readFileSync(files[0].path);
+            const quality = parseInt(options.quality) || 80;
+            
+            result = await sharp(buffer)
+              .avif({
+                quality: quality,
+                effort: 6,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(jpe?g)$/i, '') + '.avif';
+            contentType = 'image/avif';
+            break;
+          }
+
+          case "avif-to-png": {
+            const buffer = fs.readFileSync(files[0].path);
+            
+            result = await sharp(buffer)
+              .png({
+                compressionLevel: 9,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(avif)$/i, '') + '.png';
+            contentType = 'image/png';
+            break;
+          }
+
+          case "png-to-avif": {
+            const buffer = fs.readFileSync(files[0].path);
+            const quality = parseInt(options.quality) || 80;
+            const lossless = options.lossless === 'true';
+            
+            result = await sharp(buffer)
+              .avif({
+                quality: quality,
+                lossless: lossless,
+                effort: 6,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(png)$/i, '') + '.avif';
+            contentType = 'image/avif';
+            break;
+          }
+
+          case "jpe-to-jpg": {
+            const buffer = fs.readFileSync(files[0].path);
+            const quality = parseInt(options.quality) || 95;
+            
+            result = await sharp(buffer)
+              .jpeg({
+                quality: quality,
+                mozjpeg: true,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(jpe)$/i, '') + '.jpg';
+            contentType = 'image/jpeg';
+            break;
+          }
+
+          case "jfif-to-jpg": {
+            const buffer = fs.readFileSync(files[0].path);
+            const quality = parseInt(options.quality) || 95;
+            
+            result = await sharp(buffer)
+              .jpeg({
+                quality: quality,
+                mozjpeg: true,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(jfif)$/i, '') + '.jpg';
+            contentType = 'image/jpeg';
+            break;
+          }
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);

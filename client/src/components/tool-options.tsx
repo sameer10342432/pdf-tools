@@ -8244,6 +8244,181 @@ export function ToolOptionsComponent({
       );
     }
 
+    case "webp-to-gif": {
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert WebP images to GIF format for maximum compatibility. GIF is supported on virtually all platforms and devices.
+          </p>
+        </div>
+      );
+    }
+
+    case "gif-to-webp": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 80}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 80]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-gif-webp-quality"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert GIF to WebP format for significantly smaller file sizes. WebP typically produces files 25-50% smaller.
+          </p>
+        </div>
+      );
+    }
+
+    case "heic-to-png": {
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert Apple HEIC/HEIF images to lossless PNG format. Perfect for editing and sharing iPhone photos with universal compatibility.
+          </p>
+        </div>
+      );
+    }
+
+    case "heic-to-gif": {
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert Apple HEIC/HEIF images to universally compatible GIF format. Ideal for sharing iPhone photos on any platform.
+          </p>
+        </div>
+      );
+    }
+
+    case "avif-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 90}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 90]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-avif-jpg-quality"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert AVIF images to universally compatible JPG format. Higher quality produces larger files.
+          </p>
+        </div>
+      );
+    }
+
+    case "jpg-to-avif": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 80}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 80]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-jpg-avif-quality"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert JPG to next-generation AVIF format. AVIF offers superior compression with 30-50% smaller files.
+          </p>
+        </div>
+      );
+    }
+
+    case "avif-to-png": {
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert AVIF images to lossless PNG format. Perfect for editing and archival with full transparency support.
+          </p>
+        </div>
+      );
+    }
+
+    case "png-to-avif": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 80}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 80]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-png-avif-quality"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="lossless"
+              checked={options.lossless === 'true'}
+              onCheckedChange={(checked) => updateOption("lossless", checked ? 'true' : 'false')}
+              data-testid="switch-avif-lossless"
+            />
+            <Label htmlFor="lossless">Lossless compression</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert PNG to AVIF format for maximum compression. AVIF supports both lossy and lossless modes.
+          </p>
+        </div>
+      );
+    }
+
+    case "jpe-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 95}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 95]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-jpe-jpg-quality"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert JPE files to standard JPG format. JPE is an alternative extension for JPEG - this ensures compatibility with all applications.
+          </p>
+        </div>
+      );
+    }
+
+    case "jfif-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 95}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 95]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-jfif-jpg-quality"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert JFIF files to standard JPG format. JFIF is the JPEG File Interchange Format - converting ensures universal compatibility.
+          </p>
+        </div>
+      );
+    }
+
     default:
       return null;
   }

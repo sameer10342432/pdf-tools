@@ -229,6 +229,30 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     if (tool.type === "png-to-webp") {
       return ".png,image/png";
     }
+    if (tool.type === "webp-to-gif") {
+      return ".webp,image/webp";
+    }
+    if (tool.type === "gif-to-webp") {
+      return ".gif,image/gif";
+    }
+    if (tool.type === "heic-to-png" || tool.type === "heic-to-gif") {
+      return ".heic,.heif,image/heic,image/heif";
+    }
+    if (tool.type === "avif-to-jpg" || tool.type === "avif-to-png") {
+      return ".avif,image/avif";
+    }
+    if (tool.type === "jpg-to-avif") {
+      return ".jpg,.jpeg,image/jpeg";
+    }
+    if (tool.type === "png-to-avif") {
+      return ".png,image/png";
+    }
+    if (tool.type === "jpe-to-jpg") {
+      return ".jpe,image/jpeg";
+    }
+    if (tool.type === "jfif-to-jpg") {
+      return ".jfif,image/jpeg";
+    }
     return ".pdf,application/pdf";
   };
 
