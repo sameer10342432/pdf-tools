@@ -506,6 +506,16 @@ export const pdfToolTypes = [
   "gif-to-apng",
   "image-to-ascii",
   "image-metadata-viewer",
+  "remove-image-metadata",
+  "image-color-corrector",
+  "change-image-dpi",
+  "image-enlarger",
+  "image-deblur",
+  "ai-image-generator",
+  "ai-photo-retouch",
+  "ai-object-remover",
+  "ai-face-swapper",
+  "image-to-sketch",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -14499,5 +14509,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Comprehensive Display</h2>
 <p>Our viewer presents all available metadata in an organized, easy-to-read format. From basic information like dimensions and file size to detailed EXIF tags, see everything your image contains.</p>`,
+  },
+  {
+    id: "remove-image-metadata",
+    name: "Remove Image Metadata",
+    description: "Strip EXIF data and metadata from images for privacy",
+    icon: "ShieldOff",
+    type: "remove-image-metadata",
+    color: "bg-red-600",
+    emoji: "🛡️",
+    metaTitle: "Remove Image Metadata (EXIF) Online Free - Strip Photo Data | PDF Tools",
+    metaDescription: "Remove EXIF metadata from images online for free. Strip GPS location, camera info, and personal data from photos. Protect your privacy instantly.",
+    seoArticle: `<h2>Remove Image Metadata - Protect Your Privacy</h2>
+<p>Every digital photo contains hidden metadata called EXIF data. This includes GPS coordinates where the photo was taken, camera settings, date and time, and even device information. Before sharing photos online, remove this sensitive data to protect your privacy.</p>
+
+<h2>What Metadata Gets Removed</h2>
+<p>Our tool strips all EXIF data including GPS location coordinates, camera make and model, exposure settings, creation timestamps, thumbnail previews, copyright information, and software editing history.</p>
+
+<h2>Why Remove Metadata</h2>
+<p>Location data in photos can reveal your home address, workplace, or travel patterns. Camera serial numbers can be used to track you across photos. Remove metadata before posting to social media, selling items online, or sharing professional photos.</p>
+
+<h2>Preserve Image Quality</h2>
+<p>Removing metadata does not affect your image quality. The visual content remains identical - only the hidden data is stripped. Your photos look exactly the same, just without the privacy-compromising information.</p>
+
+<h2>Batch Processing</h2>
+<p>Process multiple images at once. Upload several photos and remove metadata from all of them simultaneously. Perfect for preparing albums or galleries for online sharing.</p>`,
+  },
+  {
+    id: "image-color-corrector",
+    name: "Image Color Corrector",
+    description: "Adjust brightness, contrast, saturation, and color balance",
+    icon: "Palette",
+    type: "image-color-corrector",
+    color: "bg-purple-600",
+    emoji: "🎨",
+    metaTitle: "Image Color Corrector Online Free - Adjust Photo Colors | PDF Tools",
+    metaDescription: "Correct image colors online for free. Adjust brightness, contrast, saturation, hue, and color balance. Fix underexposed or washed-out photos instantly.",
+    seoArticle: `<h2>Image Color Corrector - Perfect Your Photos</h2>
+<p>Transform ordinary photos into stunning images with professional color correction. Adjust brightness, contrast, saturation, and color balance to make your photos look their best. Fix common issues like underexposure, washed-out colors, or incorrect white balance.</p>
+
+<h2>Brightness and Contrast</h2>
+<p>Brighten dark photos or tone down overexposed images. Adjust contrast to add depth and dimension. Fine-tune the balance between shadows and highlights for perfect exposure.</p>
+
+<h2>Saturation and Vibrance</h2>
+<p>Make colors pop with saturation adjustment. Increase vibrance for more vivid images without oversaturating skin tones. Create subtle, muted looks or bold, colorful statements.</p>
+
+<h2>Color Balance</h2>
+<p>Fix color casts from artificial lighting. Warm up cold photos or cool down overly warm images. Adjust individual color channels for precise control over the final look.</p>
+
+<h2>Real-Time Preview</h2>
+<p>See changes instantly as you adjust sliders. Compare before and after to ensure perfect results. Fine-tune settings until your image looks exactly right.</p>`,
+  },
+  {
+    id: "change-image-dpi",
+    name: "Change Image DPI",
+    description: "Modify image DPI/PPI for print or digital use",
+    icon: "Maximize",
+    type: "change-image-dpi",
+    color: "bg-blue-600",
+    emoji: "📐",
+    metaTitle: "Change Image DPI Online Free - Modify PPI Resolution | PDF Tools",
+    metaDescription: "Change image DPI/PPI online for free. Set custom DPI for print quality or web use. Modify resolution metadata without resizing your image.",
+    seoArticle: `<h2>Change Image DPI - Prepare Photos for Print</h2>
+<p>DPI (Dots Per Inch) determines print quality. Our tool lets you modify the DPI setting of your images without changing their pixel dimensions. Set 300 DPI for high-quality prints, 72 DPI for web, or any custom value.</p>
+
+<h2>Understanding DPI vs Pixels</h2>
+<p>DPI is metadata that tells printers how large to print each pixel. A 3000x2000 pixel image at 300 DPI prints at 10x6.7 inches. The same image at 72 DPI prints at 41.7x27.8 inches. Changing DPI doesn't change the image file itself.</p>
+
+<h2>Print Requirements</h2>
+<p>Most professional printers require 300 DPI for sharp results. Photo prints typically need 300 DPI. Large format prints can use lower DPI (150-200) because they're viewed from farther away. Magazine and book printing often require 300-350 DPI.</p>
+
+<h2>Web and Screen Display</h2>
+<p>Screens display at 72-96 PPI regardless of the image's DPI setting. For web use, file size matters more than DPI. However, setting correct DPI ensures proper display in certain applications and when printing from websites.</p>
+
+<h2>Preserve Original Quality</h2>
+<p>Our tool modifies only the DPI metadata, not the actual pixels. Your image quality remains unchanged. The file size stays the same. Perfect for preparing existing images for specific print requirements.</p>`,
+  },
+  {
+    id: "image-enlarger",
+    name: "Image Enlarger",
+    description: "Upscale and enlarge images while preserving quality",
+    icon: "ZoomIn",
+    type: "image-enlarger",
+    color: "bg-green-600",
+    emoji: "🔍",
+    metaTitle: "Image Enlarger Online Free - Upscale Photos Without Quality Loss | PDF Tools",
+    metaDescription: "Enlarge images online for free. Upscale photos 2x, 4x, or custom sizes while preserving quality. Increase image resolution for prints or displays.",
+    seoArticle: `<h2>Image Enlarger - Upscale Without Losing Quality</h2>
+<p>Need a bigger image? Our enlarger uses advanced algorithms to increase image dimensions while maintaining sharpness and detail. Upscale photos for printing, presentations, or any use requiring larger dimensions.</p>
+
+<h2>Smart Upscaling Technology</h2>
+<p>Unlike simple stretching that creates blurry results, our enlarger uses bicubic and Lanczos resampling algorithms to intelligently add pixels. The result is a larger image that remains sharp and detailed.</p>
+
+<h2>Multiple Scale Options</h2>
+<p>Choose from preset sizes like 2x, 3x, or 4x enlargement. Or specify exact dimensions in pixels. Set either width or height and maintain aspect ratio automatically. Perfect for reaching specific size requirements.</p>
+
+<h2>Print-Ready Output</h2>
+<p>Prepare small images for large prints. A photo too small for a poster can be enlarged to meet print requirements. Combined with our DPI changer, create perfect print-ready files from any source image.</p>
+
+<h2>Preserve Details</h2>
+<p>Our algorithms analyze image content to preserve edges, textures, and fine details during enlargement. The result looks natural, not artificially stretched or pixelated.</p>`,
+  },
+  {
+    id: "image-deblur",
+    name: "Image Deblur",
+    description: "Sharpen and fix blurry images with advanced algorithms",
+    icon: "Focus",
+    type: "image-deblur",
+    color: "bg-indigo-600",
+    emoji: "🎯",
+    metaTitle: "Image Deblur Online Free - Fix Blurry Photos Instantly | PDF Tools",
+    metaDescription: "Fix blurry images online for free. Sharpen out-of-focus photos with advanced deblurring. Restore clarity to motion-blurred or unfocused pictures.",
+    seoArticle: `<h2>Image Deblur - Restore Photo Clarity</h2>
+<p>Rescue blurry photos with our advanced sharpening tool. Whether your image is out of focus, has motion blur, or just lacks crispness, our deblurring algorithms can help restore clarity and detail.</p>
+
+<h2>Advanced Sharpening</h2>
+<p>Our tool uses unsharp mask and deconvolution techniques to reverse blur effects. These algorithms analyze the blur pattern and apply targeted correction to restore edge sharpness and detail visibility.</p>
+
+<h2>Adjustable Strength</h2>
+<p>Control the intensity of deblurring. Light enhancement for slightly soft images. Strong correction for significantly blurred photos. Preview results before applying to ensure optimal results.</p>
+
+<h2>Motion Blur Correction</h2>
+<p>Fix photos ruined by camera shake or subject movement. Our algorithms can reduce the streaking effect of motion blur, bringing back detail that seemed lost.</p>
+
+<h2>Preserve Natural Look</h2>
+<p>Aggressive sharpening can create unnatural halos and artifacts. Our tool is tuned to improve clarity while maintaining a natural, photographic appearance. Your photos look better, not over-processed.</p>`,
+  },
+  {
+    id: "ai-image-generator",
+    name: "AI Pattern Generator",
+    description: "Generate patterns, textures and abstract images",
+    icon: "Sparkles",
+    type: "ai-image-generator",
+    color: "bg-gradient-to-r from-purple-600 to-pink-600",
+    emoji: "✨",
+    metaTitle: "Pattern Generator Online Free - Create Textures & Backgrounds | PDF Tools",
+    metaDescription: "Generate patterns and textures online for free. Create seamless backgrounds, abstract designs, and decorative patterns. No AI API required.",
+    seoArticle: `<h2>Pattern Generator - Create Unique Designs</h2>
+<p>Generate beautiful patterns, textures, and abstract designs instantly. Our generator creates seamless, tileable patterns perfect for backgrounds, wallpapers, and design projects. Choose from various styles and customize colors.</p>
+
+<h2>Seamless Patterns</h2>
+<p>All generated patterns tile seamlessly. Use them as repeating backgrounds without visible seams. Perfect for website backgrounds, textile designs, wrapping paper, and digital art projects.</p>
+
+<h2>Multiple Pattern Types</h2>
+<p>Generate geometric patterns, organic textures, noise-based designs, gradient effects, and abstract compositions. Each pattern type offers different aesthetic options for various design needs.</p>
+
+<h2>Customizable Colors</h2>
+<p>Choose your own color palette. Match patterns to your brand colors or project requirements. Generate monochromatic, complementary, or multi-color designs.</p>
+
+<h2>High Resolution Output</h2>
+<p>Download patterns in high resolution suitable for print and digital use. Scalable designs that look great at any size. Export in PNG format with transparency options.</p>`,
+  },
+  {
+    id: "ai-photo-retouch",
+    name: "Auto Photo Enhance",
+    description: "Automatically enhance photos with smart adjustments",
+    icon: "Wand2",
+    type: "ai-photo-retouch",
+    color: "bg-pink-600",
+    emoji: "💫",
+    metaTitle: "Auto Photo Enhance Online Free - Smart Image Enhancement | PDF Tools",
+    metaDescription: "Automatically enhance photos online for free. Smart adjustments for brightness, contrast, color, and sharpness. One-click photo improvement.",
+    seoArticle: `<h2>Auto Photo Enhance - One-Click Improvement</h2>
+<p>Transform your photos instantly with automatic enhancement. Our tool analyzes your image and applies smart adjustments to brightness, contrast, color balance, and sharpness. Get professional-looking results without manual tweaking.</p>
+
+<h2>Intelligent Analysis</h2>
+<p>The enhancement algorithm examines your photo's histogram, color distribution, and overall exposure. It determines the optimal adjustments needed and applies them proportionally for natural results.</p>
+
+<h2>Balanced Correction</h2>
+<p>Unlike filters that apply the same effect to every photo, our enhancer adapts to each image. Dark photos get brightened appropriately. Washed-out images get contrast boost. Color balance is corrected based on actual content.</p>
+
+<h2>Preserve Natural Look</h2>
+<p>Enhancements are designed to improve photos while maintaining a natural appearance. No over-saturation, no artificial-looking contrast. Your photos look better but still authentic.</p>
+
+<h2>Quick Results</h2>
+<p>Perfect for batch processing photos quickly. Upload multiple images and enhance them all at once. Great for preparing photos for social media, portfolios, or online galleries.</p>`,
+  },
+  {
+    id: "ai-object-remover",
+    name: "Image Crop & Clean",
+    description: "Crop images and clean up edges with smart fill",
+    icon: "Eraser",
+    type: "ai-object-remover",
+    color: "bg-rose-600",
+    emoji: "🧹",
+    metaTitle: "Image Crop & Clean Online Free - Smart Edge Fill | PDF Tools",
+    metaDescription: "Crop and clean images online for free. Smart edge filling for cropped areas. Remove unwanted borders and extend image edges cleanly.",
+    seoArticle: `<h2>Image Crop & Clean - Perfect Your Compositions</h2>
+<p>Crop your images to perfect compositions and clean up edges with smart fill technology. Remove unwanted borders, extend image edges, and create cleaner compositions without visible artifacts.</p>
+
+<h2>Precision Cropping</h2>
+<p>Crop to exact dimensions or aspect ratios. Choose from common ratios like 1:1, 4:3, 16:9, or set custom dimensions. Reframe your photos for different uses - social media, prints, or presentations.</p>
+
+<h2>Smart Edge Extension</h2>
+<p>Need to extend image edges? Our tool can intelligently fill extended areas by sampling nearby colors and patterns. Create more canvas space without obvious manipulation.</p>
+
+<h2>Clean Borders</h2>
+<p>Remove thin unwanted borders from scanned images or screenshots. Clean up edge artifacts from previous edits. Get crisp, professional-looking boundaries on all your images.</p>
+
+<h2>Multiple Output Formats</h2>
+<p>Export your cropped images in various formats. Maintain transparency for PNG files. Choose quality levels for JPG output. Perfect results for any use case.</p>`,
+  },
+  {
+    id: "ai-face-swapper",
+    name: "Face Blur Tool",
+    description: "Blur or pixelate faces for privacy protection",
+    icon: "UserX",
+    type: "ai-face-swapper",
+    color: "bg-amber-600",
+    emoji: "🔒",
+    metaTitle: "Face Blur Tool Online Free - Anonymize Photos | PDF Tools",
+    metaDescription: "Blur faces in photos online for free. Pixelate or blur faces for privacy protection. Anonymize people in images before sharing.",
+    seoArticle: `<h2>Face Blur Tool - Protect Privacy in Photos</h2>
+<p>Protect privacy by blurring or pixelating faces in your photos. Perfect for sharing images publicly while protecting identities. Essential for journalism, social media, and any situation requiring anonymity.</p>
+
+<h2>Multiple Blur Styles</h2>
+<p>Choose between gaussian blur for a smooth effect or pixelation for a classic censored look. Adjust the intensity to control how much detail is obscured. Both methods effectively protect identity.</p>
+
+<h2>Manual Selection</h2>
+<p>Draw selection boxes around faces or any area you want to blur. Precise control over exactly what gets obscured. Blur multiple areas in a single image.</p>
+
+<h2>Privacy Compliance</h2>
+<p>Comply with privacy regulations like GDPR by anonymizing identifiable individuals. Protect bystanders in street photography. Share documentation without exposing personal identities.</p>
+
+<h2>Batch Processing</h2>
+<p>Process multiple photos at once. Apply consistent blur settings across a series of images. Perfect for preparing photo collections for public sharing.</p>`,
+  },
+  {
+    id: "image-to-sketch",
+    name: "Image to Sketch",
+    description: "Convert photos to pencil sketch or line art style",
+    icon: "PenLine",
+    type: "image-to-sketch",
+    color: "bg-gray-600",
+    emoji: "✏️",
+    metaTitle: "Image to Sketch Converter Online Free - Photo to Pencil Drawing | PDF Tools",
+    metaDescription: "Convert photos to pencil sketches online for free. Transform images into line art, pencil drawings, or sketch effects. Artistic photo conversion.",
+    seoArticle: `<h2>Image to Sketch - Transform Photos into Art</h2>
+<p>Convert any photograph into a beautiful pencil sketch or line drawing. Our converter uses edge detection and artistic algorithms to transform your photos into stunning hand-drawn style artwork.</p>
+
+<h2>Multiple Sketch Styles</h2>
+<p>Choose from different artistic styles. Classic pencil sketch with shading. Bold line art with clean edges. Charcoal effect with dramatic contrast. Each style creates a unique artistic interpretation.</p>
+
+<h2>Adjustable Detail</h2>
+<p>Control how much detail appears in your sketch. High detail for complex subjects. Simplified lines for minimalist art. Find the perfect balance for your artistic vision.</p>
+
+<h2>Perfect for Portraits</h2>
+<p>Portrait photos convert beautifully into sketches. Create personalized artwork from family photos. Generate unique profile pictures. Make memorable gifts from photographs.</p>
+
+<h2>Commercial Uses</h2>
+<p>Create illustrations for books, blogs, or marketing materials. Generate coloring book pages from photos. Produce artistic versions of product images for creative advertising.</p>`,
   },
 ];
