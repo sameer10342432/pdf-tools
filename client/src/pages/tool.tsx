@@ -419,6 +419,29 @@ export default function ToolPage() {
         tool.type === "add-text-to-photo" || tool.type === "split-image") {
       return "image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp";
     }
+    // New 10 Image Tools
+    if (tool.type === "merge-images" || tool.type === "image-combiner-horizontal" ||
+        tool.type === "image-combiner-vertical") {
+      return "image/jpeg,image/png,image/gif,image/webp,image/bmp,.jpg,.jpeg,.png,.gif,.webp,.bmp";
+    }
+    if (tool.type === "favicon-generator") {
+      return "image/jpeg,image/png,image/gif,image/webp,image/bmp,image/svg+xml,.jpg,.jpeg,.png,.gif,.webp,.bmp,.svg";
+    }
+    if (tool.type === "ico-to-png") {
+      return ".ico,image/x-icon,image/vnd.microsoft.icon";
+    }
+    if (tool.type === "png-to-ico") {
+      return ".png,image/png";
+    }
+    if (tool.type === "apng-to-gif") {
+      return ".png,image/png,image/apng";
+    }
+    if (tool.type === "gif-to-apng") {
+      return ".gif,image/gif";
+    }
+    if (tool.type === "image-to-ascii" || tool.type === "image-metadata-viewer") {
+      return "image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp";
+    }
     return ".pdf,application/pdf";
   };
 
@@ -437,6 +460,9 @@ export default function ToolPage() {
       "replace-image-in-pdf",
       "gif-maker",
       "apng-maker",
+      "merge-images",
+      "image-combiner-horizontal",
+      "image-combiner-vertical",
     ].includes(tool.type);
   };
 
