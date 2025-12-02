@@ -67,6 +67,26 @@ The application is built with a React frontend and an Express.js backend.
 
   These tools use a multi-tier fallback system: Sharp library for compatible formats, Ghostscript for EPS files, and ImageMagick as a universal fallback. All tools include complete SEO articles (500+ words).
 
+- Added 10 new image processing and manipulation tools (December 2025):
+  
+  **Professional Format Conversion:**
+  - **AI to JPG**: Convert Adobe Illustrator AI files to high-quality JPG format
+  - **AI to PNG**: Convert Adobe Illustrator AI files to PNG with transparency
+  - **INDD to JPG**: Convert Adobe InDesign files to JPG format
+
+  **Image Flip Tools:**
+  - **Flip Image Vertical**: Flip images vertically (upside down)
+  - **Flip Image Horizontal**: Flip images horizontally (mirror)
+
+  **Image Adjustment Tools:**
+  - **Adjust Brightness**: Increase or decrease image brightness with slider control
+  - **Adjust Contrast**: Adjust image contrast levels with slider control
+  - **Adjust Saturation**: Control color saturation with slider control
+  - **Image Sharpen**: Enhance image clarity and details with adjustable sharpening
+  - **Image Blur**: Apply blur effect to images with adjustable intensity
+
+  All adjustment tools feature real-time slider controls for precise adjustments. Processing uses Sharp library for high-quality output with ImageMagick fallback.
+
 ## External Dependencies
 - **PDF Processing Libraries**: `pdf-lib` (for core PDF manipulation), `sharp` (for image processing), `archiver` (for creating zip archives).
 - **Document Conversion**: `mammoth` (for Word document processing), `xlsx` (for Excel processing), `tesseract.js` (for OCR text recognition), `marked` (for Markdown parsing), `adm-zip` (for ODF file extraction).
