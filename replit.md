@@ -20,6 +20,20 @@ The application is built with a React frontend and an Express.js backend.
     - Real-time processing progress indication.
     - Dialog-based navigation has been migrated to page-based navigation for better SEO and user experience.
 
+## Recent Changes (December 2025)
+- Added 10 new image processing tools:
+  - **HEIC to JPG**: Convert Apple HEIC/HEIF images to universally compatible JPG format
+  - **WebP to JPG**: Convert WebP images to JPG with customizable quality settings
+  - **Image to Base64**: Encode images to Base64 strings for web embedding
+  - **Base64 to Image**: Decode Base64 strings back to downloadable image files
+  - **Image Editor**: Comprehensive editor with rotate, flip, resize, brightness, contrast, saturation, grayscale, blur, and sharpen controls
+  - **Photo Editor**: Same functionality as Image Editor (alternate naming)
+  - **Remove Image Background**: Color-based background removal with adjustable threshold
+  - **Image Background Remover**: Same functionality as Remove Image Background (alternate naming)
+  - **Convert to ICO**: Create multi-size ICO favicon files (16x16 to 256x256)
+  - **ICO Converter**: Same functionality as Convert to ICO (alternate naming)
+- Each new tool includes complete SEO metadata (metaTitle, metaDescription) and 500+ word seoArticle content
+
 ## External Dependencies
 - **PDF Processing Libraries**: `pdf-lib` (for core PDF manipulation), `sharp` (for image processing), `archiver` (for creating zip archives).
 - **Document Conversion**: `mammoth` (for Word document processing), `xlsx` (for Excel processing), `tesseract.js` (for OCR text recognition), `marked` (for Markdown parsing), `adm-zip` (for ODF file extraction).

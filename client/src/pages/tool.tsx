@@ -327,6 +327,27 @@ export default function ToolPage() {
     if (tool.type === "jpg-to-png") {
       return ".jpg,.jpeg,image/jpeg";
     }
+    if (tool.type === "heic-to-jpg") {
+      return ".heic,.heif,image/heic,image/heif";
+    }
+    if (tool.type === "webp-to-jpg") {
+      return ".webp,image/webp";
+    }
+    if (tool.type === "image-to-base64") {
+      return "image/jpeg,image/png,image/gif,image/webp,image/bmp,image/svg+xml,.jpg,.jpeg,.png,.gif,.webp,.bmp,.svg";
+    }
+    if (tool.type === "base64-to-image") {
+      return "*/*";
+    }
+    if (tool.type === "image-editor" || tool.type === "photo-editor") {
+      return "image/jpeg,image/png,image/gif,image/webp,image/bmp,.jpg,.jpeg,.png,.gif,.webp,.bmp";
+    }
+    if (tool.type === "remove-image-background" || tool.type === "image-background-remover") {
+      return "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp";
+    }
+    if (tool.type === "convert-to-ico" || tool.type === "ico-converter") {
+      return "image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif";
+    }
     return ".pdf,application/pdf";
   };
 
@@ -372,6 +393,9 @@ export default function ToolPage() {
   };
 
   const canProcess = () => {
+    if (tool.type === "base64-to-image") {
+      return !!(options.base64Input?.trim());
+    }
     if (files.length < getMinFiles()) return false;
     
     if (tool.type === "add-image-to-pdf" || tool.type === "replace-image-in-pdf") {
@@ -582,15 +606,17 @@ export default function ToolPage() {
               <div className="space-y-6">
                 {processingState === "idle" && (
                   <>
-                    <FileUpload
-                      accept={getAcceptType()}
-                      multiple={isMultiFileAllowed()}
-                      maxFiles={tool.type === "images-to-pdf" ? 50 : 20}
-                      files={files}
-                      onFilesChange={setFiles}
-                    />
+                    {tool.type !== "base64-to-image" && (
+                      <FileUpload
+                        accept={getAcceptType()}
+                        multiple={isMultiFileAllowed()}
+                        maxFiles={tool.type === "images-to-pdf" ? 50 : 20}
+                        files={files}
+                        onFilesChange={setFiles}
+                      />
+                    )}
 
-                    {files.length > 0 && (
+                    {(files.length > 0 || tool.type === "base64-to-image") && (
                       <ToolOptionsComponent
                         toolType={tool.type}
                         options={options}

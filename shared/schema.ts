@@ -426,6 +426,16 @@ export const pdfToolTypes = [
   "image-converter",
   "png-to-jpg",
   "jpg-to-png",
+  "heic-to-jpg",
+  "webp-to-jpg",
+  "image-to-base64",
+  "base64-to-image",
+  "image-editor",
+  "photo-editor",
+  "remove-image-background",
+  "image-background-remover",
+  "convert-to-ico",
+  "ico-converter",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -883,6 +893,23 @@ export const toolOptionsSchema = z.object({
   // Image Converter options
   imageConvertFormat: z.enum(["jpg", "png", "webp", "gif", "bmp", "tiff"]).optional(),
   imageConvertQuality: z.number().optional(),
+  // Base64 options
+  base64Input: z.string().optional(),
+  // Image Editor/Photo Editor options
+  imageFlipH: z.boolean().optional(),
+  imageFlipV: z.boolean().optional(),
+  imageResizeWidth: z.number().optional(),
+  imageResizeHeight: z.number().optional(),
+  imageBrightness: z.number().optional(),
+  imageSaturation: z.number().optional(),
+  imageContrast: z.number().optional(),
+  imageGrayscale: z.boolean().optional(),
+  imageBlur: z.number().optional(),
+  imageSharpen: z.number().optional(),
+  imageOutputFormat: z.enum(["png", "jpg", "webp"]).optional(),
+  // Background Remover options
+  bgRemoveThreshold: z.number().optional(),
+  bgRemoveColor: z.string().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -12037,5 +12064,285 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Professional Workflows</h2>
 <p>Graphic designers often work with PNG for quality-critical projects. Convert source images to PNG for editing. Maintain maximum quality throughout the creative process. Export to appropriate formats when finished.</p>`,
+  },
+  {
+    id: "heic-to-jpg",
+    name: "HEIC to JPG",
+    description: "Convert Apple HEIC/HEIF images to universally compatible JPG format",
+    icon: "FileImage",
+    type: "heic-to-jpg",
+    color: "bg-orange-500",
+    emoji: "🍎",
+    metaTitle: "HEIC to JPG Converter Online Free - Convert iPhone Photos | Image Tools",
+    metaDescription: "Convert HEIC and HEIF images to JPG format online for free. Transform Apple iPhone photos to universally compatible JPEG. Fast, secure, no software needed.",
+    seoArticle: `<h2>HEIC to JPG Converter - Transform Apple Photos Instantly</h2>
+<p>Apple's HEIC (High Efficiency Image Container) format offers excellent compression but isn't universally supported. Our free online HEIC to JPG converter transforms your iPhone and iPad photos into the universally compatible JPEG format, ensuring your images work everywhere without quality loss.</p>
+
+<h2>Why Convert HEIC to JPG?</h2>
+<p>HEIC is Apple's default photo format since iOS 11, offering better compression than JPEG. However, Windows, older Android devices, and many websites don't support HEIC natively. Converting to JPG ensures your photos display correctly on all devices and platforms. Share without compatibility worries.</p>
+
+<h2>Preserve Image Quality</h2>
+<p>Our converter maintains the highest possible quality during conversion. Advanced algorithms ensure colors remain accurate and details stay sharp. The resulting JPG files look virtually identical to the original HEIC images. Professional-grade conversion quality.</p>
+
+<h2>Batch Conversion Support</h2>
+<p>Convert multiple HEIC files simultaneously for maximum efficiency. Perfect for processing entire photo albums from your iPhone. Upload several images at once and download them all as JPG. Save hours of manual conversion work.</p>
+
+<h2>Privacy and Security</h2>
+<p>Your photos are processed securely and never stored permanently on our servers. All conversions happen quickly and files are automatically deleted after processing. Your memories remain private throughout the conversion process.</p>
+
+<h2>Common Use Cases</h2>
+<p>Share iPhone photos on Windows computers. Upload images to websites requiring JPG format. Send photos to friends with older devices. Prepare images for printing services. Create social media content from Apple devices.</p>`,
+  },
+  {
+    id: "webp-to-jpg",
+    name: "WebP to JPG",
+    description: "Convert modern WebP images to classic JPEG format for compatibility",
+    icon: "FileImage",
+    type: "webp-to-jpg",
+    color: "bg-blue-500",
+    emoji: "🌐",
+    metaTitle: "WebP to JPG Converter Online Free - Convert WebP to JPEG | Image Tools",
+    metaDescription: "Convert WebP images to JPG format online for free. Transform modern WebP files to universally compatible JPEG. Fast conversion, no software required.",
+    seoArticle: `<h2>WebP to JPG Converter - Universal Compatibility</h2>
+<p>WebP is Google's modern image format offering excellent compression, but not all software supports it yet. Our free online WebP to JPG converter transforms WebP images into the universally supported JPEG format, ensuring your images work with any application, website, or device.</p>
+
+<h2>Why Convert WebP to JPG?</h2>
+<p>While WebP offers superior compression, many older applications and systems don't recognize the format. Photo editing software, printing services, and some websites require traditional formats. Converting to JPG ensures maximum compatibility while maintaining visual quality.</p>
+
+<h2>Quality-Preserving Conversion</h2>
+<p>Our converter uses intelligent algorithms to preserve as much quality as possible during the format transition. Colors remain vibrant, details stay crisp, and the visual appearance closely matches the original WebP. Control quality settings for optimal results.</p>
+
+<h2>Handle Transparency</h2>
+<p>WebP supports transparency like PNG, but JPG doesn't. Our converter intelligently handles transparent areas by replacing them with a background color of your choice. Choose white, black, or any custom color for transparent regions.</p>
+
+<h2>Batch Processing Power</h2>
+<p>Convert multiple WebP files at once for efficient workflow. Perfect for processing downloaded web images or migrating image libraries. Apply consistent quality settings across all conversions. Download results individually or as a zip archive.</p>
+
+<h2>No Installation Required</h2>
+<p>Works entirely in your browser without any software installation. Compatible with Windows, Mac, Linux, and mobile devices. Fast processing powered by modern web technology. Start converting immediately with no setup.</p>`,
+  },
+  {
+    id: "image-to-base64",
+    name: "Image to Base64",
+    description: "Encode images to Base64 strings for embedding in code and data URIs",
+    icon: "Code",
+    type: "image-to-base64",
+    color: "bg-purple-600",
+    emoji: "💻",
+    metaTitle: "Image to Base64 Encoder Online Free - Convert Images to Base64 | Image Tools",
+    metaDescription: "Convert images to Base64 encoded strings online for free. Generate data URIs for embedding images in HTML, CSS, and JavaScript. No file size limits.",
+    seoArticle: `<h2>Image to Base64 Encoder - Embed Images in Code</h2>
+<p>Transform any image into a Base64 encoded string that can be embedded directly in HTML, CSS, or JavaScript. Our free online encoder converts your images to data URIs, eliminating the need for separate image files and reducing HTTP requests for faster page loading.</p>
+
+<h2>What is Base64 Encoding?</h2>
+<p>Base64 is a binary-to-text encoding scheme that represents binary data in ASCII characters. For images, this means converting the file into a text string that can be included directly in code. The result is a data URI that browsers render as an image without needing to fetch an external file.</p>
+
+<h2>Benefits of Base64 Images</h2>
+<p>Reduce HTTP requests by embedding images directly in your HTML or CSS. Simplify deployment by eliminating external file dependencies. Improve loading speed for small images. Create self-contained HTML files with all assets included. Perfect for email templates and single-file applications.</p>
+
+<h2>Supported Image Formats</h2>
+<p>Convert JPG, PNG, GIF, WebP, BMP, SVG, and more to Base64. Each format produces the appropriate MIME type prefix for the data URI. The encoder handles all common web image formats seamlessly.</p>
+
+<h2>Copy-Ready Output</h2>
+<p>Get the complete data URI ready to paste into your code. Includes proper formatting for HTML img tags, CSS background-image properties, or JavaScript variables. One-click copying to your clipboard for instant use.</p>
+
+<h2>Size Considerations</h2>
+<p>Base64 encoding increases file size by approximately 33%. Best suited for small images like icons, logos, and UI elements. For larger images, traditional file hosting remains more efficient. Use strategically for maximum performance benefit.</p>`,
+  },
+  {
+    id: "base64-to-image",
+    name: "Base64 to Image",
+    description: "Decode Base64 strings back to downloadable image files",
+    icon: "Download",
+    type: "base64-to-image",
+    color: "bg-teal-500",
+    emoji: "🔓",
+    metaTitle: "Base64 to Image Decoder Online Free - Convert Base64 to Image | Image Tools",
+    metaDescription: "Convert Base64 encoded strings to images online for free. Decode data URIs back to downloadable image files. Supports all image formats.",
+    seoArticle: `<h2>Base64 to Image Decoder - Restore Your Images</h2>
+<p>Convert Base64 encoded strings back into downloadable image files. Whether you've extracted a data URI from source code or received an encoded image in an API response, our free decoder transforms the Base64 text back into a usable image file that you can save and edit.</p>
+
+<h2>How Base64 Decoding Works</h2>
+<p>Base64 encoding converts binary image data to text for embedding in code. Decoding reverses this process, reconstructing the original image from the encoded string. Our tool handles this conversion automatically, detecting the image format and producing the correct file type.</p>
+
+<h2>Supported Input Formats</h2>
+<p>Paste complete data URIs including the MIME type prefix, or just the raw Base64 string. The decoder automatically detects PNG, JPEG, GIF, WebP, SVG, and other formats. Handles both standard and URL-safe Base64 encoding variants.</p>
+
+<h2>Extract Images from Code</h2>
+<p>Web developers often need to extract embedded images from HTML, CSS, or JavaScript files. Simply copy the Base64 string and paste it into our decoder. Get the original image file ready for editing or use elsewhere.</p>
+
+<h2>API Response Processing</h2>
+<p>Many APIs return image data as Base64 encoded strings. Our decoder converts these responses into actual image files. Perfect for processing captcha images, API-generated graphics, or encoded attachments.</p>
+
+<h2>Instant Download</h2>
+<p>Once decoded, download your image immediately in the original format. Preview the result before downloading to verify correct decoding. No registration or software installation required.</p>`,
+  },
+  {
+    id: "image-editor",
+    name: "Image Editor",
+    description: "Comprehensive online image editor with crop, resize, rotate, and filters",
+    icon: "Edit3",
+    type: "image-editor",
+    color: "bg-pink-500",
+    emoji: "🎨",
+    metaTitle: "Online Image Editor Free - Edit Photos Online | Image Tools",
+    metaDescription: "Edit images online for free with our comprehensive image editor. Crop, resize, rotate, apply filters, adjust colors, and more. No software installation needed.",
+    seoArticle: `<h2>Online Image Editor - Professional Editing Made Easy</h2>
+<p>Transform your images with our powerful yet easy-to-use online image editor. Crop, resize, rotate, apply filters, adjust colors, and enhance your photos without installing any software. Professional-quality editing accessible to everyone, completely free.</p>
+
+<h2>Crop and Resize</h2>
+<p>Precisely crop images to focus on what matters. Choose from preset aspect ratios for social media or create custom crops. Resize images to exact dimensions while maintaining quality. Perfect for preparing images for specific platforms or print.</p>
+
+<h2>Rotation and Flip</h2>
+<p>Correct orientation with 90-degree rotations or fine-tune with custom angles. Flip images horizontally or vertically for mirror effects. Straighten crooked photos with precision controls. Every rotation option you need.</p>
+
+<h2>Color Adjustments</h2>
+<p>Fine-tune brightness, contrast, and saturation for perfect exposure. Adjust hue to shift colors creatively. Control shadows and highlights independently. Achieve professional color grading without complex software.</p>
+
+<h2>Filter Effects</h2>
+<p>Apply artistic filters to transform your images. Grayscale for classic black and white. Sepia for vintage warmth. Blur for dreamy effects. Sharpen for crisp details. Express your creativity with one-click filters.</p>
+
+<h2>Non-Destructive Editing</h2>
+<p>Preview all changes before applying. Reset to original at any time. Layer multiple adjustments for complex edits. Your original image stays safe throughout the editing process.</p>`,
+  },
+  {
+    id: "photo-editor",
+    name: "Photo Editor",
+    description: "Advanced photo enhancement with filters, effects, and professional adjustments",
+    icon: "Camera",
+    type: "photo-editor",
+    color: "bg-indigo-600",
+    emoji: "📷",
+    metaTitle: "Photo Editor Online Free - Enhance Your Photos | Image Tools",
+    metaDescription: "Enhance photos online for free with our advanced photo editor. Apply filters, adjust lighting, retouch images, and create stunning visuals. Professional results instantly.",
+    seoArticle: `<h2>Photo Editor - Enhance Your Photography</h2>
+<p>Elevate your photographs with professional-grade editing tools. Our free online photo editor provides everything you need to transform ordinary snapshots into stunning images. From basic adjustments to creative effects, unlock your photos' full potential.</p>
+
+<h2>Professional Enhancement</h2>
+<p>Adjust exposure to fix under or overexposed photos. Fine-tune white balance for accurate colors. Control clarity and vibrance for punch without oversaturation. Achieve professional results with intuitive controls.</p>
+
+<h2>Portrait Retouching</h2>
+<p>Smooth skin while preserving natural texture. Brighten eyes and enhance their color. Remove blemishes and imperfections. Achieve flattering portrait results while maintaining authenticity.</p>
+
+<h2>Lighting Adjustments</h2>
+<p>Rescue photos with poor lighting conditions. Brighten shadows without blowing highlights. Control contrast for dramatic or subtle effects. Simulate studio lighting in post-processing.</p>
+
+<h2>Creative Filters</h2>
+<p>Apply cinematic color grading presets. Create moody black and white conversions. Add vintage film effects for nostalgic looks. Transform photos with artistic styling.</p>
+
+<h2>Batch Enhancement</h2>
+<p>Apply consistent edits across multiple photos. Perfect for processing event photography. Maintain visual consistency across a series. Save time with efficient batch workflows.</p>`,
+  },
+  {
+    id: "remove-image-background",
+    name: "Remove Image Background",
+    description: "Automatically remove backgrounds from images with AI-powered detection",
+    icon: "Scissors",
+    type: "remove-image-background",
+    color: "bg-red-500",
+    emoji: "✂️",
+    metaTitle: "Remove Image Background Online Free - Background Remover | Image Tools",
+    metaDescription: "Remove image backgrounds online for free with AI-powered detection. Get transparent PNG images instantly. Perfect for product photos and portraits.",
+    seoArticle: `<h2>Remove Image Background - AI-Powered Precision</h2>
+<p>Instantly remove backgrounds from any image with our advanced AI-powered tool. Whether you're preparing product photos, creating profile pictures, or designing graphics, get clean transparent backgrounds in seconds. No manual selection needed.</p>
+
+<h2>AI Detection Technology</h2>
+<p>Our intelligent algorithm automatically detects subjects and separates them from backgrounds. Handles complex edges like hair and fur with remarkable accuracy. Works on people, products, animals, and objects. The AI improves continuously for better results.</p>
+
+<h2>Perfect for E-Commerce</h2>
+<p>Create professional product images with clean white or transparent backgrounds. Meet marketplace requirements for consistent product photography. Prepare images for catalogs and listings. Boost sales with professional presentation.</p>
+
+<h2>Portrait and Profile Photos</h2>
+<p>Remove distracting backgrounds from headshots and portraits. Create professional profile pictures for LinkedIn and social media. Prepare photos for ID cards and documents. Get studio-quality results from any snapshot.</p>
+
+<h2>Transparent PNG Output</h2>
+<p>Download results as PNG files with full transparency support. Layer images in design software. Create composite images easily. Use on any background color or image.</p>
+
+<h2>Batch Processing</h2>
+<p>Process multiple images at once for efficient workflows. Perfect for large product catalogs. Apply consistent background removal across image sets. Save hours of manual editing work.</p>`,
+  },
+  {
+    id: "image-background-remover",
+    name: "Image Background Remover",
+    description: "Smart background removal with edge refinement and transparency control",
+    icon: "Eraser",
+    type: "image-background-remover",
+    color: "bg-violet-600",
+    emoji: "🪄",
+    metaTitle: "Image Background Remover Online Free - Smart Removal Tool | Image Tools",
+    metaDescription: "Remove backgrounds from images with smart edge detection online for free. Refine edges, control transparency, and download transparent PNGs instantly.",
+    seoArticle: `<h2>Image Background Remover - Smart Removal Technology</h2>
+<p>Experience intelligent background removal with our advanced image processing tool. Beyond simple cutouts, our technology understands image context for cleaner separations. Refine edges, control transparency, and achieve professional results every time.</p>
+
+<h2>Smart Edge Detection</h2>
+<p>Our algorithm recognizes complex boundaries between subjects and backgrounds. Handles hair, fur, and fine details that challenge simple removal tools. Produces smooth, natural-looking edges. No harsh outlines or halos.</p>
+
+<h2>Transparency Controls</h2>
+<p>Fine-tune the transparency level of removed areas. Create semi-transparent effects for artistic purposes. Control edge feathering for seamless compositing. Full control over the final result.</p>
+
+<h2>Edge Refinement</h2>
+<p>Perfect your cutouts with edge refinement tools. Smooth jagged edges automatically. Adjust edge detection sensitivity. Clean up any imperfections manually if needed.</p>
+
+<h2>Multiple Output Options</h2>
+<p>Download as PNG with full transparency. Export with a solid color background. Choose from white, black, or custom colors. Get the format you need for your project.</p>
+
+<h2>Design-Ready Results</h2>
+<p>Results work perfectly in Photoshop, Canva, and other design tools. Create composites with removed backgrounds. Layer subjects on new backgrounds. Professional design workflow integration.</p>`,
+  },
+  {
+    id: "convert-to-ico",
+    name: "Convert to ICO",
+    description: "Create ICO favicon files from images for websites and applications",
+    icon: "Image",
+    type: "convert-to-ico",
+    color: "bg-cyan-600",
+    emoji: "🔷",
+    metaTitle: "Convert to ICO Online Free - Create Favicon Files | Image Tools",
+    metaDescription: "Convert images to ICO favicon format online for free. Create multi-size favicon files for websites and Windows applications. Supports all image formats.",
+    seoArticle: `<h2>Convert Images to ICO Format - Favicon Creator</h2>
+<p>Create professional ICO favicon files from any image with our free online converter. ICO is the standard format for website favicons and Windows application icons. Generate multi-size icon files that display perfectly across browsers and operating systems.</p>
+
+<h2>What is ICO Format?</h2>
+<p>ICO (Icon) is Microsoft's image format designed for icons. It can contain multiple sizes of the same icon within a single file, allowing Windows and browsers to select the optimal size. This ensures your icon looks sharp at any display size.</p>
+
+<h2>Multi-Size Generation</h2>
+<p>Our converter automatically generates common icon sizes: 16x16, 32x32, 48x48, and larger. All sizes are packaged into a single ICO file. Browsers and systems pick the best size for their needs.</p>
+
+<h2>Website Favicons</h2>
+<p>Create the essential favicon.ico file every website needs. Display your brand in browser tabs and bookmarks. Appear in browser history and address bar. Essential for professional web presence.</p>
+
+<h2>Windows Application Icons</h2>
+<p>Generate icons for Windows desktop applications. Create shortcut icons for programs. Design custom folder icons. ICO format is required for Windows native applications.</p>
+
+<h2>Source Image Tips</h2>
+<p>Start with a square image for best results. Higher resolution sources produce sharper icons. Simple designs with clear shapes work best at small sizes. Avoid fine details that won't be visible in 16x16 pixels.</p>`,
+  },
+  {
+    id: "ico-converter",
+    name: "ICO Converter",
+    description: "Convert between ICO and other image formats with size customization",
+    icon: "RefreshCcw",
+    type: "ico-converter",
+    color: "bg-amber-600",
+    emoji: "🔄",
+    metaTitle: "ICO Converter Online Free - Convert ICO Files | Image Tools",
+    metaDescription: "Convert ICO files to PNG, JPG, and other formats online for free. Extract icons from ICO files or create new ICO files with custom sizes.",
+    seoArticle: `<h2>ICO Converter - Complete Icon Format Tool</h2>
+<p>Work with ICO icon files easily using our comprehensive converter. Convert ICO files to standard image formats for editing, or create custom ICO files from your images. Full control over icon sizes and output formats.</p>
+
+<h2>ICO to PNG/JPG</h2>
+<p>Extract individual icon sizes from ICO files as PNG or JPG images. Edit icons in standard image software. Use extracted images for documentation or design work. Access icons in universal formats.</p>
+
+<h2>Create Custom ICO Files</h2>
+<p>Build ICO files with exactly the sizes you need. Common favicon sizes: 16x16, 32x32, 48x48. Larger sizes for high-DPI displays. Complete control over your icon package.</p>
+
+<h2>Size Customization</h2>
+<p>Choose which sizes to include in your ICO file. Add or remove specific resolutions. Optimize for your target platform. Minimize file size by including only needed sizes.</p>
+
+<h2>Quality Preservation</h2>
+<p>Maintain sharp, clear icons throughout conversion. Proper scaling algorithms for clean results. Avoid blurry or pixelated icons. Professional quality output.</p>
+
+<h2>Batch Operations</h2>
+<p>Process multiple ICO files simultaneously. Convert entire icon sets at once. Consistent output across all files. Efficient workflow for icon management.</p>`,
   },
 ];

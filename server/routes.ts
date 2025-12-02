@@ -13058,7 +13058,7 @@ export async function registerRoutes(
       const files = req.files as Express.Multer.File[] | undefined;
       const { toolType, options: optionsStr } = req.body;
       
-      const noFileRequiredTools = ["create-pdf", "pdf-creator"];
+      const noFileRequiredTools = ["create-pdf", "pdf-creator", "base64-to-image"];
       
       if ((!files || files.length === 0) && !noFileRequiredTools.includes(toolType)) {
         return res.status(400).json({ 
@@ -20705,6 +20705,293 @@ ${Array.from({ length: imageCount }, (_, i) => `- page-${i + 1}.pdf`).join('\n')
             result = jpgToPngOutput;
             filename = jpgToPngFile.originalname.replace(/\.[^/.]+$/, '.png');
             contentType = 'image/png';
+            pageCount = 1;
+            break;
+          }
+
+          case "heic-to-jpg": {
+            const heicFile = files[0];
+            const heicBuffer = fs.readFileSync(heicFile.path);
+            const heicQuality = options.imageConvertQuality || 90;
+            
+            const heicToJpgOutput = await sharp(heicBuffer)
+              .jpeg({ quality: heicQuality, mozjpeg: true })
+              .toBuffer();
+            
+            result = heicToJpgOutput;
+            filename = heicFile.originalname.replace(/\.[^/.]+$/, '.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+
+          case "webp-to-jpg": {
+            const webpFile = files[0];
+            const webpBuffer = fs.readFileSync(webpFile.path);
+            const webpQuality = options.imageConvertQuality || 90;
+            const webpBgColor = options.imageTextBackgroundColor || "#ffffff";
+            
+            let webpToJpgSharp = sharp(webpBuffer);
+            webpToJpgSharp = webpToJpgSharp.flatten({ background: webpBgColor });
+            
+            const webpToJpgOutput = await webpToJpgSharp
+              .jpeg({ quality: webpQuality, mozjpeg: true })
+              .toBuffer();
+            
+            result = webpToJpgOutput;
+            filename = webpFile.originalname.replace(/\.[^/.]+$/, '.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+
+          case "image-to-base64": {
+            const base64InputFile = files[0];
+            const base64InputBuffer = fs.readFileSync(base64InputFile.path);
+            const mimeType = base64InputFile.mimetype || 'image/png';
+            const base64String = base64InputBuffer.toString('base64');
+            const dataUri = `data:${mimeType};base64,${base64String}`;
+            
+            const base64TextContent = `Base64 Data URI:\n${dataUri}\n\nRaw Base64:\n${base64String}`;
+            result = Buffer.from(base64TextContent, 'utf-8');
+            filename = base64InputFile.originalname.replace(/\.[^/.]+$/, '.txt');
+            contentType = 'text/plain';
+            pageCount = 1;
+            break;
+          }
+
+          case "base64-to-image": {
+            let base64Input = options.base64Input || '';
+            
+            if (base64Input.includes('data:')) {
+              const matches = base64Input.match(/data:([^;]+);base64,(.+)/);
+              if (matches) {
+                const detectedMime = matches[1];
+                base64Input = matches[2];
+                
+                let ext = '.png';
+                if (detectedMime.includes('jpeg') || detectedMime.includes('jpg')) ext = '.jpg';
+                else if (detectedMime.includes('gif')) ext = '.gif';
+                else if (detectedMime.includes('webp')) ext = '.webp';
+                else if (detectedMime.includes('svg')) ext = '.svg';
+                else if (detectedMime.includes('bmp')) ext = '.bmp';
+                
+                result = Buffer.from(base64Input, 'base64');
+                filename = `decoded-image${ext}`;
+                contentType = detectedMime;
+              } else {
+                throw new Error('Invalid data URI format');
+              }
+            } else {
+              base64Input = base64Input.replace(/\s/g, '');
+              result = Buffer.from(base64Input, 'base64');
+              filename = 'decoded-image.png';
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+
+          case "image-editor":
+          case "photo-editor": {
+            const editorFile = files[0];
+            const editorBuffer = fs.readFileSync(editorFile.path);
+            
+            let editorSharp = sharp(editorBuffer);
+            
+            const rotation = options.imageRotation || 0;
+            if (rotation !== 0) {
+              editorSharp = editorSharp.rotate(rotation);
+            }
+            
+            if (options.imageFlipH) {
+              editorSharp = editorSharp.flop();
+            }
+            if (options.imageFlipV) {
+              editorSharp = editorSharp.flip();
+            }
+            
+            if (options.imageCropX !== undefined && options.imageCropY !== undefined && 
+                options.imageCropWidth !== undefined && options.imageCropHeight !== undefined) {
+              editorSharp = editorSharp.extract({
+                left: Math.max(0, options.imageCropX),
+                top: Math.max(0, options.imageCropY),
+                width: Math.max(1, options.imageCropWidth),
+                height: Math.max(1, options.imageCropHeight)
+              });
+            }
+            
+            if (options.imageResizeWidth || options.imageResizeHeight) {
+              editorSharp = editorSharp.resize(
+                options.imageResizeWidth || null,
+                options.imageResizeHeight || null,
+                { fit: 'inside', withoutEnlargement: true }
+              );
+            }
+            
+            const brightness = options.imageBrightness !== undefined ? options.imageBrightness / 100 : 1;
+            const saturation = options.imageSaturation !== undefined ? options.imageSaturation / 100 : 1;
+            const contrast = options.imageContrast !== undefined ? 1 + (options.imageContrast - 100) / 100 : 1;
+            
+            if (brightness !== 1 || saturation !== 1 || contrast !== 1) {
+              editorSharp = editorSharp.modulate({
+                brightness: brightness,
+                saturation: saturation
+              });
+              if (contrast !== 1) {
+                editorSharp = editorSharp.linear(contrast, -(128 * contrast) + 128);
+              }
+            }
+            
+            if (options.imageGrayscale) {
+              editorSharp = editorSharp.grayscale();
+            }
+            
+            if (options.imageBlur && options.imageBlur > 0) {
+              editorSharp = editorSharp.blur(options.imageBlur);
+            }
+            
+            if (options.imageSharpen && options.imageSharpen > 0) {
+              editorSharp = editorSharp.sharpen(options.imageSharpen);
+            }
+            
+            const outputFormat = options.imageOutputFormat || 'png';
+            let editorOutput: Buffer;
+            let editorContentType: string;
+            let editorExt: string;
+            
+            if (outputFormat === 'jpg' || outputFormat === 'jpeg') {
+              editorOutput = await editorSharp.jpeg({ quality: options.imageConvertQuality || 90 }).toBuffer();
+              editorContentType = 'image/jpeg';
+              editorExt = '.jpg';
+            } else if (outputFormat === 'webp') {
+              editorOutput = await editorSharp.webp({ quality: options.imageConvertQuality || 90 }).toBuffer();
+              editorContentType = 'image/webp';
+              editorExt = '.webp';
+            } else {
+              editorOutput = await editorSharp.png().toBuffer();
+              editorContentType = 'image/png';
+              editorExt = '.png';
+            }
+            
+            result = editorOutput;
+            filename = editorFile.originalname.replace(/\.[^/.]+$/, editorExt);
+            contentType = editorContentType;
+            pageCount = 1;
+            break;
+          }
+
+          case "remove-image-background":
+          case "image-background-remover": {
+            const bgRemoveFile = files[0];
+            const bgRemoveBuffer = fs.readFileSync(bgRemoveFile.path);
+            
+            const image = sharp(bgRemoveBuffer);
+            const metadata = await image.metadata();
+            
+            const { data: rawData, info } = await image
+              .ensureAlpha()
+              .raw()
+              .toBuffer({ resolveWithObject: true });
+            
+            const threshold = options.bgRemoveThreshold || 30;
+            const bgColor = options.bgRemoveColor || '#ffffff';
+            
+            const bgR = parseInt(bgColor.slice(1, 3), 16);
+            const bgG = parseInt(bgColor.slice(3, 5), 16);
+            const bgB = parseInt(bgColor.slice(5, 7), 16);
+            
+            const outputData = Buffer.alloc(rawData.length);
+            
+            for (let i = 0; i < rawData.length; i += 4) {
+              const r = rawData[i];
+              const g = rawData[i + 1];
+              const b = rawData[i + 2];
+              
+              const diff = Math.sqrt(
+                Math.pow(r - bgR, 2) + 
+                Math.pow(g - bgG, 2) + 
+                Math.pow(b - bgB, 2)
+              );
+              
+              if (diff < threshold * 4.4) {
+                outputData[i] = r;
+                outputData[i + 1] = g;
+                outputData[i + 2] = b;
+                outputData[i + 3] = 0;
+              } else {
+                outputData[i] = r;
+                outputData[i + 1] = g;
+                outputData[i + 2] = b;
+                outputData[i + 3] = 255;
+              }
+            }
+            
+            const bgRemoveOutput = await sharp(outputData, {
+              raw: {
+                width: info.width,
+                height: info.height,
+                channels: 4
+              }
+            })
+              .png()
+              .toBuffer();
+            
+            result = bgRemoveOutput;
+            filename = bgRemoveFile.originalname.replace(/\.[^/.]+$/, '-transparent.png');
+            contentType = 'image/png';
+            pageCount = 1;
+            break;
+          }
+
+          case "convert-to-ico":
+          case "ico-converter": {
+            const icoFile = files[0];
+            const icoBuffer = fs.readFileSync(icoFile.path);
+            
+            const sizes = [16, 32, 48, 64, 128, 256];
+            const images: Buffer[] = [];
+            
+            for (const size of sizes) {
+              const resized = await sharp(icoBuffer)
+                .resize(size, size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+                .png()
+                .toBuffer();
+              images.push(resized);
+            }
+            
+            const iconDir: Buffer[] = [];
+            const iconImages: Buffer[] = [];
+            let offset = 6 + (sizes.length * 16);
+            
+            const header = Buffer.alloc(6);
+            header.writeUInt16LE(0, 0);
+            header.writeUInt16LE(1, 2);
+            header.writeUInt16LE(sizes.length, 4);
+            iconDir.push(header);
+            
+            for (let i = 0; i < sizes.length; i++) {
+              const size = sizes[i];
+              const imageData = images[i];
+              
+              const entry = Buffer.alloc(16);
+              entry.writeUInt8(size === 256 ? 0 : size, 0);
+              entry.writeUInt8(size === 256 ? 0 : size, 1);
+              entry.writeUInt8(0, 2);
+              entry.writeUInt8(0, 3);
+              entry.writeUInt16LE(1, 4);
+              entry.writeUInt16LE(32, 6);
+              entry.writeUInt32LE(imageData.length, 8);
+              entry.writeUInt32LE(offset, 12);
+              
+              iconDir.push(entry);
+              iconImages.push(imageData);
+              offset += imageData.length;
+            }
+            
+            result = Buffer.concat([...iconDir, ...iconImages]);
+            filename = icoFile.originalname.replace(/\.[^/.]+$/, '.ico');
+            contentType = 'image/x-icon';
             pageCount = 1;
             break;
           }

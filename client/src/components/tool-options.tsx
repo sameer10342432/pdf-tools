@@ -7203,6 +7203,337 @@ export function ToolOptionsComponent({
       );
     }
 
+    case "heic-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="heicQuality">JPEG Quality</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="heicQuality"
+                min={10}
+                max={100}
+                step={5}
+                value={[options.imageConvertQuality || 90]}
+                onValueChange={([value]) => updateOption("imageConvertQuality", value)}
+                className="flex-1"
+                data-testid="slider-heic-quality"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.imageConvertQuality || 90}%
+              </span>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert Apple HEIC/HEIF photos to universally compatible JPG format.
+          </p>
+        </div>
+      );
+    }
+
+    case "webp-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="webpQuality">JPEG Quality</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="webpQuality"
+                min={10}
+                max={100}
+                step={5}
+                value={[options.imageConvertQuality || 90]}
+                onValueChange={([value]) => updateOption("imageConvertQuality", value)}
+                className="flex-1"
+                data-testid="slider-webp-quality"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.imageConvertQuality || 90}%
+              </span>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="webpBgColor">Background Color</Label>
+            <Input
+              id="webpBgColor"
+              type="color"
+              value={options.imageTextBackgroundColor || "#ffffff"}
+              onChange={(e) => updateOption("imageTextBackgroundColor", e.target.value)}
+              className="h-9"
+              data-testid="input-webp-bg-color"
+            />
+            <p className="text-xs text-muted-foreground">
+              This color replaces transparent areas in WebP images
+            </p>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert WebP images to JPG for maximum compatibility.
+          </p>
+        </div>
+      );
+    }
+
+    case "image-to-base64": {
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload an image to convert it to Base64 encoded string.
+          </p>
+          <div className="bg-muted/50 p-3 rounded-md">
+            <p className="text-sm font-medium">Output includes:</p>
+            <ul className="text-sm text-muted-foreground mt-2 space-y-1 list-disc list-inside">
+              <li>Complete data URI for HTML/CSS embedding</li>
+              <li>Raw Base64 string for custom use</li>
+              <li>Automatic MIME type detection</li>
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
+    case "base64-to-image": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="base64Input">Base64 String</Label>
+            <textarea
+              id="base64Input"
+              placeholder="Paste your Base64 string or data URI here..."
+              value={options.base64Input || ""}
+              onChange={(e) => updateOption("base64Input", e.target.value)}
+              className="w-full h-32 p-3 text-sm border rounded-md bg-background"
+              data-testid="input-base64"
+            />
+            <p className="text-xs text-muted-foreground">
+              Paste a complete data URI (data:image/...;base64,...) or raw Base64 string
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "image-editor":
+    case "photo-editor": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Rotation</Label>
+            <Select
+              value={String(options.imageRotation || "0")}
+              onValueChange={(value) => updateOption("imageRotation", parseInt(value) as any)}
+            >
+              <SelectTrigger data-testid="select-rotation">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0">No Rotation</SelectItem>
+                <SelectItem value="90">90 Clockwise</SelectItem>
+                <SelectItem value="180">180</SelectItem>
+                <SelectItem value="270">270 Clockwise</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex gap-4">
+            <div className="flex items-center gap-2">
+              <Switch
+                id="flipH"
+                checked={options.imageFlipH || false}
+                onCheckedChange={(checked) => updateOption("imageFlipH", checked)}
+                data-testid="switch-flip-h"
+              />
+              <Label htmlFor="flipH">Flip Horizontal</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Switch
+                id="flipV"
+                checked={options.imageFlipV || false}
+                onCheckedChange={(checked) => updateOption("imageFlipV", checked)}
+                data-testid="switch-flip-v"
+              />
+              <Label htmlFor="flipV">Flip Vertical</Label>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="resizeWidth">Resize Width (px)</Label>
+              <Input
+                id="resizeWidth"
+                type="number"
+                min={1}
+                placeholder="Auto"
+                value={options.imageResizeWidth || ""}
+                onChange={(e) => updateOption("imageResizeWidth", e.target.value ? parseInt(e.target.value) : undefined)}
+                data-testid="input-resize-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="resizeHeight">Resize Height (px)</Label>
+              <Input
+                id="resizeHeight"
+                type="number"
+                min={1}
+                placeholder="Auto"
+                value={options.imageResizeHeight || ""}
+                onChange={(e) => updateOption("imageResizeHeight", e.target.value ? parseInt(e.target.value) : undefined)}
+                data-testid="input-resize-height"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Brightness: {options.imageBrightness || 100}%</Label>
+            <Slider
+              min={0}
+              max={200}
+              step={5}
+              value={[options.imageBrightness || 100]}
+              onValueChange={([value]) => updateOption("imageBrightness", value)}
+              data-testid="slider-brightness"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Contrast: {options.imageContrast || 100}%</Label>
+            <Slider
+              min={0}
+              max={200}
+              step={5}
+              value={[options.imageContrast || 100]}
+              onValueChange={([value]) => updateOption("imageContrast", value)}
+              data-testid="slider-contrast"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Saturation: {options.imageSaturation || 100}%</Label>
+            <Slider
+              min={0}
+              max={200}
+              step={5}
+              value={[options.imageSaturation || 100]}
+              onValueChange={([value]) => updateOption("imageSaturation", value)}
+              data-testid="slider-saturation"
+            />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Switch
+              id="grayscale"
+              checked={options.imageGrayscale || false}
+              onCheckedChange={(checked) => updateOption("imageGrayscale", checked)}
+              data-testid="switch-grayscale"
+            />
+            <Label htmlFor="grayscale">Convert to Grayscale</Label>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Blur: {options.imageBlur || 0}</Label>
+            <Slider
+              min={0}
+              max={20}
+              step={0.5}
+              value={[options.imageBlur || 0]}
+              onValueChange={([value]) => updateOption("imageBlur", value)}
+              data-testid="slider-blur"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Sharpen: {options.imageSharpen || 0}</Label>
+            <Slider
+              min={0}
+              max={10}
+              step={0.5}
+              value={[options.imageSharpen || 0]}
+              onValueChange={([value]) => updateOption("imageSharpen", value)}
+              data-testid="slider-sharpen"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.imageOutputFormat || "png"}
+              onValueChange={(value) => updateOption("imageOutputFormat", value as any)}
+            >
+              <SelectTrigger data-testid="select-output-format">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="png">PNG</SelectItem>
+                <SelectItem value="jpg">JPEG</SelectItem>
+                <SelectItem value="webp">WebP</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+    }
+
+    case "remove-image-background":
+    case "image-background-remover": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="bgColor">Background Color to Remove</Label>
+            <Input
+              id="bgColor"
+              type="color"
+              value={options.bgRemoveColor || "#ffffff"}
+              onChange={(e) => updateOption("bgRemoveColor", e.target.value)}
+              className="h-9"
+              data-testid="input-bg-remove-color"
+            />
+            <p className="text-xs text-muted-foreground">
+              Select the background color to make transparent
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label>Threshold: {options.bgRemoveThreshold || 30}</Label>
+            <Slider
+              min={1}
+              max={100}
+              step={1}
+              value={[options.bgRemoveThreshold || 30]}
+              onValueChange={([value]) => updateOption("bgRemoveThreshold", value)}
+              data-testid="slider-threshold"
+            />
+            <p className="text-xs text-muted-foreground">
+              Higher values remove more similar colors (less precise)
+            </p>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Removes solid color backgrounds. Works best with high-contrast images.
+          </p>
+        </div>
+      );
+    }
+
+    case "convert-to-ico":
+    case "ico-converter": {
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert your image to ICO format for use as a favicon or Windows icon.
+          </p>
+          <div className="bg-muted/50 p-3 rounded-md">
+            <p className="text-sm font-medium">Generated sizes:</p>
+            <ul className="text-sm text-muted-foreground mt-2 space-y-1 list-disc list-inside">
+              <li>16x16 (browser tabs)</li>
+              <li>32x32 (taskbar)</li>
+              <li>48x48 (desktop)</li>
+              <li>64x64, 128x128, 256x256 (high DPI)</li>
+            </ul>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            For best results, use a square image with at least 256x256 resolution.
+          </p>
+        </div>
+      );
+    }
+
     default:
       return null;
   }
