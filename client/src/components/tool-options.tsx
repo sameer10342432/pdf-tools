@@ -5578,6 +5578,534 @@ export function ToolOptionsComponent({
     case "pdf-accessibility-checker":
       return null;
 
+    case "pdf-rich-black-converter": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Rich Black Mode</Label>
+            <Select
+              value={options.richBlackMode || "standard"}
+              onValueChange={(value) => updateOption("richBlackMode", value as ToolOptions["richBlackMode"])}
+            >
+              <SelectTrigger data-testid="select-rich-black-mode">
+                <SelectValue placeholder="Select rich black mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="standard">Standard (60C, 40M, 40Y, 100K)</SelectItem>
+                <SelectItem value="aggressive">Aggressive (70C, 50M, 50Y, 100K)</SelectItem>
+                <SelectItem value="subtle">Subtle (40C, 30M, 30Y, 100K)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="richBlackC">Cyan (C) %</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="richBlackC"
+                min={0}
+                max={100}
+                step={5}
+                value={[options.richBlackC ?? 60]}
+                onValueChange={([value]) => updateOption("richBlackC", value)}
+                className="flex-1"
+                data-testid="slider-rich-black-c"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.richBlackC ?? 60}%
+              </span>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="richBlackM">Magenta (M) %</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="richBlackM"
+                min={0}
+                max={100}
+                step={5}
+                value={[options.richBlackM ?? 40]}
+                onValueChange={([value]) => updateOption("richBlackM", value)}
+                className="flex-1"
+                data-testid="slider-rich-black-m"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.richBlackM ?? 40}%
+              </span>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="richBlackY">Yellow (Y) %</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="richBlackY"
+                min={0}
+                max={100}
+                step={5}
+                value={[options.richBlackY ?? 40]}
+                onValueChange={([value]) => updateOption("richBlackY", value)}
+                className="flex-1"
+                data-testid="slider-rich-black-y"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.richBlackY ?? 40}%
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="convertTextOnly"
+              checked={options.convertTextOnly === true}
+              onCheckedChange={(checked) => updateOption("convertTextOnly", checked)}
+              data-testid="switch-convert-text-only"
+            />
+            <Label htmlFor="convertTextOnly">Convert Text Only</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="convertGraphicsOnly"
+              checked={options.convertGraphicsOnly === true}
+              onCheckedChange={(checked) => updateOption("convertGraphicsOnly", checked)}
+              data-testid="switch-convert-graphics-only"
+            />
+            <Label htmlFor="convertGraphicsOnly">Convert Graphics Only</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert flat 100% K black to rich black for deeper, more vibrant print results.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-font-embedder": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Embed Mode</Label>
+            <Select
+              value={options.fontEmbedMode || "all"}
+              onValueChange={(value) => updateOption("fontEmbedMode", value as ToolOptions["fontEmbedMode"])}
+            >
+              <SelectTrigger data-testid="select-font-embed-mode">
+                <SelectValue placeholder="Select embed mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Embed All Fonts</SelectItem>
+                <SelectItem value="missing">Embed Missing Fonts Only</SelectItem>
+                <SelectItem value="selected">Embed Selected Fonts</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.fontEmbedMode === "selected" && (
+            <div className="space-y-2">
+              <Label htmlFor="selectedFonts">Selected Fonts</Label>
+              <Input
+                id="selectedFonts"
+                placeholder="e.g., Arial, Helvetica, Times New Roman"
+                value={options.selectedFonts || ""}
+                onChange={(e) => updateOption("selectedFonts", e.target.value)}
+                data-testid="input-selected-fonts"
+              />
+              <p className="text-sm text-muted-foreground">
+                Enter font names separated by commas.
+              </p>
+            </div>
+          )}
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="subsetFonts"
+              checked={options.subsetFonts !== false}
+              onCheckedChange={(checked) => updateOption("subsetFonts", checked)}
+              data-testid="switch-subset-fonts"
+            />
+            <Label htmlFor="subsetFonts">Subset Fonts (Include only used characters)</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="preserveEditability"
+              checked={options.preserveEditability === true}
+              onCheckedChange={(checked) => updateOption("preserveEditability", checked)}
+              data-testid="switch-preserve-editability"
+            />
+            <Label htmlFor="preserveEditability">Preserve Editability</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Embed fonts to ensure consistent display on all devices.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-font-unembedder": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="selectedFontsToRemove">Fonts to Un-embed (Optional)</Label>
+            <Input
+              id="selectedFontsToRemove"
+              placeholder="Leave empty to un-embed all fonts"
+              value={options.selectedFonts || ""}
+              onChange={(e) => updateOption("selectedFonts", e.target.value)}
+              data-testid="input-fonts-to-remove"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter font names separated by commas, or leave empty to un-embed all fonts.
+            </p>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Remove embedded fonts to reduce file size. Note: Documents may display differently on systems without the required fonts installed.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-rgb-to-cmyk": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Rendering Intent</Label>
+            <Select
+              value={options.renderingIntent || "relative-colorimetric"}
+              onValueChange={(value) => updateOption("renderingIntent", value as ToolOptions["renderingIntent"])}
+            >
+              <SelectTrigger data-testid="select-rendering-intent">
+                <SelectValue placeholder="Select rendering intent" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="perceptual">Perceptual (Best for photos)</SelectItem>
+                <SelectItem value="relative-colorimetric">Relative Colorimetric (Best for graphics)</SelectItem>
+                <SelectItem value="saturation">Saturation (Vivid colors)</SelectItem>
+                <SelectItem value="absolute-colorimetric">Absolute Colorimetric (Exact colors)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="preserveBlack"
+              checked={options.preserveBlack !== false}
+              onCheckedChange={(checked) => updateOption("preserveBlack", checked)}
+              data-testid="switch-preserve-black"
+            />
+            <Label htmlFor="preserveBlack">Preserve Pure Black (K only)</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert RGB colors to CMYK for professional printing. Some colors may shift during conversion.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-cmyk-to-rgb": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Rendering Intent</Label>
+            <Select
+              value={options.renderingIntent || "perceptual"}
+              onValueChange={(value) => updateOption("renderingIntent", value as ToolOptions["renderingIntent"])}
+            >
+              <SelectTrigger data-testid="select-cmyk-rgb-rendering-intent">
+                <SelectValue placeholder="Select rendering intent" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="perceptual">Perceptual (Best for photos)</SelectItem>
+                <SelectItem value="relative-colorimetric">Relative Colorimetric</SelectItem>
+                <SelectItem value="saturation">Saturation (Vivid colors)</SelectItem>
+                <SelectItem value="absolute-colorimetric">Absolute Colorimetric</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert CMYK colors to RGB for optimal digital display on screens, web, and email.
+          </p>
+        </div>
+      );
+    }
+
+    case "convert-to-grayscale": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Source Color Space</Label>
+            <Select
+              value={options.colorSpaceSource || "auto"}
+              onValueChange={(value) => updateOption("colorSpaceSource", value as ToolOptions["colorSpaceSource"])}
+            >
+              <SelectTrigger data-testid="select-source-color-space">
+                <SelectValue placeholder="Select source color space" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Auto Detect</SelectItem>
+                <SelectItem value="rgb">RGB</SelectItem>
+                <SelectItem value="cmyk">CMYK</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert color PDFs to professional grayscale for printing, archival, or cost savings.
+          </p>
+        </div>
+      );
+    }
+
+    case "pdf-spot-color-replacer": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="spotColorName">Spot Color Name</Label>
+            <Input
+              id="spotColorName"
+              placeholder="e.g., PANTONE 185 C"
+              value={options.spotColorName || ""}
+              onChange={(e) => updateOption("spotColorName", e.target.value)}
+              data-testid="input-spot-color-name"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Replacement Color Type</Label>
+            <Select
+              value={options.replacementColorType || "cmyk"}
+              onValueChange={(value) => updateOption("replacementColorType", value as ToolOptions["replacementColorType"])}
+            >
+              <SelectTrigger data-testid="select-replacement-color-type">
+                <SelectValue placeholder="Select replacement type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="cmyk">CMYK Process Color</SelectItem>
+                <SelectItem value="rgb">RGB Color</SelectItem>
+                <SelectItem value="grayscale">Grayscale</SelectItem>
+                <SelectItem value="another-spot">Another Spot Color</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="replacementColorValue">Replacement Color Value</Label>
+            <Input
+              id="replacementColorValue"
+              placeholder={options.replacementColorType === "rgb" ? "e.g., 255,0,0" : "e.g., 0,100,100,0"}
+              value={options.replacementColorValue || ""}
+              onChange={(e) => updateOption("replacementColorValue", e.target.value)}
+              data-testid="input-replacement-color-value"
+            />
+            <p className="text-sm text-muted-foreground">
+              {options.replacementColorType === "cmyk" && "Enter CMYK values (C,M,Y,K) from 0-100"}
+              {options.replacementColorType === "rgb" && "Enter RGB values (R,G,B) from 0-255"}
+              {options.replacementColorType === "grayscale" && "Enter gray value from 0-100"}
+              {options.replacementColorType === "another-spot" && "Enter the spot color name"}
+            </p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="matchSimilarColors"
+              checked={options.matchSimilarColors === true}
+              onCheckedChange={(checked) => updateOption("matchSimilarColors", checked)}
+              data-testid="switch-match-similar-colors"
+            />
+            <Label htmlFor="matchSimilarColors">Match Similar Colors</Label>
+          </div>
+          {options.matchSimilarColors && (
+            <div className="space-y-2">
+              <Label htmlFor="spotColorTolerance">Color Tolerance (%)</Label>
+              <div className="flex items-center gap-4">
+                <Slider
+                  id="spotColorTolerance"
+                  min={0}
+                  max={30}
+                  step={1}
+                  value={[options.spotColorTolerance || 5]}
+                  onValueChange={([value]) => updateOption("spotColorTolerance", value)}
+                  className="flex-1"
+                  data-testid="slider-spot-color-tolerance"
+                />
+                <span className="text-sm text-muted-foreground w-12">
+                  {options.spotColorTolerance || 5}%
+                </span>
+              </div>
+            </div>
+          )}
+          <p className="text-sm text-muted-foreground">
+            Replace spot colors with CMYK or other colors to reduce printing costs.
+          </p>
+        </div>
+      );
+    }
+
+    case "compress-image": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="imageCompressionQuality">Compression Quality</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="imageCompressionQuality"
+                min={10}
+                max={100}
+                step={5}
+                value={[options.imageCompressionQuality || 80]}
+                onValueChange={([value]) => updateOption("imageCompressionQuality", value)}
+                className="flex-1"
+                data-testid="slider-image-compression-quality"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.imageCompressionQuality || 80}%
+              </span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Higher quality = larger file size, lower quality = smaller file size.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="imageMaxWidth">Max Width (px)</Label>
+            <Input
+              id="imageMaxWidth"
+              type="number"
+              placeholder="4096"
+              value={options.imageMaxWidth || ""}
+              onChange={(e) => updateOption("imageMaxWidth", parseInt(e.target.value) || undefined)}
+              data-testid="input-image-max-width"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="imageMaxHeight">Max Height (px)</Label>
+            <Input
+              id="imageMaxHeight"
+              type="number"
+              placeholder="4096"
+              value={options.imageMaxHeight || ""}
+              onChange={(e) => updateOption("imageMaxHeight", parseInt(e.target.value) || undefined)}
+              data-testid="input-image-max-height"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="preserveAspectRatio"
+              checked={options.preserveAspectRatio !== false}
+              onCheckedChange={(checked) => updateOption("preserveAspectRatio", checked)}
+              data-testid="switch-preserve-aspect-ratio"
+            />
+            <Label htmlFor="preserveAspectRatio">Preserve Aspect Ratio</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="stripMetadata"
+              checked={options.stripMetadata !== false}
+              onCheckedChange={(checked) => updateOption("stripMetadata", checked)}
+              data-testid="switch-strip-metadata"
+            />
+            <Label htmlFor="stripMetadata">Strip Metadata (EXIF, etc.)</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Compress images while maintaining quality for web, email, or storage.
+          </p>
+        </div>
+      );
+    }
+
+    case "compress-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="jpgCompressionQuality">JPEG Quality</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="jpgCompressionQuality"
+                min={10}
+                max={100}
+                step={5}
+                value={[options.imageCompressionQuality || 80]}
+                onValueChange={([value]) => updateOption("imageCompressionQuality", value)}
+                className="flex-1"
+                data-testid="slider-jpg-compression-quality"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.imageCompressionQuality || 80}%
+              </span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Higher quality = larger file, lower quality = smaller file with more compression artifacts.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="jpgMaxWidth">Max Width (px)</Label>
+            <Input
+              id="jpgMaxWidth"
+              type="number"
+              placeholder="4096"
+              value={options.imageMaxWidth || ""}
+              onChange={(e) => updateOption("imageMaxWidth", parseInt(e.target.value) || undefined)}
+              data-testid="input-jpg-max-width"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="jpgMaxHeight">Max Height (px)</Label>
+            <Input
+              id="jpgMaxHeight"
+              type="number"
+              placeholder="4096"
+              value={options.imageMaxHeight || ""}
+              onChange={(e) => updateOption("imageMaxHeight", parseInt(e.target.value) || undefined)}
+              data-testid="input-jpg-max-height"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Optimize JPEG images with MozJPEG for best compression results.
+          </p>
+        </div>
+      );
+    }
+
+    case "compress-png": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="pngCompressionQuality">PNG Quality</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="pngCompressionQuality"
+                min={10}
+                max={100}
+                step={5}
+                value={[options.imageCompressionQuality || 80]}
+                onValueChange={([value]) => updateOption("imageCompressionQuality", value)}
+                className="flex-1"
+                data-testid="slider-png-compression-quality"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.imageCompressionQuality || 80}%
+              </span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Higher quality preserves more colors, lower quality uses palette optimization for smaller files.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="pngMaxWidth">Max Width (px)</Label>
+            <Input
+              id="pngMaxWidth"
+              type="number"
+              placeholder="4096"
+              value={options.imageMaxWidth || ""}
+              onChange={(e) => updateOption("imageMaxWidth", parseInt(e.target.value) || undefined)}
+              data-testid="input-png-max-width"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="pngMaxHeight">Max Height (px)</Label>
+            <Input
+              id="pngMaxHeight"
+              type="number"
+              placeholder="4096"
+              value={options.imageMaxHeight || ""}
+              onChange={(e) => updateOption("imageMaxHeight", parseInt(e.target.value) || undefined)}
+              data-testid="input-png-max-height"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Compress PNG images while preserving transparency for web and graphics.
+          </p>
+        </div>
+      );
+    }
+
     default:
       return null;
   }
