@@ -275,6 +275,17 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     if (tool.type === "psd-to-jpg" || tool.type === "psd-to-png") {
       return ".psd,image/vnd.adobe.photoshop";
     }
+    if (tool.type === "ai-to-jpg" || tool.type === "ai-to-png") {
+      return ".ai,application/postscript,application/illustrator";
+    }
+    if (tool.type === "indd-to-jpg") {
+      return ".indd,.indt,application/x-indesign";
+    }
+    if (tool.type === "flip-image-vertical" || tool.type === "flip-image-horizontal" ||
+        tool.type === "adjust-brightness" || tool.type === "adjust-contrast" ||
+        tool.type === "adjust-saturation" || tool.type === "image-sharpen" || tool.type === "image-blur") {
+      return "image/jpeg,image/png,image/gif,image/webp,image/bmp,.jpg,.jpeg,.png,.gif,.webp,.bmp";
+    }
     return ".pdf,application/pdf";
   };
 
