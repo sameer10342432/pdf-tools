@@ -19906,6 +19906,409 @@ ${Array.from({ length: imageCount }, (_, i) => `- page-${i + 1}.pdf`).join('\n')
             pageCount = 1;
             break;
           }
+
+          case "compress-gif": {
+            const gifFile = files[0];
+            const gifBuffer = fs.readFileSync(gifFile.path);
+            
+            const gifColors = options.gifColors || 128;
+            const gifMaxWidth = options.imageMaxWidth || 800;
+            const gifMaxHeight = options.imageMaxHeight || 800;
+            
+            let gifSharp = sharp(gifBuffer, { animated: true });
+            
+            gifSharp = gifSharp.resize(gifMaxWidth, gifMaxHeight, {
+              fit: 'inside',
+              withoutEnlargement: true
+            });
+            
+            const gifOutputBuffer = await gifSharp
+              .gif({ colours: Math.min(256, Math.max(2, gifColors)), dither: options.gifDither !== false ? 1.0 : 0 })
+              .toBuffer();
+            
+            result = gifOutputBuffer;
+            filename = gifFile.originalname.replace(/\.[^/.]+$/, '-compressed.gif');
+            contentType = 'image/gif';
+            pageCount = 1;
+            break;
+          }
+
+          case "compress-svg": {
+            const svgFile = files[0];
+            let svgContent = fs.readFileSync(svgFile.path, 'utf-8');
+            
+            if (options.svgRemoveComments !== false) {
+              svgContent = svgContent.replace(/<!--[\s\S]*?-->/g, '');
+            }
+            
+            if (options.svgRemoveMetadata !== false) {
+              svgContent = svgContent.replace(/<metadata[\s\S]*?<\/metadata>/gi, '');
+              svgContent = svgContent.replace(/<\?xml[^>]*\?>/gi, '');
+              svgContent = svgContent.replace(/<!DOCTYPE[^>]*>/gi, '');
+            }
+            
+            if (options.svgMinifyStyles !== false) {
+              svgContent = svgContent.replace(/\s+/g, ' ');
+              svgContent = svgContent.replace(/>\s+</g, '><');
+              svgContent = svgContent.replace(/\s*=\s*/g, '=');
+            }
+            
+            if (options.svgRemoveUnused !== false) {
+              svgContent = svgContent.replace(/\s+id="[^"]*"/g, (match) => {
+                const id = match.match(/id="([^"]*)"/)?.[1];
+                if (id && !svgContent.includes(`#${id}`) && !svgContent.includes(`url(#${id})`)) {
+                  return '';
+                }
+                return match;
+              });
+            }
+            
+            const precision = options.svgPrecision || 2;
+            svgContent = svgContent.replace(/(\d+\.\d{3,})/g, (match) => {
+              return parseFloat(match).toFixed(precision);
+            });
+            
+            svgContent = svgContent.trim();
+            
+            result = Buffer.from(svgContent, 'utf-8');
+            filename = svgFile.originalname.replace(/\.[^/.]+$/, '-compressed.svg');
+            contentType = 'image/svg+xml';
+            pageCount = 1;
+            break;
+          }
+
+          case "compress-webp": {
+            const webpFile = files[0];
+            const webpBuffer = fs.readFileSync(webpFile.path);
+            
+            const webpQuality = options.imageCompressionQuality || 80;
+            const webpMaxWidth = options.imageMaxWidth || 4096;
+            const webpMaxHeight = options.imageMaxHeight || 4096;
+            
+            let webpSharp = sharp(webpBuffer, { animated: true });
+            
+            webpSharp = webpSharp.resize(webpMaxWidth, webpMaxHeight, {
+              fit: 'inside',
+              withoutEnlargement: true
+            });
+            
+            const webpOutputBuffer = await webpSharp
+              .webp({ quality: webpQuality, effort: 6 })
+              .toBuffer();
+            
+            result = webpOutputBuffer;
+            filename = webpFile.originalname.replace(/\.[^/.]+$/, '-compressed.webp');
+            contentType = 'image/webp';
+            pageCount = 1;
+            break;
+          }
+
+          case "compress-heic": {
+            const heicFile = files[0];
+            const heicBuffer = fs.readFileSync(heicFile.path);
+            
+            const heicQuality = options.imageCompressionQuality || 80;
+            const heicMaxWidth = options.imageMaxWidth || 4096;
+            const heicMaxHeight = options.imageMaxHeight || 4096;
+            
+            let heicSharp = sharp(heicBuffer);
+            
+            heicSharp = heicSharp.resize(heicMaxWidth, heicMaxHeight, {
+              fit: 'inside',
+              withoutEnlargement: true
+            });
+            
+            const heicOutputBuffer = await heicSharp
+              .jpeg({ quality: heicQuality, mozjpeg: true })
+              .toBuffer();
+            
+            result = heicOutputBuffer;
+            filename = heicFile.originalname.replace(/\.[^/.]+$/, '-compressed.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+
+          case "resize-image": {
+            const resizeImgFile = files[0];
+            const resizeImgBuffer = fs.readFileSync(resizeImgFile.path);
+            const imgExt = path.extname(resizeImgFile.originalname).toLowerCase();
+            
+            const targetWidth = options.resizeTargetWidth;
+            const targetHeight = options.resizeTargetHeight;
+            const percentage = options.resizePercentage;
+            const fit = options.resizeFit || 'inside';
+            const position = options.resizePosition || 'center';
+            const kernel = options.resizeKernel || 'lanczos3';
+            const outputFmt = options.outputFormat || 'original';
+            const preserveRatio = options.preserveAspectRatio !== false;
+            
+            let resizeImgSharp = sharp(resizeImgBuffer, { animated: imgExt === '.gif' || imgExt === '.webp' });
+            const metadata = await resizeImgSharp.metadata();
+            
+            let newWidth = targetWidth;
+            let newHeight = targetHeight;
+            
+            if (percentage && metadata.width && metadata.height) {
+              newWidth = Math.round(metadata.width * (percentage / 100));
+              newHeight = Math.round(metadata.height * (percentage / 100));
+            }
+            
+            if (newWidth || newHeight) {
+              resizeImgSharp = resizeImgSharp.resize(newWidth, newHeight, {
+                fit: fit as any,
+                position: position as any,
+                kernel: kernel as any,
+                withoutEnlargement: false
+              });
+            }
+            
+            let resizeImgOutput: Buffer;
+            let resizeImgExt: string;
+            let resizeImgContentType: string;
+            
+            if (outputFmt === 'jpeg' || (outputFmt === 'original' && (imgExt === '.jpg' || imgExt === '.jpeg'))) {
+              resizeImgOutput = await resizeImgSharp.jpeg({ quality: options.imageCompressionQuality || 90 }).toBuffer();
+              resizeImgExt = '.jpg';
+              resizeImgContentType = 'image/jpeg';
+            } else if (outputFmt === 'png' || (outputFmt === 'original' && imgExt === '.png')) {
+              resizeImgOutput = await resizeImgSharp.png().toBuffer();
+              resizeImgExt = '.png';
+              resizeImgContentType = 'image/png';
+            } else if (outputFmt === 'webp' || (outputFmt === 'original' && imgExt === '.webp')) {
+              resizeImgOutput = await resizeImgSharp.webp({ quality: options.imageCompressionQuality || 90 }).toBuffer();
+              resizeImgExt = '.webp';
+              resizeImgContentType = 'image/webp';
+            } else if (outputFmt === 'gif' || (outputFmt === 'original' && imgExt === '.gif')) {
+              resizeImgOutput = await resizeImgSharp.gif().toBuffer();
+              resizeImgExt = '.gif';
+              resizeImgContentType = 'image/gif';
+            } else {
+              resizeImgOutput = await resizeImgSharp.jpeg({ quality: options.imageCompressionQuality || 90 }).toBuffer();
+              resizeImgExt = '.jpg';
+              resizeImgContentType = 'image/jpeg';
+            }
+            
+            result = resizeImgOutput;
+            filename = resizeImgFile.originalname.replace(/\.[^/.]+$/, `-resized${resizeImgExt}`);
+            contentType = resizeImgContentType;
+            pageCount = 1;
+            break;
+          }
+
+          case "resize-jpg": {
+            const resizeJpgFile = files[0];
+            const resizeJpgBuffer = fs.readFileSync(resizeJpgFile.path);
+            
+            const jpgWidth = options.resizeTargetWidth;
+            const jpgHeight = options.resizeTargetHeight;
+            const jpgPercentage = options.resizePercentage;
+            const jpgFit = options.resizeFit || 'inside';
+            const jpgKernel = options.resizeKernel || 'lanczos3';
+            
+            let resizeJpgSharp = sharp(resizeJpgBuffer);
+            const jpgMeta = await resizeJpgSharp.metadata();
+            
+            let jpgNewWidth = jpgWidth;
+            let jpgNewHeight = jpgHeight;
+            
+            if (jpgPercentage && jpgMeta.width && jpgMeta.height) {
+              jpgNewWidth = Math.round(jpgMeta.width * (jpgPercentage / 100));
+              jpgNewHeight = Math.round(jpgMeta.height * (jpgPercentage / 100));
+            }
+            
+            if (jpgNewWidth || jpgNewHeight) {
+              resizeJpgSharp = resizeJpgSharp.resize(jpgNewWidth, jpgNewHeight, {
+                fit: jpgFit as any,
+                kernel: jpgKernel as any,
+                withoutEnlargement: false
+              });
+            }
+            
+            const resizeJpgOutput = await resizeJpgSharp
+              .jpeg({ quality: options.imageCompressionQuality || 90, mozjpeg: true })
+              .toBuffer();
+            
+            result = resizeJpgOutput;
+            filename = resizeJpgFile.originalname.replace(/\.[^/.]+$/, '-resized.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+
+          case "resize-png": {
+            const resizePngFile = files[0];
+            const resizePngBuffer = fs.readFileSync(resizePngFile.path);
+            
+            const pngWidth = options.resizeTargetWidth;
+            const pngHeight = options.resizeTargetHeight;
+            const pngPercentage = options.resizePercentage;
+            const pngFit = options.resizeFit || 'inside';
+            const pngKernel = options.resizeKernel || 'lanczos3';
+            
+            let resizePngSharp = sharp(resizePngBuffer);
+            const pngMeta = await resizePngSharp.metadata();
+            
+            let pngNewWidth = pngWidth;
+            let pngNewHeight = pngHeight;
+            
+            if (pngPercentage && pngMeta.width && pngMeta.height) {
+              pngNewWidth = Math.round(pngMeta.width * (pngPercentage / 100));
+              pngNewHeight = Math.round(pngMeta.height * (pngPercentage / 100));
+            }
+            
+            if (pngNewWidth || pngNewHeight) {
+              resizePngSharp = resizePngSharp.resize(pngNewWidth, pngNewHeight, {
+                fit: pngFit as any,
+                kernel: pngKernel as any,
+                withoutEnlargement: false
+              });
+            }
+            
+            const resizePngOutput = await resizePngSharp
+              .png({ compressionLevel: 9 })
+              .toBuffer();
+            
+            result = resizePngOutput;
+            filename = resizePngFile.originalname.replace(/\.[^/.]+$/, '-resized.png');
+            contentType = 'image/png';
+            pageCount = 1;
+            break;
+          }
+
+          case "resize-gif": {
+            const resizeGifFile = files[0];
+            const resizeGifBuffer = fs.readFileSync(resizeGifFile.path);
+            
+            const gifWidth = options.resizeTargetWidth;
+            const gifHeight = options.resizeTargetHeight;
+            const gifPercentage = options.resizePercentage;
+            const gifFit = options.resizeFit || 'inside';
+            
+            let resizeGifSharp = sharp(resizeGifBuffer, { animated: true });
+            const gifMeta = await resizeGifSharp.metadata();
+            
+            let gifNewWidth = gifWidth;
+            let gifNewHeight = gifHeight;
+            
+            if (gifPercentage && gifMeta.width && gifMeta.height) {
+              gifNewWidth = Math.round(gifMeta.width * (gifPercentage / 100));
+              gifNewHeight = Math.round(gifMeta.height * (gifPercentage / 100));
+            }
+            
+            if (gifNewWidth || gifNewHeight) {
+              resizeGifSharp = resizeGifSharp.resize(gifNewWidth, gifNewHeight, {
+                fit: gifFit as any,
+                withoutEnlargement: false
+              });
+            }
+            
+            const resizeGifOutput = await resizeGifSharp
+              .gif({ colours: options.gifColors || 256 })
+              .toBuffer();
+            
+            result = resizeGifOutput;
+            filename = resizeGifFile.originalname.replace(/\.[^/.]+$/, '-resized.gif');
+            contentType = 'image/gif';
+            pageCount = 1;
+            break;
+          }
+
+          case "resize-svg": {
+            const resizeSvgFile = files[0];
+            let svgResizeContent = fs.readFileSync(resizeSvgFile.path, 'utf-8');
+            
+            const svgNewWidth = options.svgWidth || options.resizeTargetWidth;
+            const svgNewHeight = options.svgHeight || options.resizeTargetHeight;
+            const svgPreserveAR = options.svgPreserveAspectRatio !== false;
+            
+            const widthMatch = svgResizeContent.match(/width\s*=\s*["']([^"']+)["']/i);
+            const heightMatch = svgResizeContent.match(/height\s*=\s*["']([^"']+)["']/i);
+            const viewBoxMatch = svgResizeContent.match(/viewBox\s*=\s*["']([^"']+)["']/i);
+            
+            let originalWidth = widthMatch ? parseFloat(widthMatch[1]) : undefined;
+            let originalHeight = heightMatch ? parseFloat(heightMatch[1]) : undefined;
+            
+            if (!originalWidth || !originalHeight) {
+              if (viewBoxMatch) {
+                const vbParts = viewBoxMatch[1].split(/\s+/);
+                if (vbParts.length >= 4) {
+                  originalWidth = originalWidth || parseFloat(vbParts[2]);
+                  originalHeight = originalHeight || parseFloat(vbParts[3]);
+                }
+              }
+            }
+            
+            if (!viewBoxMatch && originalWidth && originalHeight) {
+              svgResizeContent = svgResizeContent.replace(/<svg/, `<svg viewBox="0 0 ${originalWidth} ${originalHeight}"`);
+            }
+            
+            if (svgNewWidth) {
+              if (widthMatch) {
+                svgResizeContent = svgResizeContent.replace(widthMatch[0], `width="${svgNewWidth}"`);
+              } else {
+                svgResizeContent = svgResizeContent.replace(/<svg/, `<svg width="${svgNewWidth}"`);
+              }
+            }
+            
+            if (svgNewHeight) {
+              if (heightMatch) {
+                svgResizeContent = svgResizeContent.replace(heightMatch[0], `height="${svgNewHeight}"`);
+              } else {
+                svgResizeContent = svgResizeContent.replace(/<svg/, `<svg height="${svgNewHeight}"`);
+              }
+            }
+            
+            if (svgPreserveAR && !svgResizeContent.includes('preserveAspectRatio')) {
+              svgResizeContent = svgResizeContent.replace(/<svg/, '<svg preserveAspectRatio="xMidYMid meet"');
+            }
+            
+            result = Buffer.from(svgResizeContent, 'utf-8');
+            filename = resizeSvgFile.originalname.replace(/\.[^/.]+$/, '-resized.svg');
+            contentType = 'image/svg+xml';
+            pageCount = 1;
+            break;
+          }
+
+          case "resize-webp": {
+            const resizeWebpFile = files[0];
+            const resizeWebpBuffer = fs.readFileSync(resizeWebpFile.path);
+            
+            const webpWidth = options.resizeTargetWidth;
+            const webpHeight = options.resizeTargetHeight;
+            const webpPercentage = options.resizePercentage;
+            const webpFit = options.resizeFit || 'inside';
+            const webpKernel = options.resizeKernel || 'lanczos3';
+            
+            let resizeWebpSharp = sharp(resizeWebpBuffer, { animated: true });
+            const webpMeta = await resizeWebpSharp.metadata();
+            
+            let webpNewWidth = webpWidth;
+            let webpNewHeight = webpHeight;
+            
+            if (webpPercentage && webpMeta.width && webpMeta.height) {
+              webpNewWidth = Math.round(webpMeta.width * (webpPercentage / 100));
+              webpNewHeight = Math.round(webpMeta.height * (webpPercentage / 100));
+            }
+            
+            if (webpNewWidth || webpNewHeight) {
+              resizeWebpSharp = resizeWebpSharp.resize(webpNewWidth, webpNewHeight, {
+                fit: webpFit as any,
+                kernel: webpKernel as any,
+                withoutEnlargement: false
+              });
+            }
+            
+            const resizeWebpOutput = await resizeWebpSharp
+              .webp({ quality: options.imageCompressionQuality || 90, effort: 6 })
+              .toBuffer();
+            
+            result = resizeWebpOutput;
+            filename = resizeWebpFile.originalname.replace(/\.[^/.]+$/, '-resized.webp');
+            contentType = 'image/webp';
+            pageCount = 1;
+            break;
+          }
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);

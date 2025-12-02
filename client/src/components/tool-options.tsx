@@ -6106,6 +6106,544 @@ export function ToolOptionsComponent({
       );
     }
 
+    case "compress-gif": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="gifColors">Color Palette Size</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="gifColors"
+                min={2}
+                max={256}
+                step={1}
+                value={[options.gifColors || 128]}
+                onValueChange={([value]) => updateOption("gifColors", value)}
+                className="flex-1"
+                data-testid="slider-gif-colors"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.gifColors || 128}
+              </span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Fewer colors result in smaller files. GIF supports max 256 colors.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="gifMaxWidth">Max Width (px)</Label>
+            <Input
+              id="gifMaxWidth"
+              type="number"
+              placeholder="800"
+              value={options.imageMaxWidth || ""}
+              onChange={(e) => updateOption("imageMaxWidth", parseInt(e.target.value) || undefined)}
+              data-testid="input-gif-max-width"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="gifMaxHeight">Max Height (px)</Label>
+            <Input
+              id="gifMaxHeight"
+              type="number"
+              placeholder="800"
+              value={options.imageMaxHeight || ""}
+              onChange={(e) => updateOption("imageMaxHeight", parseInt(e.target.value) || undefined)}
+              data-testid="input-gif-max-height"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="gifDither"
+              checked={options.gifDither !== false}
+              onCheckedChange={(checked) => updateOption("gifDither", checked)}
+              data-testid="checkbox-gif-dither"
+            />
+            <Label htmlFor="gifDither" className="text-sm">Enable dithering for smoother gradients</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Compress animated GIF files while preserving animation frames.
+          </p>
+        </div>
+      );
+    }
+
+    case "compress-svg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="svgPrecision">Coordinate Precision</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="svgPrecision"
+                min={0}
+                max={6}
+                step={1}
+                value={[options.svgPrecision || 2]}
+                onValueChange={([value]) => updateOption("svgPrecision", value)}
+                className="flex-1"
+                data-testid="slider-svg-precision"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.svgPrecision || 2} digits
+              </span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Lower precision reduces file size but may affect complex curves.
+            </p>
+          </div>
+          <div className="space-y-3">
+            <Label>Optimization Options</Label>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="svgRemoveComments"
+                checked={options.svgRemoveComments !== false}
+                onCheckedChange={(checked) => updateOption("svgRemoveComments", checked)}
+                data-testid="checkbox-svg-remove-comments"
+              />
+              <Label htmlFor="svgRemoveComments" className="text-sm">Remove comments</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="svgRemoveMetadata"
+                checked={options.svgRemoveMetadata !== false}
+                onCheckedChange={(checked) => updateOption("svgRemoveMetadata", checked)}
+                data-testid="checkbox-svg-remove-metadata"
+              />
+              <Label htmlFor="svgRemoveMetadata" className="text-sm">Remove metadata and XML declarations</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="svgMinifyStyles"
+                checked={options.svgMinifyStyles !== false}
+                onCheckedChange={(checked) => updateOption("svgMinifyStyles", checked)}
+                data-testid="checkbox-svg-minify-styles"
+              />
+              <Label htmlFor="svgMinifyStyles" className="text-sm">Minify whitespace</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="svgRemoveUnused"
+                checked={options.svgRemoveUnused !== false}
+                onCheckedChange={(checked) => updateOption("svgRemoveUnused", checked)}
+                data-testid="checkbox-svg-remove-unused"
+              />
+              <Label htmlFor="svgRemoveUnused" className="text-sm">Remove unused IDs</Label>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Optimize SVG vector graphics by removing unnecessary code.
+          </p>
+        </div>
+      );
+    }
+
+    case "compress-webp": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="webpCompressionQuality">WebP Quality</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="webpCompressionQuality"
+                min={10}
+                max={100}
+                step={5}
+                value={[options.imageCompressionQuality || 80]}
+                onValueChange={([value]) => updateOption("imageCompressionQuality", value)}
+                className="flex-1"
+                data-testid="slider-webp-compression-quality"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.imageCompressionQuality || 80}%
+              </span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Higher quality preserves more detail, lower quality creates smaller files.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="webpMaxWidth">Max Width (px)</Label>
+            <Input
+              id="webpMaxWidth"
+              type="number"
+              placeholder="4096"
+              value={options.imageMaxWidth || ""}
+              onChange={(e) => updateOption("imageMaxWidth", parseInt(e.target.value) || undefined)}
+              data-testid="input-webp-max-width"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="webpMaxHeight">Max Height (px)</Label>
+            <Input
+              id="webpMaxHeight"
+              type="number"
+              placeholder="4096"
+              value={options.imageMaxHeight || ""}
+              onChange={(e) => updateOption("imageMaxHeight", parseInt(e.target.value) || undefined)}
+              data-testid="input-webp-max-height"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            WebP offers superior compression with support for transparency and animation.
+          </p>
+        </div>
+      );
+    }
+
+    case "compress-heic": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="heicCompressionQuality">Output Quality</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="heicCompressionQuality"
+                min={10}
+                max={100}
+                step={5}
+                value={[options.imageCompressionQuality || 80]}
+                onValueChange={([value]) => updateOption("imageCompressionQuality", value)}
+                className="flex-1"
+                data-testid="slider-heic-compression-quality"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.imageCompressionQuality || 80}%
+              </span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              HEIC files will be converted to optimized JPEG format for compatibility.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="heicMaxWidth">Max Width (px)</Label>
+            <Input
+              id="heicMaxWidth"
+              type="number"
+              placeholder="4096"
+              value={options.imageMaxWidth || ""}
+              onChange={(e) => updateOption("imageMaxWidth", parseInt(e.target.value) || undefined)}
+              data-testid="input-heic-max-width"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="heicMaxHeight">Max Height (px)</Label>
+            <Input
+              id="heicMaxHeight"
+              type="number"
+              placeholder="4096"
+              value={options.imageMaxHeight || ""}
+              onChange={(e) => updateOption("imageMaxHeight", parseInt(e.target.value) || undefined)}
+              data-testid="input-heic-max-height"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Compress HEIC/HEIF images from iPhone and iPad for universal compatibility.
+          </p>
+        </div>
+      );
+    }
+
+    case "resize-image":
+    case "resize-jpg":
+    case "resize-png":
+    case "resize-webp": {
+      const formatLabel = toolType === "resize-jpg" ? "JPG" : 
+                          toolType === "resize-png" ? "PNG" : 
+                          toolType === "resize-webp" ? "WebP" : "Image";
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Resize Mode</Label>
+            <Select
+              value={options.resizePercentage ? "percentage" : "dimensions"}
+              onValueChange={(value) => {
+                if (value === "percentage") {
+                  updateOption("resizeTargetWidth", undefined);
+                  updateOption("resizeTargetHeight", undefined);
+                  updateOption("resizePercentage", 100);
+                } else {
+                  updateOption("resizePercentage", undefined);
+                }
+              }}
+            >
+              <SelectTrigger data-testid="select-resize-mode">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="dimensions">Exact Dimensions</SelectItem>
+                <SelectItem value="percentage">Scale by Percentage</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {options.resizePercentage !== undefined ? (
+            <div className="space-y-2">
+              <Label htmlFor="resizePercentage">Scale Percentage</Label>
+              <div className="flex items-center gap-4">
+                <Slider
+                  id="resizePercentage"
+                  min={10}
+                  max={200}
+                  step={5}
+                  value={[options.resizePercentage || 100]}
+                  onValueChange={([value]) => updateOption("resizePercentage", value)}
+                  className="flex-1"
+                  data-testid="slider-resize-percentage"
+                />
+                <span className="text-sm text-muted-foreground w-12">
+                  {options.resizePercentage || 100}%
+                </span>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="resizeWidth">Target Width (px)</Label>
+                <Input
+                  id="resizeWidth"
+                  type="number"
+                  placeholder="Enter width or leave blank"
+                  value={options.resizeTargetWidth || ""}
+                  onChange={(e) => updateOption("resizeTargetWidth", parseInt(e.target.value) || undefined)}
+                  data-testid="input-resize-width"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="resizeHeight">Target Height (px)</Label>
+                <Input
+                  id="resizeHeight"
+                  type="number"
+                  placeholder="Enter height or leave blank"
+                  value={options.resizeTargetHeight || ""}
+                  onChange={(e) => updateOption("resizeTargetHeight", parseInt(e.target.value) || undefined)}
+                  data-testid="input-resize-height"
+                />
+              </div>
+            </>
+          )}
+          
+          <div className="space-y-2">
+            <Label>Resize Fit Mode</Label>
+            <Select
+              value={options.resizeFit || "inside"}
+              onValueChange={(value) => updateOption("resizeFit", value)}
+            >
+              <SelectTrigger data-testid="select-resize-fit">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="inside">Fit Inside (preserve aspect ratio)</SelectItem>
+                <SelectItem value="cover">Cover (crop to fill)</SelectItem>
+                <SelectItem value="contain">Contain (add padding)</SelectItem>
+                <SelectItem value="fill">Fill (stretch to fit)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label>Scaling Algorithm</Label>
+            <Select
+              value={options.resizeKernel || "lanczos3"}
+              onValueChange={(value) => updateOption("resizeKernel", value)}
+            >
+              <SelectTrigger data-testid="select-resize-kernel">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="lanczos3">Lanczos3 (best quality)</SelectItem>
+                <SelectItem value="lanczos2">Lanczos2 (balanced)</SelectItem>
+                <SelectItem value="cubic">Cubic (smooth)</SelectItem>
+                <SelectItem value="mitchell">Mitchell (text-friendly)</SelectItem>
+                <SelectItem value="nearest">Nearest (pixel art)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {toolType === "resize-image" && (
+            <div className="space-y-2">
+              <Label>Output Format</Label>
+              <Select
+                value={options.outputFormat || "original"}
+                onValueChange={(value) => updateOption("outputFormat", value)}
+              >
+                <SelectTrigger data-testid="select-output-format">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="original">Keep Original Format</SelectItem>
+                  <SelectItem value="jpeg">JPEG</SelectItem>
+                  <SelectItem value="png">PNG</SelectItem>
+                  <SelectItem value="webp">WebP</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          
+          <p className="text-sm text-muted-foreground">
+            Resize {formatLabel} images to custom dimensions with high-quality resampling.
+          </p>
+        </div>
+      );
+    }
+
+    case "resize-gif": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Resize Mode</Label>
+            <Select
+              value={options.resizePercentage ? "percentage" : "dimensions"}
+              onValueChange={(value) => {
+                if (value === "percentage") {
+                  updateOption("resizeTargetWidth", undefined);
+                  updateOption("resizeTargetHeight", undefined);
+                  updateOption("resizePercentage", 100);
+                } else {
+                  updateOption("resizePercentage", undefined);
+                }
+              }}
+            >
+              <SelectTrigger data-testid="select-gif-resize-mode">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="dimensions">Exact Dimensions</SelectItem>
+                <SelectItem value="percentage">Scale by Percentage</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {options.resizePercentage !== undefined ? (
+            <div className="space-y-2">
+              <Label htmlFor="gifResizePercentage">Scale Percentage</Label>
+              <div className="flex items-center gap-4">
+                <Slider
+                  id="gifResizePercentage"
+                  min={10}
+                  max={200}
+                  step={5}
+                  value={[options.resizePercentage || 100]}
+                  onValueChange={([value]) => updateOption("resizePercentage", value)}
+                  className="flex-1"
+                  data-testid="slider-gif-resize-percentage"
+                />
+                <span className="text-sm text-muted-foreground w-12">
+                  {options.resizePercentage || 100}%
+                </span>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="gifResizeWidth">Target Width (px)</Label>
+                <Input
+                  id="gifResizeWidth"
+                  type="number"
+                  placeholder="Enter width or leave blank"
+                  value={options.resizeTargetWidth || ""}
+                  onChange={(e) => updateOption("resizeTargetWidth", parseInt(e.target.value) || undefined)}
+                  data-testid="input-gif-resize-width"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="gifResizeHeight">Target Height (px)</Label>
+                <Input
+                  id="gifResizeHeight"
+                  type="number"
+                  placeholder="Enter height or leave blank"
+                  value={options.resizeTargetHeight || ""}
+                  onChange={(e) => updateOption("resizeTargetHeight", parseInt(e.target.value) || undefined)}
+                  data-testid="input-gif-resize-height"
+                />
+              </div>
+            </>
+          )}
+          
+          <div className="space-y-2">
+            <Label>Resize Fit Mode</Label>
+            <Select
+              value={options.resizeFit || "inside"}
+              onValueChange={(value) => updateOption("resizeFit", value)}
+            >
+              <SelectTrigger data-testid="select-gif-resize-fit">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="inside">Fit Inside (preserve aspect ratio)</SelectItem>
+                <SelectItem value="cover">Cover (crop to fill)</SelectItem>
+                <SelectItem value="fill">Fill (stretch to fit)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="gifColorsResize">Color Palette Size</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="gifColorsResize"
+                min={2}
+                max={256}
+                step={1}
+                value={[options.gifColors || 256]}
+                onValueChange={([value]) => updateOption("gifColors", value)}
+                className="flex-1"
+                data-testid="slider-gif-resize-colors"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.gifColors || 256}
+              </span>
+            </div>
+          </div>
+          
+          <p className="text-sm text-muted-foreground">
+            Resize animated GIF images while preserving all animation frames.
+          </p>
+        </div>
+      );
+    }
+
+    case "resize-svg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="svgWidth">New Width</Label>
+            <Input
+              id="svgWidth"
+              type="number"
+              placeholder="Enter width (e.g., 800)"
+              value={options.svgWidth || options.resizeTargetWidth || ""}
+              onChange={(e) => updateOption("svgWidth", parseInt(e.target.value) || undefined)}
+              data-testid="input-svg-width"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="svgHeight">New Height</Label>
+            <Input
+              id="svgHeight"
+              type="number"
+              placeholder="Enter height (e.g., 600)"
+              value={options.svgHeight || options.resizeTargetHeight || ""}
+              onChange={(e) => updateOption("svgHeight", parseInt(e.target.value) || undefined)}
+              data-testid="input-svg-height"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="svgPreserveAspectRatio"
+              checked={options.svgPreserveAspectRatio !== false}
+              onCheckedChange={(checked) => updateOption("svgPreserveAspectRatio", checked)}
+              data-testid="checkbox-svg-preserve-aspect-ratio"
+            />
+            <Label htmlFor="svgPreserveAspectRatio" className="text-sm">Preserve aspect ratio</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Set SVG viewport dimensions. Vector quality is preserved at any size.
+          </p>
+        </div>
+      );
+    }
+
     default:
       return null;
   }
