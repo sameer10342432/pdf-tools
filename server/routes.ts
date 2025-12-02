@@ -22322,6 +22322,396 @@ ${paths.join('\n')}
             break;
           }
             
+
+          case "grayscale-image": {
+            const grayscaleFile = files[0];
+            const grayscaleBuffer = fs.readFileSync(grayscaleFile.path);
+            
+            let grayscaleSharp = sharp(grayscaleBuffer).grayscale();
+            
+            const grayscaleExt = path.extname(grayscaleFile.originalname).toLowerCase();
+            if (grayscaleExt === '.jpg' || grayscaleExt === '.jpeg') {
+              result = await grayscaleSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = grayscaleFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (grayscaleExt === '.webp') {
+              result = await grayscaleSharp.webp({ quality: 95 }).toBuffer();
+              filename = grayscaleFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await grayscaleSharp.png().toBuffer();
+              filename = grayscaleFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "invert-image-colors": {
+            const invertFile = files[0];
+            const invertBuffer = fs.readFileSync(invertFile.path);
+            
+            let invertSharp = sharp(invertBuffer).negate({ alpha: false });
+            
+            const invertExt = path.extname(invertFile.originalname).toLowerCase();
+            if (invertExt === '.jpg' || invertExt === '.jpeg') {
+              result = await invertSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = invertFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (invertExt === '.webp') {
+              result = await invertSharp.webp({ quality: 95 }).toBuffer();
+              filename = invertFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await invertSharp.png().toBuffer();
+              filename = invertFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "add-border-to-image": {
+            const borderFile = files[0];
+            const borderBuffer = fs.readFileSync(borderFile.path);
+            const borderWidth = options.borderWidth || 10;
+            const borderColor = options.borderColor || '#000000';
+            
+            const metadata = await sharp(borderBuffer).metadata();
+            const newWidth = (metadata.width || 0) + (borderWidth * 2);
+            const newHeight = (metadata.height || 0) + (borderWidth * 2);
+            
+            let borderSharp = sharp({
+              create: {
+                width: newWidth,
+                height: newHeight,
+                channels: 4,
+                background: borderColor
+              }
+            })
+            .composite([{
+              input: borderBuffer,
+              left: borderWidth,
+              top: borderWidth
+            }]);
+            
+            const borderExt = path.extname(borderFile.originalname).toLowerCase();
+            if (borderExt === '.jpg' || borderExt === '.jpeg') {
+              result = await borderSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = borderFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (borderExt === '.webp') {
+              result = await borderSharp.webp({ quality: 95 }).toBuffer();
+              filename = borderFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await borderSharp.png().toBuffer();
+              filename = borderFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "round-image-corners": {
+            const roundFile = files[0];
+            const roundBuffer = fs.readFileSync(roundFile.path);
+            const cornerRadius = options.cornerRadius || 20;
+            
+            const metadata = await sharp(roundBuffer).metadata();
+            const width = metadata.width || 100;
+            const height = metadata.height || 100;
+            const radius = Math.min(cornerRadius, Math.min(width, height) / 2);
+            
+            const roundedCorners = Buffer.from(
+              `<svg><rect x="0" y="0" width="${width}" height="${height}" rx="${radius}" ry="${radius}"/></svg>`
+            );
+            
+            let roundSharp = sharp(roundBuffer)
+              .composite([{
+                input: roundedCorners,
+                blend: 'dest-in'
+              }]);
+            
+            result = await roundSharp.png().toBuffer();
+            filename = roundFile.originalname.replace(/\.[^/.]+$/, '.png');
+            contentType = 'image/png';
+            pageCount = 1;
+            break;
+          }
+          
+          case "image-filter-sepia": {
+            const sepiaFile = files[0];
+            const sepiaBuffer = fs.readFileSync(sepiaFile.path);
+            const sepiaIntensity = (options.filterIntensity || 100) / 100;
+            
+            // Sepia toning effect
+            let sepiaSharp = sharp(sepiaBuffer)
+              .modulate({ saturation: 0.3 * sepiaIntensity })
+              .tint({ r: 112, g: 66, b: 20 });
+            
+            const sepiaExt = path.extname(sepiaFile.originalname).toLowerCase();
+            if (sepiaExt === '.jpg' || sepiaExt === '.jpeg') {
+              result = await sepiaSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = sepiaFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (sepiaExt === '.webp') {
+              result = await sepiaSharp.webp({ quality: 95 }).toBuffer();
+              filename = sepiaFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await sepiaSharp.png().toBuffer();
+              filename = sepiaFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "image-filter-vintage": {
+            const vintageFile = files[0];
+            const vintageBuffer = fs.readFileSync(vintageFile.path);
+            const vintageIntensity = (options.filterIntensity || 100) / 100;
+            
+            // Vintage effect: reduced contrast, warm tint, slight desaturation
+            let vintageSharp = sharp(vintageBuffer)
+              .modulate({ 
+                saturation: 0.7 * vintageIntensity,
+                brightness: 1.05
+              })
+              .gamma(1.1)
+              .tint({ r: 255, g: 240, b: 200 });
+            
+            const vintageExt = path.extname(vintageFile.originalname).toLowerCase();
+            if (vintageExt === '.jpg' || vintageExt === '.jpeg') {
+              result = await vintageSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = vintageFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (vintageExt === '.webp') {
+              result = await vintageSharp.webp({ quality: 95 }).toBuffer();
+              filename = vintageFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await vintageSharp.png().toBuffer();
+              filename = vintageFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "image-filter-bw": {
+            const bwFile = files[0];
+            const bwBuffer = fs.readFileSync(bwFile.path);
+            
+            // High contrast black and white
+            let bwSharp = sharp(bwBuffer)
+              .grayscale()
+              .linear(1.2, -30); // Increase contrast
+            
+            const bwExt = path.extname(bwFile.originalname).toLowerCase();
+            if (bwExt === '.jpg' || bwExt === '.jpeg') {
+              result = await bwSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = bwFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (bwExt === '.webp') {
+              result = await bwSharp.webp({ quality: 95 }).toBuffer();
+              filename = bwFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await bwSharp.png().toBuffer();
+              filename = bwFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "meme-generator": {
+            const memeFile = files[0];
+            const memeBuffer = fs.readFileSync(memeFile.path);
+            const topText = (options.memeTopText || '').toUpperCase();
+            const bottomText = (options.memeBottomText || '').toUpperCase();
+            
+            const metadata = await sharp(memeBuffer).metadata();
+            const width = metadata.width || 500;
+            const height = metadata.height || 500;
+            const fontSize = Math.max(Math.floor(width / 12), 24);
+            const strokeWidth = Math.max(Math.floor(fontSize / 10), 2);
+            
+            const escapeSvgText = (text: string) => {
+              return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            };
+            
+            const svgOverlay = `
+              <svg width="${width}" height="${height}">
+                <style>
+                  .meme-text {
+                    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                    font-size: ${fontSize}px;
+                    font-weight: bold;
+                    fill: white;
+                    stroke: black;
+                    stroke-width: ${strokeWidth}px;
+                    paint-order: stroke fill;
+                    text-anchor: middle;
+                  }
+                </style>
+                <text x="${width / 2}" y="${fontSize + 10}" class="meme-text">${escapeSvgText(topText)}</text>
+                <text x="${width / 2}" y="${height - 20}" class="meme-text">${escapeSvgText(bottomText)}</text>
+              </svg>
+            `;
+            
+            let memeSharp = sharp(memeBuffer)
+              .composite([{
+                input: Buffer.from(svgOverlay),
+                top: 0,
+                left: 0
+              }]);
+            
+            const memeExt = path.extname(memeFile.originalname).toLowerCase();
+            if (memeExt === '.jpg' || memeExt === '.jpeg') {
+              result = await memeSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = 'meme_' + memeFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (memeExt === '.webp') {
+              result = await memeSharp.webp({ quality: 95 }).toBuffer();
+              filename = 'meme_' + memeFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await memeSharp.png().toBuffer();
+              filename = 'meme_' + memeFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "add-text-to-photo": {
+            const textPhotoFile = files[0];
+            const textPhotoBuffer = fs.readFileSync(textPhotoFile.path);
+            const textOverlay = options.textOverlay || 'Sample Text';
+            const textPosition = options.textPosition || 'center';
+            const textFontSize = options.textFontSize || 32;
+            const textColor = options.textColor || '#ffffff';
+            const textShadow = options.textShadow !== false;
+            
+            const metadata = await sharp(textPhotoBuffer).metadata();
+            const width = metadata.width || 500;
+            const height = metadata.height || 500;
+            
+            // Calculate text position
+            let textX = width / 2;
+            let textY = height / 2;
+            let textAnchor = 'middle';
+            
+            switch (textPosition) {
+              case 'top-left': textX = 20; textY = textFontSize + 10; textAnchor = 'start'; break;
+              case 'top-center': textX = width / 2; textY = textFontSize + 10; textAnchor = 'middle'; break;
+              case 'top-right': textX = width - 20; textY = textFontSize + 10; textAnchor = 'end'; break;
+              case 'center-left': textX = 20; textY = height / 2; textAnchor = 'start'; break;
+              case 'center': textX = width / 2; textY = height / 2; textAnchor = 'middle'; break;
+              case 'center-right': textX = width - 20; textY = height / 2; textAnchor = 'end'; break;
+              case 'bottom-left': textX = 20; textY = height - 20; textAnchor = 'start'; break;
+              case 'bottom-center': textX = width / 2; textY = height - 20; textAnchor = 'middle'; break;
+              case 'bottom-right': textX = width - 20; textY = height - 20; textAnchor = 'end'; break;
+            }
+            
+            const escapeSvgText = (text: string) => {
+              return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            };
+            
+            const shadowStyle = textShadow ? 'text-shadow: 2px 2px 4px rgba(0,0,0,0.8);' : '';
+            
+            const svgTextOverlay = `
+              <svg width="${width}" height="${height}">
+                <style>
+                  .overlay-text {
+                    font-family: Arial, sans-serif;
+                    font-size: ${textFontSize}px;
+                    font-weight: bold;
+                    fill: ${textColor};
+                    text-anchor: ${textAnchor};
+                    ${textShadow ? 'stroke: rgba(0,0,0,0.5); stroke-width: 1px;' : ''}
+                  }
+                </style>
+                <text x="${textX}" y="${textY}" class="overlay-text">${escapeSvgText(textOverlay)}</text>
+              </svg>
+            `;
+            
+            let textPhotoSharp = sharp(textPhotoBuffer)
+              .composite([{
+                input: Buffer.from(svgTextOverlay),
+                top: 0,
+                left: 0
+              }]);
+            
+            const textPhotoExt = path.extname(textPhotoFile.originalname).toLowerCase();
+            if (textPhotoExt === '.jpg' || textPhotoExt === '.jpeg') {
+              result = await textPhotoSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = textPhotoFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (textPhotoExt === '.webp') {
+              result = await textPhotoSharp.webp({ quality: 95 }).toBuffer();
+              filename = textPhotoFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await textPhotoSharp.png().toBuffer();
+              filename = textPhotoFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "split-image": {
+            const splitFile = files[0];
+            const splitBuffer = fs.readFileSync(splitFile.path);
+            const splitRows = options.splitRows || 2;
+            const splitCols = options.splitCols || 2;
+            
+            const metadata = await sharp(splitBuffer).metadata();
+            const imgWidth = metadata.width || 400;
+            const imgHeight = metadata.height || 400;
+            
+            const pieceWidth = Math.floor(imgWidth / splitCols);
+            const pieceHeight = Math.floor(imgHeight / splitRows);
+            
+            const outputPath = path.join(outputDir, `split-${randomUUID()}.zip`);
+            const output = fs.createWriteStream(outputPath);
+            const archive = archiver("zip", { zlib: { level: 9 } });
+            archive.pipe(output);
+            
+            for (let row = 0; row < splitRows; row++) {
+              for (let col = 0; col < splitCols; col++) {
+                const left = col * pieceWidth;
+                const top = row * pieceHeight;
+                const width = (col === splitCols - 1) ? imgWidth - left : pieceWidth;
+                const height = (row === splitRows - 1) ? imgHeight - top : pieceHeight;
+                
+                const pieceBuf = await sharp(splitBuffer)
+                  .extract({ left, top, width, height })
+                  .png()
+                  .toBuffer();
+                
+                archive.append(pieceBuf, { name: `piece_${row + 1}_${col + 1}.png` });
+              }
+            }
+            
+            await archive.finalize();
+            
+            await new Promise<void>((resolve, reject) => {
+              output.on("close", () => resolve());
+              output.on("error", reject);
+            });
+            
+            result = outputPath;
+            filename = "split_images.zip";
+            contentType = "application/zip";
+            pageCount = splitRows * splitCols;
+            break;
+          }
+            
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
         }

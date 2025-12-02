@@ -486,6 +486,16 @@ export const pdfToolTypes = [
   "adjust-saturation",
   "image-sharpen",
   "image-blur",
+  "grayscale-image",
+  "invert-image-colors",
+  "add-border-to-image",
+  "round-image-corners",
+  "image-filter-sepia",
+  "image-filter-vintage",
+  "image-filter-bw",
+  "meme-generator",
+  "add-text-to-photo",
+  "split-image",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -1014,6 +1024,20 @@ export const toolOptionsSchema = z.object({
   compression: z.string().optional(),
   lossless: z.string().optional(),
   quality: z.number().optional(),
+  // New image tool options
+  borderWidth: z.number().optional(),
+  borderColor: z.string().optional(),
+  cornerRadius: z.number().optional(),
+  filterIntensity: z.number().optional(),
+  memeTopText: z.string().optional(),
+  memeBottomText: z.string().optional(),
+  textOverlay: z.string().optional(),
+  textPosition: z.enum(["top-left", "top-center", "top-right", "center-left", "center", "center-right", "bottom-left", "bottom-center", "bottom-right"]).optional(),
+  textFontSize: z.number().optional(),
+  textColor: z.string().optional(),
+  textShadow: z.boolean().optional(),
+  splitRows: z.number().optional(),
+  splitCols: z.number().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -13965,5 +13989,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Multiple Image Formats</h2>
 <p>Upload images in any common format and apply blur effects instantly. Download your blurred image in your preferred format for use in documents, websites, social media, or any other application.</p>`,
+  },
+  {
+    id: "grayscale-image",
+    name: "Grayscale Image",
+    description: "Convert color images to grayscale",
+    icon: "Palette",
+    type: "grayscale-image",
+    color: "bg-gray-500",
+    emoji: "🖤",
+    metaTitle: "Convert Image to Grayscale Online Free - Black and White Photo Converter | PDF Tools",
+    metaDescription: "Convert color images to grayscale online for free. Transform photos to black and white with professional quality. No registration required.",
+    seoArticle: `<h2>Convert Images to Grayscale - Professional Black and White Conversion</h2>
+<p>Transform your color photos into stunning grayscale images with our professional online converter. Whether you're creating artistic black and white photos or preparing images for specific design requirements, our tool delivers exceptional results instantly.</p>
+
+<h2>Why Convert to Grayscale?</h2>
+<p>Grayscale images remove color distractions, focusing attention on composition, lighting, and texture. This technique is popular in fine art photography, document scanning, and when color printing isn't available.</p>
+
+<h2>Professional Quality Conversion</h2>
+<p>Our grayscale converter uses advanced algorithms to preserve tonal range and detail. Unlike simple desaturation, our tool considers luminosity values to create rich, nuanced grayscale images with excellent contrast.</p>
+
+<h2>Artistic Photography</h2>
+<p>Many photographers prefer black and white for portraits, landscapes, and street photography. Removing color can reveal the emotional essence of a scene and create timeless, classic-looking images.</p>
+
+<h2>Document Preparation</h2>
+<p>Grayscale images are often required for documents, reports, and publications. Convert your color images to grayscale to ensure compatibility and reduce file sizes while maintaining visual clarity.</p>`,
+  },
+  {
+    id: "invert-image-colors",
+    name: "Invert Image Colors",
+    description: "Invert colors to create negative effect",
+    icon: "RefreshCw",
+    type: "invert-image-colors",
+    color: "bg-violet-500",
+    emoji: "🔄",
+    metaTitle: "Invert Image Colors Online Free - Create Negative Photo Effect | PDF Tools",
+    metaDescription: "Invert image colors online for free. Create stunning negative effects, reverse colors instantly. Professional color inversion tool. No software needed.",
+    seoArticle: `<h2>Invert Image Colors - Create Stunning Negative Effects</h2>
+<p>Transform your images with our powerful color inversion tool. Create eye-catching negative effects by reversing all colors in your photos. Perfect for artistic projects, design work, and creative experimentation.</p>
+
+<h2>What is Color Inversion?</h2>
+<p>Color inversion reverses each color to its opposite on the color wheel. White becomes black, red becomes cyan, and so on. This creates a striking negative effect reminiscent of film negatives.</p>
+
+<h2>Creative Applications</h2>
+<p>Use color inversion for album covers, poster designs, social media graphics, and digital art. The dramatic effect instantly grabs attention and adds an artistic edge to any image.</p>
+
+<h2>Instant Processing</h2>
+<p>Our tool processes your images instantly, inverting colors in real-time. Preview the result immediately and download your inverted image in high quality format.</p>
+
+<h2>Perfect for Design Work</h2>
+<p>Designers often use color inversion to create contrast, test color schemes, or generate alternate versions of graphics. Our tool makes this process quick and effortless.</p>`,
+  },
+  {
+    id: "add-border-to-image",
+    name: "Add Border to Image",
+    description: "Add customizable borders to your images",
+    icon: "Square",
+    type: "add-border-to-image",
+    color: "bg-amber-500",
+    emoji: "🖼️",
+    metaTitle: "Add Border to Image Online Free - Custom Photo Frames | PDF Tools",
+    metaDescription: "Add borders to images online for free. Customize color, width, and style. Create professional photo frames instantly. No registration required.",
+    seoArticle: `<h2>Add Borders to Images - Professional Photo Framing</h2>
+<p>Enhance your images with professional-looking borders using our easy-to-use online tool. Add colored frames, set custom widths, and create the perfect presentation for your photos.</p>
+
+<h2>Customize Your Borders</h2>
+<p>Choose from any color for your border and adjust the width to match your vision. Whether you want a thin elegant line or a bold statement frame, our tool gives you complete control.</p>
+
+<h2>Perfect for Social Media</h2>
+<p>Add matching borders to create cohesive Instagram feeds, stylish profile pictures, or eye-catching social media posts. Borders help your images stand out in crowded feeds.</p>
+
+<h2>Print Preparation</h2>
+<p>Prepare images for printing with professional borders. Add white margins for matting or colored frames that complement your image for display or portfolio presentation.</p>
+
+<h2>Quick and Easy</h2>
+<p>Upload your image, choose your border settings, and download instantly. No design skills required - get professional results in seconds.</p>`,
+  },
+  {
+    id: "round-image-corners",
+    name: "Round Image Corners",
+    description: "Add rounded corners to your images",
+    icon: "Circle",
+    type: "round-image-corners",
+    color: "bg-teal-500",
+    emoji: "⭕",
+    metaTitle: "Round Image Corners Online Free - Add Rounded Edges to Photos | PDF Tools",
+    metaDescription: "Add rounded corners to images online for free. Create modern, stylish photos with smooth edges. Perfect for profiles and social media. No software needed.",
+    seoArticle: `<h2>Round Image Corners - Create Modern, Stylish Photos</h2>
+<p>Transform sharp-edged photos into modern, friendly images with rounded corners. Our tool lets you customize the radius to achieve exactly the look you want, from subtle curves to perfect circles.</p>
+
+<h2>Modern Design Trend</h2>
+<p>Rounded corners are a staple of modern web and app design. They create a softer, more approachable feel compared to sharp rectangles. Add this contemporary touch to your images instantly.</p>
+
+<h2>Perfect for Profiles</h2>
+<p>Create professional-looking profile pictures with consistent rounded corners. Whether for LinkedIn, social media, or your website, rounded images look polished and contemporary.</p>
+
+<h2>Adjustable Radius</h2>
+<p>Control exactly how round your corners are. Small radius for subtle softening, maximum radius for creating circular or pill-shaped images. Preview changes in real-time.</p>
+
+<h2>Transparent Background Support</h2>
+<p>Export your rounded images with transparent backgrounds for seamless integration into websites, documents, or design projects. Perfect for overlays and compositions.</p>`,
+  },
+  {
+    id: "image-filter-sepia",
+    name: "Image Filter (Sepia)",
+    description: "Apply vintage sepia tone to images",
+    icon: "Image",
+    type: "image-filter-sepia",
+    color: "bg-orange-700",
+    emoji: "📜",
+    metaTitle: "Sepia Image Filter Online Free - Vintage Photo Effect | PDF Tools",
+    metaDescription: "Apply sepia filter to images online for free. Create vintage, antique-looking photos with warm brown tones. Professional sepia effect tool. No registration.",
+    seoArticle: `<h2>Sepia Filter - Create Timeless Vintage Photos</h2>
+<p>Transform your modern photos into nostalgic, vintage-looking images with our sepia filter. This classic effect adds warm brown tones that evoke the look of antique photographs.</p>
+
+<h2>The Sepia Look</h2>
+<p>Sepia toning originated in photography to increase print longevity and add a warm tone. Today, it's a beloved artistic effect that gives images a historical, romantic quality.</p>
+
+<h2>Perfect for Portraits</h2>
+<p>Sepia is particularly flattering for portraits, adding warmth and a timeless quality. Create family heirloom-style photos or add artistic flair to any portrait.</p>
+
+<h2>Adjustable Intensity</h2>
+<p>Control the strength of the sepia effect. Apply subtle warming or go for full vintage intensity. Find the perfect level that suits your image and vision.</p>
+
+<h2>Instant Transformation</h2>
+<p>Upload your photo and apply the sepia filter instantly. Preview the result and download in high quality. Transform any modern photo into a vintage masterpiece in seconds.</p>`,
+  },
+  {
+    id: "image-filter-vintage",
+    name: "Image Filter (Vintage)",
+    description: "Apply nostalgic vintage filter effect",
+    icon: "Camera",
+    type: "image-filter-vintage",
+    color: "bg-yellow-700",
+    emoji: "📷",
+    metaTitle: "Vintage Photo Filter Online Free - Retro Image Effect | PDF Tools",
+    metaDescription: "Apply vintage filter to photos online for free. Create retro, nostalgic looks with faded colors and warm tones. Professional vintage effect. No software needed.",
+    seoArticle: `<h2>Vintage Filter - Nostalgic Retro Photo Effect</h2>
+<p>Give your photos that beloved retro look with our vintage filter. Add faded colors, warm tones, and subtle vignetting to create images that look like they were taken decades ago.</p>
+
+<h2>The Vintage Aesthetic</h2>
+<p>Vintage effects combine multiple adjustments: faded blacks, warm color shifts, reduced contrast, and subtle grain. Together, these create the nostalgic feeling of old photographs.</p>
+
+<h2>Instagram-Style Filters</h2>
+<p>Achieve popular vintage looks without complex editing software. Our filter captures the essence of retro photography with one-click application.</p>
+
+<h2>Perfect for Any Photo</h2>
+<p>Apply the vintage effect to portraits, landscapes, street photography, or everyday snapshots. Any photo can become a nostalgic memory with this timeless filter.</p>
+
+<h2>Adjustable Effect</h2>
+<p>Control the intensity of the vintage effect to match your vision. Subtle enhancement or full retro transformation - the choice is yours.</p>`,
+  },
+  {
+    id: "image-filter-bw",
+    name: "Image Filter (Black & White)",
+    description: "Convert images to artistic black and white",
+    icon: "Contrast",
+    type: "image-filter-bw",
+    color: "bg-neutral-700",
+    emoji: "⬛",
+    metaTitle: "Black and White Photo Filter Online Free - B&W Image Converter | PDF Tools",
+    metaDescription: "Convert photos to black and white online for free. Create dramatic monochrome images with professional quality. Artistic B&W filter. No registration required.",
+    seoArticle: `<h2>Black & White Filter - Classic Monochrome Photography</h2>
+<p>Transform your color photos into stunning black and white images with our professional filter. Create dramatic, artistic monochrome photographs that emphasize form, texture, and emotion.</p>
+
+<h2>Beyond Simple Grayscale</h2>
+<p>Our black and white filter does more than remove color. It adjusts contrast and tonal range to create rich, dramatic monochrome images with deep blacks and bright whites.</p>
+
+<h2>Timeless Art Form</h2>
+<p>Black and white photography is a timeless art form that strips away color distractions to reveal the fundamental elements of an image. Shadows, light, and texture take center stage.</p>
+
+<h2>Portrait Excellence</h2>
+<p>Black and white portraits are renowned for their emotional impact. Remove color to focus on expression, character, and the interplay of light and shadow on the face.</p>
+
+<h2>Professional Results</h2>
+<p>Get professional-quality black and white conversions instantly. Our filter preserves detail while creating the contrast and tonal range that defines great monochrome photography.</p>`,
+  },
+  {
+    id: "meme-generator",
+    name: "Meme Generator",
+    description: "Create memes with custom text overlays",
+    icon: "MessageSquare",
+    type: "meme-generator",
+    color: "bg-pink-500",
+    emoji: "😂",
+    metaTitle: "Meme Generator Online Free - Create Custom Memes | PDF Tools",
+    metaDescription: "Create memes online for free. Add custom text to images with classic meme styling. Easy meme maker with top and bottom text. No watermarks.",
+    seoArticle: `<h2>Meme Generator - Create Your Own Viral Memes</h2>
+<p>Create hilarious memes with our easy-to-use online meme generator. Add top and bottom text to any image using the classic meme format that the internet loves.</p>
+
+<h2>Classic Meme Format</h2>
+<p>Our generator uses the traditional meme style with bold white text and black outlines, ensuring your text is readable on any background. Impact font for that authentic meme look.</p>
+
+<h2>Easy to Use</h2>
+<p>Simply upload your image, add your top and bottom text, and your meme is ready. No design skills required - create shareable content in seconds.</p>
+
+<h2>No Watermarks</h2>
+<p>Unlike many free meme generators, our tool doesn't add watermarks to your creations. Your memes are yours to share anywhere without annoying branding.</p>
+
+<h2>Share Everywhere</h2>
+<p>Download your meme in high quality format ready for social media, messaging apps, or anywhere else you want to spread laughter.</p>`,
+  },
+  {
+    id: "add-text-to-photo",
+    name: "Add Text to Photo",
+    description: "Add custom text overlays to images",
+    icon: "Type",
+    type: "add-text-to-photo",
+    color: "bg-indigo-500",
+    emoji: "✏️",
+    metaTitle: "Add Text to Photo Online Free - Image Text Editor | PDF Tools",
+    metaDescription: "Add text to photos online for free. Customize font, size, color, and position. Create professional image overlays instantly. No software installation needed.",
+    seoArticle: `<h2>Add Text to Photos - Professional Text Overlays</h2>
+<p>Enhance your images with custom text using our versatile online tool. Add captions, quotes, watermarks, or any text to your photos with full control over styling and positioning.</p>
+
+<h2>Full Customization</h2>
+<p>Choose your font style, adjust text size, pick any color, and position your text exactly where you want it. Create text overlays that perfectly match your vision.</p>
+
+<h2>Perfect for Social Media</h2>
+<p>Create quote images, announcement graphics, or branded social media posts. Add your message directly to photos for eye-catching, shareable content.</p>
+
+<h2>Business Applications</h2>
+<p>Add watermarks to protect your images, create promotional graphics, or add product information directly to product photos. Professional results without expensive software.</p>
+
+<h2>Multiple Text Options</h2>
+<p>Control text color, font size, position, and add text shadows for better readability. Make your text stand out on any background.</p>`,
+  },
+  {
+    id: "split-image",
+    name: "Split Image",
+    description: "Split images into multiple parts or grid",
+    icon: "Grid",
+    type: "split-image",
+    color: "bg-cyan-500",
+    emoji: "🔲",
+    metaTitle: "Split Image Online Free - Divide Pictures into Parts | PDF Tools",
+    metaDescription: "Split images into multiple parts online for free. Create grids for Instagram, puzzles, or multi-panel displays. Easy image splitter tool. No registration.",
+    seoArticle: `<h2>Split Images - Divide Photos into Multiple Parts</h2>
+<p>Divide your images into multiple pieces with our easy-to-use image splitter. Perfect for creating Instagram grids, puzzle images, or multi-panel artwork.</p>
+
+<h2>Instagram Grid Layouts</h2>
+<p>Create stunning Instagram feeds by splitting panoramic images or artwork into multiple posts that form a cohesive display on your profile grid.</p>
+
+<h2>Custom Grid Options</h2>
+<p>Choose how many rows and columns to split your image into. Create 2x2 simple grids, 3x3 Instagram layouts, or any configuration you need.</p>
+
+<h2>Perfect Cuts</h2>
+<p>Our tool ensures mathematically precise divisions with no overlap or gaps. Each piece aligns perfectly when reassembled.</p>
+
+<h2>Batch Download</h2>
+<p>Download all image pieces at once in a convenient package. Each piece is numbered for easy reassembly or posting in the correct order.</p>`,
   },
 ];

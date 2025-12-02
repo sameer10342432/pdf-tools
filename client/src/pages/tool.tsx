@@ -411,6 +411,14 @@ export default function ToolPage() {
     if (tool.type === "png-to-webp") {
       return ".png,image/png";
     }
+    // New 10 Image Tools
+    if (tool.type === "grayscale-image" || tool.type === "invert-image-colors" || 
+        tool.type === "add-border-to-image" || tool.type === "round-image-corners" ||
+        tool.type === "image-filter-sepia" || tool.type === "image-filter-vintage" ||
+        tool.type === "image-filter-bw" || tool.type === "meme-generator" ||
+        tool.type === "add-text-to-photo" || tool.type === "split-image") {
+      return "image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp";
+    }
     return ".pdf,application/pdf";
   };
 

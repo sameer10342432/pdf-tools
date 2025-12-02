@@ -8679,6 +8679,276 @@ export function ToolOptionsComponent({
       );
     }
 
+
+    case "grayscale-image":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">
+              Convert your image to grayscale. The image will be processed automatically when you click the process button.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "invert-image-colors":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">
+              Invert all colors in your image to create a negative effect. The image will be processed automatically.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "add-border-to-image":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Border Width: {options.borderWidth || 10}px</Label>
+            <Slider
+              min={1}
+              max={100}
+              step={1}
+              value={[options.borderWidth || 10]}
+              onValueChange={([value]) => updateOption("borderWidth", value)}
+              data-testid="slider-border-width"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Border Color</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                type="color"
+                value={options.borderColor || "#000000"}
+                onChange={(e) => updateOption("borderColor", e.target.value)}
+                className="w-16 h-9 p-1"
+                data-testid="input-border-color"
+              />
+              <Input
+                type="text"
+                value={options.borderColor || "#000000"}
+                onChange={(e) => updateOption("borderColor", e.target.value)}
+                className="flex-1"
+                placeholder="#000000"
+                data-testid="input-border-color-text"
+              />
+            </div>
+          </div>
+        </div>
+      );
+
+    case "round-image-corners":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Corner Radius: {options.cornerRadius || 20}px</Label>
+            <Slider
+              min={1}
+              max={200}
+              step={1}
+              value={[options.cornerRadius || 20]}
+              onValueChange={([value]) => updateOption("cornerRadius", value)}
+              data-testid="slider-corner-radius"
+            />
+            <p className="text-sm text-muted-foreground">
+              Adjust the radius to control how round the corners appear. Higher values create more circular corners.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "image-filter-sepia":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Sepia Intensity: {options.filterIntensity || 100}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={10}
+              value={[options.filterIntensity || 100]}
+              onValueChange={([value]) => updateOption("filterIntensity", value)}
+              data-testid="slider-sepia-intensity"
+            />
+            <p className="text-sm text-muted-foreground">
+              Apply a warm sepia tone for a vintage photograph look.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "image-filter-vintage":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Vintage Intensity: {options.filterIntensity || 100}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={10}
+              value={[options.filterIntensity || 100]}
+              onValueChange={([value]) => updateOption("filterIntensity", value)}
+              data-testid="slider-vintage-intensity"
+            />
+            <p className="text-sm text-muted-foreground">
+              Apply a nostalgic vintage filter with faded colors and warm tones.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "image-filter-bw":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">
+              Convert your image to high-contrast black and white for a dramatic artistic effect.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "meme-generator":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="meme-top-text">Top Text</Label>
+            <Input
+              id="meme-top-text"
+              placeholder="ENTER TOP TEXT"
+              value={options.memeTopText || ""}
+              onChange={(e) => updateOption("memeTopText", e.target.value)}
+              data-testid="input-meme-top-text"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="meme-bottom-text">Bottom Text</Label>
+            <Input
+              id="meme-bottom-text"
+              placeholder="ENTER BOTTOM TEXT"
+              value={options.memeBottomText || ""}
+              onChange={(e) => updateOption("memeBottomText", e.target.value)}
+              data-testid="input-meme-bottom-text"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Text will appear in classic meme style with white Impact font and black outline.
+          </p>
+        </div>
+      );
+
+    case "add-text-to-photo":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="text-overlay">Text</Label>
+            <Input
+              id="text-overlay"
+              placeholder="Enter your text"
+              value={options.textOverlay || ""}
+              onChange={(e) => updateOption("textOverlay", e.target.value)}
+              data-testid="input-text-overlay"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Text Position</Label>
+            <Select
+              value={options.textPosition || "center"}
+              onValueChange={(value) => updateOption("textPosition", value as any)}
+            >
+              <SelectTrigger data-testid="select-text-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-center">Top Center</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="center-left">Center Left</SelectItem>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="center-right">Center Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-center">Bottom Center</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Font Size: {options.textFontSize || 32}px</Label>
+            <Slider
+              min={12}
+              max={120}
+              step={2}
+              value={[options.textFontSize || 32]}
+              onValueChange={([value]) => updateOption("textFontSize", value)}
+              data-testid="slider-text-font-size"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Text Color</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                type="color"
+                value={options.textColor || "#ffffff"}
+                onChange={(e) => updateOption("textColor", e.target.value)}
+                className="w-16 h-9 p-1"
+                data-testid="input-text-color"
+              />
+              <Input
+                type="text"
+                value={options.textColor || "#ffffff"}
+                onChange={(e) => updateOption("textColor", e.target.value)}
+                className="flex-1"
+                placeholder="#ffffff"
+                data-testid="input-text-color-text"
+              />
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="text-shadow"
+              checked={options.textShadow !== false}
+              onCheckedChange={(checked) => updateOption("textShadow", checked as boolean)}
+              data-testid="checkbox-text-shadow"
+            />
+            <Label htmlFor="text-shadow">Add text shadow for better visibility</Label>
+          </div>
+        </div>
+      );
+
+    case "split-image":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Rows: {options.splitRows || 2}</Label>
+            <Slider
+              min={1}
+              max={10}
+              step={1}
+              value={[options.splitRows || 2]}
+              onValueChange={([value]) => updateOption("splitRows", value)}
+              data-testid="slider-split-rows"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Columns: {options.splitCols || 2}</Label>
+            <Slider
+              min={1}
+              max={10}
+              step={1}
+              value={[options.splitCols || 2]}
+              onValueChange={([value]) => updateOption("splitCols", value)}
+              data-testid="slider-split-cols"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Split your image into {(options.splitRows || 2) * (options.splitCols || 2)} pieces. 
+            Perfect for Instagram grids or puzzle creation.
+          </p>
+        </div>
+      );
+
     default:
       return null;
   }
