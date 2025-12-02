@@ -13686,8 +13686,6 @@ export const pdfTools: PdfTool[] = [
 <h2>Batch PSD Processing</h2>
 <p>Convert multiple PSD files to PNG simultaneously with our batch processing feature. Upload your collection of Photoshop documents and receive transparent PNG versions of all files. Streamline your design workflow and asset delivery process efficiently.</p>`,
   },
-];
-
   {
     id: "ai-to-jpg",
     name: "AI to JPG",

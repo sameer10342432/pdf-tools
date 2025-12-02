@@ -49,11 +49,6 @@ import {
   Sun,
   Contrast,
   Eye,
-  FlipVertical,
-  FlipHorizontal,
-  Sun,
-  Contrast,
-  Eye,
   type LucideIcon,
 } from "lucide-react";
 
