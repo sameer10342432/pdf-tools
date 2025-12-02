@@ -87,6 +87,12 @@ import {
   BadgeCheck,
   ShieldAlert,
   FileCheck,
+  Maximize,
+  Sparkles,
+  Pipette,
+  Film,
+  Video,
+  FileVideo,
   type LucideIcon,
 } from "lucide-react";
 
@@ -158,6 +164,12 @@ const iconMap: Record<string, LucideIcon> = {
   BadgeCheck,
   ShieldAlert,
   FileCheck,
+  Maximize,
+  Sparkles,
+  Pipette,
+  Film,
+  Video,
+  FileVideo,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";
@@ -348,6 +360,30 @@ export default function ToolPage() {
     if (tool.type === "convert-to-ico" || tool.type === "ico-converter") {
       return "image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif";
     }
+    if (tool.type === "image-to-svg") {
+      return "image/jpeg,image/png,image/bmp,image/webp,.jpg,.jpeg,.png,.bmp,.webp";
+    }
+    if (tool.type === "svg-to-png") {
+      return ".svg,image/svg+xml";
+    }
+    if (tool.type === "upscale-image" || tool.type === "ai-image-upscaler") {
+      return "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp";
+    }
+    if (tool.type === "colorize-photo") {
+      return "image/jpeg,image/png,image/webp,image/bmp,.jpg,.jpeg,.png,.webp,.bmp";
+    }
+    if (tool.type === "image-color-picker") {
+      return "image/jpeg,image/png,image/webp,image/gif,image/bmp,.jpg,.jpeg,.png,.webp,.gif,.bmp";
+    }
+    if (tool.type === "gif-maker" || tool.type === "apng-maker") {
+      return "image/jpeg,image/png,image/webp,image/bmp,.jpg,.jpeg,.png,.webp,.bmp";
+    }
+    if (tool.type === "video-to-gif") {
+      return "video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov";
+    }
+    if (tool.type === "gif-to-mp4") {
+      return ".gif,image/gif";
+    }
     return ".pdf,application/pdf";
   };
 
@@ -364,6 +400,8 @@ export default function ToolPage() {
       "scan-to-pdf",
       "add-image-to-pdf",
       "replace-image-in-pdf",
+      "gif-maker",
+      "apng-maker",
     ].includes(tool.type);
   };
 
@@ -377,6 +415,8 @@ export default function ToolPage() {
       "add-pages",
       "add-image-to-pdf",
       "replace-image-in-pdf",
+      "gif-maker",
+      "apng-maker",
     ].includes(tool.type);
   };
 
@@ -389,6 +429,8 @@ export default function ToolPage() {
     if (tool.type === "add-pages") return 2;
     if (tool.type === "add-image-to-pdf") return 2;
     if (tool.type === "replace-image-in-pdf") return 2;
+    if (tool.type === "gif-maker") return 2;
+    if (tool.type === "apng-maker") return 2;
     return 1;
   };
 

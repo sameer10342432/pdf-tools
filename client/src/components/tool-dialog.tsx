@@ -63,6 +63,12 @@ import {
   LockKeyhole,
   BadgeCheck,
   ShieldAlert,
+  Maximize,
+  Sparkles,
+  Pipette,
+  Film,
+  Video,
+  FileVideo,
   type LucideIcon,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -109,6 +115,12 @@ const iconMap: Record<string, LucideIcon> = {
   LockKeyhole,
   BadgeCheck,
   ShieldAlert,
+  Maximize,
+  Sparkles,
+  Pipette,
+  Film,
+  Video,
+  FileVideo,
 };
 
 interface ToolDialogProps {

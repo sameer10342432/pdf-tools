@@ -7534,6 +7534,463 @@ export function ToolOptionsComponent({
       );
     }
 
+    case "image-to-svg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Color Mode</Label>
+            <Select
+              value={options.svgColorMode || "color"}
+              onValueChange={(value) => updateOption("svgColorMode", value as any)}
+            >
+              <SelectTrigger data-testid="select-svg-color-mode">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="color">Full Color</SelectItem>
+                <SelectItem value="grayscale">Grayscale</SelectItem>
+                <SelectItem value="monochrome">Monochrome (Black & White)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Path Simplification: {options.svgPathSimplify || 2}</Label>
+            <Slider
+              min={0}
+              max={10}
+              step={0.5}
+              value={[options.svgPathSimplify || 2]}
+              onValueChange={([value]) => updateOption("svgPathSimplify", value)}
+              data-testid="slider-path-simplify"
+            />
+            <p className="text-xs text-muted-foreground">
+              Higher values create simpler paths (smaller files), lower values preserve more detail
+            </p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="optCurve"
+              checked={options.svgOptCurve !== false}
+              onCheckedChange={(checked) => updateOption("svgOptCurve", checked)}
+              data-testid="switch-opt-curve"
+            />
+            <Label htmlFor="optCurve">Optimize curves</Label>
+          </div>
+        </div>
+      );
+    }
+
+    case "svg-to-png": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="svgWidth">Width (pixels)</Label>
+            <Input
+              id="svgWidth"
+              type="number"
+              placeholder="Auto"
+              value={options.svgToPngWidth || ""}
+              onChange={(e) => updateOption("svgToPngWidth", e.target.value ? parseInt(e.target.value) : undefined)}
+              data-testid="input-svg-width"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="svgHeight">Height (pixels)</Label>
+            <Input
+              id="svgHeight"
+              type="number"
+              placeholder="Auto"
+              value={options.svgToPngHeight || ""}
+              onChange={(e) => updateOption("svgToPngHeight", e.target.value ? parseInt(e.target.value) : undefined)}
+              data-testid="input-svg-height"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Scale: {options.svgToPngScale || 1}x</Label>
+            <Slider
+              min={0.5}
+              max={4}
+              step={0.5}
+              value={[options.svgToPngScale || 1]}
+              onValueChange={([value]) => updateOption("svgToPngScale", value)}
+              data-testid="slider-svg-scale"
+            />
+            <p className="text-xs text-muted-foreground">
+              Scale multiplier (ignored if width/height are set)
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="bgColor">Background Color</Label>
+            <Input
+              id="bgColor"
+              type="color"
+              value={options.svgToPngBackground || "#ffffff"}
+              onChange={(e) => updateOption("svgToPngBackground", e.target.value)}
+              className="h-9"
+              data-testid="input-svg-bg-color"
+            />
+            <p className="text-xs text-muted-foreground">
+              Leave white for transparent background
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "upscale-image": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Scale Factor</Label>
+            <Select
+              value={options.upscaleScale || "2"}
+              onValueChange={(value) => updateOption("upscaleScale", value as any)}
+            >
+              <SelectTrigger data-testid="select-upscale-scale">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2">2x (Double size)</SelectItem>
+                <SelectItem value="3">3x (Triple size)</SelectItem>
+                <SelectItem value="4">4x (Quadruple size)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Upscaling Mode</Label>
+            <Select
+              value={options.upscaleMode || "standard"}
+              onValueChange={(value) => updateOption("upscaleMode", value as any)}
+            >
+              <SelectTrigger data-testid="select-upscale-mode">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="fast">Fast (Quick processing)</SelectItem>
+                <SelectItem value="standard">Standard (Balanced)</SelectItem>
+                <SelectItem value="quality">Quality (Best results)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Upscaling uses smart interpolation to enlarge your image while preserving details.
+          </p>
+        </div>
+      );
+    }
+
+    case "ai-image-upscaler": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Scale Factor</Label>
+            <Select
+              value={options.aiUpscaleScale || "2"}
+              onValueChange={(value) => updateOption("aiUpscaleScale", value as any)}
+            >
+              <SelectTrigger data-testid="select-ai-upscale-scale">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2">2x</SelectItem>
+                <SelectItem value="4">4x</SelectItem>
+                <SelectItem value="8">8x (Maximum enhancement)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="enhance"
+              checked={options.aiUpscaleEnhance !== false}
+              onCheckedChange={(checked) => updateOption("aiUpscaleEnhance", checked)}
+              data-testid="switch-ai-enhance"
+            />
+            <Label htmlFor="enhance">Enable AI enhancement</Label>
+          </div>
+          <div className="space-y-2">
+            <Label>Noise Reduction: {options.aiUpscaleDenoising || 0}</Label>
+            <Slider
+              min={0}
+              max={100}
+              step={5}
+              value={[options.aiUpscaleDenoising || 0]}
+              onValueChange={([value]) => updateOption("aiUpscaleDenoising", value)}
+              data-testid="slider-denoising"
+            />
+            <p className="text-xs text-muted-foreground">
+              Reduce noise and grain in the upscaled image
+            </p>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            AI-powered upscaling generates realistic details for stunning results.
+          </p>
+        </div>
+      );
+    }
+
+    case "colorize-photo": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Color Intensity: {options.colorizeIntensity || 100}%</Label>
+            <Slider
+              min={0}
+              max={100}
+              step={5}
+              value={[options.colorizeIntensity || 100]}
+              onValueChange={([value]) => updateOption("colorizeIntensity", value)}
+              data-testid="slider-colorize-intensity"
+            />
+            <p className="text-xs text-muted-foreground">
+              Lower values create a subtle, vintage effect
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label>Saturation: {options.colorizeSaturation || 100}%</Label>
+            <Slider
+              min={50}
+              max={150}
+              step={5}
+              value={[options.colorizeSaturation || 100]}
+              onValueChange={([value]) => updateOption("colorizeSaturation", value)}
+              data-testid="slider-colorize-saturation"
+            />
+            <p className="text-xs text-muted-foreground">
+              Adjust the vibrancy of colors
+            </p>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Automatically adds natural-looking colors to black and white photographs.
+          </p>
+        </div>
+      );
+    }
+
+    case "image-color-picker": {
+      return (
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="extractPalette"
+              checked={options.extractPalette !== false}
+              onCheckedChange={(checked) => updateOption("extractPalette", checked)}
+              data-testid="switch-extract-palette"
+            />
+            <Label htmlFor="extractPalette">Extract color palette</Label>
+          </div>
+          {options.extractPalette !== false && (
+            <div className="space-y-2">
+              <Label>Number of Colors: {options.paletteColors || 6}</Label>
+              <Slider
+                min={2}
+                max={12}
+                step={1}
+                value={[options.paletteColors || 6]}
+                onValueChange={([value]) => updateOption("paletteColors", value)}
+                data-testid="slider-palette-colors"
+              />
+            </div>
+          )}
+          <p className="text-sm text-muted-foreground">
+            Extract dominant colors from your image and get color codes (HEX, RGB, HSL).
+          </p>
+        </div>
+      );
+    }
+
+    case "gif-maker": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Frame Delay: {options.gifFrameDelay || 100}ms</Label>
+            <Slider
+              min={20}
+              max={1000}
+              step={10}
+              value={[options.gifFrameDelay || 100]}
+              onValueChange={([value]) => updateOption("gifFrameDelay", value)}
+              data-testid="slider-frame-delay"
+            />
+            <p className="text-xs text-muted-foreground">
+              Time between frames (lower = faster animation)
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="gifWidth">Output Width (pixels)</Label>
+            <Input
+              id="gifWidth"
+              type="number"
+              placeholder="Auto"
+              value={options.gifWidth || ""}
+              onChange={(e) => updateOption("gifWidth", e.target.value ? parseInt(e.target.value) : undefined)}
+              data-testid="input-gif-width"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="loop"
+              checked={options.gifLoop !== false}
+              onCheckedChange={(checked) => updateOption("gifLoop", checked)}
+              data-testid="switch-gif-loop"
+            />
+            <Label htmlFor="loop">Loop animation</Label>
+          </div>
+          <div className="space-y-2">
+            <Label>Quality: {options.gifQuality || 80}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.gifQuality || 80]}
+              onValueChange={([value]) => updateOption("gifQuality", value)}
+              data-testid="slider-gif-quality"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Upload multiple images to create an animated GIF.
+          </p>
+        </div>
+      );
+    }
+
+    case "video-to-gif": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="startTime">Start Time (seconds)</Label>
+            <Input
+              id="startTime"
+              type="number"
+              step="0.1"
+              placeholder="0"
+              value={options.videoStartTime || ""}
+              onChange={(e) => updateOption("videoStartTime", e.target.value ? parseFloat(e.target.value) : undefined)}
+              data-testid="input-start-time"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="duration">Duration (seconds)</Label>
+            <Input
+              id="duration"
+              type="number"
+              step="0.1"
+              placeholder="5"
+              value={options.videoDuration || ""}
+              onChange={(e) => updateOption("videoDuration", e.target.value ? parseFloat(e.target.value) : undefined)}
+              data-testid="input-duration"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Frame Rate: {options.videoFps || 10} FPS</Label>
+            <Slider
+              min={5}
+              max={30}
+              step={1}
+              value={[options.videoFps || 10]}
+              onValueChange={([value]) => updateOption("videoFps", value)}
+              data-testid="slider-fps"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="gifWidth">Output Width (pixels)</Label>
+            <Input
+              id="gifWidth"
+              type="number"
+              placeholder="480"
+              value={options.videoGifWidth || ""}
+              onChange={(e) => updateOption("videoGifWidth", e.target.value ? parseInt(e.target.value) : undefined)}
+              data-testid="input-video-gif-width"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Quality: {options.videoGifQuality || 80}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.videoGifQuality || 80]}
+              onValueChange={([value]) => updateOption("videoGifQuality", value)}
+              data-testid="slider-video-gif-quality"
+            />
+          </div>
+        </div>
+      );
+    }
+
+    case "gif-to-mp4": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Quality</Label>
+            <Select
+              value={options.gifToMp4Quality || "medium"}
+              onValueChange={(value) => updateOption("gifToMp4Quality", value as any)}
+            >
+              <SelectTrigger data-testid="select-mp4-quality">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="low">Low (Smaller file)</SelectItem>
+                <SelectItem value="medium">Medium (Balanced)</SelectItem>
+                <SelectItem value="high">High (Best quality)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="mp4Loop"
+              checked={options.gifToMp4Loop !== false}
+              onCheckedChange={(checked) => updateOption("gifToMp4Loop", checked)}
+              data-testid="switch-mp4-loop"
+            />
+            <Label htmlFor="mp4Loop">Create looping video</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert GIF to MP4 for better quality and smaller file size.
+          </p>
+        </div>
+      );
+    }
+
+    case "apng-maker": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Frame Delay: {options.apngFrameDelay || 100}ms</Label>
+            <Slider
+              min={20}
+              max={1000}
+              step={10}
+              value={[options.apngFrameDelay || 100]}
+              onValueChange={([value]) => updateOption("apngFrameDelay", value)}
+              data-testid="slider-apng-delay"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="apngLoop"
+              checked={options.apngLoop !== false}
+              onCheckedChange={(checked) => updateOption("apngLoop", checked)}
+              data-testid="switch-apng-loop"
+            />
+            <Label htmlFor="apngLoop">Loop animation</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="apngOptimize"
+              checked={options.apngOptimize !== false}
+              onCheckedChange={(checked) => updateOption("apngOptimize", checked)}
+              data-testid="switch-apng-optimize"
+            />
+            <Label htmlFor="apngOptimize">Optimize file size</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Create animated PNG files with full transparency support. Better quality than GIF.
+          </p>
+        </div>
+      );
+    }
+
     default:
       return null;
   }
