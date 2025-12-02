@@ -107,6 +107,28 @@ The application is built with a React frontend and an Express.js backend.
 
   All tools use Sharp library for high-quality image processing. Meme generator and text tools use SVG compositing with proper text escaping for security. Split tool generates ZIP files containing all image parts.
 
+- Added 10 new image composition and utility tools (December 2025):
+  
+  **Image Composition Tools:**
+  - **Merge Images**: Combine multiple images into a single composite image with layout options (horizontal, vertical, grid)
+  - **Image Combiner Horizontal**: Combine images side by side horizontally
+  - **Image Combiner Vertical**: Stack images vertically in a single column
+  
+  **Favicon and Icon Tools:**
+  - **Favicon Generator**: Generate favicon.ico and other sized icons from an image (16x16 to 512x512)
+  - **ICO to PNG**: Convert ICO files to PNG format
+  - **PNG to ICO**: Convert PNG images to ICO format for favicon use
+  
+  **Animation Conversion Tools:**
+  - **APNG to GIF**: Convert animated PNG files to GIF format for universal compatibility
+  - **GIF to APNG**: Convert GIF animations to APNG format for better quality
+  
+  **Utility Tools:**
+  - **Image to ASCII Art**: Convert images to text-based ASCII art with customizable width
+  - **Image Metadata Viewer**: View and extract EXIF, IPTC, and XMP metadata from images
+
+  All composition tools support multi-file uploads with drag-and-drop interface. Sharp library handles image processing with high-quality output.
+
 ## External Dependencies
 - **PDF Processing Libraries**: `pdf-lib` (for core PDF manipulation), `sharp` (for image processing), `archiver` (for creating zip archives).
 - **Document Conversion**: `mammoth` (for Word document processing), `xlsx` (for Excel processing), `tesseract.js` (for OCR text recognition), `marked` (for Markdown parsing), `adm-zip` (for ODF file extraction).
