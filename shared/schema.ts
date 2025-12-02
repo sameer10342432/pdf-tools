@@ -1058,6 +1058,52 @@ export const toolOptionsSchema = z.object({
   textShadow: z.boolean().optional(),
   splitRows: z.number().optional(),
   splitCols: z.number().optional(),
+  // Remove image metadata options
+  removeExif: z.boolean().optional(),
+  removeGps: z.boolean().optional(),
+  removeIcc: z.boolean().optional(),
+  removeIptc: z.boolean().optional(),
+  // Image color corrector options
+  brightness: z.number().optional(),
+  contrast: z.number().optional(),
+  saturation: z.number().optional(),
+  hue: z.number().optional(),
+  gamma: z.number().optional(),
+  autoColor: z.boolean().optional(),
+  // Change image DPI options
+  dpi: z.union([z.number(), z.string()]).optional(),
+  customDpi: z.number().optional(),
+  resample: z.boolean().optional(),
+  // Image enlarger options
+  scaleFactor: z.number().optional(),
+  upscaleMethod: z.enum(["lanczos", "cubic", "nearest"]).optional(),
+  enhanceDetails: z.boolean().optional(),
+  // Image deblur options
+  deblurStrength: z.number().optional(),
+  deblurType: z.enum(["auto", "motion", "focus", "gaussian"]).optional(),
+  reduceNoise: z.boolean().optional(),
+  // AI image generator options
+  generationStyle: z.enum(["abstract", "geometric", "fractal", "gradient", "noise", "plasma"]).optional(),
+  generationSize: z.enum(["512x512", "1024x1024", "1920x1080", "1080x1920"]).optional(),
+  colorScheme: z.enum(["vibrant", "pastel", "monochrome", "earth", "neon"]).optional(),
+  // AI photo retouch options
+  retouchPreset: z.enum(["portrait", "landscape", "product", "food", "night"]).optional(),
+  retouchStrength: z.number().optional(),
+  autoEnhance: z.boolean().optional(),
+  sharpenOutput: z.boolean().optional(),
+  // AI object remover options
+  removalMethod: z.enum(["inpaint", "blur", "pixelate", "color"]).optional(),
+  fillColor: z.string().optional(),
+  featherRadius: z.number().optional(),
+  // AI face swapper options
+  blendMode: z.enum(["smooth", "hard", "gradient"]).optional(),
+  colorMatching: z.number().optional(),
+  autoAlign: z.boolean().optional(),
+  // Image to sketch options
+  sketchStyle: z.enum(["pencil", "charcoal", "ink", "colored"]).optional(),
+  lineIntensity: z.number().optional(),
+  detailLevel: z.number().optional(),
+  invertSketch: z.boolean().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;

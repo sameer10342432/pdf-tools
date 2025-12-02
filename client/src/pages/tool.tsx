@@ -93,6 +93,15 @@ import {
   Film,
   Video,
   FileVideo,
+  FlipVertical,
+  FlipHorizontal,
+  Sun,
+  Contrast,
+  ShieldOff,
+  ZoomIn,
+  Focus,
+  Wand2,
+  UserX,
   type LucideIcon,
 } from "lucide-react";
 
@@ -170,6 +179,15 @@ const iconMap: Record<string, LucideIcon> = {
   Film,
   Video,
   FileVideo,
+  FlipVertical,
+  FlipHorizontal,
+  Sun,
+  Contrast,
+  ShieldOff,
+  ZoomIn,
+  Focus,
+  Wand2,
+  UserX,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";
@@ -442,6 +460,19 @@ export default function ToolPage() {
     if (tool.type === "image-to-ascii" || tool.type === "image-metadata-viewer") {
       return "image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp";
     }
+    // New 10 Advanced Image Tools
+    if (tool.type === "remove-image-metadata" || tool.type === "image-color-corrector" ||
+        tool.type === "change-image-dpi" || tool.type === "image-enlarger" ||
+        tool.type === "image-deblur" || tool.type === "ai-photo-retouch" ||
+        tool.type === "ai-object-remover" || tool.type === "image-to-sketch") {
+      return "image/jpeg,image/png,image/gif,image/webp,image/bmp,image/tiff,.jpg,.jpeg,.png,.gif,.webp,.bmp,.tiff,.tif";
+    }
+    if (tool.type === "ai-face-swapper") {
+      return "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp";
+    }
+    if (tool.type === "ai-image-generator") {
+      return "*/*";
+    }
     return ".pdf,application/pdf";
   };
 
@@ -460,9 +491,11 @@ export default function ToolPage() {
       "replace-image-in-pdf",
       "gif-maker",
       "apng-maker",
+      "ai-face-swapper",
       "merge-images",
       "image-combiner-horizontal",
       "image-combiner-vertical",
+      "ai-face-swapper",
     ].includes(tool.type);
   };
 
@@ -478,6 +511,7 @@ export default function ToolPage() {
       "replace-image-in-pdf",
       "gif-maker",
       "apng-maker",
+      "ai-face-swapper",
     ].includes(tool.type);
   };
 
@@ -492,6 +526,7 @@ export default function ToolPage() {
     if (tool.type === "replace-image-in-pdf") return 2;
     if (tool.type === "gif-maker") return 2;
     if (tool.type === "apng-maker") return 2;
+    if (tool.type === "ai-face-swapper") return 2;
     return 1;
   };
 

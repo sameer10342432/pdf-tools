@@ -74,6 +74,16 @@ import {
   Sun,
   Contrast,
   Eye,
+  ShieldOff,
+  ZoomIn,
+  Focus,
+  Wand2,
+  UserX,
+  ShieldOff,
+  ZoomIn,
+  Focus,
+  Wand2,
+  UserX,
   type LucideIcon,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -131,6 +141,11 @@ const iconMap: Record<string, LucideIcon> = {
   Sun,
   Contrast,
   Eye,
+  ShieldOff,
+  ZoomIn,
+  Focus,
+  Wand2,
+  UserX,
 };
 
 interface ToolDialogProps {
@@ -286,17 +301,55 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
         tool.type === "adjust-saturation" || tool.type === "image-sharpen" || tool.type === "image-blur") {
       return "image/jpeg,image/png,image/gif,image/webp,image/bmp,.jpg,.jpeg,.png,.gif,.webp,.bmp";
     }
+    // New 10 Advanced Image Tools
+    if (tool.type === "remove-image-metadata" || tool.type === "image-color-corrector" ||
+        tool.type === "change-image-dpi" || tool.type === "image-enlarger" ||
+        tool.type === "image-deblur" || tool.type === "ai-photo-retouch" ||
+        tool.type === "ai-object-remover" || tool.type === "image-to-sketch") {
+      return "image/jpeg,image/png,image/gif,image/webp,image/bmp,image/tiff,.jpg,.jpeg,.png,.gif,.webp,.bmp,.tiff,.tif";
+    }
+    if (tool.type === "ai-face-swapper") {
+      return "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp";
+    }
+    if (tool.type === "ai-image-generator") {
+      return "*/*";
+    }
+    if (tool.type === "grayscale-image" || tool.type === "invert-image-colors" ||
+        tool.type === "add-border-to-image" || tool.type === "round-image-corners" ||
+        tool.type === "image-filter-sepia" || tool.type === "image-filter-vintage" ||
+        tool.type === "image-filter-bw" || tool.type === "meme-generator" ||
+        tool.type === "add-text-to-photo" || tool.type === "split-image" ||
+        tool.type === "merge-images" || tool.type === "image-combiner-horizontal" ||
+        tool.type === "image-combiner-vertical" || tool.type === "image-to-ascii" ||
+        tool.type === "image-metadata-viewer") {
+      return "image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp";
+    }
+    if (tool.type === "favicon-generator") {
+      return "image/jpeg,image/png,image/gif,image/webp,image/bmp,image/svg+xml,.jpg,.jpeg,.png,.gif,.webp,.bmp,.svg";
+    }
+    if (tool.type === "ico-to-png") {
+      return ".ico,image/x-icon,image/vnd.microsoft.icon";
+    }
+    if (tool.type === "png-to-ico") {
+      return ".png,image/png";
+    }
+    if (tool.type === "apng-to-gif") {
+      return ".png,image/png,image/apng";
+    }
+    if (tool.type === "gif-to-apng") {
+      return ".gif,image/gif";
+    }
     return ".pdf,application/pdf";
   };
 
   const isMultiFileAllowed = () => {
     if (!tool) return true;
-    return ["merge", "images-to-pdf", "gif-maker", "apng-maker"].includes(tool.type);
+    return ["merge", "images-to-pdf", "gif-maker", "apng-maker", "ai-face-swapper", "merge-images", "image-combiner-horizontal", "image-combiner-vertical"].includes(tool.type);
   };
 
   const needsMultipleFiles = () => {
     if (!tool) return false;
-    return ["merge", "merge-alternately", "gif-maker", "apng-maker"].includes(tool.type);
+    return ["merge", "merge-alternately", "gif-maker", "apng-maker", "ai-face-swapper"].includes(tool.type);
   };
 
   const getMinFiles = () => {
@@ -305,6 +358,7 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     if (tool.type === "merge-alternately") return 2;
     if (tool.type === "gif-maker") return 2;
     if (tool.type === "apng-maker") return 2;
+    if (tool.type === "ai-face-swapper") return 2;
     return 1;
   };
 

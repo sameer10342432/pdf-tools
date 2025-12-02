@@ -9475,6 +9475,540 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "remove-image-metadata":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Metadata to Remove</Label>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="remove-exif"
+                  checked={options.removeExif !== false}
+                  onCheckedChange={(checked) => updateOption("removeExif", checked as boolean)}
+                  data-testid="checkbox-remove-exif"
+                />
+                <Label htmlFor="remove-exif">EXIF Data (camera settings, date/time)</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="remove-gps"
+                  checked={options.removeGps !== false}
+                  onCheckedChange={(checked) => updateOption("removeGps", checked as boolean)}
+                  data-testid="checkbox-remove-gps"
+                />
+                <Label htmlFor="remove-gps">GPS Location Data</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="remove-icc"
+                  checked={options.removeIcc === true}
+                  onCheckedChange={(checked) => updateOption("removeIcc", checked as boolean)}
+                  data-testid="checkbox-remove-icc"
+                />
+                <Label htmlFor="remove-icc">ICC Color Profile</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="remove-iptc"
+                  checked={options.removeIptc !== false}
+                  onCheckedChange={(checked) => updateOption("removeIptc", checked as boolean)}
+                  data-testid="checkbox-remove-iptc"
+                />
+                <Label htmlFor="remove-iptc">IPTC Data (copyright, description)</Label>
+              </div>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Remove metadata from your images to protect your privacy. GPS location and camera info are commonly stripped for security.
+          </p>
+        </div>
+      );
+
+    case "image-color-corrector":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Brightness: {options.brightness || 0}%</Label>
+            <Slider
+              value={[options.brightness || 0]}
+              onValueChange={([value]) => updateOption("brightness", value)}
+              min={-100}
+              max={100}
+              step={1}
+              data-testid="slider-brightness"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Contrast: {options.contrast || 0}%</Label>
+            <Slider
+              value={[options.contrast || 0]}
+              onValueChange={([value]) => updateOption("contrast", value)}
+              min={-100}
+              max={100}
+              step={1}
+              data-testid="slider-contrast"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Saturation: {options.saturation || 0}%</Label>
+            <Slider
+              value={[options.saturation || 0]}
+              onValueChange={([value]) => updateOption("saturation", value)}
+              min={-100}
+              max={100}
+              step={1}
+              data-testid="slider-saturation"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Hue Rotation: {options.hue || 0}°</Label>
+            <Slider
+              value={[options.hue || 0]}
+              onValueChange={([value]) => updateOption("hue", value)}
+              min={-180}
+              max={180}
+              step={1}
+              data-testid="slider-hue"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Gamma: {options.gamma || 1}</Label>
+            <Slider
+              value={[options.gamma || 1]}
+              onValueChange={([value]) => updateOption("gamma", value)}
+              min={0.1}
+              max={3}
+              step={0.1}
+              data-testid="slider-gamma"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="auto-color"
+              checked={options.autoColor === true}
+              onCheckedChange={(checked) => updateOption("autoColor", checked as boolean)}
+              data-testid="checkbox-auto-color"
+            />
+            <Label htmlFor="auto-color">Auto-correct colors (normalize)</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Adjust brightness, contrast, saturation, and other color properties to enhance your image.
+          </p>
+        </div>
+      );
+
+    case "change-image-dpi":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Target DPI</Label>
+            <Select
+              value={String(options.dpi || 300)}
+              onValueChange={(value) => updateOption("dpi", parseInt(value))}
+            >
+              <SelectTrigger data-testid="select-dpi">
+                <SelectValue placeholder="Select DPI" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="72">72 DPI (Screen/Web)</SelectItem>
+                <SelectItem value="96">96 DPI (Windows Display)</SelectItem>
+                <SelectItem value="150">150 DPI (Medium Quality Print)</SelectItem>
+                <SelectItem value="300">300 DPI (High Quality Print)</SelectItem>
+                <SelectItem value="600">600 DPI (Professional Print)</SelectItem>
+                <SelectItem value="custom">Custom DPI</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.dpi === "custom" && (
+            <div className="space-y-2">
+              <Label>Custom DPI Value</Label>
+              <Input
+                type="number"
+                min={1}
+                max={2400}
+                value={options.customDpi || 300}
+                onChange={(e) => updateOption("customDpi", parseInt(e.target.value))}
+                data-testid="input-custom-dpi"
+              />
+            </div>
+          )}
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="resample"
+              checked={options.resample === true}
+              onCheckedChange={(checked) => updateOption("resample", checked as boolean)}
+              data-testid="checkbox-resample"
+            />
+            <Label htmlFor="resample">Resample image (change pixel dimensions)</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Change the DPI (dots per inch) of your image. Higher DPI is better for printing, lower DPI for web use.
+          </p>
+        </div>
+      );
+
+    case "image-enlarger":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Scale Factor: {options.scaleFactor || 2}x</Label>
+            <Slider
+              value={[options.scaleFactor || 2]}
+              onValueChange={([value]) => updateOption("scaleFactor", value)}
+              min={1.5}
+              max={4}
+              step={0.5}
+              data-testid="slider-scale-factor"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Upscale Method</Label>
+            <Select
+              value={options.upscaleMethod || "lanczos"}
+              onValueChange={(value) => updateOption("upscaleMethod", value)}
+            >
+              <SelectTrigger data-testid="select-upscale-method">
+                <SelectValue placeholder="Select method" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="lanczos">Lanczos (Best Quality)</SelectItem>
+                <SelectItem value="cubic">Cubic (Smooth)</SelectItem>
+                <SelectItem value="nearest">Nearest (Sharp Pixels)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="enhance-details"
+              checked={options.enhanceDetails !== false}
+              onCheckedChange={(checked) => updateOption("enhanceDetails", checked as boolean)}
+              data-testid="checkbox-enhance-details"
+            />
+            <Label htmlFor="enhance-details">Enhance details after enlarging</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Enlarge your image while preserving quality. Best results with photos and artwork.
+          </p>
+        </div>
+      );
+
+    case "image-deblur":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Deblur Strength: {options.deblurStrength || 50}%</Label>
+            <Slider
+              value={[options.deblurStrength || 50]}
+              onValueChange={([value]) => updateOption("deblurStrength", value)}
+              min={0}
+              max={100}
+              step={5}
+              data-testid="slider-deblur-strength"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Deblur Type</Label>
+            <Select
+              value={options.deblurType || "auto"}
+              onValueChange={(value) => updateOption("deblurType", value)}
+            >
+              <SelectTrigger data-testid="select-deblur-type">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Auto Detect</SelectItem>
+                <SelectItem value="motion">Motion Blur</SelectItem>
+                <SelectItem value="focus">Out of Focus</SelectItem>
+                <SelectItem value="gaussian">Gaussian Blur</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="reduce-noise"
+              checked={options.reduceNoise !== false}
+              onCheckedChange={(checked) => updateOption("reduceNoise", checked as boolean)}
+              data-testid="checkbox-reduce-noise"
+            />
+            <Label htmlFor="reduce-noise">Reduce noise after deblurring</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Remove blur from images caused by motion or focus issues. Works best on slightly blurred photos.
+          </p>
+        </div>
+      );
+
+    case "ai-image-generator":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Generation Style</Label>
+            <Select
+              value={options.generationStyle || "abstract"}
+              onValueChange={(value) => updateOption("generationStyle", value)}
+            >
+              <SelectTrigger data-testid="select-generation-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="abstract">Abstract Art</SelectItem>
+                <SelectItem value="geometric">Geometric Patterns</SelectItem>
+                <SelectItem value="fractal">Fractal Art</SelectItem>
+                <SelectItem value="gradient">Gradient Mesh</SelectItem>
+                <SelectItem value="noise">Perlin Noise</SelectItem>
+                <SelectItem value="plasma">Plasma Effect</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Image Size</Label>
+            <Select
+              value={options.generationSize || "1024x1024"}
+              onValueChange={(value) => updateOption("generationSize", value)}
+            >
+              <SelectTrigger data-testid="select-generation-size">
+                <SelectValue placeholder="Select size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="512x512">512 x 512</SelectItem>
+                <SelectItem value="1024x1024">1024 x 1024</SelectItem>
+                <SelectItem value="1920x1080">1920 x 1080 (HD)</SelectItem>
+                <SelectItem value="1080x1920">1080 x 1920 (Portrait)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Color Scheme</Label>
+            <Select
+              value={options.colorScheme || "vibrant"}
+              onValueChange={(value) => updateOption("colorScheme", value)}
+            >
+              <SelectTrigger data-testid="select-color-scheme">
+                <SelectValue placeholder="Select colors" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="vibrant">Vibrant</SelectItem>
+                <SelectItem value="pastel">Pastel</SelectItem>
+                <SelectItem value="monochrome">Monochrome</SelectItem>
+                <SelectItem value="earth">Earth Tones</SelectItem>
+                <SelectItem value="neon">Neon</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Generate unique algorithmic art and patterns. No external API required - all generation is done locally.
+          </p>
+        </div>
+      );
+
+    case "ai-photo-retouch":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Retouch Preset</Label>
+            <Select
+              value={options.retouchPreset || "portrait"}
+              onValueChange={(value) => updateOption("retouchPreset", value)}
+            >
+              <SelectTrigger data-testid="select-retouch-preset">
+                <SelectValue placeholder="Select preset" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="portrait">Portrait Enhancement</SelectItem>
+                <SelectItem value="landscape">Landscape Enhancement</SelectItem>
+                <SelectItem value="product">Product Photo</SelectItem>
+                <SelectItem value="food">Food Photography</SelectItem>
+                <SelectItem value="night">Night Photo Fix</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Enhancement Strength: {options.retouchStrength || 50}%</Label>
+            <Slider
+              value={[options.retouchStrength || 50]}
+              onValueChange={([value]) => updateOption("retouchStrength", value)}
+              min={0}
+              max={100}
+              step={5}
+              data-testid="slider-retouch-strength"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="auto-enhance"
+              checked={options.autoEnhance !== false}
+              onCheckedChange={(checked) => updateOption("autoEnhance", checked as boolean)}
+              data-testid="checkbox-auto-enhance"
+            />
+            <Label htmlFor="auto-enhance">Auto-enhance colors and exposure</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="sharpen-output"
+              checked={options.sharpenOutput !== false}
+              onCheckedChange={(checked) => updateOption("sharpenOutput", checked as boolean)}
+              data-testid="checkbox-sharpen-output"
+            />
+            <Label htmlFor="sharpen-output">Sharpen output</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Automatically enhance and retouch photos using algorithmic improvements for different photo types.
+          </p>
+        </div>
+      );
+
+    case "ai-object-remover":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Removal Method</Label>
+            <Select
+              value={options.removalMethod || "inpaint"}
+              onValueChange={(value) => updateOption("removalMethod", value)}
+            >
+              <SelectTrigger data-testid="select-removal-method">
+                <SelectValue placeholder="Select method" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="inpaint">Content-Aware Fill</SelectItem>
+                <SelectItem value="blur">Blur Region</SelectItem>
+                <SelectItem value="pixelate">Pixelate Region</SelectItem>
+                <SelectItem value="color">Solid Color Fill</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {options.removalMethod === "color" && (
+            <div className="space-y-2">
+              <Label>Fill Color</Label>
+              <Input
+                type="color"
+                value={options.fillColor || "#ffffff"}
+                onChange={(e) => updateOption("fillColor", e.target.value)}
+                className="h-10 w-full"
+                data-testid="input-fill-color"
+              />
+            </div>
+          )}
+          <div className="space-y-2">
+            <Label>Edge Feathering: {options.featherRadius || 5}px</Label>
+            <Slider
+              value={[options.featherRadius || 5]}
+              onValueChange={([value]) => updateOption("featherRadius", value)}
+              min={0}
+              max={50}
+              step={1}
+              data-testid="slider-feather-radius"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Remove objects by selecting regions and filling with surrounding content or effects.
+          </p>
+        </div>
+      );
+
+    case "ai-face-swapper":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Blend Mode</Label>
+            <Select
+              value={options.blendMode || "smooth"}
+              onValueChange={(value) => updateOption("blendMode", value)}
+            >
+              <SelectTrigger data-testid="select-blend-mode">
+                <SelectValue placeholder="Select blend mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="smooth">Smooth Blend</SelectItem>
+                <SelectItem value="hard">Hard Edge</SelectItem>
+                <SelectItem value="gradient">Gradient Blend</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Color Matching: {options.colorMatching || 50}%</Label>
+            <Slider
+              value={[options.colorMatching || 50]}
+              onValueChange={([value]) => updateOption("colorMatching", value)}
+              min={0}
+              max={100}
+              step={5}
+              data-testid="slider-color-matching"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="auto-align"
+              checked={options.autoAlign !== false}
+              onCheckedChange={(checked) => updateOption("autoAlign", checked as boolean)}
+              data-testid="checkbox-auto-align"
+            />
+            <Label htmlFor="auto-align">Auto-align faces</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Swap faces between two photos. Upload the source face and target image for best results.
+          </p>
+        </div>
+      );
+
+    case "image-to-sketch":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Sketch Style</Label>
+            <Select
+              value={options.sketchStyle || "pencil"}
+              onValueChange={(value) => updateOption("sketchStyle", value)}
+            >
+              <SelectTrigger data-testid="select-sketch-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="pencil">Pencil Sketch</SelectItem>
+                <SelectItem value="charcoal">Charcoal Drawing</SelectItem>
+                <SelectItem value="ink">Ink Outline</SelectItem>
+                <SelectItem value="colored">Colored Pencil</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Line Intensity: {options.lineIntensity || 50}%</Label>
+            <Slider
+              value={[options.lineIntensity || 50]}
+              onValueChange={([value]) => updateOption("lineIntensity", value)}
+              min={0}
+              max={100}
+              step={5}
+              data-testid="slider-line-intensity"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Detail Level: {options.detailLevel || 50}%</Label>
+            <Slider
+              value={[options.detailLevel || 50]}
+              onValueChange={([value]) => updateOption("detailLevel", value)}
+              min={0}
+              max={100}
+              step={5}
+              data-testid="slider-detail-level"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="invert-sketch"
+              checked={options.invertSketch === true}
+              onCheckedChange={(checked) => updateOption("invertSketch", checked as boolean)}
+              data-testid="checkbox-invert-sketch"
+            />
+            <Label htmlFor="invert-sketch">Invert colors (white on black)</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Transform your photo into an artistic sketch using edge detection and artistic filters.
+          </p>
+        </div>
+      );
+
     default:
       return null;
   }
