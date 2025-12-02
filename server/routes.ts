@@ -17883,6 +17883,244 @@ ${Array.from({ length: imageCount }, (_, i) => `- page-${i + 1}.pdf`).join('\n')
             filename = "filled-form.pdf";
             break;
           }
+
+          case "pdf-form-filler-json": {
+            const jsonFillerBytes = fs.readFileSync(files[0].path);
+            const jsonFillerPdf = await PDFDocument.load(jsonFillerBytes, { ignoreEncryption: true });
+            const jsonForm = jsonFillerPdf.getForm();
+            const jsonFields = jsonForm.getFields();
+            
+            let jsonData: Record<string, any> = {};
+            
+            if (options.formDataJson) {
+              try {
+                jsonData = JSON.parse(options.formDataJson);
+              } catch (e) {
+                throw new Error("Invalid JSON format. Please provide valid JSON data.");
+              }
+            }
+            
+            jsonFields.forEach(field => {
+              const fieldName = field.getName();
+              let value = jsonData[fieldName];
+              
+              if (value !== undefined) {
+                try {
+                  if (typeof value !== 'string') {
+                    value = String(value);
+                  }
+                  const fieldConstructor = field.constructor.name;
+                  if (fieldConstructor === "PDFTextField") {
+                    (field as any).setText(value);
+                  } else if (fieldConstructor === "PDFCheckBox") {
+                    const boolVal = String(value).toLowerCase();
+                    if (boolVal === "true" || boolVal === "yes" || boolVal === "1") {
+                      (field as any).check();
+                    } else {
+                      (field as any).uncheck();
+                    }
+                  } else if (fieldConstructor === "PDFDropdown") {
+                    (field as any).select(value);
+                  } else if (fieldConstructor === "PDFRadioGroup") {
+                    (field as any).select(value);
+                  }
+                } catch (e) {
+                  // Field setting error
+                }
+              }
+            });
+            
+            result = Buffer.from(await jsonFillerPdf.save());
+            filename = "filled-form.pdf";
+            break;
+          }
+
+          case "pdf-form-export-csv": {
+            const csvExportBytes = fs.readFileSync(files[0].path);
+            const csvExportPdf = await PDFDocument.load(csvExportBytes, { ignoreEncryption: true });
+            const csvExportForm = csvExportPdf.getForm();
+            const csvExportFields = csvExportForm.getFields();
+            
+            const csvDelimiter = options.csvDelimiter === "\\t" ? "\t" : (options.csvDelimiter || ",");
+            
+            const escapeForCsv = (val: string, delim: string): string => {
+              if (val.includes(delim) || val.includes('"') || val.includes('\n')) {
+                return `"${val.replace(/"/g, '""')}"`;
+              }
+              return val;
+            };
+            
+            const fieldNames: string[] = [];
+            const fieldValues: string[] = [];
+            
+            csvExportFields.forEach(field => {
+              const name = field.getName();
+              let value = "";
+              
+              try {
+                const fieldConstructor = field.constructor.name;
+                if (fieldConstructor === "PDFTextField") {
+                  value = (field as any).getText() || "";
+                } else if (fieldConstructor === "PDFCheckBox") {
+                  value = (field as any).isChecked() ? "true" : "false";
+                } else if (fieldConstructor === "PDFRadioGroup") {
+                  value = (field as any).getSelected() || "";
+                } else if (fieldConstructor === "PDFDropdown") {
+                  const selected = (field as any).getSelected();
+                  value = Array.isArray(selected) ? selected.join("; ") : (selected || "");
+                }
+              } catch (e) {
+                // Field extraction error
+              }
+              
+              fieldNames.push(escapeForCsv(name, csvDelimiter));
+              fieldValues.push(escapeForCsv(value, csvDelimiter));
+            });
+            
+            const csvContent = fieldNames.join(csvDelimiter) + '\n' + fieldValues.join(csvDelimiter);
+            result = Buffer.from(csvContent, 'utf-8');
+            filename = "form-data.csv";
+            contentType = "text/csv";
+            break;
+          }
+
+          case "pdf-form-export-json": {
+            const jsonExportBytes = fs.readFileSync(files[0].path);
+            const jsonExportPdf = await PDFDocument.load(jsonExportBytes, { ignoreEncryption: true });
+            const jsonExportForm = jsonExportPdf.getForm();
+            const jsonExportFields = jsonExportForm.getFields();
+            
+            const formDataObj: Record<string, any> = {
+              documentName: files[0].originalname,
+              extractedAt: new Date().toISOString(),
+              fields: {} as Record<string, any>
+            };
+            
+            jsonExportFields.forEach(field => {
+              const name = field.getName();
+              let value: any = null;
+              let fieldType = "unknown";
+              
+              try {
+                const fieldConstructor = field.constructor.name;
+                if (fieldConstructor === "PDFTextField") {
+                  value = (field as any).getText() || "";
+                  fieldType = "text";
+                } else if (fieldConstructor === "PDFCheckBox") {
+                  value = (field as any).isChecked();
+                  fieldType = "checkbox";
+                } else if (fieldConstructor === "PDFRadioGroup") {
+                  value = (field as any).getSelected() || null;
+                  fieldType = "radio";
+                } else if (fieldConstructor === "PDFDropdown") {
+                  const selected = (field as any).getSelected();
+                  value = Array.isArray(selected) ? selected : (selected || null);
+                  fieldType = "dropdown";
+                }
+              } catch (e) {
+                // Field extraction error
+              }
+              
+              formDataObj.fields[name] = { value, type: fieldType };
+            });
+            
+            result = Buffer.from(JSON.stringify(formDataObj, null, 2), 'utf-8');
+            filename = "form-data.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "pdf-viewer":
+          case "pdf-reader":
+          case "open-pdf":
+          case "read-pdf-online": {
+            const viewerBytes = fs.readFileSync(files[0].path);
+            const viewerPdf = await PDFDocument.load(viewerBytes, { ignoreEncryption: true });
+            pageCount = viewerPdf.getPageCount();
+            
+            result = Buffer.from(await viewerPdf.save());
+            filename = files[0].originalname || "document.pdf";
+            contentType = "application/pdf";
+            break;
+          }
+
+          case "compare-pdf":
+          case "pdf-comparer":
+          case "pdf-difference-checker": {
+            if (files.length < 2) {
+              throw new Error("Two PDF files are required for comparison");
+            }
+            
+            const pdf1Bytes = fs.readFileSync(files[0].path);
+            const pdf2Bytes = fs.readFileSync(files[1].path);
+            
+            const comparePdf1 = await PDFDocument.load(pdf1Bytes, { ignoreEncryption: true });
+            const comparePdf2 = await PDFDocument.load(pdf2Bytes, { ignoreEncryption: true });
+            
+            const pdf1PageCount = comparePdf1.getPageCount();
+            const pdf2PageCount = comparePdf2.getPageCount();
+            
+            const differences: any[] = [];
+            
+            if (pdf1PageCount !== pdf2PageCount) {
+              differences.push({
+                type: "page_count",
+                description: `Page count differs: Document 1 has ${pdf1PageCount} pages, Document 2 has ${pdf2PageCount} pages`
+              });
+            }
+            
+            const minPages = Math.min(pdf1PageCount, pdf2PageCount);
+            for (let i = 0; i < minPages; i++) {
+              const page1 = comparePdf1.getPage(i);
+              const page2 = comparePdf2.getPage(i);
+              
+              const size1 = page1.getSize();
+              const size2 = page2.getSize();
+              
+              if (Math.abs(size1.width - size2.width) > 1 || Math.abs(size1.height - size2.height) > 1) {
+                differences.push({
+                  type: "page_size",
+                  page: i + 1,
+                  description: `Page ${i + 1} size differs: Doc1 (${size1.width.toFixed(0)}x${size1.height.toFixed(0)}) vs Doc2 (${size2.width.toFixed(0)}x${size2.height.toFixed(0)})`
+                });
+              }
+              
+              const rot1 = page1.getRotation().angle;
+              const rot2 = page2.getRotation().angle;
+              if (rot1 !== rot2) {
+                differences.push({
+                  type: "rotation",
+                  page: i + 1,
+                  description: `Page ${i + 1} rotation differs: Doc1 (${rot1}°) vs Doc2 (${rot2}°)`
+                });
+              }
+            }
+            
+            const comparisonReport = {
+              document1: {
+                name: files[0].originalname,
+                pageCount: pdf1PageCount,
+                fileSize: pdf1Bytes.length
+              },
+              document2: {
+                name: files[1].originalname,
+                pageCount: pdf2PageCount,
+                fileSize: pdf2Bytes.length
+              },
+              comparedAt: new Date().toISOString(),
+              differencesFound: differences.length,
+              differences: differences,
+              summary: differences.length === 0 
+                ? "No structural differences detected between the documents."
+                : `Found ${differences.length} difference(s) between the documents.`
+            };
+            
+            result = Buffer.from(JSON.stringify(comparisonReport, null, 2), 'utf-8');
+            filename = "comparison-report.json";
+            contentType = "application/json";
+            pageCount = pdf1PageCount;
+            break;
+          }
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);

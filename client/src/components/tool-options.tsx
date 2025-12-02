@@ -4973,6 +4973,120 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "pdf-form-filler-json":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="formDataJson">JSON Data</Label>
+            <textarea
+              id="formDataJson"
+              className="flex min-h-[150px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-mono ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              placeholder='{"FirstName": "John", "LastName": "Doe", "Email": "john@example.com"}'
+              value={options.formDataJson || ""}
+              onChange={(e) => updateOption("formDataJson", e.target.value)}
+              data-testid="input-json-data"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Enter JSON object with field names as keys and values to fill.
+            Keys should match the form field names in your PDF.
+          </p>
+        </div>
+      );
+
+    case "pdf-form-export-csv":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>CSV Delimiter</Label>
+            <Select
+              value={options.csvDelimiter || ","}
+              onValueChange={(value) => updateOption("csvDelimiter", value as ToolOptions["csvDelimiter"])}
+            >
+              <SelectTrigger data-testid="select-csv-delimiter">
+                <SelectValue placeholder="Select delimiter" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value=",">Comma (,)</SelectItem>
+                <SelectItem value=";">Semicolon (;)</SelectItem>
+                <SelectItem value="|">Pipe (|)</SelectItem>
+                <SelectItem value="\t">Tab</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Export all form field data to a CSV file for use in spreadsheets.
+          </p>
+        </div>
+      );
+
+    case "pdf-form-export-json":
+      return (
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="includeMetadata"
+              checked={options.includeMetadata !== false}
+              onCheckedChange={(checked) => updateOption("includeMetadata", checked)}
+              data-testid="switch-include-metadata"
+            />
+            <Label htmlFor="includeMetadata">Include Field Types</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Export form field data as JSON for web applications and APIs.
+          </p>
+        </div>
+      );
+
+    case "pdf-viewer":
+    case "pdf-reader":
+    case "open-pdf":
+    case "read-pdf-online":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload your PDF file to view it directly in your browser.
+            No additional options required.
+          </p>
+        </div>
+      );
+
+    case "compare-pdf":
+    case "pdf-comparer":
+    case "pdf-difference-checker":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Comparison Mode</Label>
+            <Select
+              value={options.comparisonMode || "detailed"}
+              onValueChange={(value) => updateOption("comparisonMode", value as ToolOptions["comparisonMode"])}
+            >
+              <SelectTrigger data-testid="select-comparison-mode">
+                <SelectValue placeholder="Select comparison mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="visual">Visual Comparison</SelectItem>
+                <SelectItem value="text">Text Comparison</SelectItem>
+                <SelectItem value="detailed">Detailed Analysis</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="highlightDifferences"
+              checked={options.highlightDifferences !== false}
+              onCheckedChange={(checked) => updateOption("highlightDifferences", checked)}
+              data-testid="switch-highlight-differences"
+            />
+            <Label htmlFor="highlightDifferences">Highlight Differences</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Upload two PDF files to compare and find differences between them.
+          </p>
+        </div>
+      );
+
     default:
       return null;
   }

@@ -346,6 +346,16 @@ export const pdfToolTypes = [
   "form-data-to-xml",
   "form-data-to-json",
   "form-filler-csv",
+  "pdf-form-filler-json",
+  "pdf-form-export-csv",
+  "pdf-form-export-json",
+  "pdf-viewer",
+  "pdf-reader",
+  "open-pdf",
+  "read-pdf-online",
+  "compare-pdf",
+  "pdf-comparer",
+  "pdf-difference-checker",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -668,6 +678,10 @@ export const toolOptionsSchema = z.object({
   csvFieldMapping: z.string().optional(),
   csvDelimiter: z.enum([",", ";", "|", "\\t"]).optional(),
   csvHasHeader: z.boolean().optional(),
+  formDataJson: z.string().optional(),
+  comparisonMode: z.enum(["visual", "text", "detailed"]).optional(),
+  highlightDifferences: z.boolean().optional(),
+  comparisonSensitivity: z.enum(["low", "medium", "high"]).optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -9492,5 +9506,285 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Business Applications</h2>
 <p>Generate personalized letters and certificates. Create employee forms for entire departments. Produce customer contracts from CRM exports. Fill event registrations from attendee lists. Automate any repetitive form-filling task.</p>`,
+  },
+  {
+    id: "pdf-form-filler-json",
+    name: "PDF Form Filler (from JSON)",
+    description: "Fill PDF forms automatically using JSON data input",
+    icon: "FilePen",
+    type: "pdf-form-filler-json",
+    color: "bg-indigo-600",
+    emoji: "🔧",
+    metaTitle: "PDF Form Filler from JSON Online Free - Auto Fill PDF Forms | PDF Tools",
+    metaDescription: "Fill PDF forms from JSON data online for free. Automatically populate form fields with JSON input. Easy PDF form filling from structured data.",
+    seoArticle: `<h2>PDF Form Filler from JSON - Automated Form Population</h2>
+<p>Automatically fill PDF forms using JSON data for seamless integration with web applications and APIs. Our JSON form filler accepts structured data and populates your PDF forms accurately and efficiently, perfect for developers and automated workflows.</p>
+
+<h2>Why Use JSON for Form Filling</h2>
+<p>JSON is the universal data format for web applications. When your systems generate JSON data, you can directly use it to fill PDF forms without manual conversion. This streamlines document generation, reduces errors, and enables fully automated document workflows.</p>
+
+<h2>How JSON Form Filling Works</h2>
+<p>Upload your PDF form template and paste or upload your JSON data. The tool automatically maps JSON keys to form field names. Preview the filled form before downloading. Handle single forms or process multiple JSON objects for batch generation.</p>
+
+<h2>Smart Field Mapping</h2>
+<p>Automatic matching connects JSON properties to form fields. Nested objects are flattened intelligently. Arrays populate multi-value fields correctly. Type coercion handles strings, numbers, and booleans automatically. Custom mapping overrides available for complex forms.</p>
+
+<h2>Developer Integration</h2>
+<p>Generate filled PDFs from API responses. Create documents from database queries. Automate form generation in CI/CD pipelines. Integrate with Node.js, Python, or any language that outputs JSON. Build document generation into your applications seamlessly.</p>
+
+<h2>Use Cases</h2>
+<p>Generate invoices from order data. Create contracts from CRM records. Produce reports from analytics JSON. Fill government forms from user profiles. Automate any form that receives structured data input.</p>`,
+  },
+  {
+    id: "pdf-form-export-csv",
+    name: "PDF Form Data Export (to CSV)",
+    description: "Extract and export PDF form data to CSV spreadsheet format",
+    icon: "FileSpreadsheet",
+    type: "pdf-form-export-csv",
+    color: "bg-green-600",
+    emoji: "📊",
+    metaTitle: "Export PDF Form to CSV Online Free - Form Data to Spreadsheet | PDF Tools",
+    metaDescription: "Export PDF form data to CSV format online for free. Convert filled PDF forms to spreadsheet format. Easy form data extraction tool.",
+    seoArticle: `<h2>PDF Form Data Export to CSV - Spreadsheet-Ready Data</h2>
+<p>Convert your PDF form data into CSV format for easy analysis in spreadsheet applications. Our tool extracts all form field values and exports them in a clean, organized CSV file that opens perfectly in Excel, Google Sheets, or any spreadsheet software.</p>
+
+<h2>Why Export Form Data to CSV</h2>
+<p>CSV is the universal format for data exchange. Export form data for analysis in Excel or Google Sheets. Combine multiple form submissions into databases. Create reports from collected form data. Share data across different systems and applications.</p>
+
+<h2>Clean Data Extraction</h2>
+<p>All form fields are extracted accurately. Field names become column headers. Values are properly escaped for CSV compatibility. Special characters are handled correctly. Date and number formats are preserved for easy processing.</p>
+
+<h2>How to Export Form Data</h2>
+<p>Upload your filled PDF form. The tool identifies all form fields automatically. Preview the extracted data before export. Configure CSV options like delimiter and encoding. Download your CSV file ready for use.</p>
+
+<h2>Batch Processing Support</h2>
+<p>Upload multiple filled forms at once. Each form becomes a row in the CSV. Consistent columns across all submissions. Perfect for aggregating survey responses or application forms. Process hundreds of forms in seconds.</p>
+
+<h2>Data Analysis Applications</h2>
+<p>Analyze survey responses in Excel. Create reports from application forms. Import form data into databases. Track submissions over time. Build dashboards from collected form data.</p>`,
+  },
+  {
+    id: "pdf-form-export-json",
+    name: "PDF Form Data Export (to JSON)",
+    description: "Extract and export PDF form data to JSON format for applications",
+    icon: "FileText",
+    type: "pdf-form-export-json",
+    color: "bg-purple-600",
+    emoji: "💾",
+    metaTitle: "Export PDF Form to JSON Online Free - Form Data to JSON | PDF Tools",
+    metaDescription: "Export PDF form data to JSON format online for free. Extract form fields as JSON for web apps. Easy PDF form data extraction tool.",
+    seoArticle: `<h2>PDF Form Data Export to JSON - Developer-Ready Output</h2>
+<p>Extract PDF form data as JSON for seamless integration with web applications, APIs, and databases. Our tool reads all form fields and outputs clean, well-structured JSON that can be directly consumed by JavaScript applications and backend services.</p>
+
+<h2>Perfect for Web Development</h2>
+<p>JSON is the native format for web applications. Extracted data integrates directly with JavaScript. No parsing or conversion needed. Field names become object keys naturally. Values maintain proper types (strings, numbers, booleans).</p>
+
+<h2>Structured Output</h2>
+<p>Form fields are organized in intuitive key-value pairs. Related fields can be grouped into nested objects. Multi-select fields export as arrays. Date fields use standardized ISO formats. The JSON structure mirrors your form's logical organization.</p>
+
+<h2>How to Export to JSON</h2>
+<p>Upload your filled PDF form. The tool identifies and extracts all form fields automatically. Preview the generated JSON structure. Configure formatting options. Download your JSON file or copy directly to clipboard.</p>
+
+<h2>Integration Scenarios</h2>
+<p>Send form data to REST APIs. Store in MongoDB or other NoSQL databases. Process with Node.js or Python applications. Display in React, Vue, or Angular apps. Build automated document processing pipelines.</p>
+
+<h2>Output Options</h2>
+<p>Minified JSON for production systems. Pretty-printed JSON for human readability. Include or exclude empty fields. Add metadata about the source PDF. Configure output to match your application needs.</p>`,
+  },
+  {
+    id: "pdf-viewer",
+    name: "PDF Viewer",
+    description: "View and read PDF documents directly in your browser",
+    icon: "FileSearch",
+    type: "pdf-viewer",
+    color: "bg-blue-500",
+    emoji: "👁️",
+    metaTitle: "PDF Viewer Online Free - View PDF Files in Browser | PDF Tools",
+    metaDescription: "View PDF files online for free without downloading. Open and read PDF documents directly in your browser. Fast, secure PDF viewer.",
+    seoArticle: `<h2>Online PDF Viewer - Read PDFs Instantly</h2>
+<p>View PDF documents directly in your browser without installing any software. Our online PDF viewer renders documents quickly and accurately, displaying text, images, and formatting exactly as intended. Simply upload your PDF and start reading immediately.</p>
+
+<h2>No Downloads Required</h2>
+<p>Unlike traditional PDF readers, our online viewer works entirely in your browser. No software to install or update. No plugins required. Works on any device with a modern web browser. Access your documents from anywhere, anytime.</p>
+
+<h2>Powerful Viewing Features</h2>
+<p>Zoom in and out for comfortable reading. Navigate using page thumbnails or page numbers. Full-screen mode for distraction-free reading. Search text within the document. Jump to specific pages instantly.</p>
+
+<h2>How to View Your PDF</h2>
+<p>Upload your PDF file using the secure uploader. The document loads and renders in the viewer. Use navigation controls to browse pages. Zoom for optimal reading comfort. Close when done - no traces left behind.</p>
+
+<h2>Compatible with All PDFs</h2>
+<p>View standard PDF documents of any size. Handle scanned documents and images. Display complex layouts accurately. Support for embedded fonts and graphics. View password-protected files when you provide the password.</p>
+
+<h2>Security and Privacy</h2>
+<p>Your documents are processed locally in your browser when possible. Files are encrypted during upload. No documents are stored permanently. Complete privacy for sensitive materials. View confidential documents with confidence.</p>`,
+  },
+  {
+    id: "pdf-reader",
+    name: "PDF Reader",
+    description: "Read and navigate PDF documents with an intuitive interface",
+    icon: "BookOpen",
+    type: "pdf-reader",
+    color: "bg-cyan-500",
+    emoji: "📖",
+    metaTitle: "PDF Reader Online Free - Read PDF Documents Online | PDF Tools",
+    metaDescription: "Read PDF documents online for free. Navigate, zoom, and read PDFs in your browser. Easy-to-use online PDF reader tool.",
+    seoArticle: `<h2>Online PDF Reader - Comfortable Document Reading</h2>
+<p>Experience comfortable PDF reading directly in your web browser. Our online PDF reader is designed for extended reading sessions, with features that make navigating and consuming PDF content easy and enjoyable. No downloads, no installations - just pure reading.</p>
+
+<h2>Optimized for Reading</h2>
+<p>Clean, distraction-free reading interface. Adjustable zoom for comfortable text size. Continuous scrolling or page-by-page navigation. Dark mode for reduced eye strain. Remember your reading position across sessions.</p>
+
+<h2>Navigation Made Easy</h2>
+<p>Table of contents navigation for structured documents. Page thumbnails for visual browsing. Keyboard shortcuts for power users. Quick jump to any page number. Bookmark your favorite pages for later reference.</p>
+
+<h2>How to Read Your PDF</h2>
+<p>Upload your PDF document using our secure uploader. The reader opens with optimal default settings. Navigate using the sidebar, toolbar, or keyboard. Adjust display settings to your preference. Resume reading anytime with saved progress.</p>
+
+<h2>Read Anywhere</h2>
+<p>Works on desktop computers, tablets, and phones. Responsive interface adapts to your screen size. Touch-friendly controls for mobile devices. Consistent experience across all platforms. Access your reading from any device.</p>
+
+<h2>Reading Features</h2>
+<p>Text selection and highlighting. Search within the document. Annotation display for marked-up PDFs. Zoom controls with fit-to-width option. Night mode for late-night reading sessions.</p>`,
+  },
+  {
+    id: "open-pdf",
+    name: "Open PDF",
+    description: "Open and display PDF files quickly in your browser",
+    icon: "FileSearch",
+    type: "open-pdf",
+    color: "bg-emerald-500",
+    emoji: "📂",
+    metaTitle: "Open PDF Online Free - Quick PDF File Opener | PDF Tools",
+    metaDescription: "Open PDF files online instantly without software. Quick and easy PDF opener in your browser. No installation required.",
+    seoArticle: `<h2>Open PDF Files Online - Instant Access</h2>
+<p>Open PDF files instantly without installing any software. Our online PDF opener loads documents quickly, displaying them with full fidelity in your web browser. Whether you received a PDF by email or downloaded one from the web, open it here in seconds.</p>
+
+<h2>Quick and Simple</h2>
+<p>Drag and drop your PDF file. Click to upload from your device. The document opens immediately. No waiting, no configuration. Just instant PDF access when you need it.</p>
+
+<h2>Universal Compatibility</h2>
+<p>Open PDFs created by any software. Handle documents from all sources. Support for older and newer PDF versions. Display complex layouts accurately. Works with scanned and text-based PDFs alike.</p>
+
+<h2>How to Open Your PDF</h2>
+<p>Click the upload button or drag your file to the upload area. The PDF loads and displays automatically. Navigate pages using intuitive controls. Zoom for detailed viewing. Close when finished - it's that simple.</p>
+
+<h2>No Software Needed</h2>
+<p>Works in any modern web browser. No PDF reader installation required. No browser plugins or extensions. Access from any computer or device. Perfect when you're on a computer without PDF software.</p>
+
+<h2>Secure File Handling</h2>
+<p>Files are processed securely and privately. No permanent storage of your documents. Encrypted transmission of your files. Your PDFs remain completely confidential. Open sensitive documents with confidence.</p>`,
+  },
+  {
+    id: "read-pdf-online",
+    name: "Read PDF Online",
+    description: "Read PDF documents online without downloading software",
+    icon: "BookOpen",
+    type: "read-pdf-online",
+    color: "bg-teal-500",
+    emoji: "📜",
+    metaTitle: "Read PDF Online Free - Online PDF Reading | PDF Tools",
+    metaDescription: "Read PDF files online without downloading. Access and read PDF documents directly in your browser. Free online PDF reading tool.",
+    seoArticle: `<h2>Read PDF Online - No Downloads Required</h2>
+<p>Access and read PDF documents online without downloading any software. Our web-based PDF reader brings the document reading experience directly to your browser. Whether you're reviewing reports, reading ebooks, or studying documents, do it all online with ease.</p>
+
+<h2>Instant Online Access</h2>
+<p>Upload your PDF and start reading immediately. No software downloads or installations. Works on any device with internet access. Perfect for public computers or restricted environments. Your browser is all you need.</p>
+
+<h2>Full Reading Experience</h2>
+<p>Complete document rendering with all formatting. High-quality display of text and graphics. Smooth scrolling and navigation. Search functionality to find specific content. Comfortable zoom levels for any document.</p>
+
+<h2>How to Read PDFs Online</h2>
+<p>Upload your PDF document through our secure interface. The document renders in the online reader. Use navigation controls to browse content. Adjust view settings for comfort. Read as long as you need.</p>
+
+<h2>Works Everywhere</h2>
+<p>Compatible with all major browsers. Desktop, laptop, tablet, or smartphone. No platform restrictions or limitations. Consistent experience across devices. Access your documents from anywhere in the world.</p>
+
+<h2>Privacy Protected</h2>
+<p>Your documents stay private and secure. No registration required to read PDFs. Files are not stored after your session. Secure, encrypted file handling. Read confidential documents worry-free.</p>`,
+  },
+  {
+    id: "compare-pdf",
+    name: "Compare PDF",
+    description: "Compare two PDF documents and identify differences",
+    icon: "FileSearch",
+    type: "compare-pdf",
+    color: "bg-orange-600",
+    emoji: "🔍",
+    metaTitle: "Compare PDF Files Online Free - Find Differences in PDFs | PDF Tools",
+    metaDescription: "Compare two PDF files online for free. Identify differences and changes between PDF documents. Easy PDF comparison tool.",
+    seoArticle: `<h2>Compare PDF Files - Find Every Difference</h2>
+<p>Upload two PDF documents and instantly see the differences between them. Our PDF comparison tool analyzes both files and highlights changes in text, formatting, and layout. Perfect for reviewing document revisions, checking contract changes, or verifying document accuracy.</p>
+
+<h2>Comprehensive Comparison</h2>
+<p>Text differences are highlighted clearly. Added and removed content is marked distinctly. Formatting changes are identified. Image and graphic modifications are detected. Page layout differences are shown visually.</p>
+
+<h2>Visual Difference Display</h2>
+<p>Side-by-side document comparison view. Color-coded highlights for easy identification. Green for additions, red for deletions. Yellow for modifications. Clear visual representation of all changes.</p>
+
+<h2>How to Compare PDFs</h2>
+<p>Upload the original PDF document. Upload the modified or comparison PDF. The tool analyzes both documents. View highlighted differences in the comparison report. Download a detailed comparison summary.</p>
+
+<h2>Use Cases</h2>
+<p>Review contract revisions for legal review. Compare document versions during editing. Verify accuracy of copied or converted documents. Check for unauthorized modifications. Quality control for document processing.</p>
+
+<h2>Detailed Reports</h2>
+<p>Summary of total changes detected. Page-by-page difference breakdown. List of specific text modifications. Location references for easy navigation. Export comparison results for documentation.</p>`,
+  },
+  {
+    id: "pdf-comparer",
+    name: "PDF Comparer",
+    description: "Advanced PDF comparison with detailed change analysis",
+    icon: "FileSearch",
+    type: "pdf-comparer",
+    color: "bg-red-600",
+    emoji: "⚖️",
+    metaTitle: "PDF Comparer Online Free - Advanced PDF Comparison | PDF Tools",
+    metaDescription: "Advanced PDF comparison tool online for free. Detailed analysis of differences between PDF documents. Professional PDF comparer.",
+    seoArticle: `<h2>PDF Comparer - Advanced Document Analysis</h2>
+<p>Our advanced PDF comparer goes beyond simple text comparison to provide comprehensive analysis of document differences. Compare layout, formatting, images, and metadata between two PDF files. Get detailed reports suitable for professional and legal document review.</p>
+
+<h2>Advanced Comparison Features</h2>
+<p>Multi-layer comparison analyzing text, images, and formatting. Structural comparison of document elements. Metadata difference detection. Font and style change identification. Deep analysis of document components.</p>
+
+<h2>Professional-Grade Analysis</h2>
+<p>Suitable for legal document review. Contract comparison for due diligence. Technical document version control. Publishing and printing quality checks. Compliance verification processes.</p>
+
+<h2>How to Use the PDF Comparer</h2>
+<p>Upload your base document for comparison. Upload the document to compare against. Select comparison options and sensitivity. Run the comparison analysis. Review detailed results and export reports.</p>
+
+<h2>Comparison Modes</h2>
+<p>Text-only mode for content comparison. Visual mode for layout analysis. Combined mode for comprehensive review. Character-level precision when needed. Customizable sensitivity settings.</p>
+
+<h2>Detailed Reporting</h2>
+<p>Executive summary of changes. Categorized list of differences. Page-by-page breakdown with locations. Statistical analysis of changes. Exportable reports in multiple formats.</p>`,
+  },
+  {
+    id: "pdf-difference-checker",
+    name: "PDF Difference Checker",
+    description: "Check and highlight differences between PDF versions",
+    icon: "FileSearch",
+    type: "pdf-difference-checker",
+    color: "bg-yellow-600",
+    emoji: "🔎",
+    metaTitle: "PDF Difference Checker Online Free - Check PDF Changes | PDF Tools",
+    metaDescription: "Check differences between PDF files online for free. Highlight and identify changes between PDF versions. Easy difference checker tool.",
+    seoArticle: `<h2>PDF Difference Checker - Verify Document Changes</h2>
+<p>Quickly check for differences between two versions of a PDF document. Our difference checker highlights all modifications, helping you verify changes, spot errors, and ensure document accuracy. Essential for anyone working with multiple document versions.</p>
+
+<h2>Fast Difference Detection</h2>
+<p>Upload two files and get results in seconds. Instant identification of all changes. Quick scan mode for rapid verification. Detailed mode for thorough analysis. Efficient processing of large documents.</p>
+
+<h2>Clear Highlighting</h2>
+<p>Differences are clearly marked and easy to spot. Color coding distinguishes types of changes. Visual markers guide you to modifications. Summary counts tell you the scope of changes. Navigate directly to specific differences.</p>
+
+<h2>How to Check PDF Differences</h2>
+<p>Upload the original PDF document. Upload the revised or compared version. Click to start the difference check. Review highlighted changes in the viewer. Generate a difference report if needed.</p>
+
+<h2>Common Use Cases</h2>
+<p>Verify edits before final approval. Compare drafts during document review. Check received documents against originals. Validate document processing accuracy. Quality assurance for converted documents.</p>
+
+<h2>Verification Features</h2>
+<p>Text content comparison with precision. Page count and structure verification. Image and graphic change detection. Annotation and comment comparison. Complete document integrity checking.</p>`,
   },
 ];
