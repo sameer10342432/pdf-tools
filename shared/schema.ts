@@ -396,6 +396,16 @@ export const pdfToolTypes = [
   "pdf-transparency-flattener",
   "pdf-overprint-preview",
   "pdf-hairline-fixer",
+  "pdf-rich-black-converter",
+  "pdf-font-embedder",
+  "pdf-font-unembedder",
+  "pdf-rgb-to-cmyk",
+  "pdf-cmyk-to-rgb",
+  "convert-to-grayscale",
+  "pdf-spot-color-replacer",
+  "compress-image",
+  "compress-jpg",
+  "compress-png",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -772,6 +782,37 @@ export const toolOptionsSchema = z.object({
   fixMode: z.enum(["auto", "manual", "threshold"]).optional(),
   applyToAllStrokes: z.boolean().optional(),
   strokeThreshold: z.number().optional(),
+  // PDF Rich Black Converter options
+  richBlackMode: z.enum(["standard", "aggressive", "subtle"]).optional(),
+  richBlackC: z.number().optional(),
+  richBlackM: z.number().optional(),
+  richBlackY: z.number().optional(),
+  richBlackK: z.number().optional(),
+  convertTextOnly: z.boolean().optional(),
+  convertGraphicsOnly: z.boolean().optional(),
+  // PDF Font Embedder/Unembedder options
+  fontEmbedMode: z.enum(["all", "missing", "selected"]).optional(),
+  selectedFonts: z.string().optional(),
+  subsetFonts: z.boolean().optional(),
+  preserveEditability: z.boolean().optional(),
+  // PDF Color Space Converter options
+  colorSpaceSource: z.enum(["rgb", "cmyk", "grayscale", "auto"]).optional(),
+  colorSpaceTarget: z.enum(["rgb", "cmyk", "grayscale"]).optional(),
+  renderingIntent: z.enum(["perceptual", "relative-colorimetric", "saturation", "absolute-colorimetric"]).optional(),
+  preserveBlack: z.boolean().optional(),
+  // PDF Spot Color Replacer options
+  spotColorName: z.string().optional(),
+  replacementColorType: z.enum(["cmyk", "rgb", "grayscale", "another-spot"]).optional(),
+  replacementColorValue: z.string().optional(),
+  matchSimilarColors: z.boolean().optional(),
+  spotColorTolerance: z.number().optional(),
+  // Image Compression options
+  imageCompressionQuality: z.number().optional(),
+  imageCompressionFormat: z.enum(["jpg", "png", "webp", "original"]).optional(),
+  imageMaxWidth: z.number().optional(),
+  imageMaxHeight: z.number().optional(),
+  preserveAspectRatio: z.boolean().optional(),
+  stripMetadata: z.boolean().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -11086,5 +11127,285 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Common Hairline Sources</h2>
 <p>CAD software often creates hairlines. Some PDF converters introduce them. Table borders may default to hairlines. Design templates sometimes include them. Our fixer handles all sources. Your documents become print-ready.</p>`,
+  },
+  {
+    id: "pdf-rich-black-converter",
+    name: "PDF Rich Black Converter",
+    description: "Convert flat black to rich black for professional printing",
+    icon: "Palette",
+    type: "pdf-rich-black-converter",
+    color: "bg-gray-900",
+    emoji: "⬛",
+    metaTitle: "PDF Rich Black Converter Online Free - Convert to Rich Black | PDF Tools",
+    metaDescription: "Convert flat 100% K black to rich black for deeper, more vibrant print results. Free online PDF rich black conversion tool.",
+    seoArticle: `<h2>PDF Rich Black Converter - Achieve Deeper Blacks in Print</h2>
+<p>Rich black creates deeper, more luxurious blacks in printed materials by combining CMYK inks. Our Rich Black Converter transforms flat 100% K black into rich black formulas that produce stunning visual impact. Perfect for high-end print jobs, photography, and premium publications where pure black simply isn't dark enough.</p>
+
+<h2>What is Rich Black?</h2>
+<p>Standard black (100% K only) can appear gray or washed out in large areas. Rich black combines Cyan, Magenta, Yellow with Black to create a deeper, more saturated appearance. Common formulas include Cool Black (60C, 40M, 40Y, 100K) for a bluish tint, Warm Black (40C, 60M, 40Y, 100K) for a warmer appearance, and Designer Black (60C, 40M, 20Y, 100K) for neutral density.</p>
+
+<h2>When to Use Rich Black</h2>
+<p>Use rich black for large solid black areas like backgrounds and headers. It's essential for photography borders and frames, luxury packaging and high-end publications, and anywhere standard black appears too light. Avoid using rich black for small text as it can cause registration issues.</p>
+
+<h2>How Our Converter Works</h2>
+<p>Upload your PDF document. Select your preferred rich black formula or create a custom CMYK combination. Choose whether to convert all black elements or only graphics. Our tool intelligently processes your document, preserving small text as 100% K while converting larger areas to your specified rich black values.</p>
+
+<h2>Professional Printing Benefits</h2>
+<p>Rich black produces dramatically deeper blacks that pop off the page. Your printed materials gain premium quality appearance. Photo presentations look more professional. Large black areas maintain density across the entire printed area. The result is print output that matches your vision.</p>
+
+<h2>Customization Options</h2>
+<p>Choose from preset rich black formulas or create custom CMYK values. Target only text, only graphics, or all elements. Set threshold sizes for what gets converted. Preview changes before finalizing. Our converter gives you complete control over your black conversion process.</p>`,
+  },
+  {
+    id: "pdf-font-embedder",
+    name: "PDF Font Embedder",
+    description: "Embed fonts in PDF for consistent display everywhere",
+    icon: "Type",
+    type: "pdf-font-embedder",
+    color: "bg-indigo-600",
+    emoji: "🔤",
+    metaTitle: "PDF Font Embedder Online Free - Embed Fonts in PDF | PDF Tools",
+    metaDescription: "Embed fonts in your PDF files for consistent display across all devices. Free online tool ensures your documents look identical everywhere.",
+    seoArticle: `<h2>PDF Font Embedder - Ensure Consistent Typography</h2>
+<p>Fonts are the backbone of document appearance. When fonts aren't embedded in a PDF, different computers may substitute them, destroying your carefully crafted design. Our Font Embedder ensures your documents display identically on every device by embedding all required font data directly into the PDF file.</p>
+
+<h2>Why Embed Fonts?</h2>
+<p>PDFs without embedded fonts rely on the viewer's computer having the same fonts installed. When fonts are missing, substitutions change your layout, spacing, and design. Professional print shops require embedded fonts. Legal documents need guaranteed appearance. Marketing materials must look consistent across all recipients.</p>
+
+<h2>What Gets Embedded</h2>
+<p>Our tool embeds the actual font data needed to render your text. This includes all characters used in your document, the font's metrics for proper spacing, and styling information for bold, italic, and other variants. The result is a self-contained PDF that renders correctly anywhere.</p>
+
+<h2>Embedding Options</h2>
+<p>Choose to embed all fonts or only those currently missing. Subset embedding includes only the characters you use, minimizing file size. Full embedding provides complete font files for potential editing. Select specific fonts to embed while leaving others as-is. Our flexible options suit every workflow.</p>
+
+<h2>File Size Considerations</h2>
+<p>Embedding fonts increases PDF file size, but subsetting minimizes this impact. A document using only 50 characters of a font embeds far less data than one using thousands. Our intelligent subsetting keeps files as small as possible while ensuring complete visual fidelity.</p>
+
+<h2>Professional Print Requirements</h2>
+<p>Print service providers universally require embedded fonts. Missing fonts cause production delays and reprints. Our tool ensures your PDFs meet professional standards. Upload, embed, and confidently send files to any printer. Your typography arrives exactly as designed.</p>`,
+  },
+  {
+    id: "pdf-font-unembedder",
+    name: "PDF Font Un-embedder",
+    description: "Remove embedded fonts to reduce PDF file size",
+    icon: "TypeOff",
+    type: "pdf-font-unembedder",
+    color: "bg-orange-600",
+    emoji: "📝",
+    metaTitle: "PDF Font Un-embedder Online Free - Remove Embedded Fonts | PDF Tools",
+    metaDescription: "Remove embedded fonts from PDF files to drastically reduce file size. Free online tool for optimizing PDF file size.",
+    seoArticle: `<h2>PDF Font Un-embedder - Reduce File Size Dramatically</h2>
+<p>Embedded fonts can significantly increase PDF file size, sometimes by megabytes. Our Font Un-embedder removes these embedded font files, relying instead on system fonts for rendering. This dramatically reduces file size for easier sharing, faster loading, and more efficient storage.</p>
+
+<h2>When to Remove Embedded Fonts</h2>
+<p>Un-embedding is ideal when file size is critical and you're distributing to controlled environments where fonts are installed. Internal document sharing within organizations with standard fonts. Web-only documents where download speed matters. Archival storage where space is at a premium.</p>
+
+<h2>Understanding the Trade-offs</h2>
+<p>Removing embedded fonts means the viewer's system must have compatible fonts installed. Documents may appear differently on systems without the original fonts. For general distribution, keeping fonts embedded is recommended. For controlled environments with standardized systems, un-embedding offers significant size savings.</p>
+
+<h2>How Un-embedding Works</h2>
+<p>Upload your PDF document. Our tool identifies all embedded fonts. You can selectively remove specific fonts or all embedded fonts. The tool preserves font references so text remains editable. Download your smaller, optimized PDF file.</p>
+
+<h2>Significant Size Reduction</h2>
+<p>Font data can comprise a large portion of PDF file size. Documents with multiple fonts or complete font embeddings see the biggest reductions. File sizes can shrink by 50-80% in font-heavy documents. The exact savings depend on how many fonts were embedded and their sizes.</p>
+
+<h2>Best Practices</h2>
+<p>Always keep a copy with embedded fonts for printing and archival. Test un-embedded PDFs on target systems before distribution. Document which fonts are required for proper rendering. Consider your audience's likely font availability. Use un-embedding as part of a broader optimization strategy.</p>`,
+  },
+  {
+    id: "pdf-rgb-to-cmyk",
+    name: "PDF RGB to CMYK Converter",
+    description: "Convert RGB colors to CMYK for professional printing",
+    icon: "Pipette",
+    type: "pdf-rgb-to-cmyk",
+    color: "bg-cyan-600",
+    emoji: "🎨",
+    metaTitle: "PDF RGB to CMYK Converter Online Free - Convert Colors for Print | PDF Tools",
+    metaDescription: "Convert PDF colors from RGB to CMYK for professional printing. Free online color space conversion ensures accurate print results.",
+    seoArticle: `<h2>PDF RGB to CMYK Converter - Prepare for Professional Printing</h2>
+<p>RGB and CMYK are fundamentally different color systems. RGB is for screens, CMYK is for print. Our converter transforms your PDF's RGB colors to CMYK, ensuring what you see on screen translates accurately to paper. Essential for anyone sending documents to commercial print.</p>
+
+<h2>Why RGB Doesn't Work for Print</h2>
+<p>RGB uses light to create colors on screens. CMYK uses ink on paper. These systems have different color gamuts, meaning not all RGB colors can be reproduced in CMYK. Sending RGB files to print often results in muddy, dull, or shifted colors. Conversion before printing is essential.</p>
+
+<h2>The Conversion Process</h2>
+<p>Upload your RGB PDF document. Our tool analyzes every color in your document. Using industry-standard color profiles, we map RGB values to their closest CMYK equivalents. The result is a print-ready PDF that will reproduce as expected on press.</p>
+
+<h2>Handling Out-of-Gamut Colors</h2>
+<p>Some vibrant RGB colors simply don't exist in CMYK. Our converter uses sophisticated rendering intents to find the best CMYK approximation. You can choose perceptual rendering for photos, relative colorimetric for graphics, or other methods depending on your content.</p>
+
+<h2>Color Accuracy Considerations</h2>
+<p>While conversion is mathematically precise, visual differences are inevitable. Bright neon colors will appear more muted in CMYK. Some blue-greens and oranges shift noticeably. Preview your converted document and adjust source colors if needed for critical color matching.</p>
+
+<h2>Professional Print Workflow</h2>
+<p>Commercial printers expect CMYK files. Mixed color spaces cause production issues. Our converter ensures your entire document is in a consistent CMYK color space. Include the color profile with your file. Your print provider will appreciate properly prepared files.</p>`,
+  },
+  {
+    id: "pdf-cmyk-to-rgb",
+    name: "PDF CMYK to RGB Converter",
+    description: "Convert CMYK colors to RGB for digital display",
+    icon: "Monitor",
+    type: "pdf-cmyk-to-rgb",
+    color: "bg-blue-600",
+    emoji: "🖥️",
+    metaTitle: "PDF CMYK to RGB Converter Online Free - Convert for Screens | PDF Tools",
+    metaDescription: "Convert PDF colors from CMYK to RGB for web and digital display. Free online color space conversion for vibrant screen viewing.",
+    seoArticle: `<h2>PDF CMYK to RGB Converter - Optimize for Digital Display</h2>
+<p>CMYK documents can appear dull on screens because monitors use RGB. Our converter transforms CMYK colors to RGB, making your documents vibrant and properly rendered on digital displays. Perfect for repurposing print materials for web, email, or digital presentations.</p>
+
+<h2>Why Convert CMYK to RGB?</h2>
+<p>Computer monitors, tablets, and phones display colors using RGB light. When they encounter CMYK data, color rendering can be inconsistent or washed out. Converting to RGB ensures optimal display across all digital devices.</p>
+
+<h2>When You Need This Conversion</h2>
+<p>Repurposing print materials for websites and digital marketing. Sharing print-ready documents via email or web. Creating digital presentations from print designs. Archiving documents for on-screen viewing. Any time CMYK documents will be viewed primarily on screens.</p>
+
+<h2>The RGB Advantage for Screens</h2>
+<p>RGB offers a wider color gamut than CMYK. Colors that were compressed for print can be expanded for screen display. Images gain vibrancy and life when converted properly. The viewing experience improves significantly on all digital devices.</p>
+
+<h2>Conversion Quality</h2>
+<p>Our converter uses accurate color science to transform CMYK values to RGB. Colors are mapped precisely using industry-standard profiles. The result maintains the document's visual intent while optimizing for screen display.</p>
+
+<h2>Workflow Integration</h2>
+<p>Upload your CMYK PDF. Select your preferred RGB profile (sRGB for web, Adobe RGB for photography). Download the converted document. Share confidently knowing your colors will display correctly on any screen.</p>`,
+  },
+  {
+    id: "convert-to-grayscale",
+    name: "PDF to Grayscale Converter",
+    description: "Convert color PDFs to professional grayscale output",
+    icon: "CircleSlash",
+    type: "convert-to-grayscale",
+    color: "bg-gray-600",
+    emoji: "⬜",
+    metaTitle: "PDF to Grayscale Converter Online Free - Convert to Black & White | PDF Tools",
+    metaDescription: "Convert color PDFs to grayscale for printing, archival, or professional documents. Free online tool maintains quality.",
+    seoArticle: `<h2>PDF to Grayscale Converter - Professional Black & White Output</h2>
+<p>Converting color documents to grayscale serves many purposes: reducing printing costs, creating professional documents, ensuring fax compatibility, or meeting archival requirements. Our converter produces high-quality grayscale output that maintains your document's readability and visual hierarchy.</p>
+
+<h2>When Grayscale is Better</h2>
+<p>Black and white printing costs significantly less than color. Legal documents often require grayscale copies. Faxing works better with black and white files. Some archival standards specify grayscale. Professional reports may call for grayscale presentation.</p>
+
+<h2>Intelligent Conversion</h2>
+<p>Not all grayscale conversions are equal. Our tool considers the luminance values of colors to create optimal gray tones. Reds, greens, and blues with similar brightness become distinguishable grays. The result maintains visual hierarchy and readability that simple desaturation can't achieve.</p>
+
+<h2>Preserving Document Quality</h2>
+<p>Images are converted with professional-grade algorithms that maintain detail. Text remains crisp and readable. Subtle color differences become visible gray distinctions. Charts and graphs remain interpretable. Your document's communication value is preserved.</p>
+
+<h2>File Size Benefits</h2>
+<p>Grayscale files are smaller than color files. Each pixel stores one value instead of three or four. Images compress more efficiently. The resulting PDF is lighter and faster to share. Storage requirements decrease significantly.</p>
+
+<h2>Simple Conversion Process</h2>
+<p>Upload your color PDF document. Our tool processes all pages and elements. Download your grayscale PDF immediately. The conversion preserves document structure, links, and bookmarks. Only the color changes; everything else remains intact.</p>`,
+  },
+  {
+    id: "pdf-spot-color-replacer",
+    name: "PDF Spot Color Replacer",
+    description: "Replace spot colors with CMYK or other spot colors",
+    icon: "Droplet",
+    type: "pdf-spot-color-replacer",
+    color: "bg-purple-600",
+    emoji: "💧",
+    metaTitle: "PDF Spot Color Replacer Online Free - Replace Spot Colors | PDF Tools",
+    metaDescription: "Replace spot colors in PDF files with CMYK equivalents or other spot colors. Free online tool for print production workflow.",
+    seoArticle: `<h2>PDF Spot Color Replacer - Manage Special Inks</h2>
+<p>Spot colors like Pantone inks provide exact color matching but require special printing plates. Our Spot Color Replacer lets you convert spot colors to CMYK process colors or replace one spot color with another. Essential for controlling printing costs and adapting documents for different output requirements.</p>
+
+<h2>Understanding Spot Colors</h2>
+<p>Spot colors are pre-mixed inks that print as a single layer. They provide consistent, exact colors that CMYK can't always match. However, each spot color adds cost with additional printing plates. Sometimes spot colors must be converted for practical or budget reasons.</p>
+
+<h2>When to Replace Spot Colors</h2>
+<p>Converting to CMYK reduces printing costs when exact color matching isn't critical. Replacing one spot color with another simplifies printing when colors are similar. Preparing files for digital printing that doesn't support spot colors. Updating branded materials when corporate colors change.</p>
+
+<h2>Conversion Options</h2>
+<p>Replace spot colors with their CMYK equivalents using standard color formulas. Substitute one spot color for another when rebranding. Convert to RGB for digital display. Our tool handles all these scenarios while maintaining document integrity.</p>
+
+<h2>Maintaining Color Consistency</h2>
+<p>When converting Pantone or other spot colors to CMYK, some color shift is inevitable. Our tool uses manufacturer-recommended CMYK formulas where available. You can also specify custom CMYK values for exact control over the replacement color.</p>
+
+<h2>Professional Workflow Integration</h2>
+<p>Upload your PDF containing spot colors. Identify which spot colors to replace. Choose replacement colors (CMYK, RGB, or other spots). Preview the result before committing. Download your updated PDF ready for production.</p>`,
+  },
+  {
+    id: "compress-image",
+    name: "Compress Image",
+    description: "Reduce image file size while preserving quality",
+    icon: "ImageDown",
+    type: "compress-image",
+    color: "bg-green-600",
+    emoji: "🖼️",
+    metaTitle: "Compress Image Online Free - Reduce Image File Size | PDF Tools",
+    metaDescription: "Compress images online for free. Reduce file size up to 90% while maintaining visual quality. Supports JPG, PNG, WebP and more.",
+    seoArticle: `<h2>Compress Images Online - Fast and Quality-Preserving</h2>
+<p>Large image files slow down websites, consume storage, and make sharing difficult. Our image compressor reduces file sizes dramatically while maintaining visual quality you can't distinguish from the original. Perfect for web optimization, email attachments, and storage efficiency.</p>
+
+<h2>Smart Compression Technology</h2>
+<p>Our compressor analyzes each image and applies optimal compression settings. Photos receive different treatment than graphics. The algorithm preserves important details while eliminating invisible data. The result is the smallest possible file that still looks great.</p>
+
+<h2>Quality You Control</h2>
+<p>Choose your compression level from minimal to maximum. Preview the compressed result before downloading. See the file size reduction in real-time. Find the perfect balance between size and quality for your specific needs.</p>
+
+<h2>Supported Formats</h2>
+<p>Compress JPG, PNG, WebP, GIF, and other common image formats. Convert between formats during compression if desired. Each format receives optimized compression appropriate to its characteristics. Output in your preferred format.</p>
+
+<h2>Batch Processing</h2>
+<p>Compress multiple images at once for efficiency. Apply consistent settings across all images. Download all compressed files in a convenient ZIP archive. Save hours of manual optimization work.</p>
+
+<h2>Web Performance Impact</h2>
+<p>Smaller images mean faster loading websites. Google rewards fast sites with better rankings. Users appreciate quick page loads. Our compression helps your website perform better while maintaining visual appeal.</p>`,
+  },
+  {
+    id: "compress-jpg",
+    name: "Compress JPG",
+    description: "Optimize JPEG images for smaller file size",
+    icon: "FileImage",
+    type: "compress-jpg",
+    color: "bg-amber-600",
+    emoji: "📷",
+    metaTitle: "Compress JPG Online Free - Reduce JPEG File Size | PDF Tools",
+    metaDescription: "Compress JPG images online for free. Reduce JPEG file size up to 80% with minimal quality loss. Fast, secure, no registration.",
+    seoArticle: `<h2>Compress JPG Images - Optimize Without Visible Quality Loss</h2>
+<p>JPEG is the most common image format for photos and web graphics. Our JPG compressor uses advanced algorithms to reduce file sizes significantly while maintaining the visual quality your images deserve. Perfect for photographers, web developers, and anyone sharing images online.</p>
+
+<h2>How JPG Compression Works</h2>
+<p>JPEG uses lossy compression, meaning some data is discarded to reduce size. Our intelligent compression identifies and removes only the information human eyes can't perceive. Colors, details, and sharpness are preserved while file size shrinks dramatically.</p>
+
+<h2>Compression Quality Levels</h2>
+<p>Low compression preserves maximum quality with modest size reduction. Medium compression offers excellent balance for most uses. High compression maximizes size reduction for web thumbnails and previews. Choose based on your image's final purpose.</p>
+
+<h2>Ideal Use Cases</h2>
+<p>Website images that need fast loading. Email attachments that must stay under size limits. Social media photos optimized for each platform. Product photos for e-commerce listings. Blog images that balance quality and performance.</p>
+
+<h2>Preserving Important Details</h2>
+<p>Faces, text, and fine details receive special attention during compression. Our algorithm identifies important areas and protects them from aggressive compression. The result maintains clarity where it matters most.</p>
+
+<h2>Batch JPG Compression</h2>
+<p>Upload multiple JPG files at once. Apply consistent compression settings to all. Download all optimized images together. Process entire photo collections efficiently. Save time on repetitive optimization tasks.</p>`,
+  },
+  {
+    id: "compress-png",
+    name: "Compress PNG",
+    description: "Reduce PNG file size with lossless compression",
+    icon: "FileImage",
+    type: "compress-png",
+    color: "bg-teal-600",
+    emoji: "🎭",
+    metaTitle: "Compress PNG Online Free - Reduce PNG File Size | PDF Tools",
+    metaDescription: "Compress PNG images online for free. Reduce file size with lossless compression or convert to optimized PNG-8. Fast and secure.",
+    seoArticle: `<h2>Compress PNG Images - Lossless Size Reduction</h2>
+<p>PNG files offer lossless quality and transparency but can be large. Our PNG compressor reduces file sizes through intelligent optimization without any quality loss. Perfect for logos, graphics, screenshots, and any images where transparency or perfect quality is essential.</p>
+
+<h2>Lossless PNG Compression</h2>
+<p>True lossless compression maintains every pixel exactly as the original. Our tool removes only unnecessary metadata and applies optimal compression algorithms. The visual result is identical to the source file at a fraction of the size.</p>
+
+<h2>When to Use Lossy PNG Compression</h2>
+<p>For maximum size reduction, our lossy mode reduces colors while maintaining visual quality. PNG-8 format with carefully chosen palettes can match PNG-24 appearance at much smaller sizes. Ideal when file size matters more than pixel perfection.</p>
+
+<h2>Transparency Preservation</h2>
+<p>PNG's alpha channel transparency is fully preserved during compression. Semi-transparent pixels maintain their exact opacity values. Your graphics overlay perfectly on any background. No white halos or fringing artifacts.</p>
+
+<h2>Optimal Use Cases</h2>
+<p>Website logos and icons requiring transparency. Screenshots for documentation and tutorials. Graphics with text requiring crisp edges. UI elements and design assets. Any image where JPG artifacts would be unacceptable.</p>
+
+<h2>Advanced Optimization</h2>
+<p>Remove unnecessary metadata that inflates file size. Optimize the compression filters for each image. Choose between maximum compression and fastest processing. Our tool applies the right techniques for each PNG automatically.</p>`,
   },
 ];
