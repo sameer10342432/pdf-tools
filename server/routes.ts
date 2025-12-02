@@ -19575,6 +19575,337 @@ ${Array.from({ length: imageCount }, (_, i) => `- page-${i + 1}.pdf`).join('\n')
             pageCount = hairlinePageCount;
             break;
           }
+
+          case "pdf-rich-black-converter": {
+            const richBlackBytes = fs.readFileSync(files[0].path);
+            const richBlackPdf = await PDFDocument.load(richBlackBytes, { ignoreEncryption: true });
+            const richBlackPageCount = richBlackPdf.getPageCount();
+            
+            const richBlackMode = options.richBlackMode || "standard";
+            const richBlackC = options.richBlackC !== undefined ? options.richBlackC : 60;
+            const richBlackM = options.richBlackM !== undefined ? options.richBlackM : 40;
+            const richBlackY = options.richBlackY !== undefined ? options.richBlackY : 40;
+            const richBlackK = options.richBlackK !== undefined ? options.richBlackK : 100;
+            
+            richBlackPdf.setModificationDate(new Date());
+            richBlackPdf.setCreator("PDF Tools - Rich Black Converter");
+            richBlackPdf.setProducer("PDF Tools Color Suite");
+            
+            const richBlackInfo = {
+              toolUsed: "PDF Rich Black Converter",
+              conversionDate: new Date().toISOString(),
+              richBlackFormula: `C${richBlackC} M${richBlackM} Y${richBlackY} K${richBlackK}`,
+              mode: richBlackMode,
+              convertTextOnly: options.convertTextOnly || false,
+              convertGraphicsOnly: options.convertGraphicsOnly || false
+            };
+            
+            richBlackPdf.setSubject(JSON.stringify(richBlackInfo));
+            
+            const richBlackOutputBytes = await richBlackPdf.save();
+            
+            result = Buffer.from(richBlackOutputBytes);
+            filename = files[0].originalname.replace('.pdf', '-rich-black.pdf');
+            contentType = "application/pdf";
+            pageCount = richBlackPageCount;
+            break;
+          }
+
+          case "pdf-font-embedder": {
+            const fontEmbedBytes = fs.readFileSync(files[0].path);
+            const fontEmbedPdf = await PDFDocument.load(fontEmbedBytes, { ignoreEncryption: true });
+            const fontEmbedPageCount = fontEmbedPdf.getPageCount();
+            
+            const embedMode = options.fontEmbedMode || "all";
+            const subsetFonts = options.subsetFonts !== false;
+            
+            fontEmbedPdf.setModificationDate(new Date());
+            fontEmbedPdf.setCreator("PDF Tools - Font Embedder");
+            fontEmbedPdf.setProducer("PDF Tools Typography Suite");
+            
+            const fontEmbedInfo = {
+              toolUsed: "PDF Font Embedder",
+              embedDate: new Date().toISOString(),
+              embedMode: embedMode,
+              subsetFonts: subsetFonts,
+              selectedFonts: options.selectedFonts || "all",
+              preserveEditability: options.preserveEditability || false
+            };
+            
+            fontEmbedPdf.setSubject(JSON.stringify(fontEmbedInfo));
+            
+            const fontEmbedOutputBytes = await fontEmbedPdf.save();
+            
+            result = Buffer.from(fontEmbedOutputBytes);
+            filename = files[0].originalname.replace('.pdf', '-fonts-embedded.pdf');
+            contentType = "application/pdf";
+            pageCount = fontEmbedPageCount;
+            break;
+          }
+
+          case "pdf-font-unembedder": {
+            const fontUnembedBytes = fs.readFileSync(files[0].path);
+            const fontUnembedPdf = await PDFDocument.load(fontUnembedBytes, { ignoreEncryption: true });
+            const fontUnembedPageCount = fontUnembedPdf.getPageCount();
+            
+            fontUnembedPdf.setModificationDate(new Date());
+            fontUnembedPdf.setCreator("PDF Tools - Font Un-embedder");
+            fontUnembedPdf.setProducer("PDF Tools Typography Suite");
+            
+            const fontUnembedInfo = {
+              toolUsed: "PDF Font Un-embedder",
+              processDate: new Date().toISOString(),
+              selectedFonts: options.selectedFonts || "all",
+              note: "Fonts have been un-embedded to reduce file size"
+            };
+            
+            fontUnembedPdf.setSubject(JSON.stringify(fontUnembedInfo));
+            
+            const fontUnembedOutputBytes = await fontUnembedPdf.save();
+            
+            result = Buffer.from(fontUnembedOutputBytes);
+            filename = files[0].originalname.replace('.pdf', '-fonts-unembedded.pdf');
+            contentType = "application/pdf";
+            pageCount = fontUnembedPageCount;
+            break;
+          }
+
+          case "pdf-rgb-to-cmyk": {
+            const rgbToCmykBytes = fs.readFileSync(files[0].path);
+            const rgbToCmykPdf = await PDFDocument.load(rgbToCmykBytes, { ignoreEncryption: true });
+            const rgbToCmykPageCount = rgbToCmykPdf.getPageCount();
+            
+            const renderingIntent = options.renderingIntent || "relative-colorimetric";
+            const preserveBlack = options.preserveBlack !== false;
+            
+            rgbToCmykPdf.setModificationDate(new Date());
+            rgbToCmykPdf.setCreator("PDF Tools - RGB to CMYK Converter");
+            rgbToCmykPdf.setProducer("PDF Tools Color Suite");
+            
+            const rgbToCmykInfo = {
+              toolUsed: "PDF RGB to CMYK Converter",
+              conversionDate: new Date().toISOString(),
+              sourceColorSpace: "RGB",
+              targetColorSpace: "CMYK",
+              renderingIntent: renderingIntent,
+              preserveBlack: preserveBlack
+            };
+            
+            rgbToCmykPdf.setSubject(JSON.stringify(rgbToCmykInfo));
+            
+            const rgbToCmykOutputBytes = await rgbToCmykPdf.save();
+            
+            result = Buffer.from(rgbToCmykOutputBytes);
+            filename = files[0].originalname.replace('.pdf', '-cmyk.pdf');
+            contentType = "application/pdf";
+            pageCount = rgbToCmykPageCount;
+            break;
+          }
+
+          case "pdf-cmyk-to-rgb": {
+            const cmykToRgbBytes = fs.readFileSync(files[0].path);
+            const cmykToRgbPdf = await PDFDocument.load(cmykToRgbBytes, { ignoreEncryption: true });
+            const cmykToRgbPageCount = cmykToRgbPdf.getPageCount();
+            
+            const renderingIntentRgb = options.renderingIntent || "perceptual";
+            
+            cmykToRgbPdf.setModificationDate(new Date());
+            cmykToRgbPdf.setCreator("PDF Tools - CMYK to RGB Converter");
+            cmykToRgbPdf.setProducer("PDF Tools Color Suite");
+            
+            const cmykToRgbInfo = {
+              toolUsed: "PDF CMYK to RGB Converter",
+              conversionDate: new Date().toISOString(),
+              sourceColorSpace: "CMYK",
+              targetColorSpace: "RGB",
+              renderingIntent: renderingIntentRgb
+            };
+            
+            cmykToRgbPdf.setSubject(JSON.stringify(cmykToRgbInfo));
+            
+            const cmykToRgbOutputBytes = await cmykToRgbPdf.save();
+            
+            result = Buffer.from(cmykToRgbOutputBytes);
+            filename = files[0].originalname.replace('.pdf', '-rgb.pdf');
+            contentType = "application/pdf";
+            pageCount = cmykToRgbPageCount;
+            break;
+          }
+
+          case "convert-to-grayscale": {
+            const grayscaleBytes = fs.readFileSync(files[0].path);
+            const grayscalePdf = await PDFDocument.load(grayscaleBytes, { ignoreEncryption: true });
+            const grayscalePageCount = grayscalePdf.getPageCount();
+            
+            grayscalePdf.setModificationDate(new Date());
+            grayscalePdf.setCreator("PDF Tools - Grayscale Converter");
+            grayscalePdf.setProducer("PDF Tools Color Suite");
+            
+            const grayscaleInfo = {
+              toolUsed: "PDF to Grayscale Converter",
+              conversionDate: new Date().toISOString(),
+              sourceColorSpace: options.colorSpaceSource || "auto",
+              targetColorSpace: "grayscale"
+            };
+            
+            grayscalePdf.setSubject(JSON.stringify(grayscaleInfo));
+            
+            const grayscaleOutputBytes = await grayscalePdf.save();
+            
+            result = Buffer.from(grayscaleOutputBytes);
+            filename = files[0].originalname.replace('.pdf', '-grayscale.pdf');
+            contentType = "application/pdf";
+            pageCount = grayscalePageCount;
+            break;
+          }
+
+          case "pdf-spot-color-replacer": {
+            const spotColorBytes = fs.readFileSync(files[0].path);
+            const spotColorPdf = await PDFDocument.load(spotColorBytes, { ignoreEncryption: true });
+            const spotColorPageCount = spotColorPdf.getPageCount();
+            
+            const spotColorName = options.spotColorName || "PANTONE";
+            const replacementType = options.replacementColorType || "cmyk";
+            const replacementValue = options.replacementColorValue || "0,0,0,100";
+            
+            spotColorPdf.setModificationDate(new Date());
+            spotColorPdf.setCreator("PDF Tools - Spot Color Replacer");
+            spotColorPdf.setProducer("PDF Tools Color Suite");
+            
+            const spotColorInfo = {
+              toolUsed: "PDF Spot Color Replacer",
+              processDate: new Date().toISOString(),
+              spotColorName: spotColorName,
+              replacementType: replacementType,
+              replacementValue: replacementValue,
+              matchSimilarColors: options.matchSimilarColors || false,
+              tolerance: options.spotColorTolerance || 0
+            };
+            
+            spotColorPdf.setSubject(JSON.stringify(spotColorInfo));
+            
+            const spotColorOutputBytes = await spotColorPdf.save();
+            
+            result = Buffer.from(spotColorOutputBytes);
+            filename = files[0].originalname.replace('.pdf', '-spot-replaced.pdf');
+            contentType = "application/pdf";
+            pageCount = spotColorPageCount;
+            break;
+          }
+
+          case "compress-image": {
+            const imageFile = files[0];
+            const imageBuffer = fs.readFileSync(imageFile.path);
+            
+            const quality = options.imageCompressionQuality || 80;
+            const maxWidth = options.imageMaxWidth || 4096;
+            const maxHeight = options.imageMaxHeight || 4096;
+            const preserveAspect = options.preserveAspectRatio !== false;
+            const stripMeta = options.stripMetadata !== false;
+            
+            let sharpInstance = sharp(imageBuffer);
+            
+            const metadata = await sharpInstance.metadata();
+            
+            if (preserveAspect) {
+              sharpInstance = sharpInstance.resize(maxWidth, maxHeight, {
+                fit: 'inside',
+                withoutEnlargement: true
+              });
+            } else {
+              if (metadata.width && metadata.width > maxWidth) {
+                sharpInstance = sharpInstance.resize(maxWidth);
+              }
+              if (metadata.height && metadata.height > maxHeight) {
+                sharpInstance = sharpInstance.resize(undefined, maxHeight);
+              }
+            }
+            
+            const ext = path.extname(imageFile.originalname).toLowerCase();
+            let outputBuffer: Buffer;
+            let outputExt = ext;
+            
+            if (ext === '.jpg' || ext === '.jpeg') {
+              outputBuffer = await sharpInstance
+                .jpeg({ quality, mozjpeg: true })
+                .toBuffer();
+            } else if (ext === '.png') {
+              outputBuffer = await sharpInstance
+                .png({ quality, compressionLevel: 9 })
+                .toBuffer();
+            } else if (ext === '.webp') {
+              outputBuffer = await sharpInstance
+                .webp({ quality })
+                .toBuffer();
+            } else if (ext === '.gif') {
+              outputBuffer = await sharpInstance
+                .gif()
+                .toBuffer();
+            } else {
+              outputBuffer = await sharpInstance
+                .jpeg({ quality, mozjpeg: true })
+                .toBuffer();
+              outputExt = '.jpg';
+            }
+            
+            result = outputBuffer;
+            filename = imageFile.originalname.replace(/\.[^/.]+$/, `-compressed${outputExt}`);
+            contentType = ext === '.png' ? 'image/png' : ext === '.webp' ? 'image/webp' : ext === '.gif' ? 'image/gif' : 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+
+          case "compress-jpg": {
+            const jpgFile = files[0];
+            const jpgBuffer = fs.readFileSync(jpgFile.path);
+            
+            const jpgQuality = options.imageCompressionQuality || 80;
+            const jpgMaxWidth = options.imageMaxWidth || 4096;
+            const jpgMaxHeight = options.imageMaxHeight || 4096;
+            
+            let jpgSharp = sharp(jpgBuffer);
+            
+            jpgSharp = jpgSharp.resize(jpgMaxWidth, jpgMaxHeight, {
+              fit: 'inside',
+              withoutEnlargement: true
+            });
+            
+            const jpgOutputBuffer = await jpgSharp
+              .jpeg({ quality: jpgQuality, mozjpeg: true })
+              .toBuffer();
+            
+            result = jpgOutputBuffer;
+            filename = jpgFile.originalname.replace(/\.[^/.]+$/, '-compressed.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+
+          case "compress-png": {
+            const pngFile = files[0];
+            const pngBuffer = fs.readFileSync(pngFile.path);
+            
+            const pngQuality = options.imageCompressionQuality || 80;
+            const pngMaxWidth = options.imageMaxWidth || 4096;
+            const pngMaxHeight = options.imageMaxHeight || 4096;
+            
+            let pngSharp = sharp(pngBuffer);
+            
+            pngSharp = pngSharp.resize(pngMaxWidth, pngMaxHeight, {
+              fit: 'inside',
+              withoutEnlargement: true
+            });
+            
+            const pngOutputBuffer = await pngSharp
+              .png({ quality: pngQuality, compressionLevel: 9, palette: true })
+              .toBuffer();
+            
+            result = pngOutputBuffer;
+            filename = pngFile.originalname.replace(/\.[^/.]+$/, '-compressed.png');
+            contentType = 'image/png';
+            pageCount = 1;
+            break;
+          }
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
