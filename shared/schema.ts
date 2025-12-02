@@ -496,6 +496,16 @@ export const pdfToolTypes = [
   "meme-generator",
   "add-text-to-photo",
   "split-image",
+  "merge-images",
+  "image-combiner-horizontal",
+  "image-combiner-vertical",
+  "favicon-generator",
+  "ico-to-png",
+  "png-to-ico",
+  "apng-to-gif",
+  "gif-to-apng",
+  "image-to-ascii",
+  "image-metadata-viewer",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -14239,5 +14249,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Batch Download</h2>
 <p>Download all image pieces at once in a convenient package. Each piece is numbered for easy reassembly or posting in the correct order.</p>`,
+  },
+  {
+    id: "merge-images",
+    name: "Merge Images",
+    description: "Combine multiple images into a single composite image",
+    icon: "Layers",
+    type: "merge-images",
+    color: "bg-blue-500",
+    emoji: "🖼️",
+    metaTitle: "Merge Images Online Free - Combine Multiple Pictures | PDF Tools",
+    metaDescription: "Merge multiple images into one composite image online for free. Combine photos seamlessly with flexible layout options. Fast and secure image merger.",
+    seoArticle: `<h2>Merge Images Online - Combine Multiple Pictures Effortlessly</h2>
+<p>Combine multiple images into a single composite picture with our powerful online image merger. Whether you're creating collages, combining screenshots, or merging photos for presentations, this tool delivers professional results instantly. No software installation required - everything happens securely in your browser.</p>
+
+<h2>Why Use Our Image Merger Tool?</h2>
+<p>Our image merger stands out for its simplicity and flexibility. Upload multiple images in any common format (JPEG, PNG, GIF, WebP), arrange them in your preferred layout, and merge them into a single high-quality output. The tool preserves image quality while giving you complete control over the final composition.</p>
+
+<h2>Key Features of Our Image Combiner</h2>
+<p>Support for multiple image formats ensures compatibility with any images you have. The tool handles different image sizes intelligently, automatically adjusting dimensions for a cohesive final result. Choose between horizontal, vertical, or grid layouts to match your needs perfectly.</p>
+
+<h2>How to Merge Images Step by Step</h2>
+<p>Start by uploading your images using the upload button or drag-and-drop area. Arrange the images in your desired order by dragging them. Select your preferred layout option and output format. Click merge and download your combined image instantly. The entire process takes just seconds.</p>
+
+<h2>Perfect for Creative Projects</h2>
+<p>Photographers use our tool for creating contact sheets and before-after comparisons. Social media managers combine multiple images for engaging posts. Designers create quick mockups by merging design elements. Whatever your creative need, our image merger delivers consistent, professional results every time.</p>`,
+  },
+  {
+    id: "image-combiner-horizontal",
+    name: "Image Combiner (Horizontal)",
+    description: "Combine images side by side horizontally",
+    icon: "ArrowLeftRight",
+    type: "image-combiner-horizontal",
+    color: "bg-teal-500",
+    emoji: "↔️",
+    metaTitle: "Combine Images Horizontally Online Free - Side by Side Photo Merger | PDF Tools",
+    metaDescription: "Combine images side by side horizontally online for free. Create panoramic composites and before-after comparisons. Easy horizontal image combiner.",
+    seoArticle: `<h2>Combine Images Horizontally - Side by Side Photo Merger</h2>
+<p>Create stunning horizontal composites by combining images side by side with our specialized image combiner. Perfect for before-after comparisons, panoramic views, or creating wide-format images for banners and headers.</p>
+
+<h2>Professional Side-by-Side Results</h2>
+<p>Our horizontal combiner automatically aligns images for a seamless result. Heights are matched intelligently so your combined image looks professionally crafted. No manual adjustments needed - just upload and combine.</p>
+
+<h2>Ideal Use Cases</h2>
+<p>Create compelling before-and-after comparisons for portfolios. Combine product shots for e-commerce listings. Make wide banner images from multiple photos. Create comparison graphics for presentations and reports.</p>
+
+<h2>Flexible Output Options</h2>
+<p>Choose your preferred output format (JPEG, PNG) and quality settings. Add optional spacing between images for a cleaner look. Download your horizontal composite instantly in high resolution.</p>
+
+<h2>Easy Three-Step Process</h2>
+<p>Upload two or more images you want to combine. Arrange them in left-to-right order by dragging. Click combine and download your horizontal composite immediately. It's that simple.</p>`,
+  },
+  {
+    id: "image-combiner-vertical",
+    name: "Image Combiner (Vertical)",
+    description: "Stack images vertically from top to bottom",
+    icon: "ArrowUpDown",
+    type: "image-combiner-vertical",
+    color: "bg-emerald-500",
+    emoji: "↕️",
+    metaTitle: "Combine Images Vertically Online Free - Stack Photos Top to Bottom | PDF Tools",
+    metaDescription: "Stack images vertically online for free. Combine photos from top to bottom for long-form content. Easy vertical image combiner tool.",
+    seoArticle: `<h2>Combine Images Vertically - Stack Photos Top to Bottom</h2>
+<p>Stack multiple images from top to bottom with our vertical image combiner. Ideal for creating long-form content, infographics, or combining multiple screenshots into a single scrollable image.</p>
+
+<h2>Perfect for Long Content</h2>
+<p>Create long-form images perfect for Pinterest pins, scrolling infographics, or combining multiple screenshots of a conversation or webpage. Our tool handles any number of images seamlessly.</p>
+
+<h2>Automatic Width Matching</h2>
+<p>Images of different widths are automatically adjusted to create a uniform, professional-looking result. No manual resizing required - our tool handles alignment intelligently.</p>
+
+<h2>Popular Applications</h2>
+<p>Combine chat screenshots for archiving conversations. Create tall Pinterest-friendly graphics. Stack multiple receipt images for expense reports. Build visual timelines from sequential photos.</p>
+
+<h2>Simple and Fast</h2>
+<p>Upload your images, arrange them in top-to-bottom order, and click combine. Your vertically stacked image is ready for download in seconds. No complex settings - just straightforward results.</p>`,
+  },
+  {
+    id: "favicon-generator",
+    name: "Favicon Generator",
+    description: "Create favicons for websites in multiple sizes",
+    icon: "Globe",
+    type: "favicon-generator",
+    color: "bg-purple-500",
+    emoji: "🌐",
+    metaTitle: "Favicon Generator Online Free - Create Website Icons All Sizes | PDF Tools",
+    metaDescription: "Generate favicons for your website in all required sizes online for free. Create ICO and PNG favicons from any image. Perfect for web developers.",
+    seoArticle: `<h2>Favicon Generator - Create Professional Website Icons</h2>
+<p>Generate favicons for your website in all the sizes you need with our comprehensive favicon generator. Upload any image and get properly sized icons for browsers, devices, and app shortcuts. Essential for professional web development.</p>
+
+<h2>All Sizes You Need</h2>
+<p>Our generator creates favicons in all standard sizes: 16x16, 32x32, 48x48, 64x64, 128x128, and more. Get ICO files for legacy browser support and PNG files for modern browsers and devices.</p>
+
+<h2>From Any Image</h2>
+<p>Start with a logo, photo, or any image and our tool will intelligently resize it to create crisp favicons. We recommend starting with a square image of at least 512x512 pixels for best results.</p>
+
+<h2>Multi-Format Output</h2>
+<p>Receive your favicons in multiple formats. ICO files containing multiple sizes for Windows and legacy browsers. Individual PNG files for Apple Touch icons and Android devices. Everything you need in one download.</p>
+
+<h2>Web Development Essential</h2>
+<p>Every professional website needs a favicon. It appears in browser tabs, bookmarks, and home screen shortcuts. A good favicon strengthens brand recognition and makes your site look polished and complete.</p>`,
+  },
+  {
+    id: "ico-to-png",
+    name: "ICO to PNG",
+    description: "Convert ICO icon files to PNG format",
+    icon: "FileImage",
+    type: "ico-to-png",
+    color: "bg-sky-500",
+    emoji: "🔄",
+    metaTitle: "ICO to PNG Converter Online Free - Convert Icon Files | PDF Tools",
+    metaDescription: "Convert ICO icon files to PNG format online for free. Extract all sizes from ICO files. Fast and easy icon converter with no software needed.",
+    seoArticle: `<h2>ICO to PNG Converter - Extract Images from Icon Files</h2>
+<p>Convert ICO icon files to PNG format quickly and easily with our online converter. Extract individual images from multi-resolution ICO files or convert single-size icons to universally compatible PNG format.</p>
+
+<h2>Extract All Sizes</h2>
+<p>ICO files often contain multiple image sizes (16x16, 32x32, 48x48, etc.). Our converter extracts all sizes and provides them as separate PNG files, giving you complete flexibility.</p>
+
+<h2>Perfect Compatibility</h2>
+<p>PNG is universally supported across all platforms and applications. Convert ICO files to PNG when you need to edit icons in image editors or use them in web projects that require PNG format.</p>
+
+<h2>Preserve Quality</h2>
+<p>Our conversion process preserves the exact quality of the original ICO file. Transparency is maintained perfectly, and colors remain accurate throughout the conversion.</p>
+
+<h2>Instant Conversion</h2>
+<p>Upload your ICO file and get PNG outputs instantly. No software to install, no registration required. Fast, free, and completely secure.</p>`,
+  },
+  {
+    id: "png-to-ico",
+    name: "PNG to ICO",
+    description: "Convert PNG images to ICO icon format",
+    icon: "ImageIcon",
+    type: "png-to-ico",
+    color: "bg-violet-500",
+    emoji: "✨",
+    metaTitle: "PNG to ICO Converter Online Free - Create Icon Files | PDF Tools",
+    metaDescription: "Convert PNG images to ICO icon format online for free. Create Windows icons and favicons from PNG files. Multi-size ICO generator.",
+    seoArticle: `<h2>PNG to ICO Converter - Create Professional Icon Files</h2>
+<p>Transform PNG images into ICO icon files with our powerful online converter. Create Windows application icons, website favicons, and multi-resolution icon files from your PNG images instantly.</p>
+
+<h2>Multi-Resolution Icons</h2>
+<p>Our converter generates ICO files containing multiple resolutions (16x16, 32x32, 48x48, 256x256) from a single PNG image. Windows and browsers automatically select the appropriate size for each context.</p>
+
+<h2>Perfect for Windows Apps</h2>
+<p>Creating a Windows application? You need an ICO file for your executable icon. Our converter produces fully compatible ICO files that work with all versions of Windows.</p>
+
+<h2>Website Favicons</h2>
+<p>While modern browsers support PNG favicons, ICO format ensures compatibility with older browsers. Create an ICO favicon for complete browser support across all your visitors.</p>
+
+<h2>Preserve Transparency</h2>
+<p>PNG transparency is fully preserved during conversion. Your icons maintain their clean edges and transparent backgrounds, looking crisp on any Windows desktop or browser tab.</p>`,
+  },
+  {
+    id: "apng-to-gif",
+    name: "APNG to GIF",
+    description: "Convert animated PNG to GIF format",
+    icon: "Play",
+    type: "apng-to-gif",
+    color: "bg-orange-500",
+    emoji: "🎬",
+    metaTitle: "APNG to GIF Converter Online Free - Animated PNG to GIF | PDF Tools",
+    metaDescription: "Convert animated PNG (APNG) files to GIF format online for free. Transform APNG animations to widely compatible GIF format instantly.",
+    seoArticle: `<h2>APNG to GIF Converter - Transform Animated PNGs</h2>
+<p>Convert animated PNG (APNG) files to the widely compatible GIF format with our online converter. While APNG offers superior quality, GIF ensures universal compatibility across all platforms and applications.</p>
+
+<h2>Universal Compatibility</h2>
+<p>GIF is supported everywhere - social media, messaging apps, email clients, and older browsers. Convert APNG to GIF when you need guaranteed playback across all platforms.</p>
+
+<h2>Preserve Animation</h2>
+<p>Our converter maintains frame timing and animation loops from your original APNG. The converted GIF plays smoothly with the same timing as your source file.</p>
+
+<h2>Automatic Optimization</h2>
+<p>GIF has a 256-color palette limit, but our converter intelligently optimizes colors to preserve visual quality. Get the smallest possible file size while maintaining animation quality.</p>
+
+<h2>When to Use GIF</h2>
+<p>Choose GIF when sharing animations on platforms that don't support APNG, embedding in emails, or ensuring compatibility with older systems. Our converter makes the transition seamless.</p>`,
+  },
+  {
+    id: "gif-to-apng",
+    name: "GIF to APNG",
+    description: "Convert GIF animations to animated PNG format",
+    icon: "Sparkles",
+    type: "gif-to-apng",
+    color: "bg-pink-500",
+    emoji: "💫",
+    metaTitle: "GIF to APNG Converter Online Free - Convert to Animated PNG | PDF Tools",
+    metaDescription: "Convert GIF animations to animated PNG (APNG) format online for free. Upgrade GIFs to higher quality APNG with better color support.",
+    seoArticle: `<h2>GIF to APNG Converter - Upgrade Your Animations</h2>
+<p>Convert GIF animations to the superior APNG (Animated PNG) format with our online converter. APNG supports full alpha transparency and millions of colors, making your animations look better than ever.</p>
+
+<h2>Superior Image Quality</h2>
+<p>While GIF is limited to 256 colors, APNG supports millions of colors and full alpha transparency. Convert your GIFs to APNG for significantly improved visual quality.</p>
+
+<h2>Better Transparency</h2>
+<p>GIF only supports binary transparency (fully transparent or fully opaque). APNG supports full alpha channels, allowing smooth, anti-aliased edges and partial transparency.</p>
+
+<h2>Modern Format</h2>
+<p>APNG is supported in all modern browsers and offers a clear quality upgrade over GIF. It's the future of animated images on the web.</p>
+
+<h2>Perfect Conversion</h2>
+<p>Our converter preserves all animation frames and timing from your original GIF. The converted APNG plays identically while looking dramatically better.</p>`,
+  },
+  {
+    id: "image-to-ascii",
+    name: "Image to ASCII Art",
+    description: "Convert images to text-based ASCII art",
+    icon: "Terminal",
+    type: "image-to-ascii",
+    color: "bg-gray-700",
+    emoji: "💻",
+    metaTitle: "Image to ASCII Art Converter Online Free - Picture to Text Art | PDF Tools",
+    metaDescription: "Convert images to ASCII art online for free. Transform photos into text-based art using characters. Retro computing aesthetic for any image.",
+    seoArticle: `<h2>Image to ASCII Art Converter - Transform Photos to Text Art</h2>
+<p>Convert any image into ASCII art with our online converter. Transform photographs into stunning text-based artwork using characters that recreate the image's tones and details. A unique way to display images using only text characters.</p>
+
+<h2>Classic Computing Aesthetic</h2>
+<p>ASCII art has a rich history in computing, from early terminal graphics to BBS art. Create nostalgic, retro-style artwork from modern images with our converter.</p>
+
+<h2>Customizable Output</h2>
+<p>Adjust the width and character set to fine-tune your ASCII art. Use more characters for detailed output or fewer for a more abstract result. Choose between different character sets for varying styles.</p>
+
+<h2>Multiple Uses</h2>
+<p>Use ASCII art for unique signatures in emails and forums. Create text-based versions of logos. Generate programmer-friendly art for README files. Make distinctive social media posts.</p>
+
+<h2>Instant Conversion</h2>
+<p>Upload any image and see it transformed into ASCII art instantly. Copy the text output directly or download as a text file. Share your ASCII creations anywhere text is supported.</p>`,
+  },
+  {
+    id: "image-metadata-viewer",
+    name: "Image Metadata Viewer",
+    description: "View EXIF data and metadata from images",
+    icon: "Info",
+    type: "image-metadata-viewer",
+    color: "bg-slate-600",
+    emoji: "📊",
+    metaTitle: "Image Metadata Viewer Online Free - View EXIF Data | PDF Tools",
+    metaDescription: "View image metadata and EXIF data online for free. See camera settings, GPS location, date taken, and more. Extract hidden information from photos.",
+    seoArticle: `<h2>Image Metadata Viewer - Explore Hidden Photo Information</h2>
+<p>Discover the hidden information stored in your images with our metadata viewer. Every digital photo contains EXIF data recording camera settings, date and time, GPS location, and much more. Our tool reveals all this hidden information instantly.</p>
+
+<h2>What Metadata Reveals</h2>
+<p>Image metadata can include camera make and model, exposure settings (aperture, shutter speed, ISO), date and time the photo was taken, GPS coordinates where it was captured, and even the software used to edit it.</p>
+
+<h2>Privacy Awareness</h2>
+<p>Understanding what metadata your images contain is crucial for privacy. Before sharing photos online, check if they contain location data or other sensitive information you might want to remove.</p>
+
+<h2>Photography Analysis</h2>
+<p>Photographers use metadata to learn from their shots. Review camera settings from your best photos to understand what works. Analyze a series of images to see how changing settings affected results.</p>
+
+<h2>Comprehensive Display</h2>
+<p>Our viewer presents all available metadata in an organized, easy-to-read format. From basic information like dimensions and file size to detailed EXIF tags, see everything your image contains.</p>`,
   },
 ];
