@@ -823,6 +823,27 @@ export const toolOptionsSchema = z.object({
   imageMaxHeight: z.number().optional(),
   preserveAspectRatio: z.boolean().optional(),
   stripMetadata: z.boolean().optional(),
+  // Image Resize options
+  resizeTargetWidth: z.number().optional(),
+  resizeTargetHeight: z.number().optional(),
+  resizePercentage: z.number().optional(),
+  resizeFit: z.enum(["cover", "contain", "fill", "inside", "outside"]).optional(),
+  resizePosition: z.enum(["center", "top", "right", "bottom", "left", "top-left", "top-right", "bottom-left", "bottom-right"]).optional(),
+  resizeKernel: z.enum(["nearest", "cubic", "mitchell", "lanczos2", "lanczos3"]).optional(),
+  outputFormat: z.enum(["jpeg", "png", "webp", "gif", "original"]).optional(),
+  // GIF Compression options
+  gifColors: z.number().optional(),
+  gifDither: z.boolean().optional(),
+  // SVG Compression options
+  svgPrecision: z.number().optional(),
+  svgRemoveComments: z.boolean().optional(),
+  svgRemoveMetadata: z.boolean().optional(),
+  svgMinifyStyles: z.boolean().optional(),
+  svgRemoveUnused: z.boolean().optional(),
+  // SVG Resize options
+  svgWidth: z.number().optional(),
+  svgHeight: z.number().optional(),
+  svgPreserveAspectRatio: z.boolean().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
