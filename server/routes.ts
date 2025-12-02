@@ -21442,6 +21442,213 @@ ${paths.join('\n')}
             pageCount = files.length;
             break;
           }
+
+          case "gif-to-png": {
+            const buffer = fs.readFileSync(files[0].path);
+            const frameIndex = parseInt(options.frameIndex) || 0;
+            
+            result = await sharp(buffer, { page: frameIndex })
+              .png({
+                compressionLevel: 9,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(gif)$/i, '') + '.png';
+            contentType = 'image/png';
+            break;
+          }
+
+          case "gif-to-jpg": {
+            const buffer = fs.readFileSync(files[0].path);
+            const quality = parseInt(options.quality) || 90;
+            const frameIndex = parseInt(options.frameIndex) || 0;
+            const bgColor = options.backgroundColor || '#ffffff';
+            
+            result = await sharp(buffer, { page: frameIndex })
+              .flatten({ background: bgColor })
+              .jpeg({
+                quality: quality,
+                progressive: true,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(gif)$/i, '') + '.jpg';
+            contentType = 'image/jpeg';
+            break;
+          }
+
+          case "png-to-gif": {
+            const buffer = fs.readFileSync(files[0].path);
+            const colors = parseInt(options.colors) || 256;
+            const dithering = options.dithering !== 'false';
+            
+            const pngBuffer = await sharp(buffer)
+              .png()
+              .toBuffer();
+            
+            result = await sharp(pngBuffer)
+              .gif({
+                colours: Math.min(256, Math.max(2, colors)),
+                dither: dithering ? 1 : 0,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(png)$/i, '') + '.gif';
+            contentType = 'image/gif';
+            break;
+          }
+
+          case "jpg-to-gif": {
+            const buffer = fs.readFileSync(files[0].path);
+            const colors = parseInt(options.colors) || 256;
+            const dithering = options.dithering !== 'false';
+            
+            result = await sharp(buffer)
+              .gif({
+                colours: Math.min(256, Math.max(2, colors)),
+                dither: dithering ? 1 : 0,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(jpe?g)$/i, '') + '.gif';
+            contentType = 'image/gif';
+            break;
+          }
+
+          case "bmp-to-jpg": {
+            const buffer = fs.readFileSync(files[0].path);
+            const quality = parseInt(options.quality) || 90;
+            
+            result = await sharp(buffer)
+              .jpeg({
+                quality: quality,
+                progressive: true,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(bmp)$/i, '') + '.jpg';
+            contentType = 'image/jpeg';
+            break;
+          }
+
+          case "jpg-to-bmp": {
+            const buffer = fs.readFileSync(files[0].path);
+            
+            const rawBuffer = await sharp(buffer)
+              .raw()
+              .toBuffer({ resolveWithObject: true });
+            
+            const { width, height, channels } = rawBuffer.info;
+            const pixelData = rawBuffer.data;
+            
+            const rowSize = Math.ceil((width * 3) / 4) * 4;
+            const imageSize = rowSize * height;
+            const fileSize = 54 + imageSize;
+            
+            const bmpBuffer = Buffer.alloc(fileSize);
+            
+            bmpBuffer.write('BM', 0);
+            bmpBuffer.writeUInt32LE(fileSize, 2);
+            bmpBuffer.writeUInt32LE(0, 6);
+            bmpBuffer.writeUInt32LE(54, 10);
+            
+            bmpBuffer.writeUInt32LE(40, 14);
+            bmpBuffer.writeInt32LE(width, 18);
+            bmpBuffer.writeInt32LE(-height, 22);
+            bmpBuffer.writeUInt16LE(1, 26);
+            bmpBuffer.writeUInt16LE(24, 28);
+            bmpBuffer.writeUInt32LE(0, 30);
+            bmpBuffer.writeUInt32LE(imageSize, 34);
+            bmpBuffer.writeInt32LE(2835, 38);
+            bmpBuffer.writeInt32LE(2835, 42);
+            bmpBuffer.writeUInt32LE(0, 46);
+            bmpBuffer.writeUInt32LE(0, 50);
+            
+            let offset = 54;
+            for (let y = 0; y < height; y++) {
+              for (let x = 0; x < width; x++) {
+                const srcIdx = (y * width + x) * channels;
+                bmpBuffer[offset++] = pixelData[srcIdx + 2];
+                bmpBuffer[offset++] = pixelData[srcIdx + 1];
+                bmpBuffer[offset++] = pixelData[srcIdx];
+              }
+              const padding = rowSize - width * 3;
+              for (let p = 0; p < padding; p++) {
+                bmpBuffer[offset++] = 0;
+              }
+            }
+            
+            result = bmpBuffer;
+            filename = files[0].originalname.replace(/\.(jpe?g)$/i, '') + '.bmp';
+            contentType = 'image/bmp';
+            break;
+          }
+
+          case "tiff-to-jpg": {
+            const buffer = fs.readFileSync(files[0].path);
+            const quality = parseInt(options.quality) || 90;
+            const pageNum = parseInt(options.pageIndex) || 0;
+            
+            result = await sharp(buffer, { page: pageNum })
+              .jpeg({
+                quality: quality,
+                progressive: true,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(tiff?)$/i, '') + '.jpg';
+            contentType = 'image/jpeg';
+            break;
+          }
+
+          case "jpg-to-tiff": {
+            const buffer = fs.readFileSync(files[0].path);
+            const compression = options.compression || 'lzw';
+            
+            const tiffOptions: any = {
+              compression: compression,
+            };
+            
+            result = await sharp(buffer)
+              .tiff(tiffOptions)
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(jpe?g)$/i, '') + '.tiff';
+            contentType = 'image/tiff';
+            break;
+          }
+
+          case "webp-to-png": {
+            const buffer = fs.readFileSync(files[0].path);
+            
+            result = await sharp(buffer)
+              .png({
+                compressionLevel: 9,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(webp)$/i, '') + '.png';
+            contentType = 'image/png';
+            break;
+          }
+
+          case "png-to-webp": {
+            const buffer = fs.readFileSync(files[0].path);
+            const quality = parseInt(options.quality) || 90;
+            const lossless = options.lossless === 'true';
+            
+            result = await sharp(buffer)
+              .webp({
+                quality: quality,
+                lossless: lossless,
+                effort: 6,
+              })
+              .toBuffer();
+            
+            filename = files[0].originalname.replace(/\.(png)$/i, '') + '.webp';
+            contentType = 'image/webp';
+            break;
+          }
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);

@@ -7991,6 +7991,259 @@ export function ToolOptionsComponent({
       );
     }
 
+    case "gif-to-png": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Frame Index (for animated GIFs)</Label>
+            <Input
+              type="number"
+              min={0}
+              value={options.frameIndex || 0}
+              onChange={(e) => updateOption("frameIndex", e.target.value)}
+              placeholder="0 = first frame"
+              data-testid="input-frame-index"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert GIF to PNG with lossless quality. For animated GIFs, select which frame to extract.
+          </p>
+        </div>
+      );
+    }
+
+    case "gif-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 90}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 90]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-jpg-quality"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Frame Index (for animated GIFs)</Label>
+            <Input
+              type="number"
+              min={0}
+              value={options.frameIndex || 0}
+              onChange={(e) => updateOption("frameIndex", e.target.value)}
+              placeholder="0 = first frame"
+              data-testid="input-frame-index-jpg"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Background Color</Label>
+            <Input
+              type="color"
+              value={options.backgroundColor || "#ffffff"}
+              onChange={(e) => updateOption("backgroundColor", e.target.value)}
+              className="h-10 w-full"
+              data-testid="input-bg-color"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert GIF to compressed JPG format. Transparent areas will be filled with the background color.
+          </p>
+        </div>
+      );
+    }
+
+    case "png-to-gif": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Color Count: {options.colors || 256}</Label>
+            <Slider
+              min={2}
+              max={256}
+              step={2}
+              value={[options.colors || 256]}
+              onValueChange={([value]) => updateOption("colors", value)}
+              data-testid="slider-gif-colors"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="dithering"
+              checked={options.dithering !== 'false'}
+              onCheckedChange={(checked) => updateOption("dithering", checked ? 'true' : 'false')}
+              data-testid="switch-dithering"
+            />
+            <Label htmlFor="dithering">Enable dithering</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert PNG to GIF format. Dithering can help smooth out color transitions.
+          </p>
+        </div>
+      );
+    }
+
+    case "jpg-to-gif": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Color Count: {options.colors || 256}</Label>
+            <Slider
+              min={2}
+              max={256}
+              step={2}
+              value={[options.colors || 256]}
+              onValueChange={([value]) => updateOption("colors", value)}
+              data-testid="slider-gif-colors-jpg"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="dithering-jpg"
+              checked={options.dithering !== 'false'}
+              onCheckedChange={(checked) => updateOption("dithering", checked ? 'true' : 'false')}
+              data-testid="switch-dithering-jpg"
+            />
+            <Label htmlFor="dithering-jpg">Enable dithering</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert JPG to GIF format. Dithering helps simulate colors beyond GIF's 256 limit.
+          </p>
+        </div>
+      );
+    }
+
+    case "bmp-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 90}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 90]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-bmp-jpg-quality"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert BMP bitmap to compressed JPG format. Higher quality = larger file size.
+          </p>
+        </div>
+      );
+    }
+
+    case "jpg-to-bmp": {
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert JPG to uncompressed BMP bitmap format. BMP files are larger but preserve quality without further compression.
+          </p>
+        </div>
+      );
+    }
+
+    case "tiff-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 90}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 90]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-tiff-jpg-quality"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Page Index (for multi-page TIFF)</Label>
+            <Input
+              type="number"
+              min={0}
+              value={options.pageIndex || 0}
+              onChange={(e) => updateOption("pageIndex", e.target.value)}
+              placeholder="0 = first page"
+              data-testid="input-tiff-page"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert TIFF to compressed JPG format. For multi-page TIFFs, select which page to convert.
+          </p>
+        </div>
+      );
+    }
+
+    case "jpg-to-tiff": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Compression</Label>
+            <Select
+              value={options.compression || "lzw"}
+              onValueChange={(value) => updateOption("compression", value)}
+            >
+              <SelectTrigger data-testid="select-tiff-compression">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">None (Largest file)</SelectItem>
+                <SelectItem value="lzw">LZW (Lossless)</SelectItem>
+                <SelectItem value="deflate">Deflate (Lossless)</SelectItem>
+                <SelectItem value="jpeg">JPEG (Lossy)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert JPG to TIFF format for professional printing and archival. LZW offers good lossless compression.
+          </p>
+        </div>
+      );
+    }
+
+    case "webp-to-png": {
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert WebP to PNG format with lossless quality. PNG is widely supported and ideal for graphics with transparency.
+          </p>
+        </div>
+      );
+    }
+
+    case "png-to-webp": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality: {options.quality || 90}%</Label>
+            <Slider
+              min={10}
+              max={100}
+              step={5}
+              value={[options.quality || 90]}
+              onValueChange={([value]) => updateOption("quality", value)}
+              data-testid="slider-webp-quality"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="lossless"
+              checked={options.lossless === 'true'}
+              onCheckedChange={(checked) => updateOption("lossless", checked ? 'true' : 'false')}
+              data-testid="switch-lossless"
+            />
+            <Label htmlFor="lossless">Lossless compression</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert PNG to WebP format for smaller file sizes. Enable lossless for perfect quality.
+          </p>
+        </div>
+      );
+    }
+
     default:
       return null;
   }

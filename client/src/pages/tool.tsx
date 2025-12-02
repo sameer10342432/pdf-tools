@@ -384,6 +384,33 @@ export default function ToolPage() {
     if (tool.type === "gif-to-mp4") {
       return ".gif,image/gif";
     }
+    if (tool.type === "gif-to-png" || tool.type === "gif-to-jpg") {
+      return ".gif,image/gif";
+    }
+    if (tool.type === "png-to-gif") {
+      return ".png,image/png";
+    }
+    if (tool.type === "jpg-to-gif") {
+      return ".jpg,.jpeg,image/jpeg";
+    }
+    if (tool.type === "bmp-to-jpg") {
+      return ".bmp,image/bmp,image/x-ms-bmp";
+    }
+    if (tool.type === "jpg-to-bmp") {
+      return ".jpg,.jpeg,image/jpeg";
+    }
+    if (tool.type === "tiff-to-jpg") {
+      return ".tif,.tiff,image/tiff";
+    }
+    if (tool.type === "jpg-to-tiff") {
+      return ".jpg,.jpeg,image/jpeg";
+    }
+    if (tool.type === "webp-to-png") {
+      return ".webp,image/webp";
+    }
+    if (tool.type === "png-to-webp") {
+      return ".png,image/png";
+    }
     return ".pdf,application/pdf";
   };
 
