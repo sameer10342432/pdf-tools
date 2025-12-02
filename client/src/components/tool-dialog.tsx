@@ -146,6 +146,26 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     if (tool.type === "images-to-pdf") {
       return "image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp";
     }
+    // New Image Tools
+    if (tool.type === "resize-heic") {
+      return ".heic,.heif,image/heic,image/heif";
+    }
+    if (tool.type === "crop-image" || tool.type === "rotate-image" || tool.type === "watermark-image" || 
+        tool.type === "add-text-to-image" || tool.type === "image-converter") {
+      return "image/jpeg,image/png,image/gif,image/webp,image/bmp,.jpg,.jpeg,.png,.gif,.webp,.bmp,.heic,.heif";
+    }
+    if (tool.type === "crop-jpg") {
+      return ".jpg,.jpeg,image/jpeg";
+    }
+    if (tool.type === "crop-png") {
+      return ".png,image/png";
+    }
+    if (tool.type === "png-to-jpg") {
+      return ".png,image/png";
+    }
+    if (tool.type === "jpg-to-png") {
+      return ".jpg,.jpeg,image/jpeg";
+    }
     return ".pdf,application/pdf";
   };
 

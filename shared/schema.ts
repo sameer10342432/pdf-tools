@@ -416,6 +416,16 @@ export const pdfToolTypes = [
   "resize-gif",
   "resize-svg",
   "resize-webp",
+  "resize-heic",
+  "crop-image",
+  "crop-jpg",
+  "crop-png",
+  "rotate-image",
+  "watermark-image",
+  "add-text-to-image",
+  "image-converter",
+  "png-to-jpg",
+  "jpg-to-png",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -844,6 +854,35 @@ export const toolOptionsSchema = z.object({
   svgWidth: z.number().optional(),
   svgHeight: z.number().optional(),
   svgPreserveAspectRatio: z.boolean().optional(),
+  // Image Crop options
+  imageCropX: z.number().optional(),
+  imageCropY: z.number().optional(),
+  imageCropWidth: z.number().optional(),
+  imageCropHeight: z.number().optional(),
+  imageCropAspectRatio: z.enum(["free", "1:1", "4:3", "16:9", "3:2", "2:3"]).optional(),
+  // Image Rotate options
+  imageRotation: z.enum(["90", "180", "270", "custom"]).optional(),
+  imageRotationAngle: z.number().optional(),
+  imageFlipHorizontal: z.boolean().optional(),
+  imageFlipVertical: z.boolean().optional(),
+  // Image Watermark options
+  imageWatermarkText: z.string().optional(),
+  imageWatermarkPosition: z.enum(["center", "top-left", "top-right", "bottom-left", "bottom-right", "tile"]).optional(),
+  imageWatermarkOpacity: z.number().optional(),
+  imageWatermarkColor: z.string().optional(),
+  imageWatermarkFontSize: z.number().optional(),
+  imageWatermarkRotation: z.number().optional(),
+  // Image Text Overlay options
+  imageTextContent: z.string().optional(),
+  imageTextX: z.number().optional(),
+  imageTextY: z.number().optional(),
+  imageTextFontSize: z.number().optional(),
+  imageTextColor: z.string().optional(),
+  imageTextBackgroundColor: z.string().optional(),
+  imageTextFont: z.enum(["sans-serif", "serif", "monospace"]).optional(),
+  // Image Converter options
+  imageConvertFormat: z.enum(["jpg", "png", "webp", "gif", "bmp", "tiff"]).optional(),
+  imageConvertQuality: z.number().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -11718,5 +11757,285 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Web Optimization</h2>
 <p>Create responsive image sizes. Generate thumbnails for galleries. Prepare images for lazy loading. Optimize for Core Web Vitals. Performance-focused resizing workflow.</p>`,
+  },
+  {
+    id: "resize-heic",
+    name: "Resize HEIC",
+    description: "Resize HEIC/HEIF images to custom dimensions",
+    icon: "Maximize",
+    type: "resize-heic",
+    color: "bg-purple-600",
+    emoji: "📐",
+    metaTitle: "Resize HEIC Online Free - Scale HEIC/HEIF Images | Image Tools",
+    metaDescription: "Resize HEIC and HEIF images online for free. Scale Apple format photos to any dimension while maintaining quality. No software needed.",
+    seoArticle: `<h2>Resize HEIC Images - Apple Format Scaling</h2>
+<p>HEIC (High Efficiency Image Container) is Apple's default image format, offering excellent compression with outstanding quality. Our free online HEIC resizer lets you scale these images to any dimension without losing the format's quality advantages or converting to another format.</p>
+
+<h2>Understanding HEIC Format</h2>
+<p>HEIC files are commonly created by iPhones and iPads running iOS 11 or later. They offer up to 50% smaller file sizes compared to JPEG while maintaining similar or better image quality. Our tool preserves these benefits while giving you complete control over image dimensions.</p>
+
+<h2>Professional Scaling Options</h2>
+<p>Set exact pixel dimensions for precise requirements. Scale by percentage for proportional resizing. Lock aspect ratio to prevent distortion. Fit images within maximum bounds while preserving proportions. Every option you need for professional results.</p>
+
+<h2>Quality Preservation</h2>
+<p>Our advanced algorithms maintain the quality that makes HEIC special. Colors remain accurate, details stay sharp, and compression artifacts are minimized. Your resized images look as good as the originals, just at different dimensions.</p>
+
+<h2>Cross-Platform Compatibility</h2>
+<p>Output as resized HEIC for Apple ecosystems. Convert to JPG or PNG for universal compatibility. Choose the format that best fits your needs. Share your images anywhere without format barriers.</p>
+
+<h2>Batch Processing</h2>
+<p>Resize multiple HEIC files at once with consistent settings. Perfect for processing photo libraries or preparing images for web galleries. Save time with efficient bulk operations.</p>`,
+  },
+  {
+    id: "crop-image",
+    name: "Crop Image",
+    description: "Crop any image format to your desired dimensions",
+    icon: "Crop",
+    type: "crop-image",
+    color: "bg-teal-500",
+    emoji: "✂️",
+    metaTitle: "Crop Image Online Free - Cut and Trim Images | Image Tools",
+    metaDescription: "Crop images online for free. Remove unwanted areas from photos in any format. Easy-to-use image cropper with preset aspect ratios.",
+    seoArticle: `<h2>Crop Images Online - Precision Cutting Tool</h2>
+<p>Remove unwanted areas from your images with our free online image cropper. Whether you need to focus on a specific subject, prepare images for social media, or create perfectly framed compositions, our tool provides the precision and flexibility you need.</p>
+
+<h2>Universal Format Support</h2>
+<p>Our image cropper works with all popular formats including JPEG, PNG, GIF, WebP, BMP, and TIFF. Upload any image and start cropping immediately. The output maintains the quality and format characteristics of your original file.</p>
+
+<h2>Preset Aspect Ratios</h2>
+<p>Choose from popular aspect ratios for common use cases. 1:1 square for Instagram and profile pictures. 16:9 for YouTube thumbnails and presentations. 4:3 for standard photos. 3:2 for DSLR proportions. Or crop freely without constraints.</p>
+
+<h2>Precise Controls</h2>
+<p>Drag to select your crop area with visual guides. Fine-tune with exact pixel coordinates. Lock aspect ratios for consistent results. Preview your crop before applying. Achieve exactly the composition you envision.</p>
+
+<h2>Perfect for Social Media</h2>
+<p>Create perfectly sized images for every platform. Crop photos for Instagram posts and stories. Prepare Twitter header images. Design Facebook cover photos. Match the exact requirements of each platform effortlessly.</p>
+
+<h2>Composition Improvement</h2>
+<p>Apply the rule of thirds for better compositions. Remove distracting elements from edges. Tighten framing around your subject. Transform ordinary snapshots into professionally composed images.</p>`,
+  },
+  {
+    id: "crop-jpg",
+    name: "Crop JPG",
+    description: "Crop JPEG images with precision controls",
+    icon: "Crop",
+    type: "crop-jpg",
+    color: "bg-blue-500",
+    emoji: "🖼️",
+    metaTitle: "Crop JPG Online Free - Cut JPEG Images | Image Tools",
+    metaDescription: "Crop JPG and JPEG images online for free. Precisely cut and trim photos with easy-to-use controls. Maintain image quality.",
+    seoArticle: `<h2>Crop JPG Images - JPEG Precision Cropping</h2>
+<p>JPEG is the world's most popular image format, and our specialized JPG cropper is optimized for this format. Remove unwanted portions, reframe compositions, and create perfectly sized images while maintaining the quality characteristics that make JPEG ideal for photographs.</p>
+
+<h2>Optimized for JPEG</h2>
+<p>Our tool understands JPEG's unique characteristics. Cropping is performed with minimal recompression to preserve quality. EXIF data can be retained or stripped based on your preference. The output maintains optimal quality-to-size ratio.</p>
+
+<h2>Quality Preservation</h2>
+<p>When cropping JPEG images, avoiding unnecessary recompression is crucial. Our tool uses intelligent processing to maintain the original quality wherever possible. Your cropped images look as sharp as the originals.</p>
+
+<h2>Flexible Cropping Options</h2>
+<p>Select your crop area visually with our intuitive interface. Use preset aspect ratios for common requirements. Enter exact pixel dimensions for precise control. Preview results before finalizing your crop.</p>
+
+<h2>Perfect for Photography</h2>
+<p>JPEG is the format of choice for photography, and proper cropping can elevate any photo. Remove distracting backgrounds. Improve composition with better framing. Create multiple crops from a single original for different uses.</p>
+
+<h2>Social Media Ready</h2>
+<p>Create JPG crops perfectly sized for social media platforms. Instagram squares, Facebook posts, Twitter images - all with the right dimensions and optimized file sizes for fast loading.</p>`,
+  },
+  {
+    id: "crop-png",
+    name: "Crop PNG",
+    description: "Crop PNG images while preserving transparency",
+    icon: "Crop",
+    type: "crop-png",
+    color: "bg-green-500",
+    emoji: "🎨",
+    metaTitle: "Crop PNG Online Free - Cut PNG Images with Transparency | Image Tools",
+    metaDescription: "Crop PNG images online for free while preserving transparency. Perfect for logos, graphics, and images with transparent backgrounds.",
+    seoArticle: `<h2>Crop PNG Images - Transparency-Preserving Cropper</h2>
+<p>PNG format is essential for images requiring transparency, and our specialized PNG cropper preserves this crucial feature. Whether you're working with logos, graphics, or photos with transparent backgrounds, your alpha channel remains perfectly intact after cropping.</p>
+
+<h2>Full Transparency Support</h2>
+<p>Unlike tools that flatten transparency, our PNG cropper maintains full alpha channel support. Partial transparency, anti-aliased edges, and gradient transparency all survive the cropping process unchanged. Your graphics remain ready for overlay on any background.</p>
+
+<h2>Lossless Quality</h2>
+<p>PNG is a lossless format, and our cropper maintains this quality advantage. No compression artifacts are introduced. Colors remain exact. Sharp edges stay crisp. Your cropped PNG is as perfect as the original, just smaller.</p>
+
+<h2>Precision Controls</h2>
+<p>Visual selection tools make cropping intuitive. Snap to exact pixels for web graphics. Use preset aspect ratios or custom dimensions. Preview transparency against different backgrounds to ensure perfect results.</p>
+
+<h2>Perfect for Graphics</h2>
+<p>Logos, icons, illustrations, and UI elements often use PNG for its transparency. Our cropper respects this, delivering clean crops suitable for professional graphics work. Web designers and graphic artists trust our tool for production work.</p>
+
+<h2>Web Optimization</h2>
+<p>Cropped PNGs remain optimized for web use. Transparency displays correctly in all browsers. File sizes stay efficient. Your graphics load quickly while maintaining visual perfection.</p>`,
+  },
+  {
+    id: "rotate-image",
+    name: "Rotate Image",
+    description: "Rotate images by any angle with flip options",
+    icon: "RotateCw",
+    type: "rotate-image",
+    color: "bg-indigo-500",
+    emoji: "🔄",
+    metaTitle: "Rotate Image Online Free - Flip and Turn Images | Image Tools",
+    metaDescription: "Rotate images online for free by 90, 180, 270 degrees or custom angles. Flip horizontally or vertically. Works with all image formats.",
+    seoArticle: `<h2>Rotate Images Online - Complete Rotation Tool</h2>
+<p>Correct orientation issues or create artistic effects with our free online image rotation tool. Whether your photo was taken at the wrong angle or you need to flip an image for mirror effect, this tool provides all the options you need with quality preservation.</p>
+
+<h2>Rotation Options</h2>
+<p>Quick rotations at 90, 180, or 270 degrees handle common orientation corrections instantly. Custom angle rotation allows precise adjustments for perfectly leveled horizons or creative tilts. Rotate clockwise or counterclockwise based on your needs.</p>
+
+<h2>Flip Transformations</h2>
+<p>Horizontal flipping creates mirror images perfect for design work. Vertical flipping inverts images for special effects. Combine rotation and flipping for complete transformation control. Every orientation possibility is available.</p>
+
+<h2>Format Support</h2>
+<p>Works seamlessly with JPEG, PNG, GIF, WebP, HEIC, and more. Transparency is preserved in applicable formats. Quality remains intact through the rotation process. Output in the same format or convert as needed.</p>
+
+<h2>EXIF Orientation Fix</h2>
+<p>Many photos display incorrectly due to EXIF orientation data. Our tool can fix these issues by actually rotating the image data while correcting the EXIF flag. Your photos will display correctly everywhere.</p>
+
+<h2>Batch Rotation</h2>
+<p>Rotate multiple images at once with consistent settings. Perfect for fixing batches of photos taken with the camera held incorrectly. Save time with efficient bulk processing.</p>`,
+  },
+  {
+    id: "watermark-image",
+    name: "Watermark Image",
+    description: "Add text or image watermarks to protect your photos",
+    icon: "Shield",
+    type: "watermark-image",
+    color: "bg-rose-500",
+    emoji: "💧",
+    metaTitle: "Watermark Image Online Free - Add Watermarks to Photos | Image Tools",
+    metaDescription: "Add watermarks to images online for free. Protect your photos with text or logo watermarks. Customizable position, opacity, and style.",
+    seoArticle: `<h2>Add Watermarks to Images - Protect Your Work</h2>
+<p>Protect your creative work and establish brand presence with our free online image watermarking tool. Add custom text or logo watermarks to photos and graphics with full control over positioning, opacity, and style. Keep your images safe while maintaining visual appeal.</p>
+
+<h2>Text Watermarks</h2>
+<p>Add your name, website, or copyright notice as a text watermark. Choose from various fonts and sizes. Set custom colors to match your brand. Control opacity for subtle or prominent marking. Position anywhere on the image.</p>
+
+<h2>Positioning Options</h2>
+<p>Place watermarks in corners for minimal intrusion. Center for maximum protection. Tile across the entire image to prevent cropping removal. Diagonal placement for classic watermarking style. Complete flexibility for your needs.</p>
+
+<h2>Opacity Control</h2>
+<p>Subtle watermarks protect without distracting from the image. Bold watermarks clearly assert ownership. Adjust opacity from barely visible to fully opaque. Find the perfect balance for your use case.</p>
+
+<h2>Batch Watermarking</h2>
+<p>Apply consistent watermarks across multiple images at once. Perfect for photographers processing event photos. Essential for stock photography preparation. Maintain brand consistency across your portfolio.</p>
+
+<h2>Professional Protection</h2>
+<p>Watermarks deter unauthorized use of your images. Establish ownership visually. Enable sharing previews while protecting full-resolution originals. Essential for creative professionals and content creators.</p>`,
+  },
+  {
+    id: "add-text-to-image",
+    name: "Add Text to Image",
+    description: "Overlay custom text on images with styling options",
+    icon: "Type",
+    type: "add-text-to-image",
+    color: "bg-cyan-500",
+    emoji: "✍️",
+    metaTitle: "Add Text to Image Online Free - Text Overlay Tool | Image Tools",
+    metaDescription: "Add text to images online for free. Customize font, size, color, and position. Create memes, quotes, and annotated images easily.",
+    seoArticle: `<h2>Add Text to Images - Complete Text Overlay Tool</h2>
+<p>Transform ordinary images into engaging visual content with our free text overlay tool. Add quotes, captions, annotations, or any text to your images with full control over styling and positioning. Perfect for social media content, memes, presentations, and more.</p>
+
+<h2>Typography Controls</h2>
+<p>Choose from clean sans-serif, elegant serif, or precise monospace fonts. Set any font size from subtle annotations to bold headlines. Every text element is fully customizable to match your vision.</p>
+
+<h2>Color and Style</h2>
+<p>Pick any color for your text with our color picker. Add background colors for improved readability over complex images. Create contrast that makes your text pop while complementing the underlying image.</p>
+
+<h2>Precise Positioning</h2>
+<p>Place text exactly where you want it with pixel-perfect control. Use coordinates for precise placement. Preview positioning in real-time. Achieve professional-looking results every time.</p>
+
+<h2>Perfect for Social Media</h2>
+<p>Create engaging quote images for Instagram. Design memes that capture attention. Add captions to photos for context. Build visual content that drives engagement across all platforms.</p>
+
+<h2>Professional Applications</h2>
+<p>Annotate images for documentation. Add labels to product photos. Create informational graphics. Design promotional images. Our text tool serves professional needs across industries.</p>`,
+  },
+  {
+    id: "image-converter",
+    name: "Image Converter",
+    description: "Convert images between JPG, PNG, WebP, GIF, and more",
+    icon: "RefreshCw",
+    type: "image-converter",
+    color: "bg-violet-500",
+    emoji: "🔄",
+    metaTitle: "Image Converter Online Free - Convert Between Formats | Image Tools",
+    metaDescription: "Convert images between formats online for free. Support for JPG, PNG, WebP, GIF, BMP, TIFF. Fast, secure format conversion.",
+    seoArticle: `<h2>Convert Images Between Formats - Universal Converter</h2>
+<p>Need to change an image format? Our free online image converter handles all popular formats with ease. Convert between JPEG, PNG, WebP, GIF, BMP, TIFF, and more while maintaining quality and controlling compression. The right format for every use case.</p>
+
+<h2>Supported Formats</h2>
+<p>JPEG for photographs with efficient compression. PNG for graphics needing transparency. WebP for modern web optimization. GIF for simple animations. BMP for uncompressed quality. TIFF for professional publishing. Convert any direction.</p>
+
+<h2>Quality Control</h2>
+<p>For lossy formats like JPEG, control compression quality. Balance file size against visual fidelity. Preview results before committing. Achieve the optimal trade-off for your needs.</p>
+
+<h2>Transparency Handling</h2>
+<p>Converting between formats with different transparency support requires care. Our tool handles these transitions intelligently. PNG to JPEG gains a background color. JPEG to PNG maintains quality. WebP handles transparency perfectly.</p>
+
+<h2>Batch Conversion</h2>
+<p>Convert multiple images at once with consistent settings. Perfect for preparing images for specific platforms. Standardize format across image libraries. Save time with bulk processing.</p>
+
+<h2>Web Optimization</h2>
+<p>Convert to WebP for modern browsers and smaller files. Fall back to JPEG or PNG for compatibility. Optimize images for faster page loads. Improve Core Web Vitals with right format choices.</p>`,
+  },
+  {
+    id: "png-to-jpg",
+    name: "PNG to JPG",
+    description: "Convert PNG images to JPEG format",
+    icon: "ArrowRightLeft",
+    type: "png-to-jpg",
+    color: "bg-amber-500",
+    emoji: "🔄",
+    metaTitle: "PNG to JPG Converter Online Free - Convert PNG to JPEG | Image Tools",
+    metaDescription: "Convert PNG images to JPG format online for free. Reduce file sizes while maintaining quality. Set custom background colors for transparency.",
+    seoArticle: `<h2>Convert PNG to JPG - Format Optimization</h2>
+<p>PNG files can be larger than necessary, especially for photographs. Our free online PNG to JPG converter transforms your images to the more efficient JPEG format, dramatically reducing file sizes while maintaining visual quality. Perfect for web optimization and storage efficiency.</p>
+
+<h2>Why Convert PNG to JPG?</h2>
+<p>JPEG typically produces smaller files for photographs. Web pages load faster with optimized images. Email attachments stay within size limits. Storage space is used more efficiently. When transparency isn't needed, JPEG is often the better choice.</p>
+
+<h2>Transparency Handling</h2>
+<p>JPEG doesn't support transparency, so transparent areas need a background color. Choose white, black, or any custom color for transparent regions. Preview results to ensure perfect appearance. Our tool handles this conversion intelligently.</p>
+
+<h2>Quality Settings</h2>
+<p>Control JPEG quality from 1-100 for optimal results. Higher quality means larger files but better appearance. Lower quality creates smaller files with some visible compression. Find your perfect balance with preview capability.</p>
+
+<h2>Batch Conversion</h2>
+<p>Convert entire folders of PNG images at once. Apply consistent quality settings across all files. Perfect for website migration or optimization projects. Save hours of manual conversion work.</p>
+
+<h2>Use Cases</h2>
+<p>Optimize website images for faster loading. Reduce storage requirements for photo libraries. Prepare images for platforms requiring JPEG. Create email-friendly versions of graphics. Practical solutions for common needs.</p>`,
+  },
+  {
+    id: "jpg-to-png",
+    name: "JPG to PNG",
+    description: "Convert JPEG images to PNG format",
+    icon: "ArrowRightLeft",
+    type: "jpg-to-png",
+    color: "bg-emerald-500",
+    emoji: "🔄",
+    metaTitle: "JPG to PNG Converter Online Free - Convert JPEG to PNG | Image Tools",
+    metaDescription: "Convert JPG images to PNG format online for free. Get lossless quality and prepare images for editing. Fast and easy conversion.",
+    seoArticle: `<h2>Convert JPG to PNG - Lossless Format Upgrade</h2>
+<p>Upgrade your JPEG images to PNG format with our free online converter. While JPEG is excellent for photographs, PNG offers lossless quality that's essential for editing, graphics work, and situations requiring the highest fidelity. Convert your images with perfect quality preservation.</p>
+
+<h2>Why Convert to PNG?</h2>
+<p>PNG uses lossless compression, preserving every detail. Ideal for further editing without quality degradation. Supports transparency for overlay effects. Sharp edges remain crisp without JPEG artifacts. The professional choice for quality-critical work.</p>
+
+<h2>Quality Preservation</h2>
+<p>Our conversion captures the full quality of your JPEG. No additional compression artifacts are introduced. The resulting PNG is as good as the source allows. Ready for professional editing workflows.</p>
+
+<h2>Transparency Benefits</h2>
+<p>While JPEG doesn't have transparency, converting to PNG prepares images for transparency editing. Remove backgrounds in image editors. Add alpha channels for overlay effects. The PNG format enables creative possibilities.</p>
+
+<h2>File Size Considerations</h2>
+<p>PNG files are typically larger than JPEG, especially for photographs. This trade-off provides lossless quality and editing flexibility. For final web delivery, you might convert back to JPEG after editing. Use PNG for the editing process.</p>
+
+<h2>Professional Workflows</h2>
+<p>Graphic designers often work with PNG for quality-critical projects. Convert source images to PNG for editing. Maintain maximum quality throughout the creative process. Export to appropriate formats when finished.</p>`,
   },
 ];

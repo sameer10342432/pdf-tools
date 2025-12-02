@@ -13091,6 +13091,7 @@ export async function registerRoutes(
         let filename: string;
         let isZip = false;
         let pageCount: number | undefined;
+        let contentType: string = 'application/pdf';
         
         switch (toolType) {
           case "merge":
@@ -20306,6 +20307,404 @@ ${Array.from({ length: imageCount }, (_, i) => `- page-${i + 1}.pdf`).join('\n')
             result = resizeWebpOutput;
             filename = resizeWebpFile.originalname.replace(/\.[^/.]+$/, '-resized.webp');
             contentType = 'image/webp';
+            pageCount = 1;
+            break;
+          }
+
+          case "resize-heic": {
+            const resizeHeicFile = files[0];
+            const resizeHeicBuffer = fs.readFileSync(resizeHeicFile.path);
+            
+            const heicWidth = options.resizeTargetWidth;
+            const heicHeight = options.resizeTargetHeight;
+            const heicPercentage = options.resizePercentage;
+            const heicFit = options.resizeFit || 'inside';
+            const heicKernel = options.resizeKernel || 'lanczos3';
+            
+            let resizeHeicSharp = sharp(resizeHeicBuffer);
+            const heicMeta = await resizeHeicSharp.metadata();
+            
+            let heicNewWidth = heicWidth;
+            let heicNewHeight = heicHeight;
+            
+            if (heicPercentage && heicMeta.width && heicMeta.height) {
+              heicNewWidth = Math.round(heicMeta.width * (heicPercentage / 100));
+              heicNewHeight = Math.round(heicMeta.height * (heicPercentage / 100));
+            }
+            
+            if (heicNewWidth || heicNewHeight) {
+              resizeHeicSharp = resizeHeicSharp.resize(heicNewWidth, heicNewHeight, {
+                fit: heicFit as any,
+                kernel: heicKernel as any,
+                withoutEnlargement: false
+              });
+            }
+            
+            const resizeHeicOutput = await resizeHeicSharp
+              .jpeg({ quality: options.imageCompressionQuality || 90, mozjpeg: true })
+              .toBuffer();
+            
+            result = resizeHeicOutput;
+            filename = resizeHeicFile.originalname.replace(/\.[^/.]+$/, '-resized.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+
+          case "crop-image":
+          case "crop-jpg":
+          case "crop-png": {
+            const cropFile = files[0];
+            const cropBuffer = fs.readFileSync(cropFile.path);
+            const cropExt = path.extname(cropFile.originalname).toLowerCase();
+            
+            const cropX = options.imageCropX || 0;
+            const cropY = options.imageCropY || 0;
+            const cropWidth = options.imageCropWidth;
+            const cropHeight = options.imageCropHeight;
+            
+            let cropSharp = sharp(cropBuffer);
+            const cropMeta = await cropSharp.metadata();
+            
+            const finalWidth = cropWidth || (cropMeta.width ? cropMeta.width - cropX : 100);
+            const finalHeight = cropHeight || (cropMeta.height ? cropMeta.height - cropY : 100);
+            
+            cropSharp = cropSharp.extract({
+              left: Math.max(0, cropX),
+              top: Math.max(0, cropY),
+              width: Math.min(finalWidth, (cropMeta.width || 0) - cropX),
+              height: Math.min(finalHeight, (cropMeta.height || 0) - cropY)
+            });
+            
+            let cropOutput: Buffer;
+            let cropContentType = 'image/jpeg';
+            let cropFilename = cropFile.originalname;
+            
+            if (cropExt === '.png' || toolType === 'crop-png') {
+              cropOutput = await cropSharp.png({ compressionLevel: 6 }).toBuffer();
+              cropContentType = 'image/png';
+              cropFilename = cropFile.originalname.replace(/\.[^/.]+$/, '-cropped.png');
+            } else {
+              cropOutput = await cropSharp.jpeg({ quality: 90, mozjpeg: true }).toBuffer();
+              cropContentType = 'image/jpeg';
+              cropFilename = cropFile.originalname.replace(/\.[^/.]+$/, '-cropped.jpg');
+            }
+            
+            result = cropOutput;
+            filename = cropFilename;
+            contentType = cropContentType;
+            pageCount = 1;
+            break;
+          }
+
+          case "rotate-image": {
+            const rotateFile = files[0];
+            const rotateBuffer = fs.readFileSync(rotateFile.path);
+            const rotateExt = path.extname(rotateFile.originalname).toLowerCase();
+            
+            const rotation = options.imageRotation || "90";
+            const customAngle = options.imageRotationAngle || 0;
+            const flipH = options.imageFlipHorizontal || false;
+            const flipV = options.imageFlipVertical || false;
+            
+            let angle = 0;
+            if (rotation === "90") angle = 90;
+            else if (rotation === "180") angle = 180;
+            else if (rotation === "270") angle = 270;
+            else if (rotation === "custom") angle = customAngle;
+            
+            let rotateSharp = sharp(rotateBuffer);
+            
+            if (angle !== 0) {
+              rotateSharp = rotateSharp.rotate(angle);
+            }
+            
+            if (flipH) {
+              rotateSharp = rotateSharp.flop();
+            }
+            
+            if (flipV) {
+              rotateSharp = rotateSharp.flip();
+            }
+            
+            let rotateOutput: Buffer;
+            let rotateContentType = 'image/jpeg';
+            let rotateFilename = rotateFile.originalname;
+            
+            if (rotateExt === '.png') {
+              rotateOutput = await rotateSharp.png({ compressionLevel: 6 }).toBuffer();
+              rotateContentType = 'image/png';
+              rotateFilename = rotateFile.originalname.replace(/\.[^/.]+$/, '-rotated.png');
+            } else if (rotateExt === '.webp') {
+              rotateOutput = await rotateSharp.webp({ quality: 90 }).toBuffer();
+              rotateContentType = 'image/webp';
+              rotateFilename = rotateFile.originalname.replace(/\.[^/.]+$/, '-rotated.webp');
+            } else if (rotateExt === '.gif') {
+              rotateOutput = await rotateSharp.gif().toBuffer();
+              rotateContentType = 'image/gif';
+              rotateFilename = rotateFile.originalname.replace(/\.[^/.]+$/, '-rotated.gif');
+            } else {
+              rotateOutput = await rotateSharp.jpeg({ quality: 90, mozjpeg: true }).toBuffer();
+              rotateContentType = 'image/jpeg';
+              rotateFilename = rotateFile.originalname.replace(/\.[^/.]+$/, '-rotated.jpg');
+            }
+            
+            result = rotateOutput;
+            filename = rotateFilename;
+            contentType = rotateContentType;
+            pageCount = 1;
+            break;
+          }
+
+          case "watermark-image": {
+            const wmFile = files[0];
+            const wmBuffer = fs.readFileSync(wmFile.path);
+            const wmExt = path.extname(wmFile.originalname).toLowerCase();
+            
+            const wmText = options.imageWatermarkText || "Watermark";
+            const wmPosition = options.imageWatermarkPosition || "center";
+            const wmOpacity = options.imageWatermarkOpacity || 0.5;
+            const wmColor = options.imageWatermarkColor || "#ffffff";
+            const wmFontSize = options.imageWatermarkFontSize || 48;
+            const wmRotation = options.imageWatermarkRotation || 0;
+            
+            let wmSharp = sharp(wmBuffer);
+            const wmMeta = await wmSharp.metadata();
+            const imgWidth = wmMeta.width || 800;
+            const imgHeight = wmMeta.height || 600;
+            
+            const hexToRgba = (hex: string, alpha: number) => {
+              const r = parseInt(hex.slice(1, 3), 16);
+              const g = parseInt(hex.slice(3, 5), 16);
+              const b = parseInt(hex.slice(5, 7), 16);
+              return `rgba(${r},${g},${b},${alpha})`;
+            };
+            
+            const textColor = hexToRgba(wmColor, wmOpacity);
+            
+            let textX = imgWidth / 2;
+            let textY = imgHeight / 2;
+            let textAnchor = "middle";
+            
+            switch (wmPosition) {
+              case "top-left":
+                textX = wmFontSize;
+                textY = wmFontSize * 1.5;
+                textAnchor = "start";
+                break;
+              case "top-right":
+                textX = imgWidth - wmFontSize;
+                textY = wmFontSize * 1.5;
+                textAnchor = "end";
+                break;
+              case "bottom-left":
+                textX = wmFontSize;
+                textY = imgHeight - wmFontSize;
+                textAnchor = "start";
+                break;
+              case "bottom-right":
+                textX = imgWidth - wmFontSize;
+                textY = imgHeight - wmFontSize;
+                textAnchor = "end";
+                break;
+              case "center":
+              default:
+                textX = imgWidth / 2;
+                textY = imgHeight / 2;
+                textAnchor = "middle";
+                break;
+            }
+            
+            const svgText = `
+              <svg width="${imgWidth}" height="${imgHeight}">
+                <text x="${textX}" y="${textY}" 
+                      font-family="Arial, sans-serif" 
+                      font-size="${wmFontSize}" 
+                      fill="${textColor}"
+                      text-anchor="${textAnchor}"
+                      transform="rotate(${wmRotation}, ${textX}, ${textY})">
+                  ${wmText.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+                </text>
+              </svg>
+            `;
+            
+            wmSharp = wmSharp.composite([{
+              input: Buffer.from(svgText),
+              top: 0,
+              left: 0
+            }]);
+            
+            let wmOutput: Buffer;
+            let wmContentType = 'image/jpeg';
+            let wmFilename = wmFile.originalname;
+            
+            if (wmExt === '.png') {
+              wmOutput = await wmSharp.png({ compressionLevel: 6 }).toBuffer();
+              wmContentType = 'image/png';
+              wmFilename = wmFile.originalname.replace(/\.[^/.]+$/, '-watermarked.png');
+            } else {
+              wmOutput = await wmSharp.jpeg({ quality: 90, mozjpeg: true }).toBuffer();
+              wmContentType = 'image/jpeg';
+              wmFilename = wmFile.originalname.replace(/\.[^/.]+$/, '-watermarked.jpg');
+            }
+            
+            result = wmOutput;
+            filename = wmFilename;
+            contentType = wmContentType;
+            pageCount = 1;
+            break;
+          }
+
+          case "add-text-to-image": {
+            const txtFile = files[0];
+            const txtBuffer = fs.readFileSync(txtFile.path);
+            const txtExt = path.extname(txtFile.originalname).toLowerCase();
+            
+            const textContent = options.imageTextContent || "Sample Text";
+            const textX = options.imageTextX || 50;
+            const textY = options.imageTextY || 50;
+            const fontSize = options.imageTextFontSize || 32;
+            const textColor = options.imageTextColor || "#000000";
+            const bgColor = options.imageTextBackgroundColor || "";
+            const fontFamily = options.imageTextFont || "sans-serif";
+            
+            let txtSharp = sharp(txtBuffer);
+            const txtMeta = await txtSharp.metadata();
+            const imgW = txtMeta.width || 800;
+            const imgH = txtMeta.height || 600;
+            
+            let bgRect = "";
+            if (bgColor) {
+              const textWidth = textContent.length * fontSize * 0.6;
+              const textHeight = fontSize * 1.4;
+              bgRect = `<rect x="${textX - 5}" y="${textY - fontSize}" width="${textWidth + 10}" height="${textHeight}" fill="${bgColor}" rx="4"/>`;
+            }
+            
+            const svgOverlay = `
+              <svg width="${imgW}" height="${imgH}">
+                ${bgRect}
+                <text x="${textX}" y="${textY}" 
+                      font-family="${fontFamily}" 
+                      font-size="${fontSize}" 
+                      fill="${textColor}">
+                  ${textContent.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+                </text>
+              </svg>
+            `;
+            
+            txtSharp = txtSharp.composite([{
+              input: Buffer.from(svgOverlay),
+              top: 0,
+              left: 0
+            }]);
+            
+            let txtOutput: Buffer;
+            let txtContentType = 'image/jpeg';
+            let txtFilename = txtFile.originalname;
+            
+            if (txtExt === '.png') {
+              txtOutput = await txtSharp.png({ compressionLevel: 6 }).toBuffer();
+              txtContentType = 'image/png';
+              txtFilename = txtFile.originalname.replace(/\.[^/.]+$/, '-text.png');
+            } else {
+              txtOutput = await txtSharp.jpeg({ quality: 90, mozjpeg: true }).toBuffer();
+              txtContentType = 'image/jpeg';
+              txtFilename = txtFile.originalname.replace(/\.[^/.]+$/, '-text.jpg');
+            }
+            
+            result = txtOutput;
+            filename = txtFilename;
+            contentType = txtContentType;
+            pageCount = 1;
+            break;
+          }
+
+          case "image-converter": {
+            const convFile = files[0];
+            const convBuffer = fs.readFileSync(convFile.path);
+            
+            const targetFormat = options.imageConvertFormat || "jpg";
+            const convQuality = options.imageConvertQuality || 90;
+            
+            let convSharp = sharp(convBuffer);
+            let convOutput: Buffer;
+            let convContentType = 'image/jpeg';
+            let convFilename = convFile.originalname;
+            
+            switch (targetFormat) {
+              case "png":
+                convOutput = await convSharp.png({ compressionLevel: 6 }).toBuffer();
+                convContentType = 'image/png';
+                convFilename = convFile.originalname.replace(/\.[^/.]+$/, '.png');
+                break;
+              case "webp":
+                convOutput = await convSharp.webp({ quality: convQuality }).toBuffer();
+                convContentType = 'image/webp';
+                convFilename = convFile.originalname.replace(/\.[^/.]+$/, '.webp');
+                break;
+              case "gif":
+                convOutput = await convSharp.gif().toBuffer();
+                convContentType = 'image/gif';
+                convFilename = convFile.originalname.replace(/\.[^/.]+$/, '.gif');
+                break;
+              case "bmp":
+                convOutput = await convSharp.raw().toBuffer();
+                convContentType = 'image/bmp';
+                convFilename = convFile.originalname.replace(/\.[^/.]+$/, '.bmp');
+                break;
+              case "tiff":
+                convOutput = await convSharp.tiff({ compression: 'lzw' }).toBuffer();
+                convContentType = 'image/tiff';
+                convFilename = convFile.originalname.replace(/\.[^/.]+$/, '.tiff');
+                break;
+              case "jpg":
+              default:
+                convOutput = await convSharp.jpeg({ quality: convQuality, mozjpeg: true }).toBuffer();
+                convContentType = 'image/jpeg';
+                convFilename = convFile.originalname.replace(/\.[^/.]+$/, '.jpg');
+                break;
+            }
+            
+            result = convOutput;
+            filename = convFilename;
+            contentType = convContentType;
+            pageCount = 1;
+            break;
+          }
+
+          case "png-to-jpg": {
+            const pngToJpgFile = files[0];
+            const pngToJpgBuffer = fs.readFileSync(pngToJpgFile.path);
+            
+            const jpgQuality = options.imageConvertQuality || 90;
+            const bgColor = options.imageTextBackgroundColor || "#ffffff";
+            
+            let pngToJpgSharp = sharp(pngToJpgBuffer);
+            
+            pngToJpgSharp = pngToJpgSharp.flatten({ background: bgColor });
+            
+            const pngToJpgOutput = await pngToJpgSharp
+              .jpeg({ quality: jpgQuality, mozjpeg: true })
+              .toBuffer();
+            
+            result = pngToJpgOutput;
+            filename = pngToJpgFile.originalname.replace(/\.[^/.]+$/, '.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+
+          case "jpg-to-png": {
+            const jpgToPngFile = files[0];
+            const jpgToPngBuffer = fs.readFileSync(jpgToPngFile.path);
+            
+            const jpgToPngOutput = await sharp(jpgToPngBuffer)
+              .png({ compressionLevel: 6 })
+              .toBuffer();
+            
+            result = jpgToPngOutput;
+            filename = jpgToPngFile.originalname.replace(/\.[^/.]+$/, '.png');
+            contentType = 'image/png';
             pageCount = 1;
             break;
           }

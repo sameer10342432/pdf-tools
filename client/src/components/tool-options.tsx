@@ -6644,6 +6644,565 @@ export function ToolOptionsComponent({
       );
     }
 
+    case "resize-heic": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Resize Mode</Label>
+            <Select
+              value={options.resizePercentage ? "percentage" : "dimensions"}
+              onValueChange={(value) => {
+                if (value === "percentage") {
+                  updateOption("resizeTargetWidth", undefined);
+                  updateOption("resizeTargetHeight", undefined);
+                  updateOption("resizePercentage", 100);
+                } else {
+                  updateOption("resizePercentage", undefined);
+                }
+              }}
+            >
+              <SelectTrigger data-testid="select-resize-mode-heic">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="dimensions">Exact Dimensions</SelectItem>
+                <SelectItem value="percentage">Scale by Percentage</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {options.resizePercentage !== undefined ? (
+            <div className="space-y-2">
+              <Label htmlFor="resizePercentageHeic">Scale Percentage</Label>
+              <div className="flex items-center gap-4">
+                <Slider
+                  id="resizePercentageHeic"
+                  min={10}
+                  max={200}
+                  step={5}
+                  value={[options.resizePercentage || 100]}
+                  onValueChange={([value]) => updateOption("resizePercentage", value)}
+                  className="flex-1"
+                  data-testid="slider-resize-percentage-heic"
+                />
+                <span className="text-sm text-muted-foreground w-12">
+                  {options.resizePercentage || 100}%
+                </span>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="resizeWidthHeic">Target Width (px)</Label>
+                <Input
+                  id="resizeWidthHeic"
+                  type="number"
+                  placeholder="e.g., 1920"
+                  value={options.resizeTargetWidth || ""}
+                  onChange={(e) => updateOption("resizeTargetWidth", parseInt(e.target.value) || undefined)}
+                  data-testid="input-resize-width-heic"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="resizeHeightHeic">Target Height (px)</Label>
+                <Input
+                  id="resizeHeightHeic"
+                  type="number"
+                  placeholder="e.g., 1080"
+                  value={options.resizeTargetHeight || ""}
+                  onChange={(e) => updateOption("resizeTargetHeight", parseInt(e.target.value) || undefined)}
+                  data-testid="input-resize-height-heic"
+                />
+              </div>
+            </>
+          )}
+          
+          <div className="space-y-2">
+            <Label htmlFor="heicQuality">Output Quality</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="heicQuality"
+                min={10}
+                max={100}
+                step={5}
+                value={[options.imageCompressionQuality || 90]}
+                onValueChange={([value]) => updateOption("imageCompressionQuality", value)}
+                className="flex-1"
+                data-testid="slider-heic-quality"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.imageCompressionQuality || 90}%
+              </span>
+            </div>
+          </div>
+          
+          <p className="text-sm text-muted-foreground">
+            HEIC images will be converted to JPEG format after resizing.
+          </p>
+        </div>
+      );
+    }
+
+    case "crop-image":
+    case "crop-jpg":
+    case "crop-png": {
+      const formatLabel = toolType === "crop-jpg" ? "JPG" : 
+                          toolType === "crop-png" ? "PNG" : "Image";
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Aspect Ratio</Label>
+            <Select
+              value={options.imageCropAspectRatio || "free"}
+              onValueChange={(value) => updateOption("imageCropAspectRatio", value as any)}
+            >
+              <SelectTrigger data-testid="select-crop-aspect">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="free">Free Form</SelectItem>
+                <SelectItem value="1:1">1:1 (Square)</SelectItem>
+                <SelectItem value="4:3">4:3 (Standard)</SelectItem>
+                <SelectItem value="16:9">16:9 (Widescreen)</SelectItem>
+                <SelectItem value="3:2">3:2 (DSLR)</SelectItem>
+                <SelectItem value="2:3">2:3 (Portrait)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="cropX">Start X (px)</Label>
+              <Input
+                id="cropX"
+                type="number"
+                placeholder="0"
+                value={options.imageCropX || ""}
+                onChange={(e) => updateOption("imageCropX", parseInt(e.target.value) || 0)}
+                data-testid="input-crop-x"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="cropY">Start Y (px)</Label>
+              <Input
+                id="cropY"
+                type="number"
+                placeholder="0"
+                value={options.imageCropY || ""}
+                onChange={(e) => updateOption("imageCropY", parseInt(e.target.value) || 0)}
+                data-testid="input-crop-y"
+              />
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="cropWidth">Width (px)</Label>
+              <Input
+                id="cropWidth"
+                type="number"
+                placeholder="e.g., 800"
+                value={options.imageCropWidth || ""}
+                onChange={(e) => updateOption("imageCropWidth", parseInt(e.target.value) || undefined)}
+                data-testid="input-crop-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="cropHeight">Height (px)</Label>
+              <Input
+                id="cropHeight"
+                type="number"
+                placeholder="e.g., 600"
+                value={options.imageCropHeight || ""}
+                onChange={(e) => updateOption("imageCropHeight", parseInt(e.target.value) || undefined)}
+                data-testid="input-crop-height"
+              />
+            </div>
+          </div>
+          
+          <p className="text-sm text-muted-foreground">
+            Crop your {formatLabel} image by specifying start coordinates and dimensions.
+          </p>
+        </div>
+      );
+    }
+
+    case "rotate-image": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Rotation Angle</Label>
+            <Select
+              value={options.imageRotation || "90"}
+              onValueChange={(value) => updateOption("imageRotation", value as any)}
+            >
+              <SelectTrigger data-testid="select-image-rotation">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="90">90° Clockwise</SelectItem>
+                <SelectItem value="180">180°</SelectItem>
+                <SelectItem value="270">270° (90° Counter-clockwise)</SelectItem>
+                <SelectItem value="custom">Custom Angle</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {options.imageRotation === "custom" && (
+            <div className="space-y-2">
+              <Label htmlFor="customAngle">Custom Angle (degrees)</Label>
+              <Input
+                id="customAngle"
+                type="number"
+                placeholder="e.g., 45"
+                value={options.imageRotationAngle || ""}
+                onChange={(e) => updateOption("imageRotationAngle", parseInt(e.target.value) || 0)}
+                data-testid="input-custom-angle"
+              />
+            </div>
+          )}
+          
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <Switch
+                id="flipHorizontal"
+                checked={options.imageFlipHorizontal || false}
+                onCheckedChange={(checked) => updateOption("imageFlipHorizontal", checked)}
+                data-testid="switch-flip-h"
+              />
+              <Label htmlFor="flipHorizontal" className="text-sm">Flip Horizontally (Mirror)</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Switch
+                id="flipVertical"
+                checked={options.imageFlipVertical || false}
+                onCheckedChange={(checked) => updateOption("imageFlipVertical", checked)}
+                data-testid="switch-flip-v"
+              />
+              <Label htmlFor="flipVertical" className="text-sm">Flip Vertically</Label>
+            </div>
+          </div>
+          
+          <p className="text-sm text-muted-foreground">
+            Rotate or flip your image. Works with all common image formats.
+          </p>
+        </div>
+      );
+    }
+
+    case "watermark-image": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="watermarkText">Watermark Text</Label>
+            <Input
+              id="watermarkText"
+              placeholder="e.g., Copyright 2024"
+              value={options.imageWatermarkText || ""}
+              onChange={(e) => updateOption("imageWatermarkText", e.target.value)}
+              data-testid="input-watermark-text"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label>Position</Label>
+            <Select
+              value={options.imageWatermarkPosition || "center"}
+              onValueChange={(value) => updateOption("imageWatermarkPosition", value as any)}
+            >
+              <SelectTrigger data-testid="select-watermark-position">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+                <SelectItem value="tile">Tile (Repeat)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="watermarkOpacity">Opacity</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="watermarkOpacity"
+                min={0.1}
+                max={1}
+                step={0.1}
+                value={[options.imageWatermarkOpacity || 0.5]}
+                onValueChange={([value]) => updateOption("imageWatermarkOpacity", value)}
+                className="flex-1"
+                data-testid="slider-watermark-opacity"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {Math.round((options.imageWatermarkOpacity || 0.5) * 100)}%
+              </span>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="watermarkColor">Text Color</Label>
+              <Input
+                id="watermarkColor"
+                type="color"
+                value={options.imageWatermarkColor || "#ffffff"}
+                onChange={(e) => updateOption("imageWatermarkColor", e.target.value)}
+                className="h-9"
+                data-testid="input-watermark-color"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="watermarkFontSize">Font Size</Label>
+              <Input
+                id="watermarkFontSize"
+                type="number"
+                placeholder="48"
+                value={options.imageWatermarkFontSize || ""}
+                onChange={(e) => updateOption("imageWatermarkFontSize", parseInt(e.target.value) || 48)}
+                data-testid="input-watermark-fontsize"
+              />
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="watermarkRotation">Rotation (degrees)</Label>
+            <Input
+              id="watermarkRotation"
+              type="number"
+              placeholder="0"
+              value={options.imageWatermarkRotation || ""}
+              onChange={(e) => updateOption("imageWatermarkRotation", parseInt(e.target.value) || 0)}
+              data-testid="input-watermark-rotation"
+            />
+          </div>
+          
+          <p className="text-sm text-muted-foreground">
+            Add a text watermark to protect your images.
+          </p>
+        </div>
+      );
+    }
+
+    case "add-text-to-image": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textContent">Text Content</Label>
+            <Input
+              id="textContent"
+              placeholder="Enter your text"
+              value={options.imageTextContent || ""}
+              onChange={(e) => updateOption("imageTextContent", e.target.value)}
+              data-testid="input-text-content"
+            />
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="textX">X Position (px)</Label>
+              <Input
+                id="textX"
+                type="number"
+                placeholder="50"
+                value={options.imageTextX || ""}
+                onChange={(e) => updateOption("imageTextX", parseInt(e.target.value) || 50)}
+                data-testid="input-text-x"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="textY">Y Position (px)</Label>
+              <Input
+                id="textY"
+                type="number"
+                placeholder="50"
+                value={options.imageTextY || ""}
+                onChange={(e) => updateOption("imageTextY", parseInt(e.target.value) || 50)}
+                data-testid="input-text-y"
+              />
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="textFontSize">Font Size</Label>
+              <Input
+                id="textFontSize"
+                type="number"
+                placeholder="32"
+                value={options.imageTextFontSize || ""}
+                onChange={(e) => updateOption("imageTextFontSize", parseInt(e.target.value) || 32)}
+                data-testid="input-text-fontsize"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="textColor">Text Color</Label>
+              <Input
+                id="textColor"
+                type="color"
+                value={options.imageTextColor || "#000000"}
+                onChange={(e) => updateOption("imageTextColor", e.target.value)}
+                className="h-9"
+                data-testid="input-text-color"
+              />
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label>Font Family</Label>
+            <Select
+              value={options.imageTextFont || "sans-serif"}
+              onValueChange={(value) => updateOption("imageTextFont", value as any)}
+            >
+              <SelectTrigger data-testid="select-text-font">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="sans-serif">Sans-serif (Clean)</SelectItem>
+                <SelectItem value="serif">Serif (Classic)</SelectItem>
+                <SelectItem value="monospace">Monospace (Code)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="textBgColor">Background Color (optional)</Label>
+            <Input
+              id="textBgColor"
+              type="color"
+              value={options.imageTextBackgroundColor || "#ffffff"}
+              onChange={(e) => updateOption("imageTextBackgroundColor", e.target.value)}
+              className="h-9"
+              data-testid="input-text-bgcolor"
+            />
+            <p className="text-xs text-muted-foreground">Leave empty for transparent background</p>
+          </div>
+          
+          <p className="text-sm text-muted-foreground">
+            Add custom text overlay to your image.
+          </p>
+        </div>
+      );
+    }
+
+    case "image-converter": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Target Format</Label>
+            <Select
+              value={options.imageConvertFormat || "jpg"}
+              onValueChange={(value) => updateOption("imageConvertFormat", value as any)}
+            >
+              <SelectTrigger data-testid="select-convert-format">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="jpg">JPEG (.jpg)</SelectItem>
+                <SelectItem value="png">PNG (.png)</SelectItem>
+                <SelectItem value="webp">WebP (.webp)</SelectItem>
+                <SelectItem value="gif">GIF (.gif)</SelectItem>
+                <SelectItem value="tiff">TIFF (.tiff)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {(options.imageConvertFormat === "jpg" || options.imageConvertFormat === "webp" || !options.imageConvertFormat) && (
+            <div className="space-y-2">
+              <Label htmlFor="convertQuality">Quality</Label>
+              <div className="flex items-center gap-4">
+                <Slider
+                  id="convertQuality"
+                  min={10}
+                  max={100}
+                  step={5}
+                  value={[options.imageConvertQuality || 90]}
+                  onValueChange={([value]) => updateOption("imageConvertQuality", value)}
+                  className="flex-1"
+                  data-testid="slider-convert-quality"
+                />
+                <span className="text-sm text-muted-foreground w-12">
+                  {options.imageConvertQuality || 90}%
+                </span>
+              </div>
+            </div>
+          )}
+          
+          <p className="text-sm text-muted-foreground">
+            Convert your image to a different format while maintaining quality.
+          </p>
+        </div>
+      );
+    }
+
+    case "png-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="jpgQuality">JPEG Quality</Label>
+            <div className="flex items-center gap-4">
+              <Slider
+                id="jpgQuality"
+                min={10}
+                max={100}
+                step={5}
+                value={[options.imageConvertQuality || 90]}
+                onValueChange={([value]) => updateOption("imageConvertQuality", value)}
+                className="flex-1"
+                data-testid="slider-jpg-quality"
+              />
+              <span className="text-sm text-muted-foreground w-12">
+                {options.imageConvertQuality || 90}%
+              </span>
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="bgColor">Background Color</Label>
+            <Input
+              id="bgColor"
+              type="color"
+              value={options.imageTextBackgroundColor || "#ffffff"}
+              onChange={(e) => updateOption("imageTextBackgroundColor", e.target.value)}
+              className="h-9"
+              data-testid="input-bg-color"
+            />
+            <p className="text-xs text-muted-foreground">
+              This color replaces transparent areas (JPEG doesn't support transparency)
+            </p>
+          </div>
+          
+          <p className="text-sm text-muted-foreground">
+            Convert PNG images to JPEG format with custom quality settings.
+          </p>
+        </div>
+      );
+    }
+
+    case "jpg-to-png": {
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert JPEG images to PNG format for lossless quality.
+            No additional options required.
+          </p>
+          <div className="bg-muted/50 p-3 rounded-md">
+            <p className="text-sm">
+              PNG format provides lossless compression, making it ideal for:
+            </p>
+            <ul className="text-sm text-muted-foreground mt-2 space-y-1 list-disc list-inside">
+              <li>Further image editing without quality loss</li>
+              <li>Graphics with sharp edges and text</li>
+              <li>Images that need transparency support later</li>
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
     default:
       return null;
   }
