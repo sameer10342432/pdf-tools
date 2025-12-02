@@ -87,6 +87,26 @@ The application is built with a React frontend and an Express.js backend.
 
   All adjustment tools feature real-time slider controls for precise adjustments. Processing uses Sharp library for high-quality output with ImageMagick fallback.
 
+- Added 10 new image manipulation and creative tools (December 2025):
+  
+  **Image Effect Tools:**
+  - **Grayscale Image**: Convert color images to professional black and white
+  - **Invert Image Colors**: Create negative/inverted color effect for images
+  - **Image Filter Sepia**: Apply warm sepia tones for vintage photography look
+  - **Image Filter Vintage**: Add nostalgic faded vintage effect with warm tones
+  - **Image Filter B&W**: Professional black & white conversion with contrast adjustment
+  
+  **Image Border and Shape Tools:**
+  - **Add Border to Image**: Add customizable borders with color picker and width slider
+  - **Round Image Corners**: Add rounded corners to images with adjustable radius
+  
+  **Creative and Text Tools:**
+  - **Meme Generator**: Create memes with top/bottom text, customizable font size and colors
+  - **Add Text to Photo**: Add custom text overlays with position and style controls
+  - **Split Image**: Split images into grids (2x2, 3x3, 4x4, etc.) for social media
+
+  All tools use Sharp library for high-quality image processing. Meme generator and text tools use SVG compositing with proper text escaping for security. Split tool generates ZIP files containing all image parts.
+
 ## External Dependencies
 - **PDF Processing Libraries**: `pdf-lib` (for core PDF manipulation), `sharp` (for image processing), `archiver` (for creating zip archives).
 - **Document Conversion**: `mammoth` (for Word document processing), `xlsx` (for Excel processing), `tesseract.js` (for OCR text recognition), `marked` (for Markdown parsing), `adm-zip` (for ODF file extraction).
