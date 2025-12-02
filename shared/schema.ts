@@ -476,6 +476,16 @@ export const pdfToolTypes = [
   "eps-to-jpg",
   "psd-to-jpg",
   "psd-to-png",
+  "ai-to-jpg",
+  "ai-to-png",
+  "indd-to-jpg",
+  "flip-image-vertical",
+  "flip-image-horizontal",
+  "adjust-brightness",
+  "adjust-contrast",
+  "adjust-saturation",
+  "image-sharpen",
+  "image-blur",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -13675,5 +13685,287 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Batch PSD Processing</h2>
 <p>Convert multiple PSD files to PNG simultaneously with our batch processing feature. Upload your collection of Photoshop documents and receive transparent PNG versions of all files. Streamline your design workflow and asset delivery process efficiently.</p>`,
+  },
+];
+
+  {
+    id: "ai-to-jpg",
+    name: "AI to JPG",
+    description: "Convert Adobe Illustrator AI files to JPG format",
+    icon: "Palette",
+    type: "ai-to-jpg",
+    color: "bg-orange-500",
+    emoji: "🎨",
+    metaTitle: "AI to JPG Converter - Convert Illustrator Files to JPG Online Free | PDF Tools",
+    metaDescription: "Convert Adobe Illustrator AI files to JPG format online for free. High-quality vector to raster conversion. No software installation required.",
+    seoArticle: `<h2>AI to JPG Converter - Transform Vector Art to Images</h2>
+<p>Convert your Adobe Illustrator AI files to universally compatible JPG format with our professional converter. AI files contain vector graphics that need specialized software to view. Our converter transforms these vectors into high-quality JPG images that can be viewed, shared, and used anywhere.</p>
+
+<h2>What is AI Format?</h2>
+<p>AI (Adobe Illustrator) is Adobe's proprietary vector graphics format. These files contain scalable artwork that maintains quality at any size. While perfect for design work, AI files require Illustrator or compatible software to open. Converting to JPG makes your artwork accessible to everyone.</p>
+
+<h2>High-Quality Rasterization</h2>
+<p>Our converter carefully rasterizes your vector graphics, preserving colors, gradients, and fine details. The resulting JPG maintains the visual quality of your original artwork while being compatible with any image viewer, website, or document.</p>
+
+<h2>Perfect for Sharing</h2>
+<p>Need to share your Illustrator designs with clients who don't have design software? Convert to JPG for easy viewing via email, messaging apps, or any platform. Your artwork remains intact and professional-looking in the universally supported JPG format.</p>
+
+<h2>Web and Print Ready</h2>
+<p>The JPG files produced by our converter are optimized for both web use and printing. Whether you're uploading to a website, including in a presentation, or sending to a print shop, your converted images deliver consistent, professional results.</p>
+
+<h2>Batch Processing Available</h2>
+<p>Convert multiple AI files simultaneously with our batch processing feature. Upload your collection of Illustrator files and receive JPG versions of all artwork. Streamline your workflow and save valuable time on repetitive conversions.</p>`,
+  },
+  {
+    id: "ai-to-png",
+    name: "AI to PNG",
+    description: "Convert Adobe Illustrator AI files to PNG with transparency",
+    icon: "Palette",
+    type: "ai-to-png",
+    color: "bg-orange-600",
+    emoji: "🖼️",
+    metaTitle: "AI to PNG Converter - Convert Illustrator Files with Transparency | PDF Tools",
+    metaDescription: "Convert Adobe Illustrator AI files to PNG format with transparency online for free. Preserve vector quality and transparent backgrounds. No Illustrator needed.",
+    seoArticle: `<h2>AI to PNG Converter - Preserve Transparency</h2>
+<p>Convert your Adobe Illustrator AI files to PNG format with full transparency support. Unlike JPG, PNG preserves transparent areas from your vector artwork, making this converter ideal for logos, icons, and graphics that need to overlay other content seamlessly.</p>
+
+<h2>Transparency Matters</h2>
+<p>When your AI file contains transparent backgrounds or semi-transparent elements, our converter preserves this transparency in the PNG output. Your logos and graphics blend naturally over any background, maintaining the professional look of your original design.</p>
+
+<h2>Vector to Raster Excellence</h2>
+<p>Our converter rasterizes your vector graphics with precision, maintaining sharp edges, smooth curves, and accurate colors. The PNG format supports millions of colors and lossless compression, ensuring your artwork looks exactly as intended.</p>
+
+<h2>Logo Export Made Easy</h2>
+<p>Designers frequently need to export AI logos as transparent PNG files for web use. Our converter streamlines this process, producing web-ready PNG files that maintain crisp edges and proper transparency for any size display.</p>
+
+<h2>No Adobe Software Required</h2>
+<p>You don't need an Illustrator subscription to convert AI files. Our online converter handles AI files directly in your browser, making it easy to extract PNG images without any software installation or technical expertise.</p>
+
+<h2>High Resolution Output</h2>
+<p>Our converter produces high-resolution PNG files suitable for both web and print applications. Whether you need images for a website banner or a printed brochure, your converted PNG delivers the quality your projects demand.</p>`,
+  },
+  {
+    id: "indd-to-jpg",
+    name: "INDD to JPG",
+    description: "Convert Adobe InDesign INDD files to JPG format",
+    icon: "FileText",
+    type: "indd-to-jpg",
+    color: "bg-pink-500",
+    emoji: "📰",
+    metaTitle: "INDD to JPG Converter - Convert InDesign Files to JPG Online Free | PDF Tools",
+    metaDescription: "Convert Adobe InDesign INDD files to JPG format online for free. Export InDesign layouts as images without InDesign. Fast and easy conversion.",
+    seoArticle: `<h2>INDD to JPG Converter - Export InDesign Layouts</h2>
+<p>Convert your Adobe InDesign INDD files to universally viewable JPG format. InDesign files contain complex layouts for magazines, brochures, and documents that require specialized software to view. Our converter transforms these layouts into JPG images anyone can open.</p>
+
+<h2>What is INDD Format?</h2>
+<p>INDD is Adobe InDesign's native file format for desktop publishing projects. These files contain page layouts, text, images, and formatting for professional publications. While essential for design work, INDD files can only be opened with InDesign.</p>
+
+<h2>Preview Your Layouts</h2>
+<p>Need to share your InDesign layouts with clients or colleagues who don't have InDesign? Convert to JPG for instant viewing. Each page of your document becomes a separate JPG image that can be viewed on any device or platform.</p>
+
+<h2>Maintain Visual Quality</h2>
+<p>Our converter captures your InDesign layouts with high fidelity, preserving text rendering, image quality, and overall visual appearance. The resulting JPG files represent your design work accurately and professionally.</p>
+
+<h2>Multi-Page Support</h2>
+<p>InDesign documents often contain multiple pages. Our converter processes each page separately, giving you a JPG image for every page in your document. Perfect for reviewing layouts, archiving projects, or sharing designs.</p>
+
+<h2>Quick Client Proofing</h2>
+<p>Speed up your approval process by converting INDD files to JPG for client review. Clients can view your designs immediately without downloading or installing any software, making feedback cycles faster and more efficient.</p>`,
+  },
+  {
+    id: "flip-image-vertical",
+    name: "Flip Image Vertical",
+    description: "Flip images vertically (upside down)",
+    icon: "FlipVertical",
+    type: "flip-image-vertical",
+    color: "bg-blue-500",
+    emoji: "🔃",
+    metaTitle: "Flip Image Vertically Online Free - Mirror Image Top to Bottom | PDF Tools",
+    metaDescription: "Flip images vertically online for free. Turn your pictures upside down with one click. Fast, easy vertical image flip tool. No registration required.",
+    seoArticle: `<h2>Flip Image Vertically - Mirror Your Photos</h2>
+<p>Flip your images vertically with our easy-to-use online tool. A vertical flip mirrors your image from top to bottom, turning it upside down. This is useful for correcting orientation issues, creating artistic effects, or preparing images for special applications.</p>
+
+<h2>How Vertical Flip Works</h2>
+<p>When you flip an image vertically, the top becomes the bottom and vice versa. The left and right sides remain in their original positions. This creates a mirror effect along the horizontal axis of your image, perfect for various creative and practical purposes.</p>
+
+<h2>Common Use Cases</h2>
+<p>Vertical flipping is useful for correcting photos taken with an inverted camera, creating reflection effects for design projects, preparing images for printing on transfer paper, and generating symmetrical designs. Whatever your need, our tool handles it instantly.</p>
+
+<h2>Preserve Image Quality</h2>
+<p>Our vertical flip tool maintains your image's original quality. Resolution, colors, and details remain unchanged after flipping. The only difference is the orientation - your flipped image is ready for immediate use in any project.</p>
+
+<h2>All Image Formats Supported</h2>
+<p>Upload JPG, PNG, GIF, WebP, BMP, or TIFF images for flipping. Our converter handles all popular image formats and produces high-quality results regardless of the source format or file size.</p>
+
+<h2>Instant Processing</h2>
+<p>Flip your images in seconds. Upload, flip, and download - the entire process takes just moments. No waiting, no registration, no software installation required.</p>`,
+  },
+  {
+    id: "flip-image-horizontal",
+    name: "Flip Image Horizontal",
+    description: "Flip images horizontally (left to right mirror)",
+    icon: "FlipHorizontal",
+    type: "flip-image-horizontal",
+    color: "bg-blue-600",
+    emoji: "🔄",
+    metaTitle: "Flip Image Horizontally Online Free - Mirror Image Left to Right | PDF Tools",
+    metaDescription: "Flip images horizontally online for free. Create mirror images with one click. Fast, easy horizontal image flip tool. No software installation needed.",
+    seoArticle: `<h2>Flip Image Horizontally - Create Mirror Images</h2>
+<p>Flip your images horizontally with our instant online tool. A horizontal flip mirrors your image from left to right, creating a perfect mirror reflection. This is essential for selfie correction, creating symmetrical designs, and preparing images for various applications.</p>
+
+<h2>Mirror Effect Explained</h2>
+<p>Horizontal flipping reverses your image along the vertical axis. The left side becomes the right and vice versa, while the top and bottom remain unchanged. This creates a mirror-image effect that's useful for many creative and practical purposes.</p>
+
+<h2>Fix Selfie Camera Flip</h2>
+<p>Many smartphones automatically flip selfie photos, making text appear backwards and faces look unfamiliar. Our horizontal flip tool corrects this, restoring your photos to how you actually looked when taking the picture.</p>
+
+<h2>Design and Art Applications</h2>
+<p>Designers use horizontal flipping for creating symmetrical logos, generating mirrored patterns, adjusting composition balance, and preparing images for print applications like t-shirt transfers that print in reverse.</p>
+
+<h2>Quality Preservation</h2>
+<p>Your flipped image maintains identical quality to the original. Resolution, color depth, and fine details are perfectly preserved during the flipping process. The result is immediately ready for professional use.</p>
+
+<h2>Fast and Free</h2>
+<p>Flip your images instantly without any cost or registration. Our tool works directly in your browser, processing your images securely and delivering results in seconds.</p>`,
+  },
+  {
+    id: "adjust-brightness",
+    name: "Adjust Brightness",
+    description: "Increase or decrease image brightness",
+    icon: "Sun",
+    type: "adjust-brightness",
+    color: "bg-yellow-500",
+    emoji: "☀️",
+    metaTitle: "Adjust Image Brightness Online Free - Brighten or Darken Photos | PDF Tools",
+    metaDescription: "Adjust image brightness online for free. Brighten dark photos or reduce overexposure easily. Professional brightness control tool. No software needed.",
+    seoArticle: `<h2>Adjust Image Brightness - Perfect Your Photos</h2>
+<p>Fine-tune your image brightness with our professional online tool. Whether your photos are too dark, overexposed, or just need subtle adjustment, our brightness control gives you precise control over how light or dark your images appear.</p>
+
+<h2>Understanding Brightness</h2>
+<p>Brightness refers to the overall lightness or darkness of an image. Increasing brightness makes all pixels lighter, revealing details in shadows. Decreasing brightness darkens the image, which can add drama or correct overexposure.</p>
+
+<h2>Fix Common Photo Problems</h2>
+<p>Rescue underexposed photos by increasing brightness to reveal hidden details. Correct overexposed images by reducing brightness to restore color depth. Our tool handles both problems with professional results.</p>
+
+<h2>Precise Control</h2>
+<p>Use our slider to adjust brightness from -100 (maximum darkening) to +100 (maximum brightening). See real-time preview of your adjustments before applying them. Find the perfect brightness level for your specific image.</p>
+
+<h2>Preserve Image Quality</h2>
+<p>Our brightness adjustment algorithm maintains image quality while modifying luminance values. Colors remain accurate, and details are preserved even with significant brightness changes.</p>
+
+<h2>Multiple Format Support</h2>
+<p>Upload JPG, PNG, WebP, or other image formats. Adjust brightness and download in your preferred format. Our tool works with all common image types for maximum flexibility.</p>`,
+  },
+  {
+    id: "adjust-contrast",
+    name: "Adjust Contrast",
+    description: "Increase or decrease image contrast",
+    icon: "Contrast",
+    type: "adjust-contrast",
+    color: "bg-gray-600",
+    emoji: "🌓",
+    metaTitle: "Adjust Image Contrast Online Free - Enhance Photo Contrast | PDF Tools",
+    metaDescription: "Adjust image contrast online for free. Enhance your photos by increasing or decreasing contrast. Professional contrast control tool. No installation required.",
+    seoArticle: `<h2>Adjust Image Contrast - Enhance Visual Impact</h2>
+<p>Control your image contrast with our professional online tool. Contrast determines the difference between the lightest and darkest parts of your image. Proper contrast makes images more visually striking and easier to understand.</p>
+
+<h2>What is Contrast?</h2>
+<p>Contrast is the range of tones from the darkest shadows to the brightest highlights. High contrast images have dramatic differences between light and dark. Low contrast images appear flat or hazy. Finding the right balance is key to great photos.</p>
+
+<h2>Enhance Your Photos</h2>
+<p>Increase contrast to make images pop with vivid colors and sharp definition. Decrease contrast for softer, more subtle effects. Our tool gives you complete control to achieve exactly the look you want.</p>
+
+<h2>Fix Flat-Looking Images</h2>
+<p>Photos taken in overcast conditions or flat lighting often lack contrast. Our tool can restore depth and dimension, making subjects stand out and colors appear more vibrant and engaging.</p>
+
+<h2>Professional Results</h2>
+<p>Our contrast adjustment uses advanced algorithms to modify tonal range while preserving detail in shadows and highlights. Avoid the clipping and loss of information that can occur with basic contrast tools.</p>
+
+<h2>Real-Time Preview</h2>
+<p>See your adjustments instantly as you move the contrast slider. Preview changes before applying them to ensure you achieve exactly the look you want for your image.</p>`,
+  },
+  {
+    id: "adjust-saturation",
+    name: "Adjust Saturation",
+    description: "Increase or decrease color saturation",
+    icon: "Pipette",
+    type: "adjust-saturation",
+    color: "bg-purple-500",
+    emoji: "🌈",
+    metaTitle: "Adjust Image Saturation Online Free - Enhance or Reduce Colors | PDF Tools",
+    metaDescription: "Adjust image saturation online for free. Make colors more vivid or create subtle tones. Professional color saturation tool. No software installation needed.",
+    seoArticle: `<h2>Adjust Image Saturation - Control Color Intensity</h2>
+<p>Fine-tune color saturation with our professional online tool. Saturation controls how vivid or muted colors appear in your image. From eye-catching vibrant photos to elegant desaturated effects, achieve exactly the look you want.</p>
+
+<h2>Understanding Saturation</h2>
+<p>Saturation refers to the intensity or purity of colors. Highly saturated images have vivid, bold colors. Desaturated images have muted, grayish tones. Completely desaturated images become black and white.</p>
+
+<h2>Boost Color Vibrancy</h2>
+<p>Increase saturation to make colors pop. Perfect for landscapes, food photography, and product images where vivid colors attract attention. Our tool enhances colors naturally without creating artificial-looking results.</p>
+
+<h2>Create Subtle Effects</h2>
+<p>Decrease saturation for a more understated, professional look. Slightly desaturated images have a sophisticated, editorial quality. Go further for dramatic black-and-white or near-monochrome effects.</p>
+
+<h2>Fix Color Problems</h2>
+<p>Correct oversaturated images from phone cameras or fix washed-out photos that lack color punch. Our precise control helps you find the perfect saturation level for any image.</p>
+
+<h2>Preserve Natural Tones</h2>
+<p>Our saturation algorithm adjusts colors intelligently, maintaining natural-looking skin tones and realistic color relationships even when making significant changes to overall saturation levels.</p>`,
+  },
+  {
+    id: "image-sharpen",
+    name: "Image Sharpen",
+    description: "Sharpen images to enhance clarity and details",
+    icon: "Sparkles",
+    type: "image-sharpen",
+    color: "bg-emerald-500",
+    emoji: "✨",
+    metaTitle: "Sharpen Image Online Free - Enhance Photo Clarity and Details | PDF Tools",
+    metaDescription: "Sharpen images online for free. Enhance photo clarity, improve details, and fix slightly blurry images. Professional image sharpening tool. No registration required.",
+    seoArticle: `<h2>Sharpen Images Online - Enhance Clarity and Details</h2>
+<p>Improve your image clarity with our professional sharpening tool. Whether your photos are slightly soft, need more punch for printing, or require enhanced details, our sharpening tool brings out the best in your images.</p>
+
+<h2>How Sharpening Works</h2>
+<p>Image sharpening enhances edges and fine details by increasing contrast between adjacent pixels. This creates the perception of increased sharpness and clarity without actually increasing resolution. The result is images that appear more crisp and defined.</p>
+
+<h2>Rescue Soft Photos</h2>
+<p>Slightly blurry or soft photos can often be improved with judicious sharpening. While sharpening cannot fix severely out-of-focus images, it can significantly enhance photos that are just a bit soft, making them usable for various purposes.</p>
+
+<h2>Prepare for Print</h2>
+<p>Images often require additional sharpening for print output. Our tool helps you prepare photos for printing by enhancing details that might otherwise appear soft on paper. Get crisp, professional-looking prints every time.</p>
+
+<h2>Adjustable Intensity</h2>
+<p>Control the amount of sharpening applied to your image. Light sharpening subtly enhances details, while stronger sharpening creates more dramatic effects. Find the perfect level for your specific image and intended use.</p>
+
+<h2>Quality Preservation</h2>
+<p>Our sharpening algorithm enhances edges intelligently, avoiding the halos and artifacts that can occur with aggressive sharpening. Your images look naturally sharp, not over-processed.</p>`,
+  },
+  {
+    id: "image-blur",
+    name: "Image Blur",
+    description: "Apply blur effect to images",
+    icon: "Eye",
+    type: "image-blur",
+    color: "bg-slate-500",
+    emoji: "🌫️",
+    metaTitle: "Blur Image Online Free - Add Blur Effect to Photos | PDF Tools",
+    metaDescription: "Blur images online for free. Add soft blur effects to photos, create depth, or protect privacy. Professional image blur tool. No software installation needed.",
+    seoArticle: `<h2>Blur Images Online - Add Professional Blur Effects</h2>
+<p>Apply blur effects to your images with our easy-to-use online tool. Whether you're creating artistic effects, adding depth to photos, protecting privacy, or softening harsh details, our blur tool gives you professional results instantly.</p>
+
+<h2>Creative Blur Effects</h2>
+<p>Blur can transform ordinary photos into artistic images. Use blur to create dreamy, ethereal effects, simulate depth of field, or add a sense of motion. Our tool gives you control over the intensity of the blur effect.</p>
+
+<h2>Privacy Protection</h2>
+<p>Need to obscure faces, license plates, or sensitive information in photos? Blur is the perfect solution. Apply blur to your entire image or consider our tool for protecting private information before sharing photos online.</p>
+
+<h2>Background Softening</h2>
+<p>Create professional-looking portraits by blurring entire images, then composite with sharp subjects. This technique mimics the shallow depth of field achieved by professional cameras with wide aperture lenses.</p>
+
+<h2>Adjustable Blur Intensity</h2>
+<p>Control exactly how much blur is applied to your image. From subtle softening to dramatic blur effects, our slider gives you precise control over the final result. Preview changes in real-time before downloading.</p>
+
+<h2>Multiple Image Formats</h2>
+<p>Upload images in any common format and apply blur effects instantly. Download your blurred image in your preferred format for use in documents, websites, social media, or any other application.</p>`,
   },
 ];
