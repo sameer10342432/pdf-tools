@@ -466,6 +466,16 @@ export const pdfToolTypes = [
   "png-to-avif",
   "jpe-to-jpg",
   "jfif-to-jpg",
+  "raw-to-jpg",
+  "cr2-to-jpg",
+  "nef-to-jpg",
+  "arw-to-jpg",
+  "dng-to-jpg",
+  "svg-to-jpg",
+  "eps-to-png",
+  "eps-to-jpg",
+  "psd-to-jpg",
+  "psd-to-png",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -13385,5 +13395,285 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Free Conversion Service</h2>
 <p>Our JFIF to JPG converter is completely free with no registration required and no hidden limitations. Simply upload your JFIF files and download universally compatible JPG versions instantly. Your images are processed securely and automatically deleted after conversion for your privacy and peace of mind.</p>`,
+  },
+  {
+    id: "raw-to-jpg",
+    name: "RAW to JPG",
+    description: "Convert RAW camera files to high-quality JPG images",
+    icon: "Camera",
+    type: "raw-to-jpg",
+    color: "bg-amber-500",
+    emoji: "📷",
+    metaTitle: "RAW to JPG Converter - Convert RAW Camera Files Online Free | PDF Tools",
+    metaDescription: "Convert RAW camera files to JPG format online for free. Support for all major camera RAW formats with high-quality output. No registration required.",
+    seoArticle: `<h2>RAW to JPG Converter - Professional Quality Conversion</h2>
+<p>Transform your RAW camera files into universally compatible JPG images with our powerful online converter. RAW files contain unprocessed image data directly from your camera sensor, offering maximum flexibility in post-processing. Our converter applies professional-grade algorithms to produce stunning JPG images that retain the quality and detail of your original captures.</p>
+
+<h2>Why Convert RAW to JPG?</h2>
+<p>While RAW files preserve all sensor data for maximum editing flexibility, JPG format is essential for sharing, printing, and displaying images across platforms. RAW files are typically much larger and require specialized software to view. Converting to JPG makes your photos accessible everywhere while maintaining excellent visual quality.</p>
+
+<h2>Professional Color Processing</h2>
+<p>Our converter applies intelligent color processing to your RAW files, ensuring accurate color reproduction and proper white balance adjustment. The conversion algorithm analyzes your image data and applies appropriate tone curves and color profiles to produce natural-looking results that match what you saw through your viewfinder.</p>
+
+<h2>Preserve Image Quality</h2>
+<p>We use advanced demosaicing algorithms to extract maximum detail from your RAW sensor data. The resulting JPG images feature excellent sharpness, accurate colors, and smooth gradients. Our high-quality compression ensures small file sizes without visible artifacts or quality loss.</p>
+
+<h2>Batch RAW Processing</h2>
+<p>Processing multiple RAW files is easy with our batch conversion feature. Upload entire photo sessions and convert them all to JPG simultaneously. Perfect for photographers who need to quickly share proofs or prepare images for clients without spending hours on individual file processing.</p>
+
+<h2>Universal Camera Support</h2>
+<p>Our converter supports RAW files from virtually every camera manufacturer. Whether you shoot with Canon, Nikon, Sony, Fujifilm, or any other brand, our tool handles your files with equal precision. No need for camera-specific software or expensive editing suites.</p>`,
+  },
+  {
+    id: "cr2-to-jpg",
+    name: "CR2 to JPG",
+    description: "Convert Canon CR2 RAW files to JPG format",
+    icon: "Camera",
+    type: "cr2-to-jpg",
+    color: "bg-red-600",
+    emoji: "📸",
+    metaTitle: "CR2 to JPG Converter - Convert Canon RAW Files Online Free | PDF Tools",
+    metaDescription: "Convert Canon CR2 RAW files to JPG format online for free. High-quality conversion preserving colors and details. No software installation needed.",
+    seoArticle: `<h2>CR2 to JPG Converter - Canon RAW File Conversion</h2>
+<p>Convert your Canon CR2 RAW files to universally compatible JPG format with our specialized converter. CR2 is Canon's proprietary RAW image format used across their DSLR and mirrorless camera lineup. Our converter understands Canon's color science and applies appropriate processing to produce beautiful JPG images.</p>
+
+<h2>What is CR2 Format?</h2>
+<p>CR2 (Canon RAW version 2) is Canon's native RAW image format containing uncompressed sensor data from Canon digital cameras. These files preserve maximum image quality and editing flexibility but require specialized software to view and edit. CR2 files are typically 20-50MB per image depending on your camera's resolution.</p>
+
+<h2>Canon Color Science Preserved</h2>
+<p>Our converter applies Canon-specific color profiles to ensure your converted JPG images match Canon's renowned color reproduction. Skin tones remain natural, landscapes appear vibrant, and overall color accuracy reflects what Canon cameras are famous for delivering to photographers worldwide.</p>
+
+<h2>High-Resolution Output</h2>
+<p>Canon cameras produce stunning high-resolution images, and our converter preserves every megapixel of detail. Whether you're shooting with a Canon 5D Mark IV, EOS R5, or any other Canon camera, your converted JPG files maintain the full resolution and sharpness of your original captures.</p>
+
+<h2>Easy Sharing and Printing</h2>
+<p>Once converted to JPG, your Canon photos are ready for sharing on social media, uploading to websites, or sending to print services. JPG format is universally supported across all platforms and devices, making your photography accessible to everyone without requiring specialized Canon software.</p>
+
+<h2>Batch Conversion for Photo Sessions</h2>
+<p>Photograph weddings, events, or studio sessions? Our batch processing handles multiple CR2 files simultaneously. Upload your entire shoot and receive JPG versions of all images quickly and efficiently, perfect for delivering proofs to clients or sharing with team members.</p>`,
+  },
+  {
+    id: "nef-to-jpg",
+    name: "NEF to JPG",
+    description: "Convert Nikon NEF RAW files to JPG format",
+    icon: "Camera",
+    type: "nef-to-jpg",
+    color: "bg-yellow-500",
+    emoji: "📸",
+    metaTitle: "NEF to JPG Converter - Convert Nikon RAW Files Online Free | PDF Tools",
+    metaDescription: "Convert Nikon NEF RAW files to JPG format online for free. Preserve Nikon's color science with high-quality output. No registration required.",
+    seoArticle: `<h2>NEF to JPG Converter - Nikon RAW File Conversion</h2>
+<p>Transform your Nikon NEF RAW files into beautiful JPG images with our specialized converter. NEF (Nikon Electronic Format) is Nikon's proprietary RAW format containing unprocessed sensor data from Nikon cameras. Our converter applies professional processing to produce stunning JPG images.</p>
+
+<h2>Understanding NEF Files</h2>
+<p>NEF files contain raw image data directly from Nikon camera sensors, providing maximum dynamic range and color depth for post-processing. While offering superior editing flexibility, NEF files require specific software like Nikon Capture NX or Adobe Camera Raw. Converting to JPG makes your photos universally accessible.</p>
+
+<h2>Nikon Color Accuracy</h2>
+<p>Nikon cameras are renowned for their excellent color reproduction, particularly for skin tones and natural scenes. Our converter applies Nikon-specific color profiles to ensure your JPG images reflect the color science that makes Nikon cameras beloved by portrait and landscape photographers worldwide.</p>
+
+<h2>Preserve Every Detail</h2>
+<p>Whether you shoot with a Nikon D850, Z series mirrorless, or any other Nikon camera, our converter extracts maximum detail from your NEF files. The resulting JPG images feature excellent sharpness, accurate colors, and smooth tonal gradations that honor your original captures.</p>
+
+<h2>Professional Workflow Support</h2>
+<p>Professional photographers often need to deliver JPG files quickly to clients while archiving RAW files for later. Our converter streamlines this workflow by producing high-quality JPG versions of your NEF files without requiring expensive software or complex export settings.</p>
+
+<h2>Batch NEF Processing</h2>
+<p>Process entire photo sessions with our batch conversion feature. Upload multiple NEF files and receive JPG versions of all images simultaneously. Perfect for event photographers, studios, and anyone who shoots high volumes and needs quick turnaround times.</p>`,
+  },
+  {
+    id: "arw-to-jpg",
+    name: "ARW to JPG",
+    description: "Convert Sony ARW RAW files to JPG format",
+    icon: "Camera",
+    type: "arw-to-jpg",
+    color: "bg-blue-600",
+    emoji: "📸",
+    metaTitle: "ARW to JPG Converter - Convert Sony RAW Files Online Free | PDF Tools",
+    metaDescription: "Convert Sony ARW RAW files to JPG format online for free. Professional quality conversion with Sony color science preserved. No installation needed.",
+    seoArticle: `<h2>ARW to JPG Converter - Sony RAW File Conversion</h2>
+<p>Convert your Sony ARW RAW files to universally compatible JPG format with our specialized converter. ARW is Sony's proprietary RAW image format used across their Alpha camera lineup. Our converter understands Sony's color science and produces beautiful JPG images from your Alpha camera captures.</p>
+
+<h2>What is ARW Format?</h2>
+<p>ARW (Sony Alpha RAW) is Sony's native RAW image format containing uncompressed sensor data from Sony Alpha cameras. These files preserve maximum image quality and provide extensive editing flexibility in post-processing. ARW files require specialized software to view but offer superior dynamic range and color depth.</p>
+
+<h2>Sony Alpha Color Science</h2>
+<p>Sony Alpha cameras are known for their exceptional image quality and color reproduction. Our converter applies Sony-specific processing to ensure your JPG images maintain the vibrant colors and excellent dynamic range that Sony cameras are famous for delivering to photographers.</p>
+
+<h2>High-Resolution Conversion</h2>
+<p>Sony's high-resolution sensors capture incredible detail, and our converter preserves every pixel. Whether you're shooting with an A7R series full-frame or APS-C Alpha camera, your converted JPG files maintain the stunning resolution and clarity of your original captures.</p>
+
+<h2>Quick Sharing Solution</h2>
+<p>After converting to JPG, your Sony photos are immediately ready for sharing on Instagram, Facebook, or any platform. No need for Sony's Imaging Edge software or Adobe subscriptions just to share your photos with friends, family, or clients.</p>
+
+<h2>Efficient Batch Processing</h2>
+<p>Process multiple ARW files at once with our batch conversion feature. Upload entire photo sessions and receive JPG versions quickly. Ideal for event photographers, content creators, and anyone who needs to deliver images promptly without compromising quality.</p>`,
+  },
+  {
+    id: "dng-to-jpg",
+    name: "DNG to JPG",
+    description: "Convert Adobe DNG RAW files to JPG format",
+    icon: "Camera",
+    type: "dng-to-jpg",
+    color: "bg-purple-600",
+    emoji: "📸",
+    metaTitle: "DNG to JPG Converter - Convert Digital Negative Files Online Free | PDF Tools",
+    metaDescription: "Convert Adobe DNG RAW files to JPG format online for free. Professional quality conversion maintaining full image quality. No registration required.",
+    seoArticle: `<h2>DNG to JPG Converter - Adobe Digital Negative Conversion</h2>
+<p>Convert your DNG (Digital Negative) files to universally compatible JPG format with our professional converter. DNG is Adobe's open RAW image format designed as a universal standard for RAW image data. Our converter produces high-quality JPG images that preserve the quality of your original captures.</p>
+
+<h2>Understanding DNG Format</h2>
+<p>DNG (Digital Negative) was created by Adobe as an open standard for RAW image files. Many photographers convert their camera's native RAW files to DNG for long-term archiving and compatibility. DNG files contain full RAW sensor data while being openly documented and widely supported.</p>
+
+<h2>Universal RAW Standard</h2>
+<p>Unlike proprietary camera RAW formats, DNG is designed to remain accessible for decades. However, JPG format offers immediate compatibility with all devices and platforms. Our converter bridges this gap by producing excellent JPG versions of your DNG files for everyday use.</p>
+
+<h2>Preserve Image Quality</h2>
+<p>DNG files store complete sensor data with full dynamic range and color depth. Our converter applies professional processing to extract maximum quality from your DNG files, producing JPG images with accurate colors, excellent detail, and proper tonal reproduction.</p>
+
+<h2>Mobile Photography Support</h2>
+<p>Many mobile devices and apps now shoot in DNG format for maximum quality. Our converter makes it easy to convert these mobile DNG files to JPG for sharing on social media or sending via messaging apps that may not support DNG directly.</p>
+
+<h2>Archival Workflow Integration</h2>
+<p>Photographers who archive in DNG format often need JPG versions for client delivery or online use. Our converter streamlines this workflow by producing high-quality JPG files from your DNG archive without requiring expensive Adobe software subscriptions.</p>`,
+  },
+  {
+    id: "svg-to-jpg",
+    name: "SVG to JPG",
+    description: "Convert SVG vector graphics to JPG raster images",
+    icon: "FileImage",
+    type: "svg-to-jpg",
+    color: "bg-green-500",
+    emoji: "🎨",
+    metaTitle: "SVG to JPG Converter - Convert Vector to Raster Online Free | PDF Tools",
+    metaDescription: "Convert SVG vector graphics to JPG raster images online for free. High-quality conversion with customizable resolution. No software installation required.",
+    seoArticle: `<h2>SVG to JPG Converter - Vector to Raster Conversion</h2>
+<p>Transform your SVG vector graphics into high-quality JPG raster images with our professional converter. SVG (Scalable Vector Graphics) files are perfect for logos and illustrations but sometimes you need a JPG version for specific applications. Our converter produces crisp, beautiful JPG images at any resolution you need.</p>
+
+<h2>Why Convert SVG to JPG?</h2>
+<p>While SVG offers infinite scalability, many platforms and applications only accept raster formats like JPG. Email clients, social media platforms, and some websites require JPG images. Our converter produces high-resolution JPG files that look perfect on any screen or in print.</p>
+
+<h2>Custom Resolution Output</h2>
+<p>Choose the exact resolution you need for your JPG output. Whether you need a small thumbnail or a large print-ready image, our converter produces the perfect size. SVG's vector nature means the source graphic can be rendered at any size without quality loss.</p>
+
+<h2>Accurate Color Reproduction</h2>
+<p>SVG files support complex color definitions including gradients and transparency. Our converter accurately renders these colors into the JPG format, producing images that match your original SVG design as closely as the format allows.</p>
+
+<h2>Logo and Branding Use</h2>
+<p>Design agencies and marketing teams often need JPG versions of SVG logos for various applications. Our converter makes it easy to generate JPG versions of your brand assets in multiple sizes, perfect for email signatures, documents, and platforms that require raster images.</p>
+
+<h2>Batch Vector Conversion</h2>
+<p>Convert multiple SVG files to JPG simultaneously with our batch processing feature. Upload your collection of vector graphics and receive JPG versions of all files. Ideal for designers who need to prepare assets for multiple platforms and use cases quickly.</p>`,
+  },
+  {
+    id: "eps-to-png",
+    name: "EPS to PNG",
+    description: "Convert EPS vector files to PNG format with transparency",
+    icon: "FileImage",
+    type: "eps-to-png",
+    color: "bg-teal-500",
+    emoji: "🖼️",
+    metaTitle: "EPS to PNG Converter - Convert Vector to PNG Online Free | PDF Tools",
+    metaDescription: "Convert EPS vector files to PNG format with transparency online for free. High-quality rasterization for web and print use. No registration required.",
+    seoArticle: `<h2>EPS to PNG Converter - Vector to Transparent Raster</h2>
+<p>Convert your EPS (Encapsulated PostScript) files to PNG format with full transparency support. EPS files are commonly used in professional design and printing but aren't suitable for web use. Our converter produces high-quality PNG images that preserve transparency and work everywhere.</p>
+
+<h2>Why Convert EPS to PNG?</h2>
+<p>EPS files are industry-standard for print design but incompatible with web browsers and most applications. PNG format preserves transparency and produces crisp images perfect for websites, presentations, and digital documents. Our converter bridges the gap between print and digital.</p>
+
+<h2>Preserve Transparency</h2>
+<p>Unlike JPG, PNG format supports full alpha transparency. When your EPS file contains transparent backgrounds, our converter preserves this transparency in the resulting PNG file. Perfect for logos, icons, and graphics that need to overlay other content.</p>
+
+<h2>High-Resolution Output</h2>
+<p>Choose the resolution that suits your needs. Whether you need web-optimized graphics or high-resolution images for presentations, our converter produces PNG files at your specified dimensions with crisp, clean edges and accurate color reproduction.</p>
+
+<h2>Professional Design Workflow</h2>
+<p>Designers frequently need to convert EPS assets for web and digital use. Our converter streamlines this process without requiring expensive Adobe software. Generate web-ready PNG versions of your EPS files instantly with professional quality results.</p>
+
+<h2>Logo and Icon Conversion</h2>
+<p>Convert vector logos and icons from EPS to PNG for use on websites, apps, and digital documents. The PNG format preserves sharp edges and transparency, making your graphics look professional on any background color or image.</p>`,
+  },
+  {
+    id: "eps-to-jpg",
+    name: "EPS to JPG",
+    description: "Convert EPS vector files to JPG raster format",
+    icon: "FileImage",
+    type: "eps-to-jpg",
+    color: "bg-orange-600",
+    emoji: "🖼️",
+    metaTitle: "EPS to JPG Converter - Convert Vector to JPG Online Free | PDF Tools",
+    metaDescription: "Convert EPS vector files to JPG raster format online for free. High-quality conversion for universal compatibility. No software installation needed.",
+    seoArticle: `<h2>EPS to JPG Converter - Vector to Universal Raster</h2>
+<p>Convert your EPS (Encapsulated PostScript) files to universally compatible JPG format with our professional converter. EPS files are essential for print design but need conversion for everyday digital use. Our converter produces high-quality JPG images from your EPS graphics.</p>
+
+<h2>EPS Format Explained</h2>
+<p>EPS (Encapsulated PostScript) is a graphics file format used primarily for vector graphics in professional design and printing. While EPS files offer excellent quality for print, they aren't directly viewable in web browsers or most applications, making JPG conversion essential for sharing.</p>
+
+<h2>Universal Compatibility</h2>
+<p>JPG format is supported everywhere - websites, emails, documents, social media, and all devices. Converting your EPS files to JPG makes them instantly accessible to anyone without requiring specialized design software like Adobe Illustrator.</p>
+
+<h2>High-Quality Rasterization</h2>
+<p>Our converter uses professional-grade rasterization to convert vector EPS graphics to high-quality JPG images. The resulting files feature smooth edges, accurate colors, and excellent detail that honors your original EPS artwork.</p>
+
+<h2>Customizable Output Size</h2>
+<p>Select the resolution and dimensions you need for your JPG output. Whether you're preparing images for web use, email, or print, our converter produces the perfect size while maintaining image quality and proper aspect ratios.</p>
+
+<h2>Batch EPS Processing</h2>
+<p>Convert multiple EPS files to JPG simultaneously with our batch processing feature. Upload your collection of EPS graphics and receive JPG versions of all files quickly. Perfect for preparing design assets for client delivery or web publication.</p>`,
+  },
+  {
+    id: "psd-to-jpg",
+    name: "PSD to JPG",
+    description: "Convert Photoshop PSD files to JPG format",
+    icon: "Palette",
+    type: "psd-to-jpg",
+    color: "bg-blue-700",
+    emoji: "🎨",
+    metaTitle: "PSD to JPG Converter - Convert Photoshop Files Online Free | PDF Tools",
+    metaDescription: "Convert Adobe Photoshop PSD files to JPG format online for free. Flatten layers and export high-quality images without Photoshop. No registration required.",
+    seoArticle: `<h2>PSD to JPG Converter - Photoshop File Conversion</h2>
+<p>Convert your Adobe Photoshop PSD files to universally compatible JPG format without needing Photoshop installed. Our converter flattens all layers and produces high-quality JPG images that can be viewed and shared anywhere. Perfect for designers sharing work with clients or anyone receiving PSD files.</p>
+
+<h2>What is PSD Format?</h2>
+<p>PSD (Photoshop Document) is Adobe Photoshop's native file format that preserves layers, masks, adjustments, and editing history. While essential for design work, PSD files can only be opened with Photoshop or compatible applications. Converting to JPG makes your images universally accessible.</p>
+
+<h2>Flatten and Export</h2>
+<p>Our converter automatically flattens all visible layers in your PSD file to produce a final composite image. Hidden layers are excluded, and the visible artwork is exported as a high-quality JPG file ready for sharing, printing, or uploading anywhere.</p>
+
+<h2>No Photoshop Required</h2>
+<p>You don't need expensive Adobe software to convert PSD files. Our online converter handles PSD files directly in your browser, making it easy to extract JPG images from Photoshop documents without any software installation or subscription.</p>
+
+<h2>Client Delivery Made Easy</h2>
+<p>Designers frequently need to deliver final images to clients who don't have Photoshop. Our converter produces professional-quality JPG files that clients can view, use, and distribute without any technical requirements or software downloads.</p>
+
+<h2>High-Quality Output</h2>
+<p>We preserve the quality of your Photoshop artwork during conversion. Colors remain accurate, details stay sharp, and the final JPG file represents your design work exactly as intended in the layered PSD file.</p>`,
+  },
+  {
+    id: "psd-to-png",
+    name: "PSD to PNG",
+    description: "Convert Photoshop PSD files to PNG with transparency",
+    icon: "Palette",
+    type: "psd-to-png",
+    color: "bg-indigo-600",
+    emoji: "🎨",
+    metaTitle: "PSD to PNG Converter - Convert Photoshop Files with Transparency | PDF Tools",
+    metaDescription: "Convert Adobe Photoshop PSD files to PNG format with transparency online for free. Preserve layers and export transparent images. No Photoshop needed.",
+    seoArticle: `<h2>PSD to PNG Converter - Preserve Transparency</h2>
+<p>Convert your Adobe Photoshop PSD files to PNG format with full transparency support. Unlike JPG, PNG preserves transparent areas from your PSD file, making this converter ideal for logos, icons, graphics, and any artwork that needs to overlay other content seamlessly.</p>
+
+<h2>Transparency Preserved</h2>
+<p>When your PSD file contains transparent areas, our converter preserves this transparency in the resulting PNG file. The transparent regions remain fully intact, allowing your graphics to blend naturally over any background in websites, presentations, or documents.</p>
+
+<h2>Layer Flattening Options</h2>
+<p>Our converter flattens visible layers while respecting transparency settings. Transparent backgrounds, cutout subjects, and semi-transparent elements are all preserved accurately in the PNG output, maintaining the visual intent of your Photoshop design.</p>
+
+<h2>Web-Ready Graphics</h2>
+<p>PNG format is ideal for web graphics, especially those requiring transparency. Our converter produces optimized PNG files that load quickly while maintaining crisp edges and accurate colors. Perfect for websites, apps, and digital marketing materials.</p>
+
+<h2>Logo and Icon Export</h2>
+<p>Design agencies frequently need to export PSD logos and icons as transparent PNG files. Our converter makes this process simple and fast, producing professional-quality PNG files without requiring Photoshop installation or expertise.</p>
+
+<h2>Batch PSD Processing</h2>
+<p>Convert multiple PSD files to PNG simultaneously with our batch processing feature. Upload your collection of Photoshop documents and receive transparent PNG versions of all files. Streamline your design workflow and asset delivery process efficiently.</p>`,
   },
 ];
