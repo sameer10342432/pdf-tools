@@ -49,6 +49,24 @@ The application is built with a React frontend and an Express.js backend.
 
 - All tools include complete SEO metadata (metaTitle, metaDescription) and 500+ word seoArticle content
 
+- Added 10 new professional image format conversion tools (December 2025):
+  
+  **Camera RAW Conversion Tools:**
+  - **RAW to JPG**: Convert generic camera RAW files to high-quality JPG format
+  - **CR2 to JPG**: Convert Canon CR2 RAW files to JPG with quality control
+  - **NEF to JPG**: Convert Nikon NEF RAW files to JPG with quality control
+  - **ARW to JPG**: Convert Sony ARW RAW files to JPG with quality control
+  - **DNG to JPG**: Convert Adobe DNG files to universally compatible JPG format
+  
+  **Professional Format Conversion Tools:**
+  - **SVG to JPG**: Convert scalable vector graphics to JPG with custom dimensions
+  - **EPS to PNG**: Convert Encapsulated PostScript files to PNG with transparency
+  - **EPS to JPG**: Convert EPS vector files to JPG with quality settings
+  - **PSD to JPG**: Convert Adobe Photoshop files to JPG format
+  - **PSD to PNG**: Convert Photoshop files to PNG with transparency support
+
+  These tools use a multi-tier fallback system: Sharp library for compatible formats, Ghostscript for EPS files, and ImageMagick as a universal fallback. All tools include complete SEO articles (500+ words).
+
 ## External Dependencies
 - **PDF Processing Libraries**: `pdf-lib` (for core PDF manipulation), `sharp` (for image processing), `archiver` (for creating zip archives).
 - **Document Conversion**: `mammoth` (for Word document processing), `xlsx` (for Excel processing), `tesseract.js` (for OCR text recognition), `marked` (for Markdown parsing), `adm-zip` (for ODF file extraction).
