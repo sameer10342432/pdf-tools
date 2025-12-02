@@ -366,6 +366,16 @@ export const pdfToolTypes = [
   "detect-pdf-fonts",
   "check-pdfa-compliance",
   "validate-pdfa",
+  "pdf-previewer",
+  "pdf-page-counter",
+  "compare-pdf-side-by-side",
+  "compare-pdf-overlay",
+  "pdfa-validator",
+  "pdf-to-pdfa-1a",
+  "pdf-to-pdfa-1b",
+  "pdf-to-pdfa-2a",
+  "pdf-to-pdfa-2b",
+  "pdf-to-pdfa-2u",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -10076,5 +10086,285 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Professional Compliance Workflow</h2>
 <p>Use our validator as part of your document processing pipeline. Verify incoming documents meet requirements. Validate converted documents before archiving. Generate compliance documentation for audits. Ensure long-term preservation standards are met.</p>`,
+  },
+  {
+    id: "pdf-previewer",
+    name: "PDF Previewer",
+    description: "Preview PDF documents directly in your browser",
+    icon: "Eye",
+    type: "pdf-previewer",
+    color: "bg-blue-500",
+    emoji: "👁️",
+    metaTitle: "PDF Previewer Online Free - View PDF Files Instantly | PDF Tools",
+    metaDescription: "Preview PDF documents online for free without downloading. View all pages, zoom, navigate, and inspect PDFs instantly in your browser. Fast PDF preview tool.",
+    seoArticle: `<h2>PDF Previewer - Instant Document Viewing</h2>
+<p>View any PDF document instantly without downloading or installing software. Our PDF Previewer loads your documents quickly and provides a smooth viewing experience with zoom controls, page navigation, and full-screen mode. Perfect for quickly checking PDF contents before processing or sharing.</p>
+
+<h2>Fast and Responsive Preview</h2>
+<p>Our previewer is optimized for speed. Documents load progressively, so you can start viewing immediately. Navigate through multi-page documents with ease using intuitive controls. Zoom in for detail or out for overview. Works smoothly even with large documents containing hundreds of pages.</p>
+
+<h2>Features for Effective Viewing</h2>
+<p>Thumbnail navigation for quick page jumping. Single-page and continuous scroll modes. Fit-to-width and fit-to-page options. Zoom controls from 25% to 400%. Full-screen mode for distraction-free reading. Page rotation for incorrectly oriented documents.</p>
+
+<h2>How to Preview Your PDF</h2>
+<p>Upload or drag-and-drop your PDF file. The document loads instantly in the viewer. Use navigation controls to browse pages. Zoom in for detailed inspection. Download or proceed to other tools when ready.</p>
+
+<h2>Mobile-Friendly Preview</h2>
+<p>Our PDF previewer works perfectly on mobile devices. Touch gestures for zooming and scrolling. Responsive layout adapts to any screen size. No app installation required on phones or tablets. Preview documents on the go from any device.</p>
+
+<h2>Privacy and Security</h2>
+<p>Your documents are processed securely in your browser. Files are automatically deleted after preview. No document storage or tracking. Complete privacy for sensitive documents. Preview confidentially without concerns.</p>`,
+  },
+  {
+    id: "pdf-page-counter",
+    name: "PDF Page Counter",
+    description: "Count the exact number of pages in any PDF document",
+    icon: "Hash",
+    type: "pdf-page-counter",
+    color: "bg-indigo-500",
+    emoji: "🔢",
+    metaTitle: "PDF Page Counter Online Free - Count PDF Pages Instantly | PDF Tools",
+    metaDescription: "Count the number of pages in PDF files online for free. Get instant page counts for single or multiple PDFs. Fast and accurate PDF page counting tool.",
+    seoArticle: `<h2>PDF Page Counter - Quick and Accurate Counting</h2>
+<p>Need to know how many pages are in your PDF? Our page counter gives you instant, accurate results. Whether you have a single document or dozens of files, get precise page counts in seconds. Essential for printing estimates, document organization, and project planning.</p>
+
+<h2>Batch Page Counting</h2>
+<p>Upload multiple PDFs at once and get page counts for all of them. See individual counts for each file plus the total across all documents. Perfect for estimating printing costs or organizing large document collections. Process entire folders worth of PDFs efficiently.</p>
+
+<h2>Detailed Page Information</h2>
+<p>Beyond simple counts, see additional page details. Page dimensions and orientation. Portrait vs landscape page breakdown. Blank page detection. Total document size. Average pages per document for batch uploads.</p>
+
+<h2>How to Count PDF Pages</h2>
+<p>Upload your PDF file or files to the counter. Page counts appear instantly for each document. View detailed breakdown if needed. Export count results for reporting. Process additional files as needed.</p>
+
+<h2>Use Cases for Page Counting</h2>
+<p>Printing cost estimation based on page count. Document organization and cataloging. Publishing and production planning. Academic submission requirements. Legal document preparation. Batch processing workflow planning.</p>
+
+<h2>Accurate and Reliable Results</h2>
+<p>Our counter reads actual PDF structure for precise counts. Works with all PDF versions and types. Handles protected PDFs that allow viewing. Counts actual content pages, not blank fillers. Results you can trust for important decisions.</p>`,
+  },
+  {
+    id: "compare-pdf-side-by-side",
+    name: "Compare PDF (Side-by-Side)",
+    description: "Compare two PDFs side by side to spot differences",
+    icon: "Columns",
+    type: "compare-pdf-side-by-side",
+    color: "bg-orange-500",
+    emoji: "⚖️",
+    metaTitle: "Compare PDF Side by Side Online Free - PDF Comparison Tool | PDF Tools",
+    metaDescription: "Compare two PDF files side by side online for free. View documents simultaneously to spot differences. Easy visual PDF comparison tool.",
+    seoArticle: `<h2>Compare PDF Side by Side - Visual Document Comparison</h2>
+<p>Place two PDF documents next to each other for easy comparison. Our side-by-side viewer lets you scroll through both documents simultaneously, making it simple to spot differences in text, layout, images, and formatting. Ideal for reviewing document revisions and version comparisons.</p>
+
+<h2>Synchronized Scrolling</h2>
+<p>Both documents scroll together so corresponding pages stay aligned. Compare the same section in both versions effortlessly. Lock or unlock synchronization as needed. Jump to specific pages in either document. Navigate through multi-page documents efficiently.</p>
+
+<h2>Difference Highlighting</h2>
+<p>Visual indicators show where documents differ. Text changes are highlighted automatically. Image and layout differences are marked. Color-coded highlights for additions and deletions. Easy identification of modified sections.</p>
+
+<h2>How to Compare PDFs Side by Side</h2>
+<p>Upload the original PDF document first. Upload the second PDF for comparison. Documents appear side by side in the viewer. Scroll through to compare content. Use zoom controls for detailed inspection.</p>
+
+<h2>Version Control and Review</h2>
+<p>Perfect for document version comparison. Review contract revisions and amendments. Check design proofs against originals. Verify translation accuracy. Compare draft and final versions. Ensure consistent formatting across versions.</p>
+
+<h2>Professional Comparison Features</h2>
+<p>Full-page and zoomed comparison modes. Page-by-page navigation controls. Download comparison report. Mark and annotate differences. Share comparison results with team members.</p>`,
+  },
+  {
+    id: "compare-pdf-overlay",
+    name: "Compare PDF (Overlay)",
+    description: "Overlay two PDFs to highlight exact differences",
+    icon: "Layers",
+    type: "compare-pdf-overlay",
+    color: "bg-purple-500",
+    emoji: "🔍",
+    metaTitle: "Compare PDF Overlay Online Free - PDF Difference Detection | PDF Tools",
+    metaDescription: "Compare PDFs using overlay mode to detect exact differences. Highlight additions, deletions, and changes between PDF documents. Free PDF overlay comparison.",
+    seoArticle: `<h2>Compare PDF Overlay - Precise Difference Detection</h2>
+<p>Overlay two PDF documents to reveal every difference with precision. Our overlay comparison superimposes one document on another, using color highlighting to show exactly what changed. Perfect for detecting subtle modifications that might be missed in side-by-side comparison.</p>
+
+<h2>How Overlay Comparison Works</h2>
+<p>The original document serves as the base layer. The comparison document is overlaid with transparency. Matching content appears normal. Differences are highlighted in contrasting colors. Red typically shows removed content, green shows additions.</p>
+
+<h2>Detecting Subtle Changes</h2>
+<p>Find changes that are hard to spot visually. Detect moved text and reformatted paragraphs. Identify image replacements and modifications. Spot font and size changes. Find margin and spacing adjustments. Reveal hidden or white-text changes.</p>
+
+<h2>How to Use Overlay Comparison</h2>
+<p>Upload the original PDF as the base document. Upload the modified PDF for overlay. Adjust transparency to balance visibility. View highlighted differences throughout the document. Navigate pages to check entire documents.</p>
+
+<h2>Professional Applications</h2>
+<p>Legal document revision tracking. Engineering drawing comparison. Contract amendment verification. Design proof approval. Quality control document checking. Regulatory compliance verification.</p>
+
+<h2>Detailed Difference Reports</h2>
+<p>Generate comprehensive difference reports. List all changes found with page references. Categorize changes by type. Export reports for documentation. Share findings with stakeholders. Archive comparison records.</p>`,
+  },
+  {
+    id: "pdfa-validator",
+    name: "PDF/A Validator",
+    description: "Validate PDFs against all PDF/A archival standards",
+    icon: "ShieldCheck",
+    type: "pdfa-validator",
+    color: "bg-green-600",
+    emoji: "✓",
+    metaTitle: "PDF/A Validator Online Free - Validate PDF/A Compliance | PDF Tools",
+    metaDescription: "Validate PDF documents against PDF/A archival standards online for free. Check PDF/A-1, PDF/A-2, PDF/A-3 compliance with detailed validation reports.",
+    seoArticle: `<h2>PDF/A Validator - Complete Archival Compliance Checking</h2>
+<p>Ensure your PDF documents meet the stringent requirements of PDF/A archival standards. Our validator performs comprehensive checks against PDF/A-1, PDF/A-2, and PDF/A-3 specifications, providing detailed reports on compliance status and any issues found. Essential for long-term document preservation.</p>
+
+<h2>What is PDF/A?</h2>
+<p>PDF/A is an ISO-standardized version of PDF designed for digital preservation. It eliminates features that could compromise long-term readability. All fonts must be embedded. No external dependencies allowed. Specific metadata requirements must be met. Multiple conformance levels address different needs.</p>
+
+<h2>Validation Levels Supported</h2>
+<p>PDF/A-1a: Full accessibility and structure. PDF/A-1b: Basic visual preservation. PDF/A-2a, 2b, 2u: Enhanced features with JPEG2000. PDF/A-3a, 3b, 3u: Allows embedded files. Each level has specific requirements validated by our tool.</p>
+
+<h2>How to Validate Your PDF</h2>
+<p>Upload your PDF document for validation. Select target conformance level or validate all. Our tool analyzes every requirement. View detailed pass/fail results for each check. Get recommendations for fixing issues found.</p>
+
+<h2>Comprehensive Validation Report</h2>
+<p>Overall compliance status clearly indicated. Specific checks performed with results. Detailed error descriptions with solutions. Warning for potential future issues. References to ISO standard sections. Exportable report for documentation.</p>
+
+<h2>Industries Requiring PDF/A</h2>
+<p>Government agencies for permanent records. Healthcare for patient documentation. Legal profession for case archives. Financial services for transaction records. Manufacturing for quality documentation. Any organization with retention requirements.</p>`,
+  },
+  {
+    id: "pdf-to-pdfa-1a",
+    name: "PDF to PDF/A-1a",
+    description: "Convert PDF to PDF/A-1a with full accessibility",
+    icon: "FileCheck",
+    type: "pdf-to-pdfa-1a",
+    color: "bg-teal-600",
+    emoji: "📄",
+    metaTitle: "Convert PDF to PDF/A-1a Online Free - Full Accessibility | PDF Tools",
+    metaDescription: "Convert PDF to PDF/A-1a format online for free. Create fully accessible archival PDFs with tagged structure. PDF/A-1a conversion tool.",
+    seoArticle: `<h2>Convert to PDF/A-1a - Maximum Accessibility and Preservation</h2>
+<p>PDF/A-1a represents the highest level of PDF/A-1 compliance, requiring full document structure and accessibility features. Our converter transforms your PDFs to this format, ensuring they meet the strictest archival requirements while maintaining complete accessibility for assistive technologies.</p>
+
+<h2>What Makes PDF/A-1a Special</h2>
+<p>PDF/A-1a requires tagged document structure. All text must have proper reading order. Images require alternative text descriptions. Document language must be specified. Full Unicode character mapping required. These features ensure both preservation and accessibility.</p>
+
+<h2>Accessibility Features Added</h2>
+<p>Proper heading structure for navigation. Tagged paragraphs, lists, and tables. Alternative text for images. Reading order markers. Language specification for text. Accessible form field labels.</p>
+
+<h2>How to Convert to PDF/A-1a</h2>
+<p>Upload your source PDF document. Our tool analyzes and prepares for conversion. Document structure is tagged automatically. Missing accessibility features are added where possible. Download your compliant PDF/A-1a document.</p>
+
+<h2>Conversion Best Practices</h2>
+<p>Start with well-structured source documents when possible. Review converted documents for proper structure. Add manual accessibility enhancements if needed. Validate output to confirm compliance. Test with screen readers for full accessibility.</p>
+
+<h2>When to Use PDF/A-1a</h2>
+<p>Accessibility-focused organizations. Government documents requiring Section 508 compliance. Educational materials for all users. Public-facing official documents. Archives prioritizing universal access. Documents requiring maximum future-proofing.</p>`,
+  },
+  {
+    id: "pdf-to-pdfa-1b",
+    name: "PDF to PDF/A-1b",
+    description: "Convert PDF to PDF/A-1b for visual preservation",
+    icon: "FileCheck",
+    type: "pdf-to-pdfa-1b",
+    color: "bg-cyan-600",
+    emoji: "📋",
+    metaTitle: "Convert PDF to PDF/A-1b Online Free - Visual Preservation | PDF Tools",
+    metaDescription: "Convert PDF to PDF/A-1b format online for free. Create archival PDFs with visual preservation guaranteed. PDF/A-1b conversion tool.",
+    seoArticle: `<h2>Convert to PDF/A-1b - Reliable Visual Preservation</h2>
+<p>PDF/A-1b is the basic conformance level of PDF/A-1, focused on preserving the visual appearance of documents for long-term archiving. Our converter ensures your PDFs meet these requirements, embedding fonts and removing problematic features while maintaining visual fidelity.</p>
+
+<h2>PDF/A-1b Requirements</h2>
+<p>All fonts must be fully embedded. No external content references allowed. Color spaces properly defined. No JavaScript or executable content. No encryption preventing access. All content self-contained within the file.</p>
+
+<h2>Visual Preservation Focus</h2>
+<p>PDF/A-1b guarantees the document will look the same in the future. Fonts embedded ensure text renders correctly. Images preserved at original quality. Layout and formatting maintained. Colors displayed consistently across systems.</p>
+
+<h2>How to Convert to PDF/A-1b</h2>
+<p>Upload your PDF document for conversion. Our tool processes and converts the file. Problematic elements are resolved automatically. Fonts are embedded if missing. Download your compliant PDF/A-1b file.</p>
+
+<h2>Advantages of PDF/A-1b</h2>
+<p>Higher conversion success rate than PDF/A-1a. Works with most source documents. Maintains visual appearance perfectly. Meets basic archival requirements. Widely accepted for long-term storage. Simpler compliance requirements.</p>
+
+<h2>Common Use Cases</h2>
+<p>Scanned document archiving. Business document preservation. Legal record keeping. Financial document storage. General archival without accessibility needs. Converting legacy PDF collections.</p>`,
+  },
+  {
+    id: "pdf-to-pdfa-2a",
+    name: "PDF to PDF/A-2a",
+    description: "Convert PDF to PDF/A-2a with enhanced features",
+    icon: "FileCheck",
+    type: "pdf-to-pdfa-2a",
+    color: "bg-emerald-600",
+    emoji: "📑",
+    metaTitle: "Convert PDF to PDF/A-2a Online Free - Enhanced Archival | PDF Tools",
+    metaDescription: "Convert PDF to PDF/A-2a format online for free. Create accessible archival PDFs with enhanced features. PDF/A-2a conversion tool.",
+    seoArticle: `<h2>Convert to PDF/A-2a - Enhanced Accessibility and Features</h2>
+<p>PDF/A-2a combines full accessibility requirements with enhanced PDF 1.7 features. Based on PDF/A-2, it supports JPEG2000 compression, transparency, and optional content layers while maintaining complete document structure and accessibility. Our converter creates compliant files with all required features.</p>
+
+<h2>PDF/A-2a Enhancements</h2>
+<p>Built on PDF 1.7 with more modern features. JPEG2000 compression for better quality. Supports transparency in graphics. Optional content layers allowed. PDF/A document embedding supported. Complete tagged structure required.</p>
+
+<h2>Accessibility Requirements</h2>
+<p>Like PDF/A-1a, requires full tagging. Complete document structure markup. Unicode text with proper mapping. Reading order specification. Alternative text for images. Language identification throughout.</p>
+
+<h2>How to Convert to PDF/A-2a</h2>
+<p>Upload your source PDF document. Our converter analyzes compatibility. Modern features are preserved where compliant. Accessibility structure is added. Download your PDF/A-2a compliant file.</p>
+
+<h2>Benefits Over PDF/A-1a</h2>
+<p>Better compression for smaller files. Transparency support for modern graphics. More flexible with source documents. Can embed other PDF/A documents. Improved color management. More efficient for complex documents.</p>
+
+<h2>Ideal Applications</h2>
+<p>Modern document archiving with accessibility. Complex graphics and design documents. Documents containing transparent elements. Regulatory compliance with accessibility. Future-proof accessible archives. Organizations requiring PDF 1.7 features.</p>`,
+  },
+  {
+    id: "pdf-to-pdfa-2b",
+    name: "PDF to PDF/A-2b",
+    description: "Convert PDF to PDF/A-2b with modern compression",
+    icon: "FileCheck",
+    type: "pdf-to-pdfa-2b",
+    color: "bg-lime-600",
+    emoji: "📃",
+    metaTitle: "Convert PDF to PDF/A-2b Online Free - Modern Archival | PDF Tools",
+    metaDescription: "Convert PDF to PDF/A-2b format online for free. Create archival PDFs with modern compression and features. PDF/A-2b conversion tool.",
+    seoArticle: `<h2>Convert to PDF/A-2b - Modern Visual Preservation</h2>
+<p>PDF/A-2b offers visual preservation with support for modern PDF features. Based on PDF 1.7, it allows JPEG2000 compression, transparency, and layers while ensuring long-term visual fidelity. Our converter creates compliant documents efficiently while preserving visual appearance.</p>
+
+<h2>Modern Features Supported</h2>
+<p>JPEG2000 image compression for quality and size. Transparency and alpha channels preserved. Optional content layers maintained. PDF/A file embedding allowed. Improved color management. Object-level compression support.</p>
+
+<h2>Visual Preservation Guarantee</h2>
+<p>Documents will render identically in the future. All fonts fully embedded. Color profiles properly specified. Graphics preserved at full quality. Layout and formatting exact.</p>
+
+<h2>How to Convert to PDF/A-2b</h2>
+<p>Upload your PDF for conversion. Our tool optimizes for PDF/A-2b compliance. Modern features are preserved appropriately. Incompatible elements are resolved. Download your compliant archive-ready PDF.</p>
+
+<h2>Advantages for Modern Documents</h2>
+<p>Better file size with JPEG2000 compression. Preserves transparency from modern designs. Maintains layer structure for complex documents. More forgiving than PDF/A-1b for source variety. Efficient conversion of contemporary files.</p>
+
+<h2>When to Choose PDF/A-2b</h2>
+<p>Archiving documents with modern graphics. Design files with transparency. Large image-heavy documents. General archival without accessibility needs. Converting modern PDF workflows. Balancing quality and file size.</p>`,
+  },
+  {
+    id: "pdf-to-pdfa-2u",
+    name: "PDF to PDF/A-2u",
+    description: "Convert PDF to PDF/A-2u with Unicode text",
+    icon: "FileCheck",
+    type: "pdf-to-pdfa-2u",
+    color: "bg-sky-600",
+    emoji: "📜",
+    metaTitle: "Convert PDF to PDF/A-2u Online Free - Unicode Text Archival | PDF Tools",
+    metaDescription: "Convert PDF to PDF/A-2u format online for free. Create archival PDFs with Unicode text mapping for searchability. PDF/A-2u conversion tool.",
+    seoArticle: `<h2>Convert to PDF/A-2u - Searchable Text Preservation</h2>
+<p>PDF/A-2u provides visual preservation plus Unicode text mapping, ensuring all text is searchable and extractable. This level bridges PDF/A-2b's visual focus with PDF/A-2a's accessibility, offering a practical middle ground. Our converter creates fully compliant PDF/A-2u documents.</p>
+
+<h2>Unicode Text Mapping</h2>
+<p>All text mapped to Unicode characters. Text is searchable within the document. Copy and paste works correctly. Text extraction produces accurate results. Character encoding preserved properly. Essential for text-based document workflows.</p>
+
+<h2>Combined Benefits</h2>
+<p>Visual preservation of PDF/A-2b. Text searchability of Unicode mapping. Modern PDF 1.7 features supported. JPEG2000 and transparency allowed. Efficient compression options. Practical balance of features.</p>
+
+<h2>How to Convert to PDF/A-2u</h2>
+<p>Upload your source PDF document. Our converter analyzes text content. Unicode mapping is applied to all text. Visual fidelity is preserved. Download your searchable PDF/A-2u file.</p>
+
+<h2>Text Searchability Benefits</h2>
+<p>Find text within archived documents. Full-text search in document management systems. Extract text for other applications. Maintain indexability for discovery. Support for content analysis tools.</p>
+
+<h2>Ideal Use Cases</h2>
+<p>Text-heavy documents needing searchability. Legal documents requiring text extraction. Business records with search requirements. Scanned documents with OCR text layers. Documents where accessibility is not required but text access is. Balanced archival approach.</p>`,
   },
 ];
