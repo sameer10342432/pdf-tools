@@ -976,6 +976,14 @@ export const toolOptionsSchema = z.object({
   apngLoop: z.boolean().optional(),
   apngLoopCount: z.number().optional(),
   apngOptimize: z.boolean().optional(),
+  frameIndex: z.string().optional(),
+  backgroundColor: z.string().optional(),
+  colors: z.number().optional(),
+  dithering: z.string().optional(),
+  pageIndex: z.string().optional(),
+  compression: z.string().optional(),
+  lossless: z.string().optional(),
+  quality: z.number().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
