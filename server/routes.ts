@@ -23390,6 +23390,518 @@ ${paths.join('\n')}
             break;
           }
 
+
+          case "remove-image-metadata": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            
+            result = await sharp(buffer)
+              .rotate()
+              .withMetadata({
+                orientation: undefined,
+                exif: {},
+                icc: undefined,
+                iptc: undefined,
+                xmp: undefined,
+              })
+              .toBuffer();
+            
+            const ext = path.extname(files[0].originalname).toLowerCase();
+            const outputFormat = ['.jpg', '.jpeg'].includes(ext) ? 'jpg' : 'png';
+            filename = `no_metadata.${outputFormat}`;
+            contentType = outputFormat === 'jpg' ? "image/jpeg" : "image/png";
+            break;
+          }
+
+          case "image-color-corrector": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const brightness = options.brightness || 1;
+            const saturation = options.saturation || 1;
+            const contrast = options.contrast || 1;
+            const hue = options.hue || 0;
+            
+            let img = sharp(buffer);
+            
+            img = img.modulate({
+              brightness: brightness,
+              saturation: saturation,
+              hue: hue,
+            });
+            
+            if (contrast !== 1) {
+              const contrastFactor = contrast;
+              img = img.linear(contrastFactor, -(128 * (contrastFactor - 1)));
+            }
+            
+            result = await img.png().toBuffer();
+            filename = "color_corrected.png";
+            contentType = "image/png";
+            break;
+          }
+
+          case "change-image-dpi": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const targetDpi = options.dpi || 300;
+            
+            result = await sharp(buffer)
+              .withMetadata({
+                density: targetDpi,
+              })
+              .toBuffer();
+            
+            const ext = path.extname(files[0].originalname).toLowerCase();
+            const outputFormat = ['.jpg', '.jpeg'].includes(ext) ? 'jpg' : 'png';
+            filename = `${targetDpi}dpi_image.${outputFormat}`;
+            contentType = outputFormat === 'jpg' ? "image/jpeg" : "image/png";
+            break;
+          }
+
+          case "image-enlarger": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const scale = options.scale || 2;
+            const targetWidth = options.targetWidth;
+            const targetHeight = options.targetHeight;
+            
+            const metadata = await sharp(buffer).metadata();
+            
+            let newWidth: number;
+            let newHeight: number;
+            
+            if (targetWidth) {
+              newWidth = targetWidth;
+              newHeight = targetHeight || Math.round((targetWidth / (metadata.width || 1)) * (metadata.height || 1));
+            } else if (targetHeight) {
+              newHeight = targetHeight;
+              newWidth = Math.round((targetHeight / (metadata.height || 1)) * (metadata.width || 1));
+            } else {
+              newWidth = Math.round((metadata.width || 1) * scale);
+              newHeight = Math.round((metadata.height || 1) * scale);
+            }
+            
+            result = await sharp(buffer)
+              .resize(newWidth, newHeight, {
+                kernel: sharp.kernel.lanczos3,
+                fit: 'fill',
+              })
+              .png()
+              .toBuffer();
+            
+            filename = `enlarged_${newWidth}x${newHeight}.png`;
+            contentType = "image/png";
+            break;
+          }
+
+          case "image-deblur": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const strength = options.strength || "medium";
+            
+            let sharpenAmount: number;
+            let sharpenSigma: number;
+            
+            switch (strength) {
+              case "light":
+                sharpenAmount = 1;
+                sharpenSigma = 0.5;
+                break;
+              case "strong":
+                sharpenAmount = 2;
+                sharpenSigma = 1.5;
+                break;
+              case "medium":
+              default:
+                sharpenAmount = 1.5;
+                sharpenSigma = 1;
+                break;
+            }
+            
+            result = await sharp(buffer)
+              .sharpen({
+                sigma: sharpenSigma,
+                m1: sharpenAmount,
+                m2: sharpenAmount * 0.5,
+              })
+              .png()
+              .toBuffer();
+            
+            filename = "deblurred_image.png";
+            contentType = "image/png";
+            break;
+          }
+
+          case "ai-image-generator": {
+            const width = options.width || 512;
+            const height = options.height || 512;
+            const patternType = options.patternType || "noise";
+            const color1 = options.color1 || "#6366f1";
+            const color2 = options.color2 || "#ec4899";
+            
+            const parseColor = (hex: string) => {
+              const r = parseInt(hex.slice(1, 3), 16);
+              const g = parseInt(hex.slice(3, 5), 16);
+              const b = parseInt(hex.slice(5, 7), 16);
+              return { r, g, b };
+            };
+            
+            const c1 = parseColor(color1);
+            const c2 = parseColor(color2);
+            
+            let svgContent: string;
+            
+            switch (patternType) {
+              case "gradient":
+                svgContent = `
+                  <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:${color1};stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:${color2};stop-opacity:1" />
+                      </linearGradient>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grad1)"/>
+                  </svg>
+                `;
+                break;
+              case "circles":
+                let circles = '';
+                for (let i = 0; i < 20; i++) {
+                  const cx = Math.random() * width;
+                  const cy = Math.random() * height;
+                  const r = 20 + Math.random() * 80;
+                  const opacity = 0.1 + Math.random() * 0.4;
+                  const color = Math.random() > 0.5 ? color1 : color2;
+                  circles += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" opacity="${opacity}"/>`;
+                }
+                svgContent = `
+                  <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100%" height="100%" fill="${color1}"/>
+                    ${circles}
+                  </svg>
+                `;
+                break;
+              case "stripes":
+                const stripeWidth = 20;
+                let stripes = '';
+                for (let x = 0; x < width + height; x += stripeWidth * 2) {
+                  stripes += `<rect x="${x}" y="-${height}" width="${stripeWidth}" height="${(width + height) * 2}" fill="${color2}" transform="rotate(45)"/>`;
+                }
+                svgContent = `
+                  <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100%" height="100%" fill="${color1}"/>
+                    <g clip-path="url(#clip)">
+                      <clipPath id="clip"><rect width="${width}" height="${height}"/></clipPath>
+                      ${stripes}
+                    </g>
+                  </svg>
+                `;
+                break;
+              case "waves":
+                let wavePaths = '';
+                for (let i = 0; i < 5; i++) {
+                  const yOffset = (height / 5) * i;
+                  const amplitude = 30 + Math.random() * 20;
+                  const frequency = 0.02 + Math.random() * 0.01;
+                  let wavePath = `M 0 ${yOffset + height / 10}`;
+                  for (let x = 0; x <= width; x += 10) {
+                    const y = yOffset + height / 10 + Math.sin(x * frequency) * amplitude;
+                    wavePath += ` L ${x} ${y}`;
+                  }
+                  wavePath += ` L ${width} ${height} L 0 ${height} Z`;
+                  const opacity = 0.3 + (i * 0.1);
+                  wavePaths += `<path d="${wavePath}" fill="${i % 2 === 0 ? color1 : color2}" opacity="${opacity}"/>`;
+                }
+                svgContent = `
+                  <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100%" height="100%" fill="${color1}"/>
+                    ${wavePaths}
+                  </svg>
+                `;
+                break;
+              case "noise":
+              default:
+                let noisePixels = '';
+                const gridSize = 10;
+                for (let x = 0; x < width; x += gridSize) {
+                  for (let y = 0; y < height; y += gridSize) {
+                    const t = Math.random();
+                    const nr = Math.round(c1.r * (1 - t) + c2.r * t);
+                    const ng = Math.round(c1.g * (1 - t) + c2.g * t);
+                    const nb = Math.round(c1.b * (1 - t) + c2.b * t);
+                    noisePixels += `<rect x="${x}" y="${y}" width="${gridSize}" height="${gridSize}" fill="rgb(${nr},${ng},${nb})"/>`;
+                  }
+                }
+                svgContent = `
+                  <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+                    ${noisePixels}
+                  </svg>
+                `;
+                break;
+            }
+            
+            result = await sharp(Buffer.from(svgContent))
+              .png()
+              .toBuffer();
+            
+            filename = `pattern_${patternType}.png`;
+            contentType = "image/png";
+            break;
+          }
+
+          case "ai-photo-retouch": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const autoEnhance = options.autoEnhance !== false;
+            const doSharpen = options.sharpen !== false;
+            const denoise = options.denoise !== false;
+            
+            let img = sharp(buffer);
+            
+            if (autoEnhance) {
+              img = img.modulate({
+                brightness: 1.05,
+                saturation: 1.1,
+              });
+              img = img.linear(1.1, -(128 * 0.1));
+            }
+            
+            if (doSharpen) {
+              img = img.sharpen({
+                sigma: 0.8,
+                m1: 0.8,
+                m2: 0.4,
+              });
+            }
+            
+            if (denoise) {
+              img = img.median(3);
+            }
+            
+            result = await img.png().toBuffer();
+            filename = "enhanced_photo.png";
+            contentType = "image/png";
+            break;
+          }
+
+          case "ai-object-remover": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const cropX = options.cropX || 0;
+            const cropY = options.cropY || 0;
+            const cropWidth = options.cropWidth;
+            const cropHeight = options.cropHeight;
+            const extendTop = options.extendTop || 0;
+            const extendBottom = options.extendBottom || 0;
+            const extendLeft = options.extendLeft || 0;
+            const extendRight = options.extendRight || 0;
+            
+            let img = sharp(buffer);
+            const imgMetadata = await img.metadata();
+            
+            if (cropWidth && cropHeight) {
+              img = img.extract({
+                left: Math.max(0, cropX),
+                top: Math.max(0, cropY),
+                width: Math.min(cropWidth, (imgMetadata.width || 0) - cropX),
+                height: Math.min(cropHeight, (imgMetadata.height || 0) - cropY),
+              });
+            }
+            
+            if (extendTop > 0 || extendBottom > 0 || extendLeft > 0 || extendRight > 0) {
+              img = img.extend({
+                top: extendTop,
+                bottom: extendBottom,
+                left: extendLeft,
+                right: extendRight,
+                background: { r: 255, g: 255, b: 255, alpha: 1 },
+              });
+            }
+            
+            result = await img.png().toBuffer();
+            filename = "cropped_image.png";
+            contentType = "image/png";
+            break;
+          }
+
+          case "ai-face-swapper": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const blurX = options.blurX;
+            const blurY = options.blurY;
+            const blurWidth = options.blurWidth || 100;
+            const blurHeight = options.blurHeight || 100;
+            const blurIntensity = options.blurIntensity || 20;
+            const blurType = options.blurType || "blur";
+            
+            const imgMetadata = await sharp(buffer).metadata();
+            const imgWidth = imgMetadata.width || 100;
+            const imgHeight = imgMetadata.height || 100;
+            
+            if (blurX !== undefined && blurY !== undefined) {
+              const left = Math.max(0, Math.min(blurX, imgWidth - 1));
+              const top = Math.max(0, Math.min(blurY, imgHeight - 1));
+              const blurW = Math.min(blurWidth, imgWidth - left);
+              const blurH = Math.min(blurHeight, imgHeight - top);
+              
+              const extractedRegion = await sharp(buffer)
+                .extract({ left, top, width: blurW, height: blurH })
+                .toBuffer();
+              
+              let processedRegion: Buffer;
+              
+              if (blurType === "pixelate") {
+                const pixelSize = Math.max(4, Math.round(blurIntensity / 2));
+                processedRegion = await sharp(extractedRegion)
+                  .resize(Math.max(1, Math.round(blurW / pixelSize)), Math.max(1, Math.round(blurH / pixelSize)), {
+                    kernel: sharp.kernel.nearest,
+                  })
+                  .resize(blurW, blurH, {
+                    kernel: sharp.kernel.nearest,
+                  })
+                  .toBuffer();
+              } else {
+                processedRegion = await sharp(extractedRegion)
+                  .blur(Math.max(1, blurIntensity))
+                  .toBuffer();
+              }
+              
+              result = await sharp(buffer)
+                .composite([
+                  {
+                    input: processedRegion,
+                    left,
+                    top,
+                  },
+                ])
+                .png()
+                .toBuffer();
+            } else {
+              if (blurType === "pixelate") {
+                const pixelSize = Math.max(4, Math.round(blurIntensity / 2));
+                result = await sharp(buffer)
+                  .resize(Math.max(1, Math.round(imgWidth / pixelSize)), Math.max(1, Math.round(imgHeight / pixelSize)), {
+                    kernel: sharp.kernel.nearest,
+                  })
+                  .resize(imgWidth, imgHeight, {
+                    kernel: sharp.kernel.nearest,
+                  })
+                  .png()
+                  .toBuffer();
+              } else {
+                result = await sharp(buffer)
+                  .blur(Math.max(1, blurIntensity))
+                  .png()
+                  .toBuffer();
+              }
+            }
+            
+            filename = "blurred_image.png";
+            contentType = "image/png";
+            break;
+          }
+
+          case "image-to-sketch": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const sketchStyle = options.sketchStyle || "pencil";
+            const detail = options.detail || "medium";
+            
+            let detailSigma: number;
+            switch (detail) {
+              case "low":
+                detailSigma = 2;
+                break;
+              case "high":
+                detailSigma = 0.5;
+                break;
+              case "medium":
+              default:
+                detailSigma = 1;
+                break;
+            }
+            
+            const grayscale = await sharp(buffer)
+              .grayscale()
+              .toBuffer();
+            
+            let sketchResult: Buffer;
+            
+            switch (sketchStyle) {
+              case "charcoal":
+                sketchResult = await sharp(grayscale)
+                  .negate()
+                  .blur(detailSigma)
+                  .negate()
+                  .linear(1.5, -50)
+                  .sharpen({ sigma: 1, m1: 1.5, m2: 0.5 })
+                  .toBuffer();
+                break;
+              case "line-art":
+                const edges = await sharp(grayscale)
+                  .convolve({
+                    width: 3,
+                    height: 3,
+                    kernel: [-1, -1, -1, -1, 8, -1, -1, -1, -1],
+                  })
+                  .negate()
+                  .linear(2, 0)
+                  .toBuffer();
+                sketchResult = edges;
+                break;
+              case "pencil":
+              default:
+                const inverted = await sharp(grayscale)
+                  .negate()
+                  .blur(detailSigma * 20)
+                  .toBuffer();
+                
+                sketchResult = await sharp(grayscale)
+                  .composite([
+                    {
+                      input: inverted,
+                      blend: 'color-dodge',
+                    },
+                  ])
+                  .linear(1.2, 10)
+                  .toBuffer();
+                break;
+            }
+            
+            result = await sharp(sketchResult).png().toBuffer();
+            filename = `sketch_${sketchStyle}.png`;
+            contentType = "image/png";
+            break;
+          }
+
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
         }
