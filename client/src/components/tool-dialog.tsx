@@ -178,23 +178,49 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     if (tool.type === "jpg-to-png") {
       return ".jpg,.jpeg,image/jpeg";
     }
+    if (tool.type === "image-to-svg") {
+      return "image/jpeg,image/png,image/bmp,image/webp,.jpg,.jpeg,.png,.bmp,.webp";
+    }
+    if (tool.type === "svg-to-png") {
+      return ".svg,image/svg+xml";
+    }
+    if (tool.type === "upscale-image" || tool.type === "ai-image-upscaler") {
+      return "image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp";
+    }
+    if (tool.type === "colorize-photo") {
+      return "image/jpeg,image/png,image/webp,image/bmp,.jpg,.jpeg,.png,.webp,.bmp";
+    }
+    if (tool.type === "image-color-picker") {
+      return "image/jpeg,image/png,image/webp,image/gif,image/bmp,.jpg,.jpeg,.png,.webp,.gif,.bmp";
+    }
+    if (tool.type === "gif-maker" || tool.type === "apng-maker") {
+      return "image/jpeg,image/png,image/webp,image/bmp,.jpg,.jpeg,.png,.webp,.bmp";
+    }
+    if (tool.type === "video-to-gif") {
+      return "video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov";
+    }
+    if (tool.type === "gif-to-mp4") {
+      return ".gif,image/gif";
+    }
     return ".pdf,application/pdf";
   };
 
   const isMultiFileAllowed = () => {
     if (!tool) return true;
-    return ["merge", "images-to-pdf"].includes(tool.type);
+    return ["merge", "images-to-pdf", "gif-maker", "apng-maker"].includes(tool.type);
   };
 
   const needsMultipleFiles = () => {
     if (!tool) return false;
-    return ["merge", "merge-alternately"].includes(tool.type);
+    return ["merge", "merge-alternately", "gif-maker", "apng-maker"].includes(tool.type);
   };
 
   const getMinFiles = () => {
     if (!tool) return 1;
     if (tool.type === "merge") return 2;
     if (tool.type === "merge-alternately") return 2;
+    if (tool.type === "gif-maker") return 2;
+    if (tool.type === "apng-maker") return 2;
     return 1;
   };
 

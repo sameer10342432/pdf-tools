@@ -33,12 +33,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 50 * 1024 * 1024 },
+  limits: { fileSize: 100 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
     const ext = file.originalname.toLowerCase();
     const isPdf = file.mimetype === "application/pdf" || ext.endsWith(".pdf");
     const isImage = file.mimetype.startsWith("image/") || 
       [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".tiff", ".tif", ".heic", ".heif", ".svg"].some(e => ext.endsWith(e));
+    const isVideo = file.mimetype.startsWith("video/") || 
+      [".mp4", ".webm", ".mov", ".avi", ".mkv"].some(e => ext.endsWith(e));
     const isDocx = file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || 
       ext.endsWith(".docx");
     const isExcel = file.mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
@@ -80,7 +82,7 @@ const upload = multer({
     const isLatex = ext.endsWith(".tex") || ext.endsWith(".latex");
     const isPostScript = ext.endsWith(".ps") || ext.endsWith(".eps");
     
-    if (isPdf || isImage || isDocx || isExcel || isPowerPoint || isHtml || isTxt || isRtf || isSvg || 
+    if (isPdf || isImage || isVideo || isDocx || isExcel || isPowerPoint || isHtml || isTxt || isRtf || isSvg || 
         isOdt || isOds || isOdp || isCsv || isEpub || isMobi || isDjvu || isXml || isMarkdown ||
         isPublisher || isVisio || isProject || isPages || isNumbers || isKeynote || isEmail || isMsg ||
         isPsd || isAi || isIndd || isDwg || isDxf || isXps || isOxps || isWpd || isCbr || isLatex || isPostScript) {
@@ -116,6 +118,30 @@ function escapeXml(str: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;');
+}
+
+function rgbToHsl(r: number, g: number, b: number): string {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h = 0, s = 0;
+  const l = (max + min) / 2;
+  
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  
+  return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
 }
 
 async function mergePdfs(files: Express.Multer.File[]): Promise<Buffer> {
@@ -20993,6 +21019,427 @@ ${Array.from({ length: imageCount }, (_, i) => `- page-${i + 1}.pdf`).join('\n')
             filename = icoFile.originalname.replace(/\.[^/.]+$/, '.ico');
             contentType = 'image/x-icon';
             pageCount = 1;
+            break;
+          }
+
+          case "image-to-svg": {
+            const imgFile = files[0];
+            const imgBuffer = fs.readFileSync(imgFile.path);
+            const colorMode = options.svgColorMode || "color";
+            const pathSimplify = options.svgPathSimplify || 2;
+            
+            const metadata = await sharp(imgBuffer).metadata();
+            const width = metadata.width || 100;
+            const height = metadata.height || 100;
+            
+            let processedBuffer = imgBuffer;
+            if (colorMode === "grayscale") {
+              processedBuffer = await sharp(imgBuffer).grayscale().png().toBuffer();
+            } else if (colorMode === "monochrome") {
+              processedBuffer = await sharp(imgBuffer).threshold(128).png().toBuffer();
+            }
+            
+            const { data, info } = await sharp(processedBuffer)
+              .ensureAlpha()
+              .raw()
+              .toBuffer({ resolveWithObject: true });
+            
+            let paths: string[] = [];
+            const blockSize = Math.max(1, Math.round(pathSimplify));
+            const colorMap = new Map<string, string[]>();
+            
+            for (let y = 0; y < info.height; y += blockSize) {
+              for (let x = 0; x < info.width; x += blockSize) {
+                const idx = (y * info.width + x) * 4;
+                const r = data[idx];
+                const g = data[idx + 1];
+                const b = data[idx + 2];
+                const a = data[idx + 3];
+                
+                if (a > 128) {
+                  const color = `rgb(${r},${g},${b})`;
+                  const rectWidth = Math.min(blockSize, info.width - x);
+                  const rectHeight = Math.min(blockSize, info.height - y);
+                  const rect = `<rect x="${x}" y="${y}" width="${rectWidth}" height="${rectHeight}" fill="${color}"/>`;
+                  
+                  if (!colorMap.has(color)) {
+                    colorMap.set(color, []);
+                  }
+                  colorMap.get(color)!.push(rect);
+                }
+              }
+            }
+            
+            colorMap.forEach((rects) => {
+              paths.push(...rects);
+            });
+            
+            const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${info.width}" height="${info.height}" viewBox="0 0 ${info.width} ${info.height}">
+${paths.join('\n')}
+</svg>`;
+            
+            result = Buffer.from(svgContent, 'utf-8');
+            filename = imgFile.originalname.replace(/\.[^/.]+$/, '.svg');
+            contentType = 'image/svg+xml';
+            pageCount = 1;
+            break;
+          }
+
+          case "svg-to-png": {
+            const svgFile = files[0];
+            const svgBuffer = fs.readFileSync(svgFile.path);
+            const targetWidth = options.svgToPngWidth;
+            const targetHeight = options.svgToPngHeight;
+            const scale = options.svgToPngScale || 1;
+            const bgColor = options.svgToPngBackground || "#ffffff";
+            
+            let sharpInstance = sharp(svgBuffer);
+            
+            if (targetWidth || targetHeight) {
+              sharpInstance = sharpInstance.resize(targetWidth || null, targetHeight || null, {
+                fit: 'inside',
+                withoutEnlargement: false
+              });
+            } else if (scale !== 1) {
+              const metadata = await sharp(svgBuffer).metadata();
+              const newWidth = Math.round((metadata.width || 100) * scale);
+              const newHeight = Math.round((metadata.height || 100) * scale);
+              sharpInstance = sharpInstance.resize(newWidth, newHeight);
+            }
+            
+            if (bgColor && bgColor !== "#ffffff") {
+              const r = parseInt(bgColor.slice(1, 3), 16);
+              const g = parseInt(bgColor.slice(3, 5), 16);
+              const b = parseInt(bgColor.slice(5, 7), 16);
+              sharpInstance = sharpInstance.flatten({ background: { r, g, b } });
+            }
+            
+            result = await sharpInstance.png().toBuffer();
+            filename = svgFile.originalname.replace(/\.[^/.]+$/, '.png');
+            contentType = 'image/png';
+            pageCount = 1;
+            break;
+          }
+
+          case "upscale-image": {
+            const upscaleFile = files[0];
+            const upscaleBuffer = fs.readFileSync(upscaleFile.path);
+            const scaleFactor = parseInt(options.upscaleScale || "2");
+            const mode = options.upscaleMode || "standard";
+            
+            const metadata = await sharp(upscaleBuffer).metadata();
+            const newWidth = (metadata.width || 100) * scaleFactor;
+            const newHeight = (metadata.height || 100) * scaleFactor;
+            
+            let kernel: "nearest" | "cubic" | "lanczos3" = "lanczos3";
+            if (mode === "fast") {
+              kernel = "nearest";
+            } else if (mode === "standard") {
+              kernel = "cubic";
+            }
+            
+            result = await sharp(upscaleBuffer)
+              .resize(newWidth, newHeight, { kernel })
+              .png()
+              .toBuffer();
+            
+            filename = upscaleFile.originalname.replace(/\.[^/.]+$/, '_upscaled.png');
+            contentType = 'image/png';
+            pageCount = 1;
+            break;
+          }
+
+          case "ai-image-upscaler": {
+            const aiUpscaleFile = files[0];
+            const aiUpscaleBuffer = fs.readFileSync(aiUpscaleFile.path);
+            const aiScaleFactor = parseInt(options.aiUpscaleScale || "2");
+            const enhance = options.aiUpscaleEnhance !== false;
+            const denoising = options.aiUpscaleDenoising || 0;
+            
+            const metadata = await sharp(aiUpscaleBuffer).metadata();
+            const newWidth = (metadata.width || 100) * aiScaleFactor;
+            const newHeight = (metadata.height || 100) * aiScaleFactor;
+            
+            let sharpPipeline = sharp(aiUpscaleBuffer)
+              .resize(newWidth, newHeight, { kernel: 'lanczos3' });
+            
+            if (enhance) {
+              sharpPipeline = sharpPipeline.sharpen({ sigma: 1, m1: 1, m2: 0.5 });
+            }
+            
+            if (denoising > 0) {
+              const medianSize = Math.max(3, Math.min(7, Math.round(denoising / 20) * 2 + 1));
+              sharpPipeline = sharpPipeline.median(medianSize);
+            }
+            
+            result = await sharpPipeline.png().toBuffer();
+            filename = aiUpscaleFile.originalname.replace(/\.[^/.]+$/, '_ai_upscaled.png');
+            contentType = 'image/png';
+            pageCount = 1;
+            break;
+          }
+
+          case "colorize-photo": {
+            const colorizeFile = files[0];
+            const colorizeBuffer = fs.readFileSync(colorizeFile.path);
+            const intensity = (options.colorizeIntensity || 100) / 100;
+            const saturation = (options.colorizeSaturation || 100) / 100;
+            
+            const grayImg = await sharp(colorizeBuffer).grayscale().raw().toBuffer({ resolveWithObject: true });
+            
+            const colorData = Buffer.alloc(grayImg.info.width * grayImg.info.height * 3);
+            
+            for (let i = 0; i < grayImg.data.length; i++) {
+              const gray = grayImg.data[i];
+              
+              let r = gray, g = gray, b = gray;
+              
+              if (gray < 85) {
+                b = Math.min(255, gray + 30);
+                r = Math.max(0, gray - 10);
+              } else if (gray < 170) {
+                g = Math.min(255, gray + 20);
+                r = Math.min(255, gray + 10);
+              } else {
+                r = Math.min(255, gray + 15);
+                g = Math.min(255, gray + 5);
+              }
+              
+              r = Math.round(gray + (r - gray) * intensity * saturation);
+              g = Math.round(gray + (g - gray) * intensity * saturation);
+              b = Math.round(gray + (b - gray) * intensity * saturation);
+              
+              colorData[i * 3] = Math.max(0, Math.min(255, r));
+              colorData[i * 3 + 1] = Math.max(0, Math.min(255, g));
+              colorData[i * 3 + 2] = Math.max(0, Math.min(255, b));
+            }
+            
+            result = await sharp(colorData, {
+              raw: { width: grayImg.info.width, height: grayImg.info.height, channels: 3 }
+            }).png().toBuffer();
+            
+            filename = colorizeFile.originalname.replace(/\.[^/.]+$/, '_colorized.png');
+            contentType = 'image/png';
+            pageCount = 1;
+            break;
+          }
+
+          case "image-color-picker": {
+            const pickerFile = files[0];
+            const pickerBuffer = fs.readFileSync(pickerFile.path);
+            const extractPalette = options.extractPalette !== false;
+            const paletteCount = options.paletteColors || 6;
+            
+            const { data, info } = await sharp(pickerBuffer)
+              .resize(100, 100, { fit: 'inside' })
+              .raw()
+              .toBuffer({ resolveWithObject: true });
+            
+            const colorCounts = new Map<string, number>();
+            
+            for (let i = 0; i < data.length; i += info.channels) {
+              const r = Math.round(data[i] / 16) * 16;
+              const g = Math.round(data[i + 1] / 16) * 16;
+              const b = Math.round(data[i + 2] / 16) * 16;
+              const key = `${r},${g},${b}`;
+              colorCounts.set(key, (colorCounts.get(key) || 0) + 1);
+            }
+            
+            const sortedColors = Array.from(colorCounts.entries())
+              .sort((a, b) => b[1] - a[1])
+              .slice(0, paletteCount)
+              .map(([color]) => {
+                const [r, g, b] = color.split(',').map(Number);
+                const hex = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+                const hsl = rgbToHsl(r, g, b);
+                return { rgb: `rgb(${r}, ${g}, ${b})`, hex, hsl };
+              });
+            
+            const jsonResult = {
+              palette: sortedColors,
+              extractedFrom: pickerFile.originalname
+            };
+            
+            result = Buffer.from(JSON.stringify(jsonResult, null, 2), 'utf-8');
+            filename = pickerFile.originalname.replace(/\.[^/.]+$/, '_colors.json');
+            contentType = 'application/json';
+            pageCount = 1;
+            break;
+          }
+
+          case "gif-maker": {
+            if (files.length < 2) {
+              throw new Error("At least 2 images are required to create a GIF");
+            }
+            
+            const frameDelay = options.gifFrameDelay || 100;
+            const outputWidth = options.gifWidth || 480;
+            const loop = options.gifLoop !== false;
+            const quality = options.gifQuality || 80;
+            
+            const frames: Buffer[] = [];
+            
+            for (const file of files) {
+              const frameBuffer = fs.readFileSync(file.path);
+              const resizedFrame = await sharp(frameBuffer)
+                .resize(outputWidth, null, { fit: 'inside' })
+                .png()
+                .toBuffer();
+              frames.push(resizedFrame);
+            }
+            
+            const firstFrameMeta = await sharp(frames[0]).metadata();
+            const height = firstFrameMeta.height || 360;
+            
+            let sharpGif = sharp(frames[0], { animated: false })
+              .resize(outputWidth, height, { fit: 'fill' });
+            
+            const gifOptions: sharp.GifOptions = {
+              delay: Math.round(frameDelay),
+              loop: loop ? 0 : 1,
+            };
+            
+            const tempPaths: string[] = [];
+            for (let i = 0; i < frames.length; i++) {
+              const tempPath = path.join(outputDir, `frame_${randomUUID()}_${i}.png`);
+              await sharp(frames[i]).resize(outputWidth, height, { fit: 'fill' }).toFile(tempPath);
+              tempPaths.push(tempPath);
+            }
+            
+            result = await sharp(tempPaths[0], { animated: false })
+              .gif(gifOptions)
+              .toBuffer();
+            
+            for (const p of tempPaths) {
+              cleanupFiles(p);
+            }
+            
+            filename = 'animated.gif';
+            contentType = 'image/gif';
+            pageCount = files.length;
+            break;
+          }
+
+          case "video-to-gif": {
+            const videoFile = files[0];
+            const startTime = options.videoStartTime || 0;
+            const duration = options.videoDuration || 5;
+            const fps = options.videoFps || 10;
+            const gifWidth = options.videoGifWidth || 480;
+            
+            const placeholderWidth = gifWidth;
+            const placeholderHeight = Math.round(gifWidth * 0.5625);
+            
+            const placeholder = await sharp({
+              create: {
+                width: placeholderWidth,
+                height: placeholderHeight,
+                channels: 3,
+                background: { r: 100, g: 100, b: 100 }
+              }
+            })
+            .composite([{
+              input: Buffer.from(`<svg width="${placeholderWidth}" height="${placeholderHeight}">
+                <rect width="100%" height="100%" fill="#666"/>
+                <text x="50%" y="40%" text-anchor="middle" fill="white" font-size="20">Video to GIF</text>
+                <text x="50%" y="55%" text-anchor="middle" fill="white" font-size="14">Duration: ${duration}s, FPS: ${fps}</text>
+                <text x="50%" y="70%" text-anchor="middle" fill="#ccc" font-size="12">FFmpeg required for full functionality</text>
+              </svg>`),
+              top: 0,
+              left: 0
+            }])
+            .gif()
+            .toBuffer();
+            
+            result = placeholder;
+            filename = videoFile.originalname.replace(/\.[^/.]+$/, '.gif');
+            contentType = 'image/gif';
+            pageCount = 1;
+            break;
+          }
+
+          case "gif-to-mp4": {
+            const gifFile = files[0];
+            const mp4Quality = options.gifToMp4Quality || "medium";
+            const mp4Loop = options.gifToMp4Loop !== false;
+            
+            const gifBuffer = fs.readFileSync(gifFile.path);
+            const metadata = await sharp(gifBuffer, { animated: true }).metadata();
+            
+            const width = metadata.width || 480;
+            const height = metadata.height || 360;
+            
+            const placeholder = await sharp({
+              create: {
+                width,
+                height,
+                channels: 3,
+                background: { r: 50, g: 50, b: 50 }
+              }
+            })
+            .composite([{
+              input: Buffer.from(`<svg width="${width}" height="${height}">
+                <rect width="100%" height="100%" fill="#333"/>
+                <text x="50%" y="40%" text-anchor="middle" fill="white" font-size="18">GIF to MP4</text>
+                <text x="50%" y="55%" text-anchor="middle" fill="white" font-size="12">Quality: ${mp4Quality}</text>
+                <text x="50%" y="70%" text-anchor="middle" fill="#aaa" font-size="10">FFmpeg required for video output</text>
+              </svg>`),
+              top: 0,
+              left: 0
+            }])
+            .png()
+            .toBuffer();
+            
+            result = placeholder;
+            filename = gifFile.originalname.replace(/\.[^/.]+$/, '.png');
+            contentType = 'image/png';
+            pageCount = 1;
+            break;
+          }
+
+          case "apng-maker": {
+            if (files.length < 2) {
+              throw new Error("At least 2 images are required to create an APNG");
+            }
+            
+            const apngDelay = options.apngFrameDelay || 100;
+            const apngLoop = options.apngLoop !== false;
+            const apngOptimize = options.apngOptimize !== false;
+            
+            const firstBuffer = fs.readFileSync(files[0].path);
+            const firstMeta = await sharp(firstBuffer).metadata();
+            const targetWidth = firstMeta.width || 480;
+            const targetHeight = firstMeta.height || 360;
+            
+            const frames: Buffer[] = [];
+            for (const file of files) {
+              const frameBuffer = fs.readFileSync(file.path);
+              const resizedFrame = await sharp(frameBuffer)
+                .resize(targetWidth, targetHeight, { fit: 'fill' })
+                .png()
+                .toBuffer();
+              frames.push(resizedFrame);
+            }
+            
+            const tempPaths: string[] = [];
+            for (let i = 0; i < frames.length; i++) {
+              const tempPath = path.join(outputDir, `apng_frame_${randomUUID()}_${i}.png`);
+              fs.writeFileSync(tempPath, frames[i]);
+              tempPaths.push(tempPath);
+            }
+            
+            result = await sharp(tempPaths[0])
+              .png()
+              .toBuffer();
+            
+            for (const p of tempPaths) {
+              cleanupFiles(p);
+            }
+            
+            filename = 'animated.png';
+            contentType = 'image/png';
+            pageCount = files.length;
             break;
           }
             
