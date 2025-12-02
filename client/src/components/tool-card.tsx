@@ -44,6 +44,16 @@ import {
   BadgeCheck,
   ShieldAlert,
   FileCheck,
+  FlipVertical,
+  FlipHorizontal,
+  Sun,
+  Contrast,
+  Eye,
+  FlipVertical,
+  FlipHorizontal,
+  Sun,
+  Contrast,
+  Eye,
   type LucideIcon,
 } from "lucide-react";
 
@@ -90,6 +100,11 @@ const iconMap: Record<string, LucideIcon> = {
   BadgeCheck,
   ShieldAlert,
   FileCheck,
+  FlipVertical,
+  FlipHorizontal,
+  Sun,
+  Contrast,
+  Eye,
 };
 
 interface ToolCardProps {

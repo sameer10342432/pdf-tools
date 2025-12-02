@@ -69,6 +69,16 @@ import {
   Film,
   Video,
   FileVideo,
+  FlipVertical,
+  FlipHorizontal,
+  Sun,
+  Contrast,
+  Eye,
+  FlipVertical,
+  FlipHorizontal,
+  Sun,
+  Contrast,
+  Eye,
   type LucideIcon,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -121,6 +131,11 @@ const iconMap: Record<string, LucideIcon> = {
   Film,
   Video,
   FileVideo,
+  FlipVertical,
+  FlipHorizontal,
+  Sun,
+  Contrast,
+  Eye,
 };
 
 interface ToolDialogProps {

@@ -8560,6 +8560,125 @@ export function ToolOptionsComponent({
       );
     }
 
+    case "ai-to-jpg":
+    case "ai-to-png":
+    case "indd-to-jpg":
+    case "flip-image-vertical":
+    case "flip-image-horizontal": {
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload your file and click process. No additional options needed.
+          </p>
+        </div>
+      );
+    }
+
+    case "adjust-brightness": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Brightness: {options.imageBrightness || 100}%</Label>
+            <Slider
+              min={0}
+              max={200}
+              step={5}
+              value={[options.imageBrightness || 100]}
+              onValueChange={([value]) => updateOption("imageBrightness", value)}
+              data-testid="slider-brightness"
+            />
+            <p className="text-sm text-muted-foreground">
+              100% is normal. Lower values darken, higher values brighten.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "adjust-contrast": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Contrast: {options.imageContrast || 100}%</Label>
+            <Slider
+              min={0}
+              max={200}
+              step={5}
+              value={[options.imageContrast || 100]}
+              onValueChange={([value]) => updateOption("imageContrast", value)}
+              data-testid="slider-contrast"
+            />
+            <p className="text-sm text-muted-foreground">
+              100% is normal. Lower values reduce contrast, higher values increase it.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "adjust-saturation": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Saturation: {options.imageSaturation || 100}%</Label>
+            <Slider
+              min={0}
+              max={200}
+              step={5}
+              value={[options.imageSaturation || 100]}
+              onValueChange={([value]) => updateOption("imageSaturation", value)}
+              data-testid="slider-saturation"
+            />
+            <p className="text-sm text-muted-foreground">
+              100% is normal. 0% is grayscale, higher values intensify colors.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "image-sharpen": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Sharpen Amount: {options.imageSharpen || 1}</Label>
+            <Slider
+              min={0.5}
+              max={10}
+              step={0.5}
+              value={[options.imageSharpen || 1]}
+              onValueChange={([value]) => updateOption("imageSharpen", value)}
+              data-testid="slider-sharpen"
+            />
+            <p className="text-sm text-muted-foreground">
+              Higher values increase sharpening. Recommended: 1-3 for subtle enhancement.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "image-blur": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Blur Amount: {options.imageBlur || 1}</Label>
+            <Slider
+              min={0.5}
+              max={20}
+              step={0.5}
+              value={[options.imageBlur || 1]}
+              onValueChange={([value]) => updateOption("imageBlur", value)}
+              data-testid="slider-blur"
+            />
+            <p className="text-sm text-muted-foreground">
+              Higher values increase blur effect. 1-5 for subtle blur, 10+ for heavy blur.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
     default:
       return null;
   }

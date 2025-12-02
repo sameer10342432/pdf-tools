@@ -22028,6 +22028,299 @@ ${paths.join('\n')}
             pageCount = 1;
             break;
           }
+          
+          case "ai-to-jpg": {
+            const aiJpgFile = files[0];
+            const aiJpgBuffer = fs.readFileSync(aiJpgFile.path);
+            const { execSync } = require('child_process');
+            const tempAiJpgPath = path.join(outputDir, `ai-${randomUUID()}.jpg`);
+            
+            try {
+              execSync(`convert "${aiJpgFile.path}[0]" -flatten -quality 95 "${tempAiJpgPath}"`, {
+                timeout: 120000,
+                stdio: 'pipe'
+              });
+              
+              if (fs.existsSync(tempAiJpgPath)) {
+                result = fs.readFileSync(tempAiJpgPath);
+                fs.unlinkSync(tempAiJpgPath);
+              } else {
+                throw new Error('ImageMagick conversion failed');
+              }
+            } catch (imError) {
+              try {
+                result = await sharp(aiJpgBuffer)
+                  .flatten({ background: { r: 255, g: 255, b: 255 } })
+                  .jpeg({ quality: 95 })
+                  .toBuffer();
+              } catch (sharpError) {
+                throw new Error('Failed to convert AI file. Please ensure the file is a valid Adobe Illustrator document.');
+              }
+            }
+            
+            filename = aiJpgFile.originalname.replace(/\.ai$/i, '.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+          
+          case "ai-to-png": {
+            const aiPngFile = files[0];
+            const aiPngBuffer = fs.readFileSync(aiPngFile.path);
+            const { execSync } = require('child_process');
+            const tempAiPngPath = path.join(outputDir, `ai-${randomUUID()}.png`);
+            
+            try {
+              execSync(`convert "${aiPngFile.path}[0]" -alpha on "${tempAiPngPath}"`, {
+                timeout: 120000,
+                stdio: 'pipe'
+              });
+              
+              if (fs.existsSync(tempAiPngPath)) {
+                result = fs.readFileSync(tempAiPngPath);
+                fs.unlinkSync(tempAiPngPath);
+              } else {
+                throw new Error('ImageMagick conversion failed');
+              }
+            } catch (imError) {
+              try {
+                result = await sharp(aiPngBuffer)
+                  .png({ compressionLevel: 9 })
+                  .toBuffer();
+              } catch (sharpError) {
+                throw new Error('Failed to convert AI file. Please ensure the file is a valid Adobe Illustrator document.');
+              }
+            }
+            
+            filename = aiPngFile.originalname.replace(/\.ai$/i, '.png');
+            contentType = 'image/png';
+            pageCount = 1;
+            break;
+          }
+          
+          case "indd-to-jpg": {
+            const inddJpgFile = files[0];
+            const { execSync } = require('child_process');
+            const tempInddJpgPath = path.join(outputDir, `indd-${randomUUID()}.jpg`);
+            
+            try {
+              execSync(`convert "${inddJpgFile.path}[0]" -flatten -quality 95 "${tempInddJpgPath}"`, {
+                timeout: 120000,
+                stdio: 'pipe'
+              });
+              
+              if (fs.existsSync(tempInddJpgPath)) {
+                result = fs.readFileSync(tempInddJpgPath);
+                fs.unlinkSync(tempInddJpgPath);
+              } else {
+                throw new Error('ImageMagick conversion failed');
+              }
+            } catch (imError) {
+              throw new Error('Failed to convert INDD file. InDesign files require ImageMagick with proper support installed.');
+            }
+            
+            filename = inddJpgFile.originalname.replace(/\.indd$/i, '.jpg');
+            contentType = 'image/jpeg';
+            pageCount = 1;
+            break;
+          }
+          
+          case "flip-image-vertical": {
+            const flipVFile = files[0];
+            const flipVBuffer = fs.readFileSync(flipVFile.path);
+            
+            result = await sharp(flipVBuffer)
+              .flip()
+              .toBuffer();
+            
+            const flipVExt = path.extname(flipVFile.originalname).toLowerCase();
+            if (flipVExt === '.jpg' || flipVExt === '.jpeg') {
+              result = await sharp(result).jpeg({ quality: 95 }).toBuffer();
+              filename = flipVFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (flipVExt === '.webp') {
+              result = await sharp(result).webp({ quality: 95 }).toBuffer();
+              filename = flipVFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await sharp(result).png().toBuffer();
+              filename = flipVFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "flip-image-horizontal": {
+            const flipHFile = files[0];
+            const flipHBuffer = fs.readFileSync(flipHFile.path);
+            
+            result = await sharp(flipHBuffer)
+              .flop()
+              .toBuffer();
+            
+            const flipHExt = path.extname(flipHFile.originalname).toLowerCase();
+            if (flipHExt === '.jpg' || flipHExt === '.jpeg') {
+              result = await sharp(result).jpeg({ quality: 95 }).toBuffer();
+              filename = flipHFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (flipHExt === '.webp') {
+              result = await sharp(result).webp({ quality: 95 }).toBuffer();
+              filename = flipHFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await sharp(result).png().toBuffer();
+              filename = flipHFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "adjust-brightness": {
+            const brightnessFile = files[0];
+            const brightnessBuffer = fs.readFileSync(brightnessFile.path);
+            const brightnessLevel = options.imageBrightness !== undefined ? options.imageBrightness / 100 : 1;
+            
+            let brightnessSharp = sharp(brightnessBuffer);
+            
+            if (brightnessLevel !== 1) {
+              brightnessSharp = brightnessSharp.modulate({ brightness: brightnessLevel });
+            }
+            
+            const brightnessExt = path.extname(brightnessFile.originalname).toLowerCase();
+            if (brightnessExt === '.jpg' || brightnessExt === '.jpeg') {
+              result = await brightnessSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = brightnessFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (brightnessExt === '.webp') {
+              result = await brightnessSharp.webp({ quality: 95 }).toBuffer();
+              filename = brightnessFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await brightnessSharp.png().toBuffer();
+              filename = brightnessFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "adjust-contrast": {
+            const contrastFile = files[0];
+            const contrastBuffer = fs.readFileSync(contrastFile.path);
+            const contrastLevel = options.imageContrast !== undefined ? 1 + (options.imageContrast - 100) / 100 : 1;
+            
+            let contrastSharp = sharp(contrastBuffer);
+            
+            if (contrastLevel !== 1) {
+              contrastSharp = contrastSharp.linear(contrastLevel, -(128 * contrastLevel) + 128);
+            }
+            
+            const contrastExt = path.extname(contrastFile.originalname).toLowerCase();
+            if (contrastExt === '.jpg' || contrastExt === '.jpeg') {
+              result = await contrastSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = contrastFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (contrastExt === '.webp') {
+              result = await contrastSharp.webp({ quality: 95 }).toBuffer();
+              filename = contrastFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await contrastSharp.png().toBuffer();
+              filename = contrastFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "adjust-saturation": {
+            const saturationFile = files[0];
+            const saturationBuffer = fs.readFileSync(saturationFile.path);
+            const saturationLevel = options.imageSaturation !== undefined ? options.imageSaturation / 100 : 1;
+            
+            let saturationSharp = sharp(saturationBuffer);
+            
+            if (saturationLevel !== 1) {
+              saturationSharp = saturationSharp.modulate({ saturation: saturationLevel });
+            }
+            
+            const saturationExt = path.extname(saturationFile.originalname).toLowerCase();
+            if (saturationExt === '.jpg' || saturationExt === '.jpeg') {
+              result = await saturationSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = saturationFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (saturationExt === '.webp') {
+              result = await saturationSharp.webp({ quality: 95 }).toBuffer();
+              filename = saturationFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await saturationSharp.png().toBuffer();
+              filename = saturationFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "image-sharpen": {
+            const sharpenFile = files[0];
+            const sharpenBuffer = fs.readFileSync(sharpenFile.path);
+            const sharpenAmount = options.imageSharpen !== undefined ? options.imageSharpen : 1;
+            
+            let sharpenSharp = sharp(sharpenBuffer);
+            
+            if (sharpenAmount > 0) {
+              sharpenSharp = sharpenSharp.sharpen(sharpenAmount);
+            }
+            
+            const sharpenExt = path.extname(sharpenFile.originalname).toLowerCase();
+            if (sharpenExt === '.jpg' || sharpenExt === '.jpeg') {
+              result = await sharpenSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = sharpenFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (sharpenExt === '.webp') {
+              result = await sharpenSharp.webp({ quality: 95 }).toBuffer();
+              filename = sharpenFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await sharpenSharp.png().toBuffer();
+              filename = sharpenFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
+          
+          case "image-blur": {
+            const blurFile = files[0];
+            const blurBuffer = fs.readFileSync(blurFile.path);
+            const blurAmount = options.imageBlur !== undefined ? options.imageBlur : 1;
+            
+            let blurSharp = sharp(blurBuffer);
+            
+            if (blurAmount > 0) {
+              blurSharp = blurSharp.blur(blurAmount);
+            }
+            
+            const blurExt = path.extname(blurFile.originalname).toLowerCase();
+            if (blurExt === '.jpg' || blurExt === '.jpeg') {
+              result = await blurSharp.jpeg({ quality: 95 }).toBuffer();
+              filename = blurFile.originalname;
+              contentType = 'image/jpeg';
+            } else if (blurExt === '.webp') {
+              result = await blurSharp.webp({ quality: 95 }).toBuffer();
+              filename = blurFile.originalname;
+              contentType = 'image/webp';
+            } else {
+              result = await blurSharp.png().toBuffer();
+              filename = blurFile.originalname.replace(/\.[^/.]+$/, '.png');
+              contentType = 'image/png';
+            }
+            pageCount = 1;
+            break;
+          }
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
