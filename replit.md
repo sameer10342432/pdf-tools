@@ -21,9 +21,23 @@ The application is built with a React frontend and an Express.js backend.
     - Dialog-based navigation has been migrated to page-based navigation for better SEO and user experience.
 
 ## Recent Changes (December 2025)
-- Added 10 new image processing tools:
+- Added 20 new image processing tools with full SEO optimization (500+ word articles each):
+  
+  **Image Format Conversion Tools:**
   - **HEIC to JPG**: Convert Apple HEIC/HEIF images to universally compatible JPG format
+  - **HEIC to PNG**: Convert Apple HEIC/HEIF images to lossless PNG format
+  - **HEIC to GIF**: Convert Apple HEIC/HEIF images to GIF format for universal compatibility
   - **WebP to JPG**: Convert WebP images to JPG with customizable quality settings
+  - **WebP to GIF**: Convert WebP images/animations to universally compatible GIF format
+  - **GIF to WebP**: Convert GIF animations to modern WebP for smaller file sizes
+  - **AVIF to JPG**: Convert cutting-edge AVIF images to universally supported JPG format
+  - **AVIF to PNG**: Convert AVIF images to lossless PNG format
+  - **JPG to AVIF**: Convert JPG images to next-generation AVIF for superior compression
+  - **PNG to AVIF**: Convert PNG images to AVIF for dramatically smaller file sizes
+  - **JPE to JPG**: Standardize JPE file extensions to universally recognized JPG
+  - **JFIF to JPG**: Convert JFIF images to standard JPG for maximum compatibility
+  
+  **Image Processing Tools:**
   - **Image to Base64**: Encode images to Base64 strings for web embedding
   - **Base64 to Image**: Decode Base64 strings back to downloadable image files
   - **Image Editor**: Comprehensive editor with rotate, flip, resize, brightness, contrast, saturation, grayscale, blur, and sharpen controls
@@ -32,7 +46,8 @@ The application is built with a React frontend and an Express.js backend.
   - **Image Background Remover**: Same functionality as Remove Image Background (alternate naming)
   - **Convert to ICO**: Create multi-size ICO favicon files (16x16 to 256x256)
   - **ICO Converter**: Same functionality as Convert to ICO (alternate naming)
-- Each new tool includes complete SEO metadata (metaTitle, metaDescription) and 500+ word seoArticle content
+
+- All tools include complete SEO metadata (metaTitle, metaDescription) and 500+ word seoArticle content
 
 ## External Dependencies
 - **PDF Processing Libraries**: `pdf-lib` (for core PDF manipulation), `sharp` (for image processing), `archiver` (for creating zip archives).
