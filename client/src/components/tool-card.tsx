@@ -43,6 +43,7 @@ import {
   LockKeyhole,
   BadgeCheck,
   ShieldAlert,
+  FileCheck,
   type LucideIcon,
 } from "lucide-react";
 
@@ -88,6 +89,7 @@ const iconMap: Record<string, LucideIcon> = {
   LockKeyhole,
   BadgeCheck,
   ShieldAlert,
+  FileCheck,
 };
 
 interface ToolCardProps {

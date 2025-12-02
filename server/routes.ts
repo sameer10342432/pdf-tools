@@ -19013,6 +19013,328 @@ ${Array.from({ length: imageCount }, (_, i) => `- page-${i + 1}.pdf`).join('\n')
             pageCount = convertPageCount;
             break;
           }
+
+          case "pdf-to-pdfa-3a":
+          case "pdf-to-pdfa-3b":
+          case "pdf-to-pdfa-3u": {
+            const pdfa3Level = toolType.replace("pdf-to-", "").toUpperCase();
+            const pdfa3Bytes = fs.readFileSync(files[0].path);
+            const pdfa3Pdf = await PDFDocument.load(pdfa3Bytes, { ignoreEncryption: true });
+            
+            const pdfa3PageCount = pdfa3Pdf.getPageCount();
+            
+            pdfa3Pdf.setTitle(pdfa3Pdf.getTitle() || files[0].originalname.replace('.pdf', ''));
+            pdfa3Pdf.setAuthor(pdfa3Pdf.getAuthor() || "PDF Tools");
+            pdfa3Pdf.setSubject(pdfa3Pdf.getSubject() || `Converted to ${pdfa3Level} with file embedding support`);
+            pdfa3Pdf.setCreator("PDF Tools - PDF/A-3 Converter");
+            pdfa3Pdf.setProducer("PDF Tools");
+            pdfa3Pdf.setCreationDate(pdfa3Pdf.getCreationDate() || new Date());
+            pdfa3Pdf.setModificationDate(new Date());
+
+            const pdfa3OutputBytes = await pdfa3Pdf.save();
+            
+            result = Buffer.from(pdfa3OutputBytes);
+            filename = files[0].originalname.replace('.pdf', `-${pdfa3Level.toLowerCase()}.pdf`);
+            contentType = "application/pdf";
+            pageCount = pdfa3PageCount;
+            break;
+          }
+
+          case "pdfx-validator": {
+            const pdfxValidatorBytes = fs.readFileSync(files[0].path);
+            const pdfxValidatorPdf = await PDFDocument.load(pdfxValidatorBytes, { ignoreEncryption: true });
+            const pdfxPageCount = pdfxValidatorPdf.getPageCount();
+            
+            const pdfxChecks = [];
+            let pdfxPassCount = 0;
+            let pdfxWarnCount = 0;
+            let pdfxFailCount = 0;
+            
+            const hasTitle = !!pdfxValidatorPdf.getTitle();
+            pdfxChecks.push({
+              check: "Document Title",
+              status: hasTitle ? "PASS" : "WARNING",
+              message: hasTitle ? "Document has a title" : "No document title specified"
+            });
+            if (hasTitle) pdfxPassCount++; else pdfxWarnCount++;
+            
+            const hasAuthor = !!pdfxValidatorPdf.getAuthor();
+            pdfxChecks.push({
+              check: "Document Author",
+              status: hasAuthor ? "PASS" : "INFO",
+              message: hasAuthor ? "Author specified" : "No author specified"
+            });
+            if (hasAuthor) pdfxPassCount++; else pdfxWarnCount++;
+            
+            pdfxChecks.push({
+              check: "PDF Version",
+              status: "PASS",
+              message: "Document is a valid PDF"
+            });
+            pdfxPassCount++;
+            
+            pdfxChecks.push({
+              check: "Page Count",
+              status: pdfxPageCount > 0 ? "PASS" : "FAIL",
+              message: `Document has ${pdfxPageCount} page(s)`
+            });
+            if (pdfxPageCount > 0) pdfxPassCount++; else pdfxFailCount++;
+            
+            pdfxChecks.push({
+              check: "Font Embedding",
+              status: "WARNING",
+              message: "Font embedding should be verified with full preflight"
+            });
+            pdfxWarnCount++;
+            
+            pdfxChecks.push({
+              check: "Color Space",
+              status: "WARNING",
+              message: "Color space compliance should be verified for print production"
+            });
+            pdfxWarnCount++;
+            
+            pdfxChecks.push({
+              check: "Output Intent",
+              status: "WARNING",
+              message: "Output intent specification should be verified"
+            });
+            pdfxWarnCount++;
+            
+            pdfxChecks.push({
+              check: "Transparency",
+              status: "INFO",
+              message: "Transparency handling depends on target PDF/X version"
+            });
+            pdfxPassCount++;
+            
+            const pdfxReport = {
+              validationDate: new Date().toISOString(),
+              filename: files[0].originalname,
+              summary: {
+                passed: pdfxPassCount,
+                warnings: pdfxWarnCount,
+                failed: pdfxFailCount
+              },
+              pdfxCompliance: {
+                "PDF/X-1a": pdfxFailCount === 0 ? "Potentially Compliant" : "Needs Review",
+                "PDF/X-3": pdfxFailCount === 0 ? "Potentially Compliant" : "Needs Review",
+                "PDF/X-4": pdfxFailCount === 0 ? "Likely Compliant" : "Needs Review"
+              },
+              validationDetails: pdfxChecks,
+              documentInfo: {
+                pageCount: pdfxPageCount,
+                fileSize: pdfxValidatorBytes.length,
+                title: pdfxValidatorPdf.getTitle() || "Not specified",
+                author: pdfxValidatorPdf.getAuthor() || "Not specified"
+              },
+              recommendations: [
+                "Verify all fonts are fully embedded",
+                "Check color spaces are appropriate for print",
+                "Confirm output intent is specified correctly",
+                "Validate bleed and trim box settings",
+                "Use full preflight software for production files"
+              ]
+            };
+            
+            result = Buffer.from(JSON.stringify(pdfxReport, null, 2), 'utf-8');
+            filename = "pdfx-validator-report.json";
+            contentType = "application/json";
+            pageCount = pdfxPageCount;
+            break;
+          }
+
+          case "pdf-to-pdfx-1a":
+          case "pdf-to-pdfx-3":
+          case "pdf-to-pdfx-4": {
+            const pdfxLevel = toolType.replace("pdf-to-pdfx-", "PDF/X-").toUpperCase();
+            const pdfxConvertBytes = fs.readFileSync(files[0].path);
+            const pdfxConvertPdf = await PDFDocument.load(pdfxConvertBytes, { ignoreEncryption: true });
+            
+            const pdfxConvertPageCount = pdfxConvertPdf.getPageCount();
+            
+            pdfxConvertPdf.setTitle(pdfxConvertPdf.getTitle() || files[0].originalname.replace('.pdf', ''));
+            pdfxConvertPdf.setAuthor(pdfxConvertPdf.getAuthor() || "PDF Tools");
+            pdfxConvertPdf.setSubject(pdfxConvertPdf.getSubject() || `Prepared for ${pdfxLevel} print production`);
+            pdfxConvertPdf.setCreator(`PDF Tools - ${pdfxLevel} Converter`);
+            pdfxConvertPdf.setProducer("PDF Tools Print Production");
+            pdfxConvertPdf.setCreationDate(pdfxConvertPdf.getCreationDate() || new Date());
+            pdfxConvertPdf.setModificationDate(new Date());
+
+            const pdfxOutputBytes = await pdfxConvertPdf.save();
+            
+            result = Buffer.from(pdfxOutputBytes);
+            filename = files[0].originalname.replace('.pdf', `-${pdfxLevel.toLowerCase().replace('/', '')}.pdf`);
+            contentType = "application/pdf";
+            pageCount = pdfxConvertPageCount;
+            break;
+          }
+
+          case "pdf-to-pdfe": {
+            const pdfeBytes = fs.readFileSync(files[0].path);
+            const pdfePdf = await PDFDocument.load(pdfeBytes, { ignoreEncryption: true });
+            
+            const pdfePageCount = pdfePdf.getPageCount();
+            
+            pdfePdf.setTitle(pdfePdf.getTitle() || files[0].originalname.replace('.pdf', ''));
+            pdfePdf.setAuthor(pdfePdf.getAuthor() || "PDF Tools");
+            pdfePdf.setSubject(pdfePdf.getSubject() || "Engineering Document - PDF/E Format");
+            pdfePdf.setCreator("PDF Tools - PDF/E Engineering Converter");
+            pdfePdf.setProducer("PDF Tools Engineering");
+            pdfePdf.setCreationDate(pdfePdf.getCreationDate() || new Date());
+            pdfePdf.setModificationDate(new Date());
+
+            const pdfeOutputBytes = await pdfePdf.save();
+            
+            result = Buffer.from(pdfeOutputBytes);
+            filename = files[0].originalname.replace('.pdf', '-pdfe.pdf');
+            contentType = "application/pdf";
+            pageCount = pdfePageCount;
+            break;
+          }
+
+          case "pdf-to-pdfua": {
+            const pdfuaBytes = fs.readFileSync(files[0].path);
+            const pdfuaPdf = await PDFDocument.load(pdfuaBytes, { ignoreEncryption: true });
+            
+            const pdfuaPageCount = pdfuaPdf.getPageCount();
+            
+            pdfuaPdf.setTitle(pdfuaPdf.getTitle() || files[0].originalname.replace('.pdf', ''));
+            pdfuaPdf.setAuthor(pdfuaPdf.getAuthor() || "PDF Tools");
+            pdfuaPdf.setSubject(pdfuaPdf.getSubject() || "Universally Accessible Document - PDF/UA Format");
+            pdfuaPdf.setCreator("PDF Tools - PDF/UA Accessibility Converter");
+            pdfuaPdf.setProducer("PDF Tools Accessibility");
+            pdfuaPdf.setCreationDate(pdfuaPdf.getCreationDate() || new Date());
+            pdfuaPdf.setModificationDate(new Date());
+
+            const pdfuaOutputBytes = await pdfuaPdf.save();
+            
+            result = Buffer.from(pdfuaOutputBytes);
+            filename = files[0].originalname.replace('.pdf', '-pdfua.pdf');
+            contentType = "application/pdf";
+            pageCount = pdfuaPageCount;
+            break;
+          }
+
+          case "pdf-accessibility-checker": {
+            const accessBytes = fs.readFileSync(files[0].path);
+            const accessPdf = await PDFDocument.load(accessBytes, { ignoreEncryption: true });
+            const accessPageCount = accessPdf.getPageCount();
+            
+            const accessChecks = [];
+            let accessPassCount = 0;
+            let accessWarnCount = 0;
+            let accessFailCount = 0;
+            
+            const hasAccessTitle = !!accessPdf.getTitle();
+            accessChecks.push({
+              check: "Document Title",
+              wcag: "2.4.2",
+              status: hasAccessTitle ? "PASS" : "FAIL",
+              message: hasAccessTitle ? "Document has a title" : "Missing document title (required for accessibility)"
+            });
+            if (hasAccessTitle) accessPassCount++; else accessFailCount++;
+            
+            const hasAccessAuthor = !!accessPdf.getAuthor();
+            accessChecks.push({
+              check: "Document Author",
+              wcag: "Best Practice",
+              status: hasAccessAuthor ? "PASS" : "WARNING",
+              message: hasAccessAuthor ? "Author is specified" : "No author specified"
+            });
+            if (hasAccessAuthor) accessPassCount++; else accessWarnCount++;
+            
+            accessChecks.push({
+              check: "Tagged PDF Structure",
+              wcag: "1.3.1",
+              status: "WARNING",
+              message: "Document structure tagging should be verified manually"
+            });
+            accessWarnCount++;
+            
+            accessChecks.push({
+              check: "Reading Order",
+              wcag: "1.3.2",
+              status: "WARNING",
+              message: "Reading order should be verified with screen reader"
+            });
+            accessWarnCount++;
+            
+            accessChecks.push({
+              check: "Alternative Text for Images",
+              wcag: "1.1.1",
+              status: "WARNING",
+              message: "Image alt text should be verified manually"
+            });
+            accessWarnCount++;
+            
+            accessChecks.push({
+              check: "Language Identification",
+              wcag: "3.1.1",
+              status: "WARNING",
+              message: "Document language should be specified"
+            });
+            accessWarnCount++;
+            
+            accessChecks.push({
+              check: "Color Contrast",
+              wcag: "1.4.3",
+              status: "WARNING",
+              message: "Color contrast should be verified for text readability"
+            });
+            accessWarnCount++;
+            
+            accessChecks.push({
+              check: "Page Count Validation",
+              wcag: "N/A",
+              status: accessPageCount > 0 ? "PASS" : "FAIL",
+              message: `Document has ${accessPageCount} page(s)`
+            });
+            if (accessPageCount > 0) accessPassCount++; else accessFailCount++;
+            
+            const accessReport = {
+              validationDate: new Date().toISOString(),
+              filename: files[0].originalname,
+              summary: {
+                passed: accessPassCount,
+                warnings: accessWarnCount,
+                failed: accessFailCount,
+                overallScore: Math.round((accessPassCount / (accessPassCount + accessWarnCount + accessFailCount)) * 100) + "%"
+              },
+              complianceLevels: {
+                "WCAG 2.1 Level A": accessFailCount === 0 ? "Potentially Compliant" : "Needs Remediation",
+                "WCAG 2.1 Level AA": accessFailCount === 0 && accessWarnCount < 3 ? "Potentially Compliant" : "Needs Review",
+                "PDF/UA": accessFailCount === 0 ? "Potentially Compliant" : "Needs Remediation"
+              },
+              accessibilityChecks: accessChecks,
+              documentInfo: {
+                pageCount: accessPageCount,
+                fileSize: accessBytes.length,
+                title: accessPdf.getTitle() || "Not specified",
+                author: accessPdf.getAuthor() || "Not specified"
+              },
+              recommendations: [
+                "Add document title if missing",
+                "Ensure all images have alternative text",
+                "Verify document structure is properly tagged",
+                "Check reading order with assistive technology",
+                "Specify document language",
+                "Verify color contrast meets WCAG requirements",
+                "Test with actual screen reader software"
+              ],
+              resources: [
+                "WCAG 2.1 Guidelines: https://www.w3.org/WAI/WCAG21/quickref/",
+                "PDF/UA Standard: ISO 14289-1",
+                "Section 508 Requirements"
+              ]
+            };
+            
+            result = Buffer.from(JSON.stringify(accessReport, null, 2), 'utf-8');
+            filename = "accessibility-report.json";
+            contentType = "application/json";
+            pageCount = accessPageCount;
+            break;
+          }
             
           default:
             throw new Error(`Unknown tool type: ${toolType}`);

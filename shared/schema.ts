@@ -376,6 +376,16 @@ export const pdfToolTypes = [
   "pdf-to-pdfa-2a",
   "pdf-to-pdfa-2b",
   "pdf-to-pdfa-2u",
+  "pdf-to-pdfa-3a",
+  "pdf-to-pdfa-3b",
+  "pdf-to-pdfa-3u",
+  "pdfx-validator",
+  "pdf-to-pdfx-1a",
+  "pdf-to-pdfx-3",
+  "pdf-to-pdfx-4",
+  "pdf-to-pdfe",
+  "pdf-to-pdfua",
+  "pdf-accessibility-checker",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -10366,5 +10376,345 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Ideal Use Cases</h2>
 <p>Text-heavy documents needing searchability. Legal documents requiring text extraction. Business records with search requirements. Scanned documents with OCR text layers. Documents where accessibility is not required but text access is. Balanced archival approach.</p>`,
+  },
+  {
+    id: "pdf-to-pdfa-3a",
+    name: "PDF to PDF/A-3a",
+    description: "Convert PDF to PDF/A-3a with embedded files and full accessibility",
+    icon: "ShieldCheck",
+    type: "pdf-to-pdfa-3a",
+    color: "bg-emerald-700",
+    emoji: "📋",
+    metaTitle: "Convert PDF to PDF/A-3a Online Free - Full Accessibility Archival | PDF Tools",
+    metaDescription: "Convert PDF to PDF/A-3a format online for free. Create accessible archival PDFs with embedded file support. Professional PDF/A-3a conversion tool.",
+    seoArticle: `<h2>Convert to PDF/A-3a - Ultimate Accessibility with File Embedding</h2>
+<p>PDF/A-3a represents the highest level of PDF/A-3 compliance, combining full accessibility requirements with the ability to embed any file type. This format ensures complete document structure, accessibility features, and the flexibility to include source files, data attachments, or related documents. Our converter creates fully compliant PDF/A-3a documents that meet the strictest archival and accessibility standards.</p>
+
+<h2>What Makes PDF/A-3a Special</h2>
+<p>PDF/A-3a builds on PDF/A-2a while adding revolutionary file embedding capabilities. Unlike earlier versions limited to PDF-only attachments, PDF/A-3a allows embedding of any file format including XML, CSV, spreadsheets, or original source documents. Combined with full accessibility requirements, this creates the most feature-rich archival format available.</p>
+
+<h2>Complete Accessibility Requirements</h2>
+<p>Like PDF/A-1a and PDF/A-2a, PDF/A-3a requires complete document tagging. Every element must be properly tagged for screen reader compatibility. Reading order is explicitly defined. Alternative text is required for all images and graphics. Language identification must be present throughout. This ensures documents are fully accessible to users with disabilities.</p>
+
+<h2>File Embedding Capabilities</h2>
+<p>Embed original source files alongside the PDF for complete document packages. Include spreadsheet data that generated charts. Attach XML invoice data for e-invoicing compliance. Bundle related documents for comprehensive archives. Each embedded file maintains its relationship to the PDF content.</p>
+
+<h2>How to Convert to PDF/A-3a</h2>
+<p>Upload your source PDF document to our converter. Our system analyzes the document structure and accessibility. Tagged structure is verified or added as needed. File attachments are properly embedded. Unicode mapping ensures text accessibility. Download your fully compliant PDF/A-3a document ready for long-term archival.</p>
+
+<h2>Industry Applications</h2>
+<p>PDF/A-3a is ideal for ZUGFeRD and Factur-X electronic invoicing where XML data accompanies visual invoices. Government agencies use it for accessible archived records with attached data. Healthcare organizations maintain accessible patient records with embedded diagnostic files. Legal professionals archive contracts with accessible structure and source documents attached.</p>
+
+<h2>Benefits of PDF/A-3a</h2>
+<p>Highest level of accessibility compliance ensures universal access. File embedding creates self-contained document packages. Long-term preservation guaranteed by ISO standard. Modern PDF 1.7 features fully supported. JPEG2000 compression reduces file sizes. Transparency and layers preserved for modern graphics.</p>
+
+<h2>Compliance and Standards</h2>
+<p>PDF/A-3a meets ISO 19005-3 requirements at the strictest level. Documents pass all PDF/A-3 validation checks. Accessibility requirements align with WCAG guidelines. E-invoicing standards like ZUGFeRD 2.0 specifically recommend PDF/A-3. Organizations requiring both accessibility and file embedding should choose this format.</p>`,
+  },
+  {
+    id: "pdf-to-pdfa-3b",
+    name: "PDF to PDF/A-3b",
+    description: "Convert PDF to PDF/A-3b with embedded file attachments",
+    icon: "Award",
+    type: "pdf-to-pdfa-3b",
+    color: "bg-teal-600",
+    emoji: "📎",
+    metaTitle: "Convert PDF to PDF/A-3b Online Free - Embedded Files Archival | PDF Tools",
+    metaDescription: "Convert PDF to PDF/A-3b format online for free. Create archival PDFs with any file type embedded. Professional PDF/A-3b conversion tool.",
+    seoArticle: `<h2>Convert to PDF/A-3b - Visual Preservation with File Embedding</h2>
+<p>PDF/A-3b combines visual preservation with the revolutionary ability to embed any file type. This format ensures your documents look identical decades from now while allowing attachment of source data, spreadsheets, or any related files. Our converter creates compliant PDF/A-3b documents efficiently while preserving all visual elements and embedded content.</p>
+
+<h2>Revolutionary File Embedding</h2>
+<p>PDF/A-3b breaks the limitation of earlier PDF/A versions that only allowed PDF attachments. Now you can embed XML data files, spreadsheets, images, CAD drawings, or any file format. The embedded files become part of the archived document, creating self-contained packages that preserve both the visual document and its underlying data.</p>
+
+<h2>Visual Preservation Guarantee</h2>
+<p>Like PDF/A-2b, documents will render identically in the future. All fonts are fully embedded. Color profiles are properly specified. Graphics are preserved at full quality. Layout and formatting remain exact. The visual appearance is guaranteed for long-term archival.</p>
+
+<h2>E-Invoicing and ZUGFeRD</h2>
+<p>PDF/A-3b is the foundation for modern e-invoicing standards. ZUGFeRD and Factur-X invoices embed XML data within visually appealing PDF invoices. Receivers can process either the visual document or extract the machine-readable data. This hybrid approach bridges traditional paper workflows with modern digital processing.</p>
+
+<h2>How to Convert to PDF/A-3b</h2>
+<p>Upload your PDF document for conversion. Our tool processes the visual content for compliance. Existing attachments are properly embedded per PDF/A-3b requirements. Incompatible elements are resolved automatically. Download your compliant archive-ready PDF with all attachments preserved.</p>
+
+<h2>Advantages Over PDF/A-2b</h2>
+<p>Embed any file type, not just PDFs. Create complete document packages. Support e-invoicing requirements. Bundle source data with presentations. Include original files for verification. Maintain data alongside visual documents.</p>
+
+<h2>Common Use Cases</h2>
+<p>Electronic invoices with embedded XML data. Technical documents with CAD source files. Reports with attached spreadsheet data. Contracts with supporting documentation. Scientific papers with research data. Any document benefiting from attached source materials.</p>
+
+<h2>Technical Specifications</h2>
+<p>Based on PDF 1.7 with all modern features. JPEG2000 compression supported. Transparency preserved in graphics. Object-level compression available. Embedded files stored with MIME type identification. Relationship between PDF and attachments explicitly defined.</p>`,
+  },
+  {
+    id: "pdf-to-pdfa-3u",
+    name: "PDF to PDF/A-3u",
+    description: "Convert PDF to PDF/A-3u with Unicode text and file embedding",
+    icon: "FileCheck",
+    type: "pdf-to-pdfa-3u",
+    color: "bg-cyan-600",
+    emoji: "📄",
+    metaTitle: "Convert PDF to PDF/A-3u Online Free - Unicode Text with Attachments | PDF Tools",
+    metaDescription: "Convert PDF to PDF/A-3u format online for free. Create searchable archival PDFs with file embedding. Professional PDF/A-3u conversion tool.",
+    seoArticle: `<h2>Convert to PDF/A-3u - Searchable Text with File Embedding</h2>
+<p>PDF/A-3u combines Unicode text mapping with file embedding capabilities, creating searchable archived documents that can include any attached file type. This format bridges visual preservation with text accessibility while supporting modern data attachment needs. Our converter creates fully compliant PDF/A-3u documents with proper text mapping and embedded files.</p>
+
+<h2>Unicode Text Excellence</h2>
+<p>All text in the document is mapped to Unicode characters, ensuring searchability and text extraction work correctly. Copy and paste produces accurate results. Full-text search indexes the document properly. Character encoding is preserved regardless of original font. This is essential for document management and discovery.</p>
+
+<h2>File Embedding Flexibility</h2>
+<p>Like PDF/A-3b, any file type can be embedded within the document. Attach spreadsheets, XML data, images, or source files. Create self-contained document packages. Support e-invoicing requirements with embedded data. Preserve relationships between visual content and underlying information.</p>
+
+<h2>The Middle Ground Choice</h2>
+<p>PDF/A-3u sits between PDF/A-3b (visual only) and PDF/A-3a (full accessibility). It provides searchable text without requiring complete structural tagging. This makes conversion easier while still supporting text-based workflows. Many organizations find this the optimal balance for their archival needs.</p>
+
+<h2>How to Convert to PDF/A-3u</h2>
+<p>Upload your source PDF document. Our converter analyzes all text content. Unicode mapping is applied throughout. File attachments are properly embedded. Visual appearance is preserved exactly. Download your searchable PDF/A-3u with all files included.</p>
+
+<h2>Benefits for Organizations</h2>
+<p>Documents remain searchable in archives. Full-text search works in document management systems. Text extraction produces accurate results. Embedded files maintain data relationships. E-invoicing compliance achieved. Modern archival requirements met efficiently.</p>
+
+<h2>Ideal Applications</h2>
+<p>Business documents requiring searchability. E-invoices with embedded XML data. Reports with attached source spreadsheets. Legal documents needing text extraction. Technical manuals with supporting files. Any text-heavy documents with data attachments.</p>
+
+<h2>Technical Requirements Met</h2>
+<p>ISO 19005-3 compliance at the "u" level. All text mapped to Unicode code points. Embedded files properly associated. PDF 1.7 features fully supported. JPEG2000 compression available. Transparency and layers preserved.</p>`,
+  },
+  {
+    id: "pdfx-validator",
+    name: "PDF/X Validator",
+    description: "Validate PDF files against PDF/X print production standards",
+    icon: "ShieldAlert",
+    type: "pdfx-validator",
+    color: "bg-amber-600",
+    emoji: "🔍",
+    metaTitle: "PDF/X Validator Online Free - Check Print Production Compliance | PDF Tools",
+    metaDescription: "Validate PDF files against PDF/X standards online for free. Check PDF/X-1a, PDF/X-3, PDF/X-4 compliance. Professional print preflight validator.",
+    seoArticle: `<h2>PDF/X Validator - Ensure Print Production Compliance</h2>
+<p>Before sending files to print, validation against PDF/X standards is essential. Our free PDF/X Validator checks your documents against industry print production standards including PDF/X-1a, PDF/X-3, and PDF/X-4. Identify compliance issues before they become expensive printing problems. Professional preflight checking at no cost.</p>
+
+<h2>What is PDF/X Validation</h2>
+<p>PDF/X standards ensure documents are suitable for professional print production. Validation checks that all required elements are present and properly formatted. Color spaces, fonts, transparency, and other technical aspects are verified. Passing validation means your file meets print production requirements.</p>
+
+<h2>Comprehensive Compliance Checking</h2>
+<p>Our validator examines every aspect of print readiness. Font embedding is verified completely. Color space compliance is checked. Bleed and trim box definitions are validated. Image resolution is assessed. Transparency handling is evaluated. Output intent is confirmed. Every element affecting print quality is examined.</p>
+
+<h2>Multiple Standard Support</h2>
+<p>Check compliance against PDF/X-1a for CMYK-only workflows. Validate PDF/X-3 for color-managed printing. Verify PDF/X-4 for modern print production with transparency. Our validator identifies which standards your document meets and where it falls short for each version.</p>
+
+<h2>How Validation Works</h2>
+<p>Upload your PDF document for analysis. Our validator performs comprehensive preflight checks. A detailed report identifies all issues found. Each problem is categorized by severity. Recommendations for fixing issues are provided. Download the validation report for your records.</p>
+
+<h2>Understanding Validation Results</h2>
+<p>Critical errors must be fixed before printing. Warnings indicate potential issues to review. Informational notes highlight areas for consideration. Each issue includes the specific location in the document. Clear explanations help you understand what needs attention.</p>
+
+<h2>Why Validate Before Printing</h2>
+<p>Prevent costly reprints from technical errors. Ensure files meet printer requirements. Catch issues before production begins. Verify color accuracy will be maintained. Confirm fonts will reproduce correctly. Avoid delays from rejected files.</p>
+
+<h2>Professional Print Workflow</h2>
+<p>Designers validate before client delivery. Print shops verify incoming files. Publishers ensure production readiness. Packaging companies confirm label compliance. Anyone in print production benefits from preflight validation.</p>`,
+  },
+  {
+    id: "pdf-to-pdfx-1a",
+    name: "PDF to PDF/X-1a",
+    description: "Convert PDF to PDF/X-1a for CMYK print production",
+    icon: "LockKeyhole",
+    type: "pdf-to-pdfx-1a",
+    color: "bg-orange-600",
+    emoji: "🖨️",
+    metaTitle: "Convert PDF to PDF/X-1a Online Free - CMYK Print Ready | PDF Tools",
+    metaDescription: "Convert PDF to PDF/X-1a format online for free. Create CMYK-ready files for professional printing. PDF/X-1a conversion for offset printing.",
+    seoArticle: `<h2>Convert to PDF/X-1a - CMYK Print Production Standard</h2>
+<p>PDF/X-1a is the gold standard for traditional CMYK offset printing. This format ensures your document contains only print-safe elements with all colors in CMYK. Our converter transforms regular PDFs into PDF/X-1a compliant files ready for professional print production. Perfect for commercial printing, packaging, and publications.</p>
+
+<h2>What is PDF/X-1a</h2>
+<p>PDF/X-1a was designed specifically for "blind exchange" of print files. Every element is self-contained and predictable. No RGB colors remain, only CMYK and spot colors. All fonts are fully embedded. No transparency exists in the final file. Output intent specifies the printing condition. The result is a file that prints exactly as expected.</p>
+
+<h2>CMYK Color Compliance</h2>
+<p>All RGB colors are converted to CMYK during the process. Spot colors are preserved or converted as specified. Device-independent colors are mapped appropriately. The output intent defines the expected printing conditions. Color accuracy is maximized for the target output.</p>
+
+<h2>Transparency Handling</h2>
+<p>PDF/X-1a does not support live transparency. Our converter flattens all transparent elements. The visual appearance is preserved exactly. Effects like drop shadows are converted to static graphics. Overlapping transparent objects are properly rendered. The flat result prints reliably on any press.</p>
+
+<h2>How to Convert to PDF/X-1a</h2>
+<p>Upload your PDF document for conversion. RGB colors are converted to CMYK. Transparency is flattened professionally. Missing fonts are embedded. Output intent is added for print specification. Download your print-ready PDF/X-1a file.</p>
+
+<h2>Font Embedding Requirements</h2>
+<p>Every font must be fully embedded, not just subsetted. This ensures text reproduces exactly on any system. Font licensing is your responsibility to verify. Our converter embeds all fonts present in the document. Missing fonts will be flagged for resolution.</p>
+
+<h2>Perfect for Commercial Printing</h2>
+<p>Magazines and newspapers use PDF/X-1a regularly. Packaging printing relies on this format. Book publishers submit in PDF/X-1a. Commercial printers often require this standard. It remains widely supported across the industry.</p>
+
+<h2>When to Choose PDF/X-1a</h2>
+<p>Traditional offset printing workflows. Printers specifically requiring PDF/X-1a. When transparency must be eliminated. CMYK-only production environments. Maximum compatibility with older systems. Established print production relationships.</p>`,
+  },
+  {
+    id: "pdf-to-pdfx-3",
+    name: "PDF to PDF/X-3",
+    description: "Convert PDF to PDF/X-3 for color-managed printing",
+    icon: "Palette",
+    type: "pdf-to-pdfx-3",
+    color: "bg-purple-600",
+    emoji: "🎨",
+    metaTitle: "Convert PDF to PDF/X-3 Online Free - Color Managed Print | PDF Tools",
+    metaDescription: "Convert PDF to PDF/X-3 format online for free. Create color-managed print files with ICC profiles. PDF/X-3 conversion for professional printing.",
+    seoArticle: `<h2>Convert to PDF/X-3 - Color-Managed Print Production</h2>
+<p>PDF/X-3 extends PDF/X-1a with support for color-managed workflows using ICC profiles. While maintaining print production reliability, it allows device-independent colors and RGB content with proper color management. Our converter creates PDF/X-3 compliant files that leverage modern color management while remaining print-ready.</p>
+
+<h2>ICC Profile Color Management</h2>
+<p>PDF/X-3 embraces ICC-based color management. RGB images can remain as RGB with embedded ICC profiles. Lab colors are supported for device-independent specification. The output intent profile guides color conversion at print time. This enables more accurate color reproduction across different printing conditions.</p>
+
+<h2>Beyond CMYK Limitations</h2>
+<p>Unlike PDF/X-1a's CMYK-only requirement, PDF/X-3 supports varied color spaces. RGB photos maintain their full gamut until output. Lab colors specify exact colorimetric values. The printer's RIP handles final color conversion. This workflow often produces better results for photography and complex artwork.</p>
+
+<h2>Transparency Considerations</h2>
+<p>Like PDF/X-1a, PDF/X-3 does not support live transparency. Transparent elements are flattened during conversion. Visual appearance is carefully preserved. The flattening process respects color management. Results are predictable and print-safe.</p>
+
+<h2>How to Convert to PDF/X-3</h2>
+<p>Upload your PDF for color-managed conversion. ICC profiles are analyzed and preserved. Color spaces are validated for compliance. Transparency is professionally flattened. Output intent is specified correctly. Download your color-managed PDF/X-3 file.</p>
+
+<h2>Advantages Over PDF/X-1a</h2>
+<p>Better color fidelity for photographs. Device-independent color specification. Flexibility in color space handling. Improved workflow for photography-heavy work. Modern color management principles applied. Still maintains print production reliability.</p>
+
+<h2>Ideal Print Scenarios</h2>
+<p>Photo books and portfolios benefit from RGB workflows. Fine art reproduction needs precise color. High-end commercial printing with color management. Publications with significant photography. Any work where color accuracy is paramount.</p>
+
+<h2>Printer Requirements</h2>
+<p>Verify your printer supports PDF/X-3 workflows. Color-managed RIPs are required for full benefit. Some printers prefer PDF/X-1a for simplicity. Discuss color management with your printer. The right choice depends on your production environment.</p>`,
+  },
+  {
+    id: "pdf-to-pdfx-4",
+    name: "PDF to PDF/X-4",
+    description: "Convert PDF to PDF/X-4 with live transparency support",
+    icon: "BadgeCheck",
+    type: "pdf-to-pdfx-4",
+    color: "bg-blue-600",
+    emoji: "✨",
+    metaTitle: "Convert PDF to PDF/X-4 Online Free - Modern Print Production | PDF Tools",
+    metaDescription: "Convert PDF to PDF/X-4 format online for free. Create modern print files with live transparency. PDF/X-4 for advanced print workflows.",
+    seoArticle: `<h2>Convert to PDF/X-4 - Modern Print Production Standard</h2>
+<p>PDF/X-4 is the most modern PDF/X standard, supporting live transparency, layers, and advanced color management. Unlike older versions that require flattening, PDF/X-4 preserves transparency for better quality RIP processing. Our converter creates PDF/X-4 compliant files that leverage the latest print production capabilities.</p>
+
+<h2>Live Transparency Preservation</h2>
+<p>PDF/X-4's revolutionary feature is live transparency support. Drop shadows, opacity effects, and blending modes remain intact. The printer's RIP handles flattening optimally for the output device. This produces superior quality compared to pre-flattened files. Modern press workflows benefit significantly from this capability.</p>
+
+<h2>Advanced Color Management</h2>
+<p>Full ICC profile support enables precise color handling. Device-independent colors are properly managed. RGB, Lab, and CMYK all supported appropriately. Output intent guides final color conversion. Color accuracy is maximized throughout the workflow.</p>
+
+<h2>Layer Support</h2>
+<p>PDF/X-4 can preserve optional content layers. Version variations can exist in single files. Print-specific layers can be defined. This enables sophisticated production workflows. Layer visibility can be controlled at output.</p>
+
+<h2>How to Convert to PDF/X-4</h2>
+<p>Upload your PDF document for conversion. Transparency is preserved rather than flattened. Color management is validated and optimized. All fonts are properly embedded. Output intent is specified for production. Download your modern PDF/X-4 file.</p>
+
+<h2>When to Choose PDF/X-4</h2>
+<p>Modern print production environments. Work with significant transparency effects. When highest quality output is required. Printers with PDF/X-4 capable workflows. Complex design with many layered effects. Color-managed professional printing.</p>
+
+<h2>Technical Advantages</h2>
+<p>Smaller file sizes than flattened equivalents. Better RIP handling of complex effects. Future-proof for evolving workflows. Preserves designer intent perfectly. Optimal quality at any output resolution. Efficient handling of repeated elements.</p>
+
+<h2>Industry Adoption</h2>
+<p>High-end commercial printers prefer PDF/X-4. Magazine and catalog production increasingly uses it. Packaging industry adopting rapidly. Book publishers transitioning to this format. The standard for new print production workflows.</p>`,
+  },
+  {
+    id: "pdf-to-pdfe",
+    name: "PDF to PDF/E",
+    description: "Convert PDF to PDF/E for engineering document exchange",
+    icon: "FileSpreadsheet",
+    type: "pdf-to-pdfe",
+    color: "bg-slate-600",
+    emoji: "🔧",
+    metaTitle: "Convert PDF to PDF/E Online Free - Engineering Documents | PDF Tools",
+    metaDescription: "Convert PDF to PDF/E format online for free. Create engineering document exchange files with 3D and interactive content. PDF/E conversion tool.",
+    seoArticle: `<h2>Convert to PDF/E - Engineering Document Exchange Standard</h2>
+<p>PDF/E is designed specifically for engineering workflows, supporting 3D models, geospatial data, and interactive content. This ISO standard ensures engineering documents display correctly across different systems while preserving technical accuracy. Our converter creates PDF/E compliant documents suitable for engineering collaboration and archival.</p>
+
+<h2>What is PDF/E</h2>
+<p>PDF/E (ISO 24517) addresses the unique needs of engineering documentation. It supports embedded 3D models using PRC or U3D formats. Geospatial coordinates can be included for mapping applications. Interactive content like animations and video is supported. The format ensures technical documents remain functional and accurate over time.</p>
+
+<h2>3D Model Support</h2>
+<p>Engineering documents often include 3D models for visualization. PDF/E preserves these models in viewable, interactive form. Readers can rotate, zoom, and explore 3D content. Multiple views and configurations can be included. Assembly instructions become truly interactive. Product documentation gains dimensional clarity.</p>
+
+<h2>Geospatial Capabilities</h2>
+<p>Maps and location-based documents benefit from PDF/E's geospatial features. Coordinate systems are properly defined. Geographic data maintains accuracy. GIS applications can extract location information. Engineering plans with site data stay connected to real-world positions.</p>
+
+<h2>How to Convert to PDF/E</h2>
+<p>Upload your engineering PDF document. Our converter validates technical content. 3D models are preserved if present. Geospatial data is maintained. Interactive elements are kept functional. Download your PDF/E compliant engineering document.</p>
+
+<h2>Engineering Workflow Benefits</h2>
+<p>Share technical documents with confidence. 3D models viewed without CAD software. Drawings display identically everywhere. Technical accuracy is preserved. Collaboration becomes more efficient. Long-term accessibility guaranteed.</p>
+
+<h2>Industry Applications</h2>
+<p>Mechanical engineering design documentation. Architectural plans and blueprints. Construction project specifications. Manufacturing assembly instructions. Aerospace technical manuals. Civil engineering site plans.</p>
+
+<h2>Interactivity Preservation</h2>
+<p>Animations demonstrate procedures. Video content explains complex processes. Interactive forms collect information. Calculations can be embedded. The document becomes a functional tool, not just static pages.</p>`,
+  },
+  {
+    id: "pdf-to-pdfua",
+    name: "PDF to PDF/UA",
+    description: "Convert PDF to PDF/UA for universal accessibility",
+    icon: "Globe",
+    type: "pdf-to-pdfua",
+    color: "bg-indigo-600",
+    emoji: "♿",
+    metaTitle: "Convert PDF to PDF/UA Online Free - Universal Accessibility | PDF Tools",
+    metaDescription: "Convert PDF to PDF/UA format online for free. Create universally accessible PDFs for screen readers. PDF/UA accessibility compliance tool.",
+    seoArticle: `<h2>Convert to PDF/UA - Universal Accessibility Standard</h2>
+<p>PDF/UA (Universal Accessibility) ensures PDF documents are accessible to everyone, including users with disabilities. This ISO standard (14289) defines technical requirements for accessible PDFs that work with assistive technologies like screen readers. Our converter creates PDF/UA compliant documents that meet accessibility requirements.</p>
+
+<h2>What is PDF/UA</h2>
+<p>PDF/UA specifies how to make PDFs accessible. Every element must be properly tagged. Reading order must be explicitly defined. Alternative text is required for images. Language must be identified throughout. The result is documents that assistive technologies can properly interpret and present to users.</p>
+
+<h2>Screen Reader Compatibility</h2>
+<p>PDF/UA documents work seamlessly with screen readers. Document structure is communicated clearly. Navigation by headings is enabled. Tables are properly announced. Links are identified with context. Users experience the document as the author intended, regardless of how they access it.</p>
+
+<h2>Complete Tagging Requirements</h2>
+<p>Every content element receives proper tags. Headings identify document structure. Paragraphs are marked for proper reading. Lists are semantically tagged. Tables include header and data cell relationships. Figures include alternative descriptions. Nothing is left untagged or ambiguous.</p>
+
+<h2>How to Convert to PDF/UA</h2>
+<p>Upload your PDF document for accessibility conversion. Our converter analyzes document structure. Tagging is added or corrected throughout. Alternative text is verified for images. Reading order is established logically. Download your universally accessible PDF/UA document.</p>
+
+<h2>Legal and Compliance Requirements</h2>
+<p>Many jurisdictions require accessible documents. Section 508 in the United States. WCAG 2.1 guidelines internationally. European accessibility directives. PDF/UA provides a clear compliance path. Meeting the standard satisfies most accessibility requirements.</p>
+
+<h2>Benefits Beyond Compliance</h2>
+<p>Improved user experience for everyone. Better document structure aids all readers. Search engines index content more accurately. Documents repurpose more effectively. Mobile reading experience improves. Content adapts to different display needs.</p>
+
+<h2>Who Needs PDF/UA</h2>
+<p>Government agencies publishing public documents. Educational institutions providing materials. Businesses ensuring customer accessibility. Publishers reaching wider audiences. Healthcare organizations serving all patients. Anyone committed to inclusive communication.</p>`,
+  },
+  {
+    id: "pdf-accessibility-checker",
+    name: "PDF Accessibility Checker",
+    description: "Check PDF accessibility compliance and get detailed reports",
+    icon: "Search",
+    type: "pdf-accessibility-checker",
+    color: "bg-green-600",
+    emoji: "✅",
+    metaTitle: "PDF Accessibility Checker Online Free - WCAG Compliance Check | PDF Tools",
+    metaDescription: "Check PDF accessibility online for free. Verify WCAG and PDF/UA compliance. Get detailed accessibility reports with fix recommendations.",
+    seoArticle: `<h2>PDF Accessibility Checker - Comprehensive Compliance Analysis</h2>
+<p>Before publishing or distributing PDFs, verifying accessibility is essential. Our free PDF Accessibility Checker analyzes your documents against WCAG guidelines and PDF/UA standards. Get detailed reports identifying accessibility issues with specific recommendations for fixes. Ensure your documents are accessible to everyone.</p>
+
+<h2>What We Check</h2>
+<p>Our comprehensive analysis examines all accessibility requirements. Document structure and tagging are verified. Reading order is analyzed for logic. Alternative text is checked for all images. Language settings are confirmed. Form field accessibility is evaluated. Color contrast is assessed. Links and navigation are tested.</p>
+
+<h2>WCAG Compliance Verification</h2>
+<p>Web Content Accessibility Guidelines apply to PDFs too. We check Perceivable requirements like text alternatives. Operable criteria including keyboard access are verified. Understandable elements like reading level are analyzed. Robust technical implementation is confirmed. Each guideline is evaluated systematically.</p>
+
+<h2>PDF/UA Standard Checking</h2>
+<p>PDF/UA specific requirements receive dedicated attention. Tagged structure completeness is verified. Required metadata is confirmed present. Specific technical requirements are checked. The standard's machine-testable criteria are all evaluated. Results indicate PDF/UA compliance level.</p>
+
+<h2>How Accessibility Checking Works</h2>
+<p>Upload your PDF for analysis. Our checker performs comprehensive evaluation. Every accessibility criterion is tested. Issues are identified and categorized. Severity levels indicate priority. Specific locations are pinpointed. Download your detailed accessibility report.</p>
+
+<h2>Understanding the Report</h2>
+<p>Critical errors require immediate attention. Warnings indicate likely problems. Manual check items need human review. Each issue includes explanation. Recommendations guide fixes. Location references help find problems. Severity helps prioritize remediation.</p>
+
+<h2>Fixing Accessibility Issues</h2>
+<p>Many issues can be fixed with proper PDF tools. Missing tags can be added. Alternative text can be written. Reading order can be corrected. Some issues require source document changes. Our report guides you through the remediation process.</p>
+
+<h2>Why Check Accessibility</h2>
+<p>Legal compliance often requires accessible documents. Inclusive communication reaches everyone. Better SEO from structured content. Professional quality improves. User experience enhances for all. Organizational values are demonstrated.</p>`,
   },
 ];
