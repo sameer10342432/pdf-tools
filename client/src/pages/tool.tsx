@@ -640,7 +640,10 @@ export default function ToolPage() {
                   <Icon className="h-7 w-7 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl md:text-3xl font-bold">{tool.name}</h1>
+                  <h1 className="text-2xl md:text-3xl font-bold">
+                    <span className="mr-2">{tool.emoji}</span>
+                    {tool.name}
+                  </h1>
                   <p className="text-muted-foreground">{tool.description}</p>
                 </div>
               </div>
