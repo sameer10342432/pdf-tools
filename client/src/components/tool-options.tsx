@@ -8949,6 +8949,532 @@ export function ToolOptionsComponent({
         </div>
       );
 
+
+    case "merge-images":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Layout</Label>
+            <Select
+              value={options.mergeLayout || "grid"}
+              onValueChange={(value) => updateOption("mergeLayout", value as any)}
+            >
+              <SelectTrigger data-testid="select-merge-layout">
+                <SelectValue placeholder="Select layout" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="grid">Grid (Auto)</SelectItem>
+                <SelectItem value="horizontal">Horizontal Row</SelectItem>
+                <SelectItem value="vertical">Vertical Stack</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Spacing: {options.mergeSpacing || 0}px</Label>
+            <Slider
+              min={0}
+              max={50}
+              step={5}
+              value={[options.mergeSpacing || 0]}
+              onValueChange={([value]) => updateOption("mergeSpacing", value)}
+              data-testid="slider-merge-spacing"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Background Color</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                type="color"
+                value={options.mergeBackground || "#ffffff"}
+                onChange={(e) => updateOption("mergeBackground", e.target.value)}
+                className="w-16 h-9 p-1"
+                data-testid="input-merge-background"
+              />
+              <Input
+                type="text"
+                value={options.mergeBackground || "#ffffff"}
+                onChange={(e) => updateOption("mergeBackground", e.target.value)}
+                className="flex-1"
+                placeholder="#ffffff"
+                data-testid="input-merge-background-text"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.outputFormat || "png"}
+              onValueChange={(value) => updateOption("outputFormat", value as any)}
+            >
+              <SelectTrigger data-testid="select-output-format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="png">PNG</SelectItem>
+                <SelectItem value="jpg">JPEG</SelectItem>
+                <SelectItem value="webp">WebP</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "image-combiner-horizontal":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Spacing Between Images: {options.horizontalSpacing || 0}px</Label>
+            <Slider
+              min={0}
+              max={50}
+              step={5}
+              value={[options.horizontalSpacing || 0]}
+              onValueChange={([value]) => updateOption("horizontalSpacing", value)}
+              data-testid="slider-horizontal-spacing"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Vertical Alignment</Label>
+            <Select
+              value={options.verticalAlign || "center"}
+              onValueChange={(value) => updateOption("verticalAlign", value as any)}
+            >
+              <SelectTrigger data-testid="select-vertical-align">
+                <SelectValue placeholder="Select alignment" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="top">Top</SelectItem>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="bottom">Bottom</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Background Color</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                type="color"
+                value={options.combineBackground || "#ffffff"}
+                onChange={(e) => updateOption("combineBackground", e.target.value)}
+                className="w-16 h-9 p-1"
+                data-testid="input-combine-background"
+              />
+              <Input
+                type="text"
+                value={options.combineBackground || "#ffffff"}
+                onChange={(e) => updateOption("combineBackground", e.target.value)}
+                className="flex-1"
+                placeholder="#ffffff"
+                data-testid="input-combine-background-text"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.outputFormat || "png"}
+              onValueChange={(value) => updateOption("outputFormat", value as any)}
+            >
+              <SelectTrigger data-testid="select-output-format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="png">PNG</SelectItem>
+                <SelectItem value="jpg">JPEG</SelectItem>
+                <SelectItem value="webp">WebP</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Images will be combined side by side from left to right. Heights will be matched automatically.
+          </p>
+        </div>
+      );
+
+    case "image-combiner-vertical":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Spacing Between Images: {options.verticalSpacing || 0}px</Label>
+            <Slider
+              min={0}
+              max={50}
+              step={5}
+              value={[options.verticalSpacing || 0]}
+              onValueChange={([value]) => updateOption("verticalSpacing", value)}
+              data-testid="slider-vertical-spacing"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Horizontal Alignment</Label>
+            <Select
+              value={options.horizontalAlign || "center"}
+              onValueChange={(value) => updateOption("horizontalAlign", value as any)}
+            >
+              <SelectTrigger data-testid="select-horizontal-align">
+                <SelectValue placeholder="Select alignment" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="left">Left</SelectItem>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="right">Right</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Background Color</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                type="color"
+                value={options.combineBackground || "#ffffff"}
+                onChange={(e) => updateOption("combineBackground", e.target.value)}
+                className="w-16 h-9 p-1"
+                data-testid="input-combine-background"
+              />
+              <Input
+                type="text"
+                value={options.combineBackground || "#ffffff"}
+                onChange={(e) => updateOption("combineBackground", e.target.value)}
+                className="flex-1"
+                placeholder="#ffffff"
+                data-testid="input-combine-background-text"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.outputFormat || "png"}
+              onValueChange={(value) => updateOption("outputFormat", value as any)}
+            >
+              <SelectTrigger data-testid="select-output-format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="png">PNG</SelectItem>
+                <SelectItem value="jpg">JPEG</SelectItem>
+                <SelectItem value="webp">WebP</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Images will be stacked vertically from top to bottom. Widths will be matched automatically.
+          </p>
+        </div>
+      );
+
+    case "favicon-generator":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Favicon Sizes</Label>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="size-16"
+                  checked={options.favicon16 !== false}
+                  onCheckedChange={(checked) => updateOption("favicon16", checked as boolean)}
+                  data-testid="checkbox-favicon-16"
+                />
+                <Label htmlFor="size-16">16x16</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="size-32"
+                  checked={options.favicon32 !== false}
+                  onCheckedChange={(checked) => updateOption("favicon32", checked as boolean)}
+                  data-testid="checkbox-favicon-32"
+                />
+                <Label htmlFor="size-32">32x32</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="size-48"
+                  checked={options.favicon48 !== false}
+                  onCheckedChange={(checked) => updateOption("favicon48", checked as boolean)}
+                  data-testid="checkbox-favicon-48"
+                />
+                <Label htmlFor="size-48">48x48</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="size-64"
+                  checked={options.favicon64 !== false}
+                  onCheckedChange={(checked) => updateOption("favicon64", checked as boolean)}
+                  data-testid="checkbox-favicon-64"
+                />
+                <Label htmlFor="size-64">64x64</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="size-128"
+                  checked={options.favicon128 !== false}
+                  onCheckedChange={(checked) => updateOption("favicon128", checked as boolean)}
+                  data-testid="checkbox-favicon-128"
+                />
+                <Label htmlFor="size-128">128x128</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="size-256"
+                  checked={options.favicon256 !== false}
+                  onCheckedChange={(checked) => updateOption("favicon256", checked as boolean)}
+                  data-testid="checkbox-favicon-256"
+                />
+                <Label htmlFor="size-256">256x256</Label>
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="generate-ico"
+              checked={options.generateIco !== false}
+              onCheckedChange={(checked) => updateOption("generateIco", checked as boolean)}
+              data-testid="checkbox-generate-ico"
+            />
+            <Label htmlFor="generate-ico">Generate ICO file (contains all sizes)</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Upload a square image (at least 256x256 recommended) to generate favicons in multiple sizes.
+          </p>
+        </div>
+      );
+
+    case "ico-to-png":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Extract Size</Label>
+            <Select
+              value={options.icoExtractSize || "all"}
+              onValueChange={(value) => updateOption("icoExtractSize", value as any)}
+            >
+              <SelectTrigger data-testid="select-ico-extract-size">
+                <SelectValue placeholder="Select size to extract" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Sizes</SelectItem>
+                <SelectItem value="largest">Largest Only</SelectItem>
+                <SelectItem value="16">16x16</SelectItem>
+                <SelectItem value="32">32x32</SelectItem>
+                <SelectItem value="48">48x48</SelectItem>
+                <SelectItem value="64">64x64</SelectItem>
+                <SelectItem value="128">128x128</SelectItem>
+                <SelectItem value="256">256x256</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            ICO files can contain multiple image sizes. Choose which size(s) to extract as PNG.
+          </p>
+        </div>
+      );
+
+    case "png-to-ico":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Include Sizes in ICO</Label>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="ico-16"
+                  checked={options.ico16 !== false}
+                  onCheckedChange={(checked) => updateOption("ico16", checked as boolean)}
+                  data-testid="checkbox-ico-16"
+                />
+                <Label htmlFor="ico-16">16x16</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="ico-32"
+                  checked={options.ico32 !== false}
+                  onCheckedChange={(checked) => updateOption("ico32", checked as boolean)}
+                  data-testid="checkbox-ico-32"
+                />
+                <Label htmlFor="ico-32">32x32</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="ico-48"
+                  checked={options.ico48 !== false}
+                  onCheckedChange={(checked) => updateOption("ico48", checked as boolean)}
+                  data-testid="checkbox-ico-48"
+                />
+                <Label htmlFor="ico-48">48x48</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="ico-256"
+                  checked={options.ico256 !== false}
+                  onCheckedChange={(checked) => updateOption("ico256", checked as boolean)}
+                  data-testid="checkbox-ico-256"
+                />
+                <Label htmlFor="ico-256">256x256</Label>
+              </div>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Create a multi-resolution ICO file from your PNG image. Windows will automatically use the appropriate size.
+          </p>
+        </div>
+      );
+
+    case "apng-to-gif":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>GIF Quality</Label>
+            <Select
+              value={options.gifQuality || "high"}
+              onValueChange={(value) => updateOption("gifQuality", value as any)}
+            >
+              <SelectTrigger data-testid="select-gif-quality">
+                <SelectValue placeholder="Select quality" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="high">High Quality (larger file)</SelectItem>
+                <SelectItem value="medium">Medium Quality</SelectItem>
+                <SelectItem value="low">Low Quality (smaller file)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="preserve-transparency"
+              checked={options.preserveTransparency !== false}
+              onCheckedChange={(checked) => updateOption("preserveTransparency", checked as boolean)}
+              data-testid="checkbox-preserve-transparency"
+            />
+            <Label htmlFor="preserve-transparency">Preserve transparency (if present)</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert animated PNG (APNG) to GIF format for universal compatibility. Note: GIF is limited to 256 colors.
+          </p>
+        </div>
+      );
+
+    case "gif-to-apng":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>APNG Optimization</Label>
+            <Select
+              value={options.apngOptimization || "balanced"}
+              onValueChange={(value) => updateOption("apngOptimization", value as any)}
+            >
+              <SelectTrigger data-testid="select-apng-optimization">
+                <SelectValue placeholder="Select optimization level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">No optimization (fastest)</SelectItem>
+                <SelectItem value="balanced">Balanced</SelectItem>
+                <SelectItem value="maximum">Maximum compression (slowest)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert GIF to animated PNG (APNG) for better quality. APNG supports millions of colors and alpha transparency.
+          </p>
+        </div>
+      );
+
+    case "image-to-ascii":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Width: {options.asciiWidth || 100} characters</Label>
+            <Slider
+              min={40}
+              max={200}
+              step={10}
+              value={[options.asciiWidth || 100]}
+              onValueChange={([value]) => updateOption("asciiWidth", value)}
+              data-testid="slider-ascii-width"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Character Set</Label>
+            <Select
+              value={options.asciiCharset || "standard"}
+              onValueChange={(value) => updateOption("asciiCharset", value as any)}
+            >
+              <SelectTrigger data-testid="select-ascii-charset">
+                <SelectValue placeholder="Select character set" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="standard">Standard (@%#*+=-:. )</SelectItem>
+                <SelectItem value="blocks">Block Characters</SelectItem>
+                <SelectItem value="detailed">Detailed (more characters)</SelectItem>
+                <SelectItem value="simple">Simple (fewer characters)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="invert-ascii"
+              checked={options.asciiInvert === true}
+              onCheckedChange={(checked) => updateOption("asciiInvert", checked as boolean)}
+              data-testid="checkbox-invert-ascii"
+            />
+            <Label htmlFor="invert-ascii">Invert colors (for dark backgrounds)</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert your image to ASCII art using text characters. Perfect for terminals, README files, and retro aesthetics.
+          </p>
+        </div>
+      );
+
+    case "image-metadata-viewer":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Metadata Categories</Label>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="show-basic"
+                  checked={options.showBasicInfo !== false}
+                  onCheckedChange={(checked) => updateOption("showBasicInfo", checked as boolean)}
+                  data-testid="checkbox-show-basic"
+                />
+                <Label htmlFor="show-basic">Basic Info (dimensions, format, size)</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="show-exif"
+                  checked={options.showExif !== false}
+                  onCheckedChange={(checked) => updateOption("showExif", checked as boolean)}
+                  data-testid="checkbox-show-exif"
+                />
+                <Label htmlFor="show-exif">EXIF Data (camera, settings)</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="show-gps"
+                  checked={options.showGps !== false}
+                  onCheckedChange={(checked) => updateOption("showGps", checked as boolean)}
+                  data-testid="checkbox-show-gps"
+                />
+                <Label htmlFor="show-gps">GPS Location (if available)</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="show-iptc"
+                  checked={options.showIptc !== false}
+                  onCheckedChange={(checked) => updateOption("showIptc", checked as boolean)}
+                  data-testid="checkbox-show-iptc"
+                />
+                <Label htmlFor="show-iptc">IPTC Data (copyright, description)</Label>
+              </div>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            View all metadata stored in your image file including camera settings, location, and editing history.
+          </p>
+        </div>
+      );
+
     default:
       return null;
   }

@@ -22712,6 +22712,684 @@ ${paths.join('\n')}
             break;
           }
             
+
+          case "merge-images": {
+            if (files.length < 2) {
+              throw new Error("Please upload at least 2 images to merge");
+            }
+            
+            const mergeLayout = options.mergeLayout || "grid";
+            const mergeSpacing = parseInt(options.mergeSpacing as string) || 0;
+            const mergeBackground = options.mergeBackground || "#ffffff";
+            const outputFormat = options.outputFormat || "png";
+            
+            const images: { buffer: Buffer; width: number; height: number }[] = [];
+            for (const file of files) {
+              const buffer = fs.readFileSync(file.path);
+              const metadata = await sharp(buffer).metadata();
+              images.push({
+                buffer,
+                width: metadata.width || 0,
+                height: metadata.height || 0,
+              });
+            }
+            
+            let finalWidth: number;
+            let finalHeight: number;
+            const compositeImages: { input: Buffer; left: number; top: number }[] = [];
+            
+            if (mergeLayout === "horizontal") {
+              const maxHeight = Math.max(...images.map(img => img.height));
+              finalWidth = images.reduce((sum, img) => sum + img.width, 0) + (images.length - 1) * mergeSpacing;
+              finalHeight = maxHeight;
+              
+              let currentX = 0;
+              for (const img of images) {
+                const resizedBuffer = await sharp(img.buffer)
+                  .resize({ height: maxHeight, fit: "contain", background: mergeBackground })
+                  .toBuffer();
+                const resizedMeta = await sharp(resizedBuffer).metadata();
+                compositeImages.push({
+                  input: resizedBuffer,
+                  left: currentX,
+                  top: Math.floor((maxHeight - (resizedMeta.height || 0)) / 2),
+                });
+                currentX += (resizedMeta.width || 0) + mergeSpacing;
+              }
+              finalWidth = currentX - mergeSpacing;
+            } else if (mergeLayout === "vertical") {
+              const maxWidth = Math.max(...images.map(img => img.width));
+              finalWidth = maxWidth;
+              finalHeight = images.reduce((sum, img) => sum + img.height, 0) + (images.length - 1) * mergeSpacing;
+              
+              let currentY = 0;
+              for (const img of images) {
+                const resizedBuffer = await sharp(img.buffer)
+                  .resize({ width: maxWidth, fit: "contain", background: mergeBackground })
+                  .toBuffer();
+                const resizedMeta = await sharp(resizedBuffer).metadata();
+                compositeImages.push({
+                  input: resizedBuffer,
+                  left: Math.floor((maxWidth - (resizedMeta.width || 0)) / 2),
+                  top: currentY,
+                });
+                currentY += (resizedMeta.height || 0) + mergeSpacing;
+              }
+              finalHeight = currentY - mergeSpacing;
+            } else {
+              const cols = Math.ceil(Math.sqrt(images.length));
+              const rows = Math.ceil(images.length / cols);
+              const maxWidth = Math.max(...images.map(img => img.width));
+              const maxHeight = Math.max(...images.map(img => img.height));
+              
+              finalWidth = cols * maxWidth + (cols - 1) * mergeSpacing;
+              finalHeight = rows * maxHeight + (rows - 1) * mergeSpacing;
+              
+              for (let i = 0; i < images.length; i++) {
+                const col = i % cols;
+                const row = Math.floor(i / cols);
+                const resizedBuffer = await sharp(images[i].buffer)
+                  .resize({ width: maxWidth, height: maxHeight, fit: "contain", background: mergeBackground })
+                  .toBuffer();
+                compositeImages.push({
+                  input: resizedBuffer,
+                  left: col * (maxWidth + mergeSpacing),
+                  top: row * (maxHeight + mergeSpacing),
+                });
+              }
+            }
+            
+            let sharpInstance = sharp({
+              create: {
+                width: finalWidth,
+                height: finalHeight,
+                channels: 4,
+                background: mergeBackground,
+              },
+            }).composite(compositeImages);
+            
+            if (outputFormat === "jpg") {
+              result = await sharpInstance.jpeg({ quality: 90 }).toBuffer();
+              filename = "merged_images.jpg";
+              contentType = "image/jpeg";
+            } else if (outputFormat === "webp") {
+              result = await sharpInstance.webp({ quality: 90 }).toBuffer();
+              filename = "merged_images.webp";
+              contentType = "image/webp";
+            } else {
+              result = await sharpInstance.png().toBuffer();
+              filename = "merged_images.png";
+              contentType = "image/png";
+            }
+            break;
+          }
+
+          case "image-combiner-horizontal": {
+            if (files.length < 2) {
+              throw new Error("Please upload at least 2 images to combine");
+            }
+            
+            const horizontalSpacing = parseInt(options.horizontalSpacing as string) || 0;
+            const verticalAlign = options.verticalAlign || "center";
+            const combineBackground = options.combineBackground || "#ffffff";
+            const outputFormat = options.outputFormat || "png";
+            
+            const images: { buffer: Buffer; width: number; height: number }[] = [];
+            for (const file of files) {
+              const buffer = fs.readFileSync(file.path);
+              const metadata = await sharp(buffer).metadata();
+              images.push({
+                buffer,
+                width: metadata.width || 0,
+                height: metadata.height || 0,
+              });
+            }
+            
+            const maxHeight = Math.max(...images.map(img => img.height));
+            const totalWidth = images.reduce((sum, img) => sum + img.width, 0) + (images.length - 1) * horizontalSpacing;
+            
+            const compositeImages: { input: Buffer; left: number; top: number }[] = [];
+            let currentX = 0;
+            
+            for (const img of images) {
+              let topOffset = 0;
+              if (verticalAlign === "center") {
+                topOffset = Math.floor((maxHeight - img.height) / 2);
+              } else if (verticalAlign === "bottom") {
+                topOffset = maxHeight - img.height;
+              }
+              
+              compositeImages.push({
+                input: img.buffer,
+                left: currentX,
+                top: topOffset,
+              });
+              currentX += img.width + horizontalSpacing;
+            }
+            
+            let sharpInstance = sharp({
+              create: {
+                width: totalWidth,
+                height: maxHeight,
+                channels: 4,
+                background: combineBackground,
+              },
+            }).composite(compositeImages);
+            
+            if (outputFormat === "jpg") {
+              result = await sharpInstance.jpeg({ quality: 90 }).toBuffer();
+              filename = "combined_horizontal.jpg";
+              contentType = "image/jpeg";
+            } else if (outputFormat === "webp") {
+              result = await sharpInstance.webp({ quality: 90 }).toBuffer();
+              filename = "combined_horizontal.webp";
+              contentType = "image/webp";
+            } else {
+              result = await sharpInstance.png().toBuffer();
+              filename = "combined_horizontal.png";
+              contentType = "image/png";
+            }
+            break;
+          }
+
+          case "image-combiner-vertical": {
+            if (files.length < 2) {
+              throw new Error("Please upload at least 2 images to combine");
+            }
+            
+            const verticalSpacing = parseInt(options.verticalSpacing as string) || 0;
+            const horizontalAlign = options.horizontalAlign || "center";
+            const combineBackground = options.combineBackground || "#ffffff";
+            const outputFormat = options.outputFormat || "png";
+            
+            const images: { buffer: Buffer; width: number; height: number }[] = [];
+            for (const file of files) {
+              const buffer = fs.readFileSync(file.path);
+              const metadata = await sharp(buffer).metadata();
+              images.push({
+                buffer,
+                width: metadata.width || 0,
+                height: metadata.height || 0,
+              });
+            }
+            
+            const maxWidth = Math.max(...images.map(img => img.width));
+            const totalHeight = images.reduce((sum, img) => sum + img.height, 0) + (images.length - 1) * verticalSpacing;
+            
+            const compositeImages: { input: Buffer; left: number; top: number }[] = [];
+            let currentY = 0;
+            
+            for (const img of images) {
+              let leftOffset = 0;
+              if (horizontalAlign === "center") {
+                leftOffset = Math.floor((maxWidth - img.width) / 2);
+              } else if (horizontalAlign === "right") {
+                leftOffset = maxWidth - img.width;
+              }
+              
+              compositeImages.push({
+                input: img.buffer,
+                left: leftOffset,
+                top: currentY,
+              });
+              currentY += img.height + verticalSpacing;
+            }
+            
+            let sharpInstance = sharp({
+              create: {
+                width: maxWidth,
+                height: totalHeight,
+                channels: 4,
+                background: combineBackground,
+              },
+            }).composite(compositeImages);
+            
+            if (outputFormat === "jpg") {
+              result = await sharpInstance.jpeg({ quality: 90 }).toBuffer();
+              filename = "combined_vertical.jpg";
+              contentType = "image/jpeg";
+            } else if (outputFormat === "webp") {
+              result = await sharpInstance.webp({ quality: 90 }).toBuffer();
+              filename = "combined_vertical.webp";
+              contentType = "image/webp";
+            } else {
+              result = await sharpInstance.png().toBuffer();
+              filename = "combined_vertical.png";
+              contentType = "image/png";
+            }
+            break;
+          }
+
+          case "favicon-generator": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image to generate favicons");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const sizes = [
+              { size: 16, enabled: options.favicon16 !== false },
+              { size: 32, enabled: options.favicon32 !== false },
+              { size: 48, enabled: options.favicon48 !== false },
+              { size: 64, enabled: options.favicon64 !== false },
+              { size: 128, enabled: options.favicon128 !== false },
+              { size: 256, enabled: options.favicon256 !== false },
+            ].filter(s => s.enabled);
+            
+            const generateIco = options.generateIco !== false;
+            
+            const outputPath = path.join(outputDir, `favicons-${randomUUID()}.zip`);
+            const output = fs.createWriteStream(outputPath);
+            const archive = archiver("zip", { zlib: { level: 9 } });
+            archive.pipe(output);
+            
+            const icoBuffers: Buffer[] = [];
+            
+            for (const { size } of sizes) {
+              const resized = await sharp(buffer)
+                .resize(size, size, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
+                .png()
+                .toBuffer();
+              
+              archive.append(resized, { name: `favicon-${size}x${size}.png` });
+              icoBuffers.push(resized);
+            }
+            
+            if (generateIco && icoBuffers.length > 0) {
+              const icoSizes = [16, 32, 48].filter(s => sizes.some(sz => sz.size === s));
+              const icoImages: Buffer[] = [];
+              
+              for (const size of icoSizes) {
+                const resized = await sharp(buffer)
+                  .resize(size, size, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
+                  .png()
+                  .toBuffer();
+                icoImages.push(resized);
+              }
+              
+              if (icoImages.length > 0) {
+                const icoHeader = Buffer.alloc(6);
+                icoHeader.writeUInt16LE(0, 0);
+                icoHeader.writeUInt16LE(1, 2);
+                icoHeader.writeUInt16LE(icoImages.length, 4);
+                
+                const entries: Buffer[] = [];
+                const imageData: Buffer[] = [];
+                let dataOffset = 6 + 16 * icoImages.length;
+                
+                for (let i = 0; i < icoImages.length; i++) {
+                  const size = icoSizes[i];
+                  const entry = Buffer.alloc(16);
+                  entry.writeUInt8(size === 256 ? 0 : size, 0);
+                  entry.writeUInt8(size === 256 ? 0 : size, 1);
+                  entry.writeUInt8(0, 2);
+                  entry.writeUInt8(0, 3);
+                  entry.writeUInt16LE(1, 4);
+                  entry.writeUInt16LE(32, 6);
+                  entry.writeUInt32LE(icoImages[i].length, 8);
+                  entry.writeUInt32LE(dataOffset, 12);
+                  
+                  entries.push(entry);
+                  imageData.push(icoImages[i]);
+                  dataOffset += icoImages[i].length;
+                }
+                
+                const icoBuffer = Buffer.concat([icoHeader, ...entries, ...imageData]);
+                archive.append(icoBuffer, { name: "favicon.ico" });
+              }
+            }
+            
+            await archive.finalize();
+            
+            await new Promise<void>((resolve, reject) => {
+              output.on("close", () => resolve());
+              output.on("error", reject);
+            });
+            
+            result = outputPath;
+            filename = "favicons.zip";
+            contentType = "application/zip";
+            break;
+          }
+
+          case "ico-to-png": {
+            if (files.length === 0) {
+              throw new Error("Please upload an ICO file");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const extractSize = options.icoExtractSize || "all";
+            
+            const reserved = buffer.readUInt16LE(0);
+            const type = buffer.readUInt16LE(2);
+            const imageCount = buffer.readUInt16LE(4);
+            
+            if (type !== 1 || reserved !== 0) {
+              throw new Error("Invalid ICO file format");
+            }
+            
+            const extractedImages: { size: number; buffer: Buffer }[] = [];
+            
+            for (let i = 0; i < imageCount; i++) {
+              const entryOffset = 6 + i * 16;
+              const width = buffer.readUInt8(entryOffset) || 256;
+              const height = buffer.readUInt8(entryOffset + 1) || 256;
+              const imageSize = buffer.readUInt32LE(entryOffset + 8);
+              const imageOffset = buffer.readUInt32LE(entryOffset + 12);
+              
+              const imageData = buffer.slice(imageOffset, imageOffset + imageSize);
+              
+              try {
+                const pngBuffer = await sharp(imageData).png().toBuffer();
+                extractedImages.push({ size: width, buffer: pngBuffer });
+              } catch (e) {
+                console.log(`Could not convert ${width}x${height} image from ICO`);
+              }
+            }
+            
+            if (extractedImages.length === 0) {
+              throw new Error("No valid images found in ICO file");
+            }
+            
+            if (extractSize === "largest") {
+              const largest = extractedImages.sort((a, b) => b.size - a.size)[0];
+              result = largest.buffer;
+              filename = `favicon-${largest.size}x${largest.size}.png`;
+              contentType = "image/png";
+            } else if (extractSize !== "all") {
+              const targetSize = parseInt(extractSize);
+              const matching = extractedImages.find(img => img.size === targetSize);
+              if (matching) {
+                result = matching.buffer;
+                filename = `favicon-${targetSize}x${targetSize}.png`;
+                contentType = "image/png";
+              } else {
+                throw new Error(`No ${targetSize}x${targetSize} image found in ICO file`);
+              }
+            } else {
+              const outputPath = path.join(outputDir, `ico-extracted-${randomUUID()}.zip`);
+              const output = fs.createWriteStream(outputPath);
+              const archive = archiver("zip", { zlib: { level: 9 } });
+              archive.pipe(output);
+              
+              for (const img of extractedImages) {
+                archive.append(img.buffer, { name: `icon-${img.size}x${img.size}.png` });
+              }
+              
+              await archive.finalize();
+              await new Promise<void>((resolve, reject) => {
+                output.on("close", () => resolve());
+                output.on("error", reject);
+              });
+              
+              result = outputPath;
+              filename = "ico_extracted.zip";
+              contentType = "application/zip";
+            }
+            break;
+          }
+
+          case "png-to-ico": {
+            if (files.length === 0) {
+              throw new Error("Please upload a PNG image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            
+            const sizes = [
+              { size: 16, enabled: options.ico16 !== false },
+              { size: 32, enabled: options.ico32 !== false },
+              { size: 48, enabled: options.ico48 !== false },
+              { size: 256, enabled: options.ico256 !== false },
+            ].filter(s => s.enabled);
+            
+            if (sizes.length === 0) {
+              sizes.push({ size: 32, enabled: true });
+            }
+            
+            const icoImages: { size: number; buffer: Buffer }[] = [];
+            
+            for (const { size } of sizes) {
+              const resized = await sharp(buffer)
+                .resize(size, size, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
+                .png()
+                .toBuffer();
+              icoImages.push({ size, buffer: resized });
+            }
+            
+            const icoHeader = Buffer.alloc(6);
+            icoHeader.writeUInt16LE(0, 0);
+            icoHeader.writeUInt16LE(1, 2);
+            icoHeader.writeUInt16LE(icoImages.length, 4);
+            
+            const entries: Buffer[] = [];
+            const imageData: Buffer[] = [];
+            let dataOffset = 6 + 16 * icoImages.length;
+            
+            for (const img of icoImages) {
+              const entry = Buffer.alloc(16);
+              entry.writeUInt8(img.size === 256 ? 0 : img.size, 0);
+              entry.writeUInt8(img.size === 256 ? 0 : img.size, 1);
+              entry.writeUInt8(0, 2);
+              entry.writeUInt8(0, 3);
+              entry.writeUInt16LE(1, 4);
+              entry.writeUInt16LE(32, 6);
+              entry.writeUInt32LE(img.buffer.length, 8);
+              entry.writeUInt32LE(dataOffset, 12);
+              
+              entries.push(entry);
+              imageData.push(img.buffer);
+              dataOffset += img.buffer.length;
+            }
+            
+            result = Buffer.concat([icoHeader, ...entries, ...imageData]);
+            filename = "favicon.ico";
+            contentType = "image/x-icon";
+            break;
+          }
+
+          case "apng-to-gif": {
+            if (files.length === 0) {
+              throw new Error("Please upload an APNG file");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const gifQuality = options.gifQuality || "high";
+            
+            const metadata = await sharp(buffer, { animated: true }).metadata();
+            
+            if (!metadata.pages || metadata.pages <= 1) {
+              const gifBuffer = await sharp(buffer)
+                .gif()
+                .toBuffer();
+              result = gifBuffer;
+            } else {
+              const frames: Buffer[] = [];
+              for (let i = 0; i < metadata.pages; i++) {
+                const frame = await sharp(buffer, { page: i })
+                  .png()
+                  .toBuffer();
+                frames.push(frame);
+              }
+              
+              const colors = gifQuality === "high" ? 256 : gifQuality === "medium" ? 128 : 64;
+              
+              const gifBuffer = await sharp(frames[0], { animated: true })
+                .gif({ colours: colors })
+                .toBuffer();
+              
+              result = gifBuffer;
+            }
+            
+            filename = "converted.gif";
+            contentType = "image/gif";
+            break;
+          }
+
+          case "gif-to-apng": {
+            if (files.length === 0) {
+              throw new Error("Please upload a GIF file");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            
+            const metadata = await sharp(buffer, { animated: true }).metadata();
+            
+            if (!metadata.pages || metadata.pages <= 1) {
+              result = await sharp(buffer).png().toBuffer();
+            } else {
+              result = await sharp(buffer, { animated: true })
+                .png()
+                .toBuffer();
+            }
+            
+            filename = "converted.png";
+            contentType = "image/png";
+            break;
+          }
+
+          case "image-to-ascii": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const asciiWidth = parseInt(options.asciiWidth as string) || 100;
+            const asciiCharset = options.asciiCharset || "standard";
+            const asciiInvert = options.asciiInvert === true;
+            
+            let chars: string;
+            switch (asciiCharset) {
+              case "blocks":
+                chars = " ░▒▓█";
+                break;
+              case "detailed":
+                chars = " .'`^\",:;Il!i><~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+                break;
+              case "simple":
+                chars = " .:-=+*#%@";
+                break;
+              default:
+                chars = " .:-=+*#%@";
+            }
+            
+            if (asciiInvert) {
+              chars = chars.split("").reverse().join("");
+            }
+            
+            const metadata = await sharp(buffer).metadata();
+            const aspectRatio = (metadata.height || 1) / (metadata.width || 1);
+            const height = Math.round(asciiWidth * aspectRatio * 0.5);
+            
+            const { data, info } = await sharp(buffer)
+              .resize(asciiWidth, height, { fit: "fill" })
+              .grayscale()
+              .raw()
+              .toBuffer({ resolveWithObject: true });
+            
+            let ascii = "";
+            for (let y = 0; y < info.height; y++) {
+              for (let x = 0; x < info.width; x++) {
+                const pixel = data[y * info.width + x];
+                const charIndex = Math.floor((pixel / 255) * (chars.length - 1));
+                ascii += chars[charIndex];
+              }
+              ascii += "\n";
+            }
+            
+            result = Buffer.from(ascii, "utf-8");
+            filename = "ascii_art.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "image-metadata-viewer": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const showBasicInfo = options.showBasicInfo !== false;
+            const showExif = options.showExif !== false;
+            const showGps = options.showGps !== false;
+            const showIptc = options.showIptc !== false;
+            
+            const metadata = await sharp(buffer).metadata();
+            
+            const metadataResult: Record<string, any> = {};
+            
+            if (showBasicInfo) {
+              metadataResult.basic = {
+                format: metadata.format,
+                width: metadata.width,
+                height: metadata.height,
+                space: metadata.space,
+                channels: metadata.channels,
+                depth: metadata.depth,
+                density: metadata.density,
+                hasAlpha: metadata.hasAlpha,
+                hasProfile: metadata.hasProfile,
+                isProgressive: metadata.isProgressive,
+                pages: metadata.pages,
+                loop: metadata.loop,
+                delay: metadata.delay,
+                background: metadata.background,
+              };
+            }
+            
+            if (showExif && metadata.exif) {
+              try {
+                const exifData: Record<string, any> = {};
+                const exifBuffer = metadata.exif;
+                
+                exifData.rawLength = exifBuffer.length;
+                exifData.available = true;
+                
+                metadataResult.exif = exifData;
+              } catch (e) {
+                metadataResult.exif = { available: false, error: "Could not parse EXIF data" };
+              }
+            }
+            
+            if (showGps) {
+              metadataResult.gps = {
+                available: false,
+                message: "GPS data extraction requires additional EXIF parsing",
+              };
+            }
+            
+            if (showIptc && metadata.iptc) {
+              try {
+                metadataResult.iptc = {
+                  available: true,
+                  rawLength: metadata.iptc.length,
+                };
+              } catch (e) {
+                metadataResult.iptc = { available: false };
+              }
+            }
+            
+            if (metadata.xmp) {
+              metadataResult.xmp = {
+                available: true,
+                rawLength: metadata.xmp.length,
+              };
+            }
+            
+            if (metadata.icc) {
+              metadataResult.icc = {
+                available: true,
+                rawLength: metadata.icc.length,
+              };
+            }
+            
+            const formattedJson = JSON.stringify(metadataResult, null, 2);
+            
+            result = Buffer.from(formattedJson, "utf-8");
+            filename = "image_metadata.json";
+            contentType = "application/json";
+            break;
+          }
+
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
         }
