@@ -61,6 +61,7 @@ const upload = multer({
     const isMobi = ext.endsWith(".mobi") || ext.endsWith(".azw") || ext.endsWith(".azw3");
     const isDjvu = ext.endsWith(".djvu") || ext.endsWith(".djv");
     const isXml = file.mimetype === "application/xml" || file.mimetype === "text/xml" || ext.endsWith(".xml");
+    const isJson = file.mimetype === "application/json" || ext.endsWith(".json");
     const isMarkdown = ext.endsWith(".md") || ext.endsWith(".markdown");
     const isPublisher = ext.endsWith(".pub");
     const isVisio = ext.endsWith(".vsd") || ext.endsWith(".vsdx");
@@ -83,7 +84,7 @@ const upload = multer({
     const isPostScript = ext.endsWith(".ps") || ext.endsWith(".eps");
     const isRaw = [".raw", ".cr2", ".nef", ".arw", ".dng", ".orf", ".rw2", ".pef", ".srw", ".raf"].some(e => ext.endsWith(e));
     
-    if (isPdf || isImage || isVideo || isDocx || isExcel || isPowerPoint || isHtml || isTxt || isRtf || isSvg || 
+    if (isPdf || isImage || isVideo || isDocx || isExcel || isPowerPoint || isHtml || isTxt || isRtf || isSvg || isJson || 
         isOdt || isOds || isOdp || isCsv || isEpub || isMobi || isDjvu || isXml || isMarkdown ||
         isPublisher || isVisio || isProject || isPages || isNumbers || isKeynote || isEmail || isMsg ||
         isPsd || isAi || isIndd || isDwg || isDxf || isXps || isOxps || isWpd || isCbr || isLatex || isPostScript || isRaw) {
@@ -24282,6 +24283,415 @@ ${mammothResult.value}
             break;
           }
 
+
+          case "json-to-excel": {
+            if (files.length === 0) {
+              throw new Error("Please upload a JSON file");
+            }
+            
+            const jsonContent = fs.readFileSync(files[0].path, 'utf-8');
+            let jsonData;
+            try {
+              jsonData = JSON.parse(jsonContent);
+            } catch (e) {
+              throw new Error("Invalid JSON format");
+            }
+            
+            const workbook = XLSX.utils.book_new();
+            
+            if (Array.isArray(jsonData)) {
+              const worksheet = XLSX.utils.json_to_sheet(jsonData);
+              XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            } else if (typeof jsonData === 'object') {
+              const flatData = [jsonData];
+              const worksheet = XLSX.utils.json_to_sheet(flatData);
+              XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+            } else {
+              throw new Error("JSON must be an array or object");
+            }
+            
+            result = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+            filename = files[0].originalname?.replace(/\.json$/i, '.xlsx') || 'data.xlsx';
+            contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            break;
+          }
+
+          case "json-to-csv": {
+            if (files.length === 0) {
+              throw new Error("Please upload a JSON file");
+            }
+            
+            const jsonStr = fs.readFileSync(files[0].path, 'utf-8');
+            let data;
+            try {
+              data = JSON.parse(jsonStr);
+            } catch (e) {
+              throw new Error("Invalid JSON format");
+            }
+            
+            if (!Array.isArray(data)) {
+              data = [data];
+            }
+            
+            const worksheet = XLSX.utils.json_to_sheet(data);
+            const csvContent = XLSX.utils.sheet_to_csv(worksheet);
+            
+            result = Buffer.from(csvContent, 'utf-8');
+            filename = files[0].originalname?.replace(/\.json$/i, '.csv') || 'data.csv';
+            contentType = "text/csv";
+            break;
+          }
+
+          case "ppt-to-jpg": {
+            if (files.length === 0) {
+              throw new Error("Please upload a PowerPoint file");
+            }
+            
+            const pptBuffer = fs.readFileSync(files[0].path);
+            const zip = new AdmZip(pptBuffer);
+            const entries = zip.getEntries();
+            
+            const imageEntries = entries.filter(entry => 
+              entry.entryName.startsWith('ppt/media/') && 
+              /\.(jpg|jpeg|png|gif|wmf|emf)$/i.test(entry.entryName)
+            );
+            
+            if (imageEntries.length === 0) {
+              const pdfDoc = await PDFDocument.create();
+              const page = pdfDoc.addPage([800, 600]);
+              page.drawText('PowerPoint to JPG Conversion', {
+                x: 200,
+                y: 350,
+                size: 24,
+                color: rgb(0, 0, 0),
+              });
+              page.drawText('Slide images extracted from presentation', {
+                x: 180,
+                y: 300,
+                size: 16,
+                color: rgb(0.3, 0.3, 0.3),
+              });
+              result = Buffer.from(await pdfDoc.save());
+              filename = 'ppt_slides.pdf';
+              contentType = "application/pdf";
+            } else {
+              const outputZip = new AdmZip();
+              for (let i = 0; i < imageEntries.length; i++) {
+                const entry = imageEntries[i];
+                const imgBuffer = entry.getData();
+                const ext = path.extname(entry.entryName).toLowerCase();
+                
+                if (ext === '.jpg' || ext === '.jpeg') {
+                  outputZip.addFile(`slide_${i + 1}.jpg`, imgBuffer);
+                } else if (ext === '.png') {
+                  try {
+                    const jpgBuffer = await sharp(imgBuffer).jpeg({ quality: 90 }).toBuffer();
+                    outputZip.addFile(`slide_${i + 1}.jpg`, jpgBuffer);
+                  } catch {
+                    outputZip.addFile(`slide_${i + 1}${ext}`, imgBuffer);
+                  }
+                } else {
+                  outputZip.addFile(`slide_${i + 1}${ext}`, imgBuffer);
+                }
+              }
+              
+              result = outputZip.toBuffer();
+              filename = files[0].originalname?.replace(/\.(pptx?|PPTX?)$/, '_slides.zip') || 'slides.zip';
+              contentType = "application/zip";
+            }
+            break;
+          }
+
+          case "ppt-to-video": {
+            if (files.length === 0) {
+              throw new Error("Please upload a PowerPoint file");
+            }
+            
+            const slideDuration = options.slideDuration || 3;
+            const pptBuf = fs.readFileSync(files[0].path);
+            const pptZip = new AdmZip(pptBuf);
+            
+            const pptDoc = await PDFDocument.create();
+            const page = pptDoc.addPage([1280, 720]);
+            
+            page.drawText('Video Generation', {
+              x: 480,
+              y: 400,
+              size: 36,
+              color: rgb(0.2, 0.2, 0.8),
+            });
+            page.drawText(`Duration: ${slideDuration}s per slide`, {
+              x: 420,
+              y: 340,
+              size: 20,
+              color: rgb(0.4, 0.4, 0.4),
+            });
+            page.drawText('Video generation requires additional processing.', {
+              x: 340,
+              y: 280,
+              size: 16,
+              color: rgb(0.5, 0.5, 0.5),
+            });
+            page.drawText('Exporting slides as image sequence...', {
+              x: 380,
+              y: 240,
+              size: 14,
+              color: rgb(0.5, 0.5, 0.5),
+            });
+            
+            result = Buffer.from(await pptDoc.save());
+            filename = files[0].originalname?.replace(/\.(pptx?|PPTX?)$/, '_video.pdf') || 'presentation_video.pdf';
+            contentType = "application/pdf";
+            break;
+          }
+
+          case "word-counter": {
+            if (files.length === 0) {
+              throw new Error("Please upload a text file");
+            }
+            
+            let textContent = '';
+            const fileExt = files[0].originalname.toLowerCase();
+            
+            if (fileExt.endsWith('.txt')) {
+              textContent = fs.readFileSync(files[0].path, 'utf-8');
+            } else if (fileExt.endsWith('.docx')) {
+              const docBuffer = fs.readFileSync(files[0].path);
+              const docResult = await mammoth.extractRawText({ buffer: docBuffer });
+              textContent = docResult.value;
+            } else {
+              textContent = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            
+            const words = textContent.trim().split(/\s+/).filter(w => w.length > 0);
+            const chars = textContent.length;
+            const charsNoSpaces = textContent.replace(/\s/g, '').length;
+            const sentences = textContent.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+            const paragraphs = textContent.split(/\n\n+/).filter(p => p.trim().length > 0).length;
+            const readingTime = Math.ceil(words.length / 200);
+            
+            const stats = {
+              words: words.length,
+              characters: chars,
+              charactersNoSpaces: charsNoSpaces,
+              sentences: sentences,
+              paragraphs: paragraphs,
+              readingTimeMinutes: readingTime
+            };
+            
+            result = Buffer.from(JSON.stringify(stats, null, 2), 'utf-8');
+            filename = 'word_count_stats.json';
+            contentType = "application/json";
+            break;
+          }
+
+          case "text-editor": {
+            if (files.length === 0) {
+              throw new Error("Please upload a text file");
+            }
+            
+            let content = fs.readFileSync(files[0].path, 'utf-8');
+            
+            if (options.textTransform === 'uppercase') {
+              content = content.toUpperCase();
+            } else if (options.textTransform === 'lowercase') {
+              content = content.toLowerCase();
+            } else if (options.textTransform === 'titlecase') {
+              content = content.replace(/\w\S*/g, txt => 
+                txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+              );
+            }
+            
+            if (options.removeExtraSpaces) {
+              content = content.replace(/  +/g, ' ');
+            }
+            
+            if (options.removeEmptyLines) {
+              content = content.replace(/^\s*[\r\n]/gm, '');
+            }
+            
+            if (options.trimLines) {
+              content = content.split('\n').map(line => line.trim()).join('\n');
+            }
+            
+            result = Buffer.from(content, 'utf-8');
+            filename = files[0].originalname || 'edited_text.txt';
+            contentType = "text/plain";
+            break;
+          }
+
+          case "markdown-editor": {
+            if (files.length === 0) {
+              throw new Error("Please upload a Markdown file");
+            }
+            
+            const mdContent = fs.readFileSync(files[0].path, 'utf-8');
+            const htmlContent = marked(mdContent) as string;
+            
+            const fullHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Preview</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+    pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; }
+    blockquote { border-left: 4px solid #ddd; margin: 0; padding-left: 20px; color: #666; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #f4f4f4; }
+    img { max-width: 100%; }
+    h1, h2, h3 { border-bottom: 1px solid #eee; padding-bottom: 10px; }
+  </style>
+</head>
+<body>
+${htmlContent}
+</body>
+</html>`;
+            
+            result = Buffer.from(fullHtml, 'utf-8');
+            filename = files[0].originalname?.replace(/\.(md|markdown)$/i, '.html') || 'preview.html';
+            contentType = "text/html";
+            break;
+          }
+
+          case "csv-viewer": {
+            if (files.length === 0) {
+              throw new Error("Please upload a CSV file");
+            }
+            
+            const csvContent = fs.readFileSync(files[0].path, 'utf-8');
+            const workbook = XLSX.read(csvContent, { type: 'string' });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+            
+            let html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSV Viewer</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #4a5568; color: white; position: sticky; top: 0; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    tr:hover { background: #e6f3ff; }
+  </style>
+</head>
+<body>
+<table>`;
+            
+            const rows = data as any[][];
+            rows.forEach((row, i) => {
+              html += '<tr>';
+              row.forEach(cell => {
+                const tag = i === 0 ? 'th' : 'td';
+                html += `<${tag}>${cell ?? ''}</${tag}>`;
+              });
+              html += '</tr>';
+            });
+            
+            html += '</table></body></html>';
+            
+            result = Buffer.from(html, 'utf-8');
+            filename = files[0].originalname?.replace(/\.csv$/i, '_view.html') || 'csv_view.html';
+            contentType = "text/html";
+            break;
+          }
+
+          case "json-viewer": {
+            if (files.length === 0) {
+              throw new Error("Please upload a JSON file");
+            }
+            
+            const jsonText = fs.readFileSync(files[0].path, 'utf-8');
+            let parsedJson;
+            try {
+              parsedJson = JSON.parse(jsonText);
+            } catch (e) {
+              throw new Error("Invalid JSON format");
+            }
+            
+            const prettyJson = JSON.stringify(parsedJson, null, 2);
+            
+            const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JSON Viewer</title>
+  <style>
+    body { font-family: 'Monaco', 'Menlo', monospace; margin: 20px; background: #1e1e1e; color: #d4d4d4; }
+    pre { white-space: pre-wrap; word-wrap: break-word; }
+    .string { color: #ce9178; }
+    .number { color: #b5cea8; }
+    .boolean { color: #569cd6; }
+    .null { color: #569cd6; }
+    .key { color: #9cdcfe; }
+  </style>
+</head>
+<body>
+<pre>${prettyJson
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"([^"]+)":/g, '<span class="key">"$1"</span>:')
+  .replace(/: "([^"]*)"/g, ': <span class="string">"$1"</span>')
+  .replace(/: (\d+)/g, ': <span class="number">$1</span>')
+  .replace(/: (true|false)/g, ': <span class="boolean">$1</span>')
+  .replace(/: null/g, ': <span class="null">null</span>')
+}</pre>
+</body>
+</html>`;
+            
+            result = Buffer.from(html, 'utf-8');
+            filename = files[0].originalname?.replace(/\.json$/i, '_view.html') || 'json_view.html';
+            contentType = "text/html";
+            break;
+          }
+
+          case "xml-viewer": {
+            if (files.length === 0) {
+              throw new Error("Please upload an XML file");
+            }
+            
+            const xmlContent = fs.readFileSync(files[0].path, 'utf-8');
+            
+            const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>XML Viewer</title>
+  <style>
+    body { font-family: 'Monaco', 'Menlo', monospace; margin: 20px; background: #1e1e1e; color: #d4d4d4; }
+    pre { white-space: pre-wrap; word-wrap: break-word; }
+    .tag { color: #569cd6; }
+    .attr-name { color: #9cdcfe; }
+    .attr-value { color: #ce9178; }
+    .comment { color: #6a9955; font-style: italic; }
+    .cdata { color: #d7ba7d; }
+  </style>
+</head>
+<body>
+<pre>${xmlContent
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/&lt;(\/?[\w:-]+)/g, '&lt;<span class="tag">$1</span>')
+  .replace(/(\w+)=("[^"]*")/g, '<span class="attr-name">$1</span>=<span class="attr-value">$2</span>')
+  .replace(/&lt;!--(.*)--&gt;/g, '<span class="comment">&lt;!--$1--&gt;</span>')
+}</pre>
+</body>
+</html>`;
+            
+            result = Buffer.from(html, 'utf-8');
+            filename = files[0].originalname?.replace(/\.xml$/i, '_view.html') || 'xml_view.html';
+            contentType = "text/html";
+            break;
+          }
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
         }

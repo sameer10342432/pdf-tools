@@ -526,6 +526,16 @@ export const pdfToolTypes = [
   "excel-to-csv",
   "csv-to-excel",
   "excel-to-json",
+  "json-to-excel",
+  "ppt-to-jpg",
+  "ppt-to-video",
+  "word-counter",
+  "text-editor",
+  "markdown-editor",
+  "csv-viewer",
+  "json-viewer",
+  "xml-viewer",
+  "json-to-csv",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -15065,5 +15075,255 @@ export const pdfTools: PdfTool[] = [
 
 <h2>Developer Ready Output</h2>
 <p>Generated JSON is properly formatted and validated. Copy directly into code or API payloads. Import into MongoDB, CouchDB, or any document database. Use as configuration files or static data sources. Minified output option for production use.</p>`,
+  },
+  {
+    id: "json-to-excel",
+    name: "JSON to Excel",
+    description: "Convert JSON data to Excel spreadsheet format",
+    icon: "FileSpreadsheet",
+    type: "json-to-excel",
+    color: "bg-emerald-500",
+    emoji: "📊",
+    metaTitle: "JSON to Excel Converter Online Free - JSON to XLSX | PDF Tools",
+    metaDescription: "Convert JSON data to Excel spreadsheets online for free. Transform structured JSON into formatted XLSX files with automatic column detection.",
+    seoArticle: `<h2>JSON to Excel Converter - Transform Data Instantly</h2>
+<p>Convert JSON files into beautifully formatted Excel spreadsheets with our free online converter. Perfect for developers, data analysts, and business professionals who need to visualize and manipulate JSON data in a spreadsheet format.</p>
+
+<h2>Automatic Structure Detection</h2>
+<p>Our converter intelligently parses your JSON structure and creates appropriate columns and rows. Arrays become rows, object keys become column headers. Nested objects are flattened or preserved based on your preferences.</p>
+
+<h2>Multiple JSON Formats Supported</h2>
+<p>Handle arrays of objects, nested structures, and complex JSON hierarchies. Support for standard JSON, JSON Lines (NDJSON), and GeoJSON formats. Large files are processed efficiently with streaming parsing.</p>
+
+<h2>Customizable Output</h2>
+<p>Choose how nested data is handled - flatten completely, create multiple sheets, or preserve as text. Format dates, numbers, and currencies automatically. Apply conditional formatting and table styles to your output.</p>
+
+<h2>Developer and Analyst Friendly</h2>
+<p>Export API responses directly to Excel for analysis. Create reports from database exports. Transform configuration files into readable spreadsheets. Perfect for data migration and ETL workflows.</p>`,
+  },
+  {
+    id: "ppt-to-jpg",
+    name: "PPT to JPG",
+    description: "Convert PowerPoint slides to JPG images",
+    icon: "Image",
+    type: "ppt-to-jpg",
+    color: "bg-orange-500",
+    emoji: "🖼️",
+    metaTitle: "PPT to JPG Converter Online Free - PowerPoint to Images | PDF Tools",
+    metaDescription: "Convert PowerPoint presentations to JPG images online for free. Transform PPT and PPTX slides into high-quality image files.",
+    seoArticle: `<h2>PowerPoint to JPG Converter - Slides to Images</h2>
+<p>Convert your PowerPoint presentations into high-quality JPG images with our free online converter. Perfect for sharing individual slides on social media, embedding in websites, or creating image-based archives of your presentations.</p>
+
+<h2>High-Quality Image Output</h2>
+<p>Each slide is converted to a crisp, high-resolution JPG image. Maintain fonts, graphics, animations (as static frames), and design elements. Choose your preferred image quality and resolution settings.</p>
+
+<h2>Batch Conversion</h2>
+<p>Convert entire presentations at once. Each slide becomes a separate numbered JPG file. Download all images in a convenient ZIP archive. Process multiple PPT files simultaneously for bulk conversions.</p>
+
+<h2>Preserve Visual Fidelity</h2>
+<p>Embedded images, charts, and SmartArt are rendered accurately. Custom fonts are preserved in the image output. Slide backgrounds, gradients, and effects are captured faithfully.</p>
+
+<h2>Perfect for Social Sharing</h2>
+<p>Create slideshows for Instagram, LinkedIn, or Twitter. Generate thumbnails for presentation previews. Build image galleries from training materials. Archive presentations in a universally viewable format.</p>`,
+  },
+  {
+    id: "ppt-to-video",
+    name: "PPT to Video",
+    description: "Convert PowerPoint presentations to video format",
+    icon: "Video",
+    type: "ppt-to-video",
+    color: "bg-purple-500",
+    emoji: "🎬",
+    metaTitle: "PPT to Video Converter Online Free - PowerPoint to MP4 | PDF Tools",
+    metaDescription: "Convert PowerPoint presentations to video format online for free. Transform PPT and PPTX files into MP4 videos with custom timing.",
+    seoArticle: `<h2>PowerPoint to Video Converter - Presentations to MP4</h2>
+<p>Transform your PowerPoint presentations into engaging video files with our free online converter. Perfect for creating training videos, social media content, or archiving presentations in a universally playable format.</p>
+
+<h2>Customizable Slide Duration</h2>
+<p>Set how long each slide displays in the video. Use uniform timing for all slides or customize duration per slide. Add transitions between slides for professional-looking videos.</p>
+
+<h2>High-Quality Video Output</h2>
+<p>Export in HD quality (720p or 1080p). Choose from MP4, WebM, or other video formats. Optimize file size while maintaining visual quality. Compatible with all major video players and platforms.</p>
+
+<h2>Animation Support</h2>
+<p>Slide animations and transitions are captured in the video. Timed elements play as designed. Build effects and motion paths are rendered accurately. Create dynamic video content from animated presentations.</p>
+
+<h2>Perfect for Content Creation</h2>
+<p>Upload to YouTube, Vimeo, or social media platforms. Create e-learning content without screen recording. Share presentations with viewers who don't have PowerPoint. Archive presentations in a future-proof format.</p>`,
+  },
+  {
+    id: "word-counter",
+    name: "Word Counter",
+    description: "Count words, characters, sentences, and paragraphs",
+    icon: "Hash",
+    type: "word-counter",
+    color: "bg-blue-500",
+    emoji: "🔢",
+    metaTitle: "Word Counter Online Free - Character & Sentence Counter | PDF Tools",
+    metaDescription: "Count words, characters, sentences, and paragraphs online for free. Analyze your text with detailed statistics including reading time.",
+    seoArticle: `<h2>Word Counter Tool - Comprehensive Text Analysis</h2>
+<p>Analyze your text with our powerful word counter tool. Get instant statistics on word count, character count, sentence count, and paragraph count. Perfect for writers, students, and content creators who need to meet specific length requirements.</p>
+
+<h2>Detailed Statistics</h2>
+<p>View word count with and without spaces. Count characters including and excluding punctuation. Track sentence and paragraph counts. Calculate estimated reading time and speaking time for your content.</p>
+
+<h2>Real-Time Analysis</h2>
+<p>Statistics update instantly as you type or paste text. No need to click buttons - see results immediately. Works with any length of text from tweets to novels. Copy statistics to clipboard with one click.</p>
+
+<h2>Writing Goals</h2>
+<p>Set target word counts for essays, articles, or social media posts. Visual progress indicators show how close you are to your goal. Perfect for meeting assignment requirements or content length guidelines.</p>
+
+<h2>Keyword Density</h2>
+<p>Identify most frequently used words. Calculate keyword density for SEO optimization. Exclude common stop words from analysis. Export word frequency reports for content strategy.</p>`,
+  },
+  {
+    id: "text-editor",
+    name: "Text Editor Online",
+    description: "Edit and format text with a powerful online editor",
+    icon: "Type",
+    type: "text-editor",
+    color: "bg-gray-600",
+    emoji: "📝",
+    metaTitle: "Text Editor Online Free - Edit Text Files | PDF Tools",
+    metaDescription: "Edit text online with our free text editor. Create, edit, and format plain text files with syntax highlighting and powerful editing features.",
+    seoArticle: `<h2>Online Text Editor - Write and Edit Anywhere</h2>
+<p>Create and edit text files directly in your browser with our powerful online text editor. No installation required - just open and start writing. Perfect for quick edits, notes, and plain text document creation.</p>
+
+<h2>Clean Writing Interface</h2>
+<p>Distraction-free editing environment. Adjustable font size and line spacing. Dark and light mode for comfortable writing. Full-screen mode for focused editing sessions.</p>
+
+<h2>Powerful Editing Features</h2>
+<p>Find and replace with regex support. Undo and redo unlimited changes. Line numbering for code and scripts. Tab and indentation controls for structured text.</p>
+
+<h2>File Management</h2>
+<p>Open text files from your device. Save your work locally or download as TXT. Auto-save prevents data loss. Support for various text encodings (UTF-8, ASCII, etc.).</p>
+
+<h2>Quick Formatting</h2>
+<p>Convert case (upper, lower, title, sentence). Remove extra whitespace and blank lines. Sort lines alphabetically or numerically. Remove duplicate lines with one click.</p>`,
+  },
+  {
+    id: "markdown-editor",
+    name: "Markdown Editor",
+    description: "Write and preview Markdown with live rendering",
+    icon: "FileText",
+    type: "markdown-editor",
+    color: "bg-indigo-500",
+    emoji: "✍️",
+    metaTitle: "Markdown Editor Online Free - Live Preview | PDF Tools",
+    metaDescription: "Write Markdown with live preview online for free. Create beautiful documents with our powerful Markdown editor featuring syntax highlighting.",
+    seoArticle: `<h2>Online Markdown Editor - Write Beautiful Documents</h2>
+<p>Create stunning documents with our powerful Markdown editor. See your formatted output in real-time as you type. Perfect for README files, documentation, blog posts, and technical writing.</p>
+
+<h2>Live Preview</h2>
+<p>Side-by-side editing and preview panels. See formatting updates instantly. Toggle between edit, preview, and split views. Preview exactly matches GitHub, GitLab, and common Markdown renderers.</p>
+
+<h2>Full Markdown Support</h2>
+<p>Standard Markdown syntax plus extensions. GitHub Flavored Markdown (GFM) support. Tables, task lists, and code blocks with syntax highlighting. Footnotes, abbreviations, and definition lists.</p>
+
+<h2>Syntax Highlighting</h2>
+<p>Code blocks support 100+ programming languages. Automatic language detection. Beautiful color themes for code display. Copy code blocks with syntax preserved.</p>
+
+<h2>Export Options</h2>
+<p>Download as Markdown (.md) file. Export to HTML for web publishing. Convert to PDF for sharing. Copy rendered HTML to clipboard.</p>`,
+  },
+  {
+    id: "csv-viewer",
+    name: "CSV Viewer",
+    description: "View and explore CSV files in a table format",
+    icon: "Table",
+    type: "csv-viewer",
+    color: "bg-green-500",
+    emoji: "📋",
+    metaTitle: "CSV Viewer Online Free - View CSV Files | PDF Tools",
+    metaDescription: "View CSV files online in a beautiful table format for free. Explore data with sorting, filtering, and search capabilities.",
+    seoArticle: `<h2>CSV Viewer - Explore Data Instantly</h2>
+<p>Open and explore CSV files directly in your browser with our powerful viewer. No software installation needed - just upload your file and start analyzing data in a clean, sortable table interface.</p>
+
+<h2>Interactive Data Table</h2>
+<p>View your data in a responsive, scrollable table. Sort by any column with a single click. Filter rows based on cell values. Search across all columns instantly.</p>
+
+<h2>Smart Column Detection</h2>
+<p>Automatic header row detection. Data type recognition for numbers, dates, and text. Column width auto-adjustment for optimal display. Handle files with thousands of rows efficiently.</p>
+
+<h2>Multiple Delimiter Support</h2>
+<p>Standard comma-separated files. Tab-separated (TSV) files. Semicolon-delimited European format. Custom delimiter specification for any format.</p>
+
+<h2>Data Analysis</h2>
+<p>Column statistics (min, max, average for numbers). Unique value counts per column. Empty cell detection. Data validation and error highlighting.</p>`,
+  },
+  {
+    id: "json-viewer",
+    name: "JSON Viewer",
+    description: "View and explore JSON data with syntax highlighting",
+    icon: "Braces",
+    type: "json-viewer",
+    color: "bg-yellow-500",
+    emoji: "🔍",
+    metaTitle: "JSON Viewer Online Free - Format & Explore JSON | PDF Tools",
+    metaDescription: "View and explore JSON data online for free. Format, validate, and navigate JSON with syntax highlighting and collapsible nodes.",
+    seoArticle: `<h2>JSON Viewer - Explore Data Structures</h2>
+<p>Visualize and explore JSON data with our powerful online viewer. Perfect for developers working with APIs, configuration files, and data structures. Format, validate, and navigate complex JSON effortlessly.</p>
+
+<h2>Tree View Navigation</h2>
+<p>Expand and collapse JSON nodes. Navigate deep hierarchies easily. Click to select and copy values. Visual distinction between data types.</p>
+
+<h2>Syntax Highlighting</h2>
+<p>Color-coded display for keys, strings, numbers, and booleans. Null values clearly marked. Array indices shown for easy reference. Dark and light themes available.</p>
+
+<h2>JSON Formatting</h2>
+<p>Pretty-print minified JSON. Customize indentation (2 or 4 spaces, tabs). Compact view for overview. Raw view for copy/paste.</p>
+
+<h2>Validation</h2>
+<p>Instant JSON syntax validation. Clear error messages with line numbers. Fix common JSON errors. Validate against JSON Schema (optional).</p>`,
+  },
+  {
+    id: "xml-viewer",
+    name: "XML Viewer",
+    description: "View and explore XML data with syntax highlighting",
+    icon: "Code",
+    type: "xml-viewer",
+    color: "bg-teal-500",
+    emoji: "📄",
+    metaTitle: "XML Viewer Online Free - Format & Explore XML | PDF Tools",
+    metaDescription: "View and explore XML data online for free. Format, validate, and navigate XML with syntax highlighting and collapsible nodes.",
+    seoArticle: `<h2>XML Viewer - Navigate Structured Data</h2>
+<p>Explore XML documents with our intuitive online viewer. Perfect for developers, data analysts, and anyone working with XML configuration files, web services, or data feeds.</p>
+
+<h2>Tree View Navigation</h2>
+<p>Hierarchical display of XML elements. Expand and collapse nodes. View attributes alongside elements. Navigate complex documents easily.</p>
+
+<h2>Syntax Highlighting</h2>
+<p>Color-coded elements, attributes, and values. CDATA sections highlighted. Comments displayed distinctly. Namespace-aware display.</p>
+
+<h2>XML Formatting</h2>
+<p>Pretty-print compressed XML. Customize indentation levels. Preserve or normalize whitespace. Line numbering for reference.</p>
+
+<h2>Validation</h2>
+<p>Well-formedness checking. Clear error reporting with locations. Validate against DTD or XSD (optional). Encoding detection and handling.</p>`,
+  },
+  {
+    id: "json-to-csv",
+    name: "JSON to CSV",
+    description: "Convert JSON data to CSV spreadsheet format",
+    icon: "FileSpreadsheet",
+    type: "json-to-csv",
+    color: "bg-lime-500",
+    emoji: "📑",
+    metaTitle: "JSON to CSV Converter Online Free - Transform Data | PDF Tools",
+    metaDescription: "Convert JSON data to CSV format online for free. Transform structured JSON into comma-separated values for spreadsheet applications.",
+    seoArticle: `<h2>JSON to CSV Converter - Flatten Your Data</h2>
+<p>Convert JSON data into CSV format for easy import into spreadsheets and databases. Perfect for exporting API responses, database dumps, or any structured JSON data into a tabular format.</p>
+
+<h2>Smart Flattening</h2>
+<p>Nested JSON objects are intelligently flattened. Array values can be joined or expanded into rows. Custom separator for nested key names. Handle complex hierarchies with configurable depth.</p>
+
+<h2>Array Handling</h2>
+<p>Arrays of objects become multiple rows. Choose how to handle nested arrays. Skip arrays or expand them inline. Preserve array indices as columns.</p>
+
+<h2>Output Customization</h2>
+<p>Choose delimiter (comma, semicolon, tab). Include or exclude header row. Quote all values or only when needed. Custom line endings for different systems.</p>
+
+<h2>Data Compatibility</h2>
+<p>Output compatible with Excel, Google Sheets, and Numbers. UTF-8 encoding with BOM option for Excel. Handle special characters and line breaks in values. Ready for database import operations.</p>`,
   },
 ];

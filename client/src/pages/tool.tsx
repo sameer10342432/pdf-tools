@@ -102,6 +102,9 @@ import {
   Focus,
   Wand2,
   UserX,
+  Table,
+  Braces,
+  Code,
   type LucideIcon,
 } from "lucide-react";
 
@@ -188,6 +191,9 @@ const iconMap: Record<string, LucideIcon> = {
   Focus,
   Wand2,
   UserX,
+  Table,
+  Braces,
+  Code,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";
@@ -491,6 +497,24 @@ export default function ToolPage() {
     }
     if (tool.type === "csv-to-excel") {
       return ".csv,text/csv,application/csv";
+    }
+    if (tool.type === "json-to-excel" || tool.type === "json-to-csv" || tool.type === "json-viewer") {
+      return ".json,application/json";
+    }
+    if (tool.type === "ppt-to-jpg" || tool.type === "ppt-to-video") {
+      return ".ppt,.pptx,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    }
+    if (tool.type === "word-counter" || tool.type === "text-editor") {
+      return ".txt,.doc,.docx,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    }
+    if (tool.type === "markdown-editor") {
+      return ".md,.markdown,text/markdown,text/plain";
+    }
+    if (tool.type === "csv-viewer") {
+      return ".csv,text/csv,application/csv";
+    }
+    if (tool.type === "xml-viewer") {
+      return ".xml,application/xml,text/xml";
     }
     return ".pdf,application/pdf";
   };
