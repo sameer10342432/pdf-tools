@@ -4,7 +4,7 @@ hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["ghostscript", "imagemagick", "libraw"]
+packages = ["ghostscript", "imagemagick", "libraw", "libreoffice-fresh", "ffmpeg"]
 
 [deployment]
 deploymentTarget = "autoscale"

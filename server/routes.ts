@@ -6,6 +6,8 @@ import archiver from "archiver";
 import path from "path";
 import fs from "fs";
 import { randomUUID } from "crypto";
+import { exec } from "child_process";
+import { promisify } from "util";
 import muhammara from "muhammara";
 import mammoth from "mammoth";
 import Tesseract from "tesseract.js";
@@ -13,6 +15,8 @@ import * as XLSX from "xlsx";
 import sharp from "sharp";
 import { marked } from "marked";
 import AdmZip from "adm-zip";
+
+const execAsync = promisify(exec);
 
 const uploadDir = path.join(process.cwd(), "uploads");
 const outputDir = path.join(process.cwd(), "output");
@@ -24347,57 +24351,45 @@ ${mammothResult.value}
               throw new Error("Please upload a PowerPoint file");
             }
             
-            const pptBuffer = fs.readFileSync(files[0].path);
-            const zip = new AdmZip(pptBuffer);
-            const entries = zip.getEntries();
+            const pptFile = files[0].path;
+            const tempDir = path.join(outputDir, `ppt_${randomUUID()}`);
+            fs.mkdirSync(tempDir, { recursive: true });
             
-            const imageEntries = entries.filter(entry => 
-              entry.entryName.startsWith('ppt/media/') && 
-              /\.(jpg|jpeg|png|gif|wmf|emf)$/i.test(entry.entryName)
-            );
-            
-            if (imageEntries.length === 0) {
-              const pdfDoc = await PDFDocument.create();
-              const page = pdfDoc.addPage([800, 600]);
-              page.drawText('PowerPoint to JPG Conversion', {
-                x: 200,
-                y: 350,
-                size: 24,
-                color: rgb(0, 0, 0),
-              });
-              page.drawText('Slide images extracted from presentation', {
-                x: 180,
-                y: 300,
-                size: 16,
-                color: rgb(0.3, 0.3, 0.3),
-              });
-              result = Buffer.from(await pdfDoc.save());
-              filename = 'ppt_slides.pdf';
-              contentType = "application/pdf";
-            } else {
-              const outputZip = new AdmZip();
-              for (let i = 0; i < imageEntries.length; i++) {
-                const entry = imageEntries[i];
-                const imgBuffer = entry.getData();
-                const ext = path.extname(entry.entryName).toLowerCase();
-                
-                if (ext === '.jpg' || ext === '.jpeg') {
-                  outputZip.addFile(`slide_${i + 1}.jpg`, imgBuffer);
-                } else if (ext === '.png') {
-                  try {
-                    const jpgBuffer = await sharp(imgBuffer).jpeg({ quality: 90 }).toBuffer();
-                    outputZip.addFile(`slide_${i + 1}.jpg`, jpgBuffer);
-                  } catch {
-                    outputZip.addFile(`slide_${i + 1}${ext}`, imgBuffer);
-                  }
-                } else {
-                  outputZip.addFile(`slide_${i + 1}${ext}`, imgBuffer);
-                }
+            try {
+              await execAsync(`libreoffice --headless --convert-to pdf --outdir "${tempDir}" "${pptFile}"`);
+              
+              const pdfFileName = path.basename(pptFile).replace(/\.(pptx?|PPTX?)$/i, '.pdf');
+              const pdfPath = path.join(tempDir, pdfFileName);
+              
+              if (!fs.existsSync(pdfPath)) {
+                throw new Error("PDF conversion failed");
               }
               
-              result = outputZip.toBuffer();
-              filename = files[0].originalname?.replace(/\.(pptx?|PPTX?)$/, '_slides.zip') || 'slides.zip';
-              contentType = "application/zip";
+              await execAsync(`convert -density 150 "${pdfPath}" "${tempDir}/slide_%03d.jpg"`);
+              
+              const slideFiles = fs.readdirSync(tempDir).filter(f => f.startsWith('slide_') && f.endsWith('.jpg'));
+              slideFiles.sort();
+              
+              if (slideFiles.length === 0) {
+                throw new Error("No slides were generated");
+              }
+              
+              if (slideFiles.length === 1) {
+                result = fs.readFileSync(path.join(tempDir, slideFiles[0]));
+                filename = 'slide_001.jpg';
+                contentType = "image/jpeg";
+              } else {
+                const outputZip = new AdmZip();
+                for (const slideFile of slideFiles) {
+                  const slideBuffer = fs.readFileSync(path.join(tempDir, slideFile));
+                  outputZip.addFile(slideFile, slideBuffer);
+                }
+                result = outputZip.toBuffer();
+                filename = files[0].originalname?.replace(/\.(pptx?|PPTX?)$/i, '_slides.zip') || 'slides.zip';
+                contentType = "application/zip";
+              }
+            } finally {
+              fs.rmSync(tempDir, { recursive: true, force: true });
             }
             break;
           }
@@ -24408,40 +24400,44 @@ ${mammothResult.value}
             }
             
             const slideDuration = options.slideDuration || 3;
-            const pptBuf = fs.readFileSync(files[0].path);
-            const pptZip = new AdmZip(pptBuf);
+            const pptVideoFile = files[0].path;
+            const videoTempDir = path.join(outputDir, `video_${randomUUID()}`);
+            fs.mkdirSync(videoTempDir, { recursive: true });
             
-            const pptDoc = await PDFDocument.create();
-            const page = pptDoc.addPage([1280, 720]);
-            
-            page.drawText('Video Generation', {
-              x: 480,
-              y: 400,
-              size: 36,
-              color: rgb(0.2, 0.2, 0.8),
-            });
-            page.drawText(`Duration: ${slideDuration}s per slide`, {
-              x: 420,
-              y: 340,
-              size: 20,
-              color: rgb(0.4, 0.4, 0.4),
-            });
-            page.drawText('Video generation requires additional processing.', {
-              x: 340,
-              y: 280,
-              size: 16,
-              color: rgb(0.5, 0.5, 0.5),
-            });
-            page.drawText('Exporting slides as image sequence...', {
-              x: 380,
-              y: 240,
-              size: 14,
-              color: rgb(0.5, 0.5, 0.5),
-            });
-            
-            result = Buffer.from(await pptDoc.save());
-            filename = files[0].originalname?.replace(/\.(pptx?|PPTX?)$/, '_video.pdf') || 'presentation_video.pdf';
-            contentType = "application/pdf";
+            try {
+              await execAsync(`libreoffice --headless --convert-to pdf --outdir "${videoTempDir}" "${pptVideoFile}"`);
+              
+              const videoPdfName = path.basename(pptVideoFile).replace(/\.(pptx?|PPTX?)$/i, '.pdf');
+              const videoPdfPath = path.join(videoTempDir, videoPdfName);
+              
+              if (!fs.existsSync(videoPdfPath)) {
+                throw new Error("PDF conversion failed");
+              }
+              
+              await execAsync(`convert -density 150 "${videoPdfPath}" "${videoTempDir}/frame_%04d.png"`);
+              
+              const frameFiles = fs.readdirSync(videoTempDir).filter(f => f.startsWith('frame_') && f.endsWith('.png'));
+              frameFiles.sort();
+              
+              if (frameFiles.length === 0) {
+                throw new Error("No frames were generated");
+              }
+              
+              const fps = 1 / slideDuration;
+              const videoOutputPath = path.join(videoTempDir, 'output.mp4');
+              
+              await execAsync(`ffmpeg -framerate ${fps} -i "${videoTempDir}/frame_%04d.png" -c:v libx264 -pix_fmt yuv420p -preset medium -crf 23 "${videoOutputPath}"`);
+              
+              if (!fs.existsSync(videoOutputPath)) {
+                throw new Error("Video generation failed");
+              }
+              
+              result = fs.readFileSync(videoOutputPath);
+              filename = files[0].originalname?.replace(/\.(pptx?|PPTX?)$/i, '.mp4') || 'presentation.mp4';
+              contentType = "video/mp4";
+            } finally {
+              fs.rmSync(videoTempDir, { recursive: true, force: true });
+            }
             break;
           }
 
