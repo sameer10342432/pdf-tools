@@ -49,6 +49,9 @@ import {
   Sun,
   Contrast,
   Eye,
+  Table,
+  Braces,
+  Code,
   type LucideIcon,
 } from "lucide-react";
 
@@ -100,6 +103,9 @@ const iconMap: Record<string, LucideIcon> = {
   Sun,
   Contrast,
   Eye,
+  Table,
+  Braces,
+  Code,
 };
 
 interface ToolCardProps {

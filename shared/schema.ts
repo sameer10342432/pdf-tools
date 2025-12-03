@@ -546,6 +546,16 @@ export const pdfToolTypes = [
   "epub-reader",
   "mobi-to-epub",
   "epub-to-mobi",
+  "file-converter",
+  "document-converter",
+  "epub-to-txt",
+  "xml-to-csv",
+  "xml-to-json",
+  "json-to-xml",
+  "json-to-yaml",
+  "yaml-to-json",
+  "yaml-to-csv",
+  "csv-to-yaml",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -15587,3 +15597,260 @@ export const pdfTools: PdfTool[] = [
 <p>Output compatible with Send to Kindle feature. Transfer via USB or email. Organize in your Kindle library. Read offline anywhere.</p>`,
   }
 ];
+
+// New File Converter Tools
+const newConverterTools: PdfTool[] = [
+  {
+    id: "file-converter",
+    name: "File Converter",
+    description: "Universal file converter supporting multiple format conversions",
+    icon: "FileOutput",
+    type: "file-converter",
+    color: "bg-blue-600",
+    emoji: "📄",
+    metaTitle: "File Converter Online Free - Convert Any File Format | PDF Tools",
+    metaDescription: "Convert files between different formats online for free. Support for documents, data files, and more. Fast, secure, and no registration required.",
+    seoArticle: `<h2>Universal File Converter - Transform Any File</h2>
+<p>Our free online file converter supports a wide range of file format conversions. Whether you need to convert documents, spreadsheets, or data files, this tool handles it all with ease and precision.</p>
+
+<h2>Supported Formats</h2>
+<p>Convert between popular formats including EPUB, XML, JSON, YAML, CSV, and more. Our converter automatically detects your file type and offers compatible output options. No technical knowledge required.</p>
+
+<h2>Fast and Secure Processing</h2>
+<p>Files are processed entirely on our secure servers. Your data is automatically deleted after conversion. No file size limits for most conversions. Results available instantly for download.</p>
+
+<h2>Why Choose Our Converter</h2>
+<p>Zero software installation needed. Works on any device with a browser. Maintains data integrity during conversion. Free to use without registration or account creation.</p>
+
+<h2>Professional Quality Output</h2>
+<p>Our conversion engine ensures accurate format transformation. Preserve structure, formatting, and data relationships. Perfect for developers, analysts, and content creators who need reliable file conversion.</p>`,
+  },
+  {
+    id: "document-converter",
+    name: "Document Converter",
+    description: "Convert documents between various text and data formats",
+    icon: "FileText",
+    type: "document-converter",
+    color: "bg-green-600",
+    emoji: "📑",
+    metaTitle: "Document Converter Online Free - Convert Documents | PDF Tools",
+    metaDescription: "Convert documents between formats online for free. Transform text files, ebooks, and data documents easily. Secure and fast conversion.",
+    seoArticle: `<h2>Document Converter - All Your Document Formats</h2>
+<p>Convert documents between multiple formats with our free online tool. Whether you're working with ebooks, text files, or structured data documents, our converter handles the transformation seamlessly.</p>
+
+<h2>Versatile Format Support</h2>
+<p>Transform EPUB to plain text for easy reading. Convert XML documents to structured data formats. Process JSON and YAML configuration files. Handle CSV spreadsheet data with precision.</p>
+
+<h2>Preserve Content Quality</h2>
+<p>Our converter maintains the integrity of your document content. Text formatting is carefully preserved. Data structures remain intact after conversion. Special characters are handled correctly.</p>
+
+<h2>Easy to Use Interface</h2>
+<p>Simply upload your document and choose output format. Conversion happens automatically. Download results immediately. No complicated settings or options to configure.</p>
+
+<h2>Ideal for Various Use Cases</h2>
+<p>Perfect for developers converting configuration files. Great for researchers transforming data formats. Useful for publishers working with ebook formats. Essential for data analysts processing structured information.</p>`,
+  },
+  {
+    id: "epub-to-txt",
+    name: "EPUB to TXT",
+    description: "Extract plain text content from EPUB ebook files",
+    icon: "FileText",
+    type: "epub-to-txt",
+    color: "bg-teal-600",
+    emoji: "📖",
+    metaTitle: "EPUB to TXT Converter Online Free - Extract Text from Ebooks | PDF Tools",
+    metaDescription: "Convert EPUB files to plain text TXT format online for free. Extract readable text content from ebooks without formatting. Fast and easy.",
+    seoArticle: `<h2>EPUB to TXT Converter - Extract Plain Text</h2>
+<p>Convert your EPUB ebook files to simple plain text format. This tool extracts all readable content from EPUB files and saves it as a clean TXT file that can be opened anywhere.</p>
+
+<h2>Why Convert to Plain Text</h2>
+<p>Plain text files are universally compatible with any device. Easy to search and index for reference. Smaller file sizes for efficient storage. Perfect for text analysis and processing applications.</p>
+
+<h2>Clean Text Extraction</h2>
+<p>Our converter extracts chapter content in reading order. Removes HTML formatting while preserving paragraph structure. Handles special characters and unicode text. Maintains chapter separations for easy navigation.</p>
+
+<h2>Simple Conversion Process</h2>
+<p>Upload your EPUB file using drag and drop. Automatic processing extracts all text content. Download your TXT file instantly. Works with any standard EPUB format ebook.</p>
+
+<h2>Use Cases for TXT Conversion</h2>
+<p>Create searchable text archives of your ebook collection. Feed content into text analysis tools. Copy text for quotations and references. Make ebooks accessible for screen readers and text-to-speech.</p>`,
+  },
+  {
+    id: "xml-to-csv",
+    name: "XML to CSV",
+    description: "Convert XML data files to CSV spreadsheet format",
+    icon: "Table",
+    type: "xml-to-csv",
+    color: "bg-orange-600",
+    emoji: "📊",
+    metaTitle: "XML to CSV Converter Online Free - Transform XML Data | PDF Tools",
+    metaDescription: "Convert XML files to CSV format online for free. Transform structured XML data into spreadsheet-compatible CSV format. Easy data migration.",
+    seoArticle: `<h2>XML to CSV Converter - Spreadsheet Ready Data</h2>
+<p>Transform your XML data files into CSV format for easy use in spreadsheets and databases. Our converter intelligently maps XML elements to CSV columns while preserving your data integrity.</p>
+
+<h2>Intelligent Data Mapping</h2>
+<p>Automatically detects repeating elements for row generation. Maps XML attributes and child elements to columns. Handles nested structures with flattening options. Preserves data types during conversion.</p>
+
+<h2>CSV Output Options</h2>
+<p>Standard comma-separated format for universal compatibility. Proper escaping of special characters. UTF-8 encoding for international character support. Headers generated from XML element names.</p>
+
+<h2>Perfect for Data Analysis</h2>
+<p>Import XML data into Excel, Google Sheets, or LibreOffice. Feed structured data into database applications. Prepare data for business intelligence tools. Enable spreadsheet-based data manipulation.</p>
+
+<h2>Reliable Conversion Engine</h2>
+<p>Handles large XML files efficiently. Processes complex nested structures. Maintains data accuracy throughout conversion. Quick processing with instant download.</p>`,
+  },
+  {
+    id: "xml-to-json",
+    name: "XML to JSON",
+    description: "Convert XML documents to JSON format for web applications",
+    icon: "Braces",
+    type: "xml-to-json",
+    color: "bg-indigo-600",
+    emoji: "🔄",
+    metaTitle: "XML to JSON Converter Online Free - Transform Data | PDF Tools",
+    metaDescription: "Convert XML files to JSON format online for free. Transform XML documents to JSON for web development and APIs. Instant conversion.",
+    seoArticle: `<h2>XML to JSON Converter - Modern Data Format</h2>
+<p>Convert XML documents to JSON format for use in modern web applications and APIs. JSON has become the preferred data interchange format for web development, and our tool makes the transition seamless.</p>
+
+<h2>Accurate Structure Conversion</h2>
+<p>XML elements become JSON objects. Attributes are preserved with special naming. Child elements map to nested objects or arrays. Text content is properly extracted and placed.</p>
+
+<h2>Developer Friendly Output</h2>
+<p>Well-formatted JSON with proper indentation. Valid JSON syntax ready for parsing. Consistent handling of arrays vs objects. Compatible with all JSON parsers and libraries.</p>
+
+<h2>Common Use Cases</h2>
+<p>Migrate legacy XML APIs to modern JSON format. Convert configuration files for JavaScript applications. Transform data feeds for frontend consumption. Prepare data for NoSQL databases.</p>
+
+<h2>Reliable Processing</h2>
+<p>Handles complex XML documents with namespaces. Processes CDATA sections correctly. Manages mixed content appropriately. Works with any well-formed XML input.</p>`,
+  },
+  {
+    id: "json-to-xml",
+    name: "JSON to XML",
+    description: "Convert JSON data to XML document format",
+    icon: "Code",
+    type: "json-to-xml",
+    color: "bg-purple-600",
+    emoji: "🔃",
+    metaTitle: "JSON to XML Converter Online Free - Transform Data | PDF Tools",
+    metaDescription: "Convert JSON files to XML format online for free. Transform JSON data to XML documents for legacy systems and enterprise integration.",
+    seoArticle: `<h2>JSON to XML Converter - Enterprise Format</h2>
+<p>Convert JSON data to XML format for integration with enterprise systems and legacy applications. XML remains essential for many business applications, SOAP web services, and configuration files.</p>
+
+<h2>Structured XML Output</h2>
+<p>JSON objects become XML elements. Arrays are properly structured with repeating elements. Proper XML declaration and formatting. Well-formed XML that validates correctly.</p>
+
+<h2>Customizable Conversion</h2>
+<p>Meaningful element names from JSON keys. Proper handling of special characters. Support for XML namespaces when needed. Indented output for human readability.</p>
+
+<h2>Integration Ready</h2>
+<p>Output compatible with XSLT transformations. Works with XML parsers and validators. Suitable for SOAP web service payloads. Ready for enterprise application integration.</p>
+
+<h2>Perfect for Developers</h2>
+<p>Convert API responses for XML-based systems. Generate configuration files from JSON data. Create XML feeds from JSON sources. Bridge modern and legacy system requirements.</p>`,
+  },
+  {
+    id: "json-to-yaml",
+    name: "JSON to YAML",
+    description: "Convert JSON configuration files to YAML format",
+    icon: "FileText",
+    type: "json-to-yaml",
+    color: "bg-cyan-600",
+    emoji: "⚙️",
+    metaTitle: "JSON to YAML Converter Online Free - Transform Config Files | PDF Tools",
+    metaDescription: "Convert JSON files to YAML format online for free. Transform configuration files to human-readable YAML format. Perfect for DevOps.",
+    seoArticle: `<h2>JSON to YAML Converter - Configuration Made Readable</h2>
+<p>Transform JSON configuration files to YAML format for improved readability and easier editing. YAML's clean syntax makes it the preferred choice for configuration files in modern DevOps workflows.</p>
+
+<h2>Human-Friendly Output</h2>
+<p>YAML's indentation-based structure is easy to read. No curly braces or quotation marks cluttering the view. Comments can be added after conversion. Perfect for configuration management.</p>
+
+<h2>Accurate Conversion</h2>
+<p>All JSON data types properly converted. Arrays become YAML lists. Objects become indented mappings. Strings, numbers, and booleans preserved correctly.</p>
+
+<h2>DevOps Essential</h2>
+<p>Convert Docker Compose files. Transform Kubernetes configurations. Prepare Ansible playbooks. Update CI/CD pipeline definitions.</p>
+
+<h2>Quick and Easy</h2>
+<p>Paste or upload your JSON file. Instant conversion to YAML. Copy or download the result. No software installation needed.</p>`,
+  },
+  {
+    id: "yaml-to-json",
+    name: "YAML to JSON",
+    description: "Convert YAML configuration files to JSON format",
+    icon: "Braces",
+    type: "yaml-to-json",
+    color: "bg-amber-600",
+    emoji: "🔧",
+    metaTitle: "YAML to JSON Converter Online Free - Transform Config Files | PDF Tools",
+    metaDescription: "Convert YAML files to JSON format online for free. Transform configuration files to JSON for API compatibility and programming.",
+    seoArticle: `<h2>YAML to JSON Converter - API Ready Format</h2>
+<p>Convert YAML configuration files to JSON format for use with APIs and programming languages. JSON is universally supported by all major programming languages and web frameworks.</p>
+
+<h2>Perfect JSON Output</h2>
+<p>Valid JSON syntax guaranteed. Proper escaping of special characters. Compact or pretty-printed options. Ready for any JSON parser.</p>
+
+<h2>Complete Data Preservation</h2>
+<p>All YAML data types converted accurately. Lists become JSON arrays. Mappings become JSON objects. Multi-line strings handled properly.</p>
+
+<h2>Developer Workflow</h2>
+<p>Prepare YAML configs for API consumption. Convert for JavaScript application use. Generate JSON from DevOps configurations. Enable programmatic configuration access.</p>
+
+<h2>Fast Processing</h2>
+<p>Upload your YAML file instantly. Automatic parsing and conversion. Download JSON immediately. Works with any valid YAML input.</p>`,
+  },
+  {
+    id: "yaml-to-csv",
+    name: "YAML to CSV",
+    description: "Convert YAML data to CSV spreadsheet format",
+    icon: "Table",
+    type: "yaml-to-csv",
+    color: "bg-rose-600",
+    emoji: "📋",
+    metaTitle: "YAML to CSV Converter Online Free - Transform Data | PDF Tools",
+    metaDescription: "Convert YAML files to CSV format online for free. Transform YAML data lists to spreadsheet format for analysis and reporting.",
+    seoArticle: `<h2>YAML to CSV Converter - Spreadsheet Ready</h2>
+<p>Convert YAML data files to CSV format for use in spreadsheets and data analysis tools. Perfect for transforming configuration data or YAML-based datasets into tabular format.</p>
+
+<h2>Smart Data Extraction</h2>
+<p>Identifies list structures for row generation. Maps YAML keys to CSV column headers. Handles nested objects by flattening. Preserves data types in output.</p>
+
+<h2>Spreadsheet Compatible</h2>
+<p>Standard CSV format works everywhere. Opens directly in Excel and Google Sheets. Compatible with database import tools. Ready for data analysis applications.</p>
+
+<h2>Data Analysis Ready</h2>
+<p>Transform YAML reports to spreadsheets. Convert inventory data for analysis. Process configuration exports. Enable bulk data editing.</p>
+
+<h2>Simple Process</h2>
+<p>Upload your YAML data file. Automatic structure detection. Instant CSV generation. Download and use immediately.</p>`,
+  },
+  {
+    id: "csv-to-yaml",
+    name: "CSV to YAML",
+    description: "Convert CSV spreadsheet data to YAML format",
+    icon: "FileText",
+    type: "csv-to-yaml",
+    color: "bg-lime-600",
+    emoji: "📝",
+    metaTitle: "CSV to YAML Converter Online Free - Transform Spreadsheets | PDF Tools",
+    metaDescription: "Convert CSV files to YAML format online for free. Transform spreadsheet data to YAML configuration format. Easy data transformation.",
+    seoArticle: `<h2>CSV to YAML Converter - Configuration Ready</h2>
+<p>Transform your CSV spreadsheet data into YAML format for configuration files and data management. Create structured YAML documents from tabular data with ease.</p>
+
+<h2>Intelligent Conversion</h2>
+<p>CSV headers become YAML keys. Each row becomes a list item. Data types detected automatically. Clean, readable YAML output.</p>
+
+<h2>Configuration Generation</h2>
+<p>Create configuration files from spreadsheet data. Generate inventory lists in YAML format. Build data fixtures for testing. Prepare content for static site generators.</p>
+
+<h2>Clean Output Format</h2>
+<p>Properly indented YAML structure. Correct quoting of string values. Array formatting for multiple records. Ready for immediate use.</p>
+
+<h2>Efficient Workflow</h2>
+<p>Upload your CSV file instantly. Automatic header detection. Quick conversion process. Download YAML immediately.</p>`,
+  }
+];
+
+// Add new converter tools to the main array
+pdfTools.push(...newConverterTools);

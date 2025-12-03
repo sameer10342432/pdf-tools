@@ -358,6 +358,24 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     if (tool.type === "csv-to-excel") {
       return ".csv,text/csv,application/csv";
     }
+    if (tool.type === "file-converter" || tool.type === "document-converter") {
+      return ".epub,.xml,.json,.yaml,.yml,.csv,.txt,.html,.htm,application/epub+zip,application/xml,application/json,text/yaml,text/csv,text/plain,text/html,*/*";
+    }
+    if (tool.type === "epub-to-txt") {
+      return ".epub,application/epub+zip";
+    }
+    if (tool.type === "xml-to-csv" || tool.type === "xml-to-json") {
+      return ".xml,application/xml,text/xml";
+    }
+    if (tool.type === "json-to-xml" || tool.type === "json-to-yaml") {
+      return ".json,application/json";
+    }
+    if (tool.type === "yaml-to-json" || tool.type === "yaml-to-csv") {
+      return ".yaml,.yml,text/yaml,application/x-yaml";
+    }
+    if (tool.type === "csv-to-yaml") {
+      return ".csv,text/csv,application/csv";
+    }
     return ".pdf,application/pdf";
   };
 

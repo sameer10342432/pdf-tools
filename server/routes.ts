@@ -25226,6 +25226,702 @@ ${pages}    </office:presentation>
             break;
           }
 
+          case "file-converter": {
+            if (files.length === 0) {
+              throw new Error("Please upload a file to convert");
+            }
+            
+            const file = files[0];
+            const ext = path.extname(file.originalname).toLowerCase();
+            const targetFormat = options.targetFormat || "txt";
+            
+            let convertedContent = "";
+            let outputExt = targetFormat;
+            
+            // Handle binary formats (EPUB) specially
+            if (ext === ".epub") {
+              const epubZip = new AdmZip(file.path);
+              const entries = epubZip.getEntries();
+              let textContent = '';
+              
+              for (const entry of entries) {
+                if (entry.entryName.match(/\.(xhtml|html|htm)$/i)) {
+                  const htmlContent = entry.getData().toString('utf-8');
+                  const textOnly = htmlContent
+                    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+                    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+                    .replace(/<br\s*\/?>/gi, '\n')
+                    .replace(/<\/p>/gi, '\n\n')
+                    .replace(/<\/div>/gi, '\n')
+                    .replace(/<[^>]+>/g, '')
+                    .replace(/&nbsp;/g, ' ')
+                    .replace(/&amp;/g, '&')
+                    .replace(/&lt;/g, '<')
+                    .replace(/&gt;/g, '>')
+                    .trim();
+                  textContent += textOnly + '\n\n';
+                }
+              }
+              
+              if (targetFormat === "txt") {
+                convertedContent = textContent || 'No text content found';
+                outputExt = "txt";
+                contentType = "text/plain";
+              } else if (targetFormat === "json") {
+                convertedContent = JSON.stringify({ content: textContent }, null, 2);
+                outputExt = "json";
+                contentType = "application/json";
+              } else {
+                convertedContent = textContent || 'No text content found';
+                outputExt = "txt";
+                contentType = "text/plain";
+              }
+            } else {
+              // For text-based formats, read as UTF-8
+              const fileContent = fs.readFileSync(file.path, 'utf-8');
+              
+              switch (targetFormat) {
+                case "txt":
+                  convertedContent = fileContent
+                    .replace(/<[^>]+>/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                  outputExt = "txt";
+                  contentType = "text/plain";
+                  break;
+                case "json":
+                  if (ext === ".xml") {
+                    const lines = fileContent.split(/\r?\n/);
+                    const jsonObj: any = {};
+                    for (const line of lines) {
+                      const tagMatch = line.match(/<(\w+)>([^<]*)<\/\1>/);
+                      if (tagMatch) {
+                        jsonObj[tagMatch[1]] = tagMatch[2];
+                      }
+                    }
+                    convertedContent = JSON.stringify(jsonObj, null, 2);
+                  } else if (ext === ".csv") {
+                    const lines = fileContent.split(/\r?\n/).filter(l => l.trim());
+                    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+                    const data = [];
+                    for (let i = 1; i < lines.length; i++) {
+                      const values = lines[i].split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+                      const obj: any = {};
+                      headers.forEach((h, idx) => obj[h] = values[idx] || '');
+                      data.push(obj);
+                    }
+                    convertedContent = JSON.stringify(data, null, 2);
+                  } else {
+                    convertedContent = JSON.stringify({ content: fileContent }, null, 2);
+                  }
+                  outputExt = "json";
+                  contentType = "application/json";
+                  break;
+                case "csv":
+                  if (ext === ".json") {
+                    let data = JSON.parse(fileContent);
+                    if (!Array.isArray(data)) data = [data];
+                    const worksheet = XLSX.utils.json_to_sheet(data);
+                    convertedContent = XLSX.utils.sheet_to_csv(worksheet);
+                  } else {
+                    convertedContent = fileContent;
+                  }
+                  outputExt = "csv";
+                  contentType = "text/csv";
+                  break;
+                default:
+                  convertedContent = fileContent;
+                  contentType = "text/plain";
+              }
+            }
+            
+            result = Buffer.from(convertedContent, 'utf-8');
+            filename = file.originalname?.replace(/\.[^.]+$/, `.${outputExt}`) || `converted.${outputExt}`;
+            break;
+          }
+
+          case "document-converter": {
+            if (files.length === 0) {
+              throw new Error("Please upload a document to convert");
+            }
+            
+            const docFile = files[0];
+            const docExt = path.extname(docFile.originalname).toLowerCase();
+            const docTargetFormat = options.targetFormat || "txt";
+            
+            let docConvertedContent = "";
+            let docOutputExt = docTargetFormat;
+            
+            // Handle binary formats (EPUB) specially
+            if (docExt === ".epub") {
+              const epubZip = new AdmZip(docFile.path);
+              const entries = epubZip.getEntries();
+              let textContent = '';
+              
+              for (const entry of entries) {
+                if (entry.entryName.match(/\.(xhtml|html|htm)$/i)) {
+                  const htmlContent = entry.getData().toString('utf-8');
+                  const textOnly = htmlContent
+                    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+                    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+                    .replace(/<br\s*\/?>/gi, '\n')
+                    .replace(/<\/p>/gi, '\n\n')
+                    .replace(/<[^>]+>/g, '')
+                    .replace(/&nbsp;/g, ' ')
+                    .replace(/&amp;/g, '&')
+                    .trim();
+                  textContent += textOnly + '\n\n';
+                }
+              }
+              
+              if (docTargetFormat === "txt") {
+                docConvertedContent = textContent || 'No text content found';
+                docOutputExt = "txt";
+                contentType = "text/plain";
+              } else if (docTargetFormat === "json") {
+                docConvertedContent = JSON.stringify({ content: textContent }, null, 2);
+                docOutputExt = "json";
+                contentType = "application/json";
+              } else {
+                docConvertedContent = textContent || 'No text content found';
+                docOutputExt = "txt";
+                contentType = "text/plain";
+              }
+            } else {
+              // For text-based formats, read as UTF-8
+              const docContent = fs.readFileSync(docFile.path, 'utf-8');
+              
+              if (docTargetFormat === "txt") {
+                docConvertedContent = docContent
+                  .replace(/<[^>]+>/g, ' ')
+                  .replace(/\{[^}]*\}/g, '')
+                  .replace(/\s+/g, ' ')
+                  .trim();
+                docOutputExt = "txt";
+                contentType = "text/plain";
+              } else if (docTargetFormat === "json") {
+                docConvertedContent = JSON.stringify({ content: docContent }, null, 2);
+                docOutputExt = "json";
+                contentType = "application/json";
+              } else {
+                docConvertedContent = docContent;
+                contentType = "text/plain";
+              }
+            }
+            
+            result = Buffer.from(docConvertedContent, 'utf-8');
+            filename = docFile.originalname?.replace(/\.[^.]+$/, `.${docOutputExt}`) || `document.${docOutputExt}`;
+            break;
+          }
+
+          case "epub-to-txt": {
+            if (files.length === 0) {
+              throw new Error("Please upload an EPUB file");
+            }
+            const epubTxtFile = files[0];
+            const epubTxtZip = new AdmZip(epubTxtFile.path);
+            const epubTxtEntries = epubTxtZip.getEntries();
+            
+            let extractedText = '';
+            
+            for (const entry of epubTxtEntries) {
+              if (entry.entryName.match(/\.(xhtml|html|htm)$/i)) {
+                const htmlContent = entry.getData().toString('utf-8');
+                const textOnly = htmlContent
+                  .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+                  .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+                  .replace(/<br\s*\/?>/gi, '\n')
+                  .replace(/<\/p>/gi, '\n\n')
+                  .replace(/<\/div>/gi, '\n')
+                  .replace(/<\/h[1-6]>/gi, '\n\n')
+                  .replace(/<[^>]+>/g, '')
+                  .replace(/&nbsp;/g, ' ')
+                  .replace(/&amp;/g, '&')
+                  .replace(/&lt;/g, '<')
+                  .replace(/&gt;/g, '>')
+                  .replace(/&quot;/g, '"')
+                  .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code)))
+                  .replace(/\n{3,}/g, '\n\n')
+                  .trim();
+                extractedText += textOnly + '\n\n';
+              }
+            }
+            
+            result = Buffer.from(extractedText || 'No text content found in EPUB', 'utf-8');
+            filename = epubTxtFile.originalname?.replace(/\.epub$/i, '.txt') || 'ebook.txt';
+            contentType = "text/plain";
+            break;
+          }
+
+          case "xml-to-csv": {
+            if (files.length === 0) {
+              throw new Error("Please upload an XML file");
+            }
+            
+            const xmlFile = files[0];
+            const xmlContent = fs.readFileSync(xmlFile.path, 'utf-8');
+            
+            const itemMatches = xmlContent.match(/<(\w+)>[\s\S]*?<\/\1>/g);
+            const records: any[] = [];
+            
+            if (itemMatches) {
+              for (const itemXml of itemMatches) {
+                const record: any = {};
+                const fieldMatches = itemXml.match(/<(\w+)>([^<]*)<\/\1>/g);
+                if (fieldMatches) {
+                  for (const field of fieldMatches) {
+                    const match = field.match(/<(\w+)>([^<]*)<\/\1>/);
+                    if (match) {
+                      record[match[1]] = match[2].trim();
+                    }
+                  }
+                  if (Object.keys(record).length > 0) {
+                    records.push(record);
+                  }
+                }
+              }
+            }
+            
+            if (records.length === 0) {
+              throw new Error("No convertible data found in XML file");
+            }
+            
+            const worksheet = XLSX.utils.json_to_sheet(records);
+            const csvContent = XLSX.utils.sheet_to_csv(worksheet);
+            
+            result = Buffer.from(csvContent, 'utf-8');
+            filename = xmlFile.originalname?.replace(/\.xml$/i, '.csv') || 'data.csv';
+            contentType = "text/csv";
+            break;
+          }
+
+          case "xml-to-json": {
+            if (files.length === 0) {
+              throw new Error("Please upload an XML file");
+            }
+            
+            const xmlJsonFile = files[0];
+            const xmlJsonContent = fs.readFileSync(xmlJsonFile.path, 'utf-8');
+            
+            function parseXmlToJson(xml: string): any {
+              const result: any = {};
+              
+              const tagPattern = /<(\w+)([^>]*)>([\s\S]*?)<\/\1>/g;
+              let match;
+              
+              while ((match = tagPattern.exec(xml)) !== null) {
+                const tagName = match[1];
+                const attributes = match[2];
+                const content = match[3].trim();
+                
+                let value: any;
+                
+                if (content.includes('<')) {
+                  value = parseXmlToJson(content);
+                } else {
+                  value = content;
+                }
+                
+                if (attributes.trim()) {
+                  const attrMatches = attributes.match(/(\w+)="([^"]*)"/g);
+                  if (attrMatches) {
+                    value = { _content: value };
+                    for (const attr of attrMatches) {
+                      const attrMatch = attr.match(/(\w+)="([^"]*)"/);
+                      if (attrMatch) {
+                        value['@' + attrMatch[1]] = attrMatch[2];
+                      }
+                    }
+                  }
+                }
+                
+                if (result[tagName]) {
+                  if (!Array.isArray(result[tagName])) {
+                    result[tagName] = [result[tagName]];
+                  }
+                  result[tagName].push(value);
+                } else {
+                  result[tagName] = value;
+                }
+              }
+              
+              return result;
+            }
+            
+            const jsonResult = parseXmlToJson(xmlJsonContent);
+            result = Buffer.from(JSON.stringify(jsonResult, null, 2), 'utf-8');
+            filename = xmlJsonFile.originalname?.replace(/\.xml$/i, '.json') || 'data.json';
+            contentType = "application/json";
+            break;
+          }
+
+          case "json-to-xml": {
+            if (files.length === 0) {
+              throw new Error("Please upload a JSON file");
+            }
+            
+            const jsonXmlFile = files[0];
+            const jsonXmlContent = fs.readFileSync(jsonXmlFile.path, 'utf-8');
+            let jsonData;
+            
+            try {
+              jsonData = JSON.parse(jsonXmlContent);
+            } catch (e) {
+              throw new Error("Invalid JSON format");
+            }
+            
+            function jsonToXml(obj: any, rootName: string = 'root', indent: string = ''): string {
+              let xml = '';
+              
+              if (Array.isArray(obj)) {
+                for (const item of obj) {
+                  xml += `${indent}<item>\n${jsonToXml(item, 'item', indent + '  ')}${indent}</item>\n`;
+                }
+              } else if (typeof obj === 'object' && obj !== null) {
+                for (const [key, value] of Object.entries(obj)) {
+                  const safeKey = key.replace(/[^a-zA-Z0-9_-]/g, '_');
+                  if (Array.isArray(value)) {
+                    for (const item of value) {
+                      if (typeof item === 'object' && item !== null) {
+                        xml += `${indent}<${safeKey}>\n${jsonToXml(item, safeKey, indent + '  ')}${indent}</${safeKey}>\n`;
+                      } else {
+                        xml += `${indent}<${safeKey}>${String(item).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</${safeKey}>\n`;
+                      }
+                    }
+                  } else if (typeof value === 'object' && value !== null) {
+                    xml += `${indent}<${safeKey}>\n${jsonToXml(value, safeKey, indent + '  ')}${indent}</${safeKey}>\n`;
+                  } else {
+                    xml += `${indent}<${safeKey}>${String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</${safeKey}>\n`;
+                  }
+                }
+              } else {
+                xml = String(obj).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              }
+              
+              return xml;
+            }
+            
+            const xmlOutput = `<?xml version="1.0" encoding="UTF-8"?>\n<root>\n${jsonToXml(jsonData, 'root', '  ')}</root>`;
+            result = Buffer.from(xmlOutput, 'utf-8');
+            filename = jsonXmlFile.originalname?.replace(/\.json$/i, '.xml') || 'data.xml';
+            contentType = "application/xml";
+            break;
+          }
+
+          case "json-to-yaml": {
+            if (files.length === 0) {
+              throw new Error("Please upload a JSON file");
+            }
+            
+            const jsonYamlFile = files[0];
+            const jsonYamlContent = fs.readFileSync(jsonYamlFile.path, 'utf-8');
+            let jsonYamlData;
+            
+            try {
+              jsonYamlData = JSON.parse(jsonYamlContent);
+            } catch (e) {
+              throw new Error("Invalid JSON format");
+            }
+            
+            function jsonToYaml(obj: any, indent: number = 0): string {
+              const spaces = '  '.repeat(indent);
+              let yaml = '';
+              
+              if (Array.isArray(obj)) {
+                for (const item of obj) {
+                  if (typeof item === 'object' && item !== null) {
+                    yaml += `${spaces}- \n${jsonToYaml(item, indent + 1)}`;
+                  } else if (typeof item === 'string') {
+                    yaml += `${spaces}- "${item.replace(/"/g, '\\"')}"\n`;
+                  } else {
+                    yaml += `${spaces}- ${item}\n`;
+                  }
+                }
+              } else if (typeof obj === 'object' && obj !== null) {
+                for (const [key, value] of Object.entries(obj)) {
+                  if (Array.isArray(value)) {
+                    yaml += `${spaces}${key}:\n${jsonToYaml(value, indent + 1)}`;
+                  } else if (typeof value === 'object' && value !== null) {
+                    yaml += `${spaces}${key}:\n${jsonToYaml(value, indent + 1)}`;
+                  } else if (typeof value === 'string') {
+                    if (value.includes('\n') || value.includes(':') || value.includes('#')) {
+                      yaml += `${spaces}${key}: |\n${value.split('\n').map(l => spaces + '  ' + l).join('\n')}\n`;
+                    } else {
+                      yaml += `${spaces}${key}: "${value.replace(/"/g, '\\"')}"\n`;
+                    }
+                  } else if (typeof value === 'boolean') {
+                    yaml += `${spaces}${key}: ${value}\n`;
+                  } else if (value === null) {
+                    yaml += `${spaces}${key}: null\n`;
+                  } else {
+                    yaml += `${spaces}${key}: ${value}\n`;
+                  }
+                }
+              }
+              
+              return yaml;
+            }
+            
+            const yamlOutput = jsonToYaml(jsonYamlData);
+            result = Buffer.from(yamlOutput, 'utf-8');
+            filename = jsonYamlFile.originalname?.replace(/\.json$/i, '.yaml') || 'data.yaml';
+            contentType = "text/yaml";
+            break;
+          }
+
+          case "yaml-to-json": {
+            if (files.length === 0) {
+              throw new Error("Please upload a YAML file");
+            }
+            
+            const yamlJsonFile = files[0];
+            const yamlContent = fs.readFileSync(yamlJsonFile.path, 'utf-8');
+            
+            function parseYaml(yaml: string): any {
+              const lines = yaml.split('\n');
+              const result: any = {};
+              const stack: { obj: any; indent: number }[] = [{ obj: result, indent: -2 }];
+              let currentArray: any[] | null = null;
+              let currentKey = '';
+              
+              for (const line of lines) {
+                const trimmed = line.replace(/\s+$/, '');
+                if (!trimmed || trimmed.startsWith('#')) continue;
+                
+                const indent = line.search(/\S/);
+                const content = trimmed.trim();
+                
+                if (content.startsWith('- ')) {
+                  const value = content.substring(2).trim();
+                  const parent = stack[stack.length - 1].obj;
+                  
+                  if (!Array.isArray(parent[currentKey])) {
+                    parent[currentKey] = [];
+                  }
+                  
+                  if (value.includes(':')) {
+                    const colonIdx = value.indexOf(':');
+                    const k = value.substring(0, colonIdx).trim();
+                    const v = value.substring(colonIdx + 1).trim();
+                    const obj: any = {};
+                    obj[k] = parseYamlValue(v);
+                    parent[currentKey].push(obj);
+                  } else if (value) {
+                    parent[currentKey].push(parseYamlValue(value));
+                  }
+                } else if (content.includes(':')) {
+                  const colonIdx = content.indexOf(':');
+                  const key = content.substring(0, colonIdx).trim();
+                  const value = content.substring(colonIdx + 1).trim();
+                  
+                  while (stack.length > 1 && stack[stack.length - 1].indent >= indent) {
+                    stack.pop();
+                  }
+                  
+                  const current = stack[stack.length - 1].obj;
+                  currentKey = key;
+                  
+                  if (value) {
+                    current[key] = parseYamlValue(value);
+                  } else {
+                    current[key] = {};
+                    stack.push({ obj: current[key], indent });
+                  }
+                }
+              }
+              
+              return result;
+            }
+            
+            function parseYamlValue(value: string): any {
+              if (value === 'true') return true;
+              if (value === 'false') return false;
+              if (value === 'null' || value === '~') return null;
+              if (/^-?\d+$/.test(value)) return parseInt(value);
+              if (/^-?\d*\.\d+$/.test(value)) return parseFloat(value);
+              if ((value.startsWith('"') && value.endsWith('"')) || 
+                  (value.startsWith("'") && value.endsWith("'"))) {
+                return value.slice(1, -1);
+              }
+              return value;
+            }
+            
+            const yamlJsonResult = parseYaml(yamlContent);
+            result = Buffer.from(JSON.stringify(yamlJsonResult, null, 2), 'utf-8');
+            filename = yamlJsonFile.originalname?.replace(/\.(yaml|yml)$/i, '.json') || 'data.json';
+            contentType = "application/json";
+            break;
+          }
+
+          case "yaml-to-csv": {
+            if (files.length === 0) {
+              throw new Error("Please upload a YAML file");
+            }
+            
+            const yamlCsvFile = files[0];
+            const yamlCsvContent = fs.readFileSync(yamlCsvFile.path, 'utf-8');
+            
+            function parseYamlForCsv(yaml: string): any {
+              const lines = yaml.split('\n');
+              const result: any = {};
+              const stack: { obj: any; indent: number }[] = [{ obj: result, indent: -2 }];
+              let currentKey = '';
+              
+              for (const line of lines) {
+                const trimmed = line.replace(/\s+$/, '');
+                if (!trimmed || trimmed.startsWith('#')) continue;
+                
+                const indent = line.search(/\S/);
+                const content = trimmed.trim();
+                
+                if (content.startsWith('- ')) {
+                  const value = content.substring(2).trim();
+                  const parent = stack[stack.length - 1].obj;
+                  
+                  if (!Array.isArray(parent[currentKey])) {
+                    parent[currentKey] = [];
+                  }
+                  
+                  if (value.includes(':')) {
+                    const colonIdx = value.indexOf(':');
+                    const k = value.substring(0, colonIdx).trim();
+                    const v = value.substring(colonIdx + 1).trim();
+                    const obj: any = {};
+                    obj[k] = v.replace(/^["']|["']$/g, '');
+                    parent[currentKey].push(obj);
+                  } else if (value) {
+                    parent[currentKey].push(value.replace(/^["']|["']$/g, ''));
+                  }
+                } else if (content.includes(':')) {
+                  const colonIdx = content.indexOf(':');
+                  const key = content.substring(0, colonIdx).trim();
+                  const value = content.substring(colonIdx + 1).trim();
+                  
+                  while (stack.length > 1 && stack[stack.length - 1].indent >= indent) {
+                    stack.pop();
+                  }
+                  
+                  const current = stack[stack.length - 1].obj;
+                  currentKey = key;
+                  
+                  if (value) {
+                    current[key] = value.replace(/^["']|["']$/g, '');
+                  } else {
+                    current[key] = {};
+                    stack.push({ obj: current[key], indent });
+                  }
+                }
+              }
+              
+              return result;
+            }
+            
+            const yamlData = parseYamlForCsv(yamlCsvContent);
+            
+            let dataArray: any[] = [];
+            if (Array.isArray(yamlData)) {
+              dataArray = yamlData;
+            } else {
+              for (const key of Object.keys(yamlData)) {
+                if (Array.isArray(yamlData[key])) {
+                  dataArray = yamlData[key];
+                  break;
+                }
+              }
+              if (dataArray.length === 0) {
+                dataArray = [yamlData];
+              }
+            }
+            
+            const worksheet = XLSX.utils.json_to_sheet(dataArray);
+            const yamlCsvOutput = XLSX.utils.sheet_to_csv(worksheet);
+            
+            result = Buffer.from(yamlCsvOutput, 'utf-8');
+            filename = yamlCsvFile.originalname?.replace(/\.(yaml|yml)$/i, '.csv') || 'data.csv';
+            contentType = "text/csv";
+            break;
+          }
+
+          case "csv-to-yaml": {
+            if (files.length === 0) {
+              throw new Error("Please upload a CSV file");
+            }
+            
+            const csvYamlFile = files[0];
+            const csvYamlContent = fs.readFileSync(csvYamlFile.path, 'utf-8');
+            
+            const csvLines = csvYamlContent.split(/\r?\n/).filter(line => line.trim());
+            
+            if (csvLines.length === 0) {
+              throw new Error("CSV file is empty");
+            }
+            
+            const headers = csvLines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+            const records: any[] = [];
+            
+            for (let i = 1; i < csvLines.length; i++) {
+              const values: string[] = [];
+              let current = '';
+              let inQuotes = false;
+              
+              for (const char of csvLines[i]) {
+                if (char === '"') {
+                  inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                  values.push(current.trim().replace(/^"|"$/g, ''));
+                  current = '';
+                } else {
+                  current += char;
+                }
+              }
+              values.push(current.trim().replace(/^"|"$/g, ''));
+              
+              const record: any = {};
+              headers.forEach((header, idx) => {
+                const val = values[idx] || '';
+                if (/^-?\d+$/.test(val)) {
+                  record[header] = parseInt(val);
+                } else if (/^-?\d*\.\d+$/.test(val)) {
+                  record[header] = parseFloat(val);
+                } else if (val.toLowerCase() === 'true') {
+                  record[header] = true;
+                } else if (val.toLowerCase() === 'false') {
+                  record[header] = false;
+                } else {
+                  record[header] = val;
+                }
+              });
+              
+              records.push(record);
+            }
+            
+            function recordsToYaml(data: any[]): string {
+              let yaml = 'data:\n';
+              for (const record of data) {
+                yaml += '  -\n';
+                for (const [key, value] of Object.entries(record)) {
+                  if (typeof value === 'string') {
+                    if (value.includes(':') || value.includes('#') || value.includes('\n')) {
+                      yaml += `    ${key}: "${value.replace(/"/g, '\\"')}"\n`;
+                    } else {
+                      yaml += `    ${key}: ${value}\n`;
+                    }
+                  } else {
+                    yaml += `    ${key}: ${value}\n`;
+                  }
+                }
+              }
+              return yaml;
+            }
+            
+            const yamlOutput = recordsToYaml(records);
+            result = Buffer.from(yamlOutput, 'utf-8');
+            filename = csvYamlFile.originalname?.replace(/\.csv$/i, '.yaml') || 'data.yaml';
+            contentType = "text/yaml";
+            break;
+          }
+
+
                     default:
             throw new Error(`Unknown tool type: ${toolType}`);
         }
