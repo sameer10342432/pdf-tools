@@ -11158,6 +11158,493 @@ export function ToolOptionsComponent({
 
 
 
+        case "reverse-text":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Reverse</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to reverse..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-reverse-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="reverseMode">Reverse Mode</Label>
+            <select
+              id="reverseMode"
+              className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              value={options.reverseMode || "characters"}
+              onChange={(e) => updateOption("reverseMode", e.target.value)}
+              data-testid="select-reverse-mode"
+            >
+              <option value="characters">Reverse Characters</option>
+              <option value="words">Reverse Words</option>
+              <option value="lines">Reverse Lines</option>
+            </select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Reverse text by characters, words, or lines.
+          </p>
+        </div>
+      );
+
+    case "random-number-generator":
+      return (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="minValue">Minimum Value</Label>
+              <Input
+                id="minValue"
+                type="number"
+                placeholder="1"
+                value={options.minValue || "1"}
+                onChange={(e) => updateOption("minValue", e.target.value)}
+                data-testid="input-min-value"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="maxValue">Maximum Value</Label>
+              <Input
+                id="maxValue"
+                type="number"
+                placeholder="100"
+                value={options.maxValue || "100"}
+                onChange={(e) => updateOption("maxValue", e.target.value)}
+                data-testid="input-max-value"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="count">How Many Numbers</Label>
+              <Input
+                id="count"
+                type="number"
+                placeholder="10"
+                value={options.count || "10"}
+                onChange={(e) => updateOption("count", e.target.value)}
+                data-testid="input-count"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="separator">Separator</Label>
+              <select
+                id="separator"
+                className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                value={options.separator || "newline"}
+                onChange={(e) => updateOption("separator", e.target.value)}
+                data-testid="select-separator"
+              >
+                <option value="newline">New Line</option>
+                <option value="comma">Comma</option>
+                <option value="space">Space</option>
+              </select>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="unique"
+              checked={options.unique === "true"}
+              onChange={(e) => updateOption("unique", e.target.checked ? "true" : "false")}
+              className="h-4 w-4 rounded border-input"
+              data-testid="checkbox-unique"
+            />
+            <Label htmlFor="unique">Generate unique numbers only</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Generate random numbers within your specified range.
+          </p>
+        </div>
+      );
+
+    case "password-generator":
+      return (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="length">Password Length</Label>
+              <Input
+                id="length"
+                type="number"
+                placeholder="16"
+                min="4"
+                max="128"
+                value={options.length || "16"}
+                onChange={(e) => updateOption("length", e.target.value)}
+                data-testid="input-password-length"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="count">How Many Passwords</Label>
+              <Input
+                id="count"
+                type="number"
+                placeholder="1"
+                min="1"
+                max="100"
+                value={options.count || "1"}
+                onChange={(e) => updateOption("count", e.target.value)}
+                data-testid="input-password-count"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Include Characters</Label>
+            <div className="grid grid-cols-2 gap-2">
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={options.lowercase !== "false"}
+                  onChange={(e) => updateOption("lowercase", e.target.checked ? "true" : "false")}
+                  className="h-4 w-4 rounded border-input"
+                  data-testid="checkbox-lowercase"
+                />
+                <span className="text-sm">Lowercase (a-z)</span>
+              </label>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={options.uppercase !== "false"}
+                  onChange={(e) => updateOption("uppercase", e.target.checked ? "true" : "false")}
+                  className="h-4 w-4 rounded border-input"
+                  data-testid="checkbox-uppercase"
+                />
+                <span className="text-sm">Uppercase (A-Z)</span>
+              </label>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={options.numbers !== "false"}
+                  onChange={(e) => updateOption("numbers", e.target.checked ? "true" : "false")}
+                  className="h-4 w-4 rounded border-input"
+                  data-testid="checkbox-numbers"
+                />
+                <span className="text-sm">Numbers (0-9)</span>
+              </label>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={options.symbols !== "false"}
+                  onChange={(e) => updateOption("symbols", e.target.checked ? "true" : "false")}
+                  className="h-4 w-4 rounded border-input"
+                  data-testid="checkbox-symbols"
+                />
+                <span className="text-sm">Symbols (!@#$...)</span>
+              </label>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="excludeAmbiguous"
+              checked={options.excludeAmbiguous === "true"}
+              onChange={(e) => updateOption("excludeAmbiguous", e.target.checked ? "true" : "false")}
+              className="h-4 w-4 rounded border-input"
+              data-testid="checkbox-exclude-ambiguous"
+            />
+            <Label htmlFor="excludeAmbiguous">Exclude ambiguous characters (l, I, 1, O, 0, o)</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Generate strong, secure passwords with customizable options.
+          </p>
+        </div>
+      );
+
+    case "text-repeater":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Repeat</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[100px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to repeat..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-repeat-input"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="repeatCount">Repeat Count</Label>
+              <Input
+                id="repeatCount"
+                type="number"
+                placeholder="10"
+                min="1"
+                max="10000"
+                value={options.repeatCount || "10"}
+                onChange={(e) => updateOption("repeatCount", e.target.value)}
+                data-testid="input-repeat-count"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="separator">Separator</Label>
+              <select
+                id="separator"
+                className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                value={options.separator || "newline"}
+                onChange={(e) => updateOption("separator", e.target.value)}
+                data-testid="select-repeat-separator"
+              >
+                <option value="newline">New Line</option>
+                <option value="space">Space</option>
+                <option value="none">None</option>
+              </select>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Repeat any text multiple times with your chosen separator.
+          </p>
+        </div>
+      );
+
+    case "find-replace-text":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Search</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[120px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter or paste your text here..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-find-replace-input"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="findText">Find</Label>
+              <Input
+                id="findText"
+                placeholder="Text to find..."
+                value={options.findText || ""}
+                onChange={(e) => updateOption("findText", e.target.value)}
+                data-testid="input-find-text"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="replaceWith">Replace With</Label>
+              <Input
+                id="replaceWith"
+                placeholder="Replacement text..."
+                value={options.replaceWith || ""}
+                onChange={(e) => updateOption("replaceWith", e.target.value)}
+                data-testid="input-replace-with"
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-4">
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                checked={options.caseSensitive === "true"}
+                onChange={(e) => updateOption("caseSensitive", e.target.checked ? "true" : "false")}
+                className="h-4 w-4 rounded border-input"
+                data-testid="checkbox-case-sensitive"
+              />
+              <span className="text-sm">Case Sensitive</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                checked={options.useRegex === "true"}
+                onChange={(e) => updateOption("useRegex", e.target.checked ? "true" : "false")}
+                className="h-4 w-4 rounded border-input"
+                data-testid="checkbox-use-regex"
+              />
+              <span className="text-sm">Use Regular Expression</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                checked={options.replaceAll !== "false"}
+                onChange={(e) => updateOption("replaceAll", e.target.checked ? "true" : "false")}
+                className="h-4 w-4 rounded border-input"
+                data-testid="checkbox-replace-all"
+              />
+              <span className="text-sm">Replace All Occurrences</span>
+            </label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Find and replace text with advanced options including regex support.
+          </p>
+        </div>
+      );
+
+    case "text-statistics":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Analyze</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter or paste your text here to get detailed statistics..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-stats-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Get comprehensive text statistics including word count, character count, reading time, and more.
+          </p>
+        </div>
+      );
+
+    case "character-counter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Count</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter or paste your text here to count characters..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-char-count-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Count characters, words, and lines in your text instantly.
+          </p>
+        </div>
+      );
+
+    case "line-counter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Count Lines</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter or paste your text here to count lines..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-line-count-input"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="showLineNumbers"
+              checked={options.showLineNumbers === "true"}
+              onChange={(e) => updateOption("showLineNumbers", e.target.checked ? "true" : "false")}
+              className="h-4 w-4 rounded border-input"
+              data-testid="checkbox-show-line-numbers"
+            />
+            <Label htmlFor="showLineNumbers">Include numbered text in output</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Count lines, detect empty lines, and optionally add line numbers to your text.
+          </p>
+        </div>
+      );
+
+    case "whitespace-remover":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Clean</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter or paste text with extra whitespace..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-whitespace-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="removeMode">Removal Mode</Label>
+            <select
+              id="removeMode"
+              className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              value={options.removeMode || "extra"}
+              onChange={(e) => updateOption("removeMode", e.target.value)}
+              data-testid="select-remove-mode"
+            >
+              <option value="extra">Remove Extra Spaces (Smart)</option>
+              <option value="leading">Remove Leading Spaces</option>
+              <option value="trailing">Remove Trailing Spaces</option>
+              <option value="both">Remove Leading and Trailing</option>
+              <option value="all">Remove All Whitespace</option>
+            </select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Clean up unwanted spaces, tabs, and whitespace from your text.
+          </p>
+        </div>
+      );
+
+    case "slugify-url":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Slugify</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[100px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to convert to URL slug..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-slugify-input"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="separator">Separator</Label>
+              <select
+                id="separator"
+                className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                value={options.separator || "hyphen"}
+                onChange={(e) => updateOption("separator", e.target.value)}
+                data-testid="select-slug-separator"
+              >
+                <option value="hyphen">Hyphen (-)</option>
+                <option value="underscore">Underscore (_)</option>
+              </select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="maxLength">Max Length (0 = unlimited)</Label>
+              <Input
+                id="maxLength"
+                type="number"
+                placeholder="0"
+                min="0"
+                value={options.maxLength || "0"}
+                onChange={(e) => updateOption("maxLength", e.target.value)}
+                data-testid="input-max-length"
+              />
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="lowercase"
+              checked={options.lowercase !== "false"}
+              onChange={(e) => updateOption("lowercase", e.target.checked ? "true" : "false")}
+              className="h-4 w-4 rounded border-input"
+              data-testid="checkbox-slug-lowercase"
+            />
+            <Label htmlFor="lowercase">Convert to lowercase</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert any text into a clean, SEO-friendly URL slug.
+          </p>
+        </div>
+      );
+
+
     case "json-formatter":
       return (
         <div className="space-y-4">

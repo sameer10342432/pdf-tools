@@ -413,7 +413,7 @@ export default function ToolPage() {
     if (tool.type === "md5-hash-generator" || tool.type === "sha256-hash-generator") {
       return !!(options.textInput?.trim());
     }
-    if (tool.type === "base64-encode" || tool.type === "base64-decode" || tool.type === "url-encoder" || tool.type === "url-decode" || tool.type === "text-case-converter" || tool.type === "uppercase-converter" || tool.type === "lowercase-converter" || tool.type === "title-case-converter" || tool.type === "sentence-case-converter" || tool.type === "remove-line-breaks" || tool.type === "add-line-breaks" || tool.type === "text-sorter" || tool.type === "alphabetize-list") {
+    if (tool.type === "base64-encode" || tool.type === "base64-decode" || tool.type === "url-encoder" || tool.type === "url-decode" || tool.type === "text-case-converter" || tool.type === "uppercase-converter" || tool.type === "lowercase-converter" || tool.type === "title-case-converter" || tool.type === "sentence-case-converter" || tool.type === "remove-line-breaks" || tool.type === "add-line-breaks" || tool.type === "text-sorter" || tool.type === "alphabetize-list" || tool.type === "reverse-text" || tool.type === "random-number-generator" || tool.type === "password-generator" || tool.type === "text-repeater" || tool.type === "find-replace-text" || tool.type === "text-statistics" || tool.type === "character-counter" || tool.type === "line-counter" || tool.type === "whitespace-remover" || tool.type === "slugify-url") {
       return !!(options.textInput?.trim());
     }
     if (tool.type === "image-editor" || tool.type === "photo-editor") {
@@ -910,7 +910,7 @@ export default function ToolPage() {
               <div className="space-y-6">
                 {processingState === "idle" && (
                   <>
-                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list"].includes(tool.type) && (
+                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url"].includes(tool.type) && (
                       <FileUpload
                         accept={getAcceptType() as string}
                         multiple={isMultiFileAllowed()}
@@ -920,7 +920,7 @@ export default function ToolPage() {
                       />
                     )}
 
-                    {(files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list"].includes(tool.type)) && (
+                    {(files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url"].includes(tool.type)) && (
                       <ToolOptionsComponent
                         toolType={tool.type}
                         options={options}

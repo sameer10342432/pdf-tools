@@ -2,6 +2,7 @@ import { type PdfTool } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import {
+  Copy,
   Layers,
   Scissors,
   Archive,
@@ -66,6 +67,7 @@ import {
 } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
+  Copy,
   Layers,
   Scissors,
   Archive,

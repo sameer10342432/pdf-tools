@@ -606,6 +606,16 @@ export const pdfToolTypes = [
   "add-line-breaks",
   "text-sorter",
   "alphabetize-list",
+  "reverse-text",
+  "random-number-generator",
+  "password-generator",
+  "text-repeater",
+  "find-replace-text",
+  "text-statistics",
+  "character-counter",
+  "line-counter",
+  "whitespace-remover",
+  "slugify-url",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -17188,3 +17198,259 @@ const textTools: PdfTool[] = [
 ];
 
 pdfTools.push(...textTools);
+
+// New Text Tools (10 tools)
+const newTextUtilityTools: PdfTool[] = [
+  {
+    id: "reverse-text",
+    name: "Reverse Text",
+    description: "Reverse the order of characters in your text",
+    icon: "RotateCw",
+    type: "reverse-text",
+    color: "bg-purple-500",
+    emoji: "🔄",
+    metaTitle: "Reverse Text Online Free - Flip Text Backwards | PDF Tools",
+    metaDescription: "Reverse text online for free. Flip characters, words, or entire sentences backwards instantly. Perfect for creating mirror text and puzzles.",
+    seoArticle: `<h2>Reverse Text Online - Complete Guide</h2>
+<p>Reversing text is a simple yet powerful operation with many practical applications. Our free online text reverser instantly flips your text backwards, character by character. Whether you need mirror text for artistic purposes, data obfuscation, or just fun word puzzles, this tool delivers instant results.</p>
+
+<h2>Multiple Reversal Options</h2>
+<p>Choose how you want to reverse your text. Reverse all characters to create complete mirror text, reverse word order while keeping characters intact, or reverse each word individually. Each option serves different creative and practical needs.</p>
+
+<h2>Perfect for Creative Projects</h2>
+<p>Artists and designers use reversed text for mirror effects, symmetrical designs, and visual puzzles. Writers create cryptic messages and word games. Programmers test string manipulation functions. Our tool handles any use case with precision.</p>
+
+<h2>How to Reverse Text</h2>
+<p>Simply paste or type your text in the input field. Select your preferred reversal method. Click the reverse button and instantly see your transformed text. Copy the result with one click and use it anywhere you need.</p>
+
+<h2>Preserve Formatting Options</h2>
+<p>Choose whether to preserve line breaks, maintain spacing, or strip all formatting during reversal. Our flexible options ensure you get exactly the output format you need for your specific application.</p>`,
+  },
+  {
+    id: "random-number-generator",
+    name: "Random Number Generator",
+    description: "Generate random numbers within a specified range",
+    icon: "Hash",
+    type: "random-number-generator",
+    color: "bg-blue-500",
+    emoji: "🎲",
+    metaTitle: "Random Number Generator Online Free - Generate Random Numbers | PDF Tools",
+    metaDescription: "Generate random numbers online for free. Set min/max range, quantity, and format. Perfect for lotteries, games, and statistical sampling.",
+    seoArticle: `<h2>Random Number Generator - Create Random Numbers Instantly</h2>
+<p>Generate truly random numbers with our free online random number generator. Set your desired range, specify how many numbers you need, and get instant results. Perfect for games, lotteries, statistical sampling, and any application requiring randomization.</p>
+
+<h2>Customizable Range and Quantity</h2>
+<p>Define your minimum and maximum values to generate numbers within any range. Need numbers between 1 and 100? Or perhaps -1000 to 1000? Set your parameters and generate as many random numbers as you need, from one to thousands.</p>
+
+<h2>Multiple Output Formats</h2>
+<p>Get your random numbers in various formats: comma-separated, one per line, space-separated, or as JSON array. Choose the format that best fits your needs, whether for spreadsheets, programming, or simple lists.</p>
+
+<h2>Unique Number Option</h2>
+<p>Enable the unique numbers option to ensure no duplicates in your results. Perfect for lottery drawings, random sampling, and any scenario where each number should appear only once.</p>
+
+<h2>Cryptographically Secure</h2>
+<p>Our random number generator uses cryptographically secure methods to ensure true randomness. Unlike predictable pseudo-random generators, our tool produces genuinely unpredictable results suitable for serious applications.</p>`,
+  },
+  {
+    id: "password-generator",
+    name: "Password Generator",
+    description: "Generate strong, secure random passwords",
+    icon: "Lock",
+    type: "password-generator",
+    color: "bg-green-500",
+    emoji: "🔐",
+    metaTitle: "Password Generator Online Free - Create Strong Passwords | PDF Tools",
+    metaDescription: "Generate strong, secure passwords online for free. Customize length, character types, and complexity. Create unbreakable passwords instantly.",
+    seoArticle: `<h2>Password Generator - Create Unbreakable Passwords</h2>
+<p>Generate strong, secure passwords with our free online password generator. Create complex passwords that are virtually impossible to crack. Customize length, include special characters, numbers, and mixed case letters for maximum security.</p>
+
+<h2>Customizable Password Options</h2>
+<p>Control every aspect of your password. Set the length from 8 to 128 characters. Include or exclude uppercase letters, lowercase letters, numbers, and special symbols. Create passwords that meet any website or application requirements.</p>
+
+<h2>Strength Indicator</h2>
+<p>See real-time password strength assessment as you adjust settings. Our algorithm evaluates entropy, pattern resistance, and cracking difficulty. Understand exactly how secure your password is before using it.</p>
+
+<h2>Generate Multiple Passwords</h2>
+<p>Need several passwords at once? Generate multiple unique passwords simultaneously. Perfect for setting up new accounts, creating backup passwords, or managing multiple services securely.</p>
+
+<h2>Easy to Copy and Use</h2>
+<p>Copy generated passwords with a single click. No data is stored or transmitted - all generation happens locally in your browser. Your passwords remain private and secure from the moment of creation.</p>`,
+  },
+  {
+    id: "text-repeater",
+    name: "Text Repeater",
+    description: "Repeat text multiple times with custom separator",
+    icon: "Copy",
+    type: "text-repeater",
+    color: "bg-orange-500",
+    emoji: "🔁",
+    metaTitle: "Text Repeater Online Free - Repeat Text Multiple Times | PDF Tools",
+    metaDescription: "Repeat text online for free. Duplicate any text multiple times with custom separators. Perfect for creating patterns and bulk content.",
+    seoArticle: `<h2>Text Repeater - Duplicate Text Instantly</h2>
+<p>Repeat any text multiple times with our free online text repeater. Whether you need to duplicate a word 10 times or repeat a phrase thousands of times, this tool delivers instant results with customizable separators.</p>
+
+<h2>Flexible Repetition Options</h2>
+<p>Set exactly how many times you want your text repeated. Choose your separator - new lines, spaces, commas, or any custom character sequence. Create perfectly formatted repeated text for any purpose.</p>
+
+<h2>Multiple Use Cases</h2>
+<p>Programmers use text repetition for testing, creating sample data, and filling buffers. Writers generate placeholder text. Designers create visual patterns. Whatever your need, our repeater handles it efficiently.</p>
+
+<h2>Handle Large Repetitions</h2>
+<p>Repeat text thousands of times without performance issues. Our optimized algorithm handles large repetition counts smoothly, generating results quickly even for massive operations.</p>
+
+<h2>Preserve or Transform</h2>
+<p>Keep your original text exactly as entered, or apply transformations during repetition. Add incrementing numbers, vary the case, or apply custom modifications to each repetition.</p>`,
+  },
+  {
+    id: "find-replace-text",
+    name: "Find and Replace Text",
+    description: "Find and replace text with advanced options",
+    icon: "Search",
+    type: "find-replace-text",
+    color: "bg-cyan-500",
+    emoji: "🔍",
+    metaTitle: "Find and Replace Text Online Free - Search Replace Tool | PDF Tools",
+    metaDescription: "Find and replace text online for free. Support for case sensitivity, regex, and whole word matching. Edit text quickly and accurately.",
+    seoArticle: `<h2>Find and Replace Text - Powerful Text Editing</h2>
+<p>Find and replace text instantly with our free online tool. Whether you need simple word substitution or complex pattern matching with regular expressions, this tool provides the power and flexibility you need.</p>
+
+<h2>Advanced Search Options</h2>
+<p>Enable case-sensitive search to match exact capitalization. Use whole word matching to avoid partial matches. Leverage regular expressions for complex pattern matching and replacement.</p>
+
+<h2>Regular Expression Support</h2>
+<p>Power users can harness the full capability of regular expressions. Match patterns, capture groups, and use backreferences in replacements. Handle complex text transformations with precision.</p>
+
+<h2>Bulk Replace Operations</h2>
+<p>Replace all occurrences at once or step through matches one by one. See a preview of changes before applying them. Undo operations if needed. Full control over your text editing process.</p>
+
+<h2>Preserve Document Structure</h2>
+<p>Your formatting is preserved during find and replace operations. Line breaks, indentation, and spacing remain intact unless specifically targeted for replacement.</p>`,
+  },
+  {
+    id: "text-statistics",
+    name: "Text Statistics",
+    description: "Analyze text with detailed statistics",
+    icon: "Calculator",
+    type: "text-statistics",
+    color: "bg-teal-500",
+    emoji: "📊",
+    metaTitle: "Text Statistics Online Free - Word Count & Analysis | PDF Tools",
+    metaDescription: "Get detailed text statistics online for free. Count words, characters, sentences, paragraphs. Analyze reading time and complexity.",
+    seoArticle: `<h2>Text Statistics - Comprehensive Text Analysis</h2>
+<p>Get detailed statistics about your text with our free online analysis tool. Count words, characters, sentences, paragraphs, and more. Perfect for writers, students, and anyone who needs to analyze text content.</p>
+
+<h2>Complete Word and Character Counts</h2>
+<p>Instantly see total words, characters with spaces, characters without spaces, and unique words. Track your writing progress against word count goals or character limits.</p>
+
+<h2>Sentence and Paragraph Analysis</h2>
+<p>Count sentences, paragraphs, and average words per sentence. Understand your writing structure and complexity. Identify overly long sentences that might need breaking up.</p>
+
+<h2>Reading Time Estimation</h2>
+<p>Calculate estimated reading time based on average reading speeds. Know how long it takes to read your content aloud or silently. Perfect for presentations, speeches, and content planning.</p>
+
+<h2>Advanced Metrics</h2>
+<p>Get readability scores, vocabulary richness indicators, and sentence length distribution. Understand the complexity and accessibility of your writing at a glance.</p>`,
+  },
+  {
+    id: "character-counter",
+    name: "Character Counter",
+    description: "Count characters with and without spaces",
+    icon: "Type",
+    type: "character-counter",
+    color: "bg-pink-500",
+    emoji: "🔢",
+    metaTitle: "Character Counter Online Free - Count Characters | PDF Tools",
+    metaDescription: "Count characters online for free. Get instant character count with and without spaces. Perfect for Twitter, SMS, and meta descriptions.",
+    seoArticle: `<h2>Character Counter - Count Every Character</h2>
+<p>Count characters instantly with our free online character counter. Get precise counts with and without spaces. Essential for social media posts, SMS messages, meta descriptions, and any content with character limits.</p>
+
+<h2>Characters With and Without Spaces</h2>
+<p>See both counts simultaneously. Many platforms count differently - Twitter includes spaces, SMS sometimes doesn't. Know exactly how your text measures against any character limit.</p>
+
+<h2>Real-Time Counting</h2>
+<p>Watch your character count update as you type. No need to click buttons or submit forms. Instant feedback helps you stay within limits while composing your content.</p>
+
+<h2>Word and Line Counts</h2>
+<p>In addition to characters, see word count and line count. Get a complete picture of your text size at a glance. Perfect for multi-constraint content creation.</p>
+
+<h2>Copy with Confidence</h2>
+<p>Know your text fits before copying it to its destination. Avoid frustrating "too long" errors and rejected submissions. Write to exact specifications every time.</p>`,
+  },
+  {
+    id: "line-counter",
+    name: "Line Counter",
+    description: "Count lines in text with empty line detection",
+    icon: "ListOrdered",
+    type: "line-counter",
+    color: "bg-violet-500",
+    emoji: "📝",
+    metaTitle: "Line Counter Online Free - Count Lines of Text | PDF Tools",
+    metaDescription: "Count lines of text online for free. Detect empty lines, count non-empty lines. Perfect for code, poetry, and data files.",
+    seoArticle: `<h2>Line Counter - Count Every Line</h2>
+<p>Count lines in your text with our free online line counter. Get total line count, empty line count, and non-empty line count. Perfect for code files, poetry, data files, and log analysis.</p>
+
+<h2>Detailed Line Analysis</h2>
+<p>See total lines, empty lines, and lines with content separately. Understand the structure of your text. Identify excessive blank lines or densely packed content.</p>
+
+<h2>Code-Friendly Analysis</h2>
+<p>Programmers use line counts for code metrics, pricing estimates, and progress tracking. Our tool handles any text format including source code with special characters.</p>
+
+<h2>Whitespace Detection</h2>
+<p>Detect lines that contain only whitespace characters. Distinguish between truly empty lines and lines with invisible spaces or tabs. Clean up your text with informed decisions.</p>
+
+<h2>Line Number Display</h2>
+<p>Option to show line numbers alongside your text. Easily reference specific lines when discussing or editing content. Export numbered text for documentation.</p>`,
+  },
+  {
+    id: "whitespace-remover",
+    name: "Whitespace Remover",
+    description: "Remove extra spaces, tabs, and whitespace",
+    icon: "Eraser",
+    type: "whitespace-remover",
+    color: "bg-red-500",
+    emoji: "🧹",
+    metaTitle: "Whitespace Remover Online Free - Clean Up Text | PDF Tools",
+    metaDescription: "Remove extra whitespace online for free. Clean up spaces, tabs, and line breaks. Fix copied text and format documents perfectly.",
+    seoArticle: `<h2>Whitespace Remover - Clean Up Text Instantly</h2>
+<p>Remove unwanted whitespace from your text with our free online tool. Eliminate extra spaces, tabs, and unnecessary line breaks. Perfect for cleaning up copied text and ensuring consistent formatting.</p>
+
+<h2>Multiple Cleaning Options</h2>
+<p>Remove all extra spaces between words, eliminate leading and trailing whitespace, convert tabs to spaces, or remove all whitespace entirely. Choose the cleaning method that fits your needs.</p>
+
+<h2>Handle Various Whitespace Types</h2>
+<p>Our tool recognizes and handles regular spaces, tabs, non-breaking spaces, and other whitespace characters. Get thoroughly cleaned text regardless of the original formatting.</p>
+
+<h2>Preserve Intentional Formatting</h2>
+<p>Keep necessary line breaks and paragraph structure while removing only excess whitespace. Smart cleaning preserves document structure while eliminating clutter.</p>
+
+<h2>Fix Copied Text</h2>
+<p>Text copied from PDFs, websites, or formatted documents often contains excessive whitespace. Our tool instantly cleans it up, giving you properly formatted text ready for use.</p>`,
+  },
+  {
+    id: "slugify-url",
+    name: "Slugify URL",
+    description: "Convert text to URL-friendly slugs",
+    icon: "Link",
+    type: "slugify-url",
+    color: "bg-indigo-500",
+    emoji: "🔗",
+    metaTitle: "Slugify URL Online Free - Create URL Slugs | PDF Tools",
+    metaDescription: "Convert text to URL slugs online for free. Create SEO-friendly URLs from any text. Perfect for blog posts, products, and web pages.",
+    seoArticle: `<h2>Slugify URL - Create SEO-Friendly URLs</h2>
+<p>Convert any text into a clean, URL-friendly slug with our free online slugify tool. Transform titles, names, and phrases into proper URL segments. Essential for web developers, bloggers, and SEO professionals.</p>
+
+<h2>Clean URL Generation</h2>
+<p>Our tool removes special characters, converts spaces to hyphens, and lowercases everything. The result is a clean, readable URL slug that works on any platform and improves SEO.</p>
+
+<h2>Handle International Characters</h2>
+<p>Properly transliterate accented characters and international text. Convert "café" to "cafe" and handle characters from any language. Get globally compatible URL slugs.</p>
+
+<h2>Customization Options</h2>
+<p>Choose your separator character - hyphens or underscores. Set maximum length limits. Decide how to handle numbers and special terms. Create slugs that match your specific URL structure.</p>
+
+<h2>Batch Processing</h2>
+<p>Generate multiple slugs at once from a list of titles or names. Perfect for bulk content creation, product catalogs, or site migrations. Save time with efficient batch processing.</p>`,
+  },
+];
+
+pdfTools.push(...newTextUtilityTools);

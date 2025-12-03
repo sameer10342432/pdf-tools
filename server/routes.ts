@@ -27906,7 +27906,360 @@ ${pages}    </office:presentation>
           }
 
 
-          case "json-formatter": {
+          
+          case "reverse-text": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to reverse");
+            }
+            const reverseMode = options.reverseMode || 'characters';
+            let reversedText = '';
+            if (reverseMode === 'characters') {
+              reversedText = input.split('').reverse().join('');
+            } else if (reverseMode === 'words') {
+              reversedText = input.split(' ').reverse().join(' ');
+            } else if (reverseMode === 'lines') {
+              reversedText = input.split('\n').reverse().join('\n');
+            } else {
+              reversedText = input.split('').reverse().join('');
+            }
+            result = Buffer.from(reversedText, 'utf-8');
+            filename = "reversed-text.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "random-number-generator": {
+            const min = parseInt(options.minValue || '1', 10);
+            const max = parseInt(options.maxValue || '100', 10);
+            const count = parseInt(options.count || '10', 10);
+            const unique = options.unique === 'true' || options.unique === true;
+            const separator = options.separator || 'newline';
+            
+            if (min > max) {
+              throw new Error("Minimum value must be less than maximum value");
+            }
+            if (unique && (max - min + 1) < count) {
+              throw new Error("Cannot generate " + count + " unique numbers in range " + min + "-" + max);
+            }
+            
+            const numbers: number[] = [];
+            const usedNumbers = new Set<number>();
+            
+            for (let i = 0; i < count; i++) {
+              let num: number;
+              do {
+                num = Math.floor(Math.random() * (max - min + 1)) + min;
+              } while (unique && usedNumbers.has(num));
+              usedNumbers.add(num);
+              numbers.push(num);
+            }
+            
+            let sep = separator === 'newline' ? '\n' : separator === 'comma' ? ', ' : separator === 'space' ? ' ' : separator;
+            result = Buffer.from(numbers.join(sep), 'utf-8');
+            filename = "random-numbers.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "password-generator": {
+            const length = parseInt(options.length || '16', 10);
+            const count = parseInt(options.count || '1', 10);
+            const includeLowercase = options.lowercase !== 'false';
+            const includeUppercase = options.uppercase !== 'false';
+            const includeNumbers = options.numbers !== 'false';
+            const includeSymbols = options.symbols !== 'false';
+            const excludeAmbiguous = options.excludeAmbiguous === 'true';
+            
+            let charset = '';
+            const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+            const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const numberChars = '0123456789';
+            const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            const ambiguousChars = 'lI1O0o';
+            
+            if (includeLowercase) charset += lowercase;
+            if (includeUppercase) charset += uppercase;
+            if (includeNumbers) charset += numberChars;
+            if (includeSymbols) charset += symbols;
+            
+            if (excludeAmbiguous) {
+              charset = charset.split('').filter(c => !ambiguousChars.includes(c)).join('');
+            }
+            
+            if (charset.length === 0) {
+              throw new Error("Please select at least one character type");
+            }
+            
+            const passwords: string[] = [];
+            for (let j = 0; j < count; j++) {
+              let password = '';
+              for (let i = 0; i < length; i++) {
+                password += charset[Math.floor(Math.random() * charset.length)];
+              }
+              passwords.push(password);
+            }
+            
+            result = Buffer.from(passwords.join('\n'), 'utf-8');
+            filename = "passwords.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "text-repeater": {
+            let input = options.textInput || options.textContent || '';
+            if (!input) {
+              throw new Error("Please provide text to repeat");
+            }
+            const repeatCount = parseInt(options.repeatCount || '10', 10);
+            const separator = options.separator || 'newline';
+            
+            if (repeatCount < 1 || repeatCount > 10000) {
+              throw new Error("Repeat count must be between 1 and 10000");
+            }
+            
+            let sep = separator === 'newline' ? '\n' : separator === 'space' ? ' ' : separator === 'none' ? '' : separator;
+            const repeated = Array(repeatCount).fill(input).join(sep);
+            
+            result = Buffer.from(repeated, 'utf-8');
+            filename = "repeated-text.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "find-replace-text": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to search");
+            }
+            const findText = options.findText || '';
+            const replaceWith = options.replaceWith || '';
+            const caseSensitive = options.caseSensitive === 'true' || options.caseSensitive === true;
+            const useRegex = options.useRegex === 'true' || options.useRegex === true;
+            const replaceAll = options.replaceAll !== 'false';
+            
+            if (!findText) {
+              throw new Error("Please provide text to find");
+            }
+            
+            let outputText: string;
+            if (useRegex) {
+              const flags = caseSensitive ? (replaceAll ? 'g' : '') : (replaceAll ? 'gi' : 'i');
+              const regex = new RegExp(findText, flags);
+              outputText = input.replace(regex, replaceWith);
+            } else {
+              if (replaceAll) {
+                if (caseSensitive) {
+                  outputText = input.split(findText).join(replaceWith);
+                } else {
+                  const escapedFind = findText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                  const regex = new RegExp(escapedFind, 'gi');
+                  outputText = input.replace(regex, replaceWith);
+                }
+              } else {
+                if (caseSensitive) {
+                  outputText = input.replace(findText, replaceWith);
+                } else {
+                  const escapedFind = findText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                  const regex = new RegExp(escapedFind, 'i');
+                  outputText = input.replace(regex, replaceWith);
+                }
+              }
+            }
+            
+            result = Buffer.from(outputText, 'utf-8');
+            filename = "replaced-text.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "text-statistics": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to analyze");
+            }
+            
+            const charCount = input.length;
+            const charNoSpaces = input.replace(/\s/g, '').length;
+            const wordCount = input.trim() ? input.trim().split(/\s+/).length : 0;
+            const lineCount = input.split('\n').length;
+            const sentenceCount = input.split(/[.!?]+/).filter((s: string) => s.trim().length > 0).length;
+            const paragraphCount = input.split(/\n\s*\n/).filter((p: string) => p.trim().length > 0).length;
+            const avgWordLength = wordCount > 0 ? (charNoSpaces / wordCount).toFixed(2) : '0';
+            const avgSentenceLength = sentenceCount > 0 ? (wordCount / sentenceCount).toFixed(2) : '0';
+            const readingTime = Math.ceil(wordCount / 200);
+            const speakingTime = Math.ceil(wordCount / 150);
+            
+            const stats = `Text Statistics:
+================
+Characters (with spaces): ${charCount}
+Characters (without spaces): ${charNoSpaces}
+Words: ${wordCount}
+Lines: ${lineCount}
+Sentences: ${sentenceCount}
+Paragraphs: ${paragraphCount}
+Average Word Length: ${avgWordLength} characters
+Average Sentence Length: ${avgSentenceLength} words
+Estimated Reading Time: ${readingTime} minute(s)
+Estimated Speaking Time: ${speakingTime} minute(s)`;
+            
+            result = Buffer.from(stats, 'utf-8');
+            filename = "text-statistics.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "character-counter": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to count");
+            }
+            
+            const charWithSpaces = input.length;
+            const charWithoutSpaces = input.replace(/\s/g, '').length;
+            const wordCount = input.trim() ? input.trim().split(/\s+/).length : 0;
+            const lineCount = input.split('\n').length;
+            const letterCount = input.replace(/[^a-zA-Z]/g, '').length;
+            const digitCount = input.replace(/[^0-9]/g, '').length;
+            const spaceCount = input.split(' ').length - 1;
+            
+            const stats = `Character Count:
+================
+Characters (with spaces): ${charWithSpaces}
+Characters (without spaces): ${charWithoutSpaces}
+Letters: ${letterCount}
+Digits: ${digitCount}
+Spaces: ${spaceCount}
+Words: ${wordCount}
+Lines: ${lineCount}`;
+            
+            result = Buffer.from(stats, 'utf-8');
+            filename = "character-count.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "line-counter": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to count lines");
+            }
+            
+            const lines = input.split('\n');
+            const totalLines = lines.length;
+            const nonEmptyLines = lines.filter((line: string) => line.trim().length > 0).length;
+            const emptyLines = totalLines - nonEmptyLines;
+            const whitespaceOnlyLines = lines.filter((line: string) => line.length > 0 && line.trim().length === 0).length;
+            const avgLineLength = (input.length / totalLines).toFixed(2);
+            
+            const showNumbers = options.showLineNumbers === 'true' || options.showLineNumbers === true;
+            
+            let output = `Line Count Statistics:
+=====================
+Total Lines: ${totalLines}
+Non-Empty Lines: ${nonEmptyLines}
+Empty Lines: ${emptyLines}
+Whitespace-Only Lines: ${whitespaceOnlyLines}
+Average Line Length: ${avgLineLength} characters`;
+            
+            if (showNumbers) {
+              output += '\n\nNumbered Text:\n' + lines.map((line: string, i: number) => `${(i + 1).toString().padStart(4, ' ')}: ${line}`).join('\n');
+            }
+            
+            result = Buffer.from(output, 'utf-8');
+            filename = "line-count.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "whitespace-remover": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to clean");
+            }
+            
+            const removeMode = options.removeMode || 'extra';
+            let cleanedText = input;
+            
+            switch (removeMode) {
+              case 'all':
+                cleanedText = input.replace(/\s/g, '');
+                break;
+              case 'leading':
+                cleanedText = input.split('\n').map((line: string) => line.replace(/^\s+/, '')).join('\n');
+                break;
+              case 'trailing':
+                cleanedText = input.split('\n').map((line: string) => line.replace(/\s+$/, '')).join('\n');
+                break;
+              case 'both':
+                cleanedText = input.split('\n').map((line: string) => line.trim()).join('\n');
+                break;
+              case 'extra':
+              default:
+                cleanedText = input.replace(/[ \t]+/g, ' ').split('\n').map((line: string) => line.trim()).join('\n').replace(/\n{3,}/g, '\n\n');
+                break;
+            }
+            
+            result = Buffer.from(cleanedText, 'utf-8');
+            filename = "cleaned-text.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "slugify-url": {
+            let input = options.textInput || options.textContent || '';
+            if (!input) {
+              throw new Error("Please provide text to slugify");
+            }
+            
+            const separator = options.separator || 'hyphen';
+            const lowercase = options.lowercase !== 'false';
+            const maxLength = parseInt(options.maxLength || '0', 10);
+            
+            let slug = input
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/[^a-zA-Z0-9\s-]/g, '')
+              .trim()
+              .replace(/\s+/g, separator === 'hyphen' ? '-' : '_');
+            
+            if (lowercase) {
+              slug = slug.toLowerCase();
+            }
+            
+            if (maxLength > 0 && slug.length > maxLength) {
+              slug = slug.substring(0, maxLength);
+              const lastSep = slug.lastIndexOf(separator === 'hyphen' ? '-' : '_');
+              if (lastSep > maxLength * 0.5) {
+                slug = slug.substring(0, lastSep);
+              }
+            }
+            
+            result = Buffer.from(slug, 'utf-8');
+            filename = "slug.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+case "json-formatter": {
             let jsonInput = options.jsonInput || '';
             if (!jsonInput && files.length > 0) {
               jsonInput = fs.readFileSync(files[0].path, 'utf-8');
