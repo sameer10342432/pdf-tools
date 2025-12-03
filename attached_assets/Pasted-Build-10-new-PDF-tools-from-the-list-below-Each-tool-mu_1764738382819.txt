@@ -1,0 +1,172 @@
+Build 10 new PDF tools from the list below.
+ Each tool must include a fully functional frontend, backend, and internal REST API, with no requirement for external API keys, third-party dependencies, or authentication tokens from me.
+
+✅ Core Requirements
+Professional, clean, modern, and fully responsive UI/UX.
+
+
+Backend APIs must be built internally (Node.js, Python, PHP, or any backend stack you choose) without relying on outside services.
+
+
+Do NOT ask for external API keys or third-party integrations.
+
+
+Tools must work accurately, in real-time, and at scale.
+
+
+Every tool must display a unique emoji icon, shown in:
+
+
+Home Page (Tools Section)
+
+
+All Tools Page (Browsing Layout)
+
+
+Tool interface header area
+
+
+Each tool should include:
+
+
+✅ SEO-Optimized Meta Title
+
+
+✅ Clear Meta Description
+
+
+✅ Short purpose description under the tool name
+
+
+✅ Long SEO article embedded at the bottom of the tool UI (not a separate page)
+
+
+Website Structure:
+
+
+All 10 tools must be linked to the Home Page and Tools Page
+
+
+Navigation should be intuitive with header/footer integration included in the code
+
+
+
+🛠 10 PDF Tools to Build
+Image to Painting
+Image Color Palette Generator
+Image Histogram Generator
+Word to TXT
+Word to HTML
+TXT to Word
+HTML to Word
+Excel to CSV
+CSV to Excel
+Excel to JSON
+
+🧪 Testing & Validation
+Perform full e2e testing for each tool
+
+
+If any:
+
+
+❌ Bug is found
+
+
+❌ Incorrect logic exists
+
+
+❌ Useless or unnecessary feature is added
+
+
+❌ Performance is slow or insecure
+ Then fix it immediately and optimize before final delivery
+
+
+
+📐 Also Include in Output
+Add the following for each individual PDF tool:
+✔ Wireframes
+Clear layout sketches for:
+
+
+Tool page UI
+
+
+Upload zone, controls, preview area, download section
+
+
+Placement of meta tags and long article
+
+
+✔ Database Structure
+If storing user activity, logs, or generated file history, define:
+
+
+Tables/collections
+
+
+Schema fields, data types, relations
+
+
+Optimized indexing strategy
+
+
+✔ API Endpoint Map (Internal REST API)
+Provide endpoints like:
+POST /api/tool-name/upload
+
+
+POST /api/tool-name/merge
+
+
+POST /api/tool-name/split
+
+
+GET /api/tool-name/download
+
+
+GET /api/tool-name/status
+
+
+Error handling routes
+
+
+Each tool must have its own endpoint group, clearly documented.
+✔ SEO Plan Per Tool
+Primary and secondary keywords
+
+
+Meta title & description rules
+
+
+Internal linking strategy
+
+
+Article outline at the bottom of each tool
+
+
+Content structure suggestions (H1, H2, schema, breadcrumbs, etc.)
+
+
+
+🔐 Final Delivery Must Be
+🚀 Production ready
+
+
+🔒 Secure against input abuse
+
+
+⚡ Optimized for performance
+
+
+📱 Responsive on all devices
+
+
+🧾 Well-structured API documentation included
+
+
+✅ Tested and bug-free
+
+
+No placeholder or dummy functionality
