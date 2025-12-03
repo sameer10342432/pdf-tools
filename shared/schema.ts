@@ -586,6 +586,16 @@ export const pdfToolTypes = [
   "css-minifier",
   "css-beautifier",
   "js-minifier",
+  "js-beautifier",
+  "sql-formatter",
+  "sql-minifier",
+  "lorem-ipsum-generator",
+  "uuid-generator",
+  "md5-hash-generator",
+  "sha256-hash-generator",
+  "base64-encode",
+  "base64-decode",
+  "url-encoder",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -16656,3 +16666,259 @@ const codeFormattingTools: PdfTool[] = [
 ];
 
 pdfTools.push(...codeFormattingTools);
+
+
+const developerTools: PdfTool[] = [
+  {
+    id: "js-beautifier",
+    name: "JS Beautifier",
+    description: "Format and beautify JavaScript code with proper indentation",
+    icon: "Code2",
+    type: "js-beautifier",
+    color: "bg-yellow-500",
+    emoji: "✨",
+    metaTitle: "JS Beautifier Online Free - Format JavaScript Code | PDF Tools",
+    metaDescription: "Beautify JavaScript code online for free. Format and indent JS code automatically with our professional JS beautifier tool. No registration required.",
+    seoArticle: `<h2>JS Beautifier - Professional JavaScript Code Formatting</h2>
+<p>Transform messy, minified, or poorly formatted JavaScript into clean, readable code with our free online JS beautifier. Perfect for developers who need to understand or debug compressed JavaScript files.</p>
+
+<h2>Why Use a JS Beautifier?</h2>
+<p>Minified JavaScript is optimized for machines, not humans. When you need to read, debug, or modify JavaScript code, proper formatting is essential. Our beautifier adds proper indentation, line breaks, and spacing to make code comprehensible.</p>
+
+<h2>Smart Formatting Algorithm</h2>
+<p>Our JS beautifier understands JavaScript syntax deeply. It handles complex scenarios like object literals, arrow functions, template literals, and destructuring assignments. The output follows modern JavaScript style conventions.</p>
+
+<h2>Customizable Output</h2>
+<p>Choose your preferred indentation style - spaces or tabs. Adjust the number of spaces per indent level. Configure brace placement and other style preferences to match your coding standards.</p>
+
+<h2>Instant Browser Processing</h2>
+<p>All formatting happens in your browser - no server uploads required. Your code remains private and secure. Process large files instantly without waiting for server responses.</p>`,
+  },
+  {
+    id: "sql-formatter",
+    name: "SQL Formatter",
+    description: "Format and beautify SQL queries with proper indentation",
+    icon: "Database",
+    type: "sql-formatter",
+    color: "bg-blue-600",
+    emoji: "📊",
+    metaTitle: "SQL Formatter Online Free - Format SQL Queries | PDF Tools",
+    metaDescription: "Format SQL queries online for free. Beautify and indent SQL statements automatically. Support for MySQL, PostgreSQL, SQL Server, and more.",
+    seoArticle: `<h2>SQL Formatter - Professional SQL Query Formatting</h2>
+<p>Transform complex, unreadable SQL queries into beautifully formatted statements with our free online SQL formatter. Essential for database developers and administrators who work with intricate queries.</p>
+
+<h2>Why Format SQL Queries?</h2>
+<p>Well-formatted SQL is easier to read, debug, and maintain. When queries span multiple tables with joins, subqueries, and conditions, proper formatting reveals the query structure at a glance.</p>
+
+<h2>Multi-Dialect Support</h2>
+<p>Our formatter handles SQL syntax from all major database systems including MySQL, PostgreSQL, Microsoft SQL Server, Oracle, and SQLite. Dialect-specific keywords and functions are properly recognized.</p>
+
+<h2>Smart Indentation</h2>
+<p>Keywords like SELECT, FROM, WHERE, JOIN, and GROUP BY are aligned for clarity. Nested subqueries receive proper indentation levels. Complex CASE statements and conditions are formatted logically.</p>
+
+<h2>Preserve Query Logic</h2>
+<p>Formatting changes only whitespace and line breaks - never the query logic itself. Your SQL runs exactly the same after formatting. Comments are preserved in place.</p>`,
+  },
+  {
+    id: "sql-minifier",
+    name: "SQL Minifier",
+    description: "Minify SQL queries by removing unnecessary whitespace",
+    icon: "Minimize2",
+    type: "sql-minifier",
+    color: "bg-indigo-600",
+    emoji: "📉",
+    metaTitle: "SQL Minifier Online Free - Compress SQL Queries | PDF Tools",
+    metaDescription: "Minify SQL queries online for free. Remove whitespace and compress SQL statements. Reduce query size for better performance.",
+    seoArticle: `<h2>SQL Minifier - Compress Your SQL Queries</h2>
+<p>Reduce SQL query size by removing unnecessary whitespace with our free online SQL minifier. Smaller queries can improve network transfer times and reduce log file sizes.</p>
+
+<h2>Why Minify SQL?</h2>
+<p>While formatted SQL is great for development, production systems often benefit from compact queries. Minification removes extra spaces, line breaks, and indentation while preserving query functionality.</p>
+
+<h2>Safe Compression</h2>
+<p>Our minifier understands SQL syntax and only removes whitespace that doesn't affect query execution. String literals, identifiers, and comments are handled correctly to ensure your query works identically.</p>
+
+<h2>Ideal for Logging</h2>
+<p>When logging SQL queries for monitoring or debugging, minified queries take less space while remaining valid. One-line queries are easier to grep and process in log analysis tools.</p>
+
+<h2>Instant Processing</h2>
+<p>Paste your SQL and get minified output instantly. No file uploads or waiting required. Process queries of any size quickly in your browser.</p>`,
+  },
+  {
+    id: "lorem-ipsum-generator",
+    name: "Lorem Ipsum Generator",
+    description: "Generate placeholder text for design and development",
+    icon: "FileText",
+    type: "lorem-ipsum-generator",
+    color: "bg-purple-500",
+    emoji: "📝",
+    metaTitle: "Lorem Ipsum Generator Online Free - Placeholder Text | PDF Tools",
+    metaDescription: "Generate Lorem Ipsum placeholder text online for free. Create paragraphs, sentences, or words of dummy text for your designs and mockups.",
+    seoArticle: `<h2>Lorem Ipsum Generator - Professional Placeholder Text</h2>
+<p>Generate high-quality Lorem Ipsum placeholder text for your design projects, mockups, and prototypes. Our generator creates natural-looking dummy text that helps visualize layouts without distraction.</p>
+
+<h2>Why Use Lorem Ipsum?</h2>
+<p>Using readable content during design can distract from visual evaluation. Lorem Ipsum provides text with natural letter distribution and word lengths, giving a realistic preview of how text will appear without being readable.</p>
+
+<h2>Flexible Generation Options</h2>
+<p>Generate exactly what you need - paragraphs, sentences, or individual words. Specify the exact amount of text for your layout. Perfect for filling blog posts, product descriptions, or any text area.</p>
+
+<h2>Classic Latin Base</h2>
+<p>Our generator uses the traditional Lorem Ipsum text derived from Cicero's "de Finibus Bonorum et Malorum." The familiar text is recognized by designers worldwide and accepted in professional mockups.</p>
+
+<h2>Instant Copy and Use</h2>
+<p>Generated text is ready to copy with one click. Use it directly in your design tools, websites, or documents. No formatting issues - just clean, properly spaced placeholder text.</p>`,
+  },
+  {
+    id: "uuid-generator",
+    name: "UUID Generator",
+    description: "Generate unique universal identifiers (UUID v4)",
+    icon: "Key",
+    type: "uuid-generator",
+    color: "bg-cyan-500",
+    emoji: "🔑",
+    metaTitle: "UUID Generator Online Free - Generate Unique IDs | PDF Tools",
+    metaDescription: "Generate UUID v4 identifiers online for free. Create unique, random UUIDs for databases, APIs, and applications. Bulk generation available.",
+    seoArticle: `<h2>UUID Generator - Create Unique Identifiers</h2>
+<p>Generate universally unique identifiers (UUIDs) instantly with our free online tool. UUIDs are essential for databases, distributed systems, and any application requiring guaranteed unique IDs.</p>
+
+<h2>What is a UUID?</h2>
+<p>A UUID (Universally Unique Identifier) is a 128-bit number used to uniquely identify information. Version 4 UUIDs are generated using random numbers, making collisions virtually impossible.</p>
+
+<h2>RFC 4122 Compliant</h2>
+<p>Our generator creates proper RFC 4122 compliant Version 4 UUIDs. These are accepted by all major databases, programming languages, and APIs that support UUID data types.</p>
+
+<h2>Bulk Generation</h2>
+<p>Need multiple UUIDs? Generate up to hundreds at once. Perfect for populating test databases, creating unique identifiers for batch processes, or pre-generating IDs for import operations.</p>
+
+<h2>Multiple Formats</h2>
+<p>Get UUIDs with or without hyphens. Copy in uppercase or lowercase. Format output for direct use in SQL statements, JSON, or programming language literals.</p>`,
+  },
+  {
+    id: "md5-hash-generator",
+    name: "MD5 Hash Generator",
+    description: "Generate MD5 hash values from text input",
+    icon: "Hash",
+    type: "md5-hash-generator",
+    color: "bg-red-600",
+    emoji: "🔐",
+    metaTitle: "MD5 Hash Generator Online Free - Create MD5 Checksums | PDF Tools",
+    metaDescription: "Generate MD5 hash values online for free. Create MD5 checksums from any text. Fast, secure, and no data storage.",
+    seoArticle: `<h2>MD5 Hash Generator - Create Message Digests</h2>
+<p>Generate MD5 hash values from any text input with our free online tool. MD5 produces a 128-bit (32 character) hexadecimal hash that's widely used for checksums and data verification.</p>
+
+<h2>What is MD5?</h2>
+<p>MD5 (Message Digest Algorithm 5) is a cryptographic hash function that produces a fixed-size hash value from any input. The same input always produces the same hash, but different inputs produce different hashes.</p>
+
+<h2>Common Use Cases</h2>
+<p>MD5 is commonly used for file integrity verification, password storage (with salting), cache keys, and generating unique identifiers from strings. While not recommended for security-critical applications, it remains useful for many purposes.</p>
+
+<h2>Instant Computation</h2>
+<p>Enter your text and get the MD5 hash immediately. All processing happens in your browser - your data never leaves your computer. Hash any length of text instantly.</p>
+
+<h2>Security Note</h2>
+<p>MD5 is considered cryptographically broken for security purposes. For password hashing or security-sensitive applications, use SHA-256 or bcrypt instead. MD5 remains useful for checksums and non-security applications.</p>`,
+  },
+  {
+    id: "sha256-hash-generator",
+    name: "SHA-256 Hash Generator",
+    description: "Generate secure SHA-256 hash values from text",
+    icon: "ShieldCheck",
+    type: "sha256-hash-generator",
+    color: "bg-green-600",
+    emoji: "🛡",
+    metaTitle: "SHA-256 Hash Generator Online Free - Secure Hashing | PDF Tools",
+    metaDescription: "Generate SHA-256 hash values online for free. Create secure cryptographic hashes from any text. Industry-standard security.",
+    seoArticle: `<h2>SHA-256 Hash Generator - Secure Cryptographic Hashing</h2>
+<p>Generate SHA-256 hash values from any text with our free online tool. SHA-256 is part of the SHA-2 family and produces a 256-bit (64 character) hexadecimal hash used for security-critical applications.</p>
+
+<h2>What is SHA-256?</h2>
+<p>SHA-256 (Secure Hash Algorithm 256-bit) is a cryptographic hash function designed by the NSA. It's widely used in security protocols, blockchain technology, digital signatures, and certificate verification.</p>
+
+<h2>Industry Standard Security</h2>
+<p>SHA-256 is approved by NIST for government use and is the backbone of Bitcoin and other cryptocurrencies. When security matters, SHA-256 is the hash function of choice.</p>
+
+<h2>Collision Resistant</h2>
+<p>SHA-256 is designed so that finding two different inputs producing the same hash is computationally infeasible. This property makes it suitable for digital signatures and integrity verification.</p>
+
+<h2>Browser-Side Processing</h2>
+<p>Your text is hashed entirely in your browser using the Web Crypto API. No data is transmitted to any server. Generate hashes for sensitive information with confidence.</p>`,
+  },
+  {
+    id: "base64-encode",
+    name: "Base64 Encode",
+    description: "Encode text or data to Base64 format",
+    icon: "ArrowRightLeft",
+    type: "base64-encode",
+    color: "bg-orange-500",
+    emoji: "📤",
+    metaTitle: "Base64 Encoder Online Free - Encode to Base64 | PDF Tools",
+    metaDescription: "Encode text to Base64 online for free. Convert strings and data to Base64 format instantly. Perfect for API data and email encoding.",
+    seoArticle: `<h2>Base64 Encoder - Convert Text to Base64</h2>
+<p>Encode any text or binary data to Base64 format with our free online encoder. Base64 is essential for transmitting data in contexts that only support ASCII text, such as email or JSON.</p>
+
+<h2>What is Base64?</h2>
+<p>Base64 is a binary-to-text encoding scheme that represents binary data using 64 ASCII characters. It's commonly used to encode data for transmission over text-based protocols.</p>
+
+<h2>Common Applications</h2>
+<p>Base64 encoding is used in email attachments (MIME), data URLs in web pages, API authentication tokens, storing binary data in JSON/XML, and embedding images in CSS or HTML.</p>
+
+<h2>UTF-8 Support</h2>
+<p>Our encoder properly handles UTF-8 text, including international characters, emojis, and special symbols. The encoded output correctly represents all Unicode characters.</p>
+
+<h2>URL-Safe Option</h2>
+<p>Generate standard Base64 or URL-safe Base64 (using - and _ instead of + and /). URL-safe encoding is essential when the encoded data will be part of a URL.</p>`,
+  },
+  {
+    id: "base64-decode",
+    name: "Base64 Decode",
+    description: "Decode Base64 encoded data back to text",
+    icon: "ArrowLeftRight",
+    type: "base64-decode",
+    color: "bg-teal-500",
+    emoji: "📥",
+    metaTitle: "Base64 Decoder Online Free - Decode Base64 | PDF Tools",
+    metaDescription: "Decode Base64 to text online for free. Convert Base64 encoded strings back to readable text instantly. Supports UTF-8.",
+    seoArticle: `<h2>Base64 Decoder - Convert Base64 to Text</h2>
+<p>Decode Base64 encoded data back to readable text with our free online decoder. Essential for reading encoded API responses, email headers, or any Base64 encoded content.</p>
+
+<h2>Instant Decoding</h2>
+<p>Paste Base64 encoded text and see the decoded result immediately. Our decoder handles both standard and URL-safe Base64 formats automatically.</p>
+
+<h2>Debug API Responses</h2>
+<p>Many APIs return Base64 encoded data for binary content or to escape special characters. Our decoder helps you inspect the actual content quickly during development.</p>
+
+<h2>UTF-8 Support</h2>
+<p>Properly decode UTF-8 encoded content including international characters and emojis. The decoder correctly interprets multi-byte UTF-8 sequences.</p>
+
+<h2>Error Handling</h2>
+<p>Invalid Base64 input is detected and reported. Know immediately if your input contains invalid characters or has incorrect padding. Helpful error messages guide you to fix issues.</p>`,
+  },
+  {
+    id: "url-encoder",
+    name: "URL Encoder",
+    description: "Encode text for safe use in URLs and query strings",
+    icon: "Link",
+    type: "url-encoder",
+    color: "bg-pink-500",
+    emoji: "🔗",
+    metaTitle: "URL Encoder Online Free - Encode URLs | PDF Tools",
+    metaDescription: "Encode text for URLs online for free. Convert special characters to URL-safe format. Perfect for query strings and API parameters.",
+    seoArticle: `<h2>URL Encoder - Encode Text for URLs</h2>
+<p>Convert text to URL-safe format with our free online URL encoder. Essential for constructing query strings, API parameters, and any text that needs to be included in a URL.</p>
+
+<h2>What is URL Encoding?</h2>
+<p>URL encoding (percent-encoding) converts characters that are not allowed in URLs to a format using % followed by hexadecimal digits. Spaces become %20, ampersands become %26, and so on.</p>
+
+<h2>Why Encode URLs?</h2>
+<p>URLs can only contain certain ASCII characters. Special characters, spaces, and non-ASCII text must be encoded to be valid in URLs. Failing to encode can break links or cause security issues.</p>
+
+<h2>Preserve URL Structure</h2>
+<p>Our encoder handles the distinction between reserved characters (like & and =) that have special meaning in URLs and characters that should be encoded. Choose to encode for path segments or query strings.</p>
+
+<h2>International Characters</h2>
+<p>Full UTF-8 support means international characters, emojis, and any Unicode text is properly encoded for safe URL use. Test encoded URLs directly in your browser.</p>`,
+  },
+];
+
+pdfTools.push(...developerTools);
