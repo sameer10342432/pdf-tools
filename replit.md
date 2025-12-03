@@ -149,6 +149,26 @@ The application is built with a React frontend and an Express.js backend.
 
   All AI tools use Sharp-based algorithmic processing without external API keys. The tools support real-time preview and adjustable parameters for customization.
 
+- Added 10 new conversion and creative tools (December 2025):
+  
+  **Image Creative Tools:**
+  - **Image to Painting**: Transform photos into artistic painting styles (oil, watercolor, impressionist, abstract) with adjustable intensity
+  - **Image Color Palette**: Extract dominant colors from images using k-means clustering algorithm with configurable color count (3-10 colors)
+  - **Image Histogram**: Generate RGB histogram charts showing color distribution across red, green, and blue channels
+  
+  **Document Conversion Tools:**
+  - **Word to TXT**: Convert Word documents (.doc, .docx) to plain text format, stripping all formatting
+  - **Word to HTML**: Convert Word documents to clean, semantic HTML with responsive styling
+  - **TXT to Word**: Convert plain text files to properly formatted Word documents (.docx)
+  - **HTML to Word**: Convert HTML files to Word documents with preserved content structure
+  
+  **Spreadsheet Conversion Tools:**
+  - **Excel to CSV**: Convert Excel spreadsheets to CSV format with configurable delimiters (comma, semicolon, tab)
+  - **CSV to Excel**: Convert CSV files to Excel spreadsheet format (.xlsx) with auto-formatted columns
+  - **Excel to JSON**: Convert Excel spreadsheets to JSON format with optional pretty-printing (first row as keys)
+
+  Image tools use Sharp library for processing. Document conversions use mammoth (Word reading) and docx (Word creation). Spreadsheet tools use xlsx library for Excel/CSV/JSON conversions.
+
 ## External Dependencies
 - **PDF Processing Libraries**: `pdf-lib` (for core PDF manipulation), `sharp` (for image processing), `archiver` (for creating zip archives).
 - **Document Conversion**: `mammoth` (for Word document processing), `xlsx` (for Excel processing), `tesseract.js` (for OCR text recognition), `marked` (for Markdown parsing), `adm-zip` (for ODF file extraction).
