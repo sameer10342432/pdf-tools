@@ -536,6 +536,16 @@ export const pdfToolTypes = [
   "json-viewer",
   "xml-viewer",
   "json-to-csv",
+  "csv-to-json",
+  "odt-to-docx",
+  "docx-to-odt",
+  "ods-to-xlsx",
+  "xlsx-to-ods",
+  "odp-to-pptx",
+  "pptx-to-odp",
+  "epub-reader",
+  "mobi-to-epub",
+  "epub-to-mobi",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -15326,4 +15336,254 @@ export const pdfTools: PdfTool[] = [
 <h2>Data Compatibility</h2>
 <p>Output compatible with Excel, Google Sheets, and Numbers. UTF-8 encoding with BOM option for Excel. Handle special characters and line breaks in values. Ready for database import operations.</p>`,
   },
+  {
+    id: "csv-to-json",
+    name: "CSV to JSON",
+    description: "Convert CSV spreadsheet data to JSON format",
+    icon: "Braces",
+    type: "csv-to-json",
+    color: "bg-emerald-500",
+    emoji: "📊",
+    metaTitle: "CSV to JSON Converter Online Free - Transform Data | PDF Tools",
+    metaDescription: "Convert CSV files to JSON format online for free. Transform spreadsheet data into structured JSON for APIs and applications.",
+    seoArticle: `<h2>CSV to JSON Converter - Transform Your Data</h2>
+<p>Convert comma-separated values into structured JSON format instantly. Our free online tool makes it easy to transform spreadsheet data into JSON for web applications, APIs, and databases.</p>
+
+<h2>Smart Data Parsing</h2>
+<p>Our converter intelligently detects data types including numbers, booleans, and strings. Headers become object keys automatically. Handle quoted values, escaped characters, and multiline content with precision.</p>
+
+<h2>Flexible Output Options</h2>
+<p>Generate an array of objects where each row becomes a JSON object. Customize indentation for readable output. Minify for production use. Perfect for configuration files and API payloads.</p>
+
+<h2>Handle Complex Data</h2>
+<p>Process large CSV files with thousands of rows efficiently. Detect and preserve special characters. Handle different encodings including UTF-8 and ASCII. Skip empty rows automatically.</p>
+
+<h2>Developer-Friendly Output</h2>
+<p>Output is valid JSON ready for immediate use. Copy to clipboard or download as a file. Integrate with JavaScript, Python, PHP, or any JSON-compatible language. Perfect for data migration and ETL processes.</p>`,
+  },
+  {
+    id: "odt-to-docx",
+    name: "ODT to DOCX",
+    description: "Convert OpenDocument Text to Microsoft Word format",
+    icon: "FileText",
+    type: "odt-to-docx",
+    color: "bg-blue-600",
+    emoji: "📝",
+    metaTitle: "ODT to DOCX Converter Online Free - Convert OpenDocument | PDF Tools",
+    metaDescription: "Convert ODT files to DOCX format online for free. Transform OpenDocument Text files to Microsoft Word format with preserved formatting.",
+    seoArticle: `<h2>ODT to DOCX Converter - Seamless Document Conversion</h2>
+<p>Convert OpenDocument Text files to Microsoft Word format instantly. Our free online converter preserves your document formatting, styles, and content while ensuring compatibility with Microsoft Office.</p>
+
+<h2>Preserve Document Integrity</h2>
+<p>Maintain text formatting including fonts, sizes, and colors. Preserve paragraph styles and alignments. Keep images, tables, and embedded objects intact. Headers, footers, and page layouts transfer accurately.</p>
+
+<h2>Universal Compatibility</h2>
+<p>Open files created in LibreOffice, OpenOffice, or any ODT-compatible application. Output works perfectly in Microsoft Word, Google Docs, and other word processors. Cross-platform compatibility guaranteed.</p>
+
+<h2>Fast and Secure</h2>
+<p>Instant conversion without software installation. Files processed securely and deleted after conversion. No file size limits for standard documents. Batch conversion available for multiple files.</p>
+
+<h2>Perfect for Office Workflows</h2>
+<p>Ideal for sharing documents with Microsoft Office users. Ensure compatibility in corporate environments. Maintain professional document appearance across platforms. Quick turnaround for urgent deadlines.</p>`,
+  },
+  {
+    id: "docx-to-odt",
+    name: "DOCX to ODT",
+    description: "Convert Microsoft Word to OpenDocument Text format",
+    icon: "FileText",
+    type: "docx-to-odt",
+    color: "bg-orange-600",
+    emoji: "📄",
+    metaTitle: "DOCX to ODT Converter Online Free - Convert to OpenDocument | PDF Tools",
+    metaDescription: "Convert DOCX files to ODT format online for free. Transform Microsoft Word documents to OpenDocument Text format for LibreOffice and OpenOffice.",
+    seoArticle: `<h2>DOCX to ODT Converter - Open Format Freedom</h2>
+<p>Convert Microsoft Word documents to OpenDocument Text format for use with free office suites like LibreOffice and OpenOffice. Our converter ensures your content remains intact during the transformation.</p>
+
+<h2>Maintain Document Fidelity</h2>
+<p>Text formatting preserves fonts, sizes, and styling. Tables and charts convert accurately. Images and graphics maintain quality. Page layouts and margins stay consistent.</p>
+
+<h2>Embrace Open Standards</h2>
+<p>ODT is an open document format supported worldwide. No proprietary software required to view or edit. Long-term archival format recommended by many governments. Future-proof your documents.</p>
+
+<h2>Seamless Conversion Process</h2>
+<p>Upload your DOCX file with one click. Conversion happens instantly on our servers. Download your ODT file immediately. No registration or software installation needed.</p>
+
+<h2>Free Software Compatibility</h2>
+<p>Works perfectly with LibreOffice Writer. Compatible with Apache OpenOffice. Supported by Google Docs for import. Ideal for Linux and cross-platform users.</p>`,
+  },
+  {
+    id: "ods-to-xlsx",
+    name: "ODS to XLSX",
+    description: "Convert OpenDocument Spreadsheet to Microsoft Excel format",
+    icon: "FileSpreadsheet",
+    type: "ods-to-xlsx",
+    color: "bg-green-600",
+    emoji: "📈",
+    metaTitle: "ODS to XLSX Converter Online Free - Convert Spreadsheets | PDF Tools",
+    metaDescription: "Convert ODS files to XLSX format online for free. Transform OpenDocument Spreadsheets to Microsoft Excel format with formulas and formatting preserved.",
+    seoArticle: `<h2>ODS to XLSX Converter - Excel Compatibility Made Easy</h2>
+<p>Convert OpenDocument Spreadsheets to Microsoft Excel format instantly. Our converter preserves your formulas, cell formatting, charts, and data structure for seamless Excel compatibility.</p>
+
+<h2>Complete Data Preservation</h2>
+<p>All cell values and formulas convert accurately. Number formats and date formats maintained. Cell colors, borders, and fonts preserved. Column widths and row heights stay consistent.</p>
+
+<h2>Formula Compatibility</h2>
+<p>Mathematical formulas translate to Excel syntax. Cell references update automatically. Common functions convert seamlessly. Complex nested formulas supported.</p>
+
+<h2>Multi-Sheet Support</h2>
+<p>All worksheets in your ODS file convert together. Sheet names and organization preserved. Cross-sheet references maintained. Tab colors and visibility settings kept.</p>
+
+<h2>Business-Ready Output</h2>
+<p>Perfect for sharing with Microsoft Office users. Ensure compatibility in corporate settings. Maintain professional spreadsheet appearance. Reliable conversion for financial data.</p>`,
+  },
+  {
+    id: "xlsx-to-ods",
+    name: "XLSX to ODS",
+    description: "Convert Microsoft Excel to OpenDocument Spreadsheet format",
+    icon: "FileSpreadsheet",
+    type: "xlsx-to-ods",
+    color: "bg-teal-600",
+    emoji: "📊",
+    metaTitle: "XLSX to ODS Converter Online Free - Convert to OpenDocument | PDF Tools",
+    metaDescription: "Convert XLSX files to ODS format online for free. Transform Microsoft Excel spreadsheets to OpenDocument format for LibreOffice Calc.",
+    seoArticle: `<h2>XLSX to ODS Converter - Open Format Spreadsheets</h2>
+<p>Convert Microsoft Excel spreadsheets to OpenDocument Spreadsheet format for use with free spreadsheet applications. Our converter maintains your data integrity and formatting throughout the process.</p>
+
+<h2>Preserve Your Spreadsheet</h2>
+<p>Cell values and formulas convert accurately. Formatting including colors and fonts maintained. Charts and graphs transfer properly. Conditional formatting rules preserved.</p>
+
+<h2>Open Standard Benefits</h2>
+<p>ODS is an internationally recognized open format. Works with LibreOffice Calc, Apache OpenOffice, and others. No license fees for viewing or editing. Ideal for long-term data archiving.</p>
+
+<h2>Efficient Conversion</h2>
+<p>Fast processing for spreadsheets of any size. Multiple sheets convert in one operation. Download immediately after conversion. No email or registration required.</p>
+
+<h2>Cross-Platform Freedom</h2>
+<p>Use your spreadsheets on Windows, Mac, or Linux. Perfect for organizations using open source software. Share data without compatibility concerns. Reliable for government and educational use.</p>`,
+  },
+  {
+    id: "odp-to-pptx",
+    name: "ODP to PPTX",
+    description: "Convert OpenDocument Presentation to PowerPoint format",
+    icon: "Columns",
+    type: "odp-to-pptx",
+    color: "bg-red-600",
+    emoji: "📽️",
+    metaTitle: "ODP to PPTX Converter Online Free - Convert Presentations | PDF Tools",
+    metaDescription: "Convert ODP files to PPTX format online for free. Transform OpenDocument Presentations to Microsoft PowerPoint format with slides and animations preserved.",
+    seoArticle: `<h2>ODP to PPTX Converter - PowerPoint Compatibility</h2>
+<p>Convert OpenDocument Presentations to Microsoft PowerPoint format instantly. Our converter ensures your slides, animations, and design elements transfer perfectly for seamless presentation delivery.</p>
+
+<h2>Slide Content Preserved</h2>
+<p>Text boxes and shapes convert accurately. Images and graphics maintain quality. Tables and charts transfer properly. Slide backgrounds and themes preserved.</p>
+
+<h2>Animation Support</h2>
+<p>Slide transitions convert to PowerPoint equivalents. Object animations maintained where possible. Timing settings preserved. Professional presentation effects kept intact.</p>
+
+<h2>Design Fidelity</h2>
+<p>Master slides and layouts transfer correctly. Font styles and sizes maintained. Color schemes preserved accurately. Custom themes convert properly.</p>
+
+<h2>Presentation Ready</h2>
+<p>Output files ready for immediate presentation. Compatible with all PowerPoint versions. Perfect for business meetings and conferences. Professional quality guaranteed.</p>`,
+  },
+  {
+    id: "pptx-to-odp",
+    name: "PPTX to ODP",
+    description: "Convert PowerPoint to OpenDocument Presentation format",
+    icon: "Columns",
+    type: "pptx-to-odp",
+    color: "bg-purple-600",
+    emoji: "🎬",
+    metaTitle: "PPTX to ODP Converter Online Free - Convert to OpenDocument | PDF Tools",
+    metaDescription: "Convert PPTX files to ODP format online for free. Transform Microsoft PowerPoint presentations to OpenDocument format for LibreOffice Impress.",
+    seoArticle: `<h2>PPTX to ODP Converter - Open Format Presentations</h2>
+<p>Convert Microsoft PowerPoint presentations to OpenDocument Presentation format for use with LibreOffice Impress and other free presentation software. Maintain your slide content and design during conversion.</p>
+
+<h2>Complete Slide Conversion</h2>
+<p>All slides convert with content intact. Text formatting and positioning preserved. Images and multimedia elements transfer properly. Speaker notes included in conversion.</p>
+
+<h2>Open Standard Advantage</h2>
+<p>ODP is an open, non-proprietary format. Works with free presentation software. No Microsoft Office license required. Suitable for educational and government use.</p>
+
+<h2>Smooth Transition</h2>
+<p>Easy upload and instant conversion. Download your ODP file immediately. Works on any operating system. No software installation needed.</p>
+
+<h2>Presentation Freedom</h2>
+<p>Present using LibreOffice Impress or Apache OpenOffice. Share presentations without compatibility worries. Perfect for mixed software environments. Reliable format for archiving.</p>`,
+  },
+  {
+    id: "epub-reader",
+    name: "EPUB Reader",
+    description: "Read and view EPUB ebook files directly in your browser",
+    icon: "BookOpen",
+    type: "epub-reader",
+    color: "bg-indigo-500",
+    emoji: "📖",
+    metaTitle: "EPUB Reader Online Free - Read Ebooks in Browser | PDF Tools",
+    metaDescription: "Read EPUB ebook files online for free. View your favorite ebooks directly in your browser without installing any software.",
+    seoArticle: `<h2>EPUB Reader - Read Ebooks Online</h2>
+<p>Open and read EPUB ebook files directly in your web browser. Our free online reader provides a comfortable reading experience without requiring any software installation or account creation.</p>
+
+<h2>Comfortable Reading Experience</h2>
+<p>Clean, distraction-free reading interface. Adjustable font sizes for comfortable viewing. Choose between different reading themes. Responsive design works on any device.</p>
+
+<h2>Navigation Features</h2>
+<p>Table of contents for easy chapter navigation. Bookmark your reading progress. Search within the book content. Page-by-page or continuous scrolling modes.</p>
+
+<h2>Format Support</h2>
+<p>Read standard EPUB 2 and EPUB 3 files. Support for embedded images and graphics. Handle complex formatting and layouts. Process protected and unprotected files.</p>
+
+<h2>Privacy First</h2>
+<p>Your books are processed locally in your browser. No files uploaded to servers. Complete privacy for your reading material. No tracking or data collection.</p>`,
+  },
+  {
+    id: "mobi-to-epub",
+    name: "MOBI to EPUB",
+    description: "Convert Kindle MOBI ebooks to EPUB format",
+    icon: "BookOpen",
+    type: "mobi-to-epub",
+    color: "bg-amber-600",
+    emoji: "📚",
+    metaTitle: "MOBI to EPUB Converter Online Free - Convert Ebooks | PDF Tools",
+    metaDescription: "Convert MOBI files to EPUB format online for free. Transform Kindle ebooks to universal EPUB format for any ebook reader.",
+    seoArticle: `<h2>MOBI to EPUB Converter - Universal Ebook Format</h2>
+<p>Convert Kindle MOBI ebooks to the universal EPUB format. Read your books on any device or ebook reader that supports EPUB, including Kobo, Nook, Apple Books, and more.</p>
+
+<h2>Format Liberation</h2>
+<p>Break free from Kindle-only restrictions. Read on any EPUB-compatible device. Access your books on multiple platforms. No more device lock-in.</p>
+
+<h2>Content Preservation</h2>
+<p>Text formatting maintained during conversion. Chapter structure preserved. Images and graphics included. Table of contents converted properly.</p>
+
+<h2>Wide Compatibility</h2>
+<p>Output works on all major ebook readers. Compatible with tablet and phone apps. Works with desktop reading software. Universal format for long-term access.</p>
+
+<h2>Simple Process</h2>
+<p>Upload your MOBI file securely. Conversion happens instantly. Download your EPUB immediately. No registration or software needed.</p>`,
+  },
+  {
+    id: "epub-to-mobi",
+    name: "EPUB to MOBI",
+    description: "Convert EPUB ebooks to Kindle MOBI format",
+    icon: "BookOpen",
+    type: "epub-to-mobi",
+    color: "bg-yellow-600",
+    emoji: "📕",
+    metaTitle: "EPUB to MOBI Converter Online Free - Convert for Kindle | PDF Tools",
+    metaDescription: "Convert EPUB files to MOBI format online for free. Transform ebooks to Kindle-compatible format for reading on Kindle devices.",
+    seoArticle: `<h2>EPUB to MOBI Converter - Kindle Ready</h2>
+<p>Convert EPUB ebooks to MOBI format for reading on Kindle devices. Our free converter ensures your books are properly formatted for the best Kindle reading experience.</p>
+
+<h2>Kindle Optimization</h2>
+<p>Output optimized for Kindle e-readers. Proper formatting for Kindle apps. Support for Kindle Fire tablets. Compatible with older Kindle devices.</p>
+
+<h2>Content Fidelity</h2>
+<p>Preserve chapter organization and structure. Maintain text formatting and styles. Convert images appropriately. Keep table of contents navigation.</p>
+
+<h2>Easy Conversion</h2>
+<p>Simple drag-and-drop upload. Fast conversion process. Instant download available. No account required.</p>
+
+<h2>Send to Kindle Ready</h2>
+<p>Output compatible with Send to Kindle feature. Transfer via USB or email. Organize in your Kindle library. Read offline anywhere.</p>`,
+  }
 ];

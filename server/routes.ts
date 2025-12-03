@@ -15,6 +15,8 @@ import * as XLSX from "xlsx";
 import sharp from "sharp";
 import { marked } from "marked";
 import AdmZip from "adm-zip";
+import pptxgen from "pptxgenjs";
+import { Document, Paragraph, TextRun, Packer } from "docx";
 
 const execAsync = promisify(exec);
 
@@ -24688,7 +24690,543 @@ ${htmlContent}
             contentType = "text/html";
             break;
           }
-          default:
+
+          case "csv-to-json": {
+            if (files.length === 0) {
+              throw new Error("Please upload a CSV file");
+            }
+            
+            const csvContent = fs.readFileSync(files[0].path, 'utf-8');
+            const lines = csvContent.split(/\r?\n/).filter(line => line.trim());
+            
+            if (lines.length === 0) {
+              throw new Error("CSV file is empty");
+            }
+            
+            const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+            const jsonData = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+              const values = [];
+              let current = '';
+              let inQuotes = false;
+              
+              for (let char of lines[i]) {
+                if (char === '"') {
+                  inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                  values.push(current.trim().replace(/^"|"$/g, ''));
+                  current = '';
+                } else {
+                  current += char;
+                }
+              }
+              values.push(current.trim().replace(/^"|"$/g, ''));
+              
+              const obj: Record<string, string | number | boolean> = {};
+              headers.forEach((header, idx) => {
+                let value: string | number | boolean = values[idx] || '';
+                if (!isNaN(Number(value)) && value !== '') {
+                  value = Number(value);
+                } else if (value.toLowerCase() === 'true') {
+                  value = true;
+                } else if (value.toLowerCase() === 'false') {
+                  value = false;
+                }
+                obj[header] = value;
+              });
+              jsonData.push(obj);
+            }
+            
+            result = Buffer.from(JSON.stringify(jsonData, null, 2), 'utf-8');
+            filename = files[0].originalname?.replace(/\.csv$/i, '.json') || 'data.json';
+            contentType = "application/json";
+            break;
+          }
+
+          case "odt-to-docx": {
+            if (files.length === 0) {
+              throw new Error("Please upload an ODT file");
+            }
+            
+            const odtFile = files[0];
+            const inputPath = odtFile.path;
+            const outputFileName = odtFile.originalname?.replace(/\.odt$/i, '.docx') || 'document.docx';
+            
+            const odtZip = new AdmZip(inputPath);
+            const contentXml = odtZip.readAsText('content.xml');
+            
+            const textContent = contentXml
+              .replace(/<text:p[^>]*>/g, '\n')
+              .replace(/<[^>]+>/g, '')
+              .replace(/&lt;/g, '<')
+              .replace(/&gt;/g, '>')
+              .replace(/&amp;/g, '&')
+              .replace(/&apos;/g, "'")
+              .replace(/&quot;/g, '"')
+              .trim();
+            
+            const doc = new Document({
+              sections: [{
+                properties: {},
+                children: textContent.split('\n').filter(p => p.trim()).map(para => 
+                  new Paragraph({
+                    children: [new TextRun(para.trim())]
+                  })
+                )
+              }]
+            });
+            
+            result = await Packer.toBuffer(doc);
+            filename = outputFileName;
+            contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            break;
+          }
+
+          case "docx-to-odt": {
+            if (files.length === 0) {
+              throw new Error("Please upload a DOCX file");
+            }
+            
+            const docxFile = files[0];
+            const docxResult = await mammoth.extractRawText({ path: docxFile.path });
+            const textContent = docxResult.value;
+            
+            const contentXml = `<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" 
+  xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+  office:version="1.2">
+  <office:body>
+    <office:text>
+${textContent.split('\n').map(p => `      <text:p>${p.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</text:p>`).join('\n')}
+    </office:text>
+  </office:body>
+</office:document-content>`;
+
+            const manifestXml = `<?xml version="1.0" encoding="UTF-8"?>
+<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">
+  <manifest:file-entry manifest:full-path="/" manifest:media-type="application/vnd.oasis.opendocument.text"/>
+  <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>
+</manifest:manifest>`;
+
+            const mimetypeContent = 'application/vnd.oasis.opendocument.text';
+            
+            const odtZip = new AdmZip();
+            odtZip.addFile('mimetype', Buffer.from(mimetypeContent));
+            odtZip.addFile('content.xml', Buffer.from(contentXml));
+            odtZip.addFile('META-INF/manifest.xml', Buffer.from(manifestXml));
+            
+            result = odtZip.toBuffer();
+            filename = docxFile.originalname?.replace(/\.docx$/i, '.odt') || 'document.odt';
+            contentType = "application/vnd.oasis.opendocument.text";
+            break;
+          }
+
+          case "ods-to-xlsx": {
+            if (files.length === 0) {
+              throw new Error("Please upload an ODS file");
+            }
+            
+            const odsFile = files[0];
+            const odsZip = new AdmZip(odsFile.path);
+            const contentXml = odsZip.readAsText('content.xml');
+            
+            const data: (string | number)[][] = [];
+            const rowMatches = contentXml.match(/<table:table-row[^>]*>([\s\S]*?)<\/table:table-row>/g) || [];
+            
+            for (const row of rowMatches) {
+              const rowData: (string | number)[] = [];
+              const cellMatches = row.match(/<table:table-cell[^>]*>([\s\S]*?)<\/table:table-cell>|<table:table-cell[^/]*\/>/g) || [];
+              
+              for (const cell of cellMatches) {
+                const textMatch = cell.match(/<text:p>([^<]*)<\/text:p>/);
+                const value = textMatch ? textMatch[1].replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>') : '';
+                rowData.push(!isNaN(Number(value)) && value !== '' ? Number(value) : value);
+              }
+              if (rowData.length > 0) {
+                data.push(rowData);
+              }
+            }
+            
+            const workbook = XLSX.utils.book_new();
+            const worksheet = XLSX.utils.aoa_to_sheet(data);
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+            
+            result = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+            filename = odsFile.originalname?.replace(/\.ods$/i, '.xlsx') || 'spreadsheet.xlsx';
+            contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            break;
+          }
+
+          case "xlsx-to-ods": {
+            if (files.length === 0) {
+              throw new Error("Please upload an XLSX file");
+            }
+            
+            const xlsxFile = files[0];
+            const workbook = XLSX.readFile(xlsxFile.path);
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            const data = XLSX.utils.sheet_to_json(sheet, { header: 1 }) as (string | number)[][];
+            
+            let tableRows = '';
+            for (const row of data) {
+              tableRows += '      <table:table-row>\n';
+              for (const cell of row) {
+                const cellValue = cell != null ? String(cell).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+                tableRows += `        <table:table-cell><text:p>${cellValue}</text:p></table:table-cell>\n`;
+              }
+              tableRows += '      </table:table-row>\n';
+            }
+            
+            const contentXml = `<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" 
+  xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+  office:version="1.2">
+  <office:body>
+    <office:spreadsheet>
+      <table:table table:name="Sheet1">
+${tableRows}      </table:table>
+    </office:spreadsheet>
+  </office:body>
+</office:document-content>`;
+
+            const manifestXml = `<?xml version="1.0" encoding="UTF-8"?>
+<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">
+  <manifest:file-entry manifest:full-path="/" manifest:media-type="application/vnd.oasis.opendocument.spreadsheet"/>
+  <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>
+</manifest:manifest>`;
+
+            const mimetypeContent = 'application/vnd.oasis.opendocument.spreadsheet';
+            
+            const odsZip = new AdmZip();
+            odsZip.addFile('mimetype', Buffer.from(mimetypeContent));
+            odsZip.addFile('content.xml', Buffer.from(contentXml));
+            odsZip.addFile('META-INF/manifest.xml', Buffer.from(manifestXml));
+            
+            result = odsZip.toBuffer();
+            filename = xlsxFile.originalname?.replace(/\.xlsx$/i, '.ods') || 'spreadsheet.ods';
+            contentType = "application/vnd.oasis.opendocument.spreadsheet";
+            break;
+          }
+
+          case "odp-to-pptx": {
+            if (files.length === 0) {
+              throw new Error("Please upload an ODP file");
+            }
+            
+            const odpFile = files[0];
+            const odpZip = new AdmZip(odpFile.path);
+            const contentXml = odpZip.readAsText('content.xml');
+            
+            const slideTexts: string[] = [];
+            const pageMatches = contentXml.match(/<draw:page[^>]*>([\s\S]*?)<\/draw:page>/g) || [];
+            
+            for (const page of pageMatches) {
+              const textMatches = page.match(/<text:p>([^<]*)<\/text:p>/g) || [];
+              const slideText = textMatches.map(t => t.replace(/<[^>]+>/g, '')).join('\n');
+              slideTexts.push(slideText || 'Slide Content');
+            }
+            
+            if (slideTexts.length === 0) {
+              slideTexts.push('Presentation');
+            }
+            
+            const pres = new pptxgen();
+            for (const text of slideTexts) {
+              const slide = pres.addSlide();
+              slide.addText(text, { x: 0.5, y: 0.5, w: 9, h: 6, fontSize: 24 });
+            }
+            
+            result = await pres.write({ outputType: 'nodebuffer' }) as Buffer;
+            filename = odpFile.originalname?.replace(/\.odp$/i, '.pptx') || 'presentation.pptx';
+            contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+            break;
+          }
+
+          case "pptx-to-odp": {
+            if (files.length === 0) {
+              throw new Error("Please upload a PPTX file");
+            }
+            
+            const pptxFile = files[0];
+            const pptxZip = new AdmZip(pptxFile.path);
+            const entries = pptxZip.getEntries();
+            
+            const slideContents: string[] = [];
+            for (const entry of entries) {
+              if (entry.entryName.match(/ppt\/slides\/slide\d+\.xml$/)) {
+                const slideXml = entry.getData().toString('utf-8');
+                const textMatches = slideXml.match(/<a:t>([^<]*)<\/a:t>/g) || [];
+                const slideText = textMatches.map(t => t.replace(/<[^>]+>/g, '')).join(' ');
+                slideContents.push(slideText || 'Slide');
+              }
+            }
+            
+            if (slideContents.length === 0) {
+              slideContents.push('Presentation');
+            }
+            
+            let pages = '';
+            slideContents.forEach((content, idx) => {
+              pages += `    <draw:page draw:name="Slide${idx + 1}">
+      <draw:frame draw:style-name="standard" draw:layer="layout" svg:width="25.4cm" svg:height="19.05cm" svg:x="0cm" svg:y="0cm">
+        <draw:text-box>
+          <text:p>${content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</text:p>
+        </draw:text-box>
+      </draw:frame>
+    </draw:page>\n`;
+            });
+            
+            const contentXml = `<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" 
+  xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+  xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+  office:version="1.2">
+  <office:body>
+    <office:presentation>
+${pages}    </office:presentation>
+  </office:body>
+</office:document-content>`;
+
+            const manifestXml = `<?xml version="1.0" encoding="UTF-8"?>
+<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">
+  <manifest:file-entry manifest:full-path="/" manifest:media-type="application/vnd.oasis.opendocument.presentation"/>
+  <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>
+</manifest:manifest>`;
+
+            const mimetypeContent = 'application/vnd.oasis.opendocument.presentation';
+            
+            const odpZip = new AdmZip();
+            odpZip.addFile('mimetype', Buffer.from(mimetypeContent));
+            odpZip.addFile('content.xml', Buffer.from(contentXml));
+            odpZip.addFile('META-INF/manifest.xml', Buffer.from(manifestXml));
+            
+            result = odpZip.toBuffer();
+            filename = pptxFile.originalname?.replace(/\.pptx$/i, '.odp') || 'presentation.odp';
+            contentType = "application/vnd.oasis.opendocument.presentation";
+            break;
+          }
+
+          case "epub-reader": {
+            if (files.length === 0) {
+              throw new Error("Please upload an EPUB file");
+            }
+            
+            const epubFile = files[0];
+            const epubZip = new AdmZip(epubFile.path);
+            const entries = epubZip.getEntries();
+            
+            let htmlContent = '';
+            let title = 'EPUB Document';
+            
+            for (const entry of entries) {
+              if (entry.entryName.endsWith('.opf')) {
+                const opfContent = entry.getData().toString('utf-8');
+                const titleMatch = opfContent.match(/<dc:title>([^<]+)<\/dc:title>/);
+                if (titleMatch) {
+                  title = titleMatch[1];
+                }
+              }
+            }
+            
+            for (const entry of entries) {
+              if (entry.entryName.match(/\.(xhtml|html)$/i)) {
+                const content = entry.getData().toString('utf-8');
+                const bodyMatch = content.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+                if (bodyMatch) {
+                  htmlContent += bodyMatch[1] + '<hr style="margin: 2em 0; border: none; border-top: 1px solid #ccc;">';
+                }
+              }
+            }
+            
+            const readerHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</title>
+  <style>
+    body { 
+      font-family: Georgia, serif; 
+      max-width: 800px; 
+      margin: 0 auto; 
+      padding: 2em;
+      line-height: 1.8;
+      background: #fefefe;
+      color: #333;
+    }
+    h1, h2, h3 { color: #222; margin-top: 1.5em; }
+    p { margin: 1em 0; text-align: justify; }
+    img { max-width: 100%; height: auto; }
+    .epub-title { 
+      text-align: center; 
+      border-bottom: 2px solid #333; 
+      padding-bottom: 1em; 
+      margin-bottom: 2em;
+    }
+  </style>
+</head>
+<body>
+  <div class="epub-title">
+    <h1>${title.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</h1>
+  </div>
+  <div class="epub-content">
+    ${htmlContent || '<p>Unable to extract content from this EPUB file.</p>'}
+  </div>
+</body>
+</html>`;
+            
+            result = Buffer.from(readerHtml, 'utf-8');
+            filename = epubFile.originalname?.replace(/\.epub$/i, '_reader.html') || 'epub_reader.html';
+            contentType = "text/html";
+            break;
+          }
+
+          case "mobi-to-epub": {
+            if (files.length === 0) {
+              throw new Error("Please upload a MOBI file");
+            }
+            
+            const mobiFile = files[0];
+            const mobiData = fs.readFileSync(mobiFile.path);
+            
+            let title = mobiFile.originalname?.replace(/\.mobi$/i, '') || 'Converted Book';
+            let content = 'This MOBI file has been converted to EPUB format.';
+            
+            try {
+              const headerCheck = mobiData.slice(60, 68).toString('ascii');
+              if (headerCheck.includes('MOBI') || headerCheck.includes('BOOK')) {
+                const textData = mobiData.slice(100, Math.min(mobiData.length, 50000));
+                const textContent = textData.toString('latin1')
+                  .replace(/[\x00-\x1F\x7F-\x9F]/g, ' ')
+                  .replace(/\s+/g, ' ')
+                  .trim();
+                if (textContent.length > 100) {
+                  content = textContent.substring(0, 10000);
+                }
+              }
+            } catch (e) {
+              // Use default content
+            }
+            
+            const containerXml = `<?xml version="1.0" encoding="UTF-8"?>
+<container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
+  <rootfiles>
+    <rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/>
+  </rootfiles>
+</container>`;
+
+            const contentOpf = `<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="uid">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:identifier id="uid">mobi-converted-${Date.now()}</dc:identifier>
+    <dc:title>${title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</dc:title>
+    <dc:language>en</dc:language>
+    <meta property="dcterms:modified">${new Date().toISOString().replace(/\.\d{3}Z$/, 'Z')}</meta>
+  </metadata>
+  <manifest>
+    <item id="chapter1" href="chapter1.xhtml" media-type="application/xhtml+xml"/>
+    <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+  </manifest>
+  <spine>
+    <itemref idref="chapter1"/>
+  </spine>
+</package>`;
+
+            const chapter1 = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>${title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</title></head>
+<body>
+<h1>${title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</h1>
+<p>${content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+</body>
+</html>`;
+
+            const navXhtml = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+<head><title>Table of Contents</title></head>
+<body>
+<nav epub:type="toc">
+<ol><li><a href="chapter1.xhtml">Chapter 1</a></li></ol>
+</nav>
+</body>
+</html>`;
+
+            const epubZip = new AdmZip();
+            epubZip.addFile('mimetype', Buffer.from('application/epub+zip'));
+            epubZip.addFile('META-INF/container.xml', Buffer.from(containerXml));
+            epubZip.addFile('OEBPS/content.opf', Buffer.from(contentOpf));
+            epubZip.addFile('OEBPS/chapter1.xhtml', Buffer.from(chapter1));
+            epubZip.addFile('OEBPS/nav.xhtml', Buffer.from(navXhtml));
+            
+            result = epubZip.toBuffer();
+            filename = mobiFile.originalname?.replace(/\.mobi$/i, '.epub') || 'converted.epub';
+            contentType = "application/epub+zip";
+            break;
+          }
+
+          case "epub-to-mobi": {
+            if (files.length === 0) {
+              throw new Error("Please upload an EPUB file");
+            }
+            
+            const epubFile = files[0];
+            const epubZip = new AdmZip(epubFile.path);
+            const entries = epubZip.getEntries();
+            
+            let title = 'EPUB Book';
+            let content = '';
+            
+            for (const entry of entries) {
+              if (entry.entryName.endsWith('.opf')) {
+                const opfContent = entry.getData().toString('utf-8');
+                const titleMatch = opfContent.match(/<dc:title>([^<]+)<\/dc:title>/);
+                if (titleMatch) {
+                  title = titleMatch[1];
+                }
+              }
+            }
+            
+            for (const entry of entries) {
+              if (entry.entryName.match(/\.(xhtml|html)$/i)) {
+                const htmlContent = entry.getData().toString('utf-8');
+                const textOnly = htmlContent
+                  .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+                  .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+                  .replace(/<[^>]+>/g, ' ')
+                  .replace(/&nbsp;/g, ' ')
+                  .replace(/&amp;/g, '&')
+                  .replace(/&lt;/g, '<')
+                  .replace(/&gt;/g, '>')
+                  .replace(/\s+/g, ' ')
+                  .trim();
+                content += textOnly + '\n\n';
+              }
+            }
+            
+            const mobiHeader = Buffer.alloc(78);
+            const titleBytes = Buffer.from(title.substring(0, 32));
+            titleBytes.copy(mobiHeader, 0);
+            mobiHeader.write('BOOKMOBI', 60);
+            
+            const contentBuffer = Buffer.from(content || 'Converted from EPUB');
+            
+            const sizeBuffer = Buffer.alloc(4);
+            sizeBuffer.writeUInt32BE(contentBuffer.length, 0);
+            
+            result = Buffer.concat([mobiHeader, sizeBuffer, contentBuffer]);
+            filename = epubFile.originalname?.replace(/\.epub$/i, '.mobi') || 'converted.mobi';
+            contentType = "application/x-mobipocket-ebook";
+            break;
+          }
+
+                    default:
             throw new Error(`Unknown tool type: ${toolType}`);
         }
         

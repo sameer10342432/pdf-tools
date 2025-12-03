@@ -510,6 +510,37 @@ export default function ToolPage() {
     if (tool.type === "markdown-editor") {
       return ".md,.markdown,text/markdown,text/plain";
     }
+
+    if (tool.type === "csv-to-json") {
+      return ".csv,text/csv,application/csv";
+    }
+    if (tool.type === "odt-to-docx") {
+      return ".odt,application/vnd.oasis.opendocument.text";
+    }
+    if (tool.type === "docx-to-odt") {
+      return ".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    }
+    if (tool.type === "ods-to-xlsx") {
+      return ".ods,application/vnd.oasis.opendocument.spreadsheet";
+    }
+    if (tool.type === "xlsx-to-ods") {
+      return ".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    }
+    if (tool.type === "odp-to-pptx") {
+      return ".odp,application/vnd.oasis.opendocument.presentation";
+    }
+    if (tool.type === "pptx-to-odp") {
+      return ".pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    }
+    if (tool.type === "epub-reader") {
+      return ".epub,application/epub+zip";
+    }
+    if (tool.type === "mobi-to-epub") {
+      return ".mobi,.azw,.azw3,application/x-mobipocket-ebook";
+    }
+    if (tool.type === "epub-to-mobi") {
+      return ".epub,application/epub+zip";
+    }
     if (tool.type === "csv-viewer") {
       return ".csv,text/csv,application/csv";
     }
