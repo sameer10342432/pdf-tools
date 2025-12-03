@@ -14033,6 +14033,158 @@ async function urlEncoder(input: string, encodeAll: boolean = false): Promise<Bu
   return Buffer.from(encoded, 'utf-8');
 }
 
+
+// URL Decode function
+async function urlDecode(input: string): Promise<Buffer> {
+  try {
+    const decoded = decodeURIComponent(input);
+    return Buffer.from(decoded, "utf-8");
+  } catch (error) {
+    throw new Error("Invalid URL-encoded string");
+  }
+}
+
+// Text Case Converter function
+async function textCaseConverter(input: string, caseType: string): Promise<Buffer> {
+  let result: string;
+  switch (caseType) {
+    case "uppercase":
+      result = input.toUpperCase();
+      break;
+    case "lowercase":
+      result = input.toLowerCase();
+      break;
+    case "titlecase":
+      result = input.toLowerCase().replace(/(?:^|\s|["'([{])\S/g, (match) => match.toUpperCase());
+      break;
+    case "sentencecase":
+      result = input.toLowerCase().replace(/(^\s*|[.!?]\s+)([a-z])/g, (match, p1, p2) => p1 + p2.toUpperCase());
+      break;
+    default:
+      result = input;
+  }
+  return Buffer.from(result, "utf-8");
+}
+
+// Uppercase Converter function
+async function uppercaseConverter(input: string): Promise<Buffer> {
+  return Buffer.from(input.toUpperCase(), "utf-8");
+}
+
+// Lowercase Converter function
+async function lowercaseConverter(input: string): Promise<Buffer> {
+  return Buffer.from(input.toLowerCase(), "utf-8");
+}
+
+// Title Case Converter function
+async function titleCaseConverter(input: string): Promise<Buffer> {
+  const result = input.toLowerCase().replace(/(?:^|\s|["'([{])\S/g, (match) => match.toUpperCase());
+  return Buffer.from(result, "utf-8");
+}
+
+// Sentence Case Converter function
+async function sentenceCaseConverter(input: string): Promise<Buffer> {
+  const result = input.toLowerCase().replace(/(^\s*|[.!?]\s+)([a-z])/g, (match, p1, p2) => p1 + p2.toUpperCase());
+  return Buffer.from(result, "utf-8");
+}
+
+// Remove Line Breaks function
+async function removeLineBreaks(input: string): Promise<Buffer> {
+  const result = input.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
+  return Buffer.from(result, "utf-8");
+}
+
+// Add Line Breaks function
+async function addLineBreaks(input: string, interval: number, breakAtWords: boolean): Promise<Buffer> {
+  if (interval <= 0) interval = 80;
+  let result: string;
+  if (breakAtWords) {
+    const words = input.split(/\s+/);
+    let currentLine = "";
+    const lines: string[] = [];
+    for (const word of words) {
+      if (currentLine.length + word.length + 1 > interval && currentLine.length > 0) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = currentLine ? currentLine + " " + word : word;
+      }
+    }
+    if (currentLine) lines.push(currentLine);
+    result = lines.join("\n");
+  } else {
+    const lines: string[] = [];
+    for (let i = 0; i < input.length; i += interval) {
+      lines.push(input.slice(i, i + interval));
+    }
+    result = lines.join("\n");
+  }
+  return Buffer.from(result, "utf-8");
+}
+
+// Text Sorter function
+async function textSorter(input: string, sortType: string, removeDuplicates: boolean): Promise<Buffer> {
+  let lines = input.split(/\r?\n/);
+  if (removeDuplicates) {
+    lines = [...new Set(lines)];
+  }
+  switch (sortType) {
+    case "az":
+      lines.sort((a, b) => a.localeCompare(b));
+      break;
+    case "za":
+      lines.sort((a, b) => b.localeCompare(a));
+      break;
+    case "numeric":
+      lines.sort((a, b) => {
+        const numA = parseFloat(a.replace(/[^0-9.-]/g, "")) || 0;
+        const numB = parseFloat(b.replace(/[^0-9.-]/g, "")) || 0;
+        return numA - numB;
+      });
+      break;
+    case "numeric-desc":
+      lines.sort((a, b) => {
+        const numA = parseFloat(a.replace(/[^0-9.-]/g, "")) || 0;
+        const numB = parseFloat(b.replace(/[^0-9.-]/g, "")) || 0;
+        return numB - numA;
+      });
+      break;
+    case "length":
+      lines.sort((a, b) => a.length - b.length);
+      break;
+    case "length-desc":
+      lines.sort((a, b) => b.length - a.length);
+      break;
+    default:
+      lines.sort((a, b) => a.localeCompare(b));
+  }
+  return Buffer.from(lines.join("\n"), "utf-8");
+}
+
+// Alphabetize List function
+async function alphabetizeList(input: string, order: string, delimiter: string, removeDuplicates: boolean): Promise<Buffer> {
+  let items: string[];
+  if (delimiter === "newline" || delimiter === "line") {
+    items = input.split(/\r?\n/);
+  } else if (delimiter === "comma") {
+    items = input.split(/,\s*/);
+  } else if (delimiter === "space") {
+    items = input.split(/\s+/);
+  } else {
+    items = input.split(/\r?\n/);
+  }
+  items = items.map(item => item.trim()).filter(item => item.length > 0);
+  if (removeDuplicates) {
+    items = [...new Set(items)];
+  }
+  if (order === "za" || order === "desc") {
+    items.sort((a, b) => b.localeCompare(a, undefined, { sensitivity: "base" }));
+  } else {
+    items.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+  }
+  return Buffer.from(items.join("\n"), "utf-8");
+}
+
 async function jsonMinifier(jsonInput: string): Promise<Buffer> {
   let result = '';
   try {
@@ -27604,6 +27756,155 @@ ${pages}    </office:presentation>
             contentType = "text/plain";
             break;
           }
+
+          case "url-decode": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide URL-encoded text to decode");
+            }
+            result = await urlDecode(input);
+            filename = "url-decoded.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "text-case-converter": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to convert");
+            }
+            const caseType = options.caseType || 'lowercase';
+            result = await textCaseConverter(input, caseType);
+            filename = "case-converted.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "uppercase-converter": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to convert to uppercase");
+            }
+            result = await uppercaseConverter(input);
+            filename = "uppercase.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "lowercase-converter": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to convert to lowercase");
+            }
+            result = await lowercaseConverter(input);
+            filename = "lowercase.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "title-case-converter": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to convert to title case");
+            }
+            result = await titleCaseConverter(input);
+            filename = "title-case.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "sentence-case-converter": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to convert to sentence case");
+            }
+            result = await sentenceCaseConverter(input);
+            filename = "sentence-case.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "remove-line-breaks": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to remove line breaks from");
+            }
+            result = await removeLineBreaks(input);
+            filename = "no-line-breaks.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "add-line-breaks": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to add line breaks to");
+            }
+            const interval = parseInt(options.interval || '80', 10);
+            const breakAtWords = options.breakAtWords === 'true' || options.breakAtWords === true;
+            result = await addLineBreaks(input, interval, breakAtWords);
+            filename = "with-line-breaks.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "text-sorter": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text to sort");
+            }
+            const sortType = options.sortType || 'az';
+            const removeDuplicates = options.removeDuplicates === 'true' || options.removeDuplicates === true;
+            result = await textSorter(input, sortType, removeDuplicates);
+            filename = "sorted-text.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "alphabetize-list": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide a list to alphabetize");
+            }
+            const order = options.order || 'az';
+            const delimiter = options.delimiter || 'newline';
+            const removeDuplicates = options.removeDuplicates === 'true' || options.removeDuplicates === true;
+            result = await alphabetizeList(input, order, delimiter, removeDuplicates);
+            filename = "alphabetized-list.txt";
+            contentType = "text/plain";
+            break;
+          }
+
 
           case "json-formatter": {
             let jsonInput = options.jsonInput || '';

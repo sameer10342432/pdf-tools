@@ -596,6 +596,16 @@ export const pdfToolTypes = [
   "base64-encode",
   "base64-decode",
   "url-encoder",
+  "url-decode",
+  "text-case-converter",
+  "uppercase-converter",
+  "lowercase-converter",
+  "title-case-converter",
+  "sentence-case-converter",
+  "remove-line-breaks",
+  "add-line-breaks",
+  "text-sorter",
+  "alphabetize-list",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -16922,3 +16932,259 @@ const developerTools: PdfTool[] = [
 ];
 
 pdfTools.push(...developerTools);
+
+// Text manipulation tools
+const textTools: PdfTool[] = [
+  {
+    id: "url-decode",
+    name: "URL Decode",
+    description: "Decode URL-encoded strings back to readable text",
+    icon: "Unlink",
+    type: "url-decode",
+    color: "bg-violet-500",
+    emoji: "🔓",
+    metaTitle: "URL Decoder Online Free - Decode URL Encoded Text | PDF Tools",
+    metaDescription: "Decode URL-encoded strings online for free. Convert percent-encoded text back to readable format. Perfect for debugging URLs and query strings.",
+    seoArticle: `<h2>URL Decoder - Decode URL Encoded Text</h2>
+<p>Decode URL-encoded strings back to readable text with our free online URL decoder. Essential for understanding encoded URLs, debugging query strings, and reading percent-encoded data.</p>
+
+<h2>What is URL Decoding?</h2>
+<p>URL decoding reverses the percent-encoding process, converting encoded characters like %20 back to spaces, %26 back to ampersands, and other encoded sequences to their original characters.</p>
+
+<h2>Debug URLs Instantly</h2>
+<p>When working with APIs or analyzing URLs, you often encounter encoded text. Our decoder instantly reveals the original content, making it easy to understand what data is being transmitted.</p>
+
+<h2>Full Unicode Support</h2>
+<p>Properly decode UTF-8 encoded URLs containing international characters, emojis, and special symbols. Our decoder handles multi-byte sequences correctly.</p>
+
+<h2>Common Use Cases</h2>
+<p>Developers use URL decoding for debugging API requests, analyzing web traffic, understanding encoded form data, and extracting information from complex URLs with query parameters.</p>`,
+  },
+  {
+    id: "text-case-converter",
+    name: "Text Case Converter",
+    description: "Convert text between different cases in one place",
+    icon: "Type",
+    type: "text-case-converter",
+    color: "bg-blue-500",
+    emoji: "🔤",
+    metaTitle: "Text Case Converter Online Free - Change Text Case | PDF Tools",
+    metaDescription: "Convert text between uppercase, lowercase, title case, and sentence case online for free. All text case conversions in one powerful tool.",
+    seoArticle: `<h2>Text Case Converter - All Case Conversions</h2>
+<p>Transform your text between any case format with our comprehensive text case converter. Whether you need uppercase, lowercase, title case, or sentence case, this tool handles all conversions instantly.</p>
+
+<h2>Multiple Case Options</h2>
+<p>Convert to uppercase for emphasis, lowercase for consistency, title case for headings, or sentence case for proper formatting. Switch between formats with a single click and compare results.</p>
+
+<h2>Perfect for Content Creators</h2>
+<p>Writers, editors, and content managers use this tool daily to format headlines, fix caps lock mistakes, and ensure consistent capitalization across documents and websites.</p>
+
+<h2>Smart Capitalization</h2>
+<p>Our title case and sentence case converters intelligently handle common words that should remain lowercase, like articles and prepositions, while properly capitalizing the first letter of sentences.</p>
+
+<h2>Preserve Special Characters</h2>
+<p>Numbers, symbols, and punctuation remain unchanged during conversion. Only alphabetic characters are affected, ensuring your formatted text maintains all other elements intact.</p>`,
+  },
+  {
+    id: "uppercase-converter",
+    name: "Uppercase Converter",
+    description: "Convert all text to UPPERCASE letters",
+    icon: "ChevronsUp",
+    type: "uppercase-converter",
+    color: "bg-red-500",
+    emoji: "🔠",
+    metaTitle: "Uppercase Converter Online Free - Convert to UPPERCASE | PDF Tools",
+    metaDescription: "Convert text to uppercase online for free. Transform any text to all capital letters instantly. Perfect for headings and emphasis.",
+    seoArticle: `<h2>Uppercase Converter - Convert to Capital Letters</h2>
+<p>Transform any text to uppercase with our free online converter. Perfect for creating headings, acronyms, or adding emphasis to your content. All lowercase letters become capitals instantly.</p>
+
+<h2>Instant Uppercase Conversion</h2>
+<p>Simply paste your text and see it transformed to all capital letters immediately. No registration required, no limits on text length, and completely free to use.</p>
+
+<h2>Common Uses</h2>
+<p>Create attention-grabbing headlines, format titles and headers, generate acronyms, prepare text for logos and branding, or fix accidentally typed lowercase text.</p>
+
+<h2>Preserve Formatting</h2>
+<p>Line breaks, spacing, and special characters are preserved during conversion. Only alphabetic characters are affected, maintaining the structure of your original text.</p>
+
+<h2>International Character Support</h2>
+<p>Full Unicode support means accented characters, Greek letters, Cyrillic text, and other international alphabets are properly converted to their uppercase equivalents.</p>`,
+  },
+  {
+    id: "lowercase-converter",
+    name: "Lowercase Converter",
+    description: "Convert all text to lowercase letters",
+    icon: "ChevronsDown",
+    type: "lowercase-converter",
+    color: "bg-green-500",
+    emoji: "🔡",
+    metaTitle: "Lowercase Converter Online Free - Convert to lowercase | PDF Tools",
+    metaDescription: "Convert text to lowercase online for free. Transform any text to all small letters instantly. Fix caps lock mistakes easily.",
+    seoArticle: `<h2>Lowercase Converter - Convert to Small Letters</h2>
+<p>Transform any text to lowercase with our free online converter. Perfect for fixing caps lock mistakes, standardizing text format, or preparing data for case-insensitive processing.</p>
+
+<h2>Quick Lowercase Conversion</h2>
+<p>Paste text with any combination of cases and see it converted to all lowercase letters instantly. Handles text of any length without limits or registration.</p>
+
+<h2>Fix Caps Lock Errors</h2>
+<p>Accidentally typed an entire paragraph with caps lock on? No need to retype. Paste your text here and get the lowercase version immediately.</p>
+
+<h2>Data Normalization</h2>
+<p>Developers and data analysts use lowercase conversion to normalize text data, prepare strings for comparison, and ensure consistent formatting in databases and files.</p>
+
+<h2>Preserve Structure</h2>
+<p>Line breaks, punctuation, numbers, and spacing remain unchanged. Only uppercase letters are converted to lowercase, maintaining the overall structure of your text.</p>`,
+  },
+  {
+    id: "title-case-converter",
+    name: "Title Case Converter",
+    description: "Convert text to Title Case for headings",
+    icon: "Heading",
+    type: "title-case-converter",
+    color: "bg-purple-500",
+    emoji: "📰",
+    metaTitle: "Title Case Converter Online Free - Capitalize Titles | PDF Tools",
+    metaDescription: "Convert text to title case online for free. Capitalize the first letter of each word for professional headings and titles.",
+    seoArticle: `<h2>Title Case Converter - Format Perfect Titles</h2>
+<p>Transform your text to professional title case with our free online converter. Each word gets capitalized properly, creating polished headings for articles, essays, and documents.</p>
+
+<h2>Smart Title Formatting</h2>
+<p>Our converter follows standard title capitalization rules. Major words are capitalized while articles, conjunctions, and short prepositions remain lowercase unless they start the title.</p>
+
+<h2>Perfect for Headlines</h2>
+<p>Journalists, bloggers, and content creators rely on title case for headlines that look professional and follow publication standards. Create consistent, polished titles every time.</p>
+
+<h2>Book and Article Titles</h2>
+<p>Format book titles, chapter headings, article names, and section headers correctly. Proper title case makes your content look professionally edited and publication-ready.</p>
+
+<h2>Quick Results</h2>
+<p>Paste any text and see it converted to title case instantly. No registration, no software to install, and completely free. Works with text of any length.</p>`,
+  },
+  {
+    id: "sentence-case-converter",
+    name: "Sentence Case Converter",
+    description: "Convert text to Sentence case format",
+    icon: "TextCursor",
+    type: "sentence-case-converter",
+    color: "bg-cyan-500",
+    emoji: "💬",
+    metaTitle: "Sentence Case Converter Online Free - Format Sentences | PDF Tools",
+    metaDescription: "Convert text to sentence case online for free. Capitalize the first letter of each sentence for proper formatting.",
+    seoArticle: `<h2>Sentence Case Converter - Proper Sentence Formatting</h2>
+<p>Transform your text to proper sentence case with our free online converter. The first letter of each sentence is capitalized while the rest remains lowercase, creating natural, readable text.</p>
+
+<h2>Natural Text Formatting</h2>
+<p>Sentence case is the most readable format for body text. Our converter ensures each sentence starts with a capital letter while maintaining lowercase for the rest, following standard writing conventions.</p>
+
+<h2>Fix Formatting Issues</h2>
+<p>Got text with inconsistent capitalization? Convert it to sentence case for a clean, professional look. Perfect for fixing text copied from various sources or correcting formatting errors.</p>
+
+<h2>Proper Noun Recognition</h2>
+<p>While converting to sentence case, proper nouns and specific terms may need manual adjustment. The converter provides a great starting point for consistent text formatting.</p>
+
+<h2>Ideal for Documents</h2>
+<p>Use sentence case for paragraphs, descriptions, and body content in documents. It's the standard format for professional writing and improves readability.</p>`,
+  },
+  {
+    id: "remove-line-breaks",
+    name: "Remove Line Breaks",
+    description: "Remove all line breaks from text",
+    icon: "WrapText",
+    type: "remove-line-breaks",
+    color: "bg-amber-500",
+    emoji: "📝",
+    metaTitle: "Remove Line Breaks Online Free - Delete Line Breaks | PDF Tools",
+    metaDescription: "Remove line breaks from text online for free. Convert multi-line text to single line. Perfect for cleaning copied text.",
+    seoArticle: `<h2>Remove Line Breaks - Clean Up Text</h2>
+<p>Remove unwanted line breaks from your text with our free online tool. Convert multi-line text into a single continuous paragraph, perfect for cleaning up copied content.</p>
+
+<h2>Clean Copied Text</h2>
+<p>Text copied from PDFs, websites, or emails often has unwanted line breaks. Our tool removes them instantly, giving you clean, continuous text ready for use.</p>
+
+<h2>Prepare Text for Single Lines</h2>
+<p>Need text on a single line for code, spreadsheets, or forms? Remove all line breaks quickly and maintain proper spacing between words.</p>
+
+<h2>Preserve Word Spacing</h2>
+<p>When removing line breaks, our tool adds proper spacing between words that were separated by line breaks, ensuring readable output without words running together.</p>
+
+<h2>Handle Various Line Break Types</h2>
+<p>Works with Windows (CRLF), Unix (LF), and old Mac (CR) line break formats. All types are detected and removed, regardless of the original text source.</p>`,
+  },
+  {
+    id: "add-line-breaks",
+    name: "Add Line Breaks",
+    description: "Add line breaks at specific intervals",
+    icon: "SplitSquareVertical",
+    type: "add-line-breaks",
+    color: "bg-lime-500",
+    emoji: "📋",
+    metaTitle: "Add Line Breaks Online Free - Insert Line Breaks | PDF Tools",
+    metaDescription: "Add line breaks to text online for free. Insert line breaks after every N characters or at specific points. Format text easily.",
+    seoArticle: `<h2>Add Line Breaks - Format Text with Line Breaks</h2>
+<p>Add line breaks to your text at specific intervals with our free online tool. Perfect for formatting long text, creating poetry layouts, or preparing text for specific width requirements.</p>
+
+<h2>Custom Line Length</h2>
+<p>Specify the number of characters per line and automatically insert line breaks. Create perfectly formatted text blocks with consistent line lengths.</p>
+
+<h2>Word-Aware Wrapping</h2>
+<p>Our tool can break lines at word boundaries, ensuring words don't get split in the middle. Get clean, readable text with proper formatting.</p>
+
+<h2>Multiple Format Options</h2>
+<p>Add breaks after every sentence, at specific character counts, or after commas and other delimiters. Flexible options for various formatting needs.</p>
+
+<h2>Code and Data Formatting</h2>
+<p>Format long strings for code, prepare data for fixed-width files, or create text that fits specific display constraints. Professional formatting in seconds.</p>`,
+  },
+  {
+    id: "text-sorter",
+    name: "Text Sorter",
+    description: "Sort lines of text alphabetically or numerically",
+    icon: "ArrowUpDown",
+    type: "text-sorter",
+    color: "bg-indigo-500",
+    emoji: "📊",
+    metaTitle: "Text Sorter Online Free - Sort Lines of Text | PDF Tools",
+    metaDescription: "Sort lines of text alphabetically or numerically online for free. Organize lists, data, and text quickly and easily.",
+    seoArticle: `<h2>Text Sorter - Organize Lines Instantly</h2>
+<p>Sort lines of text alphabetically or numerically with our free online text sorter. Perfect for organizing lists, sorting data, and arranging content in order.</p>
+
+<h2>Multiple Sort Options</h2>
+<p>Sort alphabetically A-Z or Z-A, numerically ascending or descending, or by line length. Choose the sorting method that fits your needs.</p>
+
+<h2>Case-Sensitive Options</h2>
+<p>Choose case-sensitive sorting where uppercase letters sort differently from lowercase, or case-insensitive sorting that treats them equally.</p>
+
+<h2>Remove Duplicates</h2>
+<p>Optionally remove duplicate lines while sorting, leaving only unique entries. Great for cleaning up lists and eliminating redundant data.</p>
+
+<h2>Natural Number Sorting</h2>
+<p>Our numeric sort handles numbers intelligently. "Item 2" comes before "Item 10" unlike simple alphabetical sorting. Perfect for numbered lists.</p>`,
+  },
+  {
+    id: "alphabetize-list",
+    name: "Alphabetize List",
+    description: "Alphabetize and organize lists quickly",
+    icon: "ListOrdered",
+    type: "alphabetize-list",
+    color: "bg-rose-500",
+    emoji: "🔤",
+    metaTitle: "Alphabetize List Online Free - Sort List A-Z | PDF Tools",
+    metaDescription: "Alphabetize any list online for free. Sort words, names, or items from A to Z or Z to A instantly. Clean and organize lists easily.",
+    seoArticle: `<h2>Alphabetize List - Sort A to Z</h2>
+<p>Alphabetize any list instantly with our free online tool. Sort names, words, items, or any text list from A to Z or Z to A with a single click.</p>
+
+<h2>Perfect for Any List</h2>
+<p>Sort name lists for directories, organize glossary terms, arrange bibliography entries, or order product lists. Works with any type of list content.</p>
+
+<h2>Multiple Input Formats</h2>
+<p>Paste lists separated by line breaks, commas, or other delimiters. Our tool detects the format and sorts accordingly, delivering clean results.</p>
+
+<h2>Clean Output</h2>
+<p>Get neatly organized output with one item per line or in your preferred format. Copy the sorted list directly to your document or application.</p>
+
+<h2>Trim and Clean</h2>
+<p>Automatically removes extra spaces and cleans up entries while sorting. Get a perfectly formatted, alphabetized list without manual cleanup.</p>`,
+  },
+];
+
+pdfTools.push(...textTools);

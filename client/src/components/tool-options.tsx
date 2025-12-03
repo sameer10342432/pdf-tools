@@ -10848,6 +10848,315 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "url-decode":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">URL-Encoded Text</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter URL-encoded text to decode (e.g., Hello%20World)..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-url-decode-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Decode URL-encoded text back to readable format.
+          </p>
+        </div>
+      );
+
+    case "text-case-converter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to convert..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-text-case-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="caseType">Case Type</Label>
+            <select
+              id="caseType"
+              className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              value={options.caseType || "lowercase"}
+              onChange={(e) => updateOption("caseType", e.target.value)}
+              data-testid="select-case-type"
+            >
+              <option value="uppercase">UPPERCASE</option>
+              <option value="lowercase">lowercase</option>
+              <option value="titlecase">Title Case</option>
+              <option value="sentencecase">Sentence case</option>
+            </select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert text between different case formats.
+          </p>
+        </div>
+      );
+
+    case "uppercase-converter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to convert to UPPERCASE..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-uppercase-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert all text to UPPERCASE letters.
+          </p>
+        </div>
+      );
+
+    case "lowercase-converter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to convert to lowercase..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-lowercase-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert all text to lowercase letters.
+          </p>
+        </div>
+      );
+
+    case "title-case-converter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to convert to Title Case..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-title-case-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Capitalize the first letter of each word for headings and titles.
+          </p>
+        </div>
+      );
+
+    case "sentence-case-converter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to convert to sentence case..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-sentence-case-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Capitalize the first letter of each sentence.
+          </p>
+        </div>
+      );
+
+    case "remove-line-breaks":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text with line breaks to remove..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-remove-breaks-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Remove all line breaks from text and combine into a single paragraph.
+          </p>
+        </div>
+      );
+
+    case "add-line-breaks":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to add line breaks to..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-add-breaks-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="interval">Characters Per Line</Label>
+            <input
+              type="number"
+              id="interval"
+              className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              value={options.interval || "80"}
+              onChange={(e) => updateOption("interval", e.target.value)}
+              min="10"
+              max="500"
+              data-testid="input-line-interval"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={options.breakAtWords === "true"}
+                onChange={(e) => updateOption("breakAtWords", e.target.checked ? "true" : "false")}
+                className="rounded border-input"
+                data-testid="checkbox-break-at-words"
+              />
+              <span className="text-sm">Break at word boundaries</span>
+            </label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Add line breaks at specified character intervals.
+          </p>
+        </div>
+      );
+
+    case "text-sorter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text Input (one item per line)</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to sort (one item per line)..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-text-sorter-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="sortType">Sort Order</Label>
+            <select
+              id="sortType"
+              className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              value={options.sortType || "az"}
+              onChange={(e) => updateOption("sortType", e.target.value)}
+              data-testid="select-sort-type"
+            >
+              <option value="az">A to Z (Alphabetical)</option>
+              <option value="za">Z to A (Reverse)</option>
+              <option value="numeric">Numeric (Ascending)</option>
+              <option value="numeric-desc">Numeric (Descending)</option>
+              <option value="length">By Length (Shortest First)</option>
+              <option value="length-desc">By Length (Longest First)</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={options.removeDuplicates === "true"}
+                onChange={(e) => updateOption("removeDuplicates", e.target.checked ? "true" : "false")}
+                className="rounded border-input"
+                data-testid="checkbox-remove-duplicates"
+              />
+              <span className="text-sm">Remove duplicates</span>
+            </label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Sort lines of text in various orders.
+          </p>
+        </div>
+      );
+
+    case "alphabetize-list":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">List Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter items to alphabetize (one per line, or separated by commas)..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-alphabetize-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="delimiter">List Separator</Label>
+            <select
+              id="delimiter"
+              className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              value={options.delimiter || "newline"}
+              onChange={(e) => updateOption("delimiter", e.target.value)}
+              data-testid="select-delimiter"
+            >
+              <option value="newline">New Line</option>
+              <option value="comma">Comma</option>
+              <option value="space">Space</option>
+            </select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="order">Sort Order</Label>
+            <select
+              id="order"
+              className="w-full p-2 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              value={options.order || "az"}
+              onChange={(e) => updateOption("order", e.target.value)}
+              data-testid="select-order"
+            >
+              <option value="az">A to Z</option>
+              <option value="za">Z to A</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={options.removeDuplicates === "true"}
+                onChange={(e) => updateOption("removeDuplicates", e.target.checked ? "true" : "false")}
+                className="rounded border-input"
+                data-testid="checkbox-alphabetize-remove-duplicates"
+              />
+              <span className="text-sm">Remove duplicates</span>
+            </label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Alphabetize any list of items A-Z or Z-A.
+          </p>
+        </div>
+      );
+
+
 
     case "json-formatter":
       return (
