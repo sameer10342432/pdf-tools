@@ -387,9 +387,20 @@ export default function ToolPage() {
     if (tool.type === "css-minifier" || tool.type === "css-beautifier") {
       return !!(options.cssInput?.trim());
     }
-    if (tool.type === "js-minifier") {
+    if (tool.type === "js-minifier" || tool.type === "js-beautifier") {
       return !!(options.jsInput?.trim());
-      return "*/*";
+    }
+    if (tool.type === "sql-formatter" || tool.type === "sql-minifier") {
+      return !!(options.sqlInput?.trim());
+    }
+    if (tool.type === "lorem-ipsum-generator" || tool.type === "uuid-generator") {
+      return true;
+    }
+    if (tool.type === "md5-hash-generator" || tool.type === "sha256-hash-generator") {
+      return !!(options.textInput?.trim());
+    }
+    if (tool.type === "base64-encode" || tool.type === "base64-decode" || tool.type === "url-encoder") {
+      return !!(options.textInput?.trim());
     }
     if (tool.type === "image-editor" || tool.type === "photo-editor") {
       return "image/jpeg,image/png,image/gif,image/webp,image/bmp,.jpg,.jpeg,.png,.gif,.webp,.bmp";
@@ -654,8 +665,23 @@ export default function ToolPage() {
     if (tool.type === "css-minifier" || tool.type === "css-beautifier") {
       return !!(options.cssInput?.trim());
     }
-    if (tool.type === "js-minifier") {
+    if (tool.type === "js-minifier" || tool.type === "js-beautifier") {
       return !!(options.jsInput?.trim());
+    }
+    if (tool.type === "sql-formatter" || tool.type === "sql-minifier") {
+      return !!(options.sqlInput?.trim());
+    }
+    if (tool.type === "lorem-ipsum-generator") {
+      return true;
+    }
+    if (tool.type === "uuid-generator") {
+      return true;
+    }
+    if (tool.type === "md5-hash-generator" || tool.type === "sha256-hash-generator") {
+      return !!(options.textInput?.trim());
+    }
+    if (tool.type === "base64-encode" || tool.type === "base64-decode" || tool.type === "url-encoder") {
+      return !!(options.textInput?.trim());
     }
     if (files.length < getMinFiles()) return false;
     
@@ -870,9 +896,9 @@ export default function ToolPage() {
               <div className="space-y-6">
                 {processingState === "idle" && (
                   <>
-                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier"].includes(tool.type) && (
+                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder"].includes(tool.type) && (
                       <FileUpload
-                        accept={getAcceptType()}
+                        accept={getAcceptType() as string}
                         multiple={isMultiFileAllowed()}
                         maxFiles={tool.type === "images-to-pdf" ? 50 : 20}
                         files={files}
@@ -880,7 +906,7 @@ export default function ToolPage() {
                       />
                     )}
 
-                    {(files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier"].includes(tool.type)) && (
+                    {(files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder"].includes(tool.type)) && (
                       <ToolOptionsComponent
                         toolType={tool.type}
                         options={options}

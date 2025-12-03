@@ -10549,6 +10549,306 @@ export function ToolOptionsComponent({
         </div>
       );
 
+
+    case "js-beautifier":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="jsInput">JavaScript Input</Label>
+            <textarea
+              id="jsInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder='function hello(){console.log("Hello");}'
+              value={options.jsInput || ""}
+              onChange={(e) => updateOption("jsInput", e.target.value)}
+              data-testid="textarea-js-beautifier-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Indentation</Label>
+            <Select
+              value={options.indent || "2"}
+              onValueChange={(value) => updateOption("indent", value)}
+            >
+              <SelectTrigger data-testid="select-js-beautifier-indent">
+                <SelectValue placeholder="Select indentation" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2">2 spaces</SelectItem>
+                <SelectItem value="4">4 spaces</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your JavaScript to add proper formatting and indentation.
+          </p>
+        </div>
+      );
+
+    case "sql-formatter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="sqlInput">SQL Input</Label>
+            <textarea
+              id="sqlInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="SELECT * FROM users WHERE id = 1"
+              value={options.sqlInput || ""}
+              onChange={(e) => updateOption("sqlInput", e.target.value)}
+              data-testid="textarea-sql-formatter-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Indentation</Label>
+            <Select
+              value={options.indent || "2"}
+              onValueChange={(value) => updateOption("indent", value)}
+            >
+              <SelectTrigger data-testid="select-sql-formatter-indent">
+                <SelectValue placeholder="Select indentation" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2">2 spaces</SelectItem>
+                <SelectItem value="4">4 spaces</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your SQL query to format with proper indentation and keyword alignment.
+          </p>
+        </div>
+      );
+
+    case "sql-minifier":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="sqlInput">SQL Input</Label>
+            <textarea
+              id="sqlInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder={"SELECT *\nFROM users\nWHERE id = 1"}
+              value={options.sqlInput || ""}
+              onChange={(e) => updateOption("sqlInput", e.target.value)}
+              data-testid="textarea-sql-minifier-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your SQL query to remove whitespace and reduce size.
+          </p>
+        </div>
+      );
+
+    case "lorem-ipsum-generator":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Type</Label>
+            <Select
+              value={options.type || "paragraphs"}
+              onValueChange={(value) => updateOption("type", value)}
+            >
+              <SelectTrigger data-testid="select-lorem-type">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="paragraphs">Paragraphs</SelectItem>
+                <SelectItem value="sentences">Sentences</SelectItem>
+                <SelectItem value="words">Words</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="count">Count</Label>
+            <input
+              type="number"
+              id="count"
+              className="w-full p-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="3"
+              min="1"
+              max="100"
+              value={options.count || "3"}
+              onChange={(e) => updateOption("count", e.target.value)}
+              data-testid="input-lorem-count"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Generate placeholder text for your designs and mockups.
+          </p>
+        </div>
+      );
+
+    case "uuid-generator":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="count">Number of UUIDs</Label>
+            <input
+              type="number"
+              id="count"
+              className="w-full p-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="1"
+              min="1"
+              max="1000"
+              value={options.count || "1"}
+              onChange={(e) => updateOption("count", e.target.value)}
+              data-testid="input-uuid-count"
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={options.uppercase === "true"}
+                onChange={(e) => updateOption("uppercase", e.target.checked ? "true" : "false")}
+                className="rounded border-input"
+                data-testid="checkbox-uuid-uppercase"
+              />
+              <span className="text-sm">Uppercase</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={options.hyphens !== "false"}
+                onChange={(e) => updateOption("hyphens", e.target.checked ? "true" : "false")}
+                className="rounded border-input"
+                data-testid="checkbox-uuid-hyphens"
+              />
+              <span className="text-sm">Include Hyphens</span>
+            </label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Generate RFC 4122 compliant UUID v4 identifiers.
+          </p>
+        </div>
+      );
+
+    case "md5-hash-generator":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to hash..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-md5-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Generate MD5 hash (128-bit) from your text. Note: MD5 is not recommended for security-critical applications.
+          </p>
+        </div>
+      );
+
+    case "sha256-hash-generator":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to hash..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-sha256-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Generate SHA-256 hash (256-bit) from your text. Industry-standard secure hashing.
+          </p>
+        </div>
+      );
+
+    case "base64-encode":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to encode..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-base64-encode-input"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={options.urlSafe === "true"}
+                onChange={(e) => updateOption("urlSafe", e.target.checked ? "true" : "false")}
+                className="rounded border-input"
+                data-testid="checkbox-base64-urlsafe"
+              />
+              <span className="text-sm">URL-safe encoding</span>
+            </label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Encode text to Base64 format for use in emails, APIs, or data URLs.
+          </p>
+        </div>
+      );
+
+    case "base64-decode":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Base64 Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter Base64 text to decode..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-base64-decode-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Decode Base64 encoded text back to readable format.
+          </p>
+        </div>
+      );
+
+    case "url-encoder":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text Input</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to encode for URLs..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-url-encoder-input"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={options.encodeAll === "true"}
+                onChange={(e) => updateOption("encodeAll", e.target.checked ? "true" : "false")}
+                className="rounded border-input"
+                data-testid="checkbox-url-encode-all"
+              />
+              <span className="text-sm">Encode all special characters</span>
+            </label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Encode text for safe use in URLs and query strings.
+          </p>
+        </div>
+      );
+
+
     case "json-formatter":
       return (
         <div className="space-y-4">

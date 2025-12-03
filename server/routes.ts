@@ -13728,6 +13728,311 @@ async function jsonValidator(jsonInput: string): Promise<Buffer> {
 }
 
 // JSON Minifier function
+
+// JS Beautifier function
+async function jsBeautifier(jsInput: string, indent: number = 2): Promise<Buffer> {
+  let result = '';
+  try {
+    const indentStr = ' '.repeat(indent);
+    let formatted = '';
+    let indentLevel = 0;
+    let inString = false;
+    let stringChar = '';
+    let inComment = false;
+    let inMultiLineComment = false;
+    
+    const tokens: string[] = [];
+    let currentToken = '';
+    
+    for (let i = 0; i < jsInput.length; i++) {
+      const char = jsInput[i];
+      const nextChar = jsInput[i + 1] || '';
+      
+      if (!inString && !inComment && !inMultiLineComment) {
+        if (char === '"' || char === "'" || char === '`') {
+          inString = true;
+          stringChar = char;
+          currentToken += char;
+        } else if (char === '/' && nextChar === '/') {
+          if (currentToken.trim()) tokens.push(currentToken.trim());
+          currentToken = '';
+          let comment = '//';
+          i++;
+          while (i + 1 < jsInput.length && jsInput[i + 1] !== '\n') {
+            comment += jsInput[++i];
+          }
+          tokens.push(comment);
+        } else if (char === '/' && nextChar === '*') {
+          if (currentToken.trim()) tokens.push(currentToken.trim());
+          currentToken = '';
+          let comment = '/*';
+          i++;
+          while (i + 1 < jsInput.length && !(jsInput[i] === '*' && jsInput[i + 1] === '/')) {
+            comment += jsInput[++i];
+          }
+          comment += '*/';
+          i++;
+          tokens.push(comment);
+        } else if ('{};,()[]'.includes(char)) {
+          if (currentToken.trim()) tokens.push(currentToken.trim());
+          tokens.push(char);
+          currentToken = '';
+        } else if (/\s/.test(char)) {
+          if (currentToken.trim()) tokens.push(currentToken.trim());
+          currentToken = '';
+        } else {
+          currentToken += char;
+        }
+      } else if (inString) {
+        currentToken += char;
+        if (char === stringChar && jsInput[i - 1] !== '\\') {
+          inString = false;
+        }
+      } else {
+        currentToken += char;
+      }
+    }
+    if (currentToken.trim()) tokens.push(currentToken.trim());
+    
+    for (let i = 0; i < tokens.length; i++) {
+      const token = tokens[i];
+      
+      if (token === '}' || token === ']' || token === ')') {
+        indentLevel = Math.max(0, indentLevel - 1);
+        formatted += '\n' + indentStr.repeat(indentLevel) + token;
+      } else if (token === '{' || token === '[' || token === '(') {
+        formatted += token;
+        indentLevel++;
+        formatted += '\n' + indentStr.repeat(indentLevel);
+      } else if (token === ';' || token === ',') {
+        formatted += token + '\n' + indentStr.repeat(indentLevel);
+      } else if (token.startsWith('//')) {
+        formatted += ' ' + token + '\n' + indentStr.repeat(indentLevel);
+      } else if (token.startsWith('/*')) {
+        formatted += ' ' + token + ' ';
+      } else {
+        formatted += token + ' ';
+      }
+    }
+    
+    result = formatted.replace(/\n\s*\n/g, '\n').replace(/\s+$/gm, '').trim();
+  } catch (error) {
+    result = `Error: Cannot beautify JavaScript\n\n${error instanceof Error ? error.message : 'Unknown error'}`;
+  }
+  return Buffer.from(result, 'utf-8');
+}
+
+// SQL Formatter function
+async function sqlFormatter(sqlInput: string, indent: number = 2): Promise<Buffer> {
+  const keywords = ['SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'JOIN', 'LEFT', 'RIGHT', 'INNER', 'OUTER', 
+    'ON', 'GROUP', 'BY', 'ORDER', 'HAVING', 'LIMIT', 'OFFSET', 'INSERT', 'INTO', 'VALUES', 
+    'UPDATE', 'SET', 'DELETE', 'CREATE', 'TABLE', 'ALTER', 'DROP', 'INDEX', 'UNION', 'ALL',
+    'AS', 'IN', 'NOT', 'NULL', 'IS', 'LIKE', 'BETWEEN', 'EXISTS', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END'];
+  
+  let result = sqlInput;
+  
+  // Normalize whitespace
+  result = result.replace(/\s+/g, ' ').trim();
+  
+  // Add newlines before major keywords
+  const majorKeywords = ['SELECT', 'FROM', 'WHERE', 'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 
+    'JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN', 'OUTER JOIN', 'UNION', 'INSERT', 'UPDATE', 'DELETE'];
+  
+  for (const keyword of majorKeywords) {
+    const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
+    result = result.replace(regex, `\n${keyword.toUpperCase()}`);
+  }
+  
+  // Indent after keywords
+  const lines = result.split('\n').filter(line => line.trim());
+  const indentStr = ' '.repeat(indent);
+  const formatted = lines.map((line, i) => {
+    if (i === 0) return line.trim();
+    return indentStr + line.trim();
+  }).join('\n');
+  
+  return Buffer.from(formatted, 'utf-8');
+}
+
+// SQL Minifier function
+async function sqlMinifier(sqlInput: string): Promise<Buffer> {
+  // Remove comments
+  let result = sqlInput.replace(/--.*$/gm, '');
+  result = result.replace(/\/\*[\s\S]*?\*\//g, '');
+  
+  // Normalize whitespace while preserving string literals
+  const tokens: string[] = [];
+  let current = '';
+  let inString = false;
+  let stringChar = '';
+  
+  for (let i = 0; i < result.length; i++) {
+    const char = result[i];
+    
+    if (!inString && (char === "'" || char === '"')) {
+      if (current.trim()) tokens.push(current.trim());
+      current = char;
+      inString = true;
+      stringChar = char;
+    } else if (inString && char === stringChar && result[i-1] !== '\\') {
+      current += char;
+      tokens.push(current);
+      current = '';
+      inString = false;
+    } else if (inString) {
+      current += char;
+    } else if (/\s/.test(char)) {
+      if (current.trim()) tokens.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  if (current.trim()) tokens.push(current.trim());
+  
+  result = tokens.join(' ');
+  
+  // Remove spaces around operators
+  result = result.replace(/\s*([,;()=<>!+\-*\/])\s*/g, '$1');
+  
+  return Buffer.from(result, 'utf-8');
+}
+
+// Lorem Ipsum Generator function
+async function loremIpsumGenerator(count: number = 3, type: string = 'paragraphs'): Promise<Buffer> {
+  const words = [
+    'lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 
+    'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore', 
+    'magna', 'aliqua', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud', 
+    'exercitation', 'ullamco', 'laboris', 'nisi', 'aliquip', 'ex', 'ea', 'commodo', 
+    'consequat', 'duis', 'aute', 'irure', 'in', 'reprehenderit', 'voluptate', 
+    'velit', 'esse', 'cillum', 'fugiat', 'nulla', 'pariatur', 'excepteur', 'sint', 
+    'occaecat', 'cupidatat', 'non', 'proident', 'sunt', 'culpa', 'qui', 'officia', 
+    'deserunt', 'mollit', 'anim', 'id', 'est', 'laborum'
+  ];
+  
+  function randomWord(): string {
+    return words[Math.floor(Math.random() * words.length)];
+  }
+  
+  function generateSentence(wordCount?: number): string {
+    const count = wordCount || Math.floor(Math.random() * 10) + 5;
+    const sentence = [];
+    for (let i = 0; i < count; i++) {
+      sentence.push(randomWord());
+    }
+    sentence[0] = sentence[0].charAt(0).toUpperCase() + sentence[0].slice(1);
+    return sentence.join(' ') + '.';
+  }
+  
+  function generateParagraph(): string {
+    const sentenceCount = Math.floor(Math.random() * 4) + 4;
+    const sentences = [];
+    for (let i = 0; i < sentenceCount; i++) {
+      sentences.push(generateSentence());
+    }
+    return sentences.join(' ');
+  }
+  
+  let result = '';
+  
+  switch (type) {
+    case 'words':
+      const wordList = [];
+      for (let i = 0; i < count; i++) {
+        wordList.push(randomWord());
+      }
+      result = wordList.join(' ');
+      break;
+    case 'sentences':
+      const sentenceList = [];
+      for (let i = 0; i < count; i++) {
+        sentenceList.push(generateSentence());
+      }
+      result = sentenceList.join(' ');
+      break;
+    case 'paragraphs':
+    default:
+      const paragraphList = [];
+      for (let i = 0; i < count; i++) {
+        paragraphList.push(generateParagraph());
+      }
+      result = paragraphList.join('\n\n');
+      break;
+  }
+  
+  return Buffer.from(result, 'utf-8');
+}
+
+// UUID Generator function
+async function uuidGenerator(count: number = 1, uppercase: boolean = false, hyphens: boolean = true): Promise<Buffer> {
+  const { randomUUID } = require('crypto');
+  const uuids: string[] = [];
+  
+  for (let i = 0; i < Math.min(count, 1000); i++) {
+    let uuid = randomUUID();
+    if (!hyphens) {
+      uuid = uuid.replace(/-/g, '');
+    }
+    if (uppercase) {
+      uuid = uuid.toUpperCase();
+    }
+    uuids.push(uuid);
+  }
+  
+  return Buffer.from(uuids.join('\n'), 'utf-8');
+}
+
+// MD5 Hash Generator function
+async function md5HashGenerator(input: string): Promise<Buffer> {
+  const { createHash } = require('crypto');
+  const hash = createHash('md5').update(input).digest('hex');
+  return Buffer.from(hash, 'utf-8');
+}
+
+// SHA-256 Hash Generator function
+async function sha256HashGenerator(input: string): Promise<Buffer> {
+  const { createHash } = require('crypto');
+  const hash = createHash('sha256').update(input).digest('hex');
+  return Buffer.from(hash, 'utf-8');
+}
+
+// Base64 Encode function
+async function base64Encode(input: string, urlSafe: boolean = false): Promise<Buffer> {
+  let encoded = Buffer.from(input, 'utf-8').toString('base64');
+  if (urlSafe) {
+    encoded = encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  }
+  return Buffer.from(encoded, 'utf-8');
+}
+
+// Base64 Decode function
+async function base64Decode(input: string): Promise<Buffer> {
+  try {
+    // Handle URL-safe base64
+    let normalized = input.replace(/-/g, '+').replace(/_/g, '/');
+    // Add padding if needed
+    while (normalized.length % 4) {
+      normalized += '=';
+    }
+    const decoded = Buffer.from(normalized, 'base64').toString('utf-8');
+    return Buffer.from(decoded, 'utf-8');
+  } catch (error) {
+    return Buffer.from(`Error: Invalid Base64 input\n\n${error instanceof Error ? error.message : 'Unknown error'}`, 'utf-8');
+  }
+}
+
+// URL Encoder function
+async function urlEncoder(input: string, encodeAll: boolean = false): Promise<Buffer> {
+  let encoded: string;
+  if (encodeAll) {
+    encoded = encodeURIComponent(input);
+  } else {
+    encoded = encodeURI(input);
+  }
+  return Buffer.from(encoded, 'utf-8');
+}
+
 async function jsonMinifier(jsonInput: string): Promise<Buffer> {
   let result = '';
   try {
@@ -13992,7 +14297,7 @@ export async function registerRoutes(
       const files = req.files as Express.Multer.File[] | undefined;
       const { toolType, options: optionsStr } = req.body;
       
-      const noFileRequiredTools = ["create-pdf", "pdf-creator", "base64-to-image", "json-validator", "json-minifier", "json-beautifier", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "json-formatter"];
+      const noFileRequiredTools = ["create-pdf", "pdf-creator", "base64-to-image", "json-validator", "json-minifier", "json-beautifier", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "json-formatter", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder"];
       
       if ((!files || files.length === 0) && !noFileRequiredTools.includes(toolType)) {
         return res.status(400).json({ 
@@ -27162,6 +27467,141 @@ ${pages}    </office:presentation>
             result = await jsMinifier(jsInput);
             filename = "minified.js";
             contentType = "application/javascript";
+            break;
+          }
+
+          case "js-beautifier": {
+            let jsInput = options.jsInput || options.textContent || '';
+            if (!jsInput && files && files.length > 0) {
+              jsInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!jsInput) {
+              throw new Error("Please provide JavaScript input to beautify");
+            }
+            const indentSize = parseInt(options.indent || '2', 10);
+            result = await jsBeautifier(jsInput, indentSize);
+            filename = "beautified.js";
+            contentType = "application/javascript";
+            break;
+          }
+
+          case "sql-formatter": {
+            let sqlInput = options.sqlInput || options.textContent || '';
+            if (!sqlInput && files && files.length > 0) {
+              sqlInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!sqlInput) {
+              throw new Error("Please provide SQL input to format");
+            }
+            const sqlIndent = parseInt(options.indent || '2', 10);
+            result = await sqlFormatter(sqlInput, sqlIndent);
+            filename = "formatted.sql";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "sql-minifier": {
+            let sqlInput = options.sqlInput || options.textContent || '';
+            if (!sqlInput && files && files.length > 0) {
+              sqlInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!sqlInput) {
+              throw new Error("Please provide SQL input to minify");
+            }
+            result = await sqlMinifier(sqlInput);
+            filename = "minified.sql";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "lorem-ipsum-generator": {
+            const count = parseInt(options.count || '3', 10);
+            const type = options.type || 'paragraphs';
+            result = await loremIpsumGenerator(count, type);
+            filename = "lorem-ipsum.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "uuid-generator": {
+            const count = parseInt(options.count || '1', 10);
+            const uppercase = options.uppercase === 'true' || options.uppercase === true;
+            const hyphens = options.hyphens !== 'false' && options.hyphens !== false;
+            result = await uuidGenerator(count, uppercase, hyphens);
+            filename = "uuids.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "md5-hash-generator": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text input to hash");
+            }
+            result = await md5HashGenerator(input);
+            filename = "md5-hash.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "sha256-hash-generator": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text input to hash");
+            }
+            result = await sha256HashGenerator(input);
+            filename = "sha256-hash.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "base64-encode": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text input to encode");
+            }
+            const urlSafe = options.urlSafe === 'true' || options.urlSafe === true;
+            result = await base64Encode(input, urlSafe);
+            filename = "base64-encoded.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "base64-decode": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide Base64 input to decode");
+            }
+            result = await base64Decode(input);
+            filename = "base64-decoded.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "url-encoder": {
+            let input = options.textInput || options.textContent || '';
+            if (!input && files && files.length > 0) {
+              input = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!input) {
+              throw new Error("Please provide text input to encode");
+            }
+            const encodeAll = options.encodeAll === 'true' || options.encodeAll === true;
+            result = await urlEncoder(input, encodeAll);
+            filename = "url-encoded.txt";
+            contentType = "text/plain";
             break;
           }
 
