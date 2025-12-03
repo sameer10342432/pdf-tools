@@ -158,7 +158,13 @@ export function FileUpload({
               Drop files here or click to browse
             </p>
             <p className="text-sm text-muted-foreground">
-              {accept.includes("pdf") ? "PDF files" : "Image files"} up to{" "}
+              {accept.includes("pdf") 
+                ? "PDF files" 
+                : accept.includes("audio") 
+                  ? "Audio files" 
+                  : accept.includes("video") 
+                    ? "Video files" 
+                    : "Image files"} up to{" "}
               {Math.round(maxSize / 1024 / 1024)}MB
             </p>
           </div>

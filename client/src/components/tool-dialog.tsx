@@ -80,6 +80,8 @@ import {
   Wand2,
   UserX,
   ShieldOff,
+  ChevronsUp,
+  GitCompare,
   ZoomIn,
   Focus,
   Wand2,
@@ -147,6 +149,8 @@ const iconMap: Record<string, LucideIcon> = {
   Wand2,
   UserX,
 };
+  ChevronsUp,
+  GitCompare,
 
 interface ToolDialogProps {
   tool: PdfTool | null;

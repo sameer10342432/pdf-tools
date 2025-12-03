@@ -12394,6 +12394,146 @@ export function ToolOptionsComponent({
       );
 
 
+
+    case "avi-to-mp3":
+    case "mov-to-mp3":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Bitrate</Label>
+            <Select
+              value={options.audioBitrate || "192k"}
+              onValueChange={(value) => updateOption("audioBitrate", value)}
+            >
+              <SelectTrigger data-testid="select-audio-bitrate">
+                <SelectValue placeholder="Select bitrate" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="128k">128 kbps (Good quality)</SelectItem>
+                <SelectItem value="192k">192 kbps (High quality)</SelectItem>
+                <SelectItem value="256k">256 kbps (Very high quality)</SelectItem>
+                <SelectItem value="320k">320 kbps (Maximum quality)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "cut-audio":
+    case "trim-audio":
+    case "audio-trimmer":
+      return (
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Start Time (seconds)</Label>
+              <Input
+                type="text"
+                placeholder="0"
+                value={options.audioStartTime || ""}
+                onChange={(e) => updateOption("audioStartTime", e.target.value)}
+                data-testid="input-audio-start-time"
+              />
+              <p className="text-xs text-muted-foreground">
+                Format: seconds (e.g., 30) or HH:MM:SS (e.g., 00:00:30)
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label>End Time (seconds)</Label>
+              <Input
+                type="text"
+                placeholder="Leave empty for end of file"
+                value={options.audioEndTime || ""}
+                onChange={(e) => updateOption("audioEndTime", e.target.value)}
+                data-testid="input-audio-end-time"
+              />
+              <p className="text-xs text-muted-foreground">
+                Format: seconds (e.g., 60) or HH:MM:SS (e.g., 00:01:00)
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "merge-audio":
+    case "combine-audio":
+      return (
+        <div className="p-4 bg-muted/30 rounded-lg">
+          <p className="text-sm text-muted-foreground">
+            Files will be merged in the order shown above. Drag to reorder if needed.
+          </p>
+        </div>
+      );
+
+    case "audio-joiner":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Crossfade Duration (seconds)</Label>
+            <Input
+              type="number"
+              min="0"
+              max="10"
+              placeholder="0"
+              value={options.crossfadeDuration || "0"}
+              onChange={(e) => updateOption("crossfadeDuration", e.target.value)}
+              data-testid="input-crossfade-duration"
+            />
+            <p className="text-xs text-muted-foreground">
+              Set to 0 for no crossfade, or 1-10 seconds for smooth transitions between tracks.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "change-audio-volume":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Volume Adjustment (dB)</Label>
+            <Input
+              type="number"
+              min="-20"
+              max="20"
+              step="1"
+              placeholder="0"
+              value={options.volumeDb || "0"}
+              onChange={(e) => updateOption("volumeDb", e.target.value)}
+              data-testid="input-volume-db"
+            />
+            <p className="text-xs text-muted-foreground">
+              Positive values increase volume, negative values decrease. Range: -20dB to +20dB
+            </p>
+          </div>
+        </div>
+      );
+
+    case "increase-audio-volume":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Volume Boost Multiplier</Label>
+            <Select
+              value={options.volumeBoost || "2.0"}
+              onValueChange={(value) => updateOption("volumeBoost", value)}
+            >
+              <SelectTrigger data-testid="select-volume-boost">
+                <SelectValue placeholder="Select boost level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1.5">1.5x (50% louder)</SelectItem>
+                <SelectItem value="2.0">2x (Double volume)</SelectItem>
+                <SelectItem value="2.5">2.5x (150% louder)</SelectItem>
+                <SelectItem value="3.0">3x (Triple volume)</SelectItem>
+                <SelectItem value="4.0">4x (4 times louder)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Higher values may cause distortion if the audio is already loud.
+            </p>
+          </div>
+        </div>
+      );
     default:
       return null;
   }

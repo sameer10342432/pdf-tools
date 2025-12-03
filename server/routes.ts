@@ -124,6 +124,59 @@ function cleanupUploadedFiles(files: Express.Multer.File[] | undefined) {
   }
 }
 
+// Helper function to validate audio time format (seconds or HH:MM:SS)
+function validateAudioTime(timeStr: string): string {
+  if (!timeStr) return '0';
+  
+  // Check if it's a valid number (seconds)
+  if (/^\d+(\.\d+)?$/.test(timeStr)) {
+    const seconds = parseFloat(timeStr);
+    if (seconds < 0 || seconds > 86400) { // Max 24 hours
+      throw new Error('Time must be between 0 and 86400 seconds');
+    }
+    return timeStr;
+  }
+  
+  // Check if it's in HH:MM:SS format
+  if (/^\d{1,2}:\d{2}:\d{2}$/.test(timeStr)) {
+    return timeStr;
+  }
+  
+  // Check if it's in MM:SS format  
+  if (/^\d{1,2}:\d{2}$/.test(timeStr)) {
+    return '00:' + timeStr;
+  }
+  
+  throw new Error('Invalid time format. Use seconds (e.g., 30) or HH:MM:SS (e.g., 00:00:30)');
+}
+
+// Helper function to validate volume dB value
+function validateVolumeDb(dbStr: string): number {
+  const db = parseFloat(dbStr);
+  if (isNaN(db) || db < -20 || db > 20) {
+    throw new Error('Volume adjustment must be between -20dB and +20dB');
+  }
+  return db;
+}
+
+// Helper function to validate volume boost multiplier
+function validateVolumeBoost(boostStr: string): number {
+  const boost = parseFloat(boostStr);
+  if (isNaN(boost) || boost < 0.1 || boost > 10) {
+    throw new Error('Volume boost must be between 0.1 and 10');
+  }
+  return boost;
+}
+
+// Helper function to validate crossfade duration
+function validateCrossfade(durationStr: string): number {
+  const duration = parseInt(durationStr);
+  if (isNaN(duration) || duration < 0 || duration > 30) {
+    throw new Error('Crossfade duration must be between 0 and 30 seconds');
+  }
+  return duration;
+}
+
 function escapeXml(str: string): string {
   return str
     .replace(/&/g, '&amp;')
@@ -29059,6 +29112,201 @@ File analyzed: ${imageFile.originalname}
             await execAsync(`ffmpeg -i "${inputPath}" -vn -c:a libmp3lame -b:a ${bitrate} "${outputFilePath}"`);
             result = outputFilePath;
             filename = "extracted-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "avi-to-mp3": {
+            if (files.length === 0) {
+              throw new Error("Please upload an AVI video file to extract audio");
+            }
+            const inputPath = files[0].path;
+            const bitrate = options.audioBitrate || '192k';
+            const outputFilePath = path.join(outputDir, `avi-audio-${randomUUID()}.mp3`);
+            await execAsync(`ffmpeg -i "${inputPath}" -vn -c:a libmp3lame -b:a ${bitrate} "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "avi-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "mov-to-mp3": {
+            if (files.length === 0) {
+              throw new Error("Please upload a MOV video file to extract audio");
+            }
+            const inputPath = files[0].path;
+            const bitrate = options.audioBitrate || '192k';
+            const outputFilePath = path.join(outputDir, `mov-audio-${randomUUID()}.mp3`);
+            await execAsync(`ffmpeg -i "${inputPath}" -vn -c:a libmp3lame -b:a ${bitrate} "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "mov-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "cut-audio": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to cut");
+            }
+            const inputPath = files[0].path;
+            const startTime = validateAudioTime(options.audioStartTime || '0');
+            const validatedEndTime = options.audioEndTime ? validateAudioTime(options.audioEndTime) : '';
+            const endTime = validatedEndTime;
+            const outputFilePath = path.join(outputDir, `cut-audio-${randomUUID()}.mp3`);
+            
+            let ffmpegCmd = `ffmpeg -i "${inputPath}" -ss ${startTime}`;
+            if (endTime) {
+              ffmpegCmd += ` -to ${endTime}`;
+            }
+            ffmpegCmd += ` -c:a libmp3lame -b:a 192k "${outputFilePath}"`;
+            
+            await execAsync(ffmpegCmd);
+            result = outputFilePath;
+            filename = "cut-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "trim-audio": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to trim");
+            }
+            const inputPath = files[0].path;
+            const startTime = validateAudioTime(options.audioStartTime || '0');
+            const endTime = options.audioEndTime ? validateAudioTime(options.audioEndTime) : '';
+            const outputFilePath = path.join(outputDir, `trimmed-audio-${randomUUID()}.mp3`);
+            
+            let ffmpegCmd = `ffmpeg -i "${inputPath}" -ss ${startTime}`;
+            if (endTime) {
+              ffmpegCmd += ` -to ${endTime}`;
+            }
+            ffmpegCmd += ` -c:a libmp3lame -b:a 192k "${outputFilePath}"`;
+            
+            await execAsync(ffmpegCmd);
+            result = outputFilePath;
+            filename = "trimmed-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "audio-trimmer": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to trim");
+            }
+            const inputPath = files[0].path;
+            const startTime = validateAudioTime(options.audioStartTime || '0');
+            const endTime = options.audioEndTime ? validateAudioTime(options.audioEndTime) : '';
+            const outputFilePath = path.join(outputDir, `trimmer-audio-${randomUUID()}.mp3`);
+            
+            let ffmpegCmd = `ffmpeg -i "${inputPath}" -ss ${startTime}`;
+            if (endTime) {
+              ffmpegCmd += ` -to ${endTime}`;
+            }
+            ffmpegCmd += ` -c:a libmp3lame -b:a 192k "${outputFilePath}"`;
+            
+            await execAsync(ffmpegCmd);
+            result = outputFilePath;
+            filename = "trimmed-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "merge-audio": {
+            if (files.length < 2) {
+              throw new Error("Please upload at least 2 audio files to merge");
+            }
+            
+            const fileListPath = path.join(outputDir, `filelist-${randomUUID()}.txt`);
+            const fileListContent = files.map(f => `file '${f.path}'`).join('\n');
+            fs.writeFileSync(fileListPath, fileListContent);
+            
+            const outputFilePath = path.join(outputDir, `merged-audio-${randomUUID()}.mp3`);
+            await execAsync(`ffmpeg -f concat -safe 0 -i "${fileListPath}" -c:a libmp3lame -b:a 192k "${outputFilePath}"`);
+            
+            fs.unlinkSync(fileListPath);
+            result = outputFilePath;
+            filename = "merged-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "combine-audio": {
+            if (files.length < 2) {
+              throw new Error("Please upload at least 2 audio files to combine");
+            }
+            
+            const fileListPath = path.join(outputDir, `filelist-${randomUUID()}.txt`);
+            const fileListContent = files.map(f => `file '${f.path}'`).join('\n');
+            fs.writeFileSync(fileListPath, fileListContent);
+            
+            const outputFilePath = path.join(outputDir, `combined-audio-${randomUUID()}.mp3`);
+            await execAsync(`ffmpeg -f concat -safe 0 -i "${fileListPath}" -c:a libmp3lame -b:a 192k "${outputFilePath}"`);
+            
+            fs.unlinkSync(fileListPath);
+            result = outputFilePath;
+            filename = "combined-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "audio-joiner": {
+            if (files.length < 2) {
+              throw new Error("Please upload at least 2 audio files to join");
+            }
+            
+            const crossfade = validateCrossfade(options.crossfadeDuration || '0');
+            const outputFilePath = path.join(outputDir, `joined-audio-${randomUUID()}.mp3`);
+            
+            if (crossfade > 0 && files.length === 2) {
+              await execAsync(`ffmpeg -i "${files[0].path}" -i "${files[1].path}" -filter_complex "acrossfade=d=${crossfade}:c1=tri:c2=tri" -c:a libmp3lame -b:a 192k "${outputFilePath}"`);
+            } else {
+              const fileListPath = path.join(outputDir, `filelist-${randomUUID()}.txt`);
+              const fileListContent = files.map(f => `file '${f.path}'`).join('\n');
+              fs.writeFileSync(fileListPath, fileListContent);
+              await execAsync(`ffmpeg -f concat -safe 0 -i "${fileListPath}" -c:a libmp3lame -b:a 192k "${outputFilePath}"`);
+              fs.unlinkSync(fileListPath);
+            }
+            
+            result = outputFilePath;
+            filename = "joined-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "change-audio-volume": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to change volume");
+            }
+            const inputPath = files[0].path;
+            const volumeLevel = options.volumeLevel ? validateVolumeBoost(options.volumeLevel) : 1.0;
+            const volumeDb = options.volumeDb || '';
+            const outputFilePath = path.join(outputDir, `volume-changed-${randomUUID()}.mp3`);
+            
+            let volumeFilter;
+            if (volumeDb) {
+              volumeFilter = `volume=${volumeDb}dB`;
+            } else {
+              volumeFilter = `volume=${volumeLevel}`;
+            }
+            
+            await execAsync(`ffmpeg -i "${inputPath}" -af "${volumeFilter}" -c:a libmp3lame -b:a 192k "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "volume-changed.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "increase-audio-volume": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to increase volume");
+            }
+            const inputPath = files[0].path;
+            const boostAmount = validateVolumeBoost(options.volumeBoost || '2.0');
+            const outputFilePath = path.join(outputDir, `volume-boosted-${randomUUID()}.mp3`);
+            
+            await execAsync(`ffmpeg -i "${inputPath}" -af "volume=${boostAmount}" -c:a libmp3lame -b:a 192k "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "volume-boosted.mp3";
             contentType = "audio/mpeg";
             break;
           }

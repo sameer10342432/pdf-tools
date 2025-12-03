@@ -635,6 +635,16 @@ export const pdfToolTypes = [
   "mp3-to-aac",
   "video-to-mp3",
   "mp4-to-mp3",
+  "avi-to-mp3",
+  "mov-to-mp3",
+  "cut-audio",
+  "trim-audio",
+  "audio-trimmer",
+  "merge-audio",
+  "combine-audio",
+  "audio-joiner",
+  "change-audio-volume",
+  "increase-audio-volume",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -18210,3 +18220,259 @@ const newTextAndAudioTools: PdfTool[] = [
 ];
 
 pdfTools.push(...newTextAndAudioTools);
+
+// New Audio Processing Tools - 10 New Tools
+const audioProcessingTools: PdfTool[] = [
+  {
+    id: "avi-to-mp3",
+    name: "AVI to MP3",
+    description: "Extract audio from AVI video files and convert to MP3 format",
+    icon: "FileAudio",
+    type: "avi-to-mp3",
+    color: "bg-violet-500",
+    emoji: "🎬",
+    metaTitle: "AVI to MP3 Converter Online Free - Extract Audio from AVI | PDF Tools",
+    metaDescription: "Convert AVI video files to MP3 audio format online for free. Extract high-quality audio from AVI videos instantly. No software installation required.",
+    seoArticle: `<h2>AVI to MP3 Converter - Extract Audio from Video Files</h2>
+<p>Convert your AVI video files to MP3 audio format with our free online converter. Whether you need to extract music from video clips, create audio versions of lectures, or save storage space by keeping only the audio, our tool delivers fast and high-quality results.</p>
+
+<h2>How AVI to MP3 Conversion Works</h2>
+<p>The Audio Video Interleave (AVI) format contains both video and audio streams. Our converter extracts the audio track from your AVI file and encodes it as a high-quality MP3. The video content is discarded, leaving you with a compact audio file that is perfect for listening on any device.</p>
+
+<h2>Key Features of Our Converter</h2>
+<p>Our AVI to MP3 converter offers multiple bitrate options from 128kbps to 320kbps. Process files quickly with our optimized conversion engine. Maintain audio quality during extraction. Support for AVI files of any size.</p>
+
+<h2>Common Use Cases</h2>
+<p>Extract soundtracks from home videos. Create audio versions of video tutorials for podcast-style listening. Save music from old AVI format videos. Convert video recordings to audio for transcription.</p>
+
+<h2>No Registration Required</h2>
+<p>Start converting immediately without creating an account. Upload your AVI file, select your preferred audio quality, and download your MP3 in seconds. All processing happens on secure servers with automatic file deletion after conversion.</p>`,
+  },
+  {
+    id: "mov-to-mp3",
+    name: "MOV to MP3",
+    description: "Convert MOV video files to MP3 audio format",
+    icon: "FileAudio",
+    type: "mov-to-mp3",
+    color: "bg-purple-500",
+    emoji: "🎥",
+    metaTitle: "MOV to MP3 Converter Online Free - Extract Audio from MOV | PDF Tools",
+    metaDescription: "Convert MOV video files to MP3 audio format online for free. Extract audio from Apple QuickTime videos instantly. Fast and secure conversion.",
+    seoArticle: `<h2>MOV to MP3 Converter - Extract Audio from QuickTime Videos</h2>
+<p>Transform your MOV video files into MP3 audio with our free online converter. MOV files, commonly created by Apple devices and QuickTime, often contain high-quality audio that you may want to extract. Our tool makes this process simple and fast.</p>
+
+<h2>About MOV Format</h2>
+<p>MOV is a multimedia container format developed by Apple for QuickTime Player. It is widely used for storing high-quality video and audio content, especially from iPhones, iPads, and Mac computers. Our converter extracts the audio stream and converts it to universally compatible MP3 format.</p>
+
+<h2>Why Convert MOV to MP3?</h2>
+<p>MP3 is the most widely supported audio format across all devices and platforms. Converting MOV to MP3 lets you listen to audio content on any device without the video component. Save significant storage space by keeping only the audio.</p>
+
+<h2>Quality Options Available</h2>
+<p>Choose from multiple bitrate options: 128kbps for smaller files, 192kbps for balanced quality, or 320kbps for maximum audio fidelity. Our converter preserves as much of the original audio quality as possible.</p>
+
+<h2>Fast and Secure Processing</h2>
+<p>Upload your MOV file and receive your MP3 in seconds. All files are processed on secure servers and automatically deleted after conversion. No software installation required.</p>`,
+  },
+  {
+    id: "cut-audio",
+    name: "Cut Audio",
+    description: "Cut specific portions from audio files",
+    icon: "Scissors",
+    type: "cut-audio",
+    color: "bg-rose-500",
+    emoji: "✂️",
+    metaTitle: "Cut Audio Online Free - Remove Parts from Audio Files | PDF Tools",
+    metaDescription: "Cut and remove sections from audio files online for free. Trim unwanted parts from MP3, WAV, and other audio formats. Easy-to-use audio cutter.",
+    seoArticle: `<h2>Cut Audio Online - Remove Unwanted Sections from Audio</h2>
+<p>Remove specific portions from your audio files with our free online audio cutter. Whether you need to cut out silence, remove unwanted content, or shorten an audio file, our tool provides precise control over your edits.</p>
+
+<h2>Precise Cutting Controls</h2>
+<p>Specify exact start and end times down to the second. Preview your selection before cutting. Remove multiple sections from a single file. Keep the parts you want while discarding the rest.</p>
+
+<h2>Supported Audio Formats</h2>
+<p>Our audio cutter works with all popular audio formats including MP3, WAV, OGG, AAC, FLAC, and more. Upload any audio file and export your cut version in your preferred format.</p>
+
+<h2>Common Applications</h2>
+<p>Create ringtones by cutting your favorite song sections. Remove long intros or outros from recordings. Cut out mistakes from podcast recordings. Shorten audio for social media posts.</p>
+
+<h2>No Software Installation</h2>
+<p>Use our audio cutter directly in your browser without downloading any software. Works on desktop, tablet, and mobile devices. Your files are processed securely and deleted automatically.</p>`,
+  },
+  {
+    id: "trim-audio",
+    name: "Trim Audio",
+    description: "Trim the beginning and end of audio files",
+    icon: "Scissors",
+    type: "trim-audio",
+    color: "bg-pink-500",
+    emoji: "🎵",
+    metaTitle: "Trim Audio Online Free - Cut Start and End of Audio | PDF Tools",
+    metaDescription: "Trim audio files online for free. Remove unwanted beginnings and endings from MP3, WAV, and other audio formats. Fast and easy audio trimmer.",
+    seoArticle: `<h2>Trim Audio Files Online - Remove Start and End Sections</h2>
+<p>Easily trim the beginning and end of your audio files with our free online trimmer. Perfect for removing silence, cutting intros and outros, or creating the perfect audio clip from a longer recording.</p>
+
+<h2>Simple Trimming Process</h2>
+<p>Upload your audio file and set new start and end points. Our visual waveform display helps you find the exact moments you want to keep. Preview your trimmed audio before downloading.</p>
+
+<h2>Why Trim Audio?</h2>
+<p>Remove dead air or silence from the start of recordings. Cut unnecessary intro music from podcasts. Create clean audio clips without rambling endings. Prepare audio for specific time requirements.</p>
+
+<h2>Works With All Audio Formats</h2>
+<p>Support for MP3, WAV, OGG, M4A, FLAC, AAC, and more. Upload any audio file and trim it to perfection. Choose your output format based on your needs.</p>
+
+<h2>Free and Unlimited</h2>
+<p>Trim as many audio files as you need without restrictions. No account required to use the tool. Process files of any size. Fast processing with instant downloads.</p>`,
+  },
+  {
+    id: "audio-trimmer",
+    name: "Audio Trimmer",
+    description: "Professional audio trimming with precise controls",
+    icon: "Scissors",
+    type: "audio-trimmer",
+    color: "bg-fuchsia-500",
+    emoji: "🎧",
+    metaTitle: "Audio Trimmer Online Free - Precise Audio Cutting Tool | PDF Tools",
+    metaDescription: "Professional audio trimmer tool online. Precisely cut and trim audio files with second-level accuracy. Free, fast, and easy to use.",
+    seoArticle: `<h2>Professional Audio Trimmer - Precise Editing Made Easy</h2>
+<p>Our professional-grade audio trimmer gives you precise control over your audio edits. Set exact start and end times to the second, preview your selection, and export high-quality trimmed audio files.</p>
+
+<h2>Advanced Trimming Features</h2>
+<p>Enter precise timestamps for start and end points. Visual waveform display for accurate positioning. Real-time preview of your selection. Support for long audio files. Multiple output format options.</p>
+
+<h2>Perfect for Content Creators</h2>
+<p>Podcasters can trim episodes to remove dead air and create clips. Musicians can extract specific sections from recordings. Video creators can prepare audio for their projects.</p>
+
+<h2>Quality Preservation</h2>
+<p>Our trimmer preserves the original audio quality in your trimmed output. No re-encoding degradation when using lossless formats. Choose bitrate settings for compressed formats.</p>
+
+<h2>Accessible Anywhere</h2>
+<p>Use the audio trimmer on any device with a web browser. No software to download or install. Works on Windows, Mac, Linux, iOS, and Android.</p>`,
+  },
+  {
+    id: "merge-audio",
+    name: "Merge Audio",
+    description: "Combine multiple audio files into one",
+    icon: "Layers",
+    type: "merge-audio",
+    color: "bg-amber-500",
+    emoji: "🔗",
+    metaTitle: "Merge Audio Online Free - Combine Audio Files | PDF Tools",
+    metaDescription: "Merge multiple audio files into one online for free. Combine MP3, WAV, and other audio formats seamlessly. Easy audio joiner tool.",
+    seoArticle: `<h2>Merge Audio Files Online - Combine Multiple Tracks</h2>
+<p>Join multiple audio files into a single seamless track with our free online audio merger. Perfect for combining songs into a mixtape, merging podcast segments, or creating continuous audio presentations.</p>
+
+<h2>How Audio Merging Works</h2>
+<p>Upload multiple audio files in any order. Drag and drop to rearrange the sequence. Our tool joins them end-to-end into a single audio file. Download your merged audio in your preferred format.</p>
+
+<h2>Supported Formats</h2>
+<p>Merge MP3, WAV, OGG, M4A, FLAC, AAC, and other popular audio formats. Mix different formats in a single merge operation. Export to your preferred output format.</p>
+
+<h2>Use Cases for Audio Merging</h2>
+<p>Create mixtapes and music compilations. Combine podcast episodes or segments. Join audiobook chapters into single files. Merge voice recordings and music beds.</p>
+
+<h2>Fast and Free Service</h2>
+<p>Merge unlimited audio files without restrictions. No registration or account needed. Process files quickly on secure servers. Works in any modern web browser.</p>`,
+  },
+  {
+    id: "combine-audio",
+    name: "Combine Audio Files",
+    description: "Join multiple audio tracks into a single file",
+    icon: "Layers",
+    type: "combine-audio",
+    color: "bg-yellow-500",
+    emoji: "➕",
+    metaTitle: "Combine Audio Files Online Free - Join Audio Tracks | PDF Tools",
+    metaDescription: "Combine multiple audio files into one track online for free. Join MP3, WAV, and other formats seamlessly. Professional audio combiner tool.",
+    seoArticle: `<h2>Combine Audio Files - Join Multiple Tracks Into One</h2>
+<p>Effortlessly combine multiple audio files into a single cohesive track with our free online tool. Whether you are creating compilations, joining recordings, or building playlists, our combiner handles it all.</p>
+
+<h2>Simple Combination Process</h2>
+<p>Upload all the audio files you want to combine. Arrange them in your preferred order using drag and drop. Preview the arrangement before processing. Combine into a single file with one click.</p>
+
+<h2>Professional Quality Results</h2>
+<p>Our audio combiner maintains the quality of your original files. No generation loss or quality degradation. Seamless transitions between tracks. Support for high-resolution audio formats.</p>
+
+<h2>Flexible Format Support</h2>
+<p>Combine files from different audio formats. Input formats include MP3, WAV, FLAC, AAC, OGG, and more. Output in your format of choice.</p>
+
+<h2>Ideal For Many Applications</h2>
+<p>Musicians combining recordings and samples. Podcasters joining interview segments. Authors creating audiobook compilations. DJs preparing sets.</p>`,
+  },
+  {
+    id: "audio-joiner",
+    name: "Audio Joiner",
+    description: "Join audio files with crossfade options",
+    icon: "GitCompare",
+    type: "audio-joiner",
+    color: "bg-lime-500",
+    emoji: "🎼",
+    metaTitle: "Audio Joiner Online Free - Join Audio with Crossfade | PDF Tools",
+    metaDescription: "Join audio files with crossfade transitions online for free. Seamlessly blend multiple audio tracks into one. Professional audio joiner tool.",
+    seoArticle: `<h2>Audio Joiner - Seamlessly Join Audio Files</h2>
+<p>Our advanced audio joiner combines multiple audio files with optional crossfade transitions for smooth, professional-sounding results. Create seamless audio compilations without harsh cuts between tracks.</p>
+
+<h2>Crossfade Transitions</h2>
+<p>Add crossfade between tracks for smooth blending. Adjust crossfade duration from 0 to 10 seconds. Preview transitions before finalizing. Create professional DJ-style mixes.</p>
+
+<h2>Easy Drag-and-Drop Interface</h2>
+<p>Upload files and arrange them visually. Drag tracks to reorder instantly. See file names and durations. Remove unwanted tracks with one click.</p>
+
+<h2>Output Format Options</h2>
+<p>Choose from MP3, WAV, OGG, and other formats. Select audio quality and bitrate. Optimize for file size or sound quality.</p>
+
+<h2>Free and No Registration</h2>
+<p>Use the audio joiner without creating an account. Process unlimited files. No watermarks on output. Secure file handling.</p>`,
+  },
+  {
+    id: "change-audio-volume",
+    name: "Change Audio Volume",
+    description: "Adjust the volume level of audio files",
+    icon: "ChevronsUp",
+    type: "change-audio-volume",
+    color: "bg-teal-500",
+    emoji: "🔊",
+    metaTitle: "Change Audio Volume Online Free - Adjust Volume Levels | PDF Tools",
+    metaDescription: "Change the volume of audio files online for free. Increase or decrease audio volume levels. Easy volume adjustment tool for MP3 and other formats.",
+    seoArticle: `<h2>Change Audio Volume - Adjust Volume Levels Easily</h2>
+<p>Modify the volume of your audio files with our free online volume changer. Whether you need to boost quiet recordings or reduce overly loud audio, our tool provides precise volume control without quality loss.</p>
+
+<h2>Precise Volume Control</h2>
+<p>Adjust volume from -20dB to +20dB. Fine-tune with percentage-based controls. Preview changes before applying. Real-time volume visualization.</p>
+
+<h2>When to Adjust Volume</h2>
+<p>Normalize quiet recordings to standard levels. Reduce volume for background music. Match volumes between different audio clips. Fix audio that was recorded too quietly.</p>
+
+<h2>Preserve Audio Quality</h2>
+<p>Our volume adjustment uses professional-grade algorithms. Avoid clipping when increasing volume. Maintain dynamic range during adjustments. No quality degradation in the output.</p>
+
+<h2>Works With All Audio Formats</h2>
+<p>Change volume for MP3, WAV, FLAC, OGG, M4A, and more. Upload in any format, export in any format. Quick processing for immediate results.</p>`,
+  },
+  {
+    id: "increase-audio-volume",
+    name: "Increase Audio Volume",
+    description: "Boost the volume of quiet audio files",
+    icon: "ChevronsUp",
+    type: "increase-audio-volume",
+    color: "bg-emerald-500",
+    emoji: "📢",
+    metaTitle: "Increase Audio Volume Online Free - Boost Audio Loudness | PDF Tools",
+    metaDescription: "Increase the volume of audio files online for free. Boost quiet recordings and make audio louder. Professional audio volume booster tool.",
+    seoArticle: `<h2>Increase Audio Volume - Make Your Audio Louder</h2>
+<p>Boost the volume of quiet audio files with our free online volume increaser. Perfect for fixing recordings that were captured at low levels or making audio more audible for various applications.</p>
+
+<h2>Powerful Volume Boost</h2>
+<p>Increase volume by up to 400%. Apply normalized amplification for consistent results. Automatic clipping prevention. Smart limiting to avoid distortion.</p>
+
+<h2>Common Scenarios</h2>
+<p>Boost voice recordings made on phones. Increase volume of quiet podcasts or audiobooks. Amplify music that plays too softly. Prepare audio for video projects.</p>
+
+<h2>Smart Processing</h2>
+<p>Our tool analyzes your audio to suggest optimal gain levels. Automatic peak detection prevents distortion. Apply compression for more consistent volume.</p>
+
+<h2>No Quality Compromise</h2>
+<p>High-quality audio processing algorithms. Maintain clarity while increasing volume. Preserve original dynamic range when possible. Professional results every time.</p>`,
+  },
+];
+
+pdfTools.push(...audioProcessingTools);

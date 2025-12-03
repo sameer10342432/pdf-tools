@@ -617,6 +617,16 @@ export default function ToolPage() {
     if (tool.type === "compress-wav" || tool.type === "wav-to-mp3") {
       return ".wav,audio/wav,audio/wave,audio/x-wav";
     }
+    if (tool.type === "avi-to-mp3" || tool.type === "mov-to-mp3") {
+      return ".avi,.mov,video/x-msvideo,video/quicktime";
+    }
+    if (tool.type === "cut-audio" || tool.type === "trim-audio" || tool.type === "audio-trimmer" ||
+        tool.type === "change-audio-volume" || tool.type === "increase-audio-volume") {
+      return ".mp3,.wav,.aac,.m4a,.ogg,.flac,.wma,audio/mpeg,audio/wav,audio/aac,audio/mp4,audio/ogg,audio/flac";
+    }
+    if (tool.type === "merge-audio" || tool.type === "combine-audio" || tool.type === "audio-joiner") {
+      return ".mp3,.wav,.aac,.m4a,.ogg,.flac,.wma,audio/mpeg,audio/wav,audio/aac,audio/mp4,audio/ogg,audio/flac";
+    }
     if (tool.type === "hex-to-text" || tool.type === "text-to-morse" || tool.type === "morse-to-text" || tool.type === "text-to-handwriting") {
       return "*/*";
     }
@@ -643,6 +653,9 @@ export default function ToolPage() {
       "image-combiner-horizontal",
       "image-combiner-vertical",
       "ai-face-swapper",
+      "merge-audio",
+      "combine-audio",
+      "audio-joiner",
     ].includes(tool.type);
   };
 
@@ -659,6 +672,9 @@ export default function ToolPage() {
       "gif-maker",
       "apng-maker",
       "ai-face-swapper",
+      "merge-audio",
+      "combine-audio",
+      "audio-joiner",
     ].includes(tool.type);
   };
 

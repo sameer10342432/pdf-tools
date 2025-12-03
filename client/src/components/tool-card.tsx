@@ -64,6 +64,7 @@ import {
   Camera,
   GitCompare,
   AlignLeft,
+  ChevronsUp,
   type LucideIcon,
 } from "lucide-react";
 
@@ -130,6 +131,7 @@ const iconMap: Record<string, LucideIcon> = {
   Camera,
   GitCompare,
   AlignLeft,
+  ChevronsUp,
 };
 
 interface ToolCardProps {
