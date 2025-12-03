@@ -20,6 +20,7 @@ The application is built with a React frontend and an Express.js backend.
     - New universal file converter tools: File Converter, Document Converter, EPUB to TXT, XML to CSV, XML to JSON, JSON to XML, JSON to YAML, YAML to JSON, YAML to CSV, and CSV to YAML.
     - **10 New Developer Utility Tools** (December 2025): JS Beautifier, SQL Formatter, SQL Minifier, Lorem Ipsum Generator, UUID Generator, MD5 Hash Generator, SHA-256 Hash Generator, Base64 Encode, Base64 Decode, and URL Encoder. These tools use text input areas instead of file uploads for direct text processing.
     - **10 New Audio Conversion Tools** (December 2025): M4A to MP3, MP3 to M4A, FLAC to MP3, MP3 to FLAC, OGG to MP3, MP3 to OGG, AAC to MP3, MP3 to AAC, Video to MP3, and MP4 to MP3. These tools leverage FFmpeg for high-quality audio conversion with configurable bitrate options.
+    - **10 New Audio Processing Tools** (December 2025): AVI to MP3, MOV to MP3, Cut Audio, Trim Audio, Audio Trimmer, Merge Audio, Combine Audio Files, Audio Joiner (with crossfade), Change Audio Volume, and Increase Audio Volume. These tools support multi-file operations for merging and include input validation for time formats and volume levels.
     - Secure file handling with automatic deletion after 5 minutes.
     - Real-time processing progress indication.
     - Page-based navigation for improved SEO and user experience.
