@@ -52,6 +52,16 @@ import {
   Table,
   Braces,
   Code,
+  FileCode,
+  Calculator,
+  Presentation,
+  MonitorPlay,
+  BookMarked,
+  BookText,
+  Film,
+  Camera,
+  GitCompare,
+  AlignLeft,
   type LucideIcon,
 } from "lucide-react";
 
@@ -106,6 +116,16 @@ const iconMap: Record<string, LucideIcon> = {
   Table,
   Braces,
   Code,
+  FileCode,
+  Calculator,
+  Presentation,
+  MonitorPlay,
+  BookMarked,
+  BookText,
+  Film,
+  Camera,
+  GitCompare,
+  AlignLeft,
 };
 
 interface ToolCardProps {

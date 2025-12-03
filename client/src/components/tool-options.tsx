@@ -10177,6 +10177,154 @@ export function ToolOptionsComponent({
       );
 
 
+
+    case "xlsx-to-numbers":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload your Excel XLSX file to convert it to Apple Numbers format.
+            The conversion preserves worksheet structure and data.
+          </p>
+        </div>
+      );
+
+    case "keynote-to-pptx":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload your Keynote presentation to convert it to PowerPoint PPTX format.
+            For best results, export directly from Keynote on a Mac.
+          </p>
+        </div>
+      );
+
+    case "pptx-to-keynote":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload your PowerPoint PPTX file to convert it to Apple Keynote format.
+            Slide content and text will be preserved.
+          </p>
+        </div>
+      );
+
+    case "epub-to-azw3":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert EPUB ebooks to Kindle AZW3 format for reading on Kindle devices.
+            For full compatibility, consider using Calibre for complex books.
+          </p>
+        </div>
+      );
+
+    case "azw3-to-epub":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert Kindle AZW3/MOBI files to standard EPUB format.
+            DRM-protected files cannot be converted.
+          </p>
+        </div>
+      );
+
+    case "pdf-to-cbr":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert PDF files to CBR (Comic Book RAR) format for comic book readers.
+            Each page is extracted as an individual image.
+          </p>
+        </div>
+      );
+
+    case "pdf-to-cbz":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert PDF files to CBZ (Comic Book ZIP) format for comic book readers.
+            Each page is extracted as an individual image.
+          </p>
+        </div>
+      );
+
+    case "compare-text":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload two text files to compare. The tool will show line-by-line
+            differences between the files.
+          </p>
+        </div>
+      );
+
+    case "text-difference":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="text1">First Text</Label>
+            <textarea
+              id="text1"
+              className="w-full min-h-[120px] p-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Paste or type the first text here..."
+              value={options.text1 || ""}
+              onChange={(e) => updateOption("text1", e.target.value)}
+              data-testid="textarea-text1"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="text2">Second Text</Label>
+            <textarea
+              id="text2"
+              className="w-full min-h-[120px] p-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Paste or type the second text here..."
+              value={options.text2 || ""}
+              onChange={(e) => updateOption("text2", e.target.value)}
+              data-testid="textarea-text2"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Or upload two text files to compare their contents.
+          </p>
+        </div>
+      );
+
+    case "json-formatter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="jsonInput">JSON Input</Label>
+            <textarea
+              id="jsonInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder='{"key": "value", "nested": {"data": true}}'
+              value={options.jsonInput || ""}
+              onChange={(e) => updateOption("jsonInput", e.target.value)}
+              data-testid="textarea-json-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Indentation</Label>
+            <Select
+              value={options.indent || "2"}
+              onValueChange={(value) => updateOption("indent", value)}
+            >
+              <SelectTrigger data-testid="select-indent">
+                <SelectValue placeholder="Select indentation" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2">2 spaces</SelectItem>
+                <SelectItem value="4">4 spaces</SelectItem>
+                <SelectItem value="1">1 tab</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste JSON to format and beautify, or upload a JSON file.
+          </p>
+        </div>
+      );
+
     default:
       return null;
   }
