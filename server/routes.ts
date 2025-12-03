@@ -23902,6 +23902,386 @@ ${paths.join('\n')}
             break;
           }
 
+          case "image-to-painting": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const paintingStyle = options.paintingStyle || "oil";
+            const intensity = options.paintingIntensity || 5;
+            
+            let paintingResult: Buffer;
+            const metadata = await sharp(buffer).metadata();
+            const width = metadata.width || 800;
+            const height = metadata.height || 600;
+            
+            switch (paintingStyle) {
+              case "watercolor":
+                paintingResult = await sharp(buffer)
+                  .blur(1 + intensity * 0.3)
+                  .modulate({ saturation: 0.8 + intensity * 0.1 })
+                  .sharpen({ sigma: 0.5, m1: 0.5, m2: 0.2 })
+                  .gamma(1.2)
+                  .toBuffer();
+                break;
+              case "impressionist":
+                paintingResult = await sharp(buffer)
+                  .resize(Math.round(width / (1 + intensity * 0.1)), Math.round(height / (1 + intensity * 0.1)))
+                  .resize(width, height)
+                  .modulate({ saturation: 1.2 + intensity * 0.1, brightness: 1.05 })
+                  .sharpen({ sigma: 2, m1: 1.5, m2: 0.5 })
+                  .toBuffer();
+                break;
+              case "abstract":
+                paintingResult = await sharp(buffer)
+                  .blur(2 + intensity * 0.5)
+                  .modulate({ saturation: 1.5 + intensity * 0.1, hue: intensity * 5 })
+                  .sharpen({ sigma: 3, m1: 2, m2: 1 })
+                  .gamma(0.8 + intensity * 0.05)
+                  .toBuffer();
+                break;
+              case "oil":
+              default:
+                paintingResult = await sharp(buffer)
+                  .blur(0.5 + intensity * 0.2)
+                  .modulate({ saturation: 1.1 + intensity * 0.05 })
+                  .sharpen({ sigma: 1.5, m1: 1.5, m2: 0.7 })
+                  .linear(1.1, -10)
+                  .toBuffer();
+                break;
+            }
+            
+            result = await sharp(paintingResult).png().toBuffer();
+            filename = `painting_${paintingStyle}.png`;
+            contentType = "image/png";
+            break;
+          }
+
+          case "image-color-palette": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const numColors = options.paletteColors || 6;
+            
+            const resizedBuffer = await sharp(buffer)
+              .resize(100, 100, { fit: 'cover' })
+              .raw()
+              .toBuffer({ resolveWithObject: true });
+            
+            const { data, info } = resizedBuffer;
+            const pixels: Array<[number, number, number]> = [];
+            for (let i = 0; i < data.length; i += info.channels) {
+              pixels.push([data[i], data[i + 1], data[i + 2]]);
+            }
+            
+            function kMeans(points: Array<[number, number, number]>, k: number): Array<[number, number, number]> {
+              let centroids = points.slice(0, k);
+              for (let iter = 0; iter < 10; iter++) {
+                const clusters: Array<Array<[number, number, number]>> = Array.from({ length: k }, () => []);
+                for (const point of points) {
+                  let minDist = Infinity;
+                  let closest = 0;
+                  for (let i = 0; i < centroids.length; i++) {
+                    const dist = Math.sqrt(
+                      Math.pow(point[0] - centroids[i][0], 2) +
+                      Math.pow(point[1] - centroids[i][1], 2) +
+                      Math.pow(point[2] - centroids[i][2], 2)
+                    );
+                    if (dist < minDist) {
+                      minDist = dist;
+                      closest = i;
+                    }
+                  }
+                  clusters[closest].push(point);
+                }
+                centroids = clusters.map(cluster => {
+                  if (cluster.length === 0) return [128, 128, 128] as [number, number, number];
+                  const sum = cluster.reduce((acc, p) => [acc[0] + p[0], acc[1] + p[1], acc[2] + p[2]], [0, 0, 0]);
+                  return [
+                    Math.round(sum[0] / cluster.length),
+                    Math.round(sum[1] / cluster.length),
+                    Math.round(sum[2] / cluster.length)
+                  ] as [number, number, number];
+                });
+              }
+              return centroids;
+            }
+            
+            const colors = kMeans(pixels, numColors);
+            const swatchHeight = 100;
+            const swatchWidth = 80;
+            const padding = 10;
+            const totalWidth = (swatchWidth + padding) * numColors + padding;
+            const totalHeight = swatchHeight + padding * 2 + 30;
+            
+            const svgParts: string[] = [];
+            svgParts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${totalHeight}">`);
+            svgParts.push(`<rect width="${totalWidth}" height="${totalHeight}" fill="#ffffff"/>`);
+            
+            colors.forEach((color, i) => {
+              const x = padding + i * (swatchWidth + padding);
+              const hex = `#${color.map(c => c.toString(16).padStart(2, '0')).join('')}`;
+              svgParts.push(`<rect x="${x}" y="${padding}" width="${swatchWidth}" height="${swatchHeight}" fill="${hex}" rx="8"/>`);
+              svgParts.push(`<text x="${x + swatchWidth / 2}" y="${padding + swatchHeight + 20}" text-anchor="middle" font-family="Arial" font-size="10" fill="#333">${hex.toUpperCase()}</text>`);
+            });
+            
+            svgParts.push('</svg>');
+            const svgBuffer = Buffer.from(svgParts.join(''));
+            
+            result = await sharp(svgBuffer).png().toBuffer();
+            filename = `color_palette_${numColors}_colors.png`;
+            contentType = "image/png";
+            break;
+          }
+
+          case "image-histogram": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const { data, info } = await sharp(buffer)
+              .raw()
+              .toBuffer({ resolveWithObject: true });
+            
+            const histogramR = new Array(256).fill(0);
+            const histogramG = new Array(256).fill(0);
+            const histogramB = new Array(256).fill(0);
+            
+            for (let i = 0; i < data.length; i += info.channels) {
+              histogramR[data[i]]++;
+              histogramG[data[i + 1]]++;
+              histogramB[data[i + 2]]++;
+            }
+            
+            const maxCount = Math.max(...histogramR, ...histogramG, ...histogramB);
+            const chartWidth = 512;
+            const chartHeight = 200;
+            const barWidth = chartWidth / 256;
+            
+            const svgParts: string[] = [];
+            svgParts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${chartWidth + 40}" height="${chartHeight + 60}">`);
+            svgParts.push(`<rect width="${chartWidth + 40}" height="${chartHeight + 60}" fill="#ffffff"/>`);
+            svgParts.push(`<text x="${chartWidth / 2 + 20}" y="20" text-anchor="middle" font-family="Arial" font-size="14" fill="#333">Image Histogram</text>`);
+            
+            for (let i = 0; i < 256; i++) {
+              const x = 20 + i * barWidth;
+              const hR = (histogramR[i] / maxCount) * chartHeight;
+              const hG = (histogramG[i] / maxCount) * chartHeight;
+              const hB = (histogramB[i] / maxCount) * chartHeight;
+              
+              svgParts.push(`<rect x="${x}" y="${30 + chartHeight - hR}" width="${barWidth}" height="${hR}" fill="rgba(255,0,0,0.5)"/>`);
+              svgParts.push(`<rect x="${x}" y="${30 + chartHeight - hG}" width="${barWidth}" height="${hG}" fill="rgba(0,255,0,0.5)"/>`);
+              svgParts.push(`<rect x="${x}" y="${30 + chartHeight - hB}" width="${barWidth}" height="${hB}" fill="rgba(0,0,255,0.5)"/>`);
+            }
+            
+            svgParts.push(`<text x="30" y="${chartHeight + 50}" font-family="Arial" font-size="10" fill="#333">0</text>`);
+            svgParts.push(`<text x="${chartWidth}" y="${chartHeight + 50}" font-family="Arial" font-size="10" fill="#333">255</text>`);
+            svgParts.push(`<rect x="${chartWidth / 2 - 40}" y="${chartHeight + 40}" width="15" height="10" fill="rgba(255,0,0,0.7)"/>`);
+            svgParts.push(`<text x="${chartWidth / 2 - 20}" y="${chartHeight + 50}" font-family="Arial" font-size="10" fill="#333">R</text>`);
+            svgParts.push(`<rect x="${chartWidth / 2}" y="${chartHeight + 40}" width="15" height="10" fill="rgba(0,255,0,0.7)"/>`);
+            svgParts.push(`<text x="${chartWidth / 2 + 20}" y="${chartHeight + 50}" font-family="Arial" font-size="10" fill="#333">G</text>`);
+            svgParts.push(`<rect x="${chartWidth / 2 + 40}" y="${chartHeight + 40}" width="15" height="10" fill="rgba(0,0,255,0.7)"/>`);
+            svgParts.push(`<text x="${chartWidth / 2 + 60}" y="${chartHeight + 50}" font-family="Arial" font-size="10" fill="#333">B</text>`);
+            
+            svgParts.push('</svg>');
+            const svgBuffer = Buffer.from(svgParts.join(''));
+            
+            result = await sharp(svgBuffer).png().toBuffer();
+            filename = `histogram.png`;
+            contentType = "image/png";
+            break;
+          }
+
+          case "word-to-txt": {
+            if (files.length === 0) {
+              throw new Error("Please upload a Word document");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const mammothResult = await mammoth.extractRawText({ buffer });
+            
+            result = Buffer.from(mammothResult.value, 'utf-8');
+            filename = files[0].originalname?.replace(/\.(docx?|DOCX?)$/, '.txt') || 'document.txt';
+            contentType = "text/plain";
+            break;
+          }
+
+          case "word-to-html": {
+            if (files.length === 0) {
+              throw new Error("Please upload a Word document");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const mammothResult = await mammoth.convertToHtml({ buffer });
+            
+            const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Document</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+    h1, h2, h3, h4, h5, h6 { margin-top: 1.5em; margin-bottom: 0.5em; }
+    p { margin: 1em 0; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    img { max-width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+${mammothResult.value}
+</body>
+</html>`;
+            
+            result = Buffer.from(htmlContent, 'utf-8');
+            filename = files[0].originalname?.replace(/\.(docx?|DOCX?)$/, '.html') || 'document.html';
+            contentType = "text/html";
+            break;
+          }
+
+          case "txt-to-word": {
+            if (files.length === 0) {
+              throw new Error("Please upload a text file");
+            }
+            
+            const textContent = fs.readFileSync(files[0].path, 'utf-8');
+            const paragraphs = textContent.split(/\n\n+/).filter(p => p.trim());
+            
+            const Document = (await import('docx')).Document;
+            const Paragraph = (await import('docx')).Paragraph;
+            const TextRun = (await import('docx')).TextRun;
+            const Packer = (await import('docx')).Packer;
+            
+            const doc = new Document({
+              sections: [{
+                properties: {},
+                children: paragraphs.map(para => 
+                  new Paragraph({
+                    children: para.split('\n').map((line, i, arr) => 
+                      new TextRun({
+                        text: line,
+                        break: i < arr.length - 1 ? 1 : undefined,
+                      })
+                    ),
+                  })
+                ),
+              }],
+            });
+            
+            result = await Packer.toBuffer(doc);
+            filename = files[0].originalname?.replace(/\.txt$/i, '.docx') || 'document.docx';
+            contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            break;
+          }
+
+          case "html-to-word": {
+            if (files.length === 0) {
+              throw new Error("Please upload an HTML file");
+            }
+            
+            const htmlContent = fs.readFileSync(files[0].path, 'utf-8');
+            const textContent = htmlContent
+              .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+              .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+              .replace(/<[^>]+>/g, '\n')
+              .replace(/&nbsp;/g, ' ')
+              .replace(/&amp;/g, '&')
+              .replace(/&lt;/g, '<')
+              .replace(/&gt;/g, '>')
+              .replace(/&quot;/g, '"')
+              .replace(/&#39;/g, "'")
+              .replace(/\n\s*\n/g, '\n\n')
+              .trim();
+            
+            const paragraphs = textContent.split(/\n\n+/).filter(p => p.trim());
+            
+            const Document = (await import('docx')).Document;
+            const Paragraph = (await import('docx')).Paragraph;
+            const TextRun = (await import('docx')).TextRun;
+            const Packer = (await import('docx')).Packer;
+            
+            const doc = new Document({
+              sections: [{
+                properties: {},
+                children: paragraphs.map(para => 
+                  new Paragraph({
+                    children: [new TextRun({ text: para.replace(/\n/g, ' ').trim() })],
+                  })
+                ),
+              }],
+            });
+            
+            result = await Packer.toBuffer(doc);
+            filename = files[0].originalname?.replace(/\.html?$/i, '.docx') || 'document.docx';
+            contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            break;
+          }
+
+          case "excel-to-csv": {
+            if (files.length === 0) {
+              throw new Error("Please upload an Excel file");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const workbook = XLSX.read(buffer, { type: 'buffer' });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            
+            let delimiter = ',';
+            if (options.csvDelimiter === 'semicolon') delimiter = ';';
+            else if (options.csvDelimiter === 'tab') delimiter = '\t';
+            
+            const csvContent = XLSX.utils.sheet_to_csv(worksheet, { FS: delimiter });
+            
+            result = Buffer.from(csvContent, 'utf-8');
+            filename = files[0].originalname?.replace(/\.(xlsx?|XLSX?)$/, '.csv') || 'spreadsheet.csv';
+            contentType = "text/csv";
+            break;
+          }
+
+          case "csv-to-excel": {
+            if (files.length === 0) {
+              throw new Error("Please upload a CSV file");
+            }
+            
+            const csvContent = fs.readFileSync(files[0].path, 'utf-8');
+            const workbook = XLSX.read(csvContent, { type: 'string' });
+            
+            const outputBuffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+            
+            result = Buffer.from(outputBuffer);
+            filename = files[0].originalname?.replace(/\.csv$/i, '.xlsx') || 'spreadsheet.xlsx';
+            contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            break;
+          }
+
+          case "excel-to-json": {
+            if (files.length === 0) {
+              throw new Error("Please upload an Excel file");
+            }
+            
+            const buffer = fs.readFileSync(files[0].path);
+            const workbook = XLSX.read(buffer, { type: 'buffer' });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            
+            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+            const prettyPrint = options.jsonPretty !== false;
+            const jsonContent = prettyPrint 
+              ? JSON.stringify(jsonData, null, 2) 
+              : JSON.stringify(jsonData);
+            
+            result = Buffer.from(jsonContent, 'utf-8');
+            filename = files[0].originalname?.replace(/\.(xlsx?|XLSX?)$/, '.json') || 'data.json';
+            contentType = "application/json";
+            break;
+          }
+
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
         }
