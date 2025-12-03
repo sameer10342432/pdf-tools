@@ -616,6 +616,15 @@ export const pdfToolTypes = [
   "line-counter",
   "whitespace-remover",
   "slugify-url",
+  "qr-code-generator",
+  "qr-code-reader",
+  "csv-editor",
+  "code-diff-checker",
+  "text-to-binary",
+  "binary-to-text",
+  "text-to-ascii",
+  "ascii-to-text",
+  "text-to-hex",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -17454,3 +17463,234 @@ const newTextUtilityTools: PdfTool[] = [
 ];
 
 pdfTools.push(...newTextUtilityTools);
+
+const newUtilityTools: PdfTool[] = [
+  {
+    id: "qr-code-generator",
+    name: "QR Code Generator",
+    description: "Create custom QR codes for URLs, text, and data",
+    icon: "Grid",
+    type: "qr-code-generator",
+    color: "bg-violet-500",
+    emoji: "📱",
+    metaTitle: "QR Code Generator Online Free - Create Custom QR Codes | PDF Tools",
+    metaDescription: "Generate QR codes online for free. Create custom QR codes for URLs, text, WiFi, and more. Download in PNG, SVG, or PDF format.",
+    seoArticle: `<h2>QR Code Generator - Create Custom QR Codes Instantly</h2>
+<p>Generate professional QR codes for any purpose with our free online QR code generator. Create codes for URLs, text, contact information, WiFi networks, and more. Perfect for marketing materials, business cards, product packaging, and event promotions.</p>
+
+<h2>Multiple QR Code Types</h2>
+<p>Our generator supports various QR code types including URL links, plain text, vCards for contact info, WiFi credentials, SMS messages, email addresses, and calendar events. Choose the type that fits your needs and customize it accordingly.</p>
+
+<h2>Customization Options</h2>
+<p>Personalize your QR codes with custom colors, sizes, and error correction levels. Add logos or images to the center of your QR code for brand recognition. Adjust the module size and quiet zone to fit your design requirements.</p>
+
+<h2>High-Quality Downloads</h2>
+<p>Download your QR codes in multiple formats including PNG for web use, SVG for scalable graphics, and PDF for print materials. All generated codes maintain scanning reliability across different sizes and applications.</p>
+
+<h2>Instant Scanning Verification</h2>
+<p>Test your generated QR codes instantly with our built-in scanner. Verify that the encoded data is correct before downloading. Ensure your codes work perfectly on all smartphone camera apps and dedicated QR readers.</p>`,
+  },
+  {
+    id: "qr-code-reader",
+    name: "QR Code Reader",
+    description: "Scan and decode QR codes from images",
+    icon: "Search",
+    type: "qr-code-reader",
+    color: "bg-teal-500",
+    emoji: "🔍",
+    metaTitle: "QR Code Reader Online Free - Scan QR Codes from Images | PDF Tools",
+    metaDescription: "Read QR codes online for free. Upload images containing QR codes and decode them instantly. No app installation required.",
+    seoArticle: `<h2>QR Code Reader - Decode QR Codes from Images</h2>
+<p>Scan and decode QR codes from any image with our free online QR code reader. Upload screenshots, photos, or scanned documents containing QR codes and extract the encoded information instantly. No smartphone app required.</p>
+
+<h2>Multiple Image Format Support</h2>
+<p>Our reader accepts various image formats including PNG, JPG, GIF, BMP, and WebP. Upload images of any size and quality - our advanced scanning algorithm handles low-resolution and partially obscured codes.</p>
+
+<h2>Batch Processing</h2>
+<p>Scan multiple QR codes from a single image or process multiple images at once. Perfect for inventory management, event check-ins, or processing large batches of QR-coded documents.</p>
+
+<h2>Decode All QR Types</h2>
+<p>Recognize and properly decode all QR code types including URLs, text, vCards, WiFi credentials, phone numbers, SMS messages, and calendar events. View the decoded content in its appropriate format.</p>
+
+<h2>Copy and Export Results</h2>
+<p>Easily copy decoded content to clipboard or export scan results to text files. View scan history and access previously decoded QR codes. Perfect for research, archiving, and data collection.</p>`,
+  },
+  {
+    id: "csv-editor",
+    name: "Online CSV Editor",
+    description: "Edit CSV files with a spreadsheet-like interface",
+    icon: "Table",
+    type: "csv-editor",
+    color: "bg-green-500",
+    emoji: "📊",
+    metaTitle: "CSV Editor Online Free - Edit CSV Files in Browser | PDF Tools",
+    metaDescription: "Edit CSV files online for free. View, modify, and save CSV data with our spreadsheet-like editor. No software installation needed.",
+    seoArticle: `<h2>Online CSV Editor - Edit Spreadsheet Data in Your Browser</h2>
+<p>Edit CSV files directly in your browser with our free online CSV editor. Featuring a familiar spreadsheet interface, you can view, modify, add, and delete data without installing any software. Perfect for quick edits and data manipulation.</p>
+
+<h2>Spreadsheet-Like Interface</h2>
+<p>Work with CSV data using an intuitive spreadsheet interface. Navigate cells with keyboard shortcuts, select ranges, and edit values directly. Sort columns, filter data, and find specific entries with ease.</p>
+
+<h2>Import and Export Options</h2>
+<p>Upload CSV files with various delimiters including comma, semicolon, tab, and custom separators. Export edited data back to CSV with your preferred formatting. Maintain data integrity throughout the editing process.</p>
+
+<h2>Data Validation</h2>
+<p>Validate data types and formats as you edit. Identify potential issues like inconsistent formatting, missing values, or duplicate entries. Keep your data clean and properly formatted.</p>
+
+<h2>Undo and Redo</h2>
+<p>Make changes confidently with full undo and redo support. Revert individual edits or restore the entire file to its original state. Track changes and review modifications before saving.</p>`,
+  },
+
+  {
+    id: "code-diff-checker",
+    name: "Code Diff Checker",
+    description: "Compare two texts and highlight differences",
+    icon: "GitCompare",
+    type: "code-diff-checker",
+    color: "bg-amber-500",
+    emoji: "🔀",
+    metaTitle: "Code Diff Checker Online Free - Compare Text Files | PDF Tools",
+    metaDescription: "Compare code and text files online for free. See differences highlighted line-by-line. Perfect for code review and document comparison.",
+    seoArticle: `<h2>Code Diff Checker - Compare Text and Find Differences</h2>
+<p>Compare two pieces of text or code and see the differences highlighted instantly. Our free online diff checker makes it easy to identify changes between versions. Essential for code reviews, document revisions, and version control.</p>
+
+<h2>Side-by-Side Comparison</h2>
+<p>View differences in a clear side-by-side format with additions, deletions, and modifications highlighted in distinct colors. Navigate through changes quickly and understand what's different at a glance.</p>
+
+<h2>Multiple Diff Modes</h2>
+<p>Choose from unified diff, split view, or inline diff modes. Configure how changes are displayed based on your preference. Toggle between character-level and line-level comparison.</p>
+
+<h2>Syntax Highlighting</h2>
+<p>Code comparison includes syntax highlighting for better readability. Select the programming language to enable proper coloring. Compare code with full context and formatting preserved.</p>
+
+<h2>Export and Share</h2>
+<p>Download diff results as HTML or plain text. Generate shareable links to comparison results. Copy changes to clipboard for documentation or review purposes.</p>`,
+  },
+  {
+    id: "text-to-binary",
+    name: "Text to Binary",
+    description: "Convert text to binary code representation",
+    icon: "Code",
+    type: "text-to-binary",
+    color: "bg-gray-600",
+    emoji: "💻",
+    metaTitle: "Text to Binary Converter Online Free - Convert Text | PDF Tools",
+    metaDescription: "Convert text to binary code online for free. Transform any text into 0s and 1s. Perfect for learning, encoding, and programming education.",
+    seoArticle: `<h2>Text to Binary Converter - Transform Text to Binary Code</h2>
+<p>Convert any text to binary representation instantly with our free online converter. Transform letters, numbers, and symbols into their binary equivalents. Great for learning about computer science fundamentals and data encoding.</p>
+
+<h2>Character-by-Character Conversion</h2>
+<p>See the binary code for each character in your text. Understand how computers store and process text data. View ASCII or Unicode values alongside binary representations.</p>
+
+<h2>Customizable Output</h2>
+<p>Choose between 7-bit ASCII, 8-bit extended ASCII, or full Unicode binary output. Add spaces between bytes for readability. Customize the separator between binary groups.</p>
+
+<h2>Educational Tool</h2>
+<p>Perfect for students learning computer science, programming basics, or data representation. Visualize how text becomes machine-readable data. Build understanding of binary number systems.</p>
+
+<h2>Copy and Download</h2>
+<p>Easily copy binary output to clipboard or download as a text file. Use converted binary in programming projects, educational materials, or creative works.</p>`,
+  },
+  {
+    id: "binary-to-text",
+    name: "Binary to Text",
+    description: "Decode binary code back to readable text",
+    icon: "FileCode",
+    type: "binary-to-text",
+    color: "bg-slate-600",
+    emoji: "🔢",
+    metaTitle: "Binary to Text Converter Online Free - Decode Binary | PDF Tools",
+    metaDescription: "Convert binary code to text online for free. Decode binary strings into readable text. Fast, accurate, and easy to use.",
+    seoArticle: `<h2>Binary to Text Converter - Decode Binary Code</h2>
+<p>Decode binary code back to readable text with our free online converter. Transform strings of 0s and 1s into letters, numbers, and symbols. Reverse engineer binary data or decode secret binary messages.</p>
+
+<h2>Flexible Input Handling</h2>
+<p>Paste binary code with or without spaces between bytes. Our converter automatically detects byte boundaries and handles various input formats. Process binary from any source.</p>
+
+<h2>ASCII and Unicode Support</h2>
+<p>Decode both standard 8-bit ASCII binary and extended Unicode representations. Handle multi-byte characters and special symbols. Get accurate text output regardless of character encoding.</p>
+
+<h2>Error Detection</h2>
+<p>Automatic validation identifies invalid binary input. See warnings for incomplete bytes or non-binary characters. Ensure accurate decoding with input verification.</p>
+
+<h2>Instant Results</h2>
+<p>Watch your binary decode in real-time as you type or paste. No processing delays - see results instantly. Copy decoded text or download for later use.</p>`,
+  },
+  {
+    id: "text-to-ascii",
+    name: "Text to ASCII",
+    description: "Convert text to ASCII code values",
+    icon: "Hash",
+    type: "text-to-ascii",
+    color: "bg-cyan-500",
+    emoji: "🔣",
+    metaTitle: "Text to ASCII Converter Online Free - Get ASCII Codes | PDF Tools",
+    metaDescription: "Convert text to ASCII values online for free. See ASCII codes for each character. Perfect for programming and text encoding.",
+    seoArticle: `<h2>Text to ASCII Converter - Get ASCII Code Values</h2>
+<p>Convert text characters to their ASCII numeric values with our free online tool. See the decimal, hexadecimal, or octal codes for each character. Essential for programmers, web developers, and anyone working with character encoding.</p>
+
+<h2>Multiple Format Options</h2>
+<p>View ASCII codes in decimal, hexadecimal, or octal format. Switch between formats instantly. Choose the representation that matches your needs or programming context.</p>
+
+<h2>Character-by-Character Display</h2>
+<p>See the ASCII value for every character including spaces and punctuation. Identify non-printable characters and control codes. Understand exactly how your text is encoded.</p>
+
+<h2>Programming Applications</h2>
+<p>Generate ASCII arrays for programming languages. Copy values in formats ready for C, JavaScript, Python, and more. Create character maps and encoding tables.</p>
+
+<h2>Extended ASCII Support</h2>
+<p>Handle extended ASCII characters (128-255) and show their codes. Identify special characters and their numeric values. Work with the full 8-bit ASCII character set.</p>`,
+  },
+  {
+    id: "ascii-to-text",
+    name: "ASCII to Text",
+    description: "Convert ASCII codes back to text",
+    icon: "Type",
+    type: "ascii-to-text",
+    color: "bg-emerald-500",
+    emoji: "📖",
+    metaTitle: "ASCII to Text Converter Online Free - Decode ASCII | PDF Tools",
+    metaDescription: "Convert ASCII codes to text online for free. Transform numeric ASCII values into readable characters. Simple and instant conversion.",
+    seoArticle: `<h2>ASCII to Text Converter - Decode ASCII Values</h2>
+<p>Convert ASCII numeric codes back to readable text characters with our free online tool. Transform decimal, hexadecimal, or octal values into their corresponding characters. Perfect for decoding, programming, and data recovery.</p>
+
+<h2>Multiple Input Formats</h2>
+<p>Enter ASCII values in decimal (65), hexadecimal (0x41), or octal (0101) format. Our converter automatically detects the format and converts accordingly. Mix formats in the same input for flexibility.</p>
+
+<h2>Flexible Separators</h2>
+<p>Separate ASCII values with spaces, commas, or line breaks. The converter handles various input styles and extracts values correctly. Paste data directly from spreadsheets or programming code.</p>
+
+<h2>Control Character Display</h2>
+<p>View and convert control characters (0-31) with their names and escape sequences. Understand non-printable characters like newlines, tabs, and carriage returns.</p>
+
+<h2>Bulk Conversion</h2>
+<p>Process large sets of ASCII values at once. Convert entire ASCII arrays or data dumps to text. Handle thousands of values in seconds.</p>`,
+  },
+  {
+    id: "text-to-hex",
+    name: "Text to Hex",
+    description: "Convert text to hexadecimal representation",
+    icon: "Braces",
+    type: "text-to-hex",
+    color: "bg-purple-500",
+    emoji: "🔷",
+    metaTitle: "Text to Hex Converter Online Free - Convert to Hexadecimal | PDF Tools",
+    metaDescription: "Convert text to hexadecimal online for free. Transform any text into hex codes. Perfect for programming, encoding, and data analysis.",
+    seoArticle: `<h2>Text to Hex Converter - Encode Text as Hexadecimal</h2>
+<p>Convert any text to its hexadecimal representation with our free online converter. Transform characters into hex codes used in programming, web development, and data encoding. Essential for working with color codes, encodings, and low-level data.</p>
+
+<h2>Standard Hex Encoding</h2>
+<p>Get the standard two-digit hexadecimal code for each character. View results with or without 0x prefix. Choose uppercase or lowercase hex letters based on your preference.</p>
+
+<h2>Unicode Support</h2>
+<p>Convert Unicode characters including emojis and international text. See full hex representation for multi-byte characters. Handle any character from any language.</p>
+
+<h2>Formatting Options</h2>
+<p>Customize output with various separators and prefixes. Generate C-style hex strings, JavaScript escape sequences, or URL-encoded text. Format output for your specific use case.</p>
+
+<h2>Color Code Generation</h2>
+<p>Quickly convert RGB values or color names to hex color codes for web development. View CSS-ready color values. Perfect for designers and front-end developers.</p>`,
+  },
+];
+
+pdfTools.push(...newUtilityTools);

@@ -11645,6 +11645,294 @@ export function ToolOptionsComponent({
       );
 
 
+    case "qr-code-generator":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="qrData">Data to Encode</Label>
+            <Input
+              id="qrData"
+              placeholder="Enter URL, text, or data"
+              value={options.qrData || ""}
+              onChange={(e) => updateOption("qrData", e.target.value)}
+              data-testid="input-qr-data"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>QR Code Size</Label>
+            <Select
+              value={options.qrSize || "256"}
+              onValueChange={(value) => updateOption("qrSize", value)}
+            >
+              <SelectTrigger data-testid="select-qr-size">
+                <SelectValue placeholder="Select size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="128">128x128</SelectItem>
+                <SelectItem value="256">256x256</SelectItem>
+                <SelectItem value="512">512x512</SelectItem>
+                <SelectItem value="1024">1024x1024</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Error Correction Level</Label>
+            <Select
+              value={options.qrErrorLevel || "M"}
+              onValueChange={(value) => updateOption("qrErrorLevel", value)}
+            >
+              <SelectTrigger data-testid="select-qr-error">
+                <SelectValue placeholder="Select level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="L">Low (7%)</SelectItem>
+                <SelectItem value="M">Medium (15%)</SelectItem>
+                <SelectItem value="Q">Quartile (25%)</SelectItem>
+                <SelectItem value="H">High (30%)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Generate a QR code from any text, URL, or data.
+          </p>
+        </div>
+      );
+
+    case "qr-code-reader":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload an image containing a QR code to decode its contents.
+          </p>
+        </div>
+      );
+
+    case "csv-editor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Delimiter</Label>
+            <Select
+              value={options.csvDelimiter || ","}
+              onValueChange={(value) => updateOption("csvDelimiter", value)}
+            >
+              <SelectTrigger data-testid="select-csv-delimiter">
+                <SelectValue placeholder="Select delimiter" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value=",">Comma (,)</SelectItem>
+                <SelectItem value=";">Semicolon (;)</SelectItem>
+                <SelectItem value="	">Tab</SelectItem>
+                <SelectItem value="|">Pipe (|)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="hasHeader"
+              checked={options.csvHasHeader !== false}
+              onCheckedChange={(checked) => updateOption("csvHasHeader", checked)}
+              data-testid="switch-csv-header"
+            />
+            <Label htmlFor="hasHeader">First row is header</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Upload a CSV file to view and edit in a spreadsheet interface.
+          </p>
+        </div>
+      );
+
+    case "code-diff-checker":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="originalText">Original Text</Label>
+            <textarea
+              id="originalText"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Paste original text here..."
+              value={options.originalText || ""}
+              onChange={(e) => updateOption("originalText", e.target.value)}
+              data-testid="textarea-original-text"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="modifiedText">Modified Text</Label>
+            <textarea
+              id="modifiedText"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Paste modified text here..."
+              value={options.modifiedText || ""}
+              onChange={(e) => updateOption("modifiedText", e.target.value)}
+              data-testid="textarea-modified-text"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>View Mode</Label>
+            <Select
+              value={options.diffViewMode || "split"}
+              onValueChange={(value) => updateOption("diffViewMode", value)}
+            >
+              <SelectTrigger data-testid="select-diff-view">
+                <SelectValue placeholder="Select view" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="split">Side by Side</SelectItem>
+                <SelectItem value="unified">Unified</SelectItem>
+                <SelectItem value="inline">Inline</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "text-to-binary":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Convert</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[100px] p-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to convert to binary..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-text-input"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="addSpaces"
+              checked={options.binaryAddSpaces !== false}
+              onCheckedChange={(checked) => updateOption("binaryAddSpaces", checked)}
+              data-testid="switch-binary-spaces"
+            />
+            <Label htmlFor="addSpaces">Add spaces between bytes</Label>
+          </div>
+        </div>
+      );
+
+    case "binary-to-text":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="binaryInput">Binary Code</Label>
+            <textarea
+              id="binaryInput"
+              className="w-full min-h-[100px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter binary code (e.g., 01001000 01100101)..."
+              value={options.binaryInput || ""}
+              onChange={(e) => updateOption("binaryInput", e.target.value)}
+              data-testid="textarea-binary-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste binary code to decode back to text.
+          </p>
+        </div>
+      );
+
+    case "text-to-ascii":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Convert</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[100px] p-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to get ASCII codes..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-text-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.asciiFormat || "decimal"}
+              onValueChange={(value) => updateOption("asciiFormat", value)}
+            >
+              <SelectTrigger data-testid="select-ascii-format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="decimal">Decimal</SelectItem>
+                <SelectItem value="hex">Hexadecimal</SelectItem>
+                <SelectItem value="octal">Octal</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "ascii-to-text":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="asciiInput">ASCII Codes</Label>
+            <textarea
+              id="asciiInput"
+              className="w-full min-h-[100px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter ASCII codes (e.g., 72 101 108 108 111)..."
+              value={options.asciiInput || ""}
+              onChange={(e) => updateOption("asciiInput", e.target.value)}
+              data-testid="textarea-ascii-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Input Format</Label>
+            <Select
+              value={options.asciiInputFormat || "decimal"}
+              onValueChange={(value) => updateOption("asciiInputFormat", value)}
+            >
+              <SelectTrigger data-testid="select-ascii-input-format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="decimal">Decimal</SelectItem>
+                <SelectItem value="hex">Hexadecimal</SelectItem>
+                <SelectItem value="octal">Octal</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "text-to-hex":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Convert</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[100px] p-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to convert to hexadecimal..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-text-input"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="addPrefix"
+              checked={options.hexAddPrefix || false}
+              onCheckedChange={(checked) => updateOption("hexAddPrefix", checked)}
+              data-testid="switch-hex-prefix"
+            />
+            <Label htmlFor="addPrefix">Add 0x prefix</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="uppercase"
+              checked={options.hexUppercase || false}
+              onCheckedChange={(checked) => updateOption("hexUppercase", checked)}
+              data-testid="switch-hex-uppercase"
+            />
+            <Label htmlFor="uppercase">Uppercase letters</Label>
+          </div>
+        </div>
+      );
+
     case "json-formatter":
       return (
         <div className="space-y-4">

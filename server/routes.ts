@@ -17,6 +17,9 @@ import { marked } from "marked";
 import AdmZip from "adm-zip";
 import pptxgen from "pptxgenjs";
 import { Document, Paragraph, TextRun, Packer } from "docx";
+import QRCode from "qrcode";
+import jsQR from "jsqr";
+import { Jimp } from "jimp";
 
 const execAsync = promisify(exec);
 
@@ -28259,7 +28262,343 @@ Average Line Length: ${avgLineLength} characters`;
             break;
           }
 
-case "json-formatter": {
+
+          case "qr-code-generator": {
+            const qrData = options.qrData || "https://example.com";
+            const qrSize = parseInt(options.qrSize || "256", 10);
+            const errorLevel = (options.qrErrorLevel || "M") as "L" | "M" | "Q" | "H";
+            
+            // Generate real QR code using qrcode library
+            const qrOptions = {
+              errorCorrectionLevel: errorLevel,
+              width: qrSize,
+              margin: 2,
+              color: {
+                dark: '#000000',
+                light: '#ffffff'
+              }
+            };
+            
+            // Generate QR code as PNG buffer
+            const qrBuffer = await QRCode.toBuffer(qrData, qrOptions);
+            
+            result = qrBuffer;
+            filename = "qrcode.png";
+            contentType = "image/png";
+            break;
+          }
+
+          case "qr-code-reader": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image containing a QR code");
+            }
+            
+            const imageFile = files[0];
+            const imagePath = imageFile.path;
+            
+            try {
+              // Read and process the image using Jimp
+              const image = await Jimp.read(imagePath);
+              const width = image.getWidth();
+              const height = image.getHeight();
+              
+              // Get image data as RGBA array
+              const imageData = new Uint8ClampedArray(width * height * 4);
+              let idx = 0;
+              
+              image.scan(0, 0, width, height, function (x, y, offset) {
+                const red = this.bitmap.data[offset + 0];
+                const green = this.bitmap.data[offset + 1];
+                const blue = this.bitmap.data[offset + 2];
+                const alpha = this.bitmap.data[offset + 3];
+                imageData[idx++] = red;
+                imageData[idx++] = green;
+                imageData[idx++] = blue;
+                imageData[idx++] = alpha;
+              });
+              
+              // Decode QR code using jsQR
+              const code = jsQR(imageData, width, height);
+              
+              if (code) {
+                const decodedResult = `QR Code Decoded Successfully!
+
+Content: ${code.data}
+
+Location:
+  Top-Left: (${code.location.topLeftCorner.x.toFixed(0)}, ${code.location.topLeftCorner.y.toFixed(0)})
+  Top-Right: (${code.location.topRightCorner.x.toFixed(0)}, ${code.location.topRightCorner.y.toFixed(0)})
+  Bottom-Left: (${code.location.bottomLeftCorner.x.toFixed(0)}, ${code.location.bottomLeftCorner.y.toFixed(0)})
+  Bottom-Right: (${code.location.bottomRightCorner.x.toFixed(0)}, ${code.location.bottomRightCorner.y.toFixed(0)})
+
+File: ${imageFile.originalname}
+`;
+                result = Buffer.from(decodedResult, 'utf-8');
+              } else {
+                result = Buffer.from(`No QR code found in the image.
+
+Please ensure:
+1. The image contains a valid QR code
+2. The QR code is clearly visible and not blurry
+3. The image has good contrast
+
+File analyzed: ${imageFile.originalname}
+`, 'utf-8');
+              }
+            } catch (err) {
+              throw new Error(`Failed to process image: ${err instanceof Error ? err.message : 'Unknown error'}`);
+            }
+            
+            filename = "qr-result.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "csv-editor": {
+            if (files.length === 0) {
+              throw new Error("Please upload a CSV file to edit");
+            }
+            
+            const csvFile = files[0];
+            const csvContent = fs.readFileSync(csvFile.path, 'utf-8');
+            const delimiter = options.csvDelimiter || ',';
+            const hasHeader = options.csvHasHeader !== false;
+            
+            // Parse and return formatted CSV
+            const lines = csvContent.split('\n').filter(line => line.trim());
+            const parsedData = lines.map(line => {
+              const values: string[] = [];
+              let current = '';
+              let inQuotes = false;
+              
+              for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                  inQuotes = !inQuotes;
+                } else if (char === delimiter && !inQuotes) {
+                  values.push(current.trim());
+                  current = '';
+                } else {
+                  current += char;
+                }
+              }
+              values.push(current.trim());
+              return values;
+            });
+            
+            // Format output as JSON for editing
+            result = Buffer.from(JSON.stringify({
+              delimiter,
+              hasHeader,
+              headers: hasHeader ? parsedData[0] : null,
+              data: hasHeader ? parsedData.slice(1) : parsedData,
+              rawContent: csvContent
+            }, null, 2), 'utf-8');
+            
+            filename = "parsed-csv.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "code-diff-checker": {
+            const originalText = options.originalText || '';
+            const modifiedText = options.modifiedText || '';
+            
+            if (!originalText && !modifiedText) {
+              throw new Error("Please provide both original and modified text to compare");
+            }
+            
+            const originalLines = originalText.split('\n');
+            const modifiedLines = modifiedText.split('\n');
+            
+            // Simple diff algorithm
+            const diffResult: string[] = [];
+            diffResult.push('--- Original');
+            diffResult.push('+++ Modified');
+            diffResult.push('');
+            
+            const maxLines = Math.max(originalLines.length, modifiedLines.length);
+            
+            for (let i = 0; i < maxLines; i++) {
+              const origLine = originalLines[i] || '';
+              const modLine = modifiedLines[i] || '';
+              
+              if (origLine === modLine) {
+                diffResult.push(`  ${origLine}`);
+              } else {
+                if (originalLines[i] !== undefined) {
+                  diffResult.push(`- ${origLine}`);
+                }
+                if (modifiedLines[i] !== undefined) {
+                  diffResult.push(`+ ${modLine}`);
+                }
+              }
+            }
+            
+            result = Buffer.from(diffResult.join('\n'), 'utf-8');
+            filename = "diff-result.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "text-to-binary": {
+            let textInput = options.textInput || '';
+            if (!textInput && files.length > 0) {
+              textInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            
+            if (!textInput) {
+              throw new Error("Please provide text to convert to binary");
+            }
+            
+            const addSpaces = options.binaryAddSpaces !== false;
+            const separator = addSpaces ? ' ' : '';
+            
+            const binaryResult = textInput
+              .split('')
+              .map(char => char.charCodeAt(0).toString(2).padStart(8, '0'))
+              .join(separator);
+            
+            result = Buffer.from(binaryResult, 'utf-8');
+            filename = "binary-output.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "binary-to-text": {
+            let binaryInput = options.binaryInput || '';
+            if (!binaryInput && files.length > 0) {
+              binaryInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            
+            if (!binaryInput) {
+              throw new Error("Please provide binary code to convert to text");
+            }
+            
+            // Clean up input - remove spaces and non-binary characters
+            const cleanBinary = binaryInput.replace(/[^01]/g, '');
+            
+            if (cleanBinary.length === 0) {
+              throw new Error("Invalid binary input - no valid binary digits found");
+            }
+            
+            if (cleanBinary.length % 8 !== 0) {
+              throw new Error("Invalid binary input - length must be a multiple of 8");
+            }
+            
+            const textResult: string[] = [];
+            for (let i = 0; i < cleanBinary.length; i += 8) {
+              const byte = cleanBinary.substring(i, i + 8);
+              const charCode = parseInt(byte, 2);
+              textResult.push(String.fromCharCode(charCode));
+            }
+            
+            result = Buffer.from(textResult.join(''), 'utf-8');
+            filename = "text-output.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "text-to-ascii": {
+            let textInput = options.textInput || '';
+            if (!textInput && files.length > 0) {
+              textInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            
+            if (!textInput) {
+              throw new Error("Please provide text to convert to ASCII codes");
+            }
+            
+            const format = options.asciiFormat || 'decimal';
+            
+            const asciiResult = textInput.split('').map(char => {
+              const code = char.charCodeAt(0);
+              switch (format) {
+                case 'hex':
+                  return code.toString(16).toUpperCase().padStart(2, '0');
+                case 'octal':
+                  return code.toString(8).padStart(3, '0');
+                default:
+                  return code.toString();
+              }
+            }).join(' ');
+            
+            result = Buffer.from(asciiResult, 'utf-8');
+            filename = "ascii-codes.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "ascii-to-text": {
+            let asciiInput = options.asciiInput || '';
+            if (!asciiInput && files.length > 0) {
+              asciiInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            
+            if (!asciiInput) {
+              throw new Error("Please provide ASCII codes to convert to text");
+            }
+            
+            const inputFormat = options.asciiInputFormat || 'decimal';
+            
+            // Split by spaces, commas, or newlines
+            const codes = asciiInput.split(/[\s,]+/).filter(code => code.trim());
+            
+            const textResult = codes.map(code => {
+              let num: number;
+              const cleanCode = code.trim().toLowerCase();
+              
+              switch (inputFormat) {
+                case 'hex':
+                  num = parseInt(cleanCode.replace(/^0x/, ''), 16);
+                  break;
+                case 'octal':
+                  num = parseInt(cleanCode.replace(/^0/, ''), 8);
+                  break;
+                default:
+                  num = parseInt(cleanCode, 10);
+              }
+              
+              if (isNaN(num) || num < 0 || num > 1114111) {
+                return '?';
+              }
+              return String.fromCharCode(num);
+            }).join('');
+            
+            result = Buffer.from(textResult, 'utf-8');
+            filename = "text-output.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "text-to-hex": {
+            let textInput = options.textInput || '';
+            if (!textInput && files.length > 0) {
+              textInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            
+            if (!textInput) {
+              throw new Error("Please provide text to convert to hexadecimal");
+            }
+            
+            const addPrefix = options.hexAddPrefix || false;
+            const uppercase = options.hexUppercase || false;
+            
+            const hexResult = textInput.split('').map(char => {
+              let hex = char.charCodeAt(0).toString(16);
+              hex = hex.padStart(2, '0');
+              if (uppercase) hex = hex.toUpperCase();
+              if (addPrefix) hex = '0x' + hex;
+              return hex;
+            }).join(' ');
+            
+            result = Buffer.from(hexResult, 'utf-8');
+            filename = "hex-output.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "json-formatter": {
             let jsonInput = options.jsonInput || '';
             if (!jsonInput && files.length > 0) {
               jsonInput = fs.readFileSync(files[0].path, 'utf-8');
