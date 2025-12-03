@@ -17694,3 +17694,259 @@ const newUtilityTools: PdfTool[] = [
 ];
 
 pdfTools.push(...newUtilityTools);
+
+// New Tools - Text Conversion and Audio Processing
+const newTextAndAudioTools: PdfTool[] = [
+  {
+    id: "hex-to-text",
+    name: "Hex to Text",
+    description: "Convert hexadecimal code to readable text",
+    icon: "Code",
+    type: "hex-to-text",
+    color: "bg-indigo-500",
+    emoji: "🔤",
+    metaTitle: "Hex to Text Converter Online Free - Decode Hexadecimal | PDF Tools",
+    metaDescription: "Convert hexadecimal code to readable text online for free. Decode hex strings into letters, numbers, and symbols. Fast, accurate, and easy to use.",
+    seoArticle: `<h2>Hex to Text Converter - Decode Hexadecimal Values</h2>
+<p>Transform hexadecimal code back to readable text with our free online converter. Decode hex strings from programming, data files, or encoded messages into human-readable characters. Essential for developers, security professionals, and data analysts.</p>
+
+<h2>Flexible Hex Input Formats</h2>
+<p>Enter hex values with or without 0x prefix. Use spaces, commas, or no separators between byte pairs. Our converter automatically detects the format and converts accordingly. Handles both uppercase and lowercase hex letters.</p>
+
+<h2>ASCII and Unicode Support</h2>
+<p>Decode standard ASCII hex codes and extended Unicode representations. Handle multi-byte characters from any language. Support for UTF-8, UTF-16, and other encodings ensures accurate text output.</p>
+
+<h2>Error Detection and Validation</h2>
+<p>Automatic validation identifies invalid hex characters. See warnings for incomplete byte pairs or non-hex input. Ensure accurate decoding with comprehensive input verification before conversion.</p>
+
+<h2>Practical Applications</h2>
+<p>Debug network packets by converting hex dumps to text. Decode URL-encoded strings and escape sequences. Reverse engineer encoded data. Extract text from binary files. Perfect for CTF challenges and security analysis.</p>`,
+  },
+  {
+    id: "text-to-morse",
+    name: "Text to Morse Code",
+    description: "Convert text into Morse code signals",
+    icon: "MessageCircle",
+    type: "text-to-morse",
+    color: "bg-amber-500",
+    emoji: "📶",
+    metaTitle: "Text to Morse Code Converter Online Free - Encode to Morse | PDF Tools",
+    metaDescription: "Convert text to Morse code online for free. Transform any text into dots and dashes. Learn Morse code or encode secret messages instantly.",
+    seoArticle: `<h2>Text to Morse Code Converter - Encode Your Messages</h2>
+<p>Transform any text into Morse code signals with our free online converter. Convert letters, numbers, and punctuation into the universal language of dots and dashes. Perfect for learning Morse code, encoding messages, or radio communications.</p>
+
+<h2>Complete Character Support</h2>
+<p>Convert all 26 letters of the alphabet, numbers 0-9, and common punctuation marks. Each character is translated according to international Morse code standards. Support for special characters and prosigns.</p>
+
+<h2>Multiple Output Formats</h2>
+<p>Display Morse code as dots and dashes (. and -), or use alternative representations like sound notation. Copy the output in various formats suitable for different applications.</p>
+
+<h2>Audio Playback</h2>
+<p>Listen to your converted Morse code with our built-in audio player. Adjust speed (WPM - words per minute) for learning or transmission. Practice decoding by ear.</p>
+
+<h2>Historical Significance</h2>
+<p>Morse code revolutionized long-distance communication. Invented in the 1830s by Samuel Morse, it remains used in amateur radio, aviation, and military applications. Learn this timeless skill with our easy-to-use converter.</p>`,
+  },
+  {
+    id: "morse-to-text",
+    name: "Morse Code to Text",
+    description: "Decode Morse code signals to readable text",
+    icon: "MessageSquareDashed",
+    type: "morse-to-text",
+    color: "bg-teal-500",
+    emoji: "📡",
+    metaTitle: "Morse Code to Text Converter Online Free - Decode Morse | PDF Tools",
+    metaDescription: "Convert Morse code to text online for free. Decode dots and dashes into readable text. Fast and accurate Morse code decoder.",
+    seoArticle: `<h2>Morse Code to Text Decoder - Translate Signals to Words</h2>
+<p>Decode Morse code signals back to readable text with our free online converter. Transform dots and dashes into letters, numbers, and punctuation. Essential for amateur radio enthusiasts, students, and anyone working with Morse communications.</p>
+
+<h2>Flexible Input Recognition</h2>
+<p>Enter Morse code using dots (.) and dashes (-), or type periods and hyphens. Separate characters with spaces and words with slashes or multiple spaces. Our smart parser handles various input formats.</p>
+
+<h2>Accurate Decoding</h2>
+<p>Decode following international Morse code standards. Handle all letters, numbers, and punctuation symbols. Get accurate translations even with imperfect input formatting.</p>
+
+<h2>Error Handling</h2>
+<p>Invalid sequences are clearly marked for review. See which parts of the input could not be decoded. Fix issues easily with helpful feedback on unrecognized patterns.</p>
+
+<h2>Learning Tool</h2>
+<p>Practice your Morse code skills by encoding and then decoding messages. Compare your manual decoding with our automated results. Track your progress as you learn this valuable communication skill.</p>`,
+  },
+  {
+    id: "text-to-handwriting",
+    name: "Text to Handwriting",
+    description: "Convert typed text into handwritten-style images",
+    icon: "PenTool",
+    type: "text-to-handwriting",
+    color: "bg-pink-500",
+    emoji: "✍️",
+    metaTitle: "Text to Handwriting Converter Online Free - Create Handwritten Text | PDF Tools",
+    metaDescription: "Convert typed text to handwritten-style images online for free. Generate realistic handwriting from any text. Multiple styles and customization options.",
+    seoArticle: `<h2>Text to Handwriting Converter - Create Realistic Handwritten Text</h2>
+<p>Transform your typed text into beautiful handwritten-style images with our free online converter. Generate realistic handwriting for notes, letters, assignments, or creative projects. Choose from multiple handwriting styles and customize the output.</p>
+
+<h2>Multiple Handwriting Styles</h2>
+<p>Select from various handwriting fonts and styles - from neat cursive to casual print. Each style mimics real handwriting with natural variations and authentic character shapes. Find the perfect style for your needs.</p>
+
+<h2>Customization Options</h2>
+<p>Adjust ink color, paper style, and font size. Choose blue, black, or colored ink. Select lined, grid, or blank paper backgrounds. Control letter spacing and line height for a perfect look.</p>
+
+<h2>High-Quality Output</h2>
+<p>Download your handwritten text as high-resolution PNG or PDF images. Perfect for printing or digital use. Maintain quality at any size for various applications.</p>
+
+<h2>Practical Applications</h2>
+<p>Create personalized notes and letters. Generate handwritten content for social media. Add a personal touch to digital documents. Make assignments and creative projects stand out with authentic handwriting style.</p>`,
+  },
+  {
+    id: "compress-audio",
+    name: "Compress Audio",
+    description: "Reduce audio file size while maintaining quality",
+    icon: "Archive",
+    type: "compress-audio",
+    color: "bg-orange-500",
+    emoji: "🎵",
+    metaTitle: "Compress Audio Online Free - Reduce Audio File Size | PDF Tools",
+    metaDescription: "Compress audio files online for free. Reduce MP3, WAV, and other audio file sizes while maintaining quality. Fast and easy audio compression.",
+    seoArticle: `<h2>Compress Audio Files Online - Reduce File Size</h2>
+<p>Reduce your audio file sizes without significant quality loss using our free online audio compressor. Support for MP3, WAV, AAC, OGG, and other popular audio formats. Perfect for web uploads, email attachments, and storage optimization.</p>
+
+<h2>Smart Compression</h2>
+<p>Our intelligent algorithm analyzes your audio and applies optimal compression settings. Reduce file size by up to 90% while maintaining excellent sound quality. Adjust compression level based on your quality requirements.</p>
+
+<h2>Multiple Format Support</h2>
+<p>Compress any audio format including MP3, WAV, AAC, OGG, FLAC, and more. Output in your preferred format with customizable bitrate and sample rate settings.</p>
+
+<h2>Batch Processing</h2>
+<p>Compress multiple audio files at once. Save time by processing entire playlists or audio libraries. Consistent quality settings applied across all files.</p>
+
+<h2>Quality Control</h2>
+<p>Preview compressed audio before downloading. Compare original and compressed file sizes. Choose the perfect balance between quality and file size for your specific needs.</p>`,
+  },
+  {
+    id: "compress-mp3",
+    name: "Compress MP3",
+    description: "Reduce MP3 file size with adjustable quality",
+    icon: "TrendingDown",
+    type: "compress-mp3",
+    color: "bg-green-500",
+    emoji: "🎧",
+    metaTitle: "Compress MP3 Online Free - Reduce MP3 File Size | PDF Tools",
+    metaDescription: "Compress MP3 files online for free. Reduce MP3 file sizes while maintaining audio quality. Fast, easy, and no registration required.",
+    seoArticle: `<h2>Compress MP3 Files Online - Optimize Your Audio</h2>
+<p>Reduce your MP3 file sizes efficiently with our free online compressor. Maintain excellent audio quality while making files smaller for streaming, storage, or sharing. No software installation required.</p>
+
+<h2>Adjustable Bitrate</h2>
+<p>Choose from various bitrate options from 64kbps for maximum compression to 320kbps for studio quality. Find the perfect balance between file size and audio fidelity for your specific use case.</p>
+
+<h2>Preserve Audio Quality</h2>
+<p>Our compression algorithm prioritizes audio quality. Maintain clarity in vocals and instruments even at lower bitrates. Perfect for music, podcasts, and voice recordings.</p>
+
+<h2>Fast Processing</h2>
+<p>Compress MP3 files in seconds, not minutes. Efficient server-side processing handles files quickly. No waiting or delays - get your compressed audio immediately.</p>
+
+<h2>Metadata Preservation</h2>
+<p>Keep your ID3 tags, album art, and other metadata intact during compression. Your music library information stays organized and complete after compression.</p>`,
+  },
+  {
+    id: "compress-wav",
+    name: "Compress WAV",
+    description: "Reduce WAV file size or convert to smaller format",
+    icon: "Shrink",
+    type: "compress-wav",
+    color: "bg-blue-600",
+    emoji: "🔊",
+    metaTitle: "Compress WAV Online Free - Reduce WAV File Size | PDF Tools",
+    metaDescription: "Compress WAV files online for free. Reduce large WAV file sizes while maintaining audio quality. Convert to MP3 or compress as WAV.",
+    seoArticle: `<h2>Compress WAV Files Online - Reduce Uncompressed Audio</h2>
+<p>WAV files are high-quality but very large. Our free online compressor helps reduce WAV file sizes dramatically. Convert to compressed formats or optimize WAV parameters for smaller files.</p>
+
+<h2>Compression Options</h2>
+<p>Reduce sample rate and bit depth for smaller WAV files. Convert stereo to mono when appropriate. Alternatively, convert to MP3 or AAC for maximum size reduction while keeping good quality.</p>
+
+<h2>Lossless Alternatives</h2>
+<p>Convert to FLAC for lossless compression at about half the size. Maintain perfect audio quality with mathematical compression. Ideal for archiving and professional use.</p>
+
+<h2>Professional Applications</h2>
+<p>Optimize WAV files for video editing timelines. Reduce recording sizes for easier transfer. Prepare audio for web use while maintaining broadcast quality when needed.</p>
+
+<h2>Batch Conversion</h2>
+<p>Process multiple WAV files simultaneously. Apply consistent compression settings across your entire audio library. Save hours of manual conversion work.</p>`,
+  },
+  {
+    id: "audio-converter",
+    name: "Audio Converter",
+    description: "Convert audio between MP3, WAV, AAC, OGG and more",
+    icon: "RefreshCcw",
+    type: "audio-converter",
+    color: "bg-violet-600",
+    emoji: "🔄",
+    metaTitle: "Audio Converter Online Free - Convert MP3 WAV AAC OGG | PDF Tools",
+    metaDescription: "Convert audio files online for free. Transform between MP3, WAV, AAC, OGG, FLAC and more formats. Fast and easy audio format converter.",
+    seoArticle: `<h2>Audio Converter - Transform Any Audio Format</h2>
+<p>Convert audio files between all popular formats with our free online converter. Support for MP3, WAV, AAC, OGG, FLAC, WMA, and many more. Perfect for compatibility, quality optimization, or format standardization.</p>
+
+<h2>Supported Formats</h2>
+<p>Input and output support for MP3, WAV, AAC, M4A, OGG, FLAC, WMA, AIFF, APE, and more. Convert from any format to any other format. Handle rare and legacy audio formats.</p>
+
+<h2>Quality Settings</h2>
+<p>Choose output quality with customizable bitrate, sample rate, and channels. Preserve original quality or optimize for smaller file sizes. Control every aspect of the conversion.</p>
+
+<h2>Batch Conversion</h2>
+<p>Convert multiple files at once. Apply the same settings to an entire folder of audio files. Save time with efficient bulk processing.</p>
+
+<h2>Preserve Metadata</h2>
+<p>Keep ID3 tags, album art, and other metadata through conversions. Your music library information remains intact. No need to re-tag files after conversion.</p>`,
+  },
+  {
+    id: "mp3-to-wav",
+    name: "MP3 to WAV",
+    description: "Convert MP3 audio files to WAV format",
+    icon: "FileOutput",
+    type: "mp3-to-wav",
+    color: "bg-cyan-600",
+    emoji: "🎼",
+    metaTitle: "MP3 to WAV Converter Online Free - Convert MP3 to WAV | PDF Tools",
+    metaDescription: "Convert MP3 to WAV online for free. Transform compressed MP3 audio to uncompressed WAV format. Fast, easy, and high-quality conversion.",
+    seoArticle: `<h2>MP3 to WAV Converter - Convert to Uncompressed Audio</h2>
+<p>Transform your MP3 files into high-quality WAV format with our free online converter. WAV provides uncompressed audio perfect for editing, professional use, and maximum compatibility with audio software.</p>
+
+<h2>Why Convert to WAV?</h2>
+<p>WAV files work with virtually all audio software and hardware. They provide the best editing quality without further compression artifacts. Ideal for music production, video editing, and professional audio work.</p>
+
+<h2>Quality Preservation</h2>
+<p>Our converter preserves the maximum quality from your MP3 source. Choose output sample rate and bit depth. Generate CD-quality (44.1kHz/16-bit) or higher resolution WAV files.</p>
+
+<h2>Fast Conversion</h2>
+<p>Convert MP3 to WAV in seconds. No waiting for long processing times. Download your WAV file immediately after conversion.</p>
+
+<h2>Professional Compatibility</h2>
+<p>Output files work with Pro Tools, Audacity, Adobe Audition, Logic Pro, and all major DAWs. Perfect compatibility with professional audio workflows.</p>`,
+  },
+  {
+    id: "wav-to-mp3",
+    name: "WAV to MP3",
+    description: "Convert WAV audio files to MP3 format",
+    icon: "Minimize2",
+    type: "wav-to-mp3",
+    color: "bg-red-600",
+    emoji: "💿",
+    metaTitle: "WAV to MP3 Converter Online Free - Convert WAV to MP3 | PDF Tools",
+    metaDescription: "Convert WAV to MP3 online for free. Compress large WAV files to smaller MP3 format. Adjustable quality settings and fast conversion.",
+    seoArticle: `<h2>WAV to MP3 Converter - Compress Your Audio</h2>
+<p>Convert large WAV files to compact MP3 format with our free online converter. Reduce file sizes by up to 90% while maintaining excellent audio quality. Perfect for music distribution, web uploads, and portable players.</p>
+
+<h2>Adjustable Quality</h2>
+<p>Choose from various MP3 bitrates: 128kbps for good quality and small size, 192kbps for balanced performance, or 320kbps for near-CD quality. Find the perfect setting for your needs.</p>
+
+<h2>VBR and CBR Options</h2>
+<p>Select Variable Bitrate (VBR) for optimal quality-to-size ratio, or Constant Bitrate (CBR) for consistent streaming performance. Both encoding modes use LAME encoder for best results.</p>
+
+<h2>Metadata Support</h2>
+<p>Add ID3 tags during conversion. Include title, artist, album, and other metadata. Embed album art for a complete music file.</p>
+
+<h2>Universal Compatibility</h2>
+<p>MP3 files play on every device and platform. Share music easily via email or messaging. Upload to any streaming service. The most widely supported audio format worldwide.</p>`,
+  },
+];
+
+pdfTools.push(...newTextAndAudioTools);

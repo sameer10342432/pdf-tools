@@ -608,6 +608,18 @@ export default function ToolPage() {
     if (tool.type === "csv-to-yaml") {
       return ".csv,text/csv,application/csv";
     }
+    if (tool.type === "compress-audio" || tool.type === "audio-converter") {
+      return ".mp3,.wav,.aac,.m4a,.ogg,.flac,.wma,audio/mpeg,audio/wav,audio/aac,audio/mp4,audio/ogg,audio/flac";
+    }
+    if (tool.type === "compress-mp3" || tool.type === "mp3-to-wav") {
+      return ".mp3,audio/mpeg";
+    }
+    if (tool.type === "compress-wav" || tool.type === "wav-to-mp3") {
+      return ".wav,audio/wav,audio/wave,audio/x-wav";
+    }
+    if (tool.type === "hex-to-text" || tool.type === "text-to-morse" || tool.type === "morse-to-text" || tool.type === "text-to-handwriting") {
+      return "*/*";
+    }
     return ".pdf,application/pdf";
   };
 
@@ -698,6 +710,15 @@ export default function ToolPage() {
     }
     if (tool.type === "base64-encode" || tool.type === "base64-decode" || tool.type === "url-encoder" || tool.type === "url-decode" || tool.type === "text-case-converter" || tool.type === "uppercase-converter" || tool.type === "lowercase-converter" || tool.type === "title-case-converter" || tool.type === "sentence-case-converter" || tool.type === "remove-line-breaks" || tool.type === "add-line-breaks" || tool.type === "text-sorter" || tool.type === "alphabetize-list") {
       return !!(options.textInput?.trim());
+    }
+    if (tool.type === "hex-to-text") {
+      return !!(options.hexInput?.trim());
+    }
+    if (tool.type === "text-to-morse" || tool.type === "text-to-handwriting") {
+      return !!(options.textInput?.trim());
+    }
+    if (tool.type === "morse-to-text") {
+      return !!(options.morseInput?.trim());
     }
     if (files.length < getMinFiles()) return false;
     
@@ -912,7 +933,7 @@ export default function ToolPage() {
               <div className="space-y-6">
                 {processingState === "idle" && (
                   <>
-                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url"].includes(tool.type) && (
+                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting"].includes(tool.type) && (
                       <FileUpload
                         accept={getAcceptType() as string}
                         multiple={isMultiFileAllowed()}
@@ -922,7 +943,7 @@ export default function ToolPage() {
                       />
                     )}
 
-                    {(files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url"].includes(tool.type)) && (
+                    {(files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting"].includes(tool.type)) && (
                       <ToolOptionsComponent
                         toolType={tool.type}
                         options={options}

@@ -92,11 +92,13 @@ const upload = multer({
     const isLatex = ext.endsWith(".tex") || ext.endsWith(".latex");
     const isPostScript = ext.endsWith(".ps") || ext.endsWith(".eps");
     const isRaw = [".raw", ".cr2", ".nef", ".arw", ".dng", ".orf", ".rw2", ".pef", ".srw", ".raf"].some(e => ext.endsWith(e));
+    const isAudio = file.mimetype.startsWith("audio/") || 
+      [".mp3", ".wav", ".aac", ".m4a", ".ogg", ".flac", ".wma", ".aiff", ".ape"].some(e => ext.endsWith(e));
     
     if (isPdf || isImage || isVideo || isDocx || isExcel || isPowerPoint || isHtml || isTxt || isRtf || isSvg || isJson || 
         isOdt || isOds || isOdp || isCsv || isEpub || isMobi || isDjvu || isXml || isMarkdown ||
         isPublisher || isVisio || isProject || isPages || isNumbers || isKeynote || isEmail || isMsg ||
-        isPsd || isAi || isIndd || isDwg || isDxf || isXps || isOxps || isWpd || isCbr || isLatex || isPostScript || isRaw) {
+        isPsd || isAi || isIndd || isDwg || isDxf || isXps || isOxps || isWpd || isCbr || isLatex || isPostScript || isRaw || isAudio) {
       cb(null, true);
     } else {
       cb(new Error("Invalid file type"));
@@ -28595,6 +28597,329 @@ File analyzed: ${imageFile.originalname}
             result = Buffer.from(hexResult, 'utf-8');
             filename = "hex-output.txt";
             contentType = "text/plain";
+            break;
+          }
+
+          case "hex-to-text": {
+            let hexInput = options.hexInput || '';
+            if (!hexInput && files.length > 0) {
+              hexInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            
+            if (!hexInput) {
+              throw new Error("Please provide hexadecimal code to convert to text");
+            }
+            
+            // Remove 0x prefixes, spaces, and other separators
+            const cleanHex = hexInput.replace(/0x/gi, '').replace(/[^0-9a-fA-F]/g, '');
+            
+            if (cleanHex.length === 0) {
+              throw new Error("Invalid hex input - no valid hexadecimal digits found");
+            }
+            
+            if (cleanHex.length % 2 !== 0) {
+              throw new Error("Invalid hex input - length must be even (2 characters per byte)");
+            }
+            
+            const textResultArr: string[] = [];
+            for (let i = 0; i < cleanHex.length; i += 2) {
+              const hexByte = cleanHex.substring(i, i + 2);
+              const charCode = parseInt(hexByte, 16);
+              textResultArr.push(String.fromCharCode(charCode));
+            }
+            
+            result = Buffer.from(textResultArr.join(''), 'utf-8');
+            filename = "text-output.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "text-to-morse": {
+            const morseCodeMap: Record<string, string> = {
+              'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 
+              'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 
+              'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 
+              'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 
+              'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---', 
+              '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...', 
+              '8': '---..', '9': '----.', '.': '.-.-.-', ',': '--..--', '?': '..--..', 
+              "'": '.----.', '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-', 
+              '&': '.-...', ':': '---...', ';': '-.-.-.', '=': '-...-', '+': '.-.-.', 
+              '-': '-....-', '_': '..--.-', '"': '.-..-.', '$': '...-..-', '@': '.--.-.',
+              ' ': '/'
+            };
+            
+            let textInput = options.textInput || '';
+            if (!textInput && files.length > 0) {
+              textInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            
+            if (!textInput) {
+              throw new Error("Please provide text to convert to Morse code");
+            }
+            
+            const morseResult = textInput.toUpperCase().split('').map(char => {
+              return morseCodeMap[char] || '';
+            }).filter(m => m !== '').join(' ');
+            
+            result = Buffer.from(morseResult, 'utf-8');
+            filename = "morse-output.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "morse-to-text": {
+            const morseToTextMap: Record<string, string> = {
+              '.-': 'A', '-...': 'B', '-.-.': 'C', '-..': 'D', '.': 'E', '..-.': 'F',
+              '--.': 'G', '....': 'H', '..': 'I', '.---': 'J', '-.-': 'K', '.-..': 'L',
+              '--': 'M', '-.': 'N', '---': 'O', '.--.': 'P', '--.-': 'Q', '.-.': 'R',
+              '...': 'S', '-': 'T', '..-': 'U', '...-': 'V', '.--': 'W', '-..-': 'X',
+              '-.--': 'Y', '--..': 'Z', '-----': '0', '.----': '1', '..---': '2',
+              '...--': '3', '....-': '4', '.....': '5', '-....': '6', '--...': '7',
+              '---..': '8', '----.': '9', '.-.-.-': '.', '--..--': ',', '..--..': '?',
+              '.----.': "'", '-.-.--': '!', '-..-.': '/', '-.--.': '(', '-.--.-': ')',
+              '.-...': '&', '---...': ':', '-.-.-.': ';', '-...-': '=', '.-.-.': '+',
+              '-....-': '-', '..--.-': '_', '.-..-.': '"', '...-..-': '$', '.--.-.': '@',
+              '/': ' '
+            };
+            
+            let morseInput = options.morseInput || '';
+            if (!morseInput && files.length > 0) {
+              morseInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            
+            if (!morseInput) {
+              throw new Error("Please provide Morse code to convert to text");
+            }
+            
+            // Split by word separators (/ or multiple spaces) then by character separators (single space)
+            const words = morseInput.split(/\s*\/\s*|\s{3,}/);
+            const textResult = words.map(word => {
+              const chars = word.trim().split(/\s+/);
+              return chars.map(morse => morseToTextMap[morse] || '').join('');
+            }).join(' ');
+            
+            result = Buffer.from(textResult, 'utf-8');
+            filename = "text-from-morse.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "text-to-handwriting": {
+            let textInput = options.textInput || '';
+            if (!textInput && files.length > 0) {
+              textInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            
+            if (!textInput) {
+              throw new Error("Please provide text to convert to handwriting");
+            }
+            
+            const inkColor = options.inkColor || '#1a365d';
+            const paperStyle = options.paperStyle || 'lined';
+            const fontSize = parseInt(options.fontSize || '28', 10);
+            
+            // Create handwriting-style image using sharp with SVG
+            const lines = textInput.split('\n');
+            const lineHeight = fontSize * 1.8;
+            const padding = 40;
+            const width = 800;
+            const height = Math.max(400, lines.length * lineHeight + padding * 2);
+            
+            // Paper background colors
+            const paperColors: Record<string, { bg: string; line: string }> = {
+              'lined': { bg: '#fffff8', line: '#87ceeb' },
+              'grid': { bg: '#ffffff', line: '#e0e0e0' },
+              'blank': { bg: '#fffff0', line: 'none' },
+              'old': { bg: '#f5deb3', line: '#d2b48c' }
+            };
+            const paper = paperColors[paperStyle] || paperColors['lined'];
+            
+            // Create SVG with handwriting font
+            let svgContent = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+              <style>
+                @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&amp;display=swap');
+                .handwriting { font-family: 'Caveat', cursive, serif; font-size: ${fontSize}px; fill: ${inkColor}; }
+              </style>
+              <rect width="100%" height="100%" fill="${paper.bg}"/>`;
+            
+            // Add paper lines
+            if (paperStyle === 'lined') {
+              for (let y = padding + lineHeight; y < height - padding; y += lineHeight) {
+                svgContent += `<line x1="${padding}" y1="${y}" x2="${width - padding}" y2="${y}" stroke="${paper.line}" stroke-width="1"/>`;
+              }
+            } else if (paperStyle === 'grid') {
+              for (let y = padding; y < height; y += 30) {
+                svgContent += `<line x1="0" y1="${y}" x2="${width}" y2="${y}" stroke="${paper.line}" stroke-width="0.5"/>`;
+              }
+              for (let x = padding; x < width; x += 30) {
+                svgContent += `<line x1="${x}" y1="0" x2="${x}" y2="${height}" stroke="${paper.line}" stroke-width="0.5"/>`;
+              }
+            }
+            
+            // Add text with slight randomization for natural look
+            lines.forEach((line, i) => {
+              const y = padding + (i + 1) * lineHeight;
+              const xOffset = Math.random() * 3 - 1.5;
+              const escapedLine = escapeXml(line);
+              svgContent += `<text x="${padding + xOffset}" y="${y}" class="handwriting">${escapedLine}</text>`;
+            });
+            
+            svgContent += '</svg>';
+            
+            result = await sharp(Buffer.from(svgContent))
+              .png()
+              .toBuffer();
+            
+            filename = "handwriting.png";
+            contentType = "image/png";
+            break;
+          }
+
+          case "compress-audio":
+          case "compress-mp3": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to compress");
+            }
+            
+            const inputPath = files[0].path;
+            const bitrate = options.audioBitrate || '128k';
+            const outputFilePath = path.join(outputDir, `compressed-${randomUUID()}.mp3`);
+            
+            await execAsync(`ffmpeg -i "${inputPath}" -b:a ${bitrate} -map_metadata 0 "${outputFilePath}"`);
+            
+            result = outputFilePath;
+            filename = "compressed.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "compress-wav": {
+            if (files.length === 0) {
+              throw new Error("Please upload a WAV file to compress");
+            }
+            
+            const inputPath = files[0].path;
+            const outputFormat = options.wavOutputFormat || 'mp3';
+            const bitrate = options.audioBitrate || '192k';
+            
+            if (outputFormat === 'mp3') {
+              const outputFilePath = path.join(outputDir, `compressed-${randomUUID()}.mp3`);
+              await execAsync(`ffmpeg -i "${inputPath}" -b:a ${bitrate} "${outputFilePath}"`);
+              result = outputFilePath;
+              filename = "compressed.mp3";
+              contentType = "audio/mpeg";
+            } else if (outputFormat === 'flac') {
+              const outputFilePath = path.join(outputDir, `compressed-${randomUUID()}.flac`);
+              await execAsync(`ffmpeg -i "${inputPath}" -c:a flac "${outputFilePath}"`);
+              result = outputFilePath;
+              filename = "compressed.flac";
+              contentType = "audio/flac";
+            } else {
+              // Keep as WAV but reduce sample rate/channels
+              const sampleRate = options.sampleRate || '44100';
+              const channels = options.channels || '2';
+              const outputFilePath = path.join(outputDir, `compressed-${randomUUID()}.wav`);
+              await execAsync(`ffmpeg -i "${inputPath}" -ar ${sampleRate} -ac ${channels} "${outputFilePath}"`);
+              result = outputFilePath;
+              filename = "compressed.wav";
+              contentType = "audio/wav";
+            }
+            break;
+          }
+
+          case "audio-converter": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to convert");
+            }
+            
+            const inputPath = files[0].path;
+            const outputFormatAudio = options.audioOutputFormat || 'mp3';
+            const bitrate = options.audioBitrate || '192k';
+            
+            let outputExt = outputFormatAudio;
+            let audioCodec = '';
+            let mimeType = 'audio/mpeg';
+            
+            switch (outputFormatAudio) {
+              case 'mp3':
+                audioCodec = '-c:a libmp3lame';
+                mimeType = 'audio/mpeg';
+                break;
+              case 'wav':
+                audioCodec = '-c:a pcm_s16le';
+                mimeType = 'audio/wav';
+                break;
+              case 'aac':
+              case 'm4a':
+                audioCodec = '-c:a aac';
+                outputExt = 'm4a';
+                mimeType = 'audio/mp4';
+                break;
+              case 'ogg':
+                audioCodec = '-c:a libvorbis';
+                mimeType = 'audio/ogg';
+                break;
+              case 'flac':
+                audioCodec = '-c:a flac';
+                mimeType = 'audio/flac';
+                break;
+              case 'wma':
+                audioCodec = '-c:a wmav2';
+                mimeType = 'audio/x-ms-wma';
+                break;
+              default:
+                audioCodec = '-c:a libmp3lame';
+                outputExt = 'mp3';
+            }
+            
+            const outputFilePath = path.join(outputDir, `converted-${randomUUID()}.${outputExt}`);
+            await execAsync(`ffmpeg -i "${inputPath}" ${audioCodec} -b:a ${bitrate} "${outputFilePath}"`);
+            
+            result = outputFilePath;
+            filename = `converted.${outputExt}`;
+            contentType = mimeType;
+            break;
+          }
+
+          case "mp3-to-wav": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MP3 file to convert");
+            }
+            
+            const inputPath = files[0].path;
+            const sampleRate = options.sampleRate || '44100';
+            const bitDepth = options.bitDepth || '16';
+            const outputFilePath = path.join(outputDir, `converted-${randomUUID()}.wav`);
+            
+            const bitDepthCodec = bitDepth === '24' ? 'pcm_s24le' : 'pcm_s16le';
+            await execAsync(`ffmpeg -i "${inputPath}" -c:a ${bitDepthCodec} -ar ${sampleRate} "${outputFilePath}"`);
+            
+            result = outputFilePath;
+            filename = "converted.wav";
+            contentType = "audio/wav";
+            break;
+          }
+
+          case "wav-to-mp3": {
+            if (files.length === 0) {
+              throw new Error("Please upload a WAV file to convert");
+            }
+            
+            const inputPath = files[0].path;
+            const bitrate = options.audioBitrate || '192k';
+            const vbr = options.useVBR === true;
+            const outputFilePath = path.join(outputDir, `converted-${randomUUID()}.mp3`);
+            
+            if (vbr) {
+              await execAsync(`ffmpeg -i "${inputPath}" -c:a libmp3lame -q:a 2 "${outputFilePath}"`);
+            } else {
+              await execAsync(`ffmpeg -i "${inputPath}" -c:a libmp3lame -b:a ${bitrate} "${outputFilePath}"`);
+            }
+            
+            result = outputFilePath;
+            filename = "converted.mp3";
+            contentType = "audio/mpeg";
             break;
           }
 

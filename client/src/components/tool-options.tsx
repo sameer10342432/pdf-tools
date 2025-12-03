@@ -11722,7 +11722,7 @@ export function ToolOptionsComponent({
               <SelectContent>
                 <SelectItem value=",">Comma (,)</SelectItem>
                 <SelectItem value=";">Semicolon (;)</SelectItem>
-                <SelectItem value="	">Tab</SelectItem>
+                <SelectItem value="\t">Tab</SelectItem>
                 <SelectItem value="|">Pipe (|)</SelectItem>
               </SelectContent>
             </Select>
@@ -11965,6 +11965,321 @@ export function ToolOptionsComponent({
           </div>
           <p className="text-sm text-muted-foreground">
             Paste JSON to format and beautify, or upload a JSON file.
+          </p>
+        </div>
+      );
+
+    case "hex-to-text":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="hexInput">Hexadecimal Input</Label>
+            <textarea
+              id="hexInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="48 65 6c 6c 6f or 0x48 0x65 0x6c 0x6c 0x6f"
+              value={options.hexInput || ""}
+              onChange={(e) => updateOption("hexInput", e.target.value)}
+              data-testid="textarea-hex-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Enter hex values with or without 0x prefix. Spaces between bytes are optional.
+          </p>
+        </div>
+      );
+
+    case "text-to-morse":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Convert</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to convert to Morse code..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-morse-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Letters, numbers, and punctuation will be converted to Morse code dots and dashes.
+          </p>
+        </div>
+      );
+
+    case "morse-to-text":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="morseInput">Morse Code Input</Label>
+            <textarea
+              id="morseInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder=".- -... -.-. or .- / -... / -.-. (use / or spaces for word separation)"
+              value={options.morseInput || ""}
+              onChange={(e) => updateOption("morseInput", e.target.value)}
+              data-testid="textarea-morse-decode-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Use dots (.) and dashes (-). Separate characters with spaces and words with / or multiple spaces.
+          </p>
+        </div>
+      );
+
+    case "text-to-handwriting":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="textInput">Text to Convert</Label>
+            <textarea
+              id="textInput"
+              className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder="Enter text to convert to handwriting..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="textarea-handwriting-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Ink Color</Label>
+            <Select
+              value={options.inkColor || "#1a365d"}
+              onValueChange={(value) => updateOption("inkColor", value)}
+            >
+              <SelectTrigger data-testid="select-ink-color">
+                <SelectValue placeholder="Select ink color" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="#1a365d">Blue</SelectItem>
+                <SelectItem value="#000000">Black</SelectItem>
+                <SelectItem value="#1a1a2e">Dark Blue</SelectItem>
+                <SelectItem value="#6b21a8">Purple</SelectItem>
+                <SelectItem value="#dc2626">Red</SelectItem>
+                <SelectItem value="#166534">Green</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Paper Style</Label>
+            <Select
+              value={options.paperStyle || "lined"}
+              onValueChange={(value) => updateOption("paperStyle", value)}
+            >
+              <SelectTrigger data-testid="select-paper-style">
+                <SelectValue placeholder="Select paper style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="lined">Lined Paper</SelectItem>
+                <SelectItem value="grid">Grid Paper</SelectItem>
+                <SelectItem value="blank">Blank Paper</SelectItem>
+                <SelectItem value="old">Old Parchment</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Font Size</Label>
+            <Select
+              value={options.fontSize || "28"}
+              onValueChange={(value) => updateOption("fontSize", value)}
+            >
+              <SelectTrigger data-testid="select-font-size">
+                <SelectValue placeholder="Select font size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="20">Small</SelectItem>
+                <SelectItem value="28">Medium</SelectItem>
+                <SelectItem value="36">Large</SelectItem>
+                <SelectItem value="44">Extra Large</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "compress-audio":
+    case "compress-mp3":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Bitrate</Label>
+            <Select
+              value={options.audioBitrate || "128k"}
+              onValueChange={(value) => updateOption("audioBitrate", value)}
+            >
+              <SelectTrigger data-testid="select-audio-bitrate">
+                <SelectValue placeholder="Select bitrate" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="64k">64 kbps (Low quality, smallest)</SelectItem>
+                <SelectItem value="96k">96 kbps (Acceptable quality)</SelectItem>
+                <SelectItem value="128k">128 kbps (Good quality)</SelectItem>
+                <SelectItem value="192k">192 kbps (High quality)</SelectItem>
+                <SelectItem value="256k">256 kbps (Very high quality)</SelectItem>
+                <SelectItem value="320k">320 kbps (Maximum quality)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Lower bitrate = smaller file size but lower quality. 128-192 kbps is recommended for most uses.
+          </p>
+        </div>
+      );
+
+    case "compress-wav":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.wavOutputFormat || "mp3"}
+              onValueChange={(value) => updateOption("wavOutputFormat", value)}
+            >
+              <SelectTrigger data-testid="select-wav-output">
+                <SelectValue placeholder="Select output format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mp3">MP3 (Lossy, small file)</SelectItem>
+                <SelectItem value="flac">FLAC (Lossless, medium file)</SelectItem>
+                <SelectItem value="wav">WAV (Keep format, reduce quality)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Output Bitrate (for MP3)</Label>
+            <Select
+              value={options.audioBitrate || "192k"}
+              onValueChange={(value) => updateOption("audioBitrate", value)}
+            >
+              <SelectTrigger data-testid="select-wav-bitrate">
+                <SelectValue placeholder="Select bitrate" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="128k">128 kbps</SelectItem>
+                <SelectItem value="192k">192 kbps</SelectItem>
+                <SelectItem value="256k">256 kbps</SelectItem>
+                <SelectItem value="320k">320 kbps</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "audio-converter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.audioOutputFormat || "mp3"}
+              onValueChange={(value) => updateOption("audioOutputFormat", value)}
+            >
+              <SelectTrigger data-testid="select-audio-format">
+                <SelectValue placeholder="Select output format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mp3">MP3</SelectItem>
+                <SelectItem value="wav">WAV</SelectItem>
+                <SelectItem value="aac">AAC/M4A</SelectItem>
+                <SelectItem value="ogg">OGG Vorbis</SelectItem>
+                <SelectItem value="flac">FLAC</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Quality/Bitrate</Label>
+            <Select
+              value={options.audioBitrate || "192k"}
+              onValueChange={(value) => updateOption("audioBitrate", value)}
+            >
+              <SelectTrigger data-testid="select-audio-quality">
+                <SelectValue placeholder="Select quality" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="128k">128 kbps (Standard)</SelectItem>
+                <SelectItem value="192k">192 kbps (High)</SelectItem>
+                <SelectItem value="256k">256 kbps (Very High)</SelectItem>
+                <SelectItem value="320k">320 kbps (Maximum)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "mp3-to-wav":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Sample Rate</Label>
+            <Select
+              value={options.sampleRate || "44100"}
+              onValueChange={(value) => updateOption("sampleRate", value)}
+            >
+              <SelectTrigger data-testid="select-sample-rate">
+                <SelectValue placeholder="Select sample rate" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="22050">22050 Hz</SelectItem>
+                <SelectItem value="44100">44100 Hz (CD Quality)</SelectItem>
+                <SelectItem value="48000">48000 Hz (Professional)</SelectItem>
+                <SelectItem value="96000">96000 Hz (High Resolution)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Bit Depth</Label>
+            <Select
+              value={options.bitDepth || "16"}
+              onValueChange={(value) => updateOption("bitDepth", value)}
+            >
+              <SelectTrigger data-testid="select-bit-depth">
+                <SelectValue placeholder="Select bit depth" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="16">16-bit (CD Quality)</SelectItem>
+                <SelectItem value="24">24-bit (Professional)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert MP3 to uncompressed WAV format for editing or maximum compatibility.
+          </p>
+        </div>
+      );
+
+    case "wav-to-mp3":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Bitrate</Label>
+            <Select
+              value={options.audioBitrate || "192k"}
+              onValueChange={(value) => updateOption("audioBitrate", value)}
+            >
+              <SelectTrigger data-testid="select-mp3-bitrate">
+                <SelectValue placeholder="Select bitrate" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="128k">128 kbps (Good quality)</SelectItem>
+                <SelectItem value="192k">192 kbps (High quality)</SelectItem>
+                <SelectItem value="256k">256 kbps (Very high quality)</SelectItem>
+                <SelectItem value="320k">320 kbps (Maximum quality)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="useVBR"
+              checked={options.useVBR || false}
+              onCheckedChange={(checked) => updateOption("useVBR", checked)}
+              data-testid="switch-vbr"
+            />
+            <Label htmlFor="useVBR">Use Variable Bitrate (VBR)</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            VBR adjusts quality dynamically for better compression while maintaining audio quality.
           </p>
         </div>
       );
