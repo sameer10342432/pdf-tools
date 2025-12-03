@@ -373,6 +373,22 @@ export default function ToolPage() {
       return "image/jpeg,image/png,image/gif,image/webp,image/bmp,image/svg+xml,.jpg,.jpeg,.png,.gif,.webp,.bmp,.svg";
     }
     if (tool.type === "base64-to-image") {
+      return !!(options.base64Input?.trim());
+    }
+    if (tool.type === "json-validator" || tool.type === "json-minifier" || tool.type === "json-beautifier" || tool.type === "json-formatter") {
+      return !!(options.jsonInput?.trim());
+    }
+    if (tool.type === "xml-formatter" || tool.type === "xml-validator") {
+      return !!(options.xmlInput?.trim());
+    }
+    if (tool.type === "html-minifier" || tool.type === "html-beautifier") {
+      return !!(options.htmlInput?.trim());
+    }
+    if (tool.type === "css-minifier" || tool.type === "css-beautifier") {
+      return !!(options.cssInput?.trim());
+    }
+    if (tool.type === "js-minifier") {
+      return !!(options.jsInput?.trim());
       return "*/*";
     }
     if (tool.type === "image-editor" || tool.type === "photo-editor") {
@@ -626,6 +642,21 @@ export default function ToolPage() {
     if (tool.type === "base64-to-image") {
       return !!(options.base64Input?.trim());
     }
+    if (tool.type === "json-validator" || tool.type === "json-minifier" || tool.type === "json-beautifier" || tool.type === "json-formatter") {
+      return !!(options.jsonInput?.trim());
+    }
+    if (tool.type === "xml-formatter" || tool.type === "xml-validator") {
+      return !!(options.xmlInput?.trim());
+    }
+    if (tool.type === "html-minifier" || tool.type === "html-beautifier") {
+      return !!(options.htmlInput?.trim());
+    }
+    if (tool.type === "css-minifier" || tool.type === "css-beautifier") {
+      return !!(options.cssInput?.trim());
+    }
+    if (tool.type === "js-minifier") {
+      return !!(options.jsInput?.trim());
+    }
     if (files.length < getMinFiles()) return false;
     
     if (tool.type === "add-image-to-pdf" || tool.type === "replace-image-in-pdf") {
@@ -839,7 +870,7 @@ export default function ToolPage() {
               <div className="space-y-6">
                 {processingState === "idle" && (
                   <>
-                    {tool.type !== "base64-to-image" && (
+                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier"].includes(tool.type) && (
                       <FileUpload
                         accept={getAcceptType()}
                         multiple={isMultiFileAllowed()}
@@ -849,7 +880,7 @@ export default function ToolPage() {
                       />
                     )}
 
-                    {(files.length > 0 || tool.type === "base64-to-image") && (
+                    {(files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier"].includes(tool.type)) && (
                       <ToolOptionsComponent
                         toolType={tool.type}
                         options={options}

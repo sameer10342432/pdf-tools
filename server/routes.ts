@@ -13698,6 +13698,276 @@ async function textDifference(text1: string, text2: string): Promise<Buffer> {
   return Buffer.from(result, 'utf-8');
 }
 
+// JSON Validator function
+async function jsonValidator(jsonInput: string): Promise<Buffer> {
+  let result = '';
+  try {
+    JSON.parse(jsonInput);
+    result = JSON.stringify({
+      valid: true,
+      message: "Valid JSON - No syntax errors found",
+      formatted: JSON.stringify(JSON.parse(jsonInput), null, 2)
+    }, null, 2);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const lineMatch = errorMessage.match(/position (\d+)/);
+    let lineInfo = '';
+    if (lineMatch) {
+      const position = parseInt(lineMatch[1], 10);
+      const lines = jsonInput.substring(0, position).split('\n');
+      lineInfo = ` (approximately line ${lines.length}, column ${lines[lines.length - 1].length + 1})`;
+    }
+    result = JSON.stringify({
+      valid: false,
+      message: `Invalid JSON${lineInfo}`,
+      error: errorMessage,
+      input: jsonInput
+    }, null, 2);
+  }
+  return Buffer.from(result, 'utf-8');
+}
+
+// JSON Minifier function
+async function jsonMinifier(jsonInput: string): Promise<Buffer> {
+  let result = '';
+  try {
+    const parsed = JSON.parse(jsonInput);
+    result = JSON.stringify(parsed);
+  } catch (error) {
+    result = `Error: Invalid JSON - Cannot minify\n\n${error instanceof Error ? error.message : 'Unknown error'}`;
+  }
+  return Buffer.from(result, 'utf-8');
+}
+
+// JSON Beautifier function (same as formatter but more explicit)
+async function jsonBeautifier(jsonInput: string, indent: number = 2): Promise<Buffer> {
+  let result = '';
+  try {
+    const parsed = JSON.parse(jsonInput);
+    result = JSON.stringify(parsed, null, indent);
+  } catch (error) {
+    result = `Error: Invalid JSON - Cannot beautify\n\n${error instanceof Error ? error.message : 'Unknown error'}`;
+  }
+  return Buffer.from(result, 'utf-8');
+}
+
+// XML Formatter function
+async function xmlFormatter(xmlInput: string, indent: number = 2): Promise<Buffer> {
+  let result = '';
+  try {
+    const indentStr = ' '.repeat(indent);
+    let formatted = '';
+    let indentLevel = 0;
+    const tokens = xmlInput.replace(/>\s*</g, '><').split(/(<[^>]+>)/);
+    
+    for (const token of tokens) {
+      if (!token.trim()) continue;
+      
+      if (token.startsWith('</')) {
+        indentLevel--;
+        formatted += indentStr.repeat(Math.max(0, indentLevel)) + token + '\n';
+      } else if (token.startsWith('<?') || token.startsWith('<!')) {
+        formatted += indentStr.repeat(indentLevel) + token + '\n';
+      } else if (token.startsWith('<') && token.endsWith('/>')) {
+        formatted += indentStr.repeat(indentLevel) + token + '\n';
+      } else if (token.startsWith('<')) {
+        formatted += indentStr.repeat(indentLevel) + token + '\n';
+        indentLevel++;
+      } else {
+        formatted += indentStr.repeat(indentLevel) + token.trim() + '\n';
+      }
+    }
+    result = formatted.trim();
+  } catch (error) {
+    result = `Error formatting XML: ${error instanceof Error ? error.message : 'Unknown error'}`;
+  }
+  return Buffer.from(result, 'utf-8');
+}
+
+// XML Validator function
+async function xmlValidator(xmlInput: string): Promise<Buffer> {
+  let result = '';
+  try {
+    const errors: string[] = [];
+    const tagStack: string[] = [];
+    const tagRegex = /<\/?([a-zA-Z_][\w:.-]*)[^>]*\/?>/g;
+    let match;
+    
+    while ((match = tagRegex.exec(xmlInput)) !== null) {
+      const fullTag = match[0];
+      const tagName = match[1];
+      
+      if (fullTag.startsWith('</')) {
+        if (tagStack.length === 0) {
+          errors.push(`Unexpected closing tag </${tagName}> at position ${match.index}`);
+        } else if (tagStack[tagStack.length - 1] !== tagName) {
+          errors.push(`Mismatched tag: expected </${tagStack[tagStack.length - 1]}> but found </${tagName}> at position ${match.index}`);
+        } else {
+          tagStack.pop();
+        }
+      } else if (!fullTag.endsWith('/>') && !fullTag.startsWith('<?') && !fullTag.startsWith('<!')) {
+        tagStack.push(tagName);
+      }
+    }
+    
+    if (tagStack.length > 0) {
+      errors.push(`Unclosed tags: ${tagStack.map(t => '<' + t + '>').join(', ')}`);
+    }
+    
+    if (errors.length === 0) {
+      result = JSON.stringify({
+        valid: true,
+        message: "Valid XML - No syntax errors found"
+      }, null, 2);
+    } else {
+      result = JSON.stringify({
+        valid: false,
+        message: "Invalid XML - Errors found",
+        errors: errors
+      }, null, 2);
+    }
+  } catch (error) {
+    result = JSON.stringify({
+      valid: false,
+      message: "Error validating XML",
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }, null, 2);
+  }
+  return Buffer.from(result, 'utf-8');
+}
+
+// HTML Minifier function
+async function htmlMinifier(htmlInput: string): Promise<Buffer> {
+  let result = '';
+  try {
+    result = htmlInput
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .replace(/\s+/g, ' ')
+      .replace(/>\s+</g, '><')
+      .replace(/\s+>/g, '>')
+      .replace(/<\s+/g, '<')
+      .trim();
+  } catch (error) {
+    result = `Error minifying HTML: ${error instanceof Error ? error.message : 'Unknown error'}`;
+  }
+  return Buffer.from(result, 'utf-8');
+}
+
+// HTML Beautifier function
+async function htmlBeautifier(htmlInput: string, indent: number = 2): Promise<Buffer> {
+  let result = '';
+  try {
+    const indentStr = ' '.repeat(indent);
+    let formatted = '';
+    let indentLevel = 0;
+    const voidElements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
+    const tokens = htmlInput.replace(/>\s*</g, '><').split(/(<[^>]+>)/);
+    
+    for (const token of tokens) {
+      if (!token.trim()) continue;
+      
+      const lowerToken = token.toLowerCase();
+      
+      if (lowerToken.startsWith('</')) {
+        indentLevel--;
+        formatted += indentStr.repeat(Math.max(0, indentLevel)) + token + '\n';
+      } else if (lowerToken.startsWith('<!') || lowerToken.startsWith('<?')) {
+        formatted += indentStr.repeat(indentLevel) + token + '\n';
+      } else if (lowerToken.startsWith('<')) {
+        formatted += indentStr.repeat(indentLevel) + token + '\n';
+        const tagMatch = token.match(/<([a-zA-Z][a-zA-Z0-9]*)/);
+        if (tagMatch && !voidElements.includes(tagMatch[1].toLowerCase()) && !token.endsWith('/>')) {
+          indentLevel++;
+        }
+      } else {
+        const trimmed = token.trim();
+        if (trimmed) {
+          formatted += indentStr.repeat(indentLevel) + trimmed + '\n';
+        }
+      }
+    }
+    result = formatted.trim();
+  } catch (error) {
+    result = `Error beautifying HTML: ${error instanceof Error ? error.message : 'Unknown error'}`;
+  }
+  return Buffer.from(result, 'utf-8');
+}
+
+// CSS Minifier function
+async function cssMinifier(cssInput: string): Promise<Buffer> {
+  let result = '';
+  try {
+    result = cssInput
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/\s+/g, ' ')
+      .replace(/\s*([{};:,>+~])\s*/g, '$1')
+      .replace(/;}/g, '}')
+      .replace(/\s*!important/g, '!important')
+      .trim();
+  } catch (error) {
+    result = `Error minifying CSS: ${error instanceof Error ? error.message : 'Unknown error'}`;
+  }
+  return Buffer.from(result, 'utf-8');
+}
+
+// CSS Beautifier function
+async function cssBeautifier(cssInput: string, indent: number = 2): Promise<Buffer> {
+  let result = '';
+  try {
+    const indentStr = ' '.repeat(indent);
+    let formatted = cssInput
+      .replace(/\/\*[\s\S]*?\*\//g, (match) => '\n' + match + '\n')
+      .replace(/\s+/g, ' ')
+      .replace(/\s*{\s*/g, ' {\n')
+      .replace(/\s*}\s*/g, '\n}\n\n')
+      .replace(/;\s*/g, ';\n')
+      .replace(/,\s*/g, ',\n')
+      .trim();
+    
+    const lines = formatted.split('\n');
+    let indentLevel = 0;
+    const beautified: string[] = [];
+    
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      
+      if (trimmed === '}') {
+        indentLevel--;
+        beautified.push(indentStr.repeat(Math.max(0, indentLevel)) + trimmed);
+      } else if (trimmed.endsWith('{')) {
+        beautified.push(indentStr.repeat(indentLevel) + trimmed);
+        indentLevel++;
+      } else {
+        beautified.push(indentStr.repeat(indentLevel) + trimmed);
+      }
+    }
+    
+    result = beautified.join('\n');
+  } catch (error) {
+    result = `Error beautifying CSS: ${error instanceof Error ? error.message : 'Unknown error'}`;
+  }
+  return Buffer.from(result, 'utf-8');
+}
+
+// JavaScript Minifier function
+async function jsMinifier(jsInput: string): Promise<Buffer> {
+  let result = '';
+  try {
+    result = jsInput
+      .replace(/\/\/.*$/gm, '')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/\s+/g, ' ')
+      .replace(/\s*([{};:,=+\-*/<>!&|?()[\]])\s*/g, '$1')
+      .replace(/\s*\n\s*/g, '')
+      .trim();
+  } catch (error) {
+    result = `Error minifying JavaScript: ${error instanceof Error ? error.message : 'Unknown error'}`;
+  }
+  return Buffer.from(result, 'utf-8');
+}
+
+
 // JSON Formatter function
 async function jsonFormatter(jsonInput: string, indent: number = 2): Promise<Buffer> {
   let result = '';
@@ -13722,7 +13992,7 @@ export async function registerRoutes(
       const files = req.files as Express.Multer.File[] | undefined;
       const { toolType, options: optionsStr } = req.body;
       
-      const noFileRequiredTools = ["create-pdf", "pdf-creator", "base64-to-image"];
+      const noFileRequiredTools = ["create-pdf", "pdf-creator", "base64-to-image", "json-validator", "json-minifier", "json-beautifier", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "json-formatter"];
       
       if ((!files || files.length === 0) && !noFileRequiredTools.includes(toolType)) {
         return res.status(400).json({ 
@@ -26748,6 +27018,150 @@ ${pages}    </office:presentation>
             }
             filename = "difference-analysis.txt";
             contentType = "text/plain";
+            break;
+          }
+
+          case "json-validator": {
+            let jsonInput = options.jsonInput || options.textContent || '';
+            if (!jsonInput && files && files.length > 0) {
+              jsonInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!jsonInput) {
+              throw new Error("Please provide JSON input to validate");
+            }
+            result = await jsonValidator(jsonInput);
+            filename = "validation-result.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "json-minifier": {
+            let jsonInput = options.jsonInput || options.textContent || '';
+            if (!jsonInput && files && files.length > 0) {
+              jsonInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!jsonInput) {
+              throw new Error("Please provide JSON input to minify");
+            }
+            result = await jsonMinifier(jsonInput);
+            filename = "minified.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "json-beautifier": {
+            let jsonInput = options.jsonInput || options.textContent || '';
+            if (!jsonInput && files && files.length > 0) {
+              jsonInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!jsonInput) {
+              throw new Error("Please provide JSON input to beautify");
+            }
+            const indent = parseInt(options.indent || '2', 10);
+            result = await jsonBeautifier(jsonInput, indent);
+            filename = "beautified.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "xml-formatter": {
+            let xmlInput = options.xmlInput || options.textContent || '';
+            if (!xmlInput && files && files.length > 0) {
+              xmlInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!xmlInput) {
+              throw new Error("Please provide XML input to format");
+            }
+            const indent = parseInt(options.indent || '2', 10);
+            result = await xmlFormatter(xmlInput, indent);
+            filename = "formatted.xml";
+            contentType = "application/xml";
+            break;
+          }
+
+          case "xml-validator": {
+            let xmlInput = options.xmlInput || options.textContent || '';
+            if (!xmlInput && files && files.length > 0) {
+              xmlInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!xmlInput) {
+              throw new Error("Please provide XML input to validate");
+            }
+            result = await xmlValidator(xmlInput);
+            filename = "validation-result.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "html-minifier": {
+            let htmlInput = options.htmlInput || options.textContent || '';
+            if (!htmlInput && files && files.length > 0) {
+              htmlInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!htmlInput) {
+              throw new Error("Please provide HTML input to minify");
+            }
+            result = await htmlMinifier(htmlInput);
+            filename = "minified.html";
+            contentType = "text/html";
+            break;
+          }
+
+          case "html-beautifier": {
+            let htmlInput = options.htmlInput || options.textContent || '';
+            if (!htmlInput && files && files.length > 0) {
+              htmlInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!htmlInput) {
+              throw new Error("Please provide HTML input to beautify");
+            }
+            const indent = parseInt(options.indent || '2', 10);
+            result = await htmlBeautifier(htmlInput, indent);
+            filename = "beautified.html";
+            contentType = "text/html";
+            break;
+          }
+
+          case "css-minifier": {
+            let cssInput = options.cssInput || options.textContent || '';
+            if (!cssInput && files && files.length > 0) {
+              cssInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!cssInput) {
+              throw new Error("Please provide CSS input to minify");
+            }
+            result = await cssMinifier(cssInput);
+            filename = "minified.css";
+            contentType = "text/css";
+            break;
+          }
+
+          case "css-beautifier": {
+            let cssInput = options.cssInput || options.textContent || '';
+            if (!cssInput && files && files.length > 0) {
+              cssInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!cssInput) {
+              throw new Error("Please provide CSS input to beautify");
+            }
+            const indent = parseInt(options.indent || '2', 10);
+            result = await cssBeautifier(cssInput, indent);
+            filename = "beautified.css";
+            contentType = "text/css";
+            break;
+          }
+
+          case "js-minifier": {
+            let jsInput = options.jsInput || options.textContent || '';
+            if (!jsInput && files && files.length > 0) {
+              jsInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!jsInput) {
+              throw new Error("Please provide JavaScript input to minify");
+            }
+            result = await jsMinifier(jsInput);
+            filename = "minified.js";
+            contentType = "application/javascript";
             break;
           }
 

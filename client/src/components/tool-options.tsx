@@ -10289,6 +10289,266 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "json-validator":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="jsonInput">JSON Input</Label>
+            <textarea
+              id="jsonInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder='{"key": "value", "array": [1, 2, 3]}'
+              value={options.jsonInput || ""}
+              onChange={(e) => updateOption("jsonInput", e.target.value)}
+              data-testid="textarea-json-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your JSON to validate its syntax and structure. Errors will include line numbers for easy debugging.
+          </p>
+        </div>
+      );
+
+    case "json-minifier":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="jsonInput">JSON Input</Label>
+            <textarea
+              id="jsonInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder='{"key": "value", "nested": {"data": true}}'
+              value={options.jsonInput || ""}
+              onChange={(e) => updateOption("jsonInput", e.target.value)}
+              data-testid="textarea-json-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your JSON to remove all whitespace and reduce file size. Perfect for production use.
+          </p>
+        </div>
+      );
+
+    case "json-beautifier":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="jsonInput">JSON Input</Label>
+            <textarea
+              id="jsonInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder='{"key":"value","nested":{"data":true}}'
+              value={options.jsonInput || ""}
+              onChange={(e) => updateOption("jsonInput", e.target.value)}
+              data-testid="textarea-json-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Indentation</Label>
+            <Select
+              value={options.indent || "2"}
+              onValueChange={(value) => updateOption("indent", value)}
+            >
+              <SelectTrigger data-testid="select-indent">
+                <SelectValue placeholder="Select indentation" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2">2 spaces</SelectItem>
+                <SelectItem value="4">4 spaces</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your JSON to add proper indentation and make it readable.
+          </p>
+        </div>
+      );
+
+    case "xml-formatter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="xmlInput">XML Input</Label>
+            <textarea
+              id="xmlInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder='<root><item>value</item></root>'
+              value={options.xmlInput || ""}
+              onChange={(e) => updateOption("xmlInput", e.target.value)}
+              data-testid="textarea-xml-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Indentation</Label>
+            <Select
+              value={options.indent || "2"}
+              onValueChange={(value) => updateOption("indent", value)}
+            >
+              <SelectTrigger data-testid="select-indent">
+                <SelectValue placeholder="Select indentation" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2">2 spaces</SelectItem>
+                <SelectItem value="4">4 spaces</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your XML to add proper indentation and improve readability.
+          </p>
+        </div>
+      );
+
+    case "xml-validator":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="xmlInput">XML Input</Label>
+            <textarea
+              id="xmlInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder='<root><item>value</item></root>'
+              value={options.xmlInput || ""}
+              onChange={(e) => updateOption("xmlInput", e.target.value)}
+              data-testid="textarea-xml-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your XML to validate its syntax and check for well-formedness.
+          </p>
+        </div>
+      );
+
+    case "html-minifier":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="htmlInput">HTML Input</Label>
+            <textarea
+              id="htmlInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder='<div class="container">\n  <p>Hello World</p>\n</div>'
+              value={options.htmlInput || ""}
+              onChange={(e) => updateOption("htmlInput", e.target.value)}
+              data-testid="textarea-html-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your HTML to remove whitespace, comments, and reduce file size.
+          </p>
+        </div>
+      );
+
+    case "html-beautifier":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="htmlInput">HTML Input</Label>
+            <textarea
+              id="htmlInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder='<div class="container"><p>Hello World</p></div>'
+              value={options.htmlInput || ""}
+              onChange={(e) => updateOption("htmlInput", e.target.value)}
+              data-testid="textarea-html-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Indentation</Label>
+            <Select
+              value={options.indent || "2"}
+              onValueChange={(value) => updateOption("indent", value)}
+            >
+              <SelectTrigger data-testid="select-indent">
+                <SelectValue placeholder="Select indentation" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2">2 spaces</SelectItem>
+                <SelectItem value="4">4 spaces</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your HTML to add proper indentation and improve readability.
+          </p>
+        </div>
+      );
+
+    case "css-minifier":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="cssInput">CSS Input</Label>
+            <textarea
+              id="cssInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder='.container {\n  display: flex;\n  padding: 20px;\n}'
+              value={options.cssInput || ""}
+              onChange={(e) => updateOption("cssInput", e.target.value)}
+              data-testid="textarea-css-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your CSS to remove whitespace, comments, and reduce file size.
+          </p>
+        </div>
+      );
+
+    case "css-beautifier":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="cssInput">CSS Input</Label>
+            <textarea
+              id="cssInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder='.container{display:flex;padding:20px;}'
+              value={options.cssInput || ""}
+              onChange={(e) => updateOption("cssInput", e.target.value)}
+              data-testid="textarea-css-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Indentation</Label>
+            <Select
+              value={options.indent || "2"}
+              onValueChange={(value) => updateOption("indent", value)}
+            >
+              <SelectTrigger data-testid="select-indent">
+                <SelectValue placeholder="Select indentation" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2">2 spaces</SelectItem>
+                <SelectItem value="4">4 spaces</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your CSS to add proper indentation and improve readability.
+          </p>
+        </div>
+      );
+
+    case "js-minifier":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="jsInput">JavaScript Input</Label>
+            <textarea
+              id="jsInput"
+              className="w-full min-h-[200px] p-3 rounded-md border border-input bg-background font-mono text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              placeholder='function hello() {\n  console.log("Hello World");\n}'
+              value={options.jsInput || ""}
+              onChange={(e) => updateOption("jsInput", e.target.value)}
+              data-testid="textarea-js-input"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Paste your JavaScript to remove whitespace, comments, and reduce file size.
+          </p>
+        </div>
+      );
+
     case "json-formatter":
       return (
         <div className="space-y-4">
