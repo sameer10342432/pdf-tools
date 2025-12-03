@@ -169,6 +169,28 @@ The application is built with a React frontend and an Express.js backend.
 
   Image tools use Sharp library for processing. Document conversions use mammoth (Word reading) and docx (Word creation). Spreadsheet tools use xlsx library for Excel/CSV/JSON conversions.
 
+- Added 10 new document conversion and editing tools (December 2025):
+
+  **Data Conversion Tools:**
+  - **JSON to Excel**: Convert JSON data files to Excel spreadsheet format (.xlsx) with automatic column detection
+  - **JSON to CSV**: Convert JSON arrays to CSV format with configurable delimiters
+
+  **Presentation Tools:**
+  - **PPT to JPG**: Convert PowerPoint slides to high-quality JPG images using LibreOffice rendering
+  - **PPT to Video**: Convert PowerPoint presentations to MP4 video with configurable slide duration
+
+  **Text and Document Tools:**
+  - **Word Counter**: Count words, characters, sentences, paragraphs, and reading time from text/Word files
+  - **Text Editor Online**: Edit and format plain text files with save functionality
+  - **Markdown Editor**: Write and preview Markdown with live HTML rendering using marked library
+
+  **Data Viewer Tools:**
+  - **CSV Viewer**: View CSV files in an interactive table format with search and sort capabilities
+  - **JSON Viewer**: View, format, and validate JSON data with syntax highlighting
+  - **XML Viewer**: View and format XML data with proper indentation and structure visualization
+
+  PPT conversion tools use LibreOffice for accurate slide rendering, ImageMagick for PDF-to-image conversion, and FFmpeg for video generation. All viewer tools support file upload and provide formatted output display.
+
 ## External Dependencies
 - **PDF Processing Libraries**: `pdf-lib` (for core PDF manipulation), `sharp` (for image processing), `archiver` (for creating zip archives).
 - **Document Conversion**: `mammoth` (for Word document processing), `xlsx` (for Excel processing), `tesseract.js` (for OCR text recognition), `marked` (for Markdown parsing), `adm-zip` (for ODF file extraction).
