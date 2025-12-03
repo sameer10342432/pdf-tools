@@ -556,6 +556,16 @@ export const pdfToolTypes = [
   "yaml-to-json",
   "yaml-to-csv",
   "csv-to-yaml",
+  "html-to-txt",
+  "html-to-markdown",
+  "markdown-to-html",
+  "rtf-to-docx",
+  "docx-to-rtf",
+  "rtf-to-txt",
+  "txt-to-rtf",
+  "pages-to-docx",
+  "docx-to-pages",
+  "numbers-to-xlsx",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -15854,3 +15864,261 @@ const newConverterTools: PdfTool[] = [
 
 // Add new converter tools to the main array
 pdfTools.push(...newConverterTools);
+
+
+// New Document Conversion Tools
+const newDocConverterTools: PdfTool[] = [
+  {
+    id: "html-to-txt",
+    name: "HTML to TXT",
+    description: "Convert HTML files to plain text format",
+    icon: "FileText",
+    type: "html-to-txt",
+    color: "bg-blue-500",
+    emoji: "📄",
+    metaTitle: "HTML to TXT Converter Online Free - Extract Text from HTML | PDF Tools",
+    metaDescription: "Convert HTML files to plain text format online for free. Extract clean text content from HTML pages instantly. No registration required.",
+    seoArticle: `<h2>HTML to TXT Converter - Extract Pure Text Content</h2>
+<p>Transform your HTML documents into clean, readable plain text files with our free online converter. Perfect for extracting content from web pages, stripping formatting, and creating simple text documents from HTML sources.</p>
+
+<h2>Why Convert HTML to Plain Text?</h2>
+<p>Plain text offers universal compatibility across all devices and applications. Whether you need content for email templates, accessibility purposes, or data processing, converting HTML to TXT removes all markup and formatting while preserving the actual text content.</p>
+
+<h2>Smart Content Extraction</h2>
+<p>Our converter intelligently processes HTML content, removing scripts, styles, and tags while preserving meaningful text. Paragraph breaks and document structure are maintained where possible, giving you clean, organized output.</p>
+
+<h2>How to Use This Tool</h2>
+<p>Simply upload your HTML file using the upload area above. The converter will process your file instantly and provide a downloadable TXT file containing the extracted text content. The entire process takes just seconds.</p>
+
+<h2>Perfect for Multiple Use Cases</h2>
+<p>Use this tool for web scraping results, email content preparation, documentation generation, or any scenario where you need pure text from HTML markup. The output is clean, readable, and ready for immediate use.</p>`,
+  },
+  {
+    id: "html-to-markdown",
+    name: "HTML to Markdown",
+    description: "Convert HTML documents to Markdown format",
+    icon: "Hash",
+    type: "html-to-markdown",
+    color: "bg-indigo-500",
+    emoji: "📝",
+    metaTitle: "HTML to Markdown Converter Online Free - Transform HTML to MD | PDF Tools",
+    metaDescription: "Convert HTML files to Markdown format online for free. Transform web pages to clean Markdown syntax. Perfect for documentation and blogs.",
+    seoArticle: `<h2>HTML to Markdown Converter - Clean Documentation Format</h2>
+<p>Transform your HTML content into clean Markdown syntax with our free online converter. Ideal for creating documentation, blog posts, and content that needs to be easily edited and version controlled.</p>
+
+<h2>Why Use Markdown?</h2>
+<p>Markdown is the preferred format for documentation, README files, and content management systems. It is human-readable, easy to edit, and converts beautifully to HTML when needed. Converting HTML to Markdown gives you the best of both worlds.</p>
+
+<h2>Intelligent Conversion</h2>
+<p>Our converter recognizes HTML elements and translates them to their Markdown equivalents. Headers become hash marks, bold text becomes asterisks, links maintain their URLs, and lists preserve their structure. The result is clean, readable Markdown.</p>
+
+<h2>Simple Conversion Process</h2>
+<p>Upload your HTML file and receive perfectly formatted Markdown output. The converter handles complex nested structures, tables, and code blocks while maintaining document hierarchy.</p>
+
+<h2>Ideal for Modern Workflows</h2>
+<p>Whether you are migrating content to a static site generator, creating GitHub documentation, or building a knowledge base, this tool helps you convert existing HTML content to the portable Markdown format quickly and accurately.</p>`,
+  },
+  {
+    id: "markdown-to-html",
+    name: "Markdown to HTML",
+    description: "Convert Markdown files to HTML format",
+    icon: "Code",
+    type: "markdown-to-html",
+    color: "bg-purple-500",
+    emoji: "🌐",
+    metaTitle: "Markdown to HTML Converter Online Free - Transform MD to HTML | PDF Tools",
+    metaDescription: "Convert Markdown files to HTML format online for free. Transform your MD documents into web-ready HTML. Fast and accurate conversion.",
+    seoArticle: `<h2>Markdown to HTML Converter - Web-Ready Content</h2>
+<p>Transform your Markdown documents into clean, valid HTML with our free online converter. Perfect for publishing blog posts, creating web content, or preparing documentation for web display.</p>
+
+<h2>From Simple Syntax to Rich HTML</h2>
+<p>Markdown simple syntax makes it easy to write content, but HTML is what browsers understand. Our converter bridges this gap, transforming your Markdown into semantic HTML that displays beautifully on any website.</p>
+
+<h2>Complete Element Support</h2>
+<p>Our converter handles all standard Markdown elements including headers, emphasis, links, images, code blocks, lists, and blockquotes. Extended syntax like tables and task lists are also supported for comprehensive conversion.</p>
+
+<h2>How to Convert</h2>
+<p>Upload your Markdown file and instantly receive properly formatted HTML. The output uses semantic HTML tags, making it accessible and SEO-friendly. Download the result and use it directly in your web projects.</p>
+
+<h2>Perfect for Content Creators</h2>
+<p>Writers, developers, and content creators use this tool to publish Markdown content on the web. The clean HTML output integrates seamlessly with any website or content management system.</p>`,
+  },
+  {
+    id: "rtf-to-docx",
+    name: "RTF to DOCX",
+    description: "Convert RTF files to Microsoft Word DOCX format",
+    icon: "FileType",
+    type: "rtf-to-docx",
+    color: "bg-blue-600",
+    emoji: "📄",
+    metaTitle: "RTF to DOCX Converter Online Free - Convert to Word Format | PDF Tools",
+    metaDescription: "Convert RTF files to Microsoft Word DOCX format online for free. Transform Rich Text Format documents to modern Word format. Fast conversion.",
+    seoArticle: `<h2>RTF to DOCX Converter - Modern Word Format</h2>
+<p>Convert your Rich Text Format documents to modern Microsoft Word DOCX format with our free online tool. DOCX offers better compression, enhanced features, and wider compatibility with modern applications.</p>
+
+<h2>Why Upgrade to DOCX?</h2>
+<p>DOCX is the standard format for Microsoft Word and is supported by virtually all word processors. It offers smaller file sizes, better formatting options, and improved document recovery compared to the older RTF format.</p>
+
+<h2>Preserve Your Formatting</h2>
+<p>Our converter maintains text formatting, paragraphs, and document structure during conversion. Your fonts, styles, and layout transfer cleanly to the DOCX format, ready for editing in Microsoft Word or compatible applications.</p>
+
+<h2>Simple Conversion Steps</h2>
+<p>Upload your RTF file using the secure upload area. Our converter processes the file instantly and provides a downloadable DOCX file. No software installation required - everything happens in your browser.</p>
+
+<h2>Universal Compatibility</h2>
+<p>The resulting DOCX file works with Microsoft Word, Google Docs, LibreOffice, and other major word processors. Share your converted documents with confidence knowing they will open correctly everywhere.</p>`,
+  },
+  {
+    id: "docx-to-rtf",
+    name: "DOCX to RTF",
+    description: "Convert Microsoft Word DOCX to RTF format",
+    icon: "FileType2",
+    type: "docx-to-rtf",
+    color: "bg-green-600",
+    emoji: "📋",
+    metaTitle: "DOCX to RTF Converter Online Free - Convert Word to RTF | PDF Tools",
+    metaDescription: "Convert Microsoft Word DOCX files to RTF format online for free. Transform Word documents to Rich Text Format for legacy compatibility.",
+    seoArticle: `<h2>DOCX to RTF Converter - Universal Compatibility</h2>
+<p>Convert your Microsoft Word documents to Rich Text Format with our free online converter. RTF is supported by virtually every word processor ever made, making it the ideal format for maximum compatibility.</p>
+
+<h2>When to Use RTF</h2>
+<p>RTF is perfect when you need to share documents with users who may have older software or non-Microsoft applications. It is also useful for systems that require a simpler, more universal format than DOCX.</p>
+
+<h2>Formatting Preservation</h2>
+<p>Our converter maintains your document essential formatting including fonts, text styles, and paragraph structure. The RTF output preserves your content appearance across different word processing applications.</p>
+
+<h2>Easy Conversion Process</h2>
+<p>Simply upload your DOCX file and receive the RTF version instantly. The conversion happens securely in the cloud, and your document is ready for download within seconds.</p>
+
+<h2>Legacy System Support</h2>
+<p>Need to work with older systems or specialized software? RTF ensures your documents remain accessible and editable regardless of the application being used.</p>`,
+  },
+  {
+    id: "rtf-to-txt",
+    name: "RTF to TXT",
+    description: "Convert RTF files to plain text format",
+    icon: "FileText",
+    type: "rtf-to-txt",
+    color: "bg-gray-600",
+    emoji: "📝",
+    metaTitle: "RTF to TXT Converter Online Free - Extract Text from RTF | PDF Tools",
+    metaDescription: "Convert RTF files to plain text format online for free. Extract clean text content from Rich Text Format documents instantly.",
+    seoArticle: `<h2>RTF to TXT Converter - Pure Text Extraction</h2>
+<p>Extract plain text content from Rich Text Format documents with our free online converter. Perfect for data processing, content migration, or when you need clean text without formatting.</p>
+
+<h2>Clean Text Output</h2>
+<p>Our converter strips all RTF formatting codes and delivers pure text content. No fonts, no styles, no formatting - just the words from your document in a simple, universal format.</p>
+
+<h2>Universal Compatibility</h2>
+<p>Plain text files work everywhere. Open them in any text editor, process them with scripts, or import them into any application. TXT is the most compatible format available.</p>
+
+<h2>Quick Conversion</h2>
+<p>Upload your RTF file and get instant results. The converter processes your document immediately and provides a downloadable TXT file containing your extracted text content.</p>
+
+<h2>Data Processing Ready</h2>
+<p>Need to analyze or process document content? Converting to plain text makes your content ready for text analysis, search indexing, or import into databases and other systems.</p>`,
+  },
+  {
+    id: "txt-to-rtf",
+    name: "TXT to RTF",
+    description: "Convert plain text files to RTF format",
+    icon: "FileType",
+    type: "txt-to-rtf",
+    color: "bg-orange-500",
+    emoji: "✍️",
+    metaTitle: "TXT to RTF Converter Online Free - Convert Plain Text to RTF | PDF Tools",
+    metaDescription: "Convert plain text files to RTF format online for free. Transform simple text into Rich Text Format for word processor compatibility.",
+    seoArticle: `<h2>TXT to RTF Converter - Add Word Processor Compatibility</h2>
+<p>Convert your plain text files to Rich Text Format with our free online converter. RTF files can be opened and edited in any word processor while maintaining full compatibility.</p>
+
+<h2>Why Convert to RTF?</h2>
+<p>While plain text is universal, RTF allows for formatting in word processors. Converting to RTF prepares your text for editing, formatting, and sharing through standard word processing applications.</p>
+
+<h2>Ready for Word Processors</h2>
+<p>The resulting RTF file opens in Microsoft Word, LibreOffice, WordPad, and virtually any word processor. Your text becomes a proper document ready for formatting and enhancement.</p>
+
+<h2>Simple Conversion</h2>
+<p>Upload your TXT file and receive an RTF document instantly. The conversion preserves your text content while adding the RTF structure needed for word processor compatibility.</p>
+
+<h2>Professional Document Preparation</h2>
+<p>Transform notes, logs, or plain text content into proper documents. The RTF format provides a solid foundation for creating professionally formatted documents from simple text sources.</p>`,
+  },
+  {
+    id: "pages-to-docx",
+    name: "Pages to DOCX",
+    description: "Convert Apple Pages files to Microsoft Word format",
+    icon: "FileType",
+    type: "pages-to-docx",
+    color: "bg-sky-500",
+    emoji: "🍎",
+    metaTitle: "Pages to DOCX Converter Online Free - Convert to Word | PDF Tools",
+    metaDescription: "Convert Apple Pages files to Microsoft Word DOCX format online for free. Transform Mac documents for Windows compatibility. Easy conversion.",
+    seoArticle: `<h2>Pages to DOCX Converter - Cross-Platform Compatibility</h2>
+<p>Convert your Apple Pages documents to Microsoft Word format with our free online converter. Perfect for sharing documents with Windows users or when you need full Word compatibility.</p>
+
+<h2>Bridge the Apple-Microsoft Gap</h2>
+<p>Pages is Apple excellent word processor, but sharing with Windows users can be challenging. Converting to DOCX ensures your documents are accessible to anyone using Microsoft Word or compatible applications.</p>
+
+<h2>Content Preservation</h2>
+<p>Our converter extracts text content and structure from Pages files and creates a proper DOCX document. While complex layouts may be simplified, your text content is preserved accurately.</p>
+
+<h2>Easy File Sharing</h2>
+<p>No more asking recipients to install special software. DOCX files open in Microsoft Word, Google Docs, and countless other applications, making document sharing effortless.</p>
+
+<h2>Quick and Secure</h2>
+<p>Upload your Pages file and receive a DOCX version instantly. Your documents are processed securely and deleted after conversion.</p>`,
+  },
+  {
+    id: "docx-to-pages",
+    name: "DOCX to Pages",
+    description: "Convert Microsoft Word to Apple Pages format",
+    icon: "FileType2",
+    type: "docx-to-pages",
+    color: "bg-pink-500",
+    emoji: "🍏",
+    metaTitle: "DOCX to Pages Converter Online Free - Convert Word to Apple Pages | PDF Tools",
+    metaDescription: "Convert Microsoft Word DOCX files to Apple Pages format online for free. Transform Word documents for Mac and iOS compatibility.",
+    seoArticle: `<h2>DOCX to Pages Converter - Mac-Ready Documents</h2>
+<p>Convert your Microsoft Word documents to Apple Pages format with our free online converter. Perfect for Mac and iOS users who prefer working in Apple native word processor.</p>
+
+<h2>Seamless Mac Integration</h2>
+<p>Pages integrates beautifully with the Apple ecosystem. Converting your DOCX files to Pages format lets you take advantage of iCloud syncing, iOS editing, and Apple intuitive interface.</p>
+
+<h2>Content Extraction</h2>
+<p>Our converter processes your Word document and creates a compatible Pages file. Text content and basic structure are preserved for continued editing in Apple Pages.</p>
+
+<h2>Cross-Platform Workflow</h2>
+<p>Receive Word documents from colleagues and convert them for your Mac workflow. The conversion is quick, secure, and happens entirely in your browser.</p>
+
+<h2>Apple Ecosystem Ready</h2>
+<p>The resulting file works on Mac, iPad, and iPhone through iCloud. Continue editing your documents seamlessly across all your Apple devices.</p>`,
+  },
+  {
+    id: "numbers-to-xlsx",
+    name: "Numbers to XLSX",
+    description: "Convert Apple Numbers to Microsoft Excel format",
+    icon: "Table",
+    type: "numbers-to-xlsx",
+    color: "bg-emerald-500",
+    emoji: "📊",
+    metaTitle: "Numbers to XLSX Converter Online Free - Convert to Excel | PDF Tools",
+    metaDescription: "Convert Apple Numbers files to Microsoft Excel XLSX format online for free. Transform Mac spreadsheets for Windows compatibility. Easy conversion.",
+    seoArticle: `<h2>Numbers to XLSX Converter - Excel Compatibility</h2>
+<p>Convert your Apple Numbers spreadsheets to Microsoft Excel format with our free online converter. Essential for sharing data with Windows users or organizations that standardize on Excel.</p>
+
+<h2>Cross-Platform Data Sharing</h2>
+<p>Numbers creates beautiful spreadsheets, but Excel is the business standard. Converting to XLSX ensures your data is accessible to anyone using Excel or compatible spreadsheet applications.</p>
+
+<h2>Data Preservation</h2>
+<p>Our converter extracts spreadsheet data from Numbers files and creates a proper Excel workbook. Cell data, basic formulas, and sheet structure are preserved in the conversion process.</p>
+
+<h2>Business Compatibility</h2>
+<p>Most organizations use Excel for financial data, reports, and analysis. Converting your Numbers files to XLSX format ensures seamless collaboration with Excel users worldwide.</p>
+
+<h2>Quick Conversion</h2>
+<p>Upload your Numbers file and receive an Excel-compatible XLSX file instantly. The conversion is secure, and your original data remains intact in the output file.</p>`,
+  }
+];
+
+// Add new document converter tools to the main array
+pdfTools.push(...newDocConverterTools);

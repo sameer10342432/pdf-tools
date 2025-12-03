@@ -13081,6 +13081,364 @@ async function makePresentationPdf(
   return Buffer.from(await pdf.save());
 }
 
+
+// HTML to TXT conversion
+async function htmlToTxt(file: Express.Multer.File): Promise<Buffer> {
+  const htmlContent = fs.readFileSync(file.path, 'utf-8');
+  
+  const textContent = htmlContent
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<head[^>]*>[\s\S]*?<\/head>/gi, '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<\/div>/gi, '\n')
+    .replace(/<\/h[1-6]>/gi, '\n\n')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<li[^>]*>/gi, '- ')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&rsquo;/g, "'")
+    .replace(/&lsquo;/g, "'")
+    .replace(/&rdquo;/g, '"')
+    .replace(/&ldquo;/g, '"')
+    .replace(/&mdash;/g, '—')
+    .replace(/&ndash;/g, '–')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/[ \t]+/g, ' ')
+    .trim();
+  
+  return Buffer.from(textContent, 'utf-8');
+}
+
+// HTML to Markdown conversion
+async function htmlToMarkdown(file: Express.Multer.File): Promise<Buffer> {
+  const htmlContent = fs.readFileSync(file.path, 'utf-8');
+  
+  let markdown = htmlContent
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<head[^>]*>[\s\S]*?<\/head>/gi, '');
+  
+  // Convert headers
+  markdown = markdown.replace(/<h1[^>]*>([\s\S]*?)<\/h1>/gi, '\n# $1\n');
+  markdown = markdown.replace(/<h2[^>]*>([\s\S]*?)<\/h2>/gi, '\n## $1\n');
+  markdown = markdown.replace(/<h3[^>]*>([\s\S]*?)<\/h3>/gi, '\n### $1\n');
+  markdown = markdown.replace(/<h4[^>]*>([\s\S]*?)<\/h4>/gi, '\n#### $1\n');
+  markdown = markdown.replace(/<h5[^>]*>([\s\S]*?)<\/h5>/gi, '\n##### $1\n');
+  markdown = markdown.replace(/<h6[^>]*>([\s\S]*?)<\/h6>/gi, '\n###### $1\n');
+  
+  // Convert emphasis
+  markdown = markdown.replace(/<strong[^>]*>([\s\S]*?)<\/strong>/gi, '**$1**');
+  markdown = markdown.replace(/<b[^>]*>([\s\S]*?)<\/b>/gi, '**$1**');
+  markdown = markdown.replace(/<em[^>]*>([\s\S]*?)<\/em>/gi, '*$1*');
+  markdown = markdown.replace(/<i[^>]*>([\s\S]*?)<\/i>/gi, '*$1*');
+  
+  // Convert links
+  markdown = markdown.replace(/<a[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi, '[$2]($1)');
+  
+  // Convert images
+  markdown = markdown.replace(/<img[^>]*src=["']([^"']+)["'][^>]*alt=["']([^"']*)["'][^>]*\/?>/gi, '![$2]($1)');
+  markdown = markdown.replace(/<img[^>]*alt=["']([^"']*)["'][^>]*src=["']([^"']+)["'][^>]*\/?>/gi, '![$1]($2)');
+  markdown = markdown.replace(/<img[^>]*src=["']([^"']+)["'][^>]*\/?>/gi, '![]($1)');
+  
+  // Convert code
+  markdown = markdown.replace(/<code[^>]*>([\s\S]*?)<\/code>/gi, '`$1`');
+  markdown = markdown.replace(/<pre[^>]*>([\s\S]*?)<\/pre>/gi, '\n```\n$1\n```\n');
+  
+  // Convert lists
+  markdown = markdown.replace(/<ul[^>]*>/gi, '\n');
+  markdown = markdown.replace(/<\/ul>/gi, '\n');
+  markdown = markdown.replace(/<ol[^>]*>/gi, '\n');
+  markdown = markdown.replace(/<\/ol>/gi, '\n');
+  markdown = markdown.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, '- $1\n');
+  
+  // Convert paragraphs and breaks
+  markdown = markdown.replace(/<p[^>]*>/gi, '\n');
+  markdown = markdown.replace(/<\/p>/gi, '\n');
+  markdown = markdown.replace(/<br\s*\/?>/gi, '\n');
+  markdown = markdown.replace(/<hr\s*\/?>/gi, '\n---\n');
+  
+  // Convert blockquotes
+  markdown = markdown.replace(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/gi, '\n> $1\n');
+  
+  // Clean up remaining tags and entities
+  markdown = markdown.replace(/<[^>]+>/g, '');
+  markdown = markdown.replace(/&nbsp;/g, ' ');
+  markdown = markdown.replace(/&amp;/g, '&');
+  markdown = markdown.replace(/&lt;/g, '<');
+  markdown = markdown.replace(/&gt;/g, '>');
+  markdown = markdown.replace(/&quot;/g, '"');
+  markdown = markdown.replace(/&#39;/g, "'");
+  markdown = markdown.replace(/\n{3,}/g, '\n\n');
+  markdown = markdown.trim();
+  
+  return Buffer.from(markdown, 'utf-8');
+}
+
+// Markdown to HTML conversion
+async function markdownToHtml(file: Express.Multer.File): Promise<Buffer> {
+  const mdContent = fs.readFileSync(file.path, 'utf-8');
+  const htmlContent = marked.parse(mdContent) as string;
+  
+  const fullHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Converted Document</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+    h1, h2, h3, h4, h5, h6 { margin-top: 1.5em; margin-bottom: 0.5em; }
+    code { background: #f4f4f4; padding: 0.2em 0.4em; border-radius: 3px; }
+    pre { background: #f4f4f4; padding: 1em; overflow-x: auto; border-radius: 5px; }
+    pre code { background: none; padding: 0; }
+    blockquote { border-left: 4px solid #ddd; margin: 1em 0; padding-left: 1em; color: #666; }
+    a { color: #0066cc; }
+    img { max-width: 100%; }
+  </style>
+</head>
+<body>
+${htmlContent}
+</body>
+</html>`;
+  
+  return Buffer.from(fullHtml, 'utf-8');
+}
+
+// RTF to DOCX conversion
+async function rtfToDocx(file: Express.Multer.File): Promise<Buffer> {
+  const rtfContent = fs.readFileSync(file.path, 'utf-8');
+  
+  // Parse RTF content to extract plain text
+  let textContent = rtfContent
+    .replace(/\\par[d]?/g, '\n')
+    .replace(/\{\\[^{}]+\}/g, '')
+    .replace(/\\[a-z]+[0-9]*/gi, ' ')
+    .replace(/[{}]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  
+  // Create DOCX document
+  const paragraphs = textContent.split('\n').filter(p => p.trim()).map(text => 
+    new Paragraph({
+      children: [new TextRun(text.trim())]
+    })
+  );
+  
+  const doc = new Document({
+    sections: [{
+      properties: {},
+      children: paragraphs.length > 0 ? paragraphs : [new Paragraph({ children: [new TextRun('')] })]
+    }]
+  });
+  
+  return await Packer.toBuffer(doc);
+}
+
+// DOCX to RTF conversion
+async function docxToRtf(file: Express.Multer.File): Promise<Buffer> {
+  const result = await mammoth.extractRawText({ path: file.path });
+  const text = result.value;
+  
+  // Create basic RTF structure
+  const rtfContent = `{\\rtf1\\ansi\\deff0
+{\\fonttbl{\\f0\\fswiss Helvetica;}}
+{\\colortbl;\\red0\\green0\\blue0;}
+\\f0\\fs24
+${text.split('\n').map(line => line.trim() ? line + '\\par' : '\\par').join('\n')}
+}`;
+  
+  return Buffer.from(rtfContent, 'utf-8');
+}
+
+// RTF to TXT conversion
+async function rtfToTxt(file: Express.Multer.File): Promise<Buffer> {
+  const rtfContent = fs.readFileSync(file.path, 'utf-8');
+  
+  // Parse RTF and extract plain text
+  let textContent = rtfContent
+    .replace(/\\par[d]?/g, '\n')
+    .replace(/\{\\[^{}]+\}/g, '')
+    .replace(/\\[a-z]+[0-9]*/gi, '')
+    .replace(/[{}]/g, '')
+    .replace(/\s+/g, ' ')
+    .replace(/\n\s+/g, '\n')
+    .trim();
+  
+  return Buffer.from(textContent, 'utf-8');
+}
+
+// RTF character escaping function
+function escapeRtf(text: string): string {
+  return text
+    .replace(/\\/g, '\\\\')  // Escape backslashes first
+    .replace(/\{/g, '\\{')   // Escape open braces
+    .replace(/\}/g, '\\}')   // Escape close braces
+    .replace(/[\x00-\x1f\x7f-\xff]/g, (char) => {
+      // Escape control characters (0x00-0x1F), DEL (0x7F), and extended ASCII (0x80-0xFF)
+      const code = char.charCodeAt(0);
+      if (code < 32 || code >= 127) {
+        return `\\'${code.toString(16).padStart(2, '0')}`;
+      }
+      return char;
+    });
+}
+
+// TXT to RTF conversion
+async function txtToRtf(file: Express.Multer.File): Promise<Buffer> {
+  const textContent = fs.readFileSync(file.path, 'utf-8');
+  
+  // Escape RTF special characters and create RTF structure
+  const escapedLines = textContent.split('\n').map(line => escapeRtf(line));
+  
+  const rtfContent = `{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1033
+{\\fonttbl{\\f0\\fmodern\\fcharset0 Courier New;}}
+{\\colortbl;\\red0\\green0\\blue0;}
+{\\*\\generator PDF Tools RTF Converter;}
+\\viewkind4\\uc1\\pard\\f0\\fs22
+${escapedLines.map(line => line + '\\par').join('\n')}
+}`;
+  
+  return Buffer.from(rtfContent, 'utf-8');
+}
+
+// Pages to DOCX conversion
+async function pagesToDocx(file: Express.Multer.File): Promise<Buffer> {
+  let textContent = '';
+  
+  try {
+    const zip = new AdmZip(file.path);
+    const entries = zip.getEntries();
+    
+    // Try to find and extract text from Pages document
+    for (const entry of entries) {
+      if (entry.entryName.includes('index.xml') || entry.entryName.endsWith('.xml')) {
+        try {
+          const xmlContent = entry.getData().toString('utf-8');
+          // Extract text content from XML
+          const cleanText = xmlContent
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+          if (cleanText.length > textContent.length) {
+            textContent = cleanText;
+          }
+        } catch (e) {
+          // Continue to next entry
+        }
+      }
+    }
+  } catch (error) {
+    textContent = 'Unable to extract content from Pages file. The file may be corrupted or in an unsupported format.';
+  }
+  
+  if (!textContent) {
+    textContent = 'No text content found in Pages file.';
+  }
+  
+  // Create DOCX document
+  const paragraphs = textContent.split('\n').filter(p => p.trim()).map(text =>
+    new Paragraph({
+      children: [new TextRun(text.trim())]
+    })
+  );
+  
+  const doc = new Document({
+    sections: [{
+      properties: {},
+      children: paragraphs.length > 0 ? paragraphs : [new Paragraph({ children: [new TextRun(textContent)] })]
+    }]
+  });
+  
+  return await Packer.toBuffer(doc);
+}
+
+// DOCX to Pages conversion (creates a ZIP that mimics Pages format)
+async function docxToPages(file: Express.Multer.File): Promise<Buffer> {
+  const result = await mammoth.extractRawText({ path: file.path });
+  const text = result.value;
+  
+  // Create a basic XML structure similar to Pages
+  const contentXml = `<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <body>
+    ${text.split('\n').map(line => `<p>${escapeXml(line)}</p>`).join('\n    ')}
+  </body>
+</document>`;
+  
+  const zip = new AdmZip();
+  zip.addFile('index.xml', Buffer.from(contentXml, 'utf-8'));
+  zip.addFile('buildVersionHistory.plist', Buffer.from('<?xml version="1.0" encoding="UTF-8"?>\n<plist version="1.0"><dict></dict></plist>', 'utf-8'));
+  
+  return zip.toBuffer();
+}
+
+// Numbers to XLSX conversion
+async function numbersToXlsx(file: Express.Multer.File): Promise<Buffer> {
+  let data: string[][] = [];
+  
+  try {
+    const zip = new AdmZip(file.path);
+    const entries = zip.getEntries();
+    
+    // Try to find and extract data from Numbers document
+    for (const entry of entries) {
+      if (entry.entryName.includes('Table') && entry.entryName.endsWith('.iwa')) {
+        // Numbers uses a proprietary format, extract what we can
+        try {
+          const content = entry.getData().toString('utf-8');
+          // Basic extraction - this is limited for proprietary format
+          const textMatches = content.match(/[\w\s.,!?@#$%^&*()\-+=]+/g) || [];
+          if (textMatches.length > 0) {
+            data.push(textMatches.slice(0, 10)); // Limit columns
+          }
+        } catch (e) {
+          // Continue
+        }
+      }
+    }
+    
+    // Try XML entries
+    for (const entry of entries) {
+      if (entry.entryName.endsWith('.xml')) {
+        try {
+          const xmlContent = entry.getData().toString('utf-8');
+          // Extract text that might be table data
+          const cellMatches = xmlContent.match(/<t[^>]*>([^<]+)<\/t>/g) || [];
+          if (cellMatches.length > 0) {
+            const cells = cellMatches.map(m => m.replace(/<[^>]+>/g, ''));
+            for (let i = 0; i < cells.length; i += 5) {
+              data.push(cells.slice(i, i + 5));
+            }
+          }
+        } catch (e) {
+          // Continue
+        }
+      }
+    }
+  } catch (error) {
+    data = [['Note: Apple Numbers format extraction is limited.'], ['Please export from Numbers as CSV or Excel for best results.']];
+  }
+  
+  if (data.length === 0) {
+    data = [['Note: Apple Numbers format extraction is limited.'], ['Please export from Numbers as CSV or Excel for best results.']];
+  }
+  
+  // Create Excel workbook
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+  
+  return Buffer.from(XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' }));
+}
+
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -25921,6 +26279,107 @@ ${pages}    </office:presentation>
             break;
           }
 
+
+
+          case "html-to-txt": {
+            if (files.length === 0) {
+              throw new Error("Please upload an HTML file");
+            }
+            result = await htmlToTxt(files[0]);
+            filename = files[0].originalname?.replace(/\.(html|htm)$/i, '.txt') || 'document.txt';
+            contentType = "text/plain";
+            break;
+          }
+
+          case "html-to-markdown": {
+            if (files.length === 0) {
+              throw new Error("Please upload an HTML file");
+            }
+            result = await htmlToMarkdown(files[0]);
+            filename = files[0].originalname?.replace(/\.(html|htm)$/i, '.md') || 'document.md';
+            contentType = "text/markdown";
+            break;
+          }
+
+          case "markdown-to-html": {
+            if (files.length === 0) {
+              throw new Error("Please upload a Markdown file");
+            }
+            result = await markdownToHtml(files[0]);
+            filename = files[0].originalname?.replace(/\.(md|markdown)$/i, '.html') || 'document.html';
+            contentType = "text/html";
+            break;
+          }
+
+          case "rtf-to-docx": {
+            if (files.length === 0) {
+              throw new Error("Please upload an RTF file");
+            }
+            result = await rtfToDocx(files[0]);
+            filename = files[0].originalname?.replace(/\.rtf$/i, '.docx') || 'document.docx';
+            contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            break;
+          }
+
+          case "docx-to-rtf": {
+            if (files.length === 0) {
+              throw new Error("Please upload a DOCX file");
+            }
+            result = await docxToRtf(files[0]);
+            filename = files[0].originalname?.replace(/\.docx$/i, '.rtf') || 'document.rtf';
+            contentType = "application/rtf";
+            break;
+          }
+
+          case "rtf-to-txt": {
+            if (files.length === 0) {
+              throw new Error("Please upload an RTF file");
+            }
+            result = await rtfToTxt(files[0]);
+            filename = files[0].originalname?.replace(/\.rtf$/i, '.txt') || 'document.txt';
+            contentType = "text/plain";
+            break;
+          }
+
+          case "txt-to-rtf": {
+            if (files.length === 0) {
+              throw new Error("Please upload a TXT file");
+            }
+            result = await txtToRtf(files[0]);
+            filename = files[0].originalname?.replace(/\.txt$/i, '.rtf') || 'document.rtf';
+            contentType = "application/rtf";
+            break;
+          }
+
+          case "pages-to-docx": {
+            if (files.length === 0) {
+              throw new Error("Please upload a Pages file");
+            }
+            result = await pagesToDocx(files[0]);
+            filename = files[0].originalname?.replace(/\.pages$/i, '.docx') || 'document.docx';
+            contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            break;
+          }
+
+          case "docx-to-pages": {
+            if (files.length === 0) {
+              throw new Error("Please upload a DOCX file");
+            }
+            result = await docxToPages(files[0]);
+            filename = files[0].originalname?.replace(/\.docx$/i, '.pages') || 'document.pages';
+            contentType = "application/x-iwork-pages-sffpages";
+            break;
+          }
+
+          case "numbers-to-xlsx": {
+            if (files.length === 0) {
+              throw new Error("Please upload a Numbers file");
+            }
+            result = await numbersToXlsx(files[0]);
+            filename = files[0].originalname?.replace(/\.numbers$/i, '.xlsx') || 'spreadsheet.xlsx';
+            contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            break;
+          }
 
                     default:
             throw new Error(`Unknown tool type: ${toolType}`);
