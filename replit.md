@@ -17,6 +17,7 @@ The application is built with a React frontend and an Express.js backend.
 - **Core Features**:
     - Over 140 distinct tools covering PDF manipulation (merge, split, compress, convert, edit, secure, repair, OCR), and extensive image processing (conversion across numerous formats like HEIC, WebP, AVIF, RAW, SVG, EPS, PSD, AI; editing, filtering, composition, metadata handling, and AI-powered enhancements like object removal and image generation).
     - Support for various document conversions (Word, HTML, TXT, Excel, CSV, JSON, PPT, ODT, ODS, ODP) and ebook formats (EPUB, MOBI).
+    - New universal file converter tools: File Converter, Document Converter, EPUB to TXT, XML to CSV, XML to JSON, JSON to XML, JSON to YAML, YAML to JSON, YAML to CSV, and CSV to YAML.
     - Secure file handling with automatic deletion after 5 minutes.
     - Real-time processing progress indication.
     - Page-based navigation for improved SEO and user experience.
