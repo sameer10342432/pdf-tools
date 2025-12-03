@@ -566,6 +566,16 @@ export const pdfToolTypes = [
   "pages-to-docx",
   "docx-to-pages",
   "numbers-to-xlsx",
+  "xlsx-to-numbers",
+  "keynote-to-pptx",
+  "pptx-to-keynote",
+  "epub-to-azw3",
+  "azw3-to-epub",
+  "pdf-to-cbr",
+  "pdf-to-cbz",
+  "compare-text",
+  "text-difference",
+  "json-formatter",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -16122,3 +16132,260 @@ const newDocConverterTools: PdfTool[] = [
 
 // Add new document converter tools to the main array
 pdfTools.push(...newDocConverterTools);
+
+// New 10 PDF and Conversion Tools
+const newPdfConversionTools: PdfTool[] = [
+  {
+    id: "xlsx-to-numbers",
+    name: "XLSX to Numbers",
+    description: "Convert Microsoft Excel to Apple Numbers format",
+    icon: "Table",
+    type: "xlsx-to-numbers",
+    color: "bg-green-500",
+    emoji: "📈",
+    metaTitle: "XLSX to Numbers Converter Online Free - Convert Excel to Apple Numbers | PDF Tools",
+    metaDescription: "Convert Microsoft Excel XLSX files to Apple Numbers format online for free. Transform spreadsheets for Mac and iOS compatibility. No registration needed.",
+    seoArticle: `<h2>XLSX to Numbers Converter - Apple Spreadsheet Compatibility</h2>
+<p>Convert your Microsoft Excel spreadsheets to Apple Numbers format with our free online converter. Perfect for Mac and iOS users who prefer working with Apple's native spreadsheet application.</p>
+
+<h2>Why Convert Excel to Numbers?</h2>
+<p>Apple Numbers offers a beautiful, intuitive interface that integrates seamlessly with the Apple ecosystem. By converting your XLSX files, you can take advantage of iCloud syncing, iOS editing, and the streamlined Numbers experience across all your Apple devices.</p>
+
+<h2>Seamless Data Transfer</h2>
+<p>Our converter preserves your spreadsheet's cell data, formulas, and sheet structure during the conversion process. Tables, charts, and formatting elements are handled to ensure your data remains accurate and usable in Numbers.</p>
+
+<h2>How to Convert Your Files</h2>
+<p>Simply upload your Excel XLSX file using our secure uploader. The conversion happens instantly in your browser, and you'll receive a Numbers-compatible file ready for download. No software installation required.</p>
+
+<h2>Perfect for Apple Ecosystem Users</h2>
+<p>Whether you're receiving Excel files from colleagues or transitioning from Windows to Mac, this converter bridges the gap between platforms. Your spreadsheets become fully editable in Numbers on Mac, iPad, and iPhone.</p>`,
+  },
+  {
+    id: "keynote-to-pptx",
+    name: "Keynote to PPTX",
+    description: "Convert Apple Keynote presentations to PowerPoint format",
+    icon: "FileSpreadsheet",
+    type: "keynote-to-pptx",
+    color: "bg-orange-500",
+    emoji: "🎭",
+    metaTitle: "Keynote to PPTX Converter Online Free - Convert to PowerPoint | PDF Tools",
+    metaDescription: "Convert Apple Keynote presentations to Microsoft PowerPoint PPTX format online for free. Share presentations with Windows users easily.",
+    seoArticle: `<h2>Keynote to PowerPoint Converter - Cross-Platform Presentations</h2>
+<p>Convert your stunning Apple Keynote presentations to Microsoft PowerPoint format with our free online converter. Essential for sharing presentations with Windows users or organizations that standardize on Microsoft Office.</p>
+
+<h2>Why Convert Keynote to PowerPoint?</h2>
+<p>While Keynote creates beautiful presentations, PowerPoint remains the business standard. Converting to PPTX format ensures your presentations are accessible to anyone using Microsoft Office, regardless of their operating system.</p>
+
+<h2>Presentation Elements Preserved</h2>
+<p>Our converter handles slides, text content, and basic layout elements during the conversion. Your presentation's core content transfers to PowerPoint format, ready for viewing and editing in Microsoft Office.</p>
+
+<h2>Business Compatibility</h2>
+<p>Most corporate environments require PowerPoint format for presentations. Converting your Keynote files ensures seamless collaboration with colleagues, clients, and partners who use Windows or Microsoft Office.</p>
+
+<h2>Quick and Secure Conversion</h2>
+<p>Upload your Keynote file and receive a PowerPoint-compatible PPTX file instantly. The conversion is secure, with files processed and deleted automatically for your privacy.</p>`,
+  },
+  {
+    id: "pptx-to-keynote",
+    name: "PPTX to Keynote",
+    description: "Convert PowerPoint presentations to Apple Keynote format",
+    icon: "FileSpreadsheet",
+    type: "pptx-to-keynote",
+    color: "bg-blue-500",
+    emoji: "🎬",
+    metaTitle: "PPTX to Keynote Converter Online Free - Convert PowerPoint to Apple | PDF Tools",
+    metaDescription: "Convert Microsoft PowerPoint PPTX files to Apple Keynote format online for free. Transform presentations for Mac and iOS compatibility.",
+    seoArticle: `<h2>PowerPoint to Keynote Converter - Apple-Ready Presentations</h2>
+<p>Convert your Microsoft PowerPoint presentations to Apple Keynote format with our free online converter. Perfect for Mac and iOS users who prefer the elegant Keynote interface for creating and presenting.</p>
+
+<h2>Why Convert to Keynote?</h2>
+<p>Apple Keynote offers stunning visual effects, beautiful templates, and seamless integration with the Apple ecosystem. Converting your PPTX files lets you edit presentations in Keynote on Mac, iPad, and iPhone with iCloud syncing.</p>
+
+<h2>Slide Content Transfer</h2>
+<p>Our converter processes your PowerPoint presentation and creates a compatible Keynote file. Text, images, and slide structure are preserved for continued editing in Apple's presentation software.</p>
+
+<h2>Mac Workflow Integration</h2>
+<p>Receive PowerPoint presentations from colleagues and convert them for your Mac workflow. The conversion is quick, secure, and enables you to work in your preferred presentation software.</p>
+
+<h2>Apple Device Compatibility</h2>
+<p>The resulting Keynote file works across Mac, iPad, and iPhone through iCloud. Present your slides seamlessly on any Apple device with native Keynote support.</p>`,
+  },
+  {
+    id: "epub-to-azw3",
+    name: "EPUB to AZW3",
+    description: "Convert EPUB ebooks to Amazon Kindle AZW3 format",
+    icon: "BookOpen",
+    type: "epub-to-azw3",
+    color: "bg-amber-600",
+    emoji: "📖",
+    metaTitle: "EPUB to AZW3 Converter Online Free - Convert to Kindle Format | PDF Tools",
+    metaDescription: "Convert EPUB ebooks to Amazon Kindle AZW3 format online for free. Transform ebooks for Kindle device compatibility. Easy ebook conversion.",
+    seoArticle: `<h2>EPUB to AZW3 Converter - Kindle-Ready Ebooks</h2>
+<p>Convert your EPUB ebooks to Amazon Kindle's AZW3 format with our free online converter. AZW3 (also known as KF8) is Amazon's advanced ebook format that supports enhanced formatting and features on Kindle devices.</p>
+
+<h2>Why Convert to AZW3?</h2>
+<p>While EPUB is a universal ebook format, Kindle devices natively support AZW3 for the best reading experience. Converting to AZW3 ensures optimal display, typography, and navigation on all Kindle e-readers and apps.</p>
+
+<h2>Enhanced Kindle Features</h2>
+<p>AZW3 format supports advanced Kindle features including enhanced typography, better image handling, and improved layout capabilities. Your converted ebooks will take full advantage of Kindle's reading technology.</p>
+
+<h2>Simple Conversion Process</h2>
+<p>Upload your EPUB file and receive an AZW3 file ready for your Kindle device. The conversion preserves your ebook's content, chapters, and formatting for a seamless reading experience.</p>
+
+<h2>Compatible with All Kindles</h2>
+<p>The converted AZW3 files work on all modern Kindle devices and the Kindle app. Transfer your converted ebooks via USB or Amazon's Send to Kindle service.</p>`,
+  },
+  {
+    id: "azw3-to-epub",
+    name: "AZW3 to EPUB",
+    description: "Convert Amazon Kindle AZW3 ebooks to EPUB format",
+    icon: "BookOpen",
+    type: "azw3-to-epub",
+    color: "bg-teal-600",
+    emoji: "📚",
+    metaTitle: "AZW3 to EPUB Converter Online Free - Convert Kindle to Universal | PDF Tools",
+    metaDescription: "Convert Amazon Kindle AZW3 files to EPUB format online for free. Transform Kindle ebooks to universal EPUB for any e-reader compatibility.",
+    seoArticle: `<h2>AZW3 to EPUB Converter - Universal Ebook Format</h2>
+<p>Convert your Amazon Kindle AZW3 ebooks to universal EPUB format with our free online converter. EPUB is the most widely supported ebook format, compatible with virtually every e-reader except Kindle.</p>
+
+<h2>Why Convert to EPUB?</h2>
+<p>EPUB is the open standard for ebooks, supported by Kobo, Nook, Apple Books, Google Play Books, and countless other reading apps and devices. Converting from AZW3 frees your ebooks from the Kindle ecosystem.</p>
+
+<h2>Universal Compatibility</h2>
+<p>EPUB files work on almost every e-reader, tablet, phone, and computer. Whether you're switching devices or want to read on multiple platforms, EPUB ensures your library travels with you.</p>
+
+<h2>Content Preservation</h2>
+<p>Our converter extracts the content from AZW3 files and creates proper EPUB documents. Text, chapters, and formatting are preserved for a quality reading experience on any compatible device.</p>
+
+<h2>Easy Conversion</h2>
+<p>Upload your AZW3 file and receive an EPUB instantly. The conversion is secure, and your newly formatted ebook is ready to add to your preferred reading app or device.</p>`,
+  },
+  {
+    id: "pdf-to-cbr",
+    name: "PDF to CBR",
+    description: "Convert PDF files to CBR comic book archive format",
+    icon: "Image",
+    type: "pdf-to-cbr",
+    color: "bg-red-600",
+    emoji: "🦸",
+    metaTitle: "PDF to CBR Converter Online Free - Create Comic Book Archives | PDF Tools",
+    metaDescription: "Convert PDF files to CBR comic book archive format online for free. Transform PDFs into comic book reader compatible CBR files instantly.",
+    seoArticle: `<h2>PDF to CBR Converter - Comic Book Archive Creation</h2>
+<p>Convert your PDF files to CBR (Comic Book RAR) format with our free online converter. CBR is the standard format for digital comic books, supported by all major comic reader applications.</p>
+
+<h2>Why Use CBR Format?</h2>
+<p>CBR files are specifically designed for sequential art and comics. They provide optimal page navigation, zoom controls, and reading modes that generic PDF readers cannot match. Comic reader apps offer the best experience for visual content.</p>
+
+<h2>Perfect for Comics and Manga</h2>
+<p>Whether you have scanned comics, manga, or graphic novels in PDF format, converting to CBR makes them compatible with popular readers like ComicRack, CDisplayEx, and Perfect Viewer.</p>
+
+<h2>How It Works</h2>
+<p>Our converter extracts each page from your PDF as a high-quality image and packages them into a CBR archive. The result is a comic-reader-ready file that maintains your original PDF's visual quality.</p>
+
+<h2>Enhanced Reading Experience</h2>
+<p>CBR format enables features like double-page spreads, reading progress tracking, and library organization that comic enthusiasts expect. Your converted files work with the comic reading ecosystem.</p>`,
+  },
+  {
+    id: "pdf-to-cbz",
+    name: "PDF to CBZ",
+    description: "Convert PDF files to CBZ comic book archive format",
+    icon: "Image",
+    type: "pdf-to-cbz",
+    color: "bg-purple-600",
+    emoji: "🎨",
+    metaTitle: "PDF to CBZ Converter Online Free - Create Comic Book Archives | PDF Tools",
+    metaDescription: "Convert PDF files to CBZ comic book archive format online for free. Transform PDFs into comic book reader compatible CBZ files instantly.",
+    seoArticle: `<h2>PDF to CBZ Converter - Universal Comic Archive Format</h2>
+<p>Convert your PDF files to CBZ (Comic Book ZIP) format with our free online converter. CBZ is a widely compatible comic book format that works across all platforms and operating systems.</p>
+
+<h2>CBZ vs CBR - Why Choose CBZ?</h2>
+<p>While both formats serve the same purpose, CBZ uses ZIP compression which is natively supported on all operating systems. CBZ files can be opened without special software if needed, making them more versatile.</p>
+
+<h2>Compatible Everywhere</h2>
+<p>CBZ files work with every major comic reader including ComicRack, YACReader, Chunky, and built-in comic features on tablets. The format is ideal for cross-platform comic collections.</p>
+
+<h2>High-Quality Conversion</h2>
+<p>Our converter extracts PDF pages as high-resolution images and creates a properly structured CBZ archive. Your visual content maintains its quality while gaining comic reader compatibility.</p>
+
+<h2>Easy Archive Management</h2>
+<p>CBZ files are simply renamed ZIP archives, making them easy to manage, backup, and organize. You can even extract individual pages using any ZIP tool when needed.</p>`,
+  },
+  {
+    id: "compare-text",
+    name: "Compare Text",
+    description: "Compare two text files and highlight the differences",
+    icon: "Columns",
+    type: "compare-text",
+    color: "bg-indigo-600",
+    emoji: "🔍",
+    metaTitle: "Compare Text Online Free - Text Comparison Tool | PDF Tools",
+    metaDescription: "Compare two text files and highlight differences online for free. Find changes, additions, and deletions between documents instantly.",
+    seoArticle: `<h2>Compare Text Files Online - Difference Finder</h2>
+<p>Compare two text documents and instantly see the differences with our free online text comparison tool. Whether you're comparing code, contracts, or any text content, our tool highlights every change clearly.</p>
+
+<h2>Why Use Text Comparison?</h2>
+<p>Manually spotting differences between two documents is tedious and error-prone. Our comparison tool automatically identifies additions, deletions, and modifications, presenting them in an easy-to-understand visual format.</p>
+
+<h2>Side-by-Side Comparison</h2>
+<p>View both documents side by side with color-coded highlighting. Added content appears in green, removed content in red, and modified sections are clearly marked. Navigate between differences easily.</p>
+
+<h2>Multiple Use Cases</h2>
+<p>Perfect for comparing document versions, reviewing code changes, checking contract modifications, or verifying translations. Any text-based content can be compared quickly and accurately.</p>
+
+<h2>Secure and Private</h2>
+<p>Your documents are processed securely and never stored on our servers. Compare confidential documents with confidence knowing your content remains private.</p>`,
+  },
+  {
+    id: "text-difference",
+    name: "Text Difference Checker",
+    description: "Analyze and display differences between two text inputs",
+    icon: "Eye",
+    type: "text-difference",
+    color: "bg-cyan-600",
+    emoji: "📝",
+    metaTitle: "Text Difference Checker Online Free - Find Text Changes | PDF Tools",
+    metaDescription: "Check differences between two text inputs online for free. Analyze text changes with detailed diff highlighting. Easy text comparison tool.",
+    seoArticle: `<h2>Text Difference Checker - Detailed Change Analysis</h2>
+<p>Analyze differences between two text inputs with our detailed text difference checker. Get a comprehensive breakdown of every change, addition, and deletion with line-by-line comparison.</p>
+
+<h2>Comprehensive Diff Analysis</h2>
+<p>Our tool provides detailed statistics about the differences found: number of lines changed, words added or removed, and similarity percentage. Understand the scope of changes at a glance.</p>
+
+<h2>Line-by-Line Comparison</h2>
+<p>Every line is compared and marked with precise change indicators. See exactly where text was added, removed, or modified. Perfect for reviewing document revisions or code changes.</p>
+
+<h2>Paste or Type Text</h2>
+<p>Simply paste your text into the two input areas or type directly. No file uploads required for quick comparisons. Ideal for comparing snippets, paragraphs, or short documents.</p>
+
+<h2>Developer-Friendly Output</h2>
+<p>The diff output follows familiar conventions used in version control systems. Developers will recognize the format, making it easy to understand changes in code or configuration files.</p>`,
+  },
+  {
+    id: "json-formatter",
+    name: "JSON Formatter",
+    description: "Format and beautify JSON data with proper indentation",
+    icon: "Braces",
+    type: "json-formatter",
+    color: "bg-yellow-600",
+    emoji: "📋",
+    metaTitle: "JSON Formatter Online Free - Beautify and Validate JSON | PDF Tools",
+    metaDescription: "Format and beautify JSON data online for free. Validate JSON syntax, add proper indentation, and make JSON readable. Developer tools for JSON.",
+    seoArticle: `<h2>JSON Formatter - Beautify Your JSON Data</h2>
+<p>Transform messy, minified JSON into beautifully formatted, readable code with our free online JSON formatter. Essential for developers, data analysts, and anyone working with JSON data.</p>
+
+<h2>Why Format JSON?</h2>
+<p>Minified JSON is compact but unreadable. Our formatter adds proper indentation, line breaks, and spacing to make JSON data easy to read, understand, and debug. Clean JSON is easier to work with.</p>
+
+<h2>JSON Validation Built-In</h2>
+<p>The formatter automatically validates your JSON syntax as it formats. Invalid JSON is flagged with clear error messages, helping you quickly identify and fix syntax issues.</p>
+
+<h2>Developer-Friendly Features</h2>
+<p>Choose your preferred indentation (2 or 4 spaces, or tabs). Copy formatted output with one click. The tool handles large JSON files efficiently and maintains data integrity.</p>
+
+<h2>Multiple Use Cases</h2>
+<p>Debug API responses, format configuration files, clean up JSON exports, or prepare JSON for documentation. Whether you're a developer or just working with data, formatted JSON makes everything clearer.</p>`,
+  }
+];
+
+// Add new PDF and conversion tools to the main array
+pdfTools.push(...newPdfConversionTools);

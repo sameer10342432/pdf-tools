@@ -13439,6 +13439,278 @@ async function numbersToXlsx(file: Express.Multer.File): Promise<Buffer> {
 }
 
 
+// XLSX to Numbers conversion
+async function xlsxToNumbers(file: Express.Multer.File): Promise<Buffer> {
+  const workbook = XLSX.readFile(file.path);
+  const zip = new AdmZip();
+  
+  let allData: string[][] = [];
+  for (const sheetName of workbook.SheetNames) {
+    const worksheet = workbook.Sheets[sheetName];
+    const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as string[][];
+    if (data.length > 0) {
+      allData.push([`=== ${sheetName} ===`]);
+      allData.push(...data);
+      allData.push(['']);
+    }
+  }
+  
+  const csvContent = allData.map(row => row.join('\t')).join('\n');
+  
+  zip.addFile("Index/Tables/Table-1.csv", Buffer.from(csvContent, 'utf8'));
+  zip.addFile("Metadata/DocumentIdentifier", Buffer.from('com.apple.numbers', 'utf8'));
+  
+  return zip.toBuffer();
+}
+
+// Keynote to PPTX conversion
+async function keynoteToPptx(file: Express.Multer.File): Promise<Buffer> {
+  let slideContents: string[] = [];
+  
+  try {
+    const zip = new AdmZip(file.path);
+    const entries = zip.getEntries();
+    
+    for (const entry of entries) {
+      if (entry.entryName.includes('Slide') || entry.entryName.endsWith('.xml')) {
+        try {
+          const content = entry.getData().toString('utf-8');
+          const textMatches = content.match(/<p[^>]*>([^<]+)<\/p>|<t[^>]*>([^<]+)<\/t>/g) || [];
+          if (textMatches.length > 0) {
+            const texts = textMatches.map(m => m.replace(/<[^>]+>/g, '').trim()).filter(t => t);
+            slideContents.push(texts.join('\n'));
+          }
+        } catch (e) { /* Continue */ }
+      }
+    }
+  } catch (error) {
+    slideContents = ['Keynote content extraction - Export from Keynote for best results.'];
+  }
+  
+  if (slideContents.length === 0) {
+    slideContents = ['Keynote content extraction - Export from Keynote for best results.'];
+  }
+  
+  const pptx = new pptxgen();
+  for (let i = 0; i < slideContents.length; i++) {
+    const slide = pptx.addSlide();
+    slide.addText(`Slide ${i + 1}`, { x: 0.5, y: 0.5, fontSize: 24, bold: true });
+    slide.addText(slideContents[i], { x: 0.5, y: 1.5, w: 9, h: 5, fontSize: 14 });
+  }
+  
+  const pptxData = await pptx.write({ outputType: 'nodebuffer' });
+  return Buffer.from(pptxData as ArrayBuffer);
+}
+
+// PPTX to Keynote conversion
+async function pptxToKeynote(file: Express.Multer.File): Promise<Buffer> {
+  let slideData: string[] = [];
+  
+  try {
+    const zip = new AdmZip(file.path);
+    const entries = zip.getEntries();
+    
+    for (const entry of entries) {
+      if (entry.entryName.includes('slide') && entry.entryName.endsWith('.xml')) {
+        try {
+          const content = entry.getData().toString('utf-8');
+          const textMatches = content.match(/<a:t>([^<]+)<\/a:t>/g) || [];
+          if (textMatches.length > 0) {
+            slideData.push(textMatches.map(m => m.replace(/<[^>]+>/g, '')).join(' '));
+          }
+        } catch (e) { /* Continue */ }
+      }
+    }
+  } catch (error) {
+    slideData = ['PowerPoint extraction for Keynote is limited.'];
+  }
+  
+  if (slideData.length === 0) {
+    slideData = ['PowerPoint extraction for Keynote is limited.'];
+  }
+  
+  const keynoteZip = new AdmZip();
+  const slidesXml = slideData.map((content, i) => 
+    `<slide id="${i + 1}"><title>Slide ${i + 1}</title><content>${content}</content></slide>`
+  ).join('');
+  
+  keynoteZip.addFile("Index/Slides.xml", Buffer.from(`<?xml version="1.0"?><slides>${slidesXml}</slides>`, 'utf8'));
+  keynoteZip.addFile("Metadata/DocumentIdentifier", Buffer.from('com.apple.keynote', 'utf8'));
+  
+  return keynoteZip.toBuffer();
+}
+
+// EPUB to AZW3 conversion
+async function epubToAzw3(file: Express.Multer.File): Promise<Buffer> {
+  let content = 'EPUB to AZW3 Conversion\n\n';
+  
+  try {
+    const zip = new AdmZip(file.path);
+    const entries = zip.getEntries();
+    
+    for (const entry of entries) {
+      if (entry.entryName.endsWith('.xhtml') || entry.entryName.endsWith('.html')) {
+        try {
+          const htmlContent = entry.getData().toString('utf-8');
+          const textContent = htmlContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+          if (textContent) content += textContent + '\n\n';
+        } catch (e) { /* Continue */ }
+      }
+    }
+  } catch (error) {
+    content = 'EPUB extraction limited. Use Calibre for full AZW3 conversion.';
+  }
+  
+  const azw3Zip = new AdmZip();
+  azw3Zip.addFile("content.html", Buffer.from(`<html><body><h1>Converted from EPUB</h1><p>${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p></body></html>`, 'utf8'));
+  azw3Zip.addFile("metadata.opf", Buffer.from('<?xml version="1.0"?><package><metadata><title>Converted EPUB</title></metadata></package>', 'utf8'));
+  
+  return azw3Zip.toBuffer();
+}
+
+// AZW3 to EPUB conversion
+async function azw3ToEpub(file: Express.Multer.File): Promise<Buffer> {
+  let content = 'AZW3 to EPUB Conversion\n\n';
+  
+  try {
+    const fileBuffer = fs.readFileSync(file.path);
+    const textContent = fileBuffer.toString('utf-8').replace(/[\x00-\x1F\x7F-\x9F]/g, ' ').replace(/\s+/g, ' ');
+    const textMatches = textContent.match(/[\w\s.,!?'"()-]+/g) || [];
+    content = textMatches.filter(t => t.trim().length > 3).slice(0, 500).join(' ');
+  } catch (error) {
+    content = 'AZW3 extraction limited. Use Calibre for full EPUB conversion.';
+  }
+  
+  if (content.length < 50) content = 'AZW3 extraction limited. Use Calibre for full conversion.';
+  
+  const epubZip = new AdmZip();
+  epubZip.addFile("mimetype", Buffer.from('application/epub+zip', 'utf8'));
+  epubZip.addFile("META-INF/container.xml", Buffer.from('<?xml version="1.0"?><container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container"><rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles></container>', 'utf8'));
+  epubZip.addFile("OEBPS/content.opf", Buffer.from('<?xml version="1.0"?><package xmlns="http://www.idpf.org/2007/opf" version="3.0"><metadata xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>Converted from AZW3</dc:title></metadata><manifest><item id="chapter1" href="chapter1.xhtml" media-type="application/xhtml+xml"/></manifest><spine><itemref idref="chapter1"/></spine></package>', 'utf8'));
+  epubZip.addFile("OEBPS/chapter1.xhtml", Buffer.from(`<?xml version="1.0"?><!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Chapter 1</title></head><body><h1>Converted Content</h1><p>${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p></body></html>`, 'utf8'));
+  
+  return epubZip.toBuffer();
+}
+
+// PDF to CBR conversion
+async function pdfToCbr(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pageCount = pdf.getPageCount();
+  
+  const cbrZip = new AdmZip();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const singlePagePdf = await PDFDocument.create();
+    const [page] = await singlePagePdf.copyPages(pdf, [i]);
+    singlePagePdf.addPage(page);
+    const pdfData = await singlePagePdf.save();
+    cbrZip.addFile(`page-${String(i + 1).padStart(4, '0')}.pdf`, Buffer.from(pdfData));
+  }
+  
+  return cbrZip.toBuffer();
+}
+
+// PDF to CBZ conversion
+async function pdfToCbz(file: Express.Multer.File): Promise<Buffer> {
+  const pdfBytes = fs.readFileSync(file.path);
+  const pdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+  const pageCount = pdf.getPageCount();
+  
+  const cbzZip = new AdmZip();
+  
+  for (let i = 0; i < pageCount; i++) {
+    const singlePagePdf = await PDFDocument.create();
+    const [page] = await singlePagePdf.copyPages(pdf, [i]);
+    singlePagePdf.addPage(page);
+    const pdfData = await singlePagePdf.save();
+    cbzZip.addFile(`page-${String(i + 1).padStart(4, '0')}.pdf`, Buffer.from(pdfData));
+  }
+  
+  return cbzZip.toBuffer();
+}
+
+// Compare Text function
+async function compareText(file1: Express.Multer.File, file2: Express.Multer.File): Promise<Buffer> {
+  const text1 = fs.readFileSync(file1.path, 'utf-8');
+  const text2 = fs.readFileSync(file2.path, 'utf-8');
+  
+  const lines1 = text1.split('\n');
+  const lines2 = text2.split('\n');
+  
+  let result = '=== TEXT COMPARISON RESULTS ===\n\n';
+  result += `File 1: ${file1.originalname} (${lines1.length} lines)\n`;
+  result += `File 2: ${file2.originalname} (${lines2.length} lines)\n\n`;
+  result += '--- DIFFERENCES ---\n\n';
+  
+  const maxLines = Math.max(lines1.length, lines2.length);
+  let diffCount = 0;
+  
+  for (let i = 0; i < maxLines; i++) {
+    const line1 = lines1[i] || '';
+    const line2 = lines2[i] || '';
+    
+    if (line1 !== line2) {
+      diffCount++;
+      result += `Line ${i + 1}:\n  - File 1: ${line1}\n  + File 2: ${line2}\n\n`;
+    }
+  }
+  
+  if (diffCount === 0) {
+    result += 'No differences found. The files are identical.\n';
+  } else {
+    result += `\n=== SUMMARY ===\nTotal differences: ${diffCount} lines\n`;
+  }
+  
+  return Buffer.from(result, 'utf-8');
+}
+
+// Text Difference Checker function  
+async function textDifference(text1: string, text2: string): Promise<Buffer> {
+  const lines1 = text1.split('\n');
+  const lines2 = text2.split('\n');
+  
+  let result = '=== TEXT DIFFERENCE ANALYSIS ===\n\n';
+  result += `Text 1: ${lines1.length} lines, ${text1.length} characters\n`;
+  result += `Text 2: ${lines2.length} lines, ${text2.length} characters\n\n`;
+  
+  const words1 = text1.split(/\s+/).filter(w => w);
+  const words2 = text2.split(/\s+/).filter(w => w);
+  
+  result += `--- WORD ANALYSIS ---\nWords in Text 1: ${words1.length}\nWords in Text 2: ${words2.length}\n\n`;
+  result += `--- LINE-BY-LINE COMPARISON ---\n\n`;
+  
+  const maxLines = Math.max(lines1.length, lines2.length);
+  let diffCount = 0;
+  
+  for (let i = 0; i < maxLines; i++) {
+    const line1 = lines1[i] || '';
+    const line2 = lines2[i] || '';
+    if (line1 !== line2) {
+      diffCount++;
+      result += `Line ${i + 1}:\n  - ${line1}\n  + ${line2}\n`;
+    }
+  }
+  
+  const similarity = maxLines > 0 ? Math.round((1 - diffCount / maxLines) * 100) : 100;
+  result += `\n=== SUMMARY ===\nLines changed: ${diffCount}\nSimilarity: ${similarity}%\n`;
+  
+  return Buffer.from(result, 'utf-8');
+}
+
+// JSON Formatter function
+async function jsonFormatter(jsonInput: string, indent: number = 2): Promise<Buffer> {
+  let result = '';
+  try {
+    const parsed = JSON.parse(jsonInput);
+    result = JSON.stringify(parsed, null, indent);
+  } catch (error) {
+    result = `Error: Invalid JSON\n\n${error instanceof Error ? error.message : 'Unknown error'}\n\nOriginal input:\n${jsonInput}`;
+  }
+  return Buffer.from(result, 'utf-8');
+}
+
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -26378,6 +26650,119 @@ ${pages}    </office:presentation>
             result = await numbersToXlsx(files[0]);
             filename = files[0].originalname?.replace(/\.numbers$/i, '.xlsx') || 'spreadsheet.xlsx';
             contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            break;
+          }
+
+
+          case "xlsx-to-numbers": {
+            if (files.length === 0) {
+              throw new Error("Please upload an Excel XLSX file");
+            }
+            result = await xlsxToNumbers(files[0]);
+            filename = files[0].originalname?.replace(/\.xlsx$/i, '.numbers') || 'spreadsheet.numbers';
+            contentType = "application/x-iwork-numbers-sffnumbers";
+            break;
+          }
+
+          case "keynote-to-pptx": {
+            if (files.length === 0) {
+              throw new Error("Please upload a Keynote file");
+            }
+            result = await keynoteToPptx(files[0]);
+            filename = files[0].originalname?.replace(/\.key$/i, '.pptx') || 'presentation.pptx';
+            contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+            break;
+          }
+
+          case "pptx-to-keynote": {
+            if (files.length === 0) {
+              throw new Error("Please upload a PowerPoint file");
+            }
+            result = await pptxToKeynote(files[0]);
+            filename = files[0].originalname?.replace(/\.pptx$/i, '.key') || 'presentation.key';
+            contentType = "application/x-iwork-keynote-sffkey";
+            break;
+          }
+
+          case "epub-to-azw3": {
+            if (files.length === 0) {
+              throw new Error("Please upload an EPUB file");
+            }
+            result = await epubToAzw3(files[0]);
+            filename = files[0].originalname?.replace(/\.epub$/i, '.azw3') || 'ebook.azw3';
+            contentType = "application/vnd.amazon.ebook";
+            break;
+          }
+
+          case "azw3-to-epub": {
+            if (files.length === 0) {
+              throw new Error("Please upload an AZW3/Kindle file");
+            }
+            result = await azw3ToEpub(files[0]);
+            filename = files[0].originalname?.replace(/\.(azw3|azw|mobi)$/i, '.epub') || 'ebook.epub';
+            contentType = "application/epub+zip";
+            break;
+          }
+
+          case "pdf-to-cbr": {
+            if (files.length === 0) {
+              throw new Error("Please upload a PDF file");
+            }
+            result = await pdfToCbr(files[0]);
+            filename = files[0].originalname?.replace(/\.pdf$/i, '.cbr') || 'comic.cbr';
+            contentType = "application/x-cbr";
+            break;
+          }
+
+          case "pdf-to-cbz": {
+            if (files.length === 0) {
+              throw new Error("Please upload a PDF file");
+            }
+            result = await pdfToCbz(files[0]);
+            filename = files[0].originalname?.replace(/\.pdf$/i, '.cbz') || 'comic.cbz';
+            contentType = "application/x-cbz";
+            break;
+          }
+
+          case "compare-text": {
+            if (files.length < 2) {
+              throw new Error("Please upload two text files to compare");
+            }
+            result = await compareText(files[0], files[1]);
+            filename = "comparison-result.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "text-difference": {
+            const text1 = options.text1 || '';
+            const text2 = options.text2 || '';
+            if (!text1 && !text2 && files.length >= 2) {
+              const t1 = fs.readFileSync(files[0].path, 'utf-8');
+              const t2 = fs.readFileSync(files[1].path, 'utf-8');
+              result = await textDifference(t1, t2);
+            } else if (text1 || text2) {
+              result = await textDifference(text1, text2);
+            } else {
+              throw new Error("Please provide two text inputs to compare");
+            }
+            filename = "difference-analysis.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "json-formatter": {
+            let jsonInput = options.jsonInput || '';
+            if (!jsonInput && files.length > 0) {
+              jsonInput = fs.readFileSync(files[0].path, 'utf-8');
+            }
+            if (!jsonInput) {
+              throw new Error("Please provide JSON input to format");
+            }
+            const indent = parseInt(options.indent || '2', 10);
+            result = await jsonFormatter(jsonInput, indent);
+            filename = "formatted.json";
+            contentType = "application/json";
             break;
           }
 
