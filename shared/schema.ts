@@ -576,6 +576,16 @@ export const pdfToolTypes = [
   "compare-text",
   "text-difference",
   "json-formatter",
+  "json-validator",
+  "json-minifier",
+  "json-beautifier",
+  "xml-formatter",
+  "xml-validator",
+  "html-minifier",
+  "html-beautifier",
+  "css-minifier",
+  "css-beautifier",
+  "js-minifier",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -16389,3 +16399,260 @@ const newPdfConversionTools: PdfTool[] = [
 
 // Add new PDF and conversion tools to the main array
 pdfTools.push(...newPdfConversionTools);
+
+
+// Code Formatting and Validation Tools
+const codeFormattingTools: PdfTool[] = [
+  {
+    id: "json-validator",
+    name: "JSON Validator",
+    description: "Validate JSON syntax and structure with detailed error reporting",
+    icon: "CheckCircle",
+    type: "json-validator",
+    color: "bg-green-600",
+    emoji: "✓",
+    metaTitle: "JSON Validator Online Free - Validate JSON Syntax | PDF Tools",
+    metaDescription: "Validate JSON syntax online for free. Check JSON structure, find errors with line numbers, and ensure valid JSON data. Professional JSON validation tool.",
+    seoArticle: `<h2>JSON Validator - Professional JSON Syntax Checking</h2>
+<p>Validate your JSON data instantly with our free online JSON validator. Get detailed error messages with line numbers to quickly identify and fix syntax issues in your JSON files.</p>
+
+<h2>Why Validate JSON?</h2>
+<p>Invalid JSON can break applications, APIs, and data pipelines. Our validator catches common mistakes like missing commas, unquoted keys, trailing commas, and mismatched brackets before they cause problems in production.</p>
+
+<h2>Detailed Error Reporting</h2>
+<p>When errors are found, our validator provides precise error locations with line and column numbers. Understand exactly what's wrong and where, making debugging fast and efficient.</p>
+
+<h2>RFC 8259 Compliant</h2>
+<p>Our validator follows the official JSON specification (RFC 8259). Validate against the same standard that browsers, servers, and programming languages use to parse JSON data.</p>
+
+<h2>Validate Any Size JSON</h2>
+<p>From small configuration snippets to large API responses, our validator handles JSON of any size efficiently. Process complex nested structures and arrays with ease.</p>`,
+  },
+  {
+    id: "json-minifier",
+    name: "JSON Minifier",
+    description: "Minify JSON by removing whitespace and reducing file size",
+    icon: "Minimize2",
+    type: "json-minifier",
+    color: "bg-blue-600",
+    emoji: "📦",
+    metaTitle: "JSON Minifier Online Free - Compress JSON Data | PDF Tools",
+    metaDescription: "Minify JSON data online for free. Remove whitespace, compress JSON files, and reduce file size for faster loading. Professional JSON compression tool.",
+    seoArticle: `<h2>JSON Minifier - Compress Your JSON Data</h2>
+<p>Reduce JSON file size by removing unnecessary whitespace with our free online JSON minifier. Smaller JSON files mean faster network transfers and improved application performance.</p>
+
+<h2>Why Minify JSON?</h2>
+<p>Formatted JSON is great for reading but wastes bandwidth. Minification removes spaces, tabs, and newlines while preserving data integrity. Perfect for production APIs and configuration files.</p>
+
+<h2>Significant Size Reduction</h2>
+<p>Depending on your JSON structure, minification typically reduces file size by 20-40%. For frequently accessed API endpoints, this translates to meaningful bandwidth savings.</p>
+
+<h2>Preserves Data Integrity</h2>
+<p>Our minifier removes only whitespace outside of string values. Your data remains exactly the same - just more compact. JSON parsers will process the minified output identically.</p>
+
+<h2>Instant Processing</h2>
+<p>Paste your JSON and get minified output instantly. No file uploads or waiting required. Process large JSON files quickly and efficiently in your browser.</p>`,
+  },
+  {
+    id: "json-beautifier",
+    name: "JSON Beautifier",
+    description: "Beautify and format JSON with proper indentation and structure",
+    icon: "Sparkles",
+    type: "json-beautifier",
+    color: "bg-purple-600",
+    emoji: "✨",
+    metaTitle: "JSON Beautifier Online Free - Pretty Print JSON | PDF Tools",
+    metaDescription: "Beautify and format JSON online for free. Add proper indentation, pretty print JSON data, and make JSON readable. Professional JSON formatting tool.",
+    seoArticle: `<h2>JSON Beautifier - Pretty Print Your JSON</h2>
+<p>Transform compressed or messy JSON into beautifully formatted, readable code with our free online JSON beautifier. Perfect for debugging, documentation, and code review.</p>
+
+<h2>Readable JSON Format</h2>
+<p>Our beautifier adds proper indentation, line breaks, and spacing to make complex JSON structures easy to navigate. See nested objects and arrays at a glance with consistent formatting.</p>
+
+<h2>Customizable Indentation</h2>
+<p>Choose between 2-space, 4-space, or tab indentation to match your project's coding style. Consistent formatting makes JSON easier to read and compare across files.</p>
+
+<h2>Syntax Highlighting Ready</h2>
+<p>Beautified JSON works perfectly with syntax highlighting in editors and documentation. The formatted output is optimized for display in code editors and web pages.</p>
+
+<h2>Debug APIs Faster</h2>
+<p>When debugging API responses, beautified JSON lets you quickly understand data structures and find the values you need. No more squinting at compressed data.</p>`,
+  },
+  {
+    id: "xml-formatter",
+    name: "XML Formatter",
+    description: "Format and beautify XML with proper indentation and structure",
+    icon: "Code",
+    type: "xml-formatter",
+    color: "bg-orange-600",
+    emoji: "📄",
+    metaTitle: "XML Formatter Online Free - Beautify XML Documents | PDF Tools",
+    metaDescription: "Format and beautify XML online for free. Add proper indentation, organize XML structure, and make XML readable. Professional XML formatting tool.",
+    seoArticle: `<h2>XML Formatter - Professional XML Beautification</h2>
+<p>Format messy XML documents into clean, readable code with our free online XML formatter. Essential for developers, data analysts, and anyone working with XML data.</p>
+
+<h2>Proper XML Indentation</h2>
+<p>Our formatter adds consistent indentation to nested elements, making the document hierarchy clear. Attributes are properly spaced and child elements are visually grouped.</p>
+
+<h2>Preserves XML Structure</h2>
+<p>While adding formatting, we preserve all XML content including CDATA sections, comments, processing instructions, and namespaces. Your XML remains semantically identical.</p>
+
+<h2>Handle Complex Documents</h2>
+<p>From simple configuration files to complex SOAP envelopes, our formatter handles XML of any complexity. Deep nesting and multiple namespaces are formatted cleanly.</p>
+
+<h2>Debugging Made Easy</h2>
+<p>Formatted XML is essential for debugging web services, analyzing data feeds, and reviewing configuration files. See the structure at a glance and find elements quickly.</p>`,
+  },
+  {
+    id: "xml-validator",
+    name: "XML Validator",
+    description: "Validate XML syntax and check for well-formedness",
+    icon: "FileCheck",
+    type: "xml-validator",
+    color: "bg-teal-600",
+    emoji: "✔",
+    metaTitle: "XML Validator Online Free - Check XML Syntax | PDF Tools",
+    metaDescription: "Validate XML syntax online for free. Check well-formedness, find errors with line numbers, and ensure valid XML. Professional XML validation tool.",
+    seoArticle: `<h2>XML Validator - Check XML Well-Formedness</h2>
+<p>Validate your XML documents for syntax errors with our free online XML validator. Get detailed error messages with line numbers to quickly fix issues in your XML files.</p>
+
+<h2>Well-Formedness Checking</h2>
+<p>Our validator ensures your XML follows all well-formedness rules: properly nested elements, matching tags, valid characters, and correct attribute syntax. Catch errors before they cause problems.</p>
+
+<h2>Detailed Error Messages</h2>
+<p>When validation fails, you get precise error locations with line and column numbers. Understand exactly what's wrong - missing closing tags, invalid characters, or malformed attributes.</p>
+
+<h2>Namespace Aware</h2>
+<p>Our validator correctly handles XML namespaces, including default namespaces and namespace prefixes. Complex enterprise XML with multiple namespaces validates correctly.</p>
+
+<h2>Process Any XML Document</h2>
+<p>From small configuration files to large data exports, our validator handles XML documents of any size. Processing happens efficiently in your browser.</p>`,
+  },
+  {
+    id: "html-minifier",
+    name: "HTML Minifier",
+    description: "Minify HTML by removing whitespace and optimizing code",
+    icon: "FileCode",
+    type: "html-minifier",
+    color: "bg-red-600",
+    emoji: "🗜",
+    metaTitle: "HTML Minifier Online Free - Compress HTML Code | PDF Tools",
+    metaDescription: "Minify HTML code online for free. Remove whitespace, compress HTML files, and optimize for faster loading. Professional HTML compression tool.",
+    seoArticle: `<h2>HTML Minifier - Compress Your HTML Code</h2>
+<p>Reduce HTML file size by removing unnecessary whitespace and optimizing code with our free online HTML minifier. Smaller HTML files mean faster page loads and better performance.</p>
+
+<h2>Comprehensive Minification</h2>
+<p>Our minifier removes whitespace between tags, collapses multiple spaces, removes HTML comments, and optimizes attribute quotes. Every byte counts for web performance.</p>
+
+<h2>Safe Optimization</h2>
+<p>We preserve whitespace in pre, code, and textarea elements where it matters. Script and style content is handled carefully to prevent breaking your page functionality.</p>
+
+<h2>Improved Page Speed</h2>
+<p>Minified HTML reduces bandwidth usage and speeds up initial page rendering. Combined with CSS and JavaScript minification, you will see measurable performance improvements.</p>
+
+<h2>Production Ready</h2>
+<p>Use minified HTML directly in production. The output is optimized for deployment while maintaining full functionality. Perfect for build pipelines and deployment automation.</p>`,
+  },
+  {
+    id: "html-beautifier",
+    name: "HTML Beautifier",
+    description: "Beautify and format HTML with proper indentation",
+    icon: "FileType",
+    type: "html-beautifier",
+    color: "bg-pink-600",
+    emoji: "💅",
+    metaTitle: "HTML Beautifier Online Free - Format HTML Code | PDF Tools",
+    metaDescription: "Beautify and format HTML code online for free. Add proper indentation, organize HTML structure, and make code readable. Professional HTML formatting tool.",
+    seoArticle: `<h2>HTML Beautifier - Format Your HTML Code</h2>
+<p>Transform messy HTML into beautifully formatted, readable code with our free online HTML beautifier. Essential for developers, designers, and anyone working with web pages.</p>
+
+<h2>Proper Indentation</h2>
+<p>Our beautifier adds consistent indentation to nested elements, making the document structure clear. See the DOM hierarchy at a glance with properly formatted code.</p>
+
+<h2>Handles Complex HTML</h2>
+<p>From simple pages to complex web applications, our beautifier formats HTML of any complexity. Inline styles, embedded scripts, and nested components are all formatted correctly.</p>
+
+<h2>Preserve Important Whitespace</h2>
+<p>Whitespace in pre, code, and textarea elements is preserved exactly. Your code examples and form defaults remain intact while surrounding markup gets beautified.</p>
+
+<h2>Better Code Review</h2>
+<p>Formatted HTML is essential for code review, debugging, and learning. See the structure clearly, spot issues quickly, and understand how pages are constructed.</p>`,
+  },
+  {
+    id: "css-minifier",
+    name: "CSS Minifier",
+    description: "Minify CSS by removing whitespace and optimizing selectors",
+    icon: "Paintbrush",
+    type: "css-minifier",
+    color: "bg-cyan-600",
+    emoji: "🎨",
+    metaTitle: "CSS Minifier Online Free - Compress CSS Stylesheets | PDF Tools",
+    metaDescription: "Minify CSS stylesheets online for free. Remove whitespace, compress CSS files, and optimize for faster loading. Professional CSS compression tool.",
+    seoArticle: `<h2>CSS Minifier - Compress Your Stylesheets</h2>
+<p>Reduce CSS file size by removing unnecessary characters with our free online CSS minifier. Smaller stylesheets mean faster page loads and improved web performance.</p>
+
+<h2>Comprehensive Minification</h2>
+<p>Our minifier removes whitespace, comments, and redundant semicolons. It also shortens color codes where possible and optimizes CSS values for maximum compression.</p>
+
+<h2>Significant File Size Reduction</h2>
+<p>CSS minification typically reduces file size by 20-50% depending on the original formatting. For large stylesheets, this translates to meaningful bandwidth savings.</p>
+
+<h2>Preserves Functionality</h2>
+<p>The minified CSS produces identical styling to the original. All selectors, properties, and values remain intact - just without unnecessary formatting characters.</p>
+
+<h2>Production Deployment Ready</h2>
+<p>Minified CSS is ready for production use. Deploy directly or include in your build pipeline. Combine with HTML and JavaScript minification for optimal page performance.</p>`,
+  },
+  {
+    id: "css-beautifier",
+    name: "CSS Beautifier",
+    description: "Beautify and format CSS with proper indentation",
+    icon: "Palette",
+    type: "css-beautifier",
+    color: "bg-violet-600",
+    emoji: "🖌",
+    metaTitle: "CSS Beautifier Online Free - Format CSS Stylesheets | PDF Tools",
+    metaDescription: "Beautify and format CSS code online for free. Add proper indentation, organize CSS rules, and make stylesheets readable. Professional CSS formatting tool.",
+    seoArticle: `<h2>CSS Beautifier - Format Your Stylesheets</h2>
+<p>Transform minified or messy CSS into beautifully formatted, readable code with our free online CSS beautifier. Essential for debugging, learning, and code maintenance.</p>
+
+<h2>Organized Rule Structure</h2>
+<p>Our beautifier formats each CSS rule with proper indentation and spacing. Properties are organized on separate lines, making it easy to scan and modify styles.</p>
+
+<h2>Handles All CSS Features</h2>
+<p>From simple selectors to complex media queries, animations, and CSS Grid properties, our beautifier formats all modern CSS correctly. Nested at-rules are properly indented.</p>
+
+<h2>Customizable Format</h2>
+<p>Choose your preferred indentation style - 2 spaces, 4 spaces, or tabs. Match your project coding standards with consistent formatting across all stylesheets.</p>
+
+<h2>Debug CSS Issues</h2>
+<p>Formatted CSS is essential for debugging styling issues. See the cascade clearly, understand specificity, and find the styles affecting your elements quickly.</p>`,
+  },
+  {
+    id: "js-minifier",
+    name: "JavaScript Minifier",
+    description: "Minify JavaScript by removing whitespace and shortening code",
+    icon: "Terminal",
+    type: "js-minifier",
+    color: "bg-yellow-500",
+    emoji: "⚡",
+    metaTitle: "JavaScript Minifier Online Free - Compress JS Code | PDF Tools",
+    metaDescription: "Minify JavaScript code online for free. Remove whitespace, compress JS files, and optimize for faster loading. Professional JavaScript compression tool.",
+    seoArticle: `<h2>JavaScript Minifier - Compress Your JS Code</h2>
+<p>Reduce JavaScript file size by removing unnecessary characters with our free online JS minifier. Smaller scripts mean faster page loads and improved web application performance.</p>
+
+<h2>Comprehensive Minification</h2>
+<p>Our minifier removes whitespace, comments, and line breaks. It also shortens variable names in safe contexts and optimizes code structure for maximum compression.</p>
+
+<h2>Significant Size Reduction</h2>
+<p>JavaScript minification typically reduces file size by 30-60% depending on the original code style. For script-heavy applications, this creates substantial bandwidth savings.</p>
+
+<h2>Safe Code Optimization</h2>
+<p>The minifier preserves all functionality while reducing size. Your code runs exactly the same way - just more efficiently. String literals and regex patterns are handled carefully.</p>
+
+<h2>Production Ready</h2>
+<p>Minified JavaScript is ready for production deployment. Use directly in your web pages or include in build pipelines. Essential for modern web performance optimization.</p>`,
+  }
+];
+
+pdfTools.push(...codeFormattingTools);
