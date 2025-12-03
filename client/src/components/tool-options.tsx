@@ -10009,6 +10009,174 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "image-to-painting":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Painting Style</Label>
+            <Select
+              value={options.paintingStyle || "oil"}
+              onValueChange={(value) =>
+                updateOption("paintingStyle", value)
+              }
+            >
+              <SelectTrigger data-testid="select-painting-style">
+                <SelectValue placeholder="Select painting style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="oil">Oil Painting</SelectItem>
+                <SelectItem value="watercolor">Watercolor</SelectItem>
+                <SelectItem value="impressionist">Impressionist</SelectItem>
+                <SelectItem value="abstract">Abstract</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Intensity</Label>
+            <Slider
+              min={1}
+              max={10}
+              step={1}
+              value={[options.paintingIntensity || 5]}
+              onValueChange={(value) => updateOption("paintingIntensity", value[0])}
+              data-testid="slider-painting-intensity"
+            />
+            <p className="text-sm text-muted-foreground">
+              Adjust the strength of the painting effect (1-10).
+            </p>
+          </div>
+        </div>
+      );
+
+    case "image-color-palette":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Number of Colors</Label>
+            <Select
+              value={String(options.paletteColors || 6)}
+              onValueChange={(value) =>
+                updateOption("paletteColors", parseInt(value))
+              }
+            >
+              <SelectTrigger data-testid="select-palette-colors">
+                <SelectValue placeholder="Select number of colors" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="3">3 Colors</SelectItem>
+                <SelectItem value="5">5 Colors</SelectItem>
+                <SelectItem value="6">6 Colors</SelectItem>
+                <SelectItem value="8">8 Colors</SelectItem>
+                <SelectItem value="10">10 Colors</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Extract the most dominant colors from your image.
+          </p>
+        </div>
+      );
+
+    case "image-histogram":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Generate a detailed histogram showing the color distribution of your image across RGB channels.
+          </p>
+        </div>
+      );
+
+    case "word-to-txt":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert your Word document (.doc, .docx) to plain text format. All formatting will be removed.
+          </p>
+        </div>
+      );
+
+    case "word-to-html":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert your Word document (.doc, .docx) to clean HTML code with proper semantic structure.
+          </p>
+        </div>
+      );
+
+    case "txt-to-word":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert your plain text file (.txt) to a formatted Word document (.docx).
+          </p>
+        </div>
+      );
+
+    case "html-to-word":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert your HTML file to a Word document (.docx) with preserved formatting.
+          </p>
+        </div>
+      );
+
+    case "excel-to-csv":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Delimiter</Label>
+            <Select
+              value={options.csvDelimiter || "comma"}
+              onValueChange={(value) =>
+                updateOption("csvDelimiter", value)
+              }
+            >
+              <SelectTrigger data-testid="select-csv-delimiter">
+                <SelectValue placeholder="Select delimiter" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="comma">Comma (,)</SelectItem>
+                <SelectItem value="semicolon">Semicolon (;)</SelectItem>
+                <SelectItem value="tab">Tab</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert Excel spreadsheet to CSV format. Only the first sheet will be converted.
+          </p>
+        </div>
+      );
+
+    case "csv-to-excel":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert your CSV file to an Excel spreadsheet (.xlsx) with auto-formatted columns.
+          </p>
+        </div>
+      );
+
+    case "excel-to-json":
+      return (
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="json-pretty"
+              checked={options.jsonPretty !== false}
+              onCheckedChange={(checked) => updateOption("jsonPretty", checked as boolean)}
+              data-testid="checkbox-json-pretty"
+            />
+            <Label htmlFor="json-pretty">Pretty print JSON</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Convert Excel spreadsheet to JSON format. First row will be used as object keys.
+          </p>
+        </div>
+      );
+
+
     default:
       return null;
   }

@@ -339,6 +339,25 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     if (tool.type === "gif-to-apng") {
       return ".gif,image/gif";
     }
+    // New 10 Conversion Tools
+    if (tool.type === "image-to-painting" || tool.type === "image-color-palette" || tool.type === "image-histogram") {
+      return "image/jpeg,image/png,image/gif,image/webp,image/bmp,.jpg,.jpeg,.png,.gif,.webp,.bmp";
+    }
+    if (tool.type === "word-to-txt" || tool.type === "word-to-html") {
+      return ".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    }
+    if (tool.type === "txt-to-word") {
+      return ".txt,text/plain";
+    }
+    if (tool.type === "html-to-word") {
+      return ".html,.htm,text/html";
+    }
+    if (tool.type === "excel-to-csv" || tool.type === "excel-to-json") {
+      return ".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    }
+    if (tool.type === "csv-to-excel") {
+      return ".csv,text/csv,application/csv";
+    }
     return ".pdf,application/pdf";
   };
 
