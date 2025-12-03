@@ -28923,6 +28923,147 @@ File analyzed: ${imageFile.originalname}
             break;
           }
 
+          
+          case "m4a-to-mp3": {
+            if (files.length === 0) {
+              throw new Error("Please upload an M4A file to convert");
+            }
+            const inputPath = files[0].path;
+            const bitrate = options.audioBitrate || '192k';
+            const outputFilePath = path.join(outputDir, `converted-${randomUUID()}.mp3`);
+            await execAsync(`ffmpeg -i "${inputPath}" -c:a libmp3lame -b:a ${bitrate} "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "converted.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "mp3-to-m4a": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MP3 file to convert");
+            }
+            const inputPath = files[0].path;
+            const bitrate = options.audioBitrate || '192k';
+            const outputFilePath = path.join(outputDir, `converted-${randomUUID()}.m4a`);
+            await execAsync(`ffmpeg -i "${inputPath}" -c:a aac -b:a ${bitrate} "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "converted.m4a";
+            contentType = "audio/mp4";
+            break;
+          }
+
+          case "flac-to-mp3": {
+            if (files.length === 0) {
+              throw new Error("Please upload a FLAC file to convert");
+            }
+            const inputPath = files[0].path;
+            const bitrate = options.audioBitrate || '320k';
+            const outputFilePath = path.join(outputDir, `converted-${randomUUID()}.mp3`);
+            await execAsync(`ffmpeg -i "${inputPath}" -c:a libmp3lame -b:a ${bitrate} "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "converted.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "mp3-to-flac": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MP3 file to convert");
+            }
+            const inputPath = files[0].path;
+            const outputFilePath = path.join(outputDir, `converted-${randomUUID()}.flac`);
+            await execAsync(`ffmpeg -i "${inputPath}" -c:a flac "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "converted.flac";
+            contentType = "audio/flac";
+            break;
+          }
+
+          case "ogg-to-mp3": {
+            if (files.length === 0) {
+              throw new Error("Please upload an OGG file to convert");
+            }
+            const inputPath = files[0].path;
+            const bitrate = options.audioBitrate || '192k';
+            const outputFilePath = path.join(outputDir, `converted-${randomUUID()}.mp3`);
+            await execAsync(`ffmpeg -i "${inputPath}" -c:a libmp3lame -b:a ${bitrate} "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "converted.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "mp3-to-ogg": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MP3 file to convert");
+            }
+            const inputPath = files[0].path;
+            const quality = options.audioQuality || '6';
+            const outputFilePath = path.join(outputDir, `converted-${randomUUID()}.ogg`);
+            await execAsync(`ffmpeg -i "${inputPath}" -c:a libvorbis -q:a ${quality} "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "converted.ogg";
+            contentType = "audio/ogg";
+            break;
+          }
+
+          case "aac-to-mp3": {
+            if (files.length === 0) {
+              throw new Error("Please upload an AAC file to convert");
+            }
+            const inputPath = files[0].path;
+            const bitrate = options.audioBitrate || '192k';
+            const outputFilePath = path.join(outputDir, `converted-${randomUUID()}.mp3`);
+            await execAsync(`ffmpeg -i "${inputPath}" -c:a libmp3lame -b:a ${bitrate} "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "converted.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "mp3-to-aac": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MP3 file to convert");
+            }
+            const inputPath = files[0].path;
+            const bitrate = options.audioBitrate || '192k';
+            const outputFilePath = path.join(outputDir, `converted-${randomUUID()}.aac`);
+            await execAsync(`ffmpeg -i "${inputPath}" -c:a aac -b:a ${bitrate} "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "converted.aac";
+            contentType = "audio/aac";
+            break;
+          }
+
+          case "video-to-mp3": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to extract audio");
+            }
+            const inputPath = files[0].path;
+            const bitrate = options.audioBitrate || '192k';
+            const outputFilePath = path.join(outputDir, `extracted-${randomUUID()}.mp3`);
+            await execAsync(`ffmpeg -i "${inputPath}" -vn -c:a libmp3lame -b:a ${bitrate} "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "extracted-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "mp4-to-mp3": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MP4 video file to extract audio");
+            }
+            const inputPath = files[0].path;
+            const bitrate = options.audioBitrate || '192k';
+            const outputFilePath = path.join(outputDir, `extracted-${randomUUID()}.mp3`);
+            await execAsync(`ffmpeg -i "${inputPath}" -vn -c:a libmp3lame -b:a ${bitrate} "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "extracted-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+
           case "json-formatter": {
             let jsonInput = options.jsonInput || '';
             if (!jsonInput && files.length > 0) {

@@ -625,6 +625,16 @@ export const pdfToolTypes = [
   "text-to-ascii",
   "ascii-to-text",
   "text-to-hex",
+  "m4a-to-mp3",
+  "mp3-to-m4a",
+  "flac-to-mp3",
+  "mp3-to-flac",
+  "ogg-to-mp3",
+  "mp3-to-ogg",
+  "aac-to-mp3",
+  "mp3-to-aac",
+  "video-to-mp3",
+  "mp4-to-mp3",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -17946,6 +17956,256 @@ const newTextAndAudioTools: PdfTool[] = [
 
 <h2>Universal Compatibility</h2>
 <p>MP3 files play on every device and platform. Share music easily via email or messaging. Upload to any streaming service. The most widely supported audio format worldwide.</p>`,
+  },
+  {
+    id: "m4a-to-mp3",
+    name: "M4A to MP3",
+    description: "Convert M4A audio files to MP3 format",
+    icon: "FileAudio",
+    type: "m4a-to-mp3",
+    color: "bg-purple-600",
+    emoji: "🎵",
+    metaTitle: "M4A to MP3 Converter Online Free - Convert M4A to MP3 | Audio Tools",
+    metaDescription: "Convert M4A to MP3 online for free. Transform Apple audio format to universal MP3. Fast, easy, and high-quality conversion with adjustable bitrate settings.",
+    seoArticle: `<h2>M4A to MP3 Converter - Universal Audio Compatibility</h2>
+<p>Convert your M4A audio files to universally compatible MP3 format with our free online converter. M4A files, commonly used by Apple devices and iTunes, can be easily transformed to MP3 for maximum device compatibility. Our converter preserves audio quality while creating smaller, portable files.</p>
+
+<h2>Why Convert M4A to MP3?</h2>
+<p>While M4A offers excellent quality, MP3 remains the most widely supported audio format. Convert for car stereos, older MP3 players, or universal sharing. MP3 files play on virtually every device and platform, making them ideal for distribution.</p>
+
+<h2>Quality Settings</h2>
+<p>Choose from various bitrate options: 128kbps for smaller files, 192kbps for balanced quality and size, or 320kbps for near-lossless quality. Our converter uses the high-quality LAME MP3 encoder for optimal results.</p>
+
+<h2>Fast and Secure Processing</h2>
+<p>Upload your M4A file and download your MP3 in seconds. All files are processed securely and automatically deleted after conversion. No registration or software installation required.</p>
+
+<h2>Preserve Your Music Library</h2>
+<p>Convert entire music libraries or individual tracks. Maintain consistent quality across all your audio files. Perfect for creating universally compatible backups of your iTunes music collection.</p>`,
+  },
+  {
+    id: "mp3-to-m4a",
+    name: "MP3 to M4A",
+    description: "Convert MP3 audio files to M4A format",
+    icon: "FileAudio",
+    type: "mp3-to-m4a",
+    color: "bg-pink-600",
+    emoji: "🎶",
+    metaTitle: "MP3 to M4A Converter Online Free - Convert MP3 to M4A | Audio Tools",
+    metaDescription: "Convert MP3 to M4A online for free. Transform audio to Apple-compatible AAC format. Better quality at smaller file sizes with our fast converter.",
+    seoArticle: `<h2>MP3 to M4A Converter - Enhanced Audio Quality</h2>
+<p>Transform your MP3 files to M4A format with our free online converter. M4A uses the advanced AAC codec, offering better audio quality at the same bitrate compared to MP3. Perfect for Apple devices, iTunes, and modern audio applications.</p>
+
+<h2>Benefits of M4A Format</h2>
+<p>M4A provides superior audio compression, meaning better sound quality at smaller file sizes. Native support on all Apple devices including iPhone, iPad, and Mac. Also works with most modern Android devices and media players.</p>
+
+<h2>Professional Quality Encoding</h2>
+<p>Our converter uses AAC encoding to create high-quality M4A files. Choose your preferred bitrate for the perfect balance between quality and file size. Ideal for podcast production, music distribution, and personal audio libraries.</p>
+
+<h2>Simple Conversion Process</h2>
+<p>Upload your MP3 file, select your quality settings, and convert instantly. Download your M4A file immediately after processing. No waiting, no registration, completely free to use.</p>
+
+<h2>iTunes and Apple Music Ready</h2>
+<p>Output files are fully compatible with iTunes and Apple Music. Add converted files directly to your Apple music library. Enjoy enhanced audio quality on all your Apple devices.</p>`,
+  },
+  {
+    id: "flac-to-mp3",
+    name: "FLAC to MP3",
+    description: "Convert FLAC lossless audio to MP3 format",
+    icon: "FileAudio",
+    type: "flac-to-mp3",
+    color: "bg-green-600",
+    emoji: "🎼",
+    metaTitle: "FLAC to MP3 Converter Online Free - Convert FLAC to MP3 | Audio Tools",
+    metaDescription: "Convert FLAC to MP3 online for free. Transform lossless audio to compact MP3 format. Reduce file sizes while maintaining excellent quality.",
+    seoArticle: `<h2>FLAC to MP3 Converter - Compact Your Lossless Audio</h2>
+<p>Convert your FLAC lossless audio files to compact MP3 format with our free online converter. FLAC files offer perfect quality but large file sizes. Transform them to MP3 for portable players, car stereos, or easier sharing while maintaining excellent audio quality.</p>
+
+<h2>Why Convert FLAC to MP3?</h2>
+<p>FLAC files are typically 2-5 times larger than MP3s. Convert to save storage space on mobile devices. Create portable versions of your lossless collection. Share music easily via email or messaging without huge file sizes.</p>
+
+<h2>High Bitrate Options</h2>
+<p>Choose 320kbps for maximum quality preservation from your FLAC source. The difference from the original is virtually imperceptible. Lower bitrates available for even smaller files when needed.</p>
+
+<h2>Batch Conversion Ready</h2>
+<p>Convert multiple FLAC files in one session. Maintain consistent quality settings across your entire library. Perfect for creating a portable version of your high-resolution music collection.</p>
+
+<h2>Audiophile Approved</h2>
+<p>Our converter uses the best-in-class LAME encoder at optimal settings. Preserve as much audio detail as possible from your lossless source. The perfect solution for enjoying your music on any device.</p>`,
+  },
+  {
+    id: "mp3-to-flac",
+    name: "MP3 to FLAC",
+    description: "Convert MP3 audio files to FLAC lossless format",
+    icon: "FileAudio",
+    type: "mp3-to-flac",
+    color: "bg-teal-600",
+    emoji: "🎹",
+    metaTitle: "MP3 to FLAC Converter Online Free - Convert MP3 to FLAC | Audio Tools",
+    metaDescription: "Convert MP3 to FLAC online for free. Transform compressed audio to lossless container format. Preserve current quality for archival and editing purposes.",
+    seoArticle: `<h2>MP3 to FLAC Converter - Lossless Archival Format</h2>
+<p>Convert your MP3 files to FLAC lossless format with our free online converter. While this won't recover quality lost in MP3 compression, FLAC provides a lossless container for archiving and editing. No further quality loss during future conversions or edits.</p>
+
+<h2>Understanding the Conversion</h2>
+<p>Converting MP3 to FLAC creates a lossless copy of the MP3 audio. The original MP3 compression cannot be reversed, but FLAC ensures no additional quality loss. Ideal for archival and audio editing workflows.</p>
+
+<h2>Benefits of FLAC Format</h2>
+<p>FLAC files work with professional audio editing software. No generation loss when editing or re-encoding. Open-source format supported by most modern players. Perfect for audio production workflows.</p>
+
+<h2>Audio Editing Ready</h2>
+<p>FLAC is preferred by audio editors for working files. Import into DAWs and audio editors without quality concerns. Export and convert as needed without cumulative quality loss.</p>
+
+<h2>Future-Proof Archival</h2>
+<p>FLAC is an established, open format that will remain supported. Archive your audio collection in a professional format. Maintain the highest possible quality from your source files.</p>`,
+  },
+  {
+    id: "ogg-to-mp3",
+    name: "OGG to MP3",
+    description: "Convert OGG Vorbis audio files to MP3 format",
+    icon: "FileAudio",
+    type: "ogg-to-mp3",
+    color: "bg-orange-600",
+    emoji: "🔊",
+    metaTitle: "OGG to MP3 Converter Online Free - Convert OGG to MP3 | Audio Tools",
+    metaDescription: "Convert OGG Vorbis to MP3 online for free. Transform open-source audio format to universal MP3. Maximum compatibility with all devices and players.",
+    seoArticle: `<h2>OGG to MP3 Converter - Universal Audio Format</h2>
+<p>Convert your OGG Vorbis audio files to universally compatible MP3 format with our free online converter. OGG is excellent but not universally supported. Transform to MP3 for guaranteed playback on any device, player, or platform.</p>
+
+<h2>Why Convert OGG to MP3?</h2>
+<p>While OGG Vorbis offers great quality, MP3 has universal device support. Convert for car stereos that don't support OGG. Share audio with anyone without compatibility concerns. Ensure playback on older devices and systems.</p>
+
+<h2>Quality Preservation</h2>
+<p>Our converter maintains maximum quality during the format change. Choose your preferred MP3 bitrate for the perfect balance. High-quality LAME encoding ensures the best possible results.</p>
+
+<h2>Gaming Audio Conversion</h2>
+<p>Many games use OGG format for sound files. Convert game music to MP3 for personal music libraries. Create MP3 versions of your favorite game soundtracks for portable listening.</p>
+
+<h2>Simple and Fast</h2>
+<p>Upload your OGG file and receive MP3 in seconds. No software to install, no registration required. Completely free and unlimited conversions.</p>`,
+  },
+  {
+    id: "mp3-to-ogg",
+    name: "MP3 to OGG",
+    description: "Convert MP3 audio files to OGG Vorbis format",
+    icon: "FileAudio",
+    type: "mp3-to-ogg",
+    color: "bg-indigo-600",
+    emoji: "🎧",
+    metaTitle: "MP3 to OGG Converter Online Free - Convert MP3 to OGG | Audio Tools",
+    metaDescription: "Convert MP3 to OGG Vorbis online for free. Transform to open-source audio format with better quality at same file size. Perfect for web and gaming.",
+    seoArticle: `<h2>MP3 to OGG Converter - Open Source Audio Format</h2>
+<p>Convert your MP3 files to OGG Vorbis format with our free online converter. OGG is an open-source format that offers better audio quality at the same bitrate as MP3. Popular for web audio, gaming, and Linux-based systems.</p>
+
+<h2>Benefits of OGG Format</h2>
+<p>OGG Vorbis provides superior compression efficiency compared to MP3. Open-source and patent-free format. Native support in web browsers for HTML5 audio. Standard format for many games and applications.</p>
+
+<h2>Web Audio Ready</h2>
+<p>OGG is natively supported by most web browsers. Perfect for web developers creating audio content. Smaller files with equal quality means faster loading times.</p>
+
+<h2>Gaming Industry Standard</h2>
+<p>Many game engines prefer OGG for audio assets. Convert music and sound effects for game development. Efficient compression keeps game sizes manageable.</p>
+
+<h2>Variable Quality Settings</h2>
+<p>Choose from quality levels 0-10 for precise control. VBR encoding provides optimal quality-to-size ratio. Perfect balance for any use case from podcasts to music.</p>`,
+  },
+  {
+    id: "aac-to-mp3",
+    name: "AAC to MP3",
+    description: "Convert AAC audio files to MP3 format",
+    icon: "FileAudio",
+    type: "aac-to-mp3",
+    color: "bg-red-500",
+    emoji: "💿",
+    metaTitle: "AAC to MP3 Converter Online Free - Convert AAC to MP3 | Audio Tools",
+    metaDescription: "Convert AAC to MP3 online for free. Transform advanced audio codec to universal MP3 format. Ensure compatibility with all devices and music players.",
+    seoArticle: `<h2>AAC to MP3 Converter - Universal Compatibility</h2>
+<p>Convert your AAC audio files to universally compatible MP3 format with our free online converter. AAC files from iTunes, digital downloads, or mobile recordings can be easily transformed to MP3 for maximum device compatibility.</p>
+
+<h2>Why Convert AAC to MP3?</h2>
+<p>While AAC offers excellent quality, some devices only support MP3. Convert for older car stereos and portable players. Share audio without worrying about recipient compatibility. Create universally playable backups.</p>
+
+<h2>Preserve Audio Quality</h2>
+<p>Our converter uses high-quality encoding to preserve audio fidelity. Choose appropriate bitrate settings for your needs. Minimize quality loss during the conversion process.</p>
+
+<h2>iTunes Audio Conversion</h2>
+<p>Perfect for converting AAC files from iTunes library. Create MP3 versions for non-Apple devices. Maintain your music collection in multiple formats.</p>
+
+<h2>Fast and Easy Process</h2>
+<p>Upload, convert, download - it's that simple. No software installation or account required. Convert as many files as you need, completely free.</p>`,
+  },
+  {
+    id: "mp3-to-aac",
+    name: "MP3 to AAC",
+    description: "Convert MP3 audio files to AAC format",
+    icon: "FileAudio",
+    type: "mp3-to-aac",
+    color: "bg-amber-600",
+    emoji: "🎙️",
+    metaTitle: "MP3 to AAC Converter Online Free - Convert MP3 to AAC | Audio Tools",
+    metaDescription: "Convert MP3 to AAC online for free. Transform audio to advanced AAC codec format. Better quality at same bitrate for modern devices and streaming.",
+    seoArticle: `<h2>MP3 to AAC Converter - Advanced Audio Codec</h2>
+<p>Convert your MP3 files to AAC format with our free online converter. AAC (Advanced Audio Coding) provides better sound quality at the same bitrate as MP3. Perfect for modern devices, streaming platforms, and Apple products.</p>
+
+<h2>AAC Advantages</h2>
+<p>AAC offers approximately 30% better compression efficiency than MP3. Higher audio quality at equivalent file sizes. Standard codec for YouTube, Apple Music, and most streaming services.</p>
+
+<h2>Modern Device Support</h2>
+<p>Native support on iPhone, iPad, Android devices, and modern players. Optimal format for mobile device storage. Better battery efficiency for playback on portable devices.</p>
+
+<h2>Streaming Ready</h2>
+<p>AAC is the preferred format for audio streaming. Lower bandwidth requirements with equal quality. Perfect for podcast production and online audio distribution.</p>
+
+<h2>Professional Quality</h2>
+<p>Our converter uses professional-grade AAC encoding. Multiple bitrate options for different use cases. Create broadcast-ready audio files with ease.</p>`,
+  },
+  {
+    id: "video-to-mp3",
+    name: "Video to MP3",
+    description: "Extract audio from any video file as MP3",
+    icon: "Film",
+    type: "video-to-mp3",
+    color: "bg-violet-600",
+    emoji: "🎬",
+    metaTitle: "Video to MP3 Converter Online Free - Extract Audio from Video | Audio Tools",
+    metaDescription: "Extract MP3 audio from video files online for free. Convert any video format to MP3 audio. Perfect for music videos, podcasts, and audio extraction.",
+    seoArticle: `<h2>Video to MP3 Converter - Extract Audio Instantly</h2>
+<p>Extract audio from any video file and save it as MP3 with our free online converter. Perfect for saving music from music videos, extracting podcast audio, or creating audio-only versions of video content. Supports all major video formats.</p>
+
+<h2>Supported Video Formats</h2>
+<p>Upload MP4, AVI, MOV, MKV, WebM, WMV, and many more video formats. Our converter automatically detects and extracts the audio track. No matter your video source, we can extract the audio.</p>
+
+<h2>Music Video Extraction</h2>
+<p>Save audio from music videos for your personal collection. Create MP3 files from concert recordings. Extract songs from video files for offline listening.</p>
+
+<h2>Podcast and Content Creation</h2>
+<p>Convert video podcasts to audio-only MP3 format. Create audio versions of video content for different platforms. Extract audio for repurposing in other projects.</p>
+
+<h2>Quality Options</h2>
+<p>Choose output bitrate from 128kbps to 320kbps. Preserve maximum audio quality from your video source. Fast processing for files of any size.</p>`,
+  },
+  {
+    id: "mp4-to-mp3",
+    name: "MP4 to MP3",
+    description: "Extract MP3 audio from MP4 video files",
+    icon: "Film",
+    type: "mp4-to-mp3",
+    color: "bg-cyan-600",
+    emoji: "📹",
+    metaTitle: "MP4 to MP3 Converter Online Free - Extract Audio from MP4 | Audio Tools",
+    metaDescription: "Convert MP4 to MP3 online for free. Extract audio track from MP4 video files instantly. High-quality audio extraction with adjustable bitrate settings.",
+    seoArticle: `<h2>MP4 to MP3 Converter - Extract Audio from Video</h2>
+<p>Extract the audio track from MP4 video files and save as MP3 with our free online converter. MP4 is the most common video format, and our tool makes it easy to save just the audio portion. Perfect for music videos, recorded presentations, and video podcasts.</p>
+
+<h2>How It Works</h2>
+<p>Simply upload your MP4 file and our converter extracts the audio track. The video is discarded while the audio is encoded as high-quality MP3. Download your audio file instantly after processing.</p>
+
+<h2>Common Use Cases</h2>
+<p>Save music from downloaded music videos. Create audio versions of video lectures for portable listening. Extract podcast audio from video recordings. Convert video content for audio-only platforms.</p>
+
+<h2>Preserve Original Quality</h2>
+<p>Our converter preserves the full quality of the original audio track. Choose from multiple bitrate options based on your needs. 320kbps output for maximum fidelity.</p>
+
+<h2>Fast and Free</h2>
+<p>No file size limits for standard conversions. Process completes in seconds. No registration or account required. Unlimited free conversions.</p>`,
   },
 ];
 

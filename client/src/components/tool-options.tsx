@@ -12283,6 +12283,116 @@ export function ToolOptionsComponent({
           </p>
         </div>
       );
+    case "m4a-to-mp3":
+    case "flac-to-mp3":
+    case "ogg-to-mp3":
+    case "aac-to-mp3":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Bitrate</Label>
+            <Select
+              value={options.audioBitrate || "192k"}
+              onValueChange={(value) => updateOption("audioBitrate", value)}
+            >
+              <SelectTrigger data-testid="select-mp3-bitrate">
+                <SelectValue placeholder="Select bitrate" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="128k">128 kbps (Good quality)</SelectItem>
+                <SelectItem value="192k">192 kbps (High quality)</SelectItem>
+                <SelectItem value="256k">256 kbps (Very high quality)</SelectItem>
+                <SelectItem value="320k">320 kbps (Maximum quality)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "mp3-to-m4a":
+    case "mp3-to-aac":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Bitrate</Label>
+            <Select
+              value={options.audioBitrate || "192k"}
+              onValueChange={(value) => updateOption("audioBitrate", value)}
+            >
+              <SelectTrigger data-testid="select-aac-bitrate">
+                <SelectValue placeholder="Select bitrate" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="128k">128 kbps (Good quality)</SelectItem>
+                <SelectItem value="192k">192 kbps (High quality)</SelectItem>
+                <SelectItem value="256k">256 kbps (Very high quality)</SelectItem>
+                <SelectItem value="320k">320 kbps (Maximum quality)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "mp3-to-flac":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            FLAC is a lossless format. Your MP3 will be converted without any additional quality loss.
+          </p>
+        </div>
+      );
+
+    case "mp3-to-ogg":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Quality Level (0-10)</Label>
+            <Select
+              value={options.audioQuality || "6"}
+              onValueChange={(value) => updateOption("audioQuality", value)}
+            >
+              <SelectTrigger data-testid="select-ogg-quality">
+                <SelectValue placeholder="Select quality" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="3">3 - Lower quality, smaller file</SelectItem>
+                <SelectItem value="5">5 - Balanced quality</SelectItem>
+                <SelectItem value="6">6 - Good quality (Recommended)</SelectItem>
+                <SelectItem value="8">8 - High quality</SelectItem>
+                <SelectItem value="10">10 - Maximum quality</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "video-to-mp3":
+    case "mp4-to-mp3":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Bitrate</Label>
+            <Select
+              value={options.audioBitrate || "192k"}
+              onValueChange={(value) => updateOption("audioBitrate", value)}
+            >
+              <SelectTrigger data-testid="select-extract-bitrate">
+                <SelectValue placeholder="Select bitrate" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="128k">128 kbps (Good quality)</SelectItem>
+                <SelectItem value="192k">192 kbps (High quality)</SelectItem>
+                <SelectItem value="256k">256 kbps (Very high quality)</SelectItem>
+                <SelectItem value="320k">320 kbps (Maximum quality)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Audio will be extracted from the video file and saved as MP3.
+          </p>
+        </div>
+      );
+
 
     default:
       return null;
