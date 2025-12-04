@@ -7853,7 +7853,8 @@ export function ToolOptionsComponent({
       );
     }
 
-    case "video-to-gif": {
+    case "video-to-gif":
+    case "mp4-to-gif": {
       return (
         <div className="space-y-4">
           <div className="space-y-2">
@@ -13453,6 +13454,15 @@ export function ToolOptionsComponent({
     case "mp4-to-avi":
     case "avi-to-mp4":
     case "mov-to-mp4":
+    case "mp4-to-mov":
+    case "mkv-to-mp4":
+    case "mp4-to-mkv":
+    case "webm-to-mp4":
+    case "mp4-to-webm":
+    case "avi-to-mpeg":
+    case "gif-to-mp4-hd":
+    case "video-to-webm":
+    case "video-to-flv":
       return (
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">

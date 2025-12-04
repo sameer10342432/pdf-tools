@@ -398,6 +398,25 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     if (tool.type === "mute-video") {
       return "video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov,.avi,.mkv";
     }
+    // New Video Conversion Tools
+    if (tool.type === "mp4-to-mov" || tool.type === "mp4-to-mkv" || tool.type === "mp4-to-webm" || tool.type === "mp4-to-gif") {
+      return "video/mp4,.mp4";
+    }
+    if (tool.type === "mkv-to-mp4") {
+      return "video/x-matroska,.mkv";
+    }
+    if (tool.type === "webm-to-mp4") {
+      return "video/webm,.webm";
+    }
+    if (tool.type === "avi-to-mpeg") {
+      return "video/x-msvideo,.avi";
+    }
+    if (tool.type === "gif-to-mp4-hd") {
+      return "image/gif,.gif";
+    }
+    if (tool.type === "video-to-webm" || tool.type === "video-to-flv") {
+      return "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska,.mp4,.webm,.mov,.avi,.mkv";
+    }
     if (tool.type === "voice-recorder" || tool.type === "online-voice-recorder") {
       return "audio/*,.mp3,.wav,.webm,.ogg,.m4a";
     }

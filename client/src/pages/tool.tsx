@@ -671,6 +671,25 @@ export default function ToolPage() {
     if (tool.type === "compress-avi" || tool.type === "avi-to-mp4") {
       return ".avi,video/x-msvideo";
     }
+    // New Video Conversion Tools
+    if (tool.type === "mp4-to-mov" || tool.type === "mp4-to-mkv" || tool.type === "mp4-to-webm" || tool.type === "mp4-to-gif") {
+      return ".mp4,video/mp4";
+    }
+    if (tool.type === "mkv-to-mp4") {
+      return ".mkv,video/x-matroska";
+    }
+    if (tool.type === "webm-to-mp4") {
+      return ".webm,video/webm";
+    }
+    if (tool.type === "avi-to-mpeg") {
+      return ".avi,video/x-msvideo";
+    }
+    if (tool.type === "gif-to-mp4-hd") {
+      return ".gif,image/gif";
+    }
+    if (tool.type === "video-to-webm" || tool.type === "video-to-flv") {
+      return "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska,.mp4,.webm,.mov,.avi,.mkv";
+    }
     return ".pdf,application/pdf";
   };
 

@@ -30112,6 +30112,274 @@ File analyzed: ${imageFile.originalname}
             break;
           }
 
+          case "mp4-to-mov": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MP4 file to convert to MOV");
+            }
+            const mp4ToMovInputPath = files[0].path;
+            const mp4ToMovOutputPath = path.join(outputDir, `converted-${randomUUID()}.mov`);
+            const movQuality = sanitizeStringOption(options.videoQuality, ["high", "medium", "low"], "high");
+            
+            let movSettings;
+            switch (movQuality) {
+              case "low":
+                movSettings = "-c:v libx264 -crf 28 -preset fast -c:a aac -b:a 128k";
+                break;
+              case "medium":
+                movSettings = "-c:v libx264 -crf 23 -preset medium -c:a aac -b:a 192k";
+                break;
+              default:
+                movSettings = "-c:v libx264 -crf 18 -preset slow -c:a aac -b:a 256k";
+            }
+            
+            await execAsync(`ffmpeg -i "${mp4ToMovInputPath}" ${movSettings} -f mov "${mp4ToMovOutputPath}"`);
+            result = mp4ToMovOutputPath;
+            filename = "converted.mov";
+            contentType = "video/quicktime";
+            break;
+          }
+
+          case "mkv-to-mp4": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MKV file to convert to MP4");
+            }
+            const mkvToMp4InputPath = files[0].path;
+            const mkvToMp4OutputPath = path.join(outputDir, `converted-${randomUUID()}.mp4`);
+            const mkvMp4Quality = sanitizeStringOption(options.videoQuality, ["high", "medium", "low"], "high");
+            
+            let mkvMp4Settings;
+            switch (mkvMp4Quality) {
+              case "low":
+                mkvMp4Settings = "-c:v libx264 -crf 28 -preset fast -c:a aac -b:a 128k";
+                break;
+              case "medium":
+                mkvMp4Settings = "-c:v libx264 -crf 23 -preset medium -c:a aac -b:a 192k";
+                break;
+              default:
+                mkvMp4Settings = "-c:v libx264 -crf 18 -preset slow -c:a aac -b:a 256k";
+            }
+            
+            await execAsync(`ffmpeg -i "${mkvToMp4InputPath}" ${mkvMp4Settings} "${mkvToMp4OutputPath}"`);
+            result = mkvToMp4OutputPath;
+            filename = "converted.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "mp4-to-mkv": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MP4 file to convert to MKV");
+            }
+            const mp4ToMkvInputPath = files[0].path;
+            const mp4ToMkvOutputPath = path.join(outputDir, `converted-${randomUUID()}.mkv`);
+            const mkvQuality = sanitizeStringOption(options.videoQuality, ["high", "medium", "low"], "high");
+            
+            let mkvSettings;
+            switch (mkvQuality) {
+              case "low":
+                mkvSettings = "-c:v libx264 -crf 28 -preset fast -c:a aac -b:a 128k";
+                break;
+              case "medium":
+                mkvSettings = "-c:v libx264 -crf 23 -preset medium -c:a aac -b:a 192k";
+                break;
+              default:
+                mkvSettings = "-c:v libx264 -crf 18 -preset slow -c:a aac -b:a 256k";
+            }
+            
+            await execAsync(`ffmpeg -i "${mp4ToMkvInputPath}" ${mkvSettings} "${mp4ToMkvOutputPath}"`);
+            result = mp4ToMkvOutputPath;
+            filename = "converted.mkv";
+            contentType = "video/x-matroska";
+            break;
+          }
+
+          case "webm-to-mp4": {
+            if (files.length === 0) {
+              throw new Error("Please upload a WebM file to convert to MP4");
+            }
+            const webmToMp4InputPath = files[0].path;
+            const webmToMp4OutputPath = path.join(outputDir, `converted-${randomUUID()}.mp4`);
+            const webmMp4Quality = sanitizeStringOption(options.videoQuality, ["high", "medium", "low"], "high");
+            
+            let webmMp4Settings;
+            switch (webmMp4Quality) {
+              case "low":
+                webmMp4Settings = "-c:v libx264 -crf 28 -preset fast -c:a aac -b:a 128k";
+                break;
+              case "medium":
+                webmMp4Settings = "-c:v libx264 -crf 23 -preset medium -c:a aac -b:a 192k";
+                break;
+              default:
+                webmMp4Settings = "-c:v libx264 -crf 18 -preset slow -c:a aac -b:a 256k";
+            }
+            
+            await execAsync(`ffmpeg -i "${webmToMp4InputPath}" ${webmMp4Settings} "${webmToMp4OutputPath}"`);
+            result = webmToMp4OutputPath;
+            filename = "converted.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "mp4-to-webm": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MP4 file to convert to WebM");
+            }
+            const mp4ToWebmInputPath = files[0].path;
+            const mp4ToWebmOutputPath = path.join(outputDir, `converted-${randomUUID()}.webm`);
+            const webmQuality = sanitizeStringOption(options.videoQuality, ["high", "medium", "low"], "high");
+            
+            let webmSettings;
+            switch (webmQuality) {
+              case "low":
+                webmSettings = "-c:v libvpx-vp9 -crf 35 -b:v 0 -c:a libopus -b:a 96k";
+                break;
+              case "medium":
+                webmSettings = "-c:v libvpx-vp9 -crf 30 -b:v 0 -c:a libopus -b:a 128k";
+                break;
+              default:
+                webmSettings = "-c:v libvpx-vp9 -crf 25 -b:v 0 -c:a libopus -b:a 192k";
+            }
+            
+            await execAsync(`ffmpeg -i "${mp4ToWebmInputPath}" ${webmSettings} "${mp4ToWebmOutputPath}"`);
+            result = mp4ToWebmOutputPath;
+            filename = "converted.webm";
+            contentType = "video/webm";
+            break;
+          }
+
+          case "avi-to-mpeg": {
+            if (files.length === 0) {
+              throw new Error("Please upload an AVI file to convert to MPEG");
+            }
+            const aviToMpegInputPath = files[0].path;
+            const aviToMpegOutputPath = path.join(outputDir, `converted-${randomUUID()}.mpg`);
+            const mpegQuality = sanitizeStringOption(options.videoQuality, ["high", "medium", "low"], "high");
+            
+            let mpegSettings;
+            switch (mpegQuality) {
+              case "low":
+                mpegSettings = "-c:v mpeg2video -q:v 8 -c:a mp2 -b:a 128k";
+                break;
+              case "medium":
+                mpegSettings = "-c:v mpeg2video -q:v 5 -c:a mp2 -b:a 192k";
+                break;
+              default:
+                mpegSettings = "-c:v mpeg2video -q:v 2 -c:a mp2 -b:a 256k";
+            }
+            
+            await execAsync(`ffmpeg -i "${aviToMpegInputPath}" ${mpegSettings} "${aviToMpegOutputPath}"`);
+            result = aviToMpegOutputPath;
+            filename = "converted.mpg";
+            contentType = "video/mpeg";
+            break;
+          }
+
+          case "mp4-to-gif": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MP4 file to convert to GIF");
+            }
+            const mp4ToGifInputPath = files[0].path;
+            const mp4ToGifOutputPath = path.join(outputDir, `converted-${randomUUID()}.gif`);
+            const mp4GifStartTime = sanitizeNumber(options.videoStartTime, 0, 0, 3600);
+            const mp4GifDuration = sanitizeNumber(options.videoDuration, 5, 1, 30);
+            const mp4GifFps = sanitizeNumber(options.videoFps, 10, 5, 30);
+            const mp4GifWidth = sanitizeNumber(options.videoGifWidth, 480, 100, 1920);
+            
+            const paletteFile = path.join(outputDir, `palette-${randomUUID()}.png`);
+            
+            await execAsync(`ffmpeg -y -i "${mp4ToGifInputPath}" -ss ${mp4GifStartTime} -t ${mp4GifDuration} -vf "fps=${mp4GifFps},scale=${mp4GifWidth}:-1:flags=lanczos,palettegen=stats_mode=diff" "${paletteFile}"`);
+            await execAsync(`ffmpeg -y -i "${mp4ToGifInputPath}" -i "${paletteFile}" -ss ${mp4GifStartTime} -t ${mp4GifDuration} -filter_complex "[0:v]fps=${mp4GifFps},scale=${mp4GifWidth}:-1:flags=lanczos[x];[x][1:v]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle" "${mp4ToGifOutputPath}"`);
+            
+            try { fs.unlinkSync(paletteFile); } catch (e) {}
+            
+            result = mp4ToGifOutputPath;
+            filename = "converted.gif";
+            contentType = "image/gif";
+            break;
+          }
+
+          case "gif-to-mp4-hd": {
+            if (files.length === 0) {
+              throw new Error("Please upload a GIF file to convert to MP4");
+            }
+            const gifToMp4HdInputPath = files[0].path;
+            const gifToMp4HdOutputPath = path.join(outputDir, `converted-${randomUUID()}.mp4`);
+            const hdQuality = sanitizeStringOption(options.videoQuality, ["high", "medium", "low"], "high");
+            
+            let hdSettings;
+            switch (hdQuality) {
+              case "low":
+                hdSettings = "-c:v libx264 -crf 28 -preset fast -pix_fmt yuv420p -movflags +faststart";
+                break;
+              case "medium":
+                hdSettings = "-c:v libx264 -crf 23 -preset medium -pix_fmt yuv420p -movflags +faststart";
+                break;
+              default:
+                hdSettings = "-c:v libx264 -crf 18 -preset slow -pix_fmt yuv420p -movflags +faststart";
+            }
+            
+            await execAsync(`ffmpeg -i "${gifToMp4HdInputPath}" -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" ${hdSettings} "${gifToMp4HdOutputPath}"`);
+            result = gifToMp4HdOutputPath;
+            filename = "converted.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "video-to-webm": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to convert to WebM");
+            }
+            const videoToWebmInputPath = files[0].path;
+            const videoToWebmOutputPath = path.join(outputDir, `converted-${randomUUID()}.webm`);
+            const videoWebmQuality = sanitizeStringOption(options.videoQuality, ["high", "medium", "low"], "high");
+            
+            let videoWebmSettings;
+            switch (videoWebmQuality) {
+              case "low":
+                videoWebmSettings = "-c:v libvpx-vp9 -crf 40 -b:v 0 -c:a libopus -b:a 96k";
+                break;
+              case "medium":
+                videoWebmSettings = "-c:v libvpx-vp9 -crf 32 -b:v 0 -c:a libopus -b:a 128k";
+                break;
+              default:
+                videoWebmSettings = "-c:v libvpx-vp9 -crf 25 -b:v 0 -c:a libopus -b:a 192k";
+            }
+            
+            await execAsync(`ffmpeg -i "${videoToWebmInputPath}" ${videoWebmSettings} "${videoToWebmOutputPath}"`);
+            result = videoToWebmOutputPath;
+            filename = "converted.webm";
+            contentType = "video/webm";
+            break;
+          }
+
+          case "video-to-flv": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to convert to FLV");
+            }
+            const videoToFlvInputPath = files[0].path;
+            const videoToFlvOutputPath = path.join(outputDir, `converted-${randomUUID()}.flv`);
+            const flvQuality = sanitizeStringOption(options.videoQuality, ["high", "medium", "low"], "high");
+            
+            let flvSettings;
+            switch (flvQuality) {
+              case "low":
+                flvSettings = "-c:v flv1 -q:v 8 -c:a mp3 -b:a 128k -ar 44100";
+                break;
+              case "medium":
+                flvSettings = "-c:v flv1 -q:v 5 -c:a mp3 -b:a 192k -ar 44100";
+                break;
+              default:
+                flvSettings = "-c:v flv1 -q:v 2 -c:a mp3 -b:a 256k -ar 44100";
+            }
+            
+            await execAsync(`ffmpeg -i "${videoToFlvInputPath}" ${flvSettings} "${videoToFlvOutputPath}"`);
+            result = videoToFlvOutputPath;
+            filename = "converted.flv";
+            contentType = "video/x-flv";
+            break;
+          }
+
+
               case "swap-channels":
                 channelFilter = "-af 'pan=stereo|c0=c1|c1=c0'";
                 break;
