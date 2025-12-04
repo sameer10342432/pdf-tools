@@ -30932,6 +30932,202 @@ file '${loopInputPath}'`;
             filename = "color-corrected-video.mp4";
             contentType = "video/mp4";
             break;
+
+          case "video-brightness": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file for brightness adjustment");
+            }
+            const brightnessInputPath = files[0].path;
+            const brightnessOutputPath = path.join(outputDir, `brightness-adjusted-${randomUUID()}.mp4`);
+            
+            const brightnessLevel = sanitizeNumber(options.brightness, 0, -1, 1);
+            
+            await execAsync(`ffmpeg -i "${brightnessInputPath}" -vf "eq=brightness=${brightnessLevel}" -c:v libx264 -preset fast -c:a copy "${brightnessOutputPath}"`);
+            
+            result = brightnessOutputPath;
+            filename = "brightness-adjusted-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "video-contrast": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file for contrast adjustment");
+            }
+            const contrastInputPath = files[0].path;
+            const contrastOutputPath = path.join(outputDir, `contrast-adjusted-${randomUUID()}.mp4`);
+            
+            const contrastLevel = sanitizeNumber(options.contrast, 1, 0.5, 2);
+            
+            await execAsync(`ffmpeg -i "${contrastInputPath}" -vf "eq=contrast=${contrastLevel}" -c:v libx264 -preset fast -c:a copy "${contrastOutputPath}"`);
+            
+            result = contrastOutputPath;
+            filename = "contrast-adjusted-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "video-to-jpg": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to extract frames");
+            }
+            const jpgInputPath = files[0].path;
+            const jpgOutputDir = path.join(outputDir, `frames-jpg-${randomUUID()}`);
+            fs.mkdirSync(jpgOutputDir, { recursive: true });
+            
+            const frameTime = options.frameTime || "00:00:01";
+            const extractAll = options.extractAll === true;
+            const interval = sanitizeNumber(options.interval, 1, 0.1, 60);
+            
+            if (extractAll) {
+              await execAsync(`ffmpeg -i "${jpgInputPath}" -vf "fps=1/${interval}" -q:v 2 "${jpgOutputDir}/frame_%04d.jpg"`);
+            } else {
+              await execAsync(`ffmpeg -i "${jpgInputPath}" -ss ${frameTime} -vframes 1 -q:v 2 "${jpgOutputDir}/frame.jpg"`);
+            }
+            
+            const jpgFiles = fs.readdirSync(jpgOutputDir).filter(f => f.endsWith('.jpg'));
+            
+            if (jpgFiles.length === 1) {
+              result = path.join(jpgOutputDir, jpgFiles[0]);
+              filename = "extracted-frame.jpg";
+              contentType = "image/jpeg";
+            } else {
+              const zipOutputPath = path.join(outputDir, `frames-${randomUUID()}.zip`);
+              const archive = archiver('zip', { zlib: { level: 9 } });
+              const zipStream = fs.createWriteStream(zipOutputPath);
+              
+              await new Promise<void>((resolve, reject) => {
+                archive.pipe(zipStream);
+                jpgFiles.forEach(file => {
+                  archive.file(path.join(jpgOutputDir, file), { name: file });
+                });
+                archive.finalize();
+                zipStream.on('close', () => resolve());
+                archive.on('error', reject);
+              });
+              
+              result = zipOutputPath;
+              filename = "extracted-frames.zip";
+              contentType = "application/zip";
+            }
+            break;
+          }
+
+          case "video-to-png": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to extract frames");
+            }
+            const pngInputPath = files[0].path;
+            const pngOutputDir = path.join(outputDir, `frames-png-${randomUUID()}`);
+            fs.mkdirSync(pngOutputDir, { recursive: true });
+            
+            const pngFrameTime = options.frameTime || "00:00:01";
+            const pngExtractAll = options.extractAll === true;
+            const pngInterval = sanitizeNumber(options.interval, 1, 0.1, 60);
+            
+            if (pngExtractAll) {
+              await execAsync(`ffmpeg -i "${pngInputPath}" -vf "fps=1/${pngInterval}" "${pngOutputDir}/frame_%04d.png"`);
+            } else {
+              await execAsync(`ffmpeg -i "${pngInputPath}" -ss ${pngFrameTime} -vframes 1 "${pngOutputDir}/frame.png"`);
+            }
+            
+            const pngFiles = fs.readdirSync(pngOutputDir).filter(f => f.endsWith('.png'));
+            
+            if (pngFiles.length === 1) {
+              result = path.join(pngOutputDir, pngFiles[0]);
+              filename = "extracted-frame.png";
+              contentType = "image/png";
+            } else {
+              const pngZipOutputPath = path.join(outputDir, `frames-${randomUUID()}.zip`);
+              const pngArchive = archiver('zip', { zlib: { level: 9 } });
+              const pngZipStream = fs.createWriteStream(pngZipOutputPath);
+              
+              await new Promise<void>((resolve, reject) => {
+                pngArchive.pipe(pngZipStream);
+                pngFiles.forEach(file => {
+                  pngArchive.file(path.join(pngOutputDir, file), { name: file });
+                });
+                pngArchive.finalize();
+                pngZipStream.on('close', () => resolve());
+                pngArchive.on('error', reject);
+              });
+              
+              result = pngZipOutputPath;
+              filename = "extracted-frames.zip";
+              contentType = "application/zip";
+            }
+            break;
+          }
+
+          case "extract-frames": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to extract frames");
+            }
+            const extractInputPath = files[0].path;
+            const extractOutputDir = path.join(outputDir, `extracted-frames-${randomUUID()}`);
+            fs.mkdirSync(extractOutputDir, { recursive: true });
+            
+            const extractInterval = sanitizeNumber(options.interval, 1, 0.1, 60);
+            const outputFormat = options.outputFormat === "png" ? "png" : "jpg";
+            const quality = outputFormat === "jpg" ? "-q:v 2" : "";
+            
+            await execAsync(`ffmpeg -i "${extractInputPath}" -vf "fps=1/${extractInterval}" ${quality} "${extractOutputDir}/frame_%04d.${outputFormat}"`);
+            
+            const extractedFiles = fs.readdirSync(extractOutputDir).filter(f => f.endsWith(`.${outputFormat}`));
+            
+            const extractZipPath = path.join(outputDir, `extracted-frames-${randomUUID()}.zip`);
+            const extractArchive = archiver('zip', { zlib: { level: 9 } });
+            const extractZipStream = fs.createWriteStream(extractZipPath);
+            
+            await new Promise<void>((resolve, reject) => {
+              extractArchive.pipe(extractZipStream);
+              extractedFiles.forEach(file => {
+                extractArchive.file(path.join(extractOutputDir, file), { name: file });
+              });
+              extractArchive.finalize();
+              extractZipStream.on('close', () => resolve());
+              extractArchive.on('error', reject);
+            });
+            
+            result = extractZipPath;
+            filename = "extracted-frames.zip";
+            contentType = "application/zip";
+            break;
+          }
+
+          case "video-metadata-editor": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to edit metadata");
+            }
+            const metaInputPath = files[0].path;
+            const metaOutputPath = path.join(outputDir, `metadata-edited-${randomUUID()}.mp4`);
+            
+            const title = options.title || "";
+            const artist = options.artist || "";
+            const album = options.album || "";
+            const year = options.year || "";
+            const comment = options.comment || "";
+            
+            let metadataArgs = "";
+            if (title) metadataArgs += ` -metadata title="${title.replace(/"/g, '\\"')}"`;
+            if (artist) metadataArgs += ` -metadata artist="${artist.replace(/"/g, '\\"')}"`;
+            if (album) metadataArgs += ` -metadata album="${album.replace(/"/g, '\\"')}"`;
+            if (year) metadataArgs += ` -metadata year="${year}"`;
+            if (comment) metadataArgs += ` -metadata comment="${comment.replace(/"/g, '\\"')}"`;
+            
+            if (options.clearMetadata) {
+              await execAsync(`ffmpeg -i "${metaInputPath}" -map_metadata -1 -c copy "${metaOutputPath}"`);
+            } else if (metadataArgs) {
+              await execAsync(`ffmpeg -i "${metaInputPath}"${metadataArgs} -c copy "${metaOutputPath}"`);
+            } else {
+              await execAsync(`ffmpeg -i "${metaInputPath}" -c copy "${metaOutputPath}"`);
+            }
+            
+            result = metaOutputPath;
+            filename = "metadata-edited-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
           }
 
               case "medium":

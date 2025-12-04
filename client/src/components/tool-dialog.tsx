@@ -9,6 +9,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { FileUpload } from "./file-upload";
+import { ScreenRecorder } from "./screen-recorder";
+import { WebcamRecorder } from "./webcam-recorder";
 import { ToolOptionsComponent } from "./tool-options";
 import {
   type PdfTool,
@@ -79,13 +81,6 @@ import {
   Focus,
   Wand2,
   UserX,
-  ShieldOff,
-  ChevronsUp,
-  GitCompare,
-  ZoomIn,
-  Focus,
-  Wand2,
-  UserX,
   Mic,
   Mic2,
   Volume2,
@@ -100,6 +95,7 @@ import {
   Crop,
   Square,
   RefreshCw,
+  Monitor,
   type LucideIcon,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -176,6 +172,7 @@ const iconMap: Record<string, LucideIcon> = {
   Crop,
   Square,
   RefreshCw,
+  Monitor,
 };
 
 interface ToolDialogProps {
@@ -436,6 +433,11 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
         tool.type === "flip-video" || tool.type === "video-flipper") {
       return "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska,.mp4,.webm,.mov,.avi,.mkv";
     }
+    if (tool.type === "video-brightness" || tool.type === "video-contrast" || 
+        tool.type === "video-to-jpg" || tool.type === "video-to-png" || 
+        tool.type === "extract-frames" || tool.type === "video-metadata-editor") {
+      return "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska,.mp4,.webm,.mov,.avi,.mkv";
+    }
     if (tool.type === "merge-video" || tool.type === "combine-videos" || tool.type === "video-joiner") {
       return "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska,.mp4,.webm,.mov,.avi,.mkv";
     }
@@ -595,6 +597,20 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
 
         <div className="mt-4 space-y-6">
           {processingState === "idle" && (
+            (tool.type === "screen-recorder" || tool.type === "record-screen-camera" || tool.type === "webcam-recorder") ? (
+              <div className="space-y-6">
+                {tool.type === "webcam-recorder" ? (
+                  <WebcamRecorder />
+                ) : (
+                  <ScreenRecorder includeCamera={tool.type === "record-screen-camera"} />
+                )}
+                <div className="flex justify-end">
+                  <Button variant="outline" onClick={handleClose} data-testid="button-cancel">
+                    Close
+                  </Button>
+                </div>
+              </div>
+            ) : (
             <>
               <FileUpload
                 accept={getAcceptType()}
