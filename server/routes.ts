@@ -30932,6 +30932,7 @@ file '${loopInputPath}'`;
             filename = "color-corrected-video.mp4";
             contentType = "video/mp4";
             break;
+          }
 
           case "video-brightness": {
             if (files.length === 0) {
@@ -31128,43 +31129,6 @@ file '${loopInputPath}'`;
             contentType = "video/mp4";
             break;
           }
-          }
-
-              case "medium":
-                flvSettings = "-c:v flv1 -q:v 5 -c:a mp3 -b:a 192k -ar 44100";
-                break;
-              default:
-                flvSettings = "-c:v flv1 -q:v 2 -c:a mp3 -b:a 256k -ar 44100";
-            }
-            
-            await execAsync(`ffmpeg -i "${videoToFlvInputPath}" ${flvSettings} "${videoToFlvOutputPath}"`);
-            result = videoToFlvOutputPath;
-            filename = "converted.flv";
-            contentType = "video/x-flv";
-            break;
-          }
-
-
-              case "swap-channels":
-                channelFilter = "-af 'pan=stereo|c0=c1|c1=c0'";
-                break;
-              case "left-only":
-                channelFilter = "-af 'pan=mono|c0=c0' -ac 1";
-                break;
-              case "right-only":
-                channelFilter = "-af 'pan=mono|c0=c1' -ac 1";
-                break;
-              default:
-                channelFilter = "-ac 1";
-            }
-            
-            await execAsync(`ffmpeg -i "${channelInputPath}" ${channelFilter} "${channelOutputPath}"`);
-            result = channelOutputPath;
-            filename = "channel-changed-audio.mp3";
-            contentType = "audio/mpeg";
-            break;
-          }
-
 
           case "json-formatter": {
             let jsonInput = options.jsonInput || '';
@@ -31181,7 +31145,7 @@ file '${loopInputPath}'`;
             break;
           }
 
-                    default:
+          default:
             throw new Error(`Unknown tool type: ${toolType}`);
         }
         
