@@ -695,6 +695,16 @@ export const pdfToolTypes = [
   "mp4-to-avi",
   "avi-to-mp4",
   "mov-to-mp4",
+  "mp4-to-mov",
+  "mkv-to-mp4",
+  "mp4-to-mkv",
+  "webm-to-mp4",
+  "mp4-to-webm",
+  "avi-to-mpeg",
+  "mp4-to-gif",
+  "gif-to-mp4-hd",
+  "video-to-webm",
+  "video-to-flv",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -19546,6 +19556,256 @@ const newVideoTools: PdfTool[] = [
 
 <h2>Works on Any Device</h2>
 <p>No need to install any software. Upload your MOV file from any device with a web browser. Conversion happens in the cloud. Download your MP4 file when ready. It's that simple.</p>`,
+  },
+  {
+    id: "mp4-to-mov",
+    name: "MP4 to MOV",
+    description: "Convert MP4 videos to Apple QuickTime MOV format",
+    icon: "Film",
+    type: "mp4-to-mov",
+    color: "bg-purple-500",
+    emoji: "🎬",
+    metaTitle: "MP4 to MOV Converter Online Free - Convert MP4 to MOV | Video Tools",
+    metaDescription: "Convert MP4 to MOV online for free. Transform MP4 videos into Apple QuickTime format. Fast, secure, and maintains original quality.",
+    seoArticle: `<h2>MP4 to MOV Converter - Professional Apple Format</h2>
+<p>Need to convert MP4 files to MOV for Apple devices or Final Cut Pro editing? Our free online converter transforms standard MP4 videos into high-quality QuickTime MOV files, perfect for the Apple ecosystem.</p>
+
+<h2>Why Convert to MOV?</h2>
+<p>MOV is Apple's native video format, offering excellent compatibility with macOS and iOS applications. Final Cut Pro, iMovie, and other Apple software work seamlessly with MOV files, making it ideal for professional video editing workflows.</p>
+
+<h2>Preserve Video Quality</h2>
+<p>Our conversion process maintains the original video quality. We use efficient encoding to ensure your videos look just as good in MOV format. No quality loss, no artifacts - just perfect conversion.</p>
+
+<h2>Fast Cloud Processing</h2>
+<p>Upload your MP4 file and let our powerful servers handle the conversion. No software installation required. Works on any device with a web browser. Download your MOV file when ready.</p>
+
+<h2>Optimized for Apple Devices</h2>
+<p>The output MOV files are optimized for playback on Mac, iPhone, iPad, and Apple TV. Share videos with Apple users effortlessly. Import directly into Apple's creative applications.</p>`,
+  },
+  {
+    id: "mkv-to-mp4",
+    name: "MKV to MP4",
+    description: "Convert MKV videos to widely compatible MP4 format",
+    icon: "FileVideo",
+    type: "mkv-to-mp4",
+    color: "bg-blue-500",
+    emoji: "🎞️",
+    metaTitle: "MKV to MP4 Converter Online Free - Convert MKV to MP4 | Video Tools",
+    metaDescription: "Convert MKV to MP4 online for free. Transform Matroska videos into universally compatible MP4. Preserves subtitles and audio tracks.",
+    seoArticle: `<h2>MKV to MP4 Converter - Universal Compatibility</h2>
+<p>MKV files offer excellent quality but limited device compatibility. Convert your MKV videos to MP4 for playback on virtually any device - smartphones, tablets, smart TVs, and gaming consoles.</p>
+
+<h2>Why Convert MKV to MP4?</h2>
+<p>While MKV is great for storing high-quality video with multiple audio tracks and subtitles, many devices don't support it natively. MP4 is the universal standard that works everywhere without requiring special players.</p>
+
+<h2>Preserve Quality and Features</h2>
+<p>Our converter maintains video quality during the format change. Audio tracks are preserved with high-quality encoding. Subtitles can be embedded or kept as separate tracks depending on your preference.</p>
+
+<h2>Handle Large Files</h2>
+<p>MKV files are often large, containing full HD or 4K content. Our cloud servers handle files of any size efficiently. Fast upload and processing ensure you get your converted file quickly.</p>
+
+<h2>No Software Required</h2>
+<p>Convert directly in your web browser. No need to download or install any software. Works on Windows, Mac, Linux, and mobile devices. Simple, fast, and completely free.</p>`,
+  },
+  {
+    id: "mp4-to-mkv",
+    name: "MP4 to MKV",
+    description: "Convert MP4 videos to Matroska MKV format",
+    icon: "Clapperboard",
+    type: "mp4-to-mkv",
+    color: "bg-indigo-500",
+    emoji: "📀",
+    metaTitle: "MP4 to MKV Converter Online Free - Convert MP4 to MKV | Video Tools",
+    metaDescription: "Convert MP4 to MKV online for free. Transform videos to Matroska format with multiple audio and subtitle track support.",
+    seoArticle: `<h2>MP4 to MKV Converter - Flexible Container Format</h2>
+<p>Convert your MP4 files to MKV (Matroska) format for enhanced flexibility. MKV supports multiple audio tracks, subtitles, and chapters - perfect for archiving and advanced playback scenarios.</p>
+
+<h2>Benefits of MKV Format</h2>
+<p>MKV is an open-source container that can hold virtually unlimited video, audio, and subtitle tracks. It's ideal for movies with multiple language options, director's commentary, or accessibility features.</p>
+
+<h2>Lossless Conversion</h2>
+<p>Our converter remuxes your MP4 content into an MKV container without re-encoding. This means instant conversion with zero quality loss. The video and audio data remain exactly the same.</p>
+
+<h2>Add Metadata and Chapters</h2>
+<p>MKV supports rich metadata and chapter markers. Perfect for organizing long videos, creating navigable content, and maintaining detailed file information.</p>
+
+<h2>Industry Standard Archival</h2>
+<p>Many video enthusiasts prefer MKV for archiving due to its flexibility and open standard. Convert your MP4 files to MKV for long-term storage with maximum format flexibility.</p>`,
+  },
+  {
+    id: "webm-to-mp4",
+    name: "WebM to MP4",
+    description: "Convert WebM videos to universal MP4 format",
+    icon: "Globe",
+    type: "webm-to-mp4",
+    color: "bg-green-500",
+    emoji: "🌐",
+    metaTitle: "WebM to MP4 Converter Online Free - Convert WebM to MP4 | Video Tools",
+    metaDescription: "Convert WebM to MP4 online for free. Transform web videos into universally compatible MP4 format. Fast and maintains quality.",
+    seoArticle: `<h2>WebM to MP4 Converter - From Web to Universal</h2>
+<p>WebM files are great for web browsers but may not play on all devices. Convert your WebM videos to MP4 for universal compatibility across all platforms and devices.</p>
+
+<h2>Why Convert WebM to MP4?</h2>
+<p>WebM was designed specifically for web use with HTML5 video. However, many mobile apps, media players, and older devices prefer MP4. Convert for maximum playback compatibility.</p>
+
+<h2>Maintain Video Quality</h2>
+<p>Our conversion process carefully transcodes WebM content to MP4 while preserving visual quality. VP8/VP9 video is converted to H.264 for broad hardware support.</p>
+
+<h2>Perfect for Mobile Sharing</h2>
+<p>MP4 files are the standard for mobile video. Convert your WebM clips for easy sharing on social media, messaging apps, and cloud storage platforms.</p>
+
+<h2>Fast Online Conversion</h2>
+<p>Upload your WebM file and get an MP4 in minutes. No software installation required. Works on any device with a web browser.</p>`,
+  },
+  {
+    id: "mp4-to-webm",
+    name: "MP4 to WebM",
+    description: "Convert MP4 videos to web-optimized WebM format",
+    icon: "Monitor",
+    type: "mp4-to-webm",
+    color: "bg-teal-500",
+    emoji: "💻",
+    metaTitle: "MP4 to WebM Converter Online Free - Convert MP4 to WebM | Video Tools",
+    metaDescription: "Convert MP4 to WebM online for free. Create web-optimized videos with VP9 encoding. Perfect for HTML5 video embedding.",
+    seoArticle: `<h2>MP4 to WebM Converter - Optimize for the Web</h2>
+<p>Convert your MP4 videos to WebM format for optimal web performance. WebM offers excellent compression and is natively supported by all modern browsers including Chrome, Firefox, and Edge.</p>
+
+<h2>Perfect for Web Development</h2>
+<p>WebM files load faster and stream more efficiently on websites. The format was specifically designed for HTML5 video elements. Improve your website's performance with WebM.</p>
+
+<h2>VP9 Encoding</h2>
+<p>Our converter uses the efficient VP9 codec, which provides excellent quality at smaller file sizes. Great for reducing bandwidth costs while maintaining visual quality.</p>
+
+<h2>HTML5 Compatible</h2>
+<p>WebM works perfectly with HTML5 video tags. No plugins required - videos play natively in browsers. Ideal for responsive web design and progressive web apps.</p>
+
+<h2>Open and Royalty-Free</h2>
+<p>WebM is an open format with no licensing fees. Use it freely for commercial and personal projects. The ideal choice for web content creators.</p>`,
+  },
+  {
+    id: "avi-to-mpeg",
+    name: "AVI to MPEG",
+    description: "Convert AVI videos to MPEG format for broad compatibility",
+    icon: "Tv",
+    type: "avi-to-mpeg",
+    color: "bg-orange-500",
+    emoji: "📺",
+    metaTitle: "AVI to MPEG Converter Online Free - Convert AVI to MPEG | Video Tools",
+    metaDescription: "Convert AVI to MPEG online for free. Transform AVI files to DVD-compatible MPEG format. Perfect for disc authoring and legacy devices.",
+    seoArticle: `<h2>AVI to MPEG Converter - DVD-Ready Format</h2>
+<p>Convert your AVI files to MPEG format for DVD authoring and compatibility with legacy devices. MPEG is the standard format for DVD video and many older media players.</p>
+
+<h2>Perfect for DVD Creation</h2>
+<p>MPEG-2 is the standard format for DVD video. Convert your AVI files to MPEG to create DVDs that play in any standard DVD player. Ideal for archiving home videos.</p>
+
+<h2>Broad Hardware Support</h2>
+<p>MPEG is supported by a wide range of devices including older TVs, DVD players, and media centers. Convert AVI files for playback on equipment that doesn't support modern formats.</p>
+
+<h2>Consistent Quality</h2>
+<p>Our converter produces high-quality MPEG files suitable for DVD authoring. Choose from different quality presets to balance file size and visual quality.</p>
+
+<h2>Legacy System Compatible</h2>
+<p>Some industrial and professional equipment still requires MPEG format. Convert your AVI files for use with legacy systems and specialized hardware.</p>`,
+  },
+  {
+    id: "mp4-to-gif",
+    name: "MP4 to GIF",
+    description: "Convert MP4 video clips to animated GIF images",
+    icon: "Image",
+    type: "mp4-to-gif",
+    color: "bg-pink-500",
+    emoji: "🖼️",
+    metaTitle: "MP4 to GIF Converter Online Free - Convert MP4 to GIF | Video Tools",
+    metaDescription: "Convert MP4 videos to animated GIFs online for free. Create shareable animations from video clips. Customize size, quality, and frame rate.",
+    seoArticle: `<h2>MP4 to GIF Converter - Create Shareable Animations</h2>
+<p>Transform your MP4 video clips into animated GIFs that play anywhere. GIFs are perfect for social media, messaging apps, forums, and websites where video may not be supported.</p>
+
+<h2>Universal Compatibility</h2>
+<p>GIFs work everywhere without requiring a video player. They auto-play in browsers, emails, and messaging apps. Share moments, reactions, and highlights effortlessly.</p>
+
+<h2>Customizable Output</h2>
+<p>Control the quality and size of your GIF. Adjust frame rate for smooth or stylized animation. Set output dimensions to balance quality and file size.</p>
+
+<h2>Select the Perfect Clip</h2>
+<p>Specify exact start time and duration to capture just the moment you want. Preview before converting to ensure you get the perfect clip.</p>
+
+<h2>Optimize for Sharing</h2>
+<p>Create GIFs optimized for social media platforms. Reduce file size while maintaining visual appeal. Perfect for Twitter, Reddit, Discord, and more.</p>`,
+  },
+  {
+    id: "gif-to-mp4-hd",
+    name: "GIF to MP4 HD",
+    description: "Convert animated GIFs to high-quality MP4 video",
+    icon: "Sparkles",
+    type: "gif-to-mp4-hd",
+    color: "bg-yellow-500",
+    emoji: "✨",
+    metaTitle: "GIF to MP4 HD Converter Online Free - Convert GIF to MP4 | Video Tools",
+    metaDescription: "Convert animated GIFs to high-quality MP4 videos online for free. Reduce file sizes dramatically while maintaining visual quality.",
+    seoArticle: `<h2>GIF to MP4 HD Converter - Smaller Files, Better Quality</h2>
+<p>Convert your animated GIFs to high-definition MP4 videos. MP4 files are typically 90% smaller than GIFs while maintaining or even improving visual quality.</p>
+
+<h2>Dramatic Size Reduction</h2>
+<p>GIF is an inefficient format for animations. Converting to MP4 can reduce file sizes by 10x or more. Share and store your animations more efficiently.</p>
+
+<h2>Better Color Quality</h2>
+<p>GIF is limited to 256 colors. MP4 supports millions of colors, resulting in smoother gradients and more vibrant images. Upgrade your animations to true color.</p>
+
+<h2>HD Output</h2>
+<p>Our converter produces high-definition MP4 files that look crisp on any screen. Choose quality settings to balance file size and visual fidelity.</p>
+
+<h2>Social Media Ready</h2>
+<p>MP4 videos are preferred by social media platforms. They load faster, use less bandwidth, and often loop automatically. Convert GIFs for better social sharing.</p>`,
+  },
+  {
+    id: "video-to-webm",
+    name: "Video to WebM",
+    description: "Convert any video format to web-optimized WebM",
+    icon: "Upload",
+    type: "video-to-webm",
+    color: "bg-emerald-500",
+    emoji: "📤",
+    metaTitle: "Video to WebM Converter Online Free - Convert Video to WebM | Video Tools",
+    metaDescription: "Convert any video to WebM format online for free. Create web-optimized videos from MP4, AVI, MOV, MKV and more.",
+    seoArticle: `<h2>Video to WebM Converter - Web-Ready Format</h2>
+<p>Convert videos from any format to WebM for optimal web performance. WebM is the ideal format for HTML5 video, offering excellent compression and universal browser support.</p>
+
+<h2>Support for All Formats</h2>
+<p>Upload videos in MP4, AVI, MOV, MKV, WMV, FLV, or any other common format. Our converter handles them all and produces optimized WebM output.</p>
+
+<h2>VP9 Compression</h2>
+<p>We use the efficient VP9 codec for optimal file sizes without sacrificing quality. VP9 can reduce file sizes by 30-50% compared to H.264 at similar quality levels.</p>
+
+<h2>Perfect for Websites</h2>
+<p>WebM files stream efficiently and load quickly on websites. Reduce bandwidth costs while providing smooth playback for your visitors.</p>
+
+<h2>Open Standard</h2>
+<p>WebM is an open, royalty-free format. Use it freely for any purpose. Supported by Chrome, Firefox, Edge, and Opera browsers natively.</p>`,
+  },
+  {
+    id: "video-to-flv",
+    name: "Video to FLV",
+    description: "Convert videos to Flash Video FLV format",
+    icon: "Zap",
+    type: "video-to-flv",
+    color: "bg-red-500",
+    emoji: "⚡",
+    metaTitle: "Video to FLV Converter Online Free - Convert Video to FLV | Video Tools",
+    metaDescription: "Convert any video to FLV format online for free. Create Flash Video files from MP4, AVI, MOV and more for legacy streaming systems.",
+    seoArticle: `<h2>Video to FLV Converter - Legacy Flash Format</h2>
+<p>Convert your videos to FLV (Flash Video) format for use with legacy streaming systems and applications that still require Flash Video compatibility.</p>
+
+<h2>Legacy System Support</h2>
+<p>Some older content management systems, streaming servers, and applications still use FLV. Convert your modern videos for compatibility with these legacy systems.</p>
+
+<h2>Small File Sizes</h2>
+<p>FLV offers good compression for streaming video. Create efficient files for bandwidth-limited environments and older infrastructure.</p>
+
+<h2>Streaming Ready</h2>
+<p>FLV was designed for streaming video over the internet. The format supports progressive download and streaming protocols.</p>
+
+<h2>Convert from Any Format</h2>
+<p>Upload MP4, AVI, MOV, MKV, or any other video format. Our converter handles the transformation to FLV with customizable quality settings.</p>`,
   },
 ];
 
