@@ -12966,6 +12966,320 @@ export function ToolOptionsComponent({
           </div>
         </div>
       );
+
+    case "spectrogram-generator":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload an audio file to generate a detailed spectrogram showing frequencies over time.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Width (px)</Label>
+              <Input
+                type="number"
+                placeholder="1920"
+                value={options.width || "1920"}
+                onChange={(e) => updateOption("width", e.target.value)}
+                data-testid="input-spectro-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Height (px)</Label>
+              <Input
+                type="number"
+                placeholder="500"
+                value={options.height || "500"}
+                onChange={(e) => updateOption("height", e.target.value)}
+                data-testid="input-spectro-height"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Color Mode</Label>
+            <Select
+              value={options.colorMode || "channel"}
+              onValueChange={(value) => updateOption("colorMode", value)}
+            >
+              <SelectTrigger data-testid="select-color-mode">
+                <SelectValue placeholder="Select mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="channel">Channel</SelectItem>
+                <SelectItem value="intensity">Intensity</SelectItem>
+                <SelectItem value="rainbow">Rainbow</SelectItem>
+                <SelectItem value="moreland">Moreland</SelectItem>
+                <SelectItem value="nebulae">Nebulae</SelectItem>
+                <SelectItem value="fire">Fire</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "audio-normalizer":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Normalize audio volume to consistent levels for professional sound quality.
+          </p>
+          <div className="space-y-2">
+            <Label>Normalization Type</Label>
+            <Select
+              value={options.normalizationType || "loudnorm"}
+              onValueChange={(value) => updateOption("normalizationType", value)}
+            >
+              <SelectTrigger data-testid="select-norm-type">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="loudnorm">Loudness (LUFS)</SelectItem>
+                <SelectItem value="peak">Peak Normalization</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Target Level (dB LUFS)</Label>
+            <Select
+              value={options.targetLevel || "-16"}
+              onValueChange={(value) => updateOption("targetLevel", value)}
+            >
+              <SelectTrigger data-testid="select-target-level">
+                <SelectValue placeholder="Select level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="-14">-14 LUFS (Streaming)</SelectItem>
+                <SelectItem value="-16">-16 LUFS (Standard)</SelectItem>
+                <SelectItem value="-19">-19 LUFS (Podcast)</SelectItem>
+                <SelectItem value="-23">-23 LUFS (Broadcast)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "remove-vocals":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Remove vocals from songs to create karaoke and instrumental versions. Works best with stereo recordings.
+          </p>
+          <div className="p-4 bg-muted rounded-lg">
+            <p className="text-sm">
+              This tool uses phase cancellation to remove center-panned vocals. Results vary depending on the original mix.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "vocal-remover":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Professional vocal extraction and removal from audio tracks for music production.
+          </p>
+          <div className="p-4 bg-muted rounded-lg">
+            <p className="text-sm">
+              Removes vocals by targeting the center channel where vocals typically sit in a stereo mix.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "isolate-vocals":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Extract and isolate vocals from songs for acapella versions and remixing.
+          </p>
+          <div className="p-4 bg-muted rounded-lg">
+            <p className="text-sm">
+              Isolates the vocal frequency range (300Hz - 3000Hz) to extract singing from instrumentals.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "audio-noise-reduction":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Remove background noise, hiss, and hum from audio recordings.
+          </p>
+          <div className="space-y-2">
+            <Label>Noise Reduction Amount</Label>
+            <Select
+              value={options.noiseReduction || "0.21"}
+              onValueChange={(value) => updateOption("noiseReduction", value)}
+            >
+              <SelectTrigger data-testid="select-noise-reduction">
+                <SelectValue placeholder="Select amount" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0.10">Light</SelectItem>
+                <SelectItem value="0.21">Medium</SelectItem>
+                <SelectItem value="0.40">Strong</SelectItem>
+                <SelectItem value="0.60">Maximum</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Noise Floor (dB)</Label>
+            <Select
+              value={options.noiseFloor || "-25"}
+              onValueChange={(value) => updateOption("noiseFloor", value)}
+            >
+              <SelectTrigger data-testid="select-noise-floor">
+                <SelectValue placeholder="Select floor" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="-15">-15 dB (High noise)</SelectItem>
+                <SelectItem value="-25">-25 dB (Medium noise)</SelectItem>
+                <SelectItem value="-35">-35 dB (Low noise)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "denoise-audio":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Advanced audio denoising for crystal-clear sound quality.
+          </p>
+          <div className="space-y-2">
+            <Label>Denoise Strength</Label>
+            <Select
+              value={options.denoiseStrength || "medium"}
+              onValueChange={(value) => updateOption("denoiseStrength", value)}
+            >
+              <SelectTrigger data-testid="select-denoise-strength">
+                <SelectValue placeholder="Select strength" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="light">Light (Preserve quality)</SelectItem>
+                <SelectItem value="medium">Medium (Balanced)</SelectItem>
+                <SelectItem value="strong">Strong (Maximum cleaning)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "audio-fader":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Add professional fade-in and fade-out effects to your audio files.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Fade In Duration (seconds)</Label>
+              <Input
+                type="number"
+                step="0.5"
+                min="0"
+                placeholder="0"
+                value={options.fadeInDuration || "0"}
+                onChange={(e) => updateOption("fadeInDuration", e.target.value)}
+                data-testid="input-fade-in"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Fade Out Duration (seconds)</Label>
+              <Input
+                type="number"
+                step="0.5"
+                min="0"
+                placeholder="3"
+                value={options.fadeOutDuration || "3"}
+                onChange={(e) => updateOption("fadeOutDuration", e.target.value)}
+                data-testid="input-fade-out"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Fade Curve</Label>
+            <Select
+              value={options.fadeType || "tri"}
+              onValueChange={(value) => updateOption("fadeType", value)}
+            >
+              <SelectTrigger data-testid="select-fade-type">
+                <SelectValue placeholder="Select curve" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="tri">Linear</SelectItem>
+                <SelectItem value="log">Logarithmic</SelectItem>
+                <SelectItem value="exp">Exponential</SelectItem>
+                <SelectItem value="qsin">Sine</SelectItem>
+                <SelectItem value="hsin">Half Sine</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "8d-audio-converter":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Create immersive 8D audio effects with spatial sound movement. Best experienced with headphones.
+          </p>
+          <div className="space-y-2">
+            <Label>Rotation Speed</Label>
+            <Select
+              value={options.rotationSpeed || "0.125"}
+              onValueChange={(value) => updateOption("rotationSpeed", value)}
+            >
+              <SelectTrigger data-testid="select-rotation-speed">
+                <SelectValue placeholder="Select speed" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0.05">Very Slow</SelectItem>
+                <SelectItem value="0.1">Slow</SelectItem>
+                <SelectItem value="0.125">Medium</SelectItem>
+                <SelectItem value="0.2">Fast</SelectItem>
+                <SelectItem value="0.3">Very Fast</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="p-4 bg-muted rounded-lg">
+            <p className="text-sm font-medium">Best with headphones</p>
+            <p className="text-sm text-muted-foreground">
+              8D audio creates a surround sound effect that works best when listening with headphones or earbuds.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "change-audio-channels":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert between stereo and mono audio or swap channels.
+          </p>
+          <div className="space-y-2">
+            <Label>Channel Mode</Label>
+            <Select
+              value={options.channelMode || "stereo-to-mono"}
+              onValueChange={(value) => updateOption("channelMode", value)}
+            >
+              <SelectTrigger data-testid="select-channel-mode">
+                <SelectValue placeholder="Select mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="stereo-to-mono">Stereo to Mono</SelectItem>
+                <SelectItem value="mono-to-stereo">Mono to Stereo</SelectItem>
+                <SelectItem value="swap-channels">Swap Left/Right</SelectItem>
+                <SelectItem value="left-only">Extract Left Channel</SelectItem>
+                <SelectItem value="right-only">Extract Right Channel</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }

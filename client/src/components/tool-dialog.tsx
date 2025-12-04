@@ -410,7 +410,7 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     if (tool.type === "audio-metadata-editor" || tool.type === "mp3-tag-editor") {
       return "audio/*,.mp3,.wav,.ogg,.m4a,.flac,.aac";
     }
-    if (tool.type === "audio-visualizer") {
+    if (tool.type === "audio-visualizer" || tool.type === "spectrogram-generator" || tool.type === "audio-normalizer" || tool.type === "remove-vocals" || tool.type === "vocal-remover" || tool.type === "isolate-vocals" || tool.type === "audio-noise-reduction" || tool.type === "denoise-audio" || tool.type === "audio-fader" || tool.type === "8d-audio-converter" || tool.type === "change-audio-channels") {
       return "audio/*,.mp3,.wav,.ogg,.m4a,.flac,.aac";
     }
     return ".pdf,application/pdf";

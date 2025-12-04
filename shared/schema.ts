@@ -675,6 +675,16 @@ export const pdfToolTypes = [
   "audio-metadata-editor",
   "mp3-tag-editor",
   "audio-visualizer",
+  "spectrogram-generator",
+  "audio-normalizer",
+  "remove-vocals",
+  "vocal-remover",
+  "isolate-vocals",
+  "audio-noise-reduction",
+  "denoise-audio",
+  "audio-fader",
+  "8d-audio-converter",
+  "change-audio-channels",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -19007,6 +19017,256 @@ const newAudioTools: PdfTool[] = [
 
 <h2>Export and Share</h2>
 <p>Download your visualizations as high-resolution images. Export animated versions for video use. Share directly to social media. Use in presentations, websites, or print materials.</p>`,
+  },
+  {
+    id: "spectrogram-generator",
+    name: "Spectrogram Generator",
+    description: "Generate visual spectrograms from audio files showing frequency over time",
+    icon: "BarChart3",
+    type: "spectrogram-generator",
+    color: "bg-violet-500",
+    emoji: "📊",
+    metaTitle: "Spectrogram Generator Online Free - Audio Frequency Visualization | Audio Tools",
+    metaDescription: "Generate spectrograms from audio files online for free. Visualize audio frequencies over time with our professional spectrogram tool. No software needed.",
+    seoArticle: `<h2>Spectrogram Generator - Visualize Audio Frequencies</h2>
+<p>Transform your audio files into detailed spectrograms that reveal the frequency content over time. Our free online spectrogram generator creates professional-quality visualizations perfect for audio analysis, music production, and scientific research.</p>
+
+<h2>Understanding Spectrograms</h2>
+<p>A spectrogram displays three dimensions of audio: time on the horizontal axis, frequency on the vertical axis, and amplitude represented by color intensity. This visualization reveals patterns invisible in standard waveforms, including harmonics, formants, and frequency changes.</p>
+
+<h2>Professional Analysis Tools</h2>
+<p>Audio engineers use spectrograms to identify frequency issues in mixes. Linguists analyze speech patterns and phonetics. Musicians study instrumental timbre and overtones. Scientists examine animal calls and environmental sounds. Our tool serves all these applications.</p>
+
+<h2>Customizable Display Options</h2>
+<p>Adjust the frequency range to focus on specific bands. Choose from multiple color schemes for optimal visibility. Set time resolution to capture fast transients or view longer passages. Export high-resolution images for reports and presentations.</p>
+
+<h2>Easy One-Click Generation</h2>
+<p>Simply upload your audio file and our tool instantly generates a detailed spectrogram. Supports MP3, WAV, FLAC, and other common formats. Download your spectrogram as a high-quality PNG image ready for any use.</p>`,
+  },
+  {
+    id: "audio-normalizer",
+    name: "Audio Normalizer",
+    description: "Normalize audio volume to consistent levels across your files",
+    icon: "SlidersHorizontal",
+    type: "audio-normalizer",
+    color: "bg-cyan-500",
+    emoji: "📢",
+    metaTitle: "Audio Normalizer Online Free - Normalize Audio Volume | Audio Tools",
+    metaDescription: "Normalize audio volume online for free. Balance audio levels across files with our professional normalization tool. Supports all formats.",
+    seoArticle: `<h2>Audio Normalizer - Consistent Volume Levels</h2>
+<p>Ensure consistent audio levels across all your files with our free online audio normalizer. Whether you are preparing a podcast, mastering music, or compiling a playlist, normalized audio creates a professional listening experience without sudden volume changes.</p>
+
+<h2>What is Audio Normalization?</h2>
+<p>Normalization analyzes your audio and adjusts the overall volume to reach a target level. Unlike compression, normalization maintains the dynamic range of your audio while ensuring the peak or average volume hits your specified target. The result is louder audio without distortion or quality loss.</p>
+
+<h2>Peak vs. Loudness Normalization</h2>
+<p>Choose peak normalization to set the maximum level, ideal for preventing clipping. Select loudness normalization (LUFS) for broadcast-standard levels used in podcasts, streaming, and professional audio. Each method serves different purposes and industry standards.</p>
+
+<h2>Batch Processing</h2>
+<p>Normalize multiple files to the same target level. Perfect for album mastering, podcast episodes, or audio library organization. All files will have consistent playback volume, creating a seamless listening experience.</p>
+
+<h2>Quality Preservation</h2>
+<p>Our normalization process preserves audio quality throughout. Files are processed in high resolution, and you can choose your output format and quality settings. The original dynamics and character of your audio remain intact.</p>`,
+  },
+  {
+    id: "remove-vocals",
+    name: "Remove Vocals (Karaoke)",
+    description: "Remove vocals from songs to create karaoke tracks and instrumentals",
+    icon: "MicOff",
+    type: "remove-vocals",
+    color: "bg-pink-500",
+    emoji: "🎤",
+    metaTitle: "Remove Vocals Online Free - Create Karaoke Tracks | Audio Tools",
+    metaDescription: "Remove vocals from songs online for free. Create karaoke and instrumental versions instantly. AI-powered vocal removal technology.",
+    seoArticle: `<h2>Remove Vocals - Create Karaoke Tracks Instantly</h2>
+<p>Transform any song into a karaoke or instrumental version with our advanced vocal removal tool. Using sophisticated audio processing algorithms, we separate vocals from instrumentals, giving you clean backing tracks for singing, remixing, or practice.</p>
+
+<h2>Advanced Separation Technology</h2>
+<p>Our vocal removal uses phase cancellation and frequency analysis techniques to isolate and remove vocals while preserving the instrumental elements. The result is a clean backing track with minimal artifacts, ready for karaoke or creative use.</p>
+
+<h2>Perfect for Karaoke</h2>
+<p>Create your own karaoke versions of any song. Practice singing with professional backing tracks. Host karaoke parties with songs from your personal collection. Our tool makes any track ready for the spotlight.</p>
+
+<h2>Music Production Applications</h2>
+<p>DJs use vocal-free versions for remixes and mashups. Music producers sample instrumentals for new compositions. Cover artists create backing tracks for performances. The creative possibilities are endless.</p>
+
+<h2>Fast and Easy Processing</h2>
+<p>Upload your audio file and receive the instrumental version in moments. No complex settings or audio engineering knowledge required. Download your karaoke track in high quality MP3 or WAV format.</p>`,
+  },
+  {
+    id: "vocal-remover",
+    name: "Vocal Remover",
+    description: "Professional vocal extraction and removal from audio tracks",
+    icon: "UserMinus",
+    type: "vocal-remover",
+    color: "bg-rose-500",
+    emoji: "🔇",
+    metaTitle: "Vocal Remover Online Free - Remove Singing from Songs | Audio Tools",
+    metaDescription: "Remove vocals from audio tracks online for free. Professional vocal extraction technology for music and audio production.",
+    seoArticle: `<h2>Vocal Remover - Professional Vocal Extraction</h2>
+<p>Our vocal remover uses advanced audio processing to separate and remove vocal tracks from music. Whether creating instrumentals, sampling beats, or preparing backing tracks, this tool delivers professional-quality results without expensive software.</p>
+
+<h2>How Vocal Removal Works</h2>
+<p>Vocals typically appear in the center of a stereo mix. Our algorithm analyzes frequency patterns, stereo positioning, and audio characteristics to identify and remove vocal elements while preserving the remaining instrumental content.</p>
+
+<h2>Multiple Use Cases</h2>
+<p>Create backing tracks for live performances. Remove vocals for dance remixes. Extract beats for new productions. Practice instruments with real song backing. Study musical arrangements without vocal distraction.</p>
+
+<h2>Quality Results</h2>
+<p>While perfect vocal removal depends on the original mix, our tool achieves excellent results on most commercial recordings. Center-panned vocals with full stereo instrumentation produce the cleanest separations.</p>
+
+<h2>Simple Process</h2>
+<p>Upload any audio file, click process, and download your vocal-free track. No technical expertise needed. Works with MP3, WAV, FLAC, and other popular formats.</p>`,
+  },
+  {
+    id: "isolate-vocals",
+    name: "Isolate Vocals",
+    description: "Extract and isolate vocals from songs for acapella and remixing",
+    icon: "User",
+    type: "isolate-vocals",
+    color: "bg-fuchsia-500",
+    emoji: "🎵",
+    metaTitle: "Isolate Vocals Online Free - Extract Vocals from Songs | Audio Tools",
+    metaDescription: "Isolate and extract vocals from any song online for free. Create acapella tracks and vocal samples. Professional vocal extraction.",
+    seoArticle: `<h2>Isolate Vocals - Extract Acapellas from Any Song</h2>
+<p>Extract clean vocal tracks from any song with our vocal isolation tool. Create acapella versions for remixes, mashups, or vocal sampling. Our advanced processing separates singing from instrumentation with impressive clarity.</p>
+
+<h2>Acapella Creation</h2>
+<p>Generate acapella versions of your favorite songs. Use isolated vocals for remix projects. Create vocal sample libraries. Study singing techniques by listening to vocals in isolation.</p>
+
+<h2>Advanced Isolation Algorithm</h2>
+<p>Our tool uses sophisticated audio analysis to identify and extract vocal frequencies from the full mix. Center-panned vocals with stereo instrumentation yield the cleanest results, though our algorithm works well on various mix types.</p>
+
+<h2>Creative Applications</h2>
+<p>DJs create mashups combining vocals from one song with instrumentals from another. Producers sample vocal hooks and phrases. Vocalists study phrasing and technique. Educators analyze singing for teaching purposes.</p>
+
+<h2>High-Quality Output</h2>
+<p>Download your isolated vocals in high-quality format. Results are suitable for professional production work. Process files up to full song length with consistent quality throughout.</p>`,
+  },
+  {
+    id: "audio-noise-reduction",
+    name: "Audio Noise Reduction",
+    description: "Remove background noise and hiss from audio recordings",
+    icon: "VolumeX",
+    type: "audio-noise-reduction",
+    color: "bg-teal-500",
+    emoji: "🔕",
+    metaTitle: "Audio Noise Reduction Online Free - Remove Background Noise | Audio Tools",
+    metaDescription: "Reduce audio noise online for free. Remove hiss, hum, and background noise from recordings. Professional noise reduction technology.",
+    seoArticle: `<h2>Audio Noise Reduction - Clean Up Your Recordings</h2>
+<p>Remove unwanted background noise from your audio files with our professional noise reduction tool. Whether dealing with hiss, hum, room noise, or environmental sounds, our processing cleans your audio while preserving the content you want to keep.</p>
+
+<h2>Types of Noise We Remove</h2>
+<p>Our tool handles various noise types effectively. White noise and hiss from recording equipment. Electrical hum from power lines. Air conditioning and fan noise. Traffic and environmental sounds. Each type requires different processing approaches.</p>
+
+<h2>Intelligent Processing</h2>
+<p>Our noise reduction algorithm analyzes your audio to distinguish between noise and desired content. It then reduces noise while preserving speech clarity, musical detail, and natural sound quality. The result is cleaner audio without artificial artifacts.</p>
+
+<h2>Professional Applications</h2>
+<p>Podcasters clean up recordings made in imperfect environments. Musicians remove studio noise from tracks. Archivists restore old recordings. Video producers improve location audio. Any recording benefits from noise reduction.</p>
+
+<h2>Adjustable Strength</h2>
+<p>Control the intensity of noise reduction to balance cleaning with quality preservation. Light reduction for subtle noise with maximum quality. Strong reduction for heavily degraded audio. Find the perfect setting for your needs.</p>`,
+  },
+  {
+    id: "denoise-audio",
+    name: "Denoise Audio",
+    description: "Advanced audio denoising for crystal-clear sound quality",
+    icon: "Sparkles",
+    type: "denoise-audio",
+    color: "bg-emerald-500",
+    emoji: "✨",
+    metaTitle: "Denoise Audio Online Free - Clean Audio Recordings | Audio Tools",
+    metaDescription: "Denoise audio files online for free. Advanced audio cleaning technology removes noise while preserving quality. Professional results.",
+    seoArticle: `<h2>Denoise Audio - Crystal Clear Sound Quality</h2>
+<p>Achieve professional-quality audio with our advanced denoising technology. Our tool intelligently removes background noise, static, and interference while preserving the clarity and natural character of your recordings.</p>
+
+<h2>Advanced Denoising Technology</h2>
+<p>Using sophisticated spectral analysis, our denoiser identifies noise patterns and removes them without affecting the audio you want to keep. The processing adapts to different noise profiles for optimal results on any recording.</p>
+
+<h2>Preserve Audio Quality</h2>
+<p>Unlike aggressive noise gates that can make audio sound unnatural, our denoising maintains smooth, natural sound. Voices retain their warmth. Music keeps its dynamics. Only the noise disappears.</p>
+
+<h2>Perfect for Voice Recordings</h2>
+<p>Podcasts and interviews sound more professional. Voiceovers become broadcast-ready. Phone recordings become understandable. Lectures and presentations gain clarity. Voice content benefits most from denoising.</p>
+
+<h2>Easy to Use</h2>
+<p>Upload your noisy audio file, select your denoising strength, and download the cleaned version. No audio engineering experience needed. Works with all common audio formats including MP3, WAV, and M4A.</p>`,
+  },
+  {
+    id: "audio-fader",
+    name: "Audio Fader",
+    description: "Add professional fade-in and fade-out effects to audio files",
+    icon: "TrendingUp",
+    type: "audio-fader",
+    color: "bg-amber-500",
+    emoji: "📉",
+    metaTitle: "Audio Fader Online Free - Add Fade In/Out Effects | Audio Tools",
+    metaDescription: "Add fade in and fade out effects to audio online for free. Create smooth transitions with customizable duration. Professional audio editing.",
+    seoArticle: `<h2>Audio Fader - Professional Fade Effects</h2>
+<p>Add smooth, professional fade-in and fade-out effects to your audio files. Whether you are editing music, podcasts, or sound effects, proper fades create polished, professional-sounding content with seamless beginnings and endings.</p>
+
+<h2>Customizable Fade Duration</h2>
+<p>Set exact fade durations to match your needs. Quick fades for tight edits. Long, gradual fades for ambient pieces. Independent control over fade-in and fade-out lengths. Precision timing for perfect results.</p>
+
+<h2>Fade Curve Options</h2>
+<p>Choose from different fade shapes. Linear fades provide constant volume change. Logarithmic curves sound more natural to human ears. Exponential fades create dramatic effects. S-curves offer smooth, organic transitions.</p>
+
+<h2>Essential for Audio Production</h2>
+<p>Fades prevent jarring starts and stops in audio. They are essential for professional music production. Podcast editors use them between segments. Video editors fade audio in sync with visuals. Every audio project benefits from proper fading.</p>
+
+<h2>Non-Destructive Preview</h2>
+<p>Preview your fade effects before applying them. Adjust durations and curves until perfect. Only then download your final faded audio. This workflow ensures you always get exactly the result you want.</p>`,
+  },
+  {
+    id: "8d-audio-converter",
+    name: "8D Audio Converter",
+    description: "Create immersive 8D audio effects with spatial sound movement",
+    icon: "Headphones",
+    type: "8d-audio-converter",
+    color: "bg-purple-500",
+    emoji: "🎧",
+    metaTitle: "8D Audio Converter Online Free - Create 8D Music | Audio Tools",
+    metaDescription: "Convert audio to 8D online for free. Create immersive spatial audio effects with sound movement. Perfect for headphone listening.",
+    seoArticle: `<h2>8D Audio Converter - Immersive Spatial Sound</h2>
+<p>Transform your music into immersive 8D audio that swirls around your head. This spatial audio effect creates a stunning listening experience where sound appears to move in three-dimensional space around the listener.</p>
+
+<h2>What is 8D Audio?</h2>
+<p>8D audio uses panning, equalization, and spatial effects to simulate sound sources moving around the listener. When heard through headphones, the effect creates an illusion of music existing in physical space around you rather than inside your head.</p>
+
+<h2>Best with Headphones</h2>
+<p>8D audio is designed specifically for headphone listening. The effect relies on binaural audio principles that require separate left and right ear channels. For the full immersive experience, always use headphones or earbuds.</p>
+
+<h2>Adjustable Movement</h2>
+<p>Control how the sound moves around you. Adjust rotation speed from subtle swaying to dramatic spinning. Set the depth of the spatial effect. Create gentle ambient movement or intense spatial experiences.</p>
+
+<h2>Popular for Music Sharing</h2>
+<p>8D versions of popular songs have gained massive popularity on streaming platforms. Create your own 8D versions of favorite tracks. Share unique listening experiences with friends. Experience music in an entirely new way.</p>`,
+  },
+  {
+    id: "change-audio-channels",
+    name: "Change Audio Channels",
+    description: "Convert between stereo and mono audio or swap channels",
+    icon: "GitBranch",
+    type: "change-audio-channels",
+    color: "bg-sky-500",
+    emoji: "🔀",
+    metaTitle: "Change Audio Channels Online Free - Stereo to Mono Converter | Audio Tools",
+    metaDescription: "Change audio channels online for free. Convert stereo to mono, mono to stereo, or swap left/right channels. Professional channel management.",
+    seoArticle: `<h2>Change Audio Channels - Stereo and Mono Conversion</h2>
+<p>Manage audio channel configuration with our versatile channel conversion tool. Convert stereo to mono, duplicate mono to stereo, swap left and right channels, or extract individual channels from stereo recordings.</p>
+
+<h2>Stereo to Mono Conversion</h2>
+<p>Combine stereo channels into mono for compatibility with single-speaker systems. Create mono versions for broadcast requirements. Reduce file size by eliminating redundant channel data. Ensure audio plays correctly on all systems.</p>
+
+<h2>Mono to Stereo</h2>
+<p>Convert mono recordings to stereo format. Duplicate the mono signal to both channels. This is essential when working with stereo-only systems or preparing mono content for stereo distribution.</p>
+
+<h2>Channel Swapping</h2>
+<p>Fix recordings where left and right channels were accidentally reversed. Swap channels to correct stereo imaging. Essential for audio restoration and fixing recording mistakes.</p>
+
+<h2>Channel Extraction</h2>
+<p>Extract just the left or right channel from a stereo recording. Useful when channels contain different content. Create focused mixes from multi-channel recordings. Isolate specific elements recorded to separate channels.</p>`,
   },
 ];
 

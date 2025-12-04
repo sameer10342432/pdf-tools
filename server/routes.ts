@@ -29574,6 +29574,204 @@ File analyzed: ${imageFile.originalname}
           }
 
 
+          case "spectrogram-generator": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to generate spectrogram");
+            }
+            const spectroInputPath = files[0].path;
+            const spectroOutputPath = path.join(outputDir, `spectrogram-${randomUUID()}.png`);
+            
+            const spectroWidth = options.width || "1920";
+            const spectroHeight = options.height || "500";
+            const spectroColorMode = options.colorMode || "channel";
+            
+            await execAsync(`ffmpeg -i "${spectroInputPath}" -lavfi "showspectrumpic=s=${spectroWidth}x${spectroHeight}:mode=combined:color=${spectroColorMode}:legend=disabled" "${spectroOutputPath}"`);
+            result = spectroOutputPath;
+            filename = "spectrogram.png";
+            contentType = "image/png";
+            break;
+          }
+
+          case "audio-normalizer": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to normalize");
+            }
+            const normInputPath = files[0].path;
+            const normOutputPath = path.join(outputDir, `normalized-${randomUUID()}.mp3`);
+            const normTargetLevel = options.targetLevel || "-16";
+            const normType = options.normalizationType || "loudnorm";
+            
+            if (normType === "peak") {
+              await execAsync(`ffmpeg -i "${normInputPath}" -af "volume=1" -filter:a "dynaudnorm" "${normOutputPath}"`);
+            } else {
+              await execAsync(`ffmpeg -i "${normInputPath}" -af "loudnorm=I=${normTargetLevel}:TP=-1.5:LRA=11" "${normOutputPath}"`);
+            }
+            result = normOutputPath;
+            filename = "normalized-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "remove-vocals": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to remove vocals");
+            }
+            const rvInputPath = files[0].path;
+            const rvOutputPath = path.join(outputDir, `karaoke-${randomUUID()}.mp3`);
+            
+            await execAsync(`ffmpeg -i "${rvInputPath}" -af "pan=stereo|c0=c0-c1|c1=c1-c0" "${rvOutputPath}"`);
+            result = rvOutputPath;
+            filename = "karaoke-version.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "vocal-remover": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to remove vocals");
+            }
+            const vrInputPath = files[0].path;
+            const vrOutputPath = path.join(outputDir, `instrumental-${randomUUID()}.mp3`);
+            
+            await execAsync(`ffmpeg -i "${vrInputPath}" -af "stereotools=mlev=0.015625" "${vrOutputPath}"`);
+            result = vrOutputPath;
+            filename = "instrumental.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "isolate-vocals": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to isolate vocals");
+            }
+            const ivInputPath = files[0].path;
+            const ivOutputPath = path.join(outputDir, `vocals-${randomUUID()}.mp3`);
+            
+            await execAsync(`ffmpeg -i "${ivInputPath}" -af "highpass=f=300,lowpass=f=3000" "${ivOutputPath}"`);
+            result = ivOutputPath;
+            filename = "isolated-vocals.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "audio-noise-reduction": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to reduce noise");
+            }
+            const nrInputPath = files[0].path;
+            const nrOutputPath = path.join(outputDir, `noise-reduced-${randomUUID()}.mp3`);
+            const nrAmount = options.noiseReduction || "0.21";
+            const nrFloor = options.noiseFloor || "-25";
+            
+            await execAsync(`ffmpeg -i "${nrInputPath}" -af "afftdn=nf=${nrFloor}:nr=${nrAmount}:nt=w" "${nrOutputPath}"`);
+            result = nrOutputPath;
+            filename = "noise-reduced-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "denoise-audio": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to denoise");
+            }
+            const dnInputPath = files[0].path;
+            const dnOutputPath = path.join(outputDir, `denoised-${randomUUID()}.mp3`);
+            const dnStrength = options.denoiseStrength || "medium";
+            
+            let dnFilter;
+            switch (dnStrength) {
+              case "light":
+                dnFilter = "afftdn=nf=-20:nr=10:nt=w";
+                break;
+              case "strong":
+                dnFilter = "afftdn=nf=-35:nr=50:nt=w,highpass=f=100,lowpass=f=8000";
+                break;
+              default:
+                dnFilter = "afftdn=nf=-25:nr=25:nt=w";
+            }
+            
+            await execAsync(`ffmpeg -i "${dnInputPath}" -af "${dnFilter}" "${dnOutputPath}"`);
+            result = dnOutputPath;
+            filename = "denoised-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "audio-fader": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to add fade effects");
+            }
+            const fadeInputPath = files[0].path;
+            const fadeOutputPath = path.join(outputDir, `faded-${randomUUID()}.mp3`);
+            const fadeInDuration = options.fadeInDuration || "0";
+            const fadeOutDuration = options.fadeOutDuration || "3";
+            const fadeType = options.fadeType || "tri";
+            
+            let fadeFilter = "";
+            if (parseFloat(fadeInDuration) > 0 && parseFloat(fadeOutDuration) > 0) {
+              fadeFilter = `afade=t=in:st=0:d=${fadeInDuration}:curve=${fadeType},afade=t=out:st=-${fadeOutDuration}:d=${fadeOutDuration}:curve=${fadeType}`;
+            } else if (parseFloat(fadeInDuration) > 0) {
+              fadeFilter = `afade=t=in:st=0:d=${fadeInDuration}:curve=${fadeType}`;
+            } else {
+              fadeFilter = `afade=t=out:st=-${fadeOutDuration}:d=${fadeOutDuration}:curve=${fadeType}`;
+            }
+            
+            await execAsync(`ffmpeg -i "${fadeInputPath}" -af "${fadeFilter}" "${fadeOutputPath}"`);
+            result = fadeOutputPath;
+            filename = "faded-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "8d-audio-converter": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to convert to 8D");
+            }
+            const eightdInputPath = files[0].path;
+            const eightdOutputPath = path.join(outputDir, `8d-audio-${randomUUID()}.mp3`);
+            const rotationSpeed = options.rotationSpeed || "0.125";
+            
+            await execAsync(`ffmpeg -i "${eightdInputPath}" -af "apulsator=mode=sine:hz=${rotationSpeed}:width=1" "${eightdOutputPath}"`);
+            result = eightdOutputPath;
+            filename = "8d-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "change-audio-channels": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to change channels");
+            }
+            const channelInputPath = files[0].path;
+            const channelOutputPath = path.join(outputDir, `channel-changed-${randomUUID()}.mp3`);
+            const channelMode = options.channelMode || "stereo-to-mono";
+            
+            let channelFilter;
+            switch (channelMode) {
+              case "mono-to-stereo":
+                channelFilter = "-ac 2";
+                break;
+              case "swap-channels":
+                channelFilter = "-af 'pan=stereo|c0=c1|c1=c0'";
+                break;
+              case "left-only":
+                channelFilter = "-af 'pan=mono|c0=c0' -ac 1";
+                break;
+              case "right-only":
+                channelFilter = "-af 'pan=mono|c0=c1' -ac 1";
+                break;
+              default:
+                channelFilter = "-ac 1";
+            }
+            
+            await execAsync(`ffmpeg -i "${channelInputPath}" ${channelFilter} "${channelOutputPath}"`);
+            result = channelOutputPath;
+            filename = "channel-changed-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+
           case "json-formatter": {
             let jsonInput = options.jsonInput || '';
             if (!jsonInput && files.length > 0) {
