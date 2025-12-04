@@ -125,6 +125,12 @@ import {
   Captions,
   Tag,
   Activity,
+  Smartphone,
+  Slice,
+  Timer,
+  Crop,
+  Square,
+  RefreshCw,
 } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -229,6 +235,12 @@ const iconMap: Record<string, LucideIcon> = {
   Captions,
   Tag,
   AudioWaveform: Activity,
+  Smartphone,
+  Slice,
+  Timer,
+  Crop,
+  Square,
+  RefreshCw,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";

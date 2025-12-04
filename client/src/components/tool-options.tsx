@@ -13487,6 +13487,169 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "video-to-3gp":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert video to 3GP format for mobile devices.
+          </p>
+          <div className="space-y-2">
+            <Label>Quality</Label>
+            <Select
+              value={options.video3gpQuality || "medium"}
+              onValueChange={(value) => updateOption("video3gpQuality", value)}
+            >
+              <SelectTrigger data-testid="select-3gp-quality">
+                <SelectValue placeholder="Select quality" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="high">High Quality</SelectItem>
+                <SelectItem value="medium">Medium Quality</SelectItem>
+                <SelectItem value="low">Low Quality (Smallest Size)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Resolution</Label>
+            <Select
+              value={options.videoResolution || "480p"}
+              onValueChange={(value) => updateOption("videoResolution", value)}
+            >
+              <SelectTrigger data-testid="select-3gp-resolution">
+                <SelectValue placeholder="Select resolution" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="720p">720p HD</SelectItem>
+                <SelectItem value="480p">480p SD</SelectItem>
+                <SelectItem value="360p">360p Mobile</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "cut-video":
+    case "trim-video":
+    case "video-trimmer":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            {toolType === "cut-video" 
+              ? "Remove unwanted sections from your video."
+              : "Trim the beginning and end of your video."}
+          </p>
+          <div className="space-y-2">
+            <Label htmlFor="cutStartTime">Start Time (seconds)</Label>
+            <Input
+              id="cutStartTime"
+              type="number"
+              step="0.1"
+              min="0"
+              placeholder="0"
+              value={options.videoCutStartTime ?? ""}
+              onChange={(e) => updateOption("videoCutStartTime", e.target.value ? parseFloat(e.target.value) : undefined)}
+              data-testid="input-cut-start-time"
+            />
+            <p className="text-xs text-muted-foreground">Start time in seconds (e.g., 5.5 for 5 seconds and 500 milliseconds)</p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="cutEndTime">End Time (seconds)</Label>
+            <Input
+              id="cutEndTime"
+              type="number"
+              step="0.1"
+              min="0"
+              placeholder="Leave empty to keep until end"
+              value={options.videoCutEndTime ?? ""}
+              onChange={(e) => updateOption("videoCutEndTime", e.target.value ? parseFloat(e.target.value) : undefined)}
+              data-testid="input-cut-end-time"
+            />
+            <p className="text-xs text-muted-foreground">End time in seconds. Leave empty to trim until the end of the video.</p>
+          </div>
+        </div>
+      );
+
+    case "crop-video":
+    case "video-cropper":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Crop your video to a specific size or aspect ratio.
+          </p>
+          <div className="space-y-2">
+            <Label>Aspect Ratio</Label>
+            <Select
+              value={options.videoAspectRatio || "16:9"}
+              onValueChange={(value) => updateOption("videoAspectRatio", value)}
+            >
+              <SelectTrigger data-testid="select-aspect-ratio">
+                <SelectValue placeholder="Select aspect ratio" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="16:9">16:9 (Widescreen)</SelectItem>
+                <SelectItem value="9:16">9:16 (Vertical/Mobile)</SelectItem>
+                <SelectItem value="1:1">1:1 (Square)</SelectItem>
+                <SelectItem value="4:3">4:3 (Standard)</SelectItem>
+                <SelectItem value="4:5">4:5 (Instagram Portrait)</SelectItem>
+                <SelectItem value="custom">Custom Dimensions</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "rotate-video":
+    case "video-rotator":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Rotate your video by 90, 180, or 270 degrees.
+          </p>
+          <div className="space-y-2">
+            <Label>Rotation Angle</Label>
+            <Select
+              value={options.videoRotationDegrees || "90"}
+              onValueChange={(value) => updateOption("videoRotationDegrees", value)}
+            >
+              <SelectTrigger data-testid="select-video-rotation">
+                <SelectValue placeholder="Select rotation" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="90">90 Degrees Clockwise</SelectItem>
+                <SelectItem value="180">180 Degrees</SelectItem>
+                <SelectItem value="270">270 Degrees (90 Counter-clockwise)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "flip-video":
+    case "video-flipper":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Flip your video horizontally or vertically.
+          </p>
+          <div className="space-y-2">
+            <Label>Flip Direction</Label>
+            <Select
+              value={options.videoFlipDirection || "horizontal"}
+              onValueChange={(value) => updateOption("videoFlipDirection", value)}
+            >
+              <SelectTrigger data-testid="select-video-flip">
+                <SelectValue placeholder="Select flip direction" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="horizontal">Horizontal (Mirror)</SelectItem>
+                <SelectItem value="vertical">Vertical (Upside Down)</SelectItem>
+                <SelectItem value="both">Both (Horizontal + Vertical)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }

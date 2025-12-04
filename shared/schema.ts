@@ -1315,6 +1315,16 @@ export const toolOptionsSchema = z.object({
   keepOriginalFormat: z.boolean().optional(),
   videoOutputFormat: z.enum(["mp4", "webm", "avi", "mov", "mkv"]).optional(),
   videoQuality: z.enum(["high", "medium", "low"]).optional(),
+  videoCutStartTime: z.number().optional(),
+  videoCutEndTime: z.number().optional(),
+  videoCropWidth: z.number().optional(),
+  videoCropHeight: z.number().optional(),
+  videoCropX: z.number().optional(),
+  videoCropY: z.number().optional(),
+  videoAspectRatio: z.enum(["16:9", "9:16", "1:1", "4:3", "4:5", "custom"]).optional(),
+  videoRotationDegrees: z.enum(["90", "180", "270"]).optional(),
+  videoFlipDirection: z.enum(["horizontal", "vertical", "both"]).optional(),
+  video3gpQuality: z.enum(["low", "medium", "high"]).optional(),
   channelMode: z.enum(["stereo-to-mono", "mono-to-stereo", "swap-channels", "left-only", "right-only"]).optional(),
 });
 

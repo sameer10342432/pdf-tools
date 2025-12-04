@@ -30365,6 +30365,169 @@ File analyzed: ${imageFile.originalname}
               case "low":
                 flvSettings = "-c:v flv1 -q:v 8 -c:a mp3 -b:a 128k -ar 44100";
                 break;
+
+          case "video-to-3gp": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to convert to 3GP");
+            }
+            const videoTo3gpInputPath = files[0].path;
+            const videoTo3gpOutputPath = path.join(outputDir, `converted-${randomUUID()}.3gp`);
+            const gpQuality = sanitizeStringOption(options.video3gpQuality, ["high", "medium", "low"], "medium");
+            const gpResolution = sanitizeStringOption(options.videoResolution, ["720p", "480p", "360p"], "480p");
+            
+            let gpScale;
+            switch (gpResolution) {
+              case "720p":
+                gpScale = "1280:720";
+                break;
+              case "360p":
+                gpScale = "480:360";
+                break;
+              default:
+                gpScale = "640:480";
+            }
+            
+            let gpBitrate;
+            switch (gpQuality) {
+              case "high":
+                gpBitrate = "-b:v 500k -b:a 128k";
+                break;
+              case "low":
+                gpBitrate = "-b:v 150k -b:a 48k";
+                break;
+              default:
+                gpBitrate = "-b:v 300k -b:a 96k";
+            }
+            
+            await execAsync(`ffmpeg -i "${videoTo3gpInputPath}" -vf "scale=${gpScale}" -c:v h263 -c:a aac ${gpBitrate} -ar 8000 -ac 1 "${videoTo3gpOutputPath}"`);
+            result = videoTo3gpOutputPath;
+            filename = "converted.3gp";
+            contentType = "video/3gpp";
+            break;
+          }
+
+          case "cut-video":
+          case "trim-video":
+          case "video-trimmer": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to trim");
+            }
+            const trimInputPath = files[0].path;
+            const trimOutputPath = path.join(outputDir, `trimmed-${randomUUID()}.mp4`);
+            const startTime = sanitizeNumber(options.videoCutStartTime, 0, 0, 86400);
+            const endTime = options.videoCutEndTime ? sanitizeNumber(options.videoCutEndTime, 0, 0, 86400) : null;
+            
+            let trimCmd = `ffmpeg -i "${trimInputPath}" -ss ${startTime}`;
+            if (endTime !== null && endTime > startTime) {
+              const duration = endTime - startTime;
+              trimCmd += ` -t ${duration}`;
+            }
+            trimCmd += ` -c copy "${trimOutputPath}"`;
+            
+            await execAsync(trimCmd);
+            result = trimOutputPath;
+            filename = "trimmed-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "crop-video":
+          case "video-cropper": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to crop");
+            }
+            const cropInputPath = files[0].path;
+            const cropOutputPath = path.join(outputDir, `cropped-${randomUUID()}.mp4`);
+            const aspectRatio = sanitizeStringOption(options.videoAspectRatio, ["16:9", "9:16", "1:1", "4:3", "4:5", "custom"], "16:9");
+            
+            let cropFilter;
+            switch (aspectRatio) {
+              case "9:16":
+                cropFilter = "crop=ih*9/16:ih";
+                break;
+              case "1:1":
+                cropFilter = "crop=min(iw\,ih):min(iw\,ih)";
+                break;
+              case "4:3":
+                cropFilter = "crop=ih*4/3:ih";
+                break;
+              case "4:5":
+                cropFilter = "crop=ih*4/5:ih";
+                break;
+              case "custom": {
+                const cropW = sanitizeNumber(options.videoCropWidth, 1920, 1, 7680);
+                const cropH = sanitizeNumber(options.videoCropHeight, 1080, 1, 4320);
+                const cropX = sanitizeNumber(options.videoCropX, 0, 0, 7680);
+                const cropY = sanitizeNumber(options.videoCropY, 0, 0, 4320);
+                cropFilter = `crop=${cropW}:${cropH}:${cropX}:${cropY}`;
+                break;
+              }
+              default:
+                cropFilter = "crop=iw:iw*9/16";
+            }
+            
+            await execAsync(`ffmpeg -i "${cropInputPath}" -vf "${cropFilter}" -c:a copy "${cropOutputPath}"`);
+            result = cropOutputPath;
+            filename = "cropped-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "rotate-video":
+          case "video-rotator": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to rotate");
+            }
+            const rotateInputPath = files[0].path;
+            const rotateOutputPath = path.join(outputDir, `rotated-${randomUUID()}.mp4`);
+            const rotationDeg = sanitizeStringOption(options.videoRotationDegrees, ["90", "180", "270"], "90");
+            
+            let rotateFilter;
+            switch (rotationDeg) {
+              case "180":
+                rotateFilter = "transpose=2,transpose=2";
+                break;
+              case "270":
+                rotateFilter = "transpose=2";
+                break;
+              default:
+                rotateFilter = "transpose=1";
+            }
+            
+            await execAsync(`ffmpeg -i "${rotateInputPath}" -vf "${rotateFilter}" -c:a copy "${rotateOutputPath}"`);
+            result = rotateOutputPath;
+            filename = "rotated-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "flip-video":
+          case "video-flipper": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to flip");
+            }
+            const flipInputPath = files[0].path;
+            const flipOutputPath = path.join(outputDir, `flipped-${randomUUID()}.mp4`);
+            const flipDir = sanitizeStringOption(options.videoFlipDirection, ["horizontal", "vertical", "both"], "horizontal");
+            
+            let flipFilter;
+            switch (flipDir) {
+              case "vertical":
+                flipFilter = "vflip";
+                break;
+              case "both":
+                flipFilter = "hflip,vflip";
+                break;
+              default:
+                flipFilter = "hflip";
+            }
+            
+            await execAsync(`ffmpeg -i "${flipInputPath}" -vf "${flipFilter}" -c:a copy "${flipOutputPath}"`);
+            result = flipOutputPath;
+            filename = "flipped-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
               case "medium":
                 flvSettings = "-c:v flv1 -q:v 5 -c:a mp3 -b:a 192k -ar 44100";
                 break;

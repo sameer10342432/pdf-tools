@@ -94,6 +94,12 @@ import {
   Captions,
   Tag,
   Activity,
+  Smartphone,
+  Slice,
+  Timer,
+  Crop,
+  Square,
+  RefreshCw,
   type LucideIcon,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -164,6 +170,12 @@ const iconMap: Record<string, LucideIcon> = {
   Captions,
   Tag,
   AudioWaveform: Activity,
+  Smartphone,
+  Slice,
+  Timer,
+  Crop,
+  Square,
+  RefreshCw,
 };
 
 interface ToolDialogProps {

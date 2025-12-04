@@ -65,6 +65,12 @@ import {
   GitCompare,
   AlignLeft,
   ChevronsUp,
+  Smartphone,
+  Slice,
+  Timer,
+  Crop,
+  Square,
+  RefreshCw,
   type LucideIcon,
 } from "lucide-react";
 
@@ -132,6 +138,12 @@ const iconMap: Record<string, LucideIcon> = {
   GitCompare,
   AlignLeft,
   ChevronsUp,
+  Smartphone,
+  Slice,
+  Timer,
+  Crop,
+  Square,
+  RefreshCw,
 };
 
 interface ToolCardProps {
