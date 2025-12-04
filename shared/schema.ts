@@ -19249,7 +19249,6 @@ const audioProcessingTools: PdfTool[] = [
     name: "Audio Equalizer",
     description: "Adjust audio frequencies with multi-band EQ",
     icon: "Sliders",
-    type: "video-color-correction",
     type: "audio-equalizer",
     color: "bg-pink-500",
     emoji: "🎚️",
@@ -20602,14 +20601,185 @@ const newVideoTools: PdfTool[] = [
 <h2>Preview All Options</h2>
 <p>See how each transformation affects your video before processing. Compare original and transformed versions side by side to choose the right option.</p>
 
-<h2>Fix Any Orientation</h2>
-<p>No matter how your video is oriented, our flipper can correct it. Combine flips and rotations to get your video displaying exactly right.</p>
-
-<h2>Batch Processing</h2>
-<p>Apply the same flip transformation to multiple videos at once. Consistent processing for video series or large collections.</p>
-
 <h2>Metadata Correction</h2>
 <p>Properly updates video metadata to reflect the new orientation. Ensures your flipped video plays correctly on all devices and platforms.</p>`,
+  },
+  {
+    id: "video-brightness",
+    name: "Adjust Video Brightness",
+    description: "Easily adjust the brightness of your videos online",
+    icon: "Sun",
+    type: "video-brightness",
+    color: "bg-yellow-500",
+    emoji: "☀️",
+    metaTitle: "Adjust Video Brightness Online Free - Brighten or Darken Videos | Video Tools",
+    metaDescription: "Adjust video brightness online for free. Brighten dark videos or reduce overexposure instantly. No software installation required.",
+    seoArticle: `<h2>Adjust Video Brightness - Professional Lighting Control</h2>
+<p>Our free online video brightness tool allows you to easily correct lighting issues in your videos. Whether your footage is too dark from indoor recording or overexposed from bright sunlight, this tool provides precise control over brightness levels.</p>
+
+<h2>Why Adjust Video Brightness?</h2>
+<p>Proper brightness is essential for professional-looking videos. Dark videos lose detail in shadows, while overexposed footage appears washed out. Our brightness adjustment tool helps you find the perfect balance for clear, visible content.</p>
+
+<h2>Key Features</h2>
+<p>The intuitive slider control lets you increase or decrease brightness in real-time. Preview your adjustments before processing to ensure perfect results. The tool preserves video quality while applying brightness changes using advanced FFmpeg processing.</p>
+
+<h2>How to Adjust Brightness</h2>
+<p>Upload your video file, use the brightness slider to adjust levels from -100 to +100, preview the result, and download your corrected video. The process is fast and works with all major video formats including MP4, AVI, MOV, and MKV.</p>
+
+<h2>Perfect for Content Creators</h2>
+<p>YouTubers, social media influencers, and video editors use brightness adjustment to fix recording mistakes and enhance visual appeal. Create consistent lighting across your video projects for professional results.</p>`,
+  },
+  {
+    id: "video-contrast",
+    name: "Adjust Video Contrast",
+    description: "Enhance video contrast for more vivid and dynamic footage",
+    icon: "Contrast",
+    type: "video-contrast",
+    color: "bg-slate-500",
+    emoji: "🎚️",
+    metaTitle: "Adjust Video Contrast Online Free - Enhance Video Quality | Video Tools",
+    metaDescription: "Adjust video contrast online for free. Make videos more vivid and dynamic with professional contrast control. No registration required.",
+    seoArticle: `<h2>Adjust Video Contrast - Professional Quality Enhancement</h2>
+<p>Contrast adjustment is one of the most powerful tools for improving video quality. Our free online contrast tool helps you create more dynamic, visually appealing footage by controlling the difference between light and dark areas.</p>
+
+<h2>Understanding Video Contrast</h2>
+<p>Contrast refers to the difference between the darkest and lightest parts of your video. Low contrast makes footage look flat and washed out, while high contrast creates punchy, dramatic visuals.</p>
+
+<h2>How It Works</h2>
+<p>Upload your video, adjust the contrast slider to your preference, preview the changes in real-time, and download the enhanced video. Our FFmpeg-powered processing ensures high-quality results.</p>`,
+  },
+  {
+    id: "screen-recorder",
+    name: "Screen Recorder",
+    description: "Record your screen directly in the browser",
+    icon: "Monitor",
+    type: "screen-recorder",
+    color: "bg-blue-500",
+    emoji: "🖥️",
+    metaTitle: "Screen Recorder Online Free - Record Screen in Browser | Video Tools",
+    metaDescription: "Record your screen online for free. No download or installation required. Capture tutorials, presentations, and gameplay directly in your browser.",
+    seoArticle: `<h2>Screen Recorder - Capture Your Screen Instantly</h2>
+<p>Our browser-based screen recorder allows you to capture your screen without installing any software. Perfect for tutorials, presentations, bug reports, and gameplay recording.</p>
+
+<h2>No Installation Required</h2>
+<p>Unlike traditional screen recording software, our tool runs entirely in your browser. No downloads, no installations, no updates to manage.</p>
+
+<h2>Privacy First</h2>
+<p>All recording happens locally in your browser. Your screen content is never uploaded to our servers during recording. You have complete control over your data.</p>`,
+  },
+  {
+    id: "record-screen-camera",
+    name: "Record Screen and Camera",
+    description: "Record your screen with a picture-in-picture camera overlay",
+    icon: "Camera",
+    type: "record-screen-camera",
+    color: "bg-purple-500",
+    emoji: "📹",
+    metaTitle: "Record Screen and Camera Online Free - Picture in Picture Recording | Video Tools",
+    metaDescription: "Record your screen with webcam overlay online for free. Perfect for tutorials, presentations, and course creation with picture-in-picture effect.",
+    seoArticle: `<h2>Record Screen and Camera - Professional Picture-in-Picture</h2>
+<p>Create engaging tutorials and presentations by recording your screen with a webcam overlay. This picture-in-picture format is perfect for course creators and educators.</p>
+
+<h2>Why Use Screen and Camera Together?</h2>
+<p>Adding your face to screen recordings increases engagement and helps viewers connect with the content. Studies show that educational content with presenter video has higher completion rates.</p>
+
+<h2>Browser-Based Convenience</h2>
+<p>No software installation needed. Our tool uses your browser built-in recording capabilities for reliable, high-quality capture.</p>`,
+  },
+  {
+    id: "webcam-recorder",
+    name: "Webcam Recorder",
+    description: "Record video from your webcam directly in the browser",
+    icon: "Video",
+    type: "webcam-recorder",
+    color: "bg-green-500",
+    emoji: "🎥",
+    metaTitle: "Webcam Recorder Online Free - Record Video Messages | Video Tools",
+    metaDescription: "Record webcam video online for free. Create video messages, testimonials, and vlogs without any software. Privacy-focused browser recording.",
+    seoArticle: `<h2>Webcam Recorder - Capture Video Instantly</h2>
+<p>Our browser-based webcam recorder makes it easy to record video messages, testimonials, and vlogs without installing any software.</p>
+
+<h2>Privacy Focused</h2>
+<p>Your video recordings are processed locally on your device. Nothing is uploaded to our servers during recording. You maintain complete control over your content.</p>
+
+<h2>Perfect for Video Messages</h2>
+<p>Send personal video messages to friends, family, or colleagues. Create video greetings, quick updates, or heartfelt messages.</p>`,
+  },
+  {
+    id: "video-to-jpg",
+    name: "Video to JPG",
+    description: "Extract high-quality JPG images from your videos",
+    icon: "Image",
+    type: "video-to-jpg",
+    color: "bg-orange-500",
+    emoji: "🖼️",
+    metaTitle: "Video to JPG Online Free - Extract JPG Images from Video | Video Tools",
+    metaDescription: "Convert video frames to JPG images online for free. Extract single frames or multiple images from any video format. High-quality image extraction.",
+    seoArticle: `<h2>Video to JPG - Extract Quality Images from Video</h2>
+<p>Convert any video frame into a high-quality JPG image. Our tool lets you extract the perfect moment from your videos for thumbnails, social media, or documentation.</p>
+
+<h2>Perfect Frame Extraction</h2>
+<p>Navigate to any point in your video and extract that exact frame as a JPG image. Get the precise moment you want with frame-accurate extraction.</p>
+
+<h2>All Video Formats Supported</h2>
+<p>Works with MP4, AVI, MOV, MKV, WebM, and virtually any other video format.</p>`,
+  },
+  {
+    id: "video-to-png",
+    name: "Video to PNG",
+    description: "Extract lossless PNG images from your videos",
+    icon: "FileImage",
+    type: "video-to-png",
+    color: "bg-teal-500",
+    emoji: "📸",
+    metaTitle: "Video to PNG Online Free - Extract Lossless PNG from Video | Video Tools",
+    metaDescription: "Convert video frames to lossless PNG images online for free. Extract high-quality screenshots from any video. Perfect for graphics and design work.",
+    seoArticle: `<h2>Video to PNG - Lossless Image Extraction</h2>
+<p>Extract frames from your videos as PNG images for maximum quality. Unlike JPG, PNG uses lossless compression, preserving every detail from your video frame.</p>
+
+<h2>Why Choose PNG Over JPG?</h2>
+<p>PNG format provides lossless compression, meaning no quality is lost during saving. This makes PNG ideal for images that will be edited further or printed.</p>
+
+<h2>Full Resolution Preservation</h2>
+<p>Our tool extracts frames at your video native resolution without any downscaling or quality reduction.</p>`,
+  },
+  {
+    id: "extract-frames",
+    name: "Extract Frames from Video",
+    description: "Extract multiple frames at custom intervals from videos",
+    icon: "Film",
+    type: "extract-frames",
+    color: "bg-indigo-500",
+    emoji: "🎞️",
+    metaTitle: "Extract Frames from Video Online Free - Multi-Frame Extraction | Video Tools",
+    metaDescription: "Extract multiple frames from video at custom intervals online for free. Create image sequences, thumbnails, or animated previews from any video.",
+    seoArticle: `<h2>Extract Frames from Video - Batch Frame Extraction</h2>
+<p>Extract multiple frames from your video at customizable intervals. Whether you need frames every second or at specific timestamps, our tool provides flexible batch extraction.</p>
+
+<h2>Custom Interval Extraction</h2>
+<p>Set your preferred interval between frames - every second, every 5 seconds, or any custom duration.</p>
+
+<h2>Download All Frames</h2>
+<p>All extracted frames are packaged into a convenient ZIP file for easy download.</p>`,
+  },
+  {
+    id: "video-metadata-editor",
+    name: "Video Metadata Editor",
+    description: "View and edit video file metadata and properties",
+    icon: "FileText",
+    type: "video-metadata-editor",
+    color: "bg-gray-500",
+    emoji: "📋",
+    metaTitle: "Video Metadata Editor Online Free - Edit Video Properties | Video Tools",
+    metaDescription: "Edit video metadata online for free. Change title, author, description, and other properties. View complete video information and technical details.",
+    seoArticle: `<h2>Video Metadata Editor - Manage Video Properties</h2>
+<p>View and edit the metadata embedded in your video files. Change titles, add descriptions, update author information, and manage other properties without re-encoding.</p>
+
+<h2>View Technical Information</h2>
+<p>See complete technical details about your video: resolution, frame rate, codec, bitrate, duration, and audio specifications.</p>
+
+<h2>Preserve Video Quality</h2>
+<p>Metadata editing does not require re-encoding your video. The original video and audio streams remain untouched.</p>`,
   },
 ];
 
