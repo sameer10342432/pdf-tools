@@ -665,6 +665,16 @@ export const pdfToolTypes = [
   "audio-equalizer",
   "add-audio-to-video",
   "remove-audio-from-video",
+  "mute-video",
+  "voice-recorder",
+  "online-voice-recorder",
+  "text-to-speech",
+  "speech-to-text",
+  "audio-to-text",
+  "transcribe-audio",
+  "audio-metadata-editor",
+  "mp3-tag-editor",
+  "audio-visualizer",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -18746,3 +18756,258 @@ const audioProcessingTools: PdfTool[] = [
 ];
 
 pdfTools.push(...audioProcessingTools);
+
+const newAudioTools: PdfTool[] = [
+  {
+    id: "mute-video",
+    name: "Mute Video",
+    description: "Remove audio track from video files to create silent videos",
+    icon: "VolumeX",
+    type: "mute-video",
+    color: "bg-slate-600",
+    emoji: "🔇",
+    metaTitle: "Mute Video Online Free - Remove Sound from Video | PDF Tools",
+    metaDescription: "Mute videos online for free. Remove audio from any video file instantly. Create silent videos without installing software. Fast and secure.",
+    seoArticle: `<h2>Mute Video Online - Remove Audio from Videos Instantly</h2>
+<p>Need to remove sound from a video? Our free online video muting tool makes it effortless. Whether you're preparing content for social media, removing unwanted background noise, or creating silent clips for presentations, this tool delivers professional results in seconds.</p>
+
+<h2>Why Mute Your Videos?</h2>
+<p>There are many reasons to remove audio from videos. Remove copyrighted music to avoid copyright strikes. Eliminate background noise from recordings. Prepare videos for custom voiceovers or music. Create silent loops for websites and presentations. Remove private conversations from footage.</p>
+
+<h2>How to Mute Video</h2>
+<p>Using our video muting tool is simple. Upload your video file in any common format (MP4, WebM, MOV, AVI). Click the mute button to remove all audio tracks. Download your silent video instantly. The video quality remains exactly the same - only the audio is removed.</p>
+
+<h2>Supported Video Formats</h2>
+<p>Our tool supports all major video formats including MP4, WebM, MOV, AVI, and MKV. The output maintains your original video quality with optimized compression. No matter what format you upload, you'll get a clean, silent video ready for your project.</p>
+
+<h2>Fast and Secure Processing</h2>
+<p>All video processing happens on our secure servers. Your files are automatically deleted after processing. No registration or account required. Mute unlimited videos for free with no watermarks added to your content.</p>`,
+  },
+  {
+    id: "voice-recorder",
+    name: "Voice Recorder",
+    description: "Record audio from your microphone directly in the browser",
+    icon: "Mic",
+    type: "voice-recorder",
+    color: "bg-red-500",
+    emoji: "🎙️",
+    metaTitle: "Voice Recorder Online Free - Record Audio in Browser | PDF Tools",
+    metaDescription: "Record audio online for free using your microphone. Simple browser-based voice recorder with instant download. No software installation needed.",
+    seoArticle: `<h2>Voice Recorder Online - Record Audio Directly in Your Browser</h2>
+<p>Our free online voice recorder lets you capture audio directly from your microphone without installing any software. Perfect for recording voice memos, podcasts, interviews, lectures, or any audio content you need to preserve.</p>
+
+<h2>Simple One-Click Recording</h2>
+<p>Click the record button to start capturing audio. Your browser will ask for microphone permission. Once granted, recording begins immediately. Click stop when finished, and your audio file is ready for download. It couldn't be easier.</p>
+
+<h2>High-Quality Audio Capture</h2>
+<p>Our recorder captures audio at high quality suitable for professional use. The recording uses your device's microphone at its native quality settings. Whether you're using a built-in laptop mic or a professional USB microphone, you'll get great results.</p>
+
+<h2>Perfect for Multiple Use Cases</h2>
+<p>Students use it to record lectures and study notes. Professionals record meeting summaries and voice memos. Podcasters capture quick audio segments. Musicians record melody ideas on the go. The possibilities are endless.</p>
+
+<h2>Privacy and Security</h2>
+<p>Your recordings never leave your device until you choose to download them. All processing happens locally in your browser. No audio is uploaded to any server. Your privacy is completely protected.</p>`,
+  },
+  {
+    id: "online-voice-recorder",
+    name: "Online Voice Recorder",
+    description: "Professional-grade audio recording with waveform visualization",
+    icon: "Mic2",
+    type: "online-voice-recorder",
+    color: "bg-rose-500",
+    emoji: "🎤",
+    metaTitle: "Online Voice Recorder Free - Professional Audio Recording | PDF Tools",
+    metaDescription: "Professional online voice recorder with waveform display. Record high-quality audio directly in your browser. Download in multiple formats.",
+    seoArticle: `<h2>Professional Online Voice Recorder with Waveform Display</h2>
+<p>Experience professional-grade audio recording right in your browser. Our enhanced online voice recorder includes real-time waveform visualization, recording timer, and multiple format options for your audio files.</p>
+
+<h2>Real-Time Waveform Visualization</h2>
+<p>Watch your audio levels as you record with our live waveform display. This helps you monitor recording quality, avoid clipping, and ensure consistent audio levels throughout your session. Professional studios use similar visualizations.</p>
+
+<h2>Multiple Output Formats</h2>
+<p>Download your recordings in the format that suits your needs. Choose from WAV for highest quality, MP3 for smaller file sizes, or WebM for web compatibility. Switch formats instantly without re-recording.</p>
+
+<h2>Advanced Recording Features</h2>
+<p>Our recorder includes features you'd expect from professional software. Recording timer shows exact duration. Pause and resume without creating multiple files. Audio level indicators prevent distortion. All this runs smoothly in your browser.</p>
+
+<h2>No Installation Required</h2>
+<p>Unlike traditional recording software, our tool requires no download or installation. Works on any modern browser across Windows, Mac, Linux, and mobile devices. Start recording in seconds from any device with a microphone.</p>`,
+  },
+  {
+    id: "text-to-speech",
+    name: "Text to Speech",
+    description: "Convert written text into natural-sounding audio",
+    icon: "Volume2",
+    type: "text-to-speech",
+    color: "bg-blue-500",
+    emoji: "🔊",
+    metaTitle: "Text to Speech Online Free - Convert Text to Audio | PDF Tools",
+    metaDescription: "Convert text to speech online for free. Transform written content into natural-sounding audio. Multiple voices and languages available.",
+    seoArticle: `<h2>Text to Speech Converter - Turn Text Into Natural Audio</h2>
+<p>Transform any written text into natural-sounding speech with our free online text-to-speech converter. Perfect for creating voiceovers, accessibility content, audiobooks, and educational materials without recording your own voice.</p>
+
+<h2>Natural-Sounding Voices</h2>
+<p>Our text-to-speech engine uses advanced synthesis technology to produce clear, natural-sounding audio. Choose from multiple voice options including different genders and accents. The result sounds professional and engaging.</p>
+
+<h2>Versatile Applications</h2>
+<p>Content creators use it for video narration. Educators create audio learning materials. Accessibility advocates make content available to visually impaired users. Authors preview how their writing sounds when read aloud.</p>
+
+<h2>Adjustable Settings</h2>
+<p>Customize the output to match your needs. Adjust speaking rate from slow to fast. Modify pitch for different effects. Choose output quality and format. Fine-tune every aspect of the generated speech.</p>
+
+<h2>Easy to Use</h2>
+<p>Simply paste or type your text, select your preferred voice and settings, and click convert. Download the audio file instantly. No registration required, no limits on text length for reasonable content.</p>`,
+  },
+  {
+    id: "speech-to-text",
+    name: "Speech to Text",
+    description: "Transcribe spoken audio into written text",
+    icon: "FileText",
+    type: "speech-to-text",
+    color: "bg-green-500",
+    emoji: "📝",
+    metaTitle: "Speech to Text Online Free - Transcribe Audio to Text | PDF Tools",
+    metaDescription: "Convert speech to text online for free. Transcribe audio recordings into accurate text. Support for multiple languages and accents.",
+    seoArticle: `<h2>Speech to Text Converter - Accurate Audio Transcription</h2>
+<p>Convert spoken audio into accurate written text with our free online speech-to-text tool. Perfect for transcribing interviews, meetings, lectures, podcasts, and any audio content that needs to be documented in text form.</p>
+
+<h2>Accurate Transcription Technology</h2>
+<p>Our speech recognition engine delivers impressive accuracy across various audio types. It handles different accents, speaking speeds, and audio quality levels. The result is clean, readable text ready for editing or use.</p>
+
+<h2>Wide Range of Uses</h2>
+<p>Journalists transcribe interviews quickly. Students convert lecture recordings to notes. Professionals document meeting discussions. Content creators generate subtitles. Researchers analyze audio data efficiently.</p>
+
+<h2>Supported Audio Formats</h2>
+<p>Upload audio in any common format including MP3, WAV, M4A, OGG, and more. The tool processes your audio and delivers text output you can copy, download, or edit directly in the browser.</p>
+
+<h2>Edit and Export</h2>
+<p>Review and edit the transcription directly in our interface. Copy text to clipboard with one click. Download as plain text or formatted document. Make corrections easily before finalizing your transcript.</p>`,
+  },
+  {
+    id: "audio-to-text",
+    name: "Audio to Text",
+    description: "Convert any audio file to readable text transcript",
+    icon: "FileAudio",
+    type: "audio-to-text",
+    color: "bg-teal-500",
+    emoji: "📄",
+    metaTitle: "Audio to Text Online Free - Convert Audio Files to Text | PDF Tools",
+    metaDescription: "Convert audio files to text online for free. Transform audio recordings into accurate transcripts. Fast, secure audio transcription service.",
+    seoArticle: `<h2>Audio to Text Converter - Transform Audio into Documents</h2>
+<p>Turn your audio files into text documents with our powerful audio-to-text converter. Whether you have MP3 podcasts, WAV recordings, or any other audio format, we will transform it into clean, readable text.</p>
+
+<h2>Comprehensive Format Support</h2>
+<p>Our tool accepts all major audio formats including MP3, WAV, M4A, FLAC, OGG, and more. No matter what format your audio is in, we can process it and deliver accurate text transcription.</p>
+
+<h2>Professional Quality Results</h2>
+<p>The transcription engine recognizes natural speech patterns, handles pauses and filler words appropriately, and delivers well-formatted text output. Results are suitable for professional documentation.</p>
+
+<h2>Bulk Processing</h2>
+<p>Need to transcribe multiple files? Upload several audio files and process them together. Each file gets its own transcript, ready for download individually or as a batch.</p>
+
+<h2>Privacy Protected</h2>
+<p>Your audio files are processed securely and deleted immediately after transcription. We never store your audio or text. Your content remains completely private and confidential.</p>`,
+  },
+  {
+    id: "transcribe-audio",
+    name: "Transcribe Audio",
+    description: "Professional audio transcription with timestamps and speakers",
+    icon: "Captions",
+    type: "transcribe-audio",
+    color: "bg-purple-500",
+    emoji: "📋",
+    metaTitle: "Transcribe Audio Online Free - Professional Transcription | PDF Tools",
+    metaDescription: "Professional audio transcription online for free. Get detailed transcripts with timestamps and speaker identification. Accurate and fast.",
+    seoArticle: `<h2>Professional Audio Transcription with Timestamps</h2>
+<p>Get detailed, professional-quality transcriptions of your audio files. Our advanced transcription tool provides accurate text with timestamps, making it perfect for interviews, meetings, podcasts, and content requiring precise timing.</p>
+
+<h2>Timestamp Integration</h2>
+<p>Every section of your transcript includes timing information. Navigate to specific moments in your audio easily. Perfect for creating subtitles, meeting minutes, or indexed audio content.</p>
+
+<h2>Speaker Identification</h2>
+<p>For multi-speaker recordings, our tool attempts to identify and label different speakers. This makes interview and meeting transcripts much easier to follow and reference later.</p>
+
+<h2>Professional Formatting</h2>
+<p>Transcripts are formatted professionally with proper paragraphing and punctuation. The output is ready for professional use in documents, subtitles, or published content.</p>
+
+<h2>Export Options</h2>
+<p>Download your transcript in multiple formats including plain text, SRT for subtitles, or formatted documents. Choose the format that best fits your workflow and project needs.</p>`,
+  },
+  {
+    id: "audio-metadata-editor",
+    name: "Audio Metadata Editor",
+    description: "View and edit audio file metadata and properties",
+    icon: "FileEdit",
+    type: "audio-metadata-editor",
+    color: "bg-orange-500",
+    emoji: "📊",
+    metaTitle: "Audio Metadata Editor Online Free - Edit Audio Tags | PDF Tools",
+    metaDescription: "Edit audio metadata online for free. View and modify audio file properties, tags, and information. Support for MP3, FLAC, WAV and more.",
+    seoArticle: `<h2>Audio Metadata Editor - Manage Your Audio File Information</h2>
+<p>Take control of your audio file metadata with our comprehensive online editor. View, edit, and manage all the information embedded in your audio files without installing specialized software.</p>
+
+<h2>Complete Metadata Access</h2>
+<p>View all metadata stored in your audio files including title, artist, album, year, genre, track number, and more. See technical details like bitrate, sample rate, channels, and duration.</p>
+
+<h2>Easy Editing</h2>
+<p>Modify any metadata field with simple form inputs. Update incorrect information, add missing details, or completely overhaul your audio file tags. Changes are saved directly to your file.</p>
+
+<h2>Batch Processing</h2>
+<p>Edit metadata for multiple files at once. Apply the same album name, artist, or genre to a collection of tracks. Perfect for organizing your music library or podcast episodes.</p>
+
+<h2>Format Support</h2>
+<p>Works with all major audio formats including MP3, M4A, FLAC, OGG, WAV, and more. Each format's specific metadata tags are fully supported and editable.</p>`,
+  },
+  {
+    id: "mp3-tag-editor",
+    name: "MP3 Tag Editor",
+    description: "Edit ID3 tags and metadata in MP3 audio files",
+    icon: "Tag",
+    type: "mp3-tag-editor",
+    color: "bg-amber-600",
+    emoji: "🏷️",
+    metaTitle: "MP3 Tag Editor Online Free - Edit ID3 Tags | PDF Tools",
+    metaDescription: "Edit MP3 tags online for free. Modify ID3v1 and ID3v2 tags including title, artist, album, year, genre, and cover art. No software needed.",
+    seoArticle: `<h2>MP3 Tag Editor - Complete ID3 Tag Management</h2>
+<p>Edit all ID3 tags in your MP3 files with our specialized MP3 tag editor. Whether you need to fix incorrect track information, add missing metadata, or update album artwork, this tool handles it all.</p>
+
+<h2>Full ID3 Support</h2>
+<p>Edit both ID3v1 and ID3v2 tags for complete compatibility. Modify standard fields like title, artist, album, year, track number, and genre. Access extended ID3v2 fields for comprehensive metadata management.</p>
+
+<h2>Album Artwork</h2>
+<p>Add, replace, or remove album cover artwork embedded in your MP3 files. Upload images in JPEG or PNG format. The artwork displays in media players that support embedded images.</p>
+
+<h2>Lyrics and Comments</h2>
+<p>Add lyrics that display in supporting music players. Include comments or notes in the file metadata. Perfect for personal music collections or podcast distribution.</p>
+
+<h2>Organize Your Music</h2>
+<p>Properly tagged MP3 files display correctly in all music players and library software. Sort by artist, album, or genre automatically. Create smart playlists based on metadata. Keep your music collection perfectly organized.</p>`,
+  },
+  {
+    id: "audio-visualizer",
+    name: "Audio Visualizer",
+    description: "Create visual waveforms and spectrograms from audio files",
+    icon: "AudioWaveform",
+    type: "audio-visualizer",
+    color: "bg-indigo-500",
+    emoji: "📈",
+    metaTitle: "Audio Visualizer Online Free - Create Waveforms | PDF Tools",
+    metaDescription: "Create audio visualizations online for free. Generate waveforms and spectrograms from audio files. Perfect for podcasts, music, and videos.",
+    seoArticle: `<h2>Audio Visualizer - Create Stunning Visual Representations</h2>
+<p>Transform your audio files into beautiful visual representations. Our audio visualizer generates waveforms, spectrograms, and other visual displays that bring your audio to life in graphical form.</p>
+
+<h2>Multiple Visualization Styles</h2>
+<p>Choose from several visualization types. Classic waveform shows amplitude over time. Spectrogram displays frequency content. Bar graphs show real-time levels. Each style serves different purposes and aesthetics.</p>
+
+<h2>Customization Options</h2>
+<p>Personalize your visualizations with custom colors, sizes, and styles. Match your brand colors or create unique visual effects. Export in various resolutions for different use cases.</p>
+
+<h2>Perfect for Content Creators</h2>
+<p>Podcasters use waveform images for episode artwork. Musicians create promotional graphics. Video editors add visual audio elements. Social media managers create engaging audio-based content.</p>
+
+<h2>Export and Share</h2>
+<p>Download your visualizations as high-resolution images. Export animated versions for video use. Share directly to social media. Use in presentations, websites, or print materials.</p>`,
+  },
+];
+
+pdfTools.push(...newAudioTools);

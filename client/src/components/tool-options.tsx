@@ -12752,6 +12752,220 @@ export function ToolOptionsComponent({
         </div>
       );
 
+
+    case "mute-video":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload a video file and the audio track will be completely removed, creating a silent video.
+          </p>
+        </div>
+      );
+
+    case "voice-recorder":
+    case "online-voice-recorder":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Click the record button to start capturing audio from your microphone. Your recording will be processed and available for download.
+          </p>
+        </div>
+      );
+
+    case "text-to-speech":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Text to Convert</Label>
+            <Input
+              placeholder="Enter text to convert to speech..."
+              value={options.textInput || ""}
+              onChange={(e) => updateOption("textInput", e.target.value)}
+              data-testid="input-text-to-speech"
+            />
+            <p className="text-xs text-muted-foreground">
+              Enter the text you want to convert to spoken audio.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label>Voice</Label>
+            <Select
+              value={options.voice || "default"}
+              onValueChange={(value) => updateOption("voice", value)}
+            >
+              <SelectTrigger data-testid="select-voice">
+                <SelectValue placeholder="Select voice" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="default">Default Voice</SelectItem>
+                <SelectItem value="male">Male Voice</SelectItem>
+                <SelectItem value="female">Female Voice</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Speed: {options.speechRate || "1.0"}x</Label>
+            <Slider
+              value={[parseFloat(options.speechRate || "1.0")]}
+              min={0.5}
+              max={2.0}
+              step={0.1}
+              onValueChange={([value]) => updateOption("speechRate", value.toString())}
+              data-testid="slider-speech-rate"
+            />
+          </div>
+        </div>
+      );
+
+    case "speech-to-text":
+    case "audio-to-text":
+    case "transcribe-audio":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload an audio file to transcribe. The audio will be converted to text using speech recognition.
+          </p>
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.transcriptFormat || "text"}
+              onValueChange={(value) => updateOption("transcriptFormat", value)}
+            >
+              <SelectTrigger data-testid="select-transcript-format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="text">Plain Text</SelectItem>
+                <SelectItem value="timestamps">With Timestamps</SelectItem>
+                <SelectItem value="srt">SRT Subtitles</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "audio-metadata-editor":
+    case "mp3-tag-editor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Title</Label>
+            <Input
+              placeholder="Track title"
+              value={options.title || ""}
+              onChange={(e) => updateOption("title", e.target.value)}
+              data-testid="input-audio-title"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Artist</Label>
+            <Input
+              placeholder="Artist name"
+              value={options.artist || ""}
+              onChange={(e) => updateOption("artist", e.target.value)}
+              data-testid="input-audio-artist"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Album</Label>
+            <Input
+              placeholder="Album name"
+              value={options.album || ""}
+              onChange={(e) => updateOption("album", e.target.value)}
+              data-testid="input-audio-album"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Year</Label>
+              <Input
+                placeholder="2024"
+                value={options.year || ""}
+                onChange={(e) => updateOption("year", e.target.value)}
+                data-testid="input-audio-year"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Track Number</Label>
+              <Input
+                placeholder="1"
+                value={options.trackNumber || ""}
+                onChange={(e) => updateOption("trackNumber", e.target.value)}
+                data-testid="input-audio-track"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Genre</Label>
+            <Input
+              placeholder="Genre"
+              value={options.genre || ""}
+              onChange={(e) => updateOption("genre", e.target.value)}
+              data-testid="input-audio-genre"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Comment</Label>
+            <Input
+              placeholder="Add a comment"
+              value={options.comment || ""}
+              onChange={(e) => updateOption("comment", e.target.value)}
+              data-testid="input-audio-comment"
+            />
+          </div>
+        </div>
+      );
+
+    case "audio-visualizer":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload an audio file to generate a visual waveform representation.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Width (px)</Label>
+              <Input
+                type="number"
+                placeholder="1920"
+                value={options.width || "1920"}
+                onChange={(e) => updateOption("width", e.target.value)}
+                data-testid="input-viz-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Height (px)</Label>
+              <Input
+                type="number"
+                placeholder="200"
+                value={options.height || "200"}
+                onChange={(e) => updateOption("height", e.target.value)}
+                data-testid="input-viz-height"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Waveform Color</Label>
+            <Select
+              value={options.waveColor || "0x3b82f6"}
+              onValueChange={(value) => updateOption("waveColor", value)}
+            >
+              <SelectTrigger data-testid="select-wave-color">
+                <SelectValue placeholder="Select color" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0x3b82f6">Blue</SelectItem>
+                <SelectItem value="0xef4444">Red</SelectItem>
+                <SelectItem value="0x22c55e">Green</SelectItem>
+                <SelectItem value="0xf59e0b">Orange</SelectItem>
+                <SelectItem value="0x8b5cf6">Purple</SelectItem>
+                <SelectItem value="0xffffff">White</SelectItem>
+                <SelectItem value="0x000000">Black</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
     default:
       return null;
   }

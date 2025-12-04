@@ -29459,6 +29459,120 @@ File analyzed: ${imageFile.originalname}
             break;
           }
 
+          case "mute-video": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to mute");
+            }
+            const muteInputPath = files[0].path;
+            const muteOutputPath = path.join(outputDir, `muted-video-${randomUUID()}.mp4`);
+            await execAsync(`ffmpeg -i "${muteInputPath}" -c:v copy -an "${muteOutputPath}"`);
+            result = muteOutputPath;
+            filename = "muted-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "voice-recorder":
+          case "online-voice-recorder": {
+            // These tools are client-side only - audio is recorded in browser
+            // This endpoint handles saving the recorded blob
+            if (files.length === 0) {
+              throw new Error("No audio recording received");
+            }
+            const recordedFile = files[0].path;
+            const recordedOutputPath = path.join(outputDir, `recording-${randomUUID()}.webm`);
+            fs.copyFileSync(recordedFile, recordedOutputPath);
+            result = recordedOutputPath;
+            filename = "voice-recording.webm";
+            contentType = "audio/webm";
+            break;
+          }
+
+          case "text-to-speech": {
+            // Text-to-speech is handled client-side using Web Speech API
+            // This endpoint saves the synthesized audio blob
+            if (files.length === 0 && !options.textInput) {
+              throw new Error("Please provide text to convert to speech");
+            }
+            if (files.length > 0) {
+              const ttsInputPath = files[0].path;
+              const ttsOutputPath = path.join(outputDir, `speech-${randomUUID()}.mp3`);
+              fs.copyFileSync(ttsInputPath, ttsOutputPath);
+              result = ttsOutputPath;
+              filename = "text-to-speech.mp3";
+              contentType = "audio/mpeg";
+            } else {
+              // Return info that TTS should be done client-side
+              result = Buffer.from(JSON.stringify({ clientSide: true, text: options.textInput }));
+              filename = "tts-config.json";
+              contentType = "application/json";
+            }
+            break;
+          }
+
+          case "speech-to-text":
+          case "audio-to-text":
+          case "transcribe-audio": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to transcribe");
+            }
+            // For now, return a message that transcription requires client-side processing
+            // or integration with a transcription service
+            const transcribeInfo = {
+              message: "Audio transcription requires the Web Speech API in the browser",
+              instructions: "Use the browser-based transcription feature",
+              filename: files[0].originalname
+            };
+            result = Buffer.from(JSON.stringify(transcribeInfo));
+            filename = "transcription-info.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "audio-metadata-editor":
+          case "mp3-tag-editor": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to edit metadata");
+            }
+            const metaInputPath = files[0].path;
+            const metaOutputPath = path.join(outputDir, `edited-audio-${randomUUID()}.mp3`);
+            
+            // Build ffmpeg metadata options
+            let metadataArgs = "";
+            if (options.title) metadataArgs += ` -metadata title="${options.title}"`;
+            if (options.artist) metadataArgs += ` -metadata artist="${options.artist}"`;
+            if (options.album) metadataArgs += ` -metadata album="${options.album}"`;
+            if (options.year) metadataArgs += ` -metadata date="${options.year}"`;
+            if (options.genre) metadataArgs += ` -metadata genre="${options.genre}"`;
+            if (options.trackNumber) metadataArgs += ` -metadata track="${options.trackNumber}"`;
+            if (options.comment) metadataArgs += ` -metadata comment="${options.comment}"`;
+            
+            await execAsync(`ffmpeg -i "${metaInputPath}" -c copy${metadataArgs} "${metaOutputPath}"`);
+            result = metaOutputPath;
+            filename = "edited-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "audio-visualizer": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to visualize");
+            }
+            const vizInputPath = files[0].path;
+            const vizOutputPath = path.join(outputDir, `waveform-${randomUUID()}.png`);
+            
+            // Generate waveform image using ffmpeg
+            const vizWidth = options.width || "1920";
+            const vizHeight = options.height || "200";
+            const vizColor = options.waveColor || "0x3b82f6";
+            
+            await execAsync(`ffmpeg -i "${vizInputPath}" -filter_complex "showwavespic=s=${vizWidth}x${vizHeight}:colors=${vizColor}" -frames:v 1 "${vizOutputPath}"`);
+            result = vizOutputPath;
+            filename = "audio-waveform.png";
+            contentType = "image/png";
+            break;
+          }
+
 
           case "json-formatter": {
             let jsonInput = options.jsonInput || '';

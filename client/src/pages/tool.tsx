@@ -4,6 +4,9 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { FileUpload } from "@/components/file-upload";
 import { ToolOptionsComponent } from "@/components/tool-options";
+import { VoiceRecorder } from "@/components/voice-recorder";
+import { TextToSpeechComponent } from "@/components/text-to-speech";
+import { AudioVisualizerComponent } from "@/components/audio-visualizer";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
@@ -114,6 +117,14 @@ import {
   SplitSquareVertical,
   ListOrdered,
   type LucideIcon,
+  Mic,
+  Mic2,
+  Volume2,
+  VolumeX,
+  FileAudio,
+  Captions,
+  Tag,
+  Activity,
 } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -210,6 +221,14 @@ const iconMap: Record<string, LucideIcon> = {
   WrapText,
   SplitSquareVertical,
   ListOrdered,
+  Mic,
+  Mic2,
+  Volume2,
+  VolumeX,
+  FileAudio,
+  Captions,
+  Tag,
+  AudioWaveform: Activity,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";
@@ -957,7 +976,19 @@ export default function ToolPage() {
               <div className="space-y-6">
                 {processingState === "idle" && (
                   <>
-                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting"].includes(tool.type) && (
+                    {(tool.type === "voice-recorder" || tool.type === "online-voice-recorder") && (
+                      <VoiceRecorder />
+                    )}
+
+                    {tool.type === "text-to-speech" && (
+                      <TextToSpeechComponent />
+                    )}
+
+                    {tool.type === "audio-visualizer" && (
+                      <AudioVisualizerComponent />
+                    )}
+
+                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting", "voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer"].includes(tool.type) && (
                       <FileUpload
                         accept={getAcceptType() as string}
                         multiple={isMultiFileAllowed()}
@@ -967,7 +998,7 @@ export default function ToolPage() {
                       />
                     )}
 
-                    {(files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting"].includes(tool.type)) && (
+                    {!["voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer"].includes(tool.type) && (files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting"].includes(tool.type)) && (
                       <ToolOptionsComponent
                         toolType={tool.type}
                         options={options}
@@ -982,16 +1013,18 @@ export default function ToolPage() {
                       </p>
                     )}
 
-                    <div className="flex justify-end gap-3">
-                      <Button
-                        onClick={handleProcess}
-                        disabled={!canProcess()}
-                        size="lg"
-                        data-testid="button-process"
-                      >
-                        Process {tool.name.split(" ")[0]}
-                      </Button>
-                    </div>
+                    {!["voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer"].includes(tool.type) && (
+                      <div className="flex justify-end gap-3">
+                        <Button
+                          onClick={handleProcess}
+                          disabled={!canProcess()}
+                          size="lg"
+                          data-testid="button-process"
+                        >
+                          Process {tool.name.split(" ")[0]}
+                        </Button>
+                      </div>
+                    )}
                   </>
                 )}
 

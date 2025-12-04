@@ -86,6 +86,14 @@ import {
   Focus,
   Wand2,
   UserX,
+  Mic,
+  Mic2,
+  Volume2,
+  VolumeX,
+  FileAudio,
+  Captions,
+  Tag,
+  Activity,
   type LucideIcon,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -148,9 +156,15 @@ const iconMap: Record<string, LucideIcon> = {
   Focus,
   Wand2,
   UserX,
+  Mic,
+  Mic2,
+  Volume2,
+  VolumeX,
+  FileAudio,
+  Captions,
+  Tag,
+  AudioWaveform: Activity,
 };
-  ChevronsUp,
-  GitCompare,
 
 interface ToolDialogProps {
   tool: PdfTool | null;
@@ -379,6 +393,25 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     }
     if (tool.type === "csv-to-yaml") {
       return ".csv,text/csv,application/csv";
+    }
+    // New Audio Tools
+    if (tool.type === "mute-video") {
+      return "video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov,.avi,.mkv";
+    }
+    if (tool.type === "voice-recorder" || tool.type === "online-voice-recorder") {
+      return "audio/*,.mp3,.wav,.webm,.ogg,.m4a";
+    }
+    if (tool.type === "text-to-speech") {
+      return "*/*";
+    }
+    if (tool.type === "speech-to-text" || tool.type === "audio-to-text" || tool.type === "transcribe-audio") {
+      return "audio/*,.mp3,.wav,.ogg,.m4a,.flac,.aac,.wma";
+    }
+    if (tool.type === "audio-metadata-editor" || tool.type === "mp3-tag-editor") {
+      return "audio/*,.mp3,.wav,.ogg,.m4a,.flac,.aac";
+    }
+    if (tool.type === "audio-visualizer") {
+      return "audio/*,.mp3,.wav,.ogg,.m4a,.flac,.aac";
     }
     return ".pdf,application/pdf";
   };
