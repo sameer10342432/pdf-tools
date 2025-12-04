@@ -30696,6 +30696,244 @@ File analyzed: ${imageFile.originalname}
             break;
           }
 
+          case "change-video-speed":
+          case "speed-up-video":
+          case "slow-down-video": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to change speed");
+            }
+            const speedInputPath = files[0].path;
+            const speedOutputPath = path.join(outputDir, `speed-changed-${randomUUID()}.mp4`);
+            
+            // Get speed factor based on tool type
+            let speedFactor = sanitizeNumber(options.speedFactor, 1, 0.25, 4);
+            if (toolType === "speed-up-video") {
+              speedFactor = sanitizeNumber(options.speedFactor, 2, 1.1, 4);
+            } else if (toolType === "slow-down-video") {
+              speedFactor = sanitizeNumber(options.speedFactor, 0.5, 0.25, 0.9);
+            }
+            
+            // Video speed uses setpts filter, audio uses atempo
+            // atempo only works in range 0.5-2.0, so we chain for larger changes
+            let audioFilter = "";
+            const maintainPitch = options.maintainPitch !== false;
+            
+            if (maintainPitch) {
+              let remainingSpeed = speedFactor;
+              const atempoFilters = [];
+              while (remainingSpeed > 2.0) {
+                atempoFilters.push("atempo=2.0");
+                remainingSpeed /= 2.0;
+              }
+              while (remainingSpeed < 0.5) {
+                atempoFilters.push("atempo=0.5");
+                remainingSpeed /= 0.5;
+              }
+              atempoFilters.push(`atempo=${remainingSpeed.toFixed(4)}`);
+              audioFilter = atempoFilters.join(",");
+            }
+            
+            const videoFilter = `setpts=${(1/speedFactor).toFixed(4)}*PTS`;
+            
+            if (options.removeAudio) {
+              await execAsync(`ffmpeg -i "${speedInputPath}" -filter:v "${videoFilter}" -an -c:v libx264 -preset fast "${speedOutputPath}"`);
+            } else if (maintainPitch && audioFilter) {
+              // Use atempo filter chain to maintain pitch while changing speed
+              await execAsync(`ffmpeg -i "${speedInputPath}" -filter:v "${videoFilter}" -filter:a "${audioFilter}" -c:v libx264 -preset fast -c:a aac -b:a 192k "${speedOutputPath}"`);
+            } else {
+              // When not maintaining pitch, remove audio as natural pitch shifting with FFmpeg is complex
+              // This gives users a choice: keep original pitch (maintainPitch=true) or have no audio
+              await execAsync(`ffmpeg -i "${speedInputPath}" -filter:v "${videoFilter}" -an -c:v libx264 -preset fast "${speedOutputPath}"`);
+            }
+            
+            result = speedOutputPath;
+            filename = "speed-changed-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "loop-video": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to loop");
+            }
+            const loopInputPath = files[0].path;
+            const loopOutputPath = path.join(outputDir, `looped-${randomUUID()}.mp4`);
+            const loopCount = sanitizeNumber(options.loopCount, 3, 2, 20);
+            const boomerang = options.boomerangMode === true;
+            
+            if (boomerang) {
+              // Create a forward-backward loop
+              const tempReverse = path.join(outputDir, `temp-reverse-${randomUUID()}.mp4`);
+              await execAsync(`ffmpeg -i "${loopInputPath}" -vf reverse -af areverse "${tempReverse}"`);
+              
+              // Concatenate forward and backward
+              const concatList = path.join(outputDir, `concat-${randomUUID()}.txt`);
+              let listContent = `file '${loopInputPath}'
+file '${tempReverse}'`;
+              for (let i = 1; i < loopCount; i++) {
+                listContent += `
+file '${loopInputPath}'
+file '${tempReverse}'`;
+              }
+              fs.writeFileSync(concatList, listContent);
+              await execAsync(`ffmpeg -f concat -safe 0 -i "${concatList}" -c:v libx264 -preset fast -c:a aac "${loopOutputPath}"`);
+              
+              // Cleanup temp files
+              fs.unlinkSync(tempReverse);
+              fs.unlinkSync(concatList);
+            } else {
+              // Simple loop - use stream_loop or concat
+              const concatList = path.join(outputDir, `concat-${randomUUID()}.txt`);
+              let listContent = `file '${loopInputPath}'`;
+              for (let i = 1; i < loopCount; i++) {
+                listContent += `
+file '${loopInputPath}'`;
+              }
+              fs.writeFileSync(concatList, listContent);
+              await execAsync(`ffmpeg -f concat -safe 0 -i "${concatList}" -c:v libx264 -preset fast -c:a aac "${loopOutputPath}"`);
+              fs.unlinkSync(concatList);
+            }
+            
+            result = loopOutputPath;
+            filename = "looped-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "stabilize-video":
+          case "video-deshaker": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to stabilize");
+            }
+            const stabilizeInputPath = files[0].path;
+            const stabilizeOutputPath = path.join(outputDir, `stabilized-${randomUUID()}.mp4`);
+            const stabilizeStrength = sanitizeNumber(options.stabilizationStrength, 10, 1, 30);
+            const zoomAmount = sanitizeNumber(options.stabilizeZoom, 0, 0, 20);
+            
+            // FFmpeg vidstab requires two passes - detect then transform
+            // For simplicity, we'll use the deshake filter which is one-pass
+            const smoothing = Math.round(stabilizeStrength);
+            
+            await execAsync(`ffmpeg -i "${stabilizeInputPath}" -vf "deshake=rx=32:ry=32:shakiness=${smoothing}:zoom=${zoomAmount}" -c:v libx264 -preset fast -c:a copy "${stabilizeOutputPath}"`);
+            
+            result = stabilizeOutputPath;
+            filename = "stabilized-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "reverse-video":
+          case "video-reverser": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to reverse");
+            }
+            const reverseInputPath = files[0].path;
+            const reverseOutputPath = path.join(outputDir, `reversed-${randomUUID()}.mp4`);
+            const reverseAudio = options.reverseAudio !== false;
+            
+            if (reverseAudio) {
+              await execAsync(`ffmpeg -i "${reverseInputPath}" -vf reverse -af areverse -c:v libx264 -preset fast -c:a aac -b:a 192k "${reverseOutputPath}"`);
+            } else {
+              // Reverse video but keep audio forward (remove audio)
+              await execAsync(`ffmpeg -i "${reverseInputPath}" -vf reverse -an -c:v libx264 -preset fast "${reverseOutputPath}"`);
+            }
+            
+            result = reverseOutputPath;
+            filename = "reversed-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "add-filter-to-video": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to apply filter");
+            }
+            const filterInputPath = files[0].path;
+            const filterOutputPath = path.join(outputDir, `filtered-${randomUUID()}.mp4`);
+            const filterType = options.videoFilter || "none";
+            
+            let filterString = "";
+            switch (filterType) {
+              case "grayscale":
+                filterString = "colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3";
+                break;
+              case "sepia":
+                filterString = "colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131";
+                break;
+              case "vintage":
+                filterString = "curves=vintage";
+                break;
+              case "noir":
+                filterString = "colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3,curves=m='0/0 0.5/0.4 1/1'";
+                break;
+              case "warm":
+                filterString = "colortemperature=temperature=6500";
+                break;
+              case "cool":
+                filterString = "colortemperature=temperature=9000";
+                break;
+              case "vivid":
+                filterString = "eq=saturation=1.5:contrast=1.1";
+                break;
+              case "muted":
+                filterString = "eq=saturation=0.5:contrast=0.9";
+                break;
+              case "sharpen":
+                filterString = "unsharp=5:5:1.0:5:5:0.0";
+                break;
+              case "blur":
+                filterString = "boxblur=2:1";
+                break;
+              case "vignette":
+                filterString = "vignette=PI/4";
+                break;
+              case "negative":
+                filterString = "negate";
+                break;
+              case "emboss":
+                filterString = "convolution='0 -1 0 -1 4 -1 0 -1 0:0 -1 0 -1 4 -1 0 -1 0:0 -1 0 -1 4 -1 0 -1 0:0 -1 0 -1 4 -1 0 -1 0'";
+                break;
+              default:
+                filterString = "";
+            }
+            
+            if (filterString) {
+              await execAsync(`ffmpeg -i "${filterInputPath}" -vf "${filterString}" -c:v libx264 -preset fast -c:a copy "${filterOutputPath}"`);
+            } else {
+              await execAsync(`ffmpeg -i "${filterInputPath}" -c:v libx264 -preset fast -c:a copy "${filterOutputPath}"`);
+            }
+            
+            result = filterOutputPath;
+            filename = "filtered-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "video-color-correction": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file for color correction");
+            }
+            const colorInputPath = files[0].path;
+            const colorOutputPath = path.join(outputDir, `color-corrected-${randomUUID()}.mp4`);
+            
+            const brightness = sanitizeNumber(options.brightness, 0, -1, 1);
+            const contrast = sanitizeNumber(options.contrast, 1, 0.5, 2);
+            const saturation = sanitizeNumber(options.saturation, 1, 0, 3);
+            const gamma = sanitizeNumber(options.gamma, 1, 0.5, 2);
+            const hue = sanitizeNumber(options.hue, 0, -180, 180);
+            
+            // Build the filter string for color correction
+            const eqFilter = `eq=brightness=${brightness}:contrast=${contrast}:saturation=${saturation}:gamma=${gamma}`;
+            const hueFilter = hue !== 0 ? `,hue=h=${hue}` : "";
+            
+            await execAsync(`ffmpeg -i "${colorInputPath}" -vf "${eqFilter}${hueFilter}" -c:v libx264 -preset fast -c:a copy "${colorOutputPath}"`);
+            
+            result = colorOutputPath;
+            filename = "color-corrected-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
               case "medium":
                 flvSettings = "-c:v flv1 -q:v 5 -c:a mp3 -b:a 192k -ar 44100";
                 break;

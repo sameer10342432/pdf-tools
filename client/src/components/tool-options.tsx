@@ -13851,7 +13851,279 @@ export function ToolOptionsComponent({
           </div>
         </div>
       );
-default:
+
+    case "change-video-speed":
+    case "speed-up-video":
+    case "slow-down-video":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            {toolType === "speed-up-video" ? "Speed up your video to create time-lapse effects." :
+             toolType === "slow-down-video" ? "Slow down your video to create slow-motion effects." :
+             "Adjust the playback speed of your video."}
+          </p>
+          <div className="space-y-2">
+            <Label htmlFor="speedFactor">Speed Factor</Label>
+            <Slider
+              id="speedFactor"
+              min={toolType === "slow-down-video" ? 0.25 : toolType === "speed-up-video" ? 1.1 : 0.25}
+              max={toolType === "slow-down-video" ? 0.9 : toolType === "speed-up-video" ? 4 : 4}
+              step={0.05}
+              value={[options.speedFactor ?? (toolType === "speed-up-video" ? 2 : toolType === "slow-down-video" ? 0.5 : 1)]}
+              onValueChange={([value]) => updateOption("speedFactor", value)}
+              className="w-full"
+              data-testid="slider-speed-factor"
+            />
+            <p className="text-xs text-muted-foreground">
+              Current: {(options.speedFactor ?? (toolType === "speed-up-video" ? 2 : toolType === "slow-down-video" ? 0.5 : 1)).toFixed(2)}x 
+              {(options.speedFactor ?? 1) > 1 ? " (faster)" : (options.speedFactor ?? 1) < 1 ? " (slower)" : " (normal)"}
+            </p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="maintainPitch"
+              checked={options.maintainPitch !== false}
+              onCheckedChange={(checked) => updateOption("maintainPitch", checked)}
+              data-testid="switch-maintain-pitch"
+            />
+            <Label htmlFor="maintainPitch">Maintain audio pitch</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="removeAudio"
+              checked={options.removeAudio === true}
+              onCheckedChange={(checked) => updateOption("removeAudio", checked)}
+              data-testid="switch-remove-audio"
+            />
+            <Label htmlFor="removeAudio">Remove audio track</Label>
+          </div>
+        </div>
+      );
+
+    case "loop-video":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Create looping videos for social media or GIF-like content.
+          </p>
+          <div className="space-y-2">
+            <Label htmlFor="loopCount">Number of Loops</Label>
+            <Slider
+              id="loopCount"
+              min={2}
+              max={20}
+              step={1}
+              value={[options.loopCount ?? 3]}
+              onValueChange={([value]) => updateOption("loopCount", value)}
+              className="w-full"
+              data-testid="slider-loop-count"
+            />
+            <p className="text-xs text-muted-foreground">
+              Current: {options.loopCount ?? 3} loops
+            </p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="boomerangMode"
+              checked={options.boomerangMode === true}
+              onCheckedChange={(checked) => updateOption("boomerangMode", checked)}
+              data-testid="switch-boomerang"
+            />
+            <Label htmlFor="boomerangMode">Boomerang mode (play forward then backward)</Label>
+          </div>
+        </div>
+      );
+
+    case "stabilize-video":
+    case "video-deshaker":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Remove camera shake and create smooth, stable footage.
+          </p>
+          <div className="space-y-2">
+            <Label htmlFor="stabilizationStrength">Stabilization Strength</Label>
+            <Slider
+              id="stabilizationStrength"
+              min={1}
+              max={30}
+              step={1}
+              value={[options.stabilizationStrength ?? 10]}
+              onValueChange={([value]) => updateOption("stabilizationStrength", value)}
+              className="w-full"
+              data-testid="slider-stabilization-strength"
+            />
+            <p className="text-xs text-muted-foreground">
+              Current: {options.stabilizationStrength ?? 10} - Higher values = more stabilization
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="stabilizeZoom">Zoom Compensation (%)</Label>
+            <Slider
+              id="stabilizeZoom"
+              min={0}
+              max={20}
+              step={1}
+              value={[options.stabilizeZoom ?? 0]}
+              onValueChange={([value]) => updateOption("stabilizeZoom", value)}
+              className="w-full"
+              data-testid="slider-stabilize-zoom"
+            />
+            <p className="text-xs text-muted-foreground">
+              Current: {options.stabilizeZoom ?? 0}% - Slight zoom to hide edge artifacts
+            </p>
+          </div>
+        </div>
+      );
+
+    case "reverse-video":
+    case "video-reverser":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Play your video backwards for creative effects and fun content.
+          </p>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="reverseAudio"
+              checked={options.reverseAudio !== false}
+              onCheckedChange={(checked) => updateOption("reverseAudio", checked)}
+              data-testid="switch-reverse-audio"
+            />
+            <Label htmlFor="reverseAudio">Reverse audio along with video</Label>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Turn off to keep video silent (audio will be removed)
+          </p>
+        </div>
+      );
+
+    case "add-filter-to-video":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Apply visual filters and effects to enhance your video.
+          </p>
+          <div className="space-y-2">
+            <Label htmlFor="videoFilter">Select Filter</Label>
+            <Select
+              value={options.videoFilter || "none"}
+              onValueChange={(value) => updateOption("videoFilter", value)}
+            >
+              <SelectTrigger id="videoFilter" data-testid="select-video-filter">
+                <SelectValue placeholder="Choose a filter" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">None (Original)</SelectItem>
+                <SelectItem value="grayscale">Grayscale</SelectItem>
+                <SelectItem value="sepia">Sepia</SelectItem>
+                <SelectItem value="vintage">Vintage</SelectItem>
+                <SelectItem value="noir">Film Noir</SelectItem>
+                <SelectItem value="warm">Warm</SelectItem>
+                <SelectItem value="cool">Cool</SelectItem>
+                <SelectItem value="vivid">Vivid</SelectItem>
+                <SelectItem value="muted">Muted</SelectItem>
+                <SelectItem value="sharpen">Sharpen</SelectItem>
+                <SelectItem value="blur">Blur</SelectItem>
+                <SelectItem value="vignette">Vignette</SelectItem>
+                <SelectItem value="negative">Negative</SelectItem>
+                <SelectItem value="emboss">Emboss</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "video-color-correction":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Professional color correction and grading for your videos.
+          </p>
+          <div className="space-y-2">
+            <Label htmlFor="brightness">Brightness</Label>
+            <Slider
+              id="brightness"
+              min={-100}
+              max={100}
+              step={5}
+              value={[(options.brightness ?? 0) * 100]}
+              onValueChange={([value]) => updateOption("brightness", value / 100)}
+              className="w-full"
+              data-testid="slider-brightness"
+            />
+            <p className="text-xs text-muted-foreground">
+              Current: {((options.brightness ?? 0) * 100).toFixed(0)}%
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="contrast">Contrast</Label>
+            <Slider
+              id="contrast"
+              min={50}
+              max={200}
+              step={5}
+              value={[(options.contrast ?? 1) * 100]}
+              onValueChange={([value]) => updateOption("contrast", value / 100)}
+              className="w-full"
+              data-testid="slider-contrast"
+            />
+            <p className="text-xs text-muted-foreground">
+              Current: {((options.contrast ?? 1) * 100).toFixed(0)}%
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="saturation">Saturation</Label>
+            <Slider
+              id="saturation"
+              min={0}
+              max={300}
+              step={10}
+              value={[(options.saturation ?? 1) * 100]}
+              onValueChange={([value]) => updateOption("saturation", value / 100)}
+              className="w-full"
+              data-testid="slider-saturation"
+            />
+            <p className="text-xs text-muted-foreground">
+              Current: {((options.saturation ?? 1) * 100).toFixed(0)}%
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="gamma">Gamma</Label>
+            <Slider
+              id="gamma"
+              min={50}
+              max={200}
+              step={5}
+              value={[(options.gamma ?? 1) * 100]}
+              onValueChange={([value]) => updateOption("gamma", value / 100)}
+              className="w-full"
+              data-testid="slider-gamma"
+            />
+            <p className="text-xs text-muted-foreground">
+              Current: {(options.gamma ?? 1).toFixed(2)}
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="hue">Hue Shift</Label>
+            <Slider
+              id="hue"
+              min={-180}
+              max={180}
+              step={5}
+              value={[options.hue ?? 0]}
+              onValueChange={([value]) => updateOption("hue", value)}
+              className="w-full"
+              data-testid="slider-hue"
+            />
+            <p className="text-xs text-muted-foreground">
+              Current: {options.hue ?? 0} degrees
+            </p>
+          </div>
+        </div>
+      );
+
+    default:
       return null;
   }
 }

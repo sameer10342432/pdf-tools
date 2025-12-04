@@ -704,7 +704,12 @@ export default function ToolPage() {
     }
     if (tool.type === "resize-video" || tool.type === "video-resizer" || 
         tool.type === "change-video-aspect-ratio" || tool.type === "mute-video" ||
-        tool.type === "change-video-audio") {
+        tool.type === "change-video-audio" || tool.type === "change-video-speed" ||
+        tool.type === "speed-up-video" || tool.type === "slow-down-video" ||
+        tool.type === "loop-video" || tool.type === "stabilize-video" ||
+        tool.type === "video-deshaker" || tool.type === "reverse-video" ||
+        tool.type === "video-reverser" || tool.type === "add-filter-to-video" ||
+        tool.type === "video-color-correction") {
       return ".mp4,.webm,.mov,.avi,.mkv,video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska";
     }
     if (tool.type === "merge-video" || tool.type === "combine-videos" || tool.type === "video-joiner") {
