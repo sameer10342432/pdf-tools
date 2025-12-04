@@ -19827,7 +19827,6 @@ const newVideoTools: PdfTool[] = [
 <h2>Convert from Any Format</h2>
 <p>Upload MP4, AVI, MOV, MKV, or any other video format. Our converter handles the transformation to FLV with customizable quality settings.</p>`,
   },
-  },
   {
     id: "video-to-3gp",
     name: "Video to 3GP",
