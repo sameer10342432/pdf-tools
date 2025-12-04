@@ -685,6 +685,16 @@ export const pdfToolTypes = [
   "audio-fader",
   "8d-audio-converter",
   "change-audio-channels",
+  "ringtone-maker",
+  "compress-video",
+  "reduce-video-size",
+  "compress-mp4",
+  "compress-mov",
+  "compress-avi",
+  "video-converter",
+  "mp4-to-avi",
+  "avi-to-mp4",
+  "mov-to-mp4",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -1273,6 +1283,19 @@ export const toolOptionsSchema = z.object({
   lineIntensity: z.number().optional(),
   detailLevel: z.number().optional(),
   invertSketch: z.boolean().optional(),
+  // Video tool options
+  ringtoneStart: z.number().optional(),
+  ringtoneDuration: z.number().optional(),
+  ringtoneFadeIn: z.number().optional(),
+  ringtoneFadeOut: z.number().optional(),
+  ringtoneFormat: z.enum(["m4r", "mp3"]).optional(),
+  videoCompressionLevel: z.enum(["light", "medium", "maximum"]).optional(),
+  videoResolution: z.enum(["original", "1080p", "720p", "480p", "360p"]).optional(),
+  targetVideoSizeMB: z.number().optional(),
+  keepOriginalFormat: z.boolean().optional(),
+  videoOutputFormat: z.enum(["mp4", "webm", "avi", "mov", "mkv"]).optional(),
+  videoQuality: z.enum(["high", "medium", "low"]).optional(),
+  channelMode: z.enum(["stereo-to-mono", "mono-to-stereo", "swap-channels", "left-only", "right-only"]).optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -19271,3 +19294,259 @@ const newAudioTools: PdfTool[] = [
 ];
 
 pdfTools.push(...newAudioTools);
+
+// New Video Tools
+const newVideoTools: PdfTool[] = [
+  {
+    id: "ringtone-maker",
+    name: "Ringtone Maker",
+    description: "Create custom ringtones from any audio or video file",
+    icon: "Bell",
+    type: "ringtone-maker",
+    color: "bg-pink-500",
+    emoji: "🔔",
+    metaTitle: "Ringtone Maker Online Free - Create Custom Ringtones | Audio Tools",
+    metaDescription: "Create custom ringtones from any audio or video file online for free. Trim, fade, and convert to ringtone formats instantly. No software needed.",
+    seoArticle: `<h2>Ringtone Maker - Create Custom Ringtones Online</h2>
+<p>Transform any audio or video file into a personalized ringtone with our free online Ringtone Maker. Whether you want to set your favorite song, a memorable sound bite, or a custom notification tone, this tool makes it effortless to create ringtones that reflect your style.</p>
+
+<h2>Why Create Custom Ringtones?</h2>
+<p>Default ringtones are boring and impersonal. With custom ringtones, you can immediately recognize your phone ringing in a crowd. Personalize your device with sounds that matter to you. Set different ringtones for different contacts. Express your personality through unique audio alerts.</p>
+
+<h2>Easy Three-Step Process</h2>
+<p>Creating a ringtone is simple: Upload any audio or video file. Select the portion you want as your ringtone using our visual waveform editor. Add optional fade in/out effects. Download in your preferred format (M4R for iPhone, MP3 for Android).</p>
+
+<h2>Perfect for Any Device</h2>
+<p>Our ringtone maker supports all major formats. Export as M4R for iPhone and iPad. Create MP3 ringtones for Android devices. Generate notification sounds in the perfect length and quality for any smartphone or tablet.</p>
+
+<h2>Professional Audio Editing Features</h2>
+<p>Precisely trim audio down to the exact moment you want. Add smooth fade in and fade out effects for professional-sounding ringtones. Adjust volume levels to ensure your ringtone is audible. Preview your creation before downloading to ensure perfection.</p>`,
+  },
+  {
+    id: "compress-video",
+    name: "Compress Video",
+    description: "Reduce video file size while maintaining quality",
+    icon: "FileArchive",
+    type: "compress-video",
+    color: "bg-blue-500",
+    emoji: "📦",
+    metaTitle: "Compress Video Online Free - Reduce Video File Size | Video Tools",
+    metaDescription: "Compress video files online for free. Reduce file size while maintaining quality. Support for MP4, MOV, AVI, and more formats.",
+    seoArticle: `<h2>Compress Video Files Online - Reduce Size Without Losing Quality</h2>
+<p>Large video files can be problematic for sharing, uploading, and storage. Our free online video compressor helps you reduce file sizes dramatically while preserving visual quality. Perfect for social media uploads, email attachments, and saving storage space.</p>
+
+<h2>Smart Compression Technology</h2>
+<p>Our compression algorithm intelligently analyzes your video content to apply optimal compression settings. It preserves important visual details while eliminating redundant data. The result is significantly smaller files that still look great on any screen.</p>
+
+<h2>Multiple Compression Levels</h2>
+<p>Choose from different compression presets based on your needs. Light compression for minimal quality loss. Medium compression for balanced size reduction. Maximum compression for smallest possible file size. Custom settings for precise control over quality vs size.</p>
+
+<h2>Supports All Popular Formats</h2>
+<p>Upload videos in any format: MP4, MOV, AVI, MKV, WebM, and more. Our tool handles the conversion and compression automatically. Download your compressed video in the format that works best for your use case.</p>
+
+<h2>Fast Cloud Processing</h2>
+<p>Processing happens on our powerful cloud servers, not your device. This means fast compression even for large files. No software installation required. Works on any device with a web browser.</p>`,
+  },
+  {
+    id: "reduce-video-size",
+    name: "Reduce Video Size",
+    description: "Shrink video files for easier sharing and storage",
+    icon: "Minimize2",
+    type: "reduce-video-size",
+    color: "bg-indigo-500",
+    emoji: "📉",
+    metaTitle: "Reduce Video Size Online Free - Shrink Video Files | Video Tools",
+    metaDescription: "Reduce video file size online for free. Shrink large videos for email, social media, and storage. Fast and easy video size reducer.",
+    seoArticle: `<h2>Reduce Video Size Online - Shrink Files Instantly</h2>
+<p>Need to make a video file smaller? Our video size reducer helps you shrink large video files quickly and easily. Perfect for fitting videos under email attachment limits, speeding up uploads to social media, or freeing up storage space on your devices.</p>
+
+<h2>Why Reduce Video Size?</h2>
+<p>Large video files create many challenges. Email services typically limit attachments to 25MB. Social platforms have upload size restrictions. Large files take forever to upload on slow connections. Storage space on devices and cloud services fills up quickly.</p>
+
+<h2>Multiple Reduction Methods</h2>
+<p>Our tool offers several ways to reduce video size. Lower the resolution for significant size reduction. Reduce the bitrate while maintaining resolution. Shorten the video duration. Compress using efficient codecs. Choose the method that best fits your needs.</p>
+
+<h2>Maintain Acceptable Quality</h2>
+<p>We understand that quality matters. Our reduction algorithms prioritize visual quality while achieving your target file size. Preview the reduced video before downloading to ensure it meets your standards.</p>
+
+<h2>Instant Size Estimation</h2>
+<p>See the estimated final file size before processing. Adjust settings to hit your target size. Know exactly what to expect before you commit to the reduction. No surprises when the file finishes processing.</p>`,
+  },
+  {
+    id: "compress-mp4",
+    name: "Compress MP4",
+    description: "Compress MP4 video files to reduce size",
+    icon: "FileVideo",
+    type: "compress-mp4",
+    color: "bg-red-500",
+    emoji: "🎬",
+    metaTitle: "Compress MP4 Online Free - Reduce MP4 File Size | Video Tools",
+    metaDescription: "Compress MP4 video files online for free. Reduce MP4 size while keeping quality. Fast, secure, and easy-to-use MP4 compressor.",
+    seoArticle: `<h2>Compress MP4 Videos Online - Professional Quality Compression</h2>
+<p>MP4 is the most popular video format, but these files can grow quite large. Our specialized MP4 compressor reduces file sizes while preserving the quality viewers expect. Perfect for sharing videos online, reducing storage usage, or preparing files for streaming.</p>
+
+<h2>MP4-Optimized Compression</h2>
+<p>Our tool is specifically optimized for MP4 files. It understands H.264 and H.265 video codecs. It handles AAC audio compression intelligently. The result is maximum compression with minimum quality loss.</p>
+
+<h2>Flexible Quality Settings</h2>
+<p>Control the compression level to match your needs. Select from preset quality levels for quick results. Fine-tune bitrate settings for precise control. Balance file size against visual quality. Find the perfect sweet spot for your specific use case.</p>
+
+<h2>Preserve Audio Quality</h2>
+<p>Video compression often neglects audio quality. Our tool maintains crisp, clear audio even at high compression levels. Adjust audio settings independently from video. Keep your videos sounding as good as they look.</p>
+
+<h2>Fast Processing</h2>
+<p>Cloud-based processing means fast results regardless of your device's capabilities. Upload your MP4, choose your settings, and download the compressed file in minutes. Process multiple files efficiently with our batch compression option.</p>`,
+  },
+  {
+    id: "compress-mov",
+    name: "Compress MOV",
+    description: "Compress MOV video files from Apple devices",
+    icon: "Film",
+    type: "compress-mov",
+    color: "bg-gray-600",
+    emoji: "🍎",
+    metaTitle: "Compress MOV Online Free - Reduce MOV File Size | Video Tools",
+    metaDescription: "Compress MOV video files online for free. Reduce MOV size from iPhone and Mac. Maintain quality while shrinking Apple video files.",
+    seoArticle: `<h2>Compress MOV Files Online - Apple Video Compression</h2>
+<p>MOV files from iPhones, iPads, and Macs often have enormous file sizes. Our MOV compressor specifically targets Apple's video format to reduce file sizes while maintaining the stunning quality you expect from Apple devices.</p>
+
+<h2>Designed for Apple Video</h2>
+<p>MOV files use specific codecs and containers that require specialized handling. Our tool understands ProRes, H.264, and HEVC codecs common in MOV files. It preserves important metadata and quality characteristics unique to Apple's format.</p>
+
+<h2>Perfect for iPhone Videos</h2>
+<p>iPhone videos in 4K can be several gigabytes in size. Compress them for easier sharing via email and messaging apps. Reduce file sizes for faster cloud backup. Save storage space without deleting precious memories.</p>
+
+<h2>Convert or Keep MOV</h2>
+<p>Choose to keep your compressed file in MOV format for Apple ecosystem compatibility. Or convert to MP4 for broader compatibility with Windows and Android devices. The choice is yours based on how you'll use the video.</p>
+
+<h2>Quality Preservation</h2>
+<p>Apple users expect high quality. Our compression algorithms are tuned to preserve the vibrant colors and sharp details that Apple cameras capture. Your compressed videos will still look stunning on Retina displays.</p>`,
+  },
+  {
+    id: "compress-avi",
+    name: "Compress AVI",
+    description: "Compress AVI video files to smaller sizes",
+    icon: "Video",
+    type: "compress-avi",
+    color: "bg-amber-600",
+    emoji: "📹",
+    metaTitle: "Compress AVI Online Free - Reduce AVI File Size | Video Tools",
+    metaDescription: "Compress AVI video files online for free. Reduce large AVI files while maintaining quality. Fast and easy AVI compression tool.",
+    seoArticle: `<h2>Compress AVI Files Online - Reduce AVI Video Size</h2>
+<p>AVI files are known for their large file sizes due to less efficient compression. Our AVI compressor helps you reduce these files to more manageable sizes, perfect for storage, sharing, and streaming purposes.</p>
+
+<h2>Why AVI Files Are Large</h2>
+<p>AVI (Audio Video Interleave) is an older format that often uses less efficient codecs. Many cameras and recording devices still output AVI files. These files can be many times larger than equivalent MP4s. Our compressor solves this size problem.</p>
+
+<h2>Modern Compression for Legacy Format</h2>
+<p>We apply modern compression techniques to your AVI files. Reduce file sizes by 50-90% depending on the source material. Maintain the visual quality you need. Convert to more efficient formats if desired.</p>
+
+<h2>Batch Processing</h2>
+<p>Have multiple AVI files to compress? Our tool handles batch processing efficiently. Upload several files at once. Apply the same compression settings across all files. Download them all when complete.</p>
+
+<h2>Flexible Output Options</h2>
+<p>Keep your compressed file as AVI for compatibility with existing workflows. Or convert to MP4 for better compression and broader compatibility. Choose the resolution and quality that fits your needs.</p>`,
+  },
+  {
+    id: "video-converter",
+    name: "Video Converter",
+    description: "Convert videos between any formats easily",
+    icon: "RefreshCw",
+    type: "video-converter",
+    color: "bg-green-500",
+    emoji: "🔄",
+    metaTitle: "Video Converter Online Free - Convert Video Formats | Video Tools",
+    metaDescription: "Convert video files between any formats online for free. Support for MP4, MOV, AVI, MKV, WebM and more. Fast, secure video conversion.",
+    seoArticle: `<h2>Video Converter - Convert Any Video Format Online</h2>
+<p>Need to convert a video to a different format? Our universal video converter handles all popular video formats. Whether you're converting for device compatibility, web optimization, or editing purposes, we've got you covered.</p>
+
+<h2>Supported Formats</h2>
+<p>Our video converter supports a wide range of input and output formats: MP4, MOV, AVI, MKV, WebM, WMV, FLV, 3GP, and more. Convert between any combination of these formats with just a few clicks. No software installation required.</p>
+
+<h2>Optimized Presets</h2>
+<p>Not sure which format to choose? Use our device-specific presets. Optimize for iPhone or Android playback. Create web-ready videos for YouTube, Vimeo, or social media. Generate files optimized for specific editing software.</p>
+
+<h2>Advanced Options</h2>
+<p>For users who need more control, we offer advanced conversion settings. Choose specific codecs for video and audio. Set custom bitrates and resolutions. Adjust frame rates and aspect ratios. Fine-tune every aspect of your converted video.</p>
+
+<h2>Maintain Quality</h2>
+<p>Our conversion process preserves video quality. We use the best available codecs and encoding settings. Your converted videos will look and sound as good as the originals. Quality is never sacrificed for convenience.</p>`,
+  },
+  {
+    id: "mp4-to-avi",
+    name: "MP4 to AVI",
+    description: "Convert MP4 videos to AVI format",
+    icon: "ArrowRight",
+    type: "mp4-to-avi",
+    color: "bg-violet-500",
+    emoji: "➡️",
+    metaTitle: "MP4 to AVI Converter Online Free - Convert MP4 to AVI | Video Tools",
+    metaDescription: "Convert MP4 to AVI online for free. Fast and easy MP4 to AVI conversion with quality preservation. No software installation needed.",
+    seoArticle: `<h2>MP4 to AVI Converter - Free Online Conversion</h2>
+<p>Need to convert an MP4 file to AVI format? Our free online converter makes it simple. AVI format is required by some older devices, editing software, and playback systems. Convert your MP4s to AVI quickly and easily.</p>
+
+<h2>When You Need AVI Format</h2>
+<p>While MP4 is widely compatible, some situations require AVI files. Certain video editing programs prefer AVI input. Some older DVD players and TVs only support AVI. Specific industrial and professional equipment may require AVI format.</p>
+
+<h2>Quality Preservation</h2>
+<p>Our converter maintains video quality during the format change. Audio and video streams are carefully transcoded. Resolution and frame rate are preserved. The only thing that changes is the container format.</p>
+
+<h2>Customizable Output</h2>
+<p>Choose from multiple AVI codec options. Select the audio format that works best for your needs. Adjust quality settings to balance file size and visual quality. Get exactly the AVI file you need.</p>
+
+<h2>Fast Cloud Conversion</h2>
+<p>Conversion happens on our powerful cloud servers. No need to install software or tie up your computer. Upload, convert, and download in minutes. Works on any device with a web browser.</p>`,
+  },
+  {
+    id: "avi-to-mp4",
+    name: "AVI to MP4",
+    description: "Convert AVI videos to MP4 format",
+    icon: "ArrowLeft",
+    type: "avi-to-mp4",
+    color: "bg-cyan-500",
+    emoji: "⬅️",
+    metaTitle: "AVI to MP4 Converter Online Free - Convert AVI to MP4 | Video Tools",
+    metaDescription: "Convert AVI to MP4 online for free. Transform large AVI files into compact MP4 format. Fast, secure, and maintains quality.",
+    seoArticle: `<h2>AVI to MP4 Converter - Modernize Your Video Files</h2>
+<p>Convert your AVI files to the widely compatible MP4 format. MP4 offers better compression, smaller file sizes, and plays on virtually every device. Our free converter makes the switch easy and maintains quality.</p>
+
+<h2>Benefits of Converting to MP4</h2>
+<p>MP4 offers numerous advantages over AVI. Files are typically 2-5 times smaller. Compatibility with modern devices is universal. Streaming and web playback work seamlessly. Most editing software prefers MP4 input.</p>
+
+<h2>Preserve Video Quality</h2>
+<p>Converting to MP4 doesn't mean losing quality. Our converter uses efficient H.264 or H.265 codecs. Visual quality remains excellent while file sizes shrink. Audio is preserved in high-quality AAC format.</p>
+
+<h2>Perfect for Modern Devices</h2>
+<p>MP4 files play on virtually everything: smartphones, tablets, computers, smart TVs, and gaming consoles. Share videos easily on social media. Upload to cloud storage without format issues. Stream directly in web browsers.</p>
+
+<h2>Batch Conversion</h2>
+<p>Have many AVI files to convert? Our batch processing feature handles multiple files efficiently. Upload all your files at once. Apply consistent settings across the batch. Download converted files individually or as a ZIP archive.</p>`,
+  },
+  {
+    id: "mov-to-mp4",
+    name: "MOV to MP4",
+    description: "Convert MOV videos to MP4 format",
+    icon: "Repeat",
+    type: "mov-to-mp4",
+    color: "bg-teal-500",
+    emoji: "🔁",
+    metaTitle: "MOV to MP4 Converter Online Free - Convert MOV to MP4 | Video Tools",
+    metaDescription: "Convert MOV to MP4 online for free. Transform Apple MOV files into universally compatible MP4. Fast conversion with quality preservation.",
+    seoArticle: `<h2>MOV to MP4 Converter - Universal Compatibility</h2>
+<p>MOV files from your iPhone or Mac don't play well on Windows or Android? Convert them to MP4 for universal compatibility. Our free converter transforms Apple's native format into the widely supported MP4 format quickly and easily.</p>
+
+<h2>Why Convert MOV to MP4?</h2>
+<p>While MOV works great within the Apple ecosystem, sharing with non-Apple users can be problematic. MP4 is the universal standard that works everywhere. Windows PCs, Android devices, smart TVs, and web browsers all prefer MP4.</p>
+
+<h2>Maintain Apple Quality</h2>
+<p>Apple devices capture stunning video. Our converter preserves that quality when converting to MP4. Use efficient H.264 or HEVC encoding. Keep the vibrant colors and sharp details your Apple camera captured.</p>
+
+<h2>Reduce File Sizes</h2>
+<p>MOV files from iPhones can be huge, especially in 4K. Converting to MP4 often reduces file size significantly. Share videos more easily. Upload faster. Use less storage space.</p>
+
+<h2>Works on Any Device</h2>
+<p>No need to install any software. Upload your MOV file from any device with a web browser. Conversion happens in the cloud. Download your MP4 file when ready. It's that simple.</p>`,
+  },
+];
+
+pdfTools.push(...newVideoTools);

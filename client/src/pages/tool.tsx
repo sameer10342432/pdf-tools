@@ -655,6 +655,22 @@ export default function ToolPage() {
     if (tool.type === "hex-to-text" || tool.type === "text-to-morse" || tool.type === "morse-to-text" || tool.type === "text-to-handwriting") {
       return "*/*";
     }
+    // New Video Tools
+    if (tool.type === "ringtone-maker") {
+      return ".mp3,.wav,.aac,.m4a,.ogg,.flac,.mp4,.webm,.mov,.avi,.mkv,audio/mpeg,audio/wav,audio/aac,audio/mp4,audio/ogg,video/mp4,video/webm,video/quicktime,video/x-msvideo";
+    }
+    if (tool.type === "compress-video" || tool.type === "reduce-video-size" || tool.type === "video-converter") {
+      return ".mp4,.webm,.mov,.avi,.mkv,video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska";
+    }
+    if (tool.type === "compress-mp4" || tool.type === "mp4-to-avi") {
+      return ".mp4,video/mp4";
+    }
+    if (tool.type === "compress-mov" || tool.type === "mov-to-mp4") {
+      return ".mov,video/quicktime";
+    }
+    if (tool.type === "compress-avi" || tool.type === "avi-to-mp4") {
+      return ".avi,video/x-msvideo";
+    }
     return ".pdf,application/pdf";
   };
 

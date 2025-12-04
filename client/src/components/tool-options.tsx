@@ -13280,6 +13280,203 @@ export function ToolOptionsComponent({
         </div>
       );
 
+
+
+    case "ringtone-maker":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Create custom ringtones from any audio or video file.
+          </p>
+          <div className="space-y-2">
+            <Label>Start Time (seconds)</Label>
+            <Input
+              type="number"
+              min="0"
+              value={options.ringtoneStart || 0}
+              onChange={(e) => updateOption("ringtoneStart", parseFloat(e.target.value) || 0)}
+              data-testid="input-ringtone-start"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Duration (seconds)</Label>
+            <Input
+              type="number"
+              min="1"
+              max="40"
+              value={options.ringtoneDuration || 30}
+              onChange={(e) => updateOption("ringtoneDuration", parseFloat(e.target.value) || 30)}
+              data-testid="input-ringtone-duration"
+            />
+            <p className="text-xs text-muted-foreground">iPhone ringtones should be 30 seconds or less.</p>
+          </div>
+          <div className="space-y-2">
+            <Label>Fade In (seconds)</Label>
+            <Input
+              type="number"
+              min="0"
+              max="5"
+              value={options.ringtoneFadeIn || 0}
+              onChange={(e) => updateOption("ringtoneFadeIn", parseFloat(e.target.value) || 0)}
+              data-testid="input-ringtone-fade-in"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Fade Out (seconds)</Label>
+            <Input
+              type="number"
+              min="0"
+              max="5"
+              value={options.ringtoneFadeOut || 0}
+              onChange={(e) => updateOption("ringtoneFadeOut", parseFloat(e.target.value) || 0)}
+              data-testid="input-ringtone-fade-out"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.ringtoneFormat || "m4r"}
+              onValueChange={(value) => updateOption("ringtoneFormat", value)}
+            >
+              <SelectTrigger data-testid="select-ringtone-format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="m4r">M4R (iPhone)</SelectItem>
+                <SelectItem value="mp3">MP3 (Android)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "compress-video":
+    case "reduce-video-size":
+    case "compress-mp4":
+    case "compress-mov":
+    case "compress-avi":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Compress video files to reduce size while maintaining quality.
+          </p>
+          <div className="space-y-2">
+            <Label>Compression Level</Label>
+            <Select
+              value={options.videoCompressionLevel || "medium"}
+              onValueChange={(value) => updateOption("videoCompressionLevel", value)}
+            >
+              <SelectTrigger data-testid="select-video-compression">
+                <SelectValue placeholder="Select compression" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="light">Light (Best Quality)</SelectItem>
+                <SelectItem value="medium">Medium (Balanced)</SelectItem>
+                <SelectItem value="maximum">Maximum (Smallest Size)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {(toolType === "compress-video" || toolType === "reduce-video-size") && (
+            <div className="space-y-2">
+              <Label>Resolution</Label>
+              <Select
+                value={options.videoResolution || "original"}
+                onValueChange={(value) => updateOption("videoResolution", value)}
+              >
+                <SelectTrigger data-testid="select-video-resolution">
+                  <SelectValue placeholder="Select resolution" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="original">Keep Original</SelectItem>
+                  <SelectItem value="1080p">1080p Full HD</SelectItem>
+                  <SelectItem value="720p">720p HD</SelectItem>
+                  <SelectItem value="480p">480p SD</SelectItem>
+                  <SelectItem value="360p">360p Low</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          {toolType === "reduce-video-size" && (
+            <div className="space-y-2">
+              <Label>Target Size (MB)</Label>
+              <Input
+                type="number"
+                min="1"
+                max="500"
+                value={options.targetVideoSizeMB || 50}
+                onChange={(e) => updateOption("targetVideoSizeMB", parseInt(e.target.value) || 50)}
+                data-testid="input-target-video-size"
+              />
+            </div>
+          )}
+          {(toolType === "compress-mov" || toolType === "compress-avi") && (
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="keepFormat"
+                checked={options.keepOriginalFormat !== false}
+                onCheckedChange={(checked) => updateOption("keepOriginalFormat", checked === true)}
+                data-testid="checkbox-keep-format"
+              />
+              <Label htmlFor="keepFormat">Keep original format (otherwise convert to MP4)</Label>
+            </div>
+          )}
+        </div>
+      );
+
+    case "video-converter":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert videos between different formats.
+          </p>
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.videoOutputFormat || "mp4"}
+              onValueChange={(value) => updateOption("videoOutputFormat", value)}
+            >
+              <SelectTrigger data-testid="select-video-output-format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mp4">MP4</SelectItem>
+                <SelectItem value="webm">WebM</SelectItem>
+                <SelectItem value="avi">AVI</SelectItem>
+                <SelectItem value="mov">MOV</SelectItem>
+                <SelectItem value="mkv">MKV</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "mp4-to-avi":
+    case "avi-to-mp4":
+    case "mov-to-mp4":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Convert video to a different format with quality options.
+          </p>
+          <div className="space-y-2">
+            <Label>Quality</Label>
+            <Select
+              value={options.videoQuality || "high"}
+              onValueChange={(value) => updateOption("videoQuality", value)}
+            >
+              <SelectTrigger data-testid="select-video-quality">
+                <SelectValue placeholder="Select quality" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="high">High Quality</SelectItem>
+                <SelectItem value="medium">Medium Quality</SelectItem>
+                <SelectItem value="low">Low Quality (Smaller Size)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }

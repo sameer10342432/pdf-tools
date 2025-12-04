@@ -23,6 +23,20 @@ import { Jimp } from "jimp";
 
 const execAsync = promisify(exec);
 
+// Helper function to sanitize numeric inputs for FFmpeg commands
+function sanitizeNumber(value: any, defaultVal: number, min: number, max: number): number {
+  if (value === undefined || value === null || value === "") return defaultVal;
+  const num = typeof value === "number" ? value : parseFloat(String(value));
+  if (isNaN(num)) return defaultVal;
+  return Math.max(min, Math.min(max, num));
+}
+
+// Helper function to sanitize string options for FFmpeg commands
+function sanitizeStringOption(value: any, allowed: string[], defaultVal: string): string {
+  if (typeof value !== "string") return defaultVal;
+  return allowed.includes(value) ? value : defaultVal;
+}
+
 const uploadDir = path.join(process.cwd(), "uploads");
 const outputDir = path.join(process.cwd(), "output");
 
@@ -29751,6 +29765,353 @@ File analyzed: ${imageFile.originalname}
               case "mono-to-stereo":
                 channelFilter = "-ac 2";
                 break;
+
+          case "ringtone-maker": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio or video file to create a ringtone");
+            }
+            const ringtoneInputPath = files[0].path;
+            const ringtoneOutputPath = path.join(outputDir, `ringtone-${randomUUID()}.m4r`);
+            
+            // Sanitize all numeric inputs with sensible bounds
+            const startTime = sanitizeNumber(options.ringtoneStart, 0, 0, 3600);
+            const duration = sanitizeNumber(options.ringtoneDuration, 30, 1, 40);
+            const fadeIn = sanitizeNumber(options.ringtoneFadeIn, 0, 0, 5);
+            const fadeOut = sanitizeNumber(options.ringtoneFadeOut, 0, 0, 5);
+            const format = sanitizeStringOption(options.ringtoneFormat, ["m4r", "mp3"], "m4r");
+            
+            // Ensure fadeOut doesnt exceed duration
+            const safeFadeOut = Math.min(fadeOut, duration - 0.1);
+            
+            let ffmpegCmd = `ffmpeg -i "${ringtoneInputPath}" -ss ${startTime} -t ${duration}`;
+            
+            if (fadeIn > 0 || safeFadeOut > 0) {
+              let fadeFilters = [];
+              if (fadeIn > 0) {
+                fadeFilters.push(`afade=t=in:st=0:d=${fadeIn}`);
+              }
+              if (safeFadeOut > 0) {
+                fadeFilters.push(`afade=t=out:st=${duration - safeFadeOut}:d=${safeFadeOut}`);
+              }
+              ffmpegCmd += ` -af "${fadeFilters.join(',')}"`;
+            }
+            
+            if (format === "m4r") {
+              ffmpegCmd += ` -c:a aac -b:a 256k "${ringtoneOutputPath}"`;
+              filename = "ringtone.m4r";
+              contentType = "audio/x-m4r";
+            } else {
+              const mp3OutputPath = path.join(outputDir, `ringtone-${randomUUID()}.mp3`);
+              ffmpegCmd += ` -c:a libmp3lame -b:a 256k "${mp3OutputPath}"`;
+              result = mp3OutputPath;
+              filename = "ringtone.mp3";
+              contentType = "audio/mpeg";
+            }
+            
+            if (format === "m4r") {
+              await execAsync(ffmpegCmd);
+              result = ringtoneOutputPath;
+            } else {
+              await execAsync(ffmpegCmd);
+            }
+            break;
+          }
+
+          case "compress-video": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to compress");
+            }
+            const compressVideoInputPath = files[0].path;
+            const compressVideoOutputPath = path.join(outputDir, `compressed-${randomUUID()}.mp4`);
+            const compressionLevel = sanitizeStringOption(options.videoCompressionLevel, ["light", "medium", "maximum"], "medium");
+            const targetResolution = sanitizeStringOption(options.videoResolution, ["original", "1080p", "720p", "480p", "360p"], "original");
+            
+            let crf;
+            switch (compressionLevel) {
+              case "light":
+                crf = 23;
+                break;
+              case "maximum":
+                crf = 32;
+                break;
+              default:
+                crf = 28;
+            }
+            
+            let scaleFilter = "";
+            if (targetResolution !== "original") {
+              const resolutions: { [key: string]: string } = {
+                "1080p": "1920:1080",
+                "720p": "1280:720",
+                "480p": "854:480",
+                "360p": "640:360"
+              };
+              if (resolutions[targetResolution]) {
+                scaleFilter = `-vf "scale=${resolutions[targetResolution]}:force_original_aspect_ratio=decrease,pad=ceil(iw/2)*2:ceil(ih/2)*2"`;
+              }
+            }
+            
+            await execAsync(`ffmpeg -i "${compressVideoInputPath}" ${scaleFilter} -c:v libx264 -crf ${crf} -preset medium -c:a aac -b:a 128k "${compressVideoOutputPath}"`);
+            result = compressVideoOutputPath;
+            filename = "compressed-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "reduce-video-size": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to reduce size");
+            }
+            const reduceVideoInputPath = files[0].path;
+            const reduceVideoOutputPath = path.join(outputDir, `reduced-${randomUUID()}.mp4`);
+            const targetSizeMB = sanitizeNumber(options.targetVideoSizeMB, 50, 1, 1000);
+            const reduceResolution = sanitizeStringOption(options.videoResolution, ["original", "1080p", "720p", "480p", "360p"], "original");
+            
+            // Get video duration for bitrate calculation
+            const durationOutput = await execAsync(`ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${reduceVideoInputPath}"`);
+            const duration = parseFloat(durationOutput.stdout.trim());
+            
+            // Calculate target bitrate (video + audio)
+            const targetBitrate = Math.floor((targetSizeMB * 8 * 1024) / duration);
+            const videoBitrate = Math.max(targetBitrate - 128, 500); // Reserve 128k for audio
+            
+            let scaleFilterReduce = "";
+            if (reduceResolution !== "original") {
+              const resolutions: { [key: string]: string } = {
+                "1080p": "1920:1080",
+                "720p": "1280:720",
+                "480p": "854:480",
+                "360p": "640:360"
+              };
+              if (resolutions[reduceResolution]) {
+                scaleFilterReduce = `-vf "scale=${resolutions[reduceResolution]}:force_original_aspect_ratio=decrease,pad=ceil(iw/2)*2:ceil(ih/2)*2"`;
+              }
+            }
+            
+            await execAsync(`ffmpeg -i "${reduceVideoInputPath}" ${scaleFilterReduce} -c:v libx264 -b:v ${videoBitrate}k -maxrate ${videoBitrate}k -bufsize ${videoBitrate * 2}k -c:a aac -b:a 128k "${reduceVideoOutputPath}"`);
+            result = reduceVideoOutputPath;
+            filename = "reduced-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "compress-mp4": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MP4 file to compress");
+            }
+            const compressMp4InputPath = files[0].path;
+            const compressMp4OutputPath = path.join(outputDir, `compressed-${randomUUID()}.mp4`);
+            const mp4CompressionLevel = sanitizeStringOption(options.videoCompressionLevel, ["light", "medium", "maximum"], "medium");
+            
+            let mp4Crf;
+            switch (mp4CompressionLevel) {
+              case "light":
+                mp4Crf = 23;
+                break;
+              case "maximum":
+                mp4Crf = 32;
+                break;
+              default:
+                mp4Crf = 28;
+            }
+            
+            await execAsync(`ffmpeg -i "${compressMp4InputPath}" -c:v libx264 -crf ${mp4Crf} -preset medium -c:a aac -b:a 128k "${compressMp4OutputPath}"`);
+            result = compressMp4OutputPath;
+            filename = "compressed.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "compress-mov": {
+            if (files.length === 0) {
+              throw new Error("Please upload a MOV file to compress");
+            }
+            const compressMovInputPath = files[0].path;
+            const compressMovOutputPath = path.join(outputDir, `compressed-${randomUUID()}.mov`);
+            const movCompressionLevel = sanitizeStringOption(options.videoCompressionLevel, ["light", "medium", "maximum"], "medium");
+            const keepMovFormat = options.keepOriginalFormat !== false;
+            
+            let movCrf;
+            switch (movCompressionLevel) {
+              case "light":
+                movCrf = 23;
+                break;
+              case "maximum":
+                movCrf = 32;
+                break;
+              default:
+                movCrf = 28;
+            }
+            
+            if (keepMovFormat) {
+              await execAsync(`ffmpeg -i "${compressMovInputPath}" -c:v libx264 -crf ${movCrf} -preset medium -c:a aac -b:a 128k -f mov "${compressMovOutputPath}"`);
+              result = compressMovOutputPath;
+              filename = "compressed.mov";
+              contentType = "video/quicktime";
+            } else {
+              const mp4OutputPath = path.join(outputDir, `compressed-${randomUUID()}.mp4`);
+              await execAsync(`ffmpeg -i "${compressMovInputPath}" -c:v libx264 -crf ${movCrf} -preset medium -c:a aac -b:a 128k "${mp4OutputPath}"`);
+              result = mp4OutputPath;
+              filename = "compressed.mp4";
+              contentType = "video/mp4";
+            }
+            break;
+          }
+
+          case "compress-avi": {
+            if (files.length === 0) {
+              throw new Error("Please upload an AVI file to compress");
+            }
+            const compressAviInputPath = files[0].path;
+            const compressAviOutputPath = path.join(outputDir, `compressed-${randomUUID()}.avi`);
+            const aviCompressionLevel = sanitizeStringOption(options.videoCompressionLevel, ["light", "medium", "maximum"], "medium");
+            const keepAviFormat = options.keepOriginalFormat !== false;
+            
+            let aviCrf;
+            switch (aviCompressionLevel) {
+              case "light":
+                aviCrf = 23;
+                break;
+              case "maximum":
+                aviCrf = 32;
+                break;
+              default:
+                aviCrf = 28;
+            }
+            
+            if (keepAviFormat) {
+              await execAsync(`ffmpeg -i "${compressAviInputPath}" -c:v libx264 -crf ${aviCrf} -preset medium -c:a aac -b:a 128k -f avi "${compressAviOutputPath}"`);
+              result = compressAviOutputPath;
+              filename = "compressed.avi";
+              contentType = "video/x-msvideo";
+            } else {
+              const mp4OutputPath = path.join(outputDir, `compressed-${randomUUID()}.mp4`);
+              await execAsync(`ffmpeg -i "${compressAviInputPath}" -c:v libx264 -crf ${aviCrf} -preset medium -c:a aac -b:a 128k "${mp4OutputPath}"`);
+              result = mp4OutputPath;
+              filename = "compressed.mp4";
+              contentType = "video/mp4";
+            }
+            break;
+          }
+
+          case "video-converter": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to convert");
+            }
+            const videoConvertInputPath = files[0].path;
+            const outputFormat = sanitizeStringOption(options.videoOutputFormat, ["mp4", "webm", "avi", "mov", "mkv"], "mp4");
+            const videoConvertOutputPath = path.join(outputDir, `converted-${randomUUID()}.${outputFormat}`);
+            
+            let codecSettings;
+            switch (outputFormat) {
+              case "webm":
+                codecSettings = "-c:v libvpx-vp9 -crf 30 -b:v 0 -c:a libopus -b:a 128k";
+                contentType = "video/webm";
+                break;
+              case "avi":
+                codecSettings = "-c:v libx264 -crf 23 -c:a aac -b:a 192k -f avi";
+                contentType = "video/x-msvideo";
+                break;
+              case "mov":
+                codecSettings = "-c:v libx264 -crf 23 -c:a aac -b:a 192k -f mov";
+                contentType = "video/quicktime";
+                break;
+              case "mkv":
+                codecSettings = "-c:v libx264 -crf 23 -c:a aac -b:a 192k";
+                contentType = "video/x-matroska";
+                break;
+              default:
+                codecSettings = "-c:v libx264 -crf 23 -c:a aac -b:a 192k";
+                contentType = "video/mp4";
+            }
+            
+            await execAsync(`ffmpeg -i "${videoConvertInputPath}" ${codecSettings} "${videoConvertOutputPath}"`);
+            result = videoConvertOutputPath;
+            filename = `converted.${outputFormat}`;
+            break;
+          }
+
+          case "mp4-to-avi": {
+            if (files.length === 0) {
+              throw new Error("Please upload an MP4 file to convert to AVI");
+            }
+            const mp4ToAviInputPath = files[0].path;
+            const mp4ToAviOutputPath = path.join(outputDir, `converted-${randomUUID()}.avi`);
+            const aviQuality = sanitizeStringOption(options.videoQuality, ["high", "medium", "low"], "high");
+            
+            let aviSettings;
+            switch (aviQuality) {
+              case "low":
+                aviSettings = "-c:v libx264 -crf 28 -preset fast -c:a aac -b:a 128k";
+                break;
+              case "medium":
+                aviSettings = "-c:v libx264 -crf 23 -preset medium -c:a aac -b:a 192k";
+                break;
+              default:
+                aviSettings = "-c:v libx264 -crf 18 -preset slow -c:a aac -b:a 256k";
+            }
+            
+            await execAsync(`ffmpeg -i "${mp4ToAviInputPath}" ${aviSettings} -f avi "${mp4ToAviOutputPath}"`);
+            result = mp4ToAviOutputPath;
+            filename = "converted.avi";
+            contentType = "video/x-msvideo";
+            break;
+          }
+
+          case "avi-to-mp4": {
+            if (files.length === 0) {
+              throw new Error("Please upload an AVI file to convert to MP4");
+            }
+            const aviToMp4InputPath = files[0].path;
+            const aviToMp4OutputPath = path.join(outputDir, `converted-${randomUUID()}.mp4`);
+            const mp4Quality = sanitizeStringOption(options.videoQuality, ["high", "medium", "low"], "high");
+            
+            let mp4Settings;
+            switch (mp4Quality) {
+              case "low":
+                mp4Settings = "-c:v libx264 -crf 28 -preset fast -c:a aac -b:a 128k";
+                break;
+              case "medium":
+                mp4Settings = "-c:v libx264 -crf 23 -preset medium -c:a aac -b:a 192k";
+                break;
+              default:
+                mp4Settings = "-c:v libx264 -crf 18 -preset slow -c:a aac -b:a 256k";
+            }
+            
+            await execAsync(`ffmpeg -i "${aviToMp4InputPath}" ${mp4Settings} "${aviToMp4OutputPath}"`);
+            result = aviToMp4OutputPath;
+            filename = "converted.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "mov-to-mp4": {
+            if (files.length === 0) {
+              throw new Error("Please upload a MOV file to convert to MP4");
+            }
+            const movToMp4InputPath = files[0].path;
+            const movToMp4OutputPath = path.join(outputDir, `converted-${randomUUID()}.mp4`);
+            const movMp4Quality = sanitizeStringOption(options.videoQuality, ["high", "medium", "low"], "high");
+            
+            let movMp4Settings;
+            switch (movMp4Quality) {
+              case "low":
+                movMp4Settings = "-c:v libx264 -crf 28 -preset fast -c:a aac -b:a 128k";
+                break;
+              case "medium":
+                movMp4Settings = "-c:v libx264 -crf 23 -preset medium -c:a aac -b:a 192k";
+                break;
+              default:
+                movMp4Settings = "-c:v libx264 -crf 18 -preset slow -c:a aac -b:a 256k";
+            }
+            
+            await execAsync(`ffmpeg -i "${movToMp4InputPath}" ${movMp4Settings} "${movToMp4OutputPath}"`);
+            result = movToMp4OutputPath;
+            filename = "converted.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
               case "swap-channels":
                 channelFilter = "-af 'pan=stereo|c0=c1|c1=c0'";
                 break;
