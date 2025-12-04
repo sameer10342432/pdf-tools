@@ -13650,7 +13650,208 @@ export function ToolOptionsComponent({
         </div>
       );
 
-    default:
+    
+    case "resize-video":
+    case "video-resizer":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Resize your video to custom dimensions or standard resolutions.
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="videoResizeWidth">Width (pixels)</Label>
+              <Input
+                id="videoResizeWidth"
+                type="number"
+                min="1"
+                max="7680"
+                placeholder="1920"
+                value={options.videoResizeWidth ?? ""}
+                onChange={(e) => updateOption("videoResizeWidth", e.target.value ? parseInt(e.target.value) : undefined)}
+                data-testid="input-video-resize-width"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="videoResizeHeight">Height (pixels)</Label>
+              <Input
+                id="videoResizeHeight"
+                type="number"
+                min="1"
+                max="4320"
+                placeholder="1080"
+                value={options.videoResizeHeight ?? ""}
+                onChange={(e) => updateOption("videoResizeHeight", e.target.value ? parseInt(e.target.value) : undefined)}
+                data-testid="input-video-resize-height"
+              />
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Switch
+              id="maintainAspect"
+              checked={options.videoMaintainAspect !== false}
+              onCheckedChange={(checked) => updateOption("videoMaintainAspect", checked)}
+              data-testid="switch-maintain-aspect"
+            />
+            <Label htmlFor="maintainAspect">Maintain aspect ratio (add black bars if needed)</Label>
+          </div>
+          <div className="space-y-2">
+            <Label>Preset Resolutions</Label>
+            <div className="flex flex-wrap gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => { updateOption("videoResizeWidth", 1920); updateOption("videoResizeHeight", 1080); }}
+                data-testid="button-preset-1080p"
+              >
+                1080p
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => { updateOption("videoResizeWidth", 1280); updateOption("videoResizeHeight", 720); }}
+                data-testid="button-preset-720p"
+              >
+                720p
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => { updateOption("videoResizeWidth", 854); updateOption("videoResizeHeight", 480); }}
+                data-testid="button-preset-480p"
+              >
+                480p
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => { updateOption("videoResizeWidth", 640); updateOption("videoResizeHeight", 360); }}
+                data-testid="button-preset-360p"
+              >
+                360p
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "change-video-aspect-ratio":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Change your video to a different aspect ratio for various platforms.
+          </p>
+          <div className="space-y-2">
+            <Label>Target Aspect Ratio</Label>
+            <Select
+              value={options.targetAspectRatio || "16:9"}
+              onValueChange={(value) => updateOption("targetAspectRatio", value)}
+            >
+              <SelectTrigger data-testid="select-target-aspect-ratio">
+                <SelectValue placeholder="Select aspect ratio" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="16:9">16:9 (Widescreen - YouTube)</SelectItem>
+                <SelectItem value="4:3">4:3 (Standard)</SelectItem>
+                <SelectItem value="1:1">1:1 (Square - Instagram)</SelectItem>
+                <SelectItem value="9:16">9:16 (Vertical - TikTok/Reels)</SelectItem>
+                <SelectItem value="21:9">21:9 (Ultrawide)</SelectItem>
+                <SelectItem value="4:5">4:5 (Instagram Portrait)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Conversion Method</Label>
+            <Select
+              value={options.aspectMethod || "letterbox"}
+              onValueChange={(value) => updateOption("aspectMethod", value)}
+            >
+              <SelectTrigger data-testid="select-aspect-method">
+                <SelectValue placeholder="Select method" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="letterbox">Letterbox (Add black bars)</SelectItem>
+                <SelectItem value="crop">Crop (Remove edges)</SelectItem>
+                <SelectItem value="stretch">Stretch (May distort)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Letterbox adds bars to preserve content. Crop removes edges. Stretch may distort the video.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "merge-video":
+    case "combine-videos":
+    case "video-joiner":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Combine multiple videos into one. Upload at least 2 videos to merge them together.
+          </p>
+          <div className="space-y-2">
+            <Label htmlFor="videoCrossfade">Crossfade Duration (seconds)</Label>
+            <Input
+              id="videoCrossfade"
+              type="number"
+              step="0.5"
+              min="0"
+              max="5"
+              placeholder="0"
+              value={options.videoCrossfade ?? ""}
+              onChange={(e) => updateOption("videoCrossfade", e.target.value ? parseFloat(e.target.value) : undefined)}
+              data-testid="input-video-crossfade"
+            />
+            <p className="text-xs text-muted-foreground">
+              Set to 0 for a direct cut. Use 0.5-2 seconds for smooth transitions between clips.
+              Note: Crossfade works best with 2 videos.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "change-video-audio":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Replace or modify the audio in your video. Upload a video file and optionally an audio file.
+          </p>
+          <div className="space-y-2">
+            <Label htmlFor="newAudioVolume">New Audio Volume (%)</Label>
+            <Slider
+              id="newAudioVolume"
+              min={0}
+              max={200}
+              step={5}
+              value={[options.newAudioVolume ?? 100]}
+              onValueChange={([value]) => updateOption("newAudioVolume", value)}
+              className="w-full"
+              data-testid="slider-new-audio-volume"
+            />
+            <p className="text-xs text-muted-foreground">
+              Current: {options.newAudioVolume ?? 100}% - Adjust the volume of the new audio track
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="originalAudioVolume">Original Audio Volume (%)</Label>
+            <Slider
+              id="originalAudioVolume"
+              min={0}
+              max={200}
+              step={5}
+              value={[options.originalAudioVolume ?? 0]}
+              onValueChange={([value]) => updateOption("originalAudioVolume", value)}
+              className="w-full"
+              data-testid="slider-original-audio-volume"
+            />
+            <p className="text-xs text-muted-foreground">
+              Current: {options.originalAudioVolume ?? 0}% - Set to 0 to completely replace audio, or higher to mix with original
+            </p>
+          </div>
+        </div>
+      );
+default:
       return null;
   }
 }

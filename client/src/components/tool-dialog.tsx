@@ -429,6 +429,19 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     if (tool.type === "video-to-webm" || tool.type === "video-to-flv") {
       return "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska,.mp4,.webm,.mov,.avi,.mkv";
     }
+    // New Video Tools - Resize, Aspect Ratio, Merge
+    if (tool.type === "resize-video" || tool.type === "video-resizer" || 
+        tool.type === "change-video-aspect-ratio" || tool.type === "video-trimmer" ||
+        tool.type === "video-cropper" || tool.type === "video-rotator" || 
+        tool.type === "flip-video" || tool.type === "video-flipper") {
+      return "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska,.mp4,.webm,.mov,.avi,.mkv";
+    }
+    if (tool.type === "merge-video" || tool.type === "combine-videos" || tool.type === "video-joiner") {
+      return "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska,.mp4,.webm,.mov,.avi,.mkv";
+    }
+    if (tool.type === "change-video-audio") {
+      return "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska,audio/mpeg,audio/mp3,audio/wav,audio/ogg,audio/m4a,.mp4,.webm,.mov,.avi,.mkv,.mp3,.wav,.ogg,.m4a,.aac";
+    }
     if (tool.type === "voice-recorder" || tool.type === "online-voice-recorder") {
       return "audio/*,.mp3,.wav,.webm,.ogg,.m4a";
     }
@@ -449,12 +462,12 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
 
   const isMultiFileAllowed = () => {
     if (!tool) return true;
-    return ["merge", "images-to-pdf", "gif-maker", "apng-maker", "ai-face-swapper", "merge-images", "image-combiner-horizontal", "image-combiner-vertical"].includes(tool.type);
+    return ["merge", "images-to-pdf", "gif-maker", "apng-maker", "ai-face-swapper", "merge-images", "image-combiner-horizontal", "image-combiner-vertical", "merge-video", "combine-videos", "video-joiner", "change-video-audio"].includes(tool.type);
   };
 
   const needsMultipleFiles = () => {
     if (!tool) return false;
-    return ["merge", "merge-alternately", "gif-maker", "apng-maker", "ai-face-swapper"].includes(tool.type);
+    return ["merge", "merge-alternately", "gif-maker", "apng-maker", "ai-face-swapper", "merge-video", "combine-videos", "video-joiner"].includes(tool.type);
   };
 
   const getMinFiles = () => {
@@ -464,6 +477,7 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     if (tool.type === "gif-maker") return 2;
     if (tool.type === "apng-maker") return 2;
     if (tool.type === "ai-face-swapper") return 2;
+    if (tool.type === "merge-video" || tool.type === "combine-videos" || tool.type === "video-joiner") return 2;
     return 1;
   };
 

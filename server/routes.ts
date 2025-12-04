@@ -30528,6 +30528,174 @@ File analyzed: ${imageFile.originalname}
             contentType = "video/mp4";
             break;
           }
+          case "resize-video":
+          case "video-resizer": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to resize");
+            }
+            const resizeInputPath = files[0].path;
+            const resizeOutputPath = path.join(outputDir, `resized-${randomUUID()}.mp4`);
+            const targetWidth = sanitizeNumber(options.videoResizeWidth, 1920, 1, 7680);
+            const targetHeight = sanitizeNumber(options.videoResizeHeight, 1080, 1, 4320);
+            const maintainAspect = options.videoMaintainAspect !== false;
+            
+            // Ensure dimensions are even (required by h264)
+            const evenWidth = Math.floor(targetWidth / 2) * 2;
+            const evenHeight = Math.floor(targetHeight / 2) * 2;
+            
+            let scaleFilter;
+            if (maintainAspect) {
+              scaleFilter = `scale=${evenWidth}:${evenHeight}:force_original_aspect_ratio=decrease,pad=${evenWidth}:${evenHeight}:(ow-iw)/2:(oh-ih)/2`;
+            } else {
+              scaleFilter = `scale=${evenWidth}:${evenHeight}`;
+            }
+            
+            // Re-encode to ensure compatibility
+            await execAsync(`ffmpeg -i "${resizeInputPath}" -vf "${scaleFilter}" -c:v libx264 -preset fast -crf 23 -c:a aac -b:a 128k "${resizeOutputPath}"`);
+            result = resizeOutputPath;
+            filename = "resized-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "change-video-aspect-ratio": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to change aspect ratio");
+            }
+            const aspectInputPath = files[0].path;
+            const aspectOutputPath = path.join(outputDir, `aspect-changed-${randomUUID()}.mp4`);
+            const newAspectRatio = sanitizeStringOption(options.targetAspectRatio, ["16:9", "4:3", "1:1", "9:16", "21:9", "4:5"], "16:9");
+            const aspectMethod = sanitizeStringOption(options.aspectMethod, ["letterbox", "crop", "stretch"], "letterbox");
+            
+            // Calculate target dimensions based on aspect ratio
+            const [w, h] = newAspectRatio.split(":").map(Number);
+            const targetRatio = w / h;
+            
+            // Base resolution for output (can be 1080p or keep original)
+            let baseWidth = 1920;
+            let baseHeight = Math.round(baseWidth / targetRatio);
+            
+            // Ensure even dimensions for h264
+            baseWidth = Math.floor(baseWidth / 2) * 2;
+            baseHeight = Math.floor(baseHeight / 2) * 2;
+            
+            let aspectFilter;
+            switch (aspectMethod) {
+              case "crop":
+                aspectFilter = `crop=if(gt(a\,${targetRatio})\,ih*${targetRatio}\,iw):if(gt(a\,${targetRatio})\,ih\,iw/${targetRatio}),scale=${baseWidth}:${baseHeight}`;
+                break;
+              case "stretch":
+                aspectFilter = `scale=${baseWidth}:${baseHeight}`;
+                break;
+              default:
+                aspectFilter = `scale=${baseWidth}:${baseHeight}:force_original_aspect_ratio=decrease,pad=${baseWidth}:${baseHeight}:(ow-iw)/2:(oh-ih)/2:black`;
+            }
+            
+            // Re-encode for compatibility
+            await execAsync(`ffmpeg -i "${aspectInputPath}" -vf "${aspectFilter}" -c:v libx264 -preset fast -crf 23 -c:a aac -b:a 128k "${aspectOutputPath}"`);
+            result = aspectOutputPath;
+            filename = "aspect-changed-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "merge-video":
+          case "combine-videos":
+          case "video-joiner": {
+            if (files.length < 2) {
+              throw new Error("Please upload at least 2 video files to merge");
+            }
+            
+            const mergeOutputPath = path.join(outputDir, `merged-${randomUUID()}.mp4`);
+            const crossfadeDuration = sanitizeNumber(options.videoCrossfade, 0, 0, 5);
+            
+            // Re-encode all videos to a common format first
+            const tempVideos: string[] = [];
+            for (let i = 0; i < files.length; i++) {
+              const tempPath = path.join(outputDir, `temp-normalized-${i}-${randomUUID()}.mp4`);
+              // Normalize to 720p, h264/aac, same framerate
+              await execAsync(`ffmpeg -i "${files[i].path}" -vf "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2" -c:v libx264 -preset fast -crf 23 -r 30 -c:a aac -b:a 128k -ar 44100 -ac 2 "${tempPath}"`);
+              tempVideos.push(tempPath);
+            }
+            
+            try {
+              if (crossfadeDuration > 0 && files.length === 2) {
+                // Crossfade between two videos
+                const [v1, v2] = tempVideos;
+                // Get duration of first video
+                const durCmd = await execAsync(`ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${v1}"`);
+                const dur1 = parseFloat(durCmd.stdout.trim()) || 5;
+                const offset = Math.max(0, dur1 - crossfadeDuration);
+                
+                await execAsync(`ffmpeg -i "${v1}" -i "${v2}" -filter_complex "[0:v][1:v]xfade=transition=fade:duration=${crossfadeDuration}:offset=${offset}[v];[0:a][1:a]acrossfade=d=${crossfadeDuration}[a]" -map "[v]" -map "[a]" -c:v libx264 -preset fast -crf 23 -c:a aac -b:a 128k "${mergeOutputPath}"`);
+              } else {
+                // Simple concat using file list
+                const concatListPath = path.join(outputDir, `concat-list-${randomUUID()}.txt`);
+                const listContent = tempVideos.map(p => `file '${p}'`).join('\n');
+                fs.writeFileSync(concatListPath, listContent);
+                
+                await execAsync(`ffmpeg -f concat -safe 0 -i "${concatListPath}" -c copy "${mergeOutputPath}"`);
+                fs.unlinkSync(concatListPath);
+              }
+            } finally {
+              // Cleanup temp files
+              tempVideos.forEach(p => { try { fs.unlinkSync(p); } catch {} });
+            }
+            
+            result = mergeOutputPath;
+            filename = "merged-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "change-video-audio": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file");
+            }
+            
+            // Find video and audio files
+            const videoFile = files.find(f => 
+              f.mimetype?.startsWith("video/") || 
+              f.originalname.match(/\.(mp4|webm|mov|avi|mkv)$/i)
+            );
+            const audioFile = files.find(f => 
+              f.mimetype?.startsWith("audio/") || 
+              f.originalname.match(/\.(mp3|wav|m4a|ogg|aac|flac)$/i)
+            );
+            
+            if (!videoFile) {
+              throw new Error("Please upload a video file. Audio files alone are not supported.");
+            }
+            
+            const changeAudioOutputPath = path.join(outputDir, `audio-changed-${randomUUID()}.mp4`);
+            const newAudioVolume = sanitizeNumber(options.newAudioVolume, 100, 0, 200) / 100;
+            const originalVolume = sanitizeNumber(options.originalAudioVolume, 0, 0, 200) / 100;
+            
+            if (audioFile) {
+              // Replace or mix audio
+              if (originalVolume > 0) {
+                // Mix original and new audio
+                await execAsync(`ffmpeg -i "${videoFile.path}" -i "${audioFile.path}" -filter_complex "[0:a]volume=${originalVolume}[a0];[1:a]volume=${newAudioVolume}[a1];[a0][a1]amix=inputs=2:duration=first[a]" -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k "${changeAudioOutputPath}"`);
+              } else {
+                // Replace audio completely
+                await execAsync(`ffmpeg -i "${videoFile.path}" -i "${audioFile.path}" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest "${changeAudioOutputPath}"`);
+              }
+            } else {
+              // Just adjust volume of original audio
+              if (newAudioVolume === 0) {
+                // Mute
+                await execAsync(`ffmpeg -i "${videoFile.path}" -c:v copy -an "${changeAudioOutputPath}"`);
+              } else {
+                await execAsync(`ffmpeg -i "${videoFile.path}" -af "volume=${newAudioVolume}" -c:v copy -c:a aac -b:a 192k "${changeAudioOutputPath}"`);
+              }
+            }
+            
+            result = changeAudioOutputPath;
+            filename = "audio-changed-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
               case "medium":
                 flvSettings = "-c:v flv1 -q:v 5 -c:a mp3 -b:a 192k -ar 44100";
                 break;
