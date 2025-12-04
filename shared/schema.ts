@@ -722,6 +722,16 @@ export const pdfToolTypes = [
   "combine-videos",
   "video-joiner",
   "change-video-audio",
+  "change-video-speed",
+  "speed-up-video",
+  "slow-down-video",
+  "loop-video",
+  "stabilize-video",
+  "video-deshaker",
+  "reverse-video",
+  "video-reverser",
+  "add-filter-to-video",
+  "video-color-correction",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -17263,6 +17273,286 @@ const developerTools: PdfTool[] = [
 
 <h2>Fade Effects</h2>
 <p>Add fade in and fade out effects to audio. Smooth audio transitions at the beginning and end of your video.</p>`,
+  },
+  {
+    id: "change-video-speed",
+    name: "Change Video Speed",
+    description: "Adjust playback speed of your videos",
+    icon: "Gauge",
+    type: "change-video-speed",
+    color: "bg-purple-500",
+    emoji: "⏱️",
+    metaTitle: "Change Video Speed Online Free - Speed Up or Slow Down Videos | Video Tools",
+    metaDescription: "Change video playback speed online for free. Speed up or slow down your videos with precision control. Perfect for time-lapses, slow-motion, and more.",
+    seoArticle: `<h2>Change Video Speed - Adjust Playback Rate</h2>
+<p>Modify the playback speed of your videos with our free online speed changer. Whether you need to create time-lapses, slow-motion effects, or adjust pacing for better viewing, our tool provides precise speed control.</p>
+
+<h2>Precise Speed Control</h2>
+<p>Adjust video speed from 0.25x to 4x with fine-grained control. Choose exact speed multipliers or use presets for common adjustments like 2x or 0.5x playback rates.</p>
+
+<h2>Maintain Audio Quality</h2>
+<p>Our advanced processing maintains audio pitch and quality during speed changes. Option to preserve original pitch or allow natural pitch shifting based on speed changes.</p>
+
+<h2>Frame Interpolation</h2>
+<p>For slow-motion effects, optional frame interpolation creates smoother results. Generate intermediate frames for fluid slow-motion playback without stuttering.</p>
+
+<h2>Time-Lapse Creation</h2>
+<p>Speed up footage to create stunning time-lapses. Perfect for capturing construction projects, sunsets, or any extended event in condensed form.</p>
+
+<h2>Perfect for Content Creators</h2>
+<p>Essential tool for video editors and content creators. Create dramatic slow-motion moments or speed through less important sections of your content.</p>`,
+  },
+  {
+    id: "speed-up-video",
+    name: "Speed Up Video",
+    description: "Increase video playback speed for time-lapse effects",
+    icon: "FastForward",
+    type: "speed-up-video",
+    color: "bg-green-500",
+    emoji: "⏩",
+    metaTitle: "Speed Up Video Online Free - Create Time-Lapse Videos | Video Tools",
+    metaDescription: "Speed up your videos online for free. Create time-lapse effects, condense content, or accelerate footage. Easy video acceleration with no software needed.",
+    seoArticle: `<h2>Speed Up Video - Create Time-Lapse Effects</h2>
+<p>Accelerate your videos with our free online speed up tool. Perfect for creating time-lapses, condensing lengthy footage, or adding dynamic pacing to your content.</p>
+
+<h2>Multiple Speed Presets</h2>
+<p>Choose from preset speeds like 1.5x, 2x, 4x, or 8x for quick acceleration. Custom speed input for precise control over your video's pace.</p>
+
+<h2>Time-Lapse Made Easy</h2>
+<p>Transform hours of footage into captivating time-lapse videos. Watch clouds move, flowers bloom, or cities come alive in accelerated motion.</p>
+
+<h2>Audio Handling Options</h2>
+<p>Choose to speed up audio along with video, remove audio entirely, or keep audio at original speed. Flexible options for different use cases.</p>
+
+<h2>Quality Preservation</h2>
+<p>Accelerate videos while maintaining visual quality. Smart frame selection ensures smooth playback even at high speeds.</p>
+
+<h2>Batch Processing</h2>
+<p>Speed up multiple videos with the same settings. Perfect for processing video collections or creating consistent content series.</p>`,
+  },
+  {
+    id: "slow-down-video",
+    name: "Slow Down Video",
+    description: "Create slow motion effects and dramatic moments",
+    icon: "Rewind",
+    type: "slow-down-video",
+    color: "bg-blue-500",
+    emoji: "🐢",
+    metaTitle: "Slow Down Video Online Free - Create Slow Motion Effects | Video Tools",
+    metaDescription: "Slow down videos online for free. Create stunning slow-motion effects for dramatic moments. Perfect for sports, dance, and artistic videos.",
+    seoArticle: `<h2>Slow Down Video - Create Slow Motion Effects</h2>
+<p>Create stunning slow-motion videos with our free online slow down tool. Perfect for capturing dramatic moments, analyzing motion, or adding artistic effects to your content.</p>
+
+<h2>Smooth Slow Motion</h2>
+<p>Reduce video speed to 0.5x, 0.25x, or even slower for dramatic slow-motion effects. Frame interpolation creates smooth playback without stuttering.</p>
+
+<h2>Frame Interpolation Technology</h2>
+<p>Our advanced algorithm generates intermediate frames for ultra-smooth slow motion. Even at very slow speeds, your video plays back fluidly.</p>
+
+<h2>Perfect for Sports</h2>
+<p>Analyze athletic performance, capture winning moments, or create highlight reels with professional-quality slow motion.</p>
+
+<h2>Artistic Effects</h2>
+<p>Add drama and impact to any scene. Slow-motion transforms ordinary moments into extraordinary visual experiences.</p>
+
+<h2>Audio Processing</h2>
+<p>Choose to slow down audio maintaining pitch, remove audio entirely, or keep audio separate. Perfect control for your creative vision.</p>`,
+  },
+  {
+    id: "loop-video",
+    name: "Loop Video",
+    description: "Create seamless looping videos for social media",
+    icon: "Repeat",
+    type: "loop-video",
+    color: "bg-indigo-500",
+    emoji: "🔁",
+    metaTitle: "Loop Video Online Free - Create Repeating Video Loops | Video Tools",
+    metaDescription: "Create looping videos online for free. Make seamless video loops for GIFs, social media, and presentations. Easy loop creation with no software required.",
+    seoArticle: `<h2>Loop Video - Create Seamless Video Loops</h2>
+<p>Create perfectly looping videos with our free online loop creator. Whether you need social media content, background videos, or GIF-style loops, our tool makes it easy.</p>
+
+<h2>Seamless Loop Creation</h2>
+<p>Our tool analyzes your video to create smooth, seamless loops. No jarring transitions or visible cuts - just continuous playback.</p>
+
+<h2>Custom Loop Count</h2>
+<p>Specify exactly how many times your video should repeat. Create 2-loop, 5-loop, or infinite-loop videos for different platforms.</p>
+
+<h2>Perfect for Social Media</h2>
+<p>Create engaging loop content for Instagram, TikTok, and other platforms. Looping videos capture attention and increase watch time.</p>
+
+<h2>Boomerang Effects</h2>
+<p>Optional boomerang mode plays video forward then backward for satisfying ping-pong loops. Popular for short, dynamic content.</p>
+
+<h2>GIF Alternative</h2>
+<p>Create video loops that work like GIFs but with better quality and smaller file sizes. Perfect for web and mobile applications.</p>`,
+  },
+  {
+    id: "stabilize-video",
+    name: "Stabilize Video",
+    description: "Remove camera shake and smooth out shaky footage",
+    icon: "Anchor",
+    type: "stabilize-video",
+    color: "bg-teal-500",
+    emoji: "📹",
+    metaTitle: "Stabilize Video Online Free - Remove Camera Shake | Video Tools",
+    metaDescription: "Stabilize shaky videos online for free. Remove camera shake and create smooth, professional-looking footage. No software installation needed.",
+    seoArticle: `<h2>Stabilize Video - Remove Camera Shake</h2>
+<p>Transform shaky, unstable footage into smooth, professional-looking video with our free online stabilization tool. Perfect for handheld recordings, action footage, and mobile videos.</p>
+
+<h2>Advanced Stabilization Algorithm</h2>
+<p>Our intelligent algorithm analyzes motion patterns and corrects camera shake frame by frame. The result is smooth, watchable footage from even the shakiest sources.</p>
+
+<h2>Adjustable Smoothness</h2>
+<p>Control the level of stabilization from subtle correction to maximum smoothing. Balance between stability and natural motion for your specific needs.</p>
+
+<h2>Edge Cropping Control</h2>
+<p>Stabilization requires slight cropping. Choose your preferred crop level to balance between maximum stabilization and preserving frame content.</p>
+
+<h2>Perfect for Action Cameras</h2>
+<p>Essential for GoPro and action camera footage. Turn extreme sports and adventure videos into professional-quality content.</p>
+
+<h2>Mobile Video Enhancement</h2>
+<p>Phone videos often suffer from hand shake. Stabilize your mobile recordings to achieve DSLR-quality smoothness.</p>`,
+  },
+  {
+    id: "video-deshaker",
+    name: "Video Deshaker",
+    description: "Professional video deshaking and motion correction",
+    icon: "Shield",
+    type: "video-deshaker",
+    color: "bg-cyan-500",
+    emoji: "🎥",
+    metaTitle: "Video Deshaker Online Free - Professional Motion Correction | Video Tools",
+    metaDescription: "Professional video deshaking online for free. Advanced motion correction algorithms remove shake and jitter. Create smooth videos from unstable footage.",
+    seoArticle: `<h2>Video Deshaker - Professional Motion Correction</h2>
+<p>Professional-grade video deshaking for filmmakers and content creators. Our advanced algorithms provide cinema-quality stabilization for even the most challenging footage.</p>
+
+<h2>Multi-Pass Analysis</h2>
+<p>Our deshaker performs multiple analysis passes for optimal stabilization. Detects and corrects both rapid shakes and slow drifts in camera motion.</p>
+
+<h2>Rolling Shutter Correction</h2>
+<p>Addresses the wobble effect caused by rolling shutter sensors. Essential for fast action shots and panning movements.</p>
+
+<h2>Tripod Mode</h2>
+<p>Special mode for footage intended to be completely static. Locks the frame position for rock-solid stability.</p>
+
+<h2>Motion Blur Reduction</h2>
+<p>Optional motion blur reduction helps sharpen frames affected by rapid camera movement. Clearer details in every frame.</p>
+
+<h2>Batch Processing</h2>
+<p>Deshake multiple clips with consistent settings. Perfect for processing event footage or multi-camera shoots.</p>`,
+  },
+  {
+    id: "reverse-video",
+    name: "Reverse Video",
+    description: "Play your video backwards for creative effects",
+    icon: "RotateCcw",
+    type: "reverse-video",
+    color: "bg-rose-500",
+    emoji: "⏪",
+    metaTitle: "Reverse Video Online Free - Play Video Backwards | Video Tools",
+    metaDescription: "Reverse videos online for free. Create fun backward-playing videos for social media and creative projects. No software download needed.",
+    seoArticle: `<h2>Reverse Video - Play Video Backwards</h2>
+<p>Create captivating reversed videos with our free online reverse tool. Perfect for magic tricks, creative effects, or just having fun with video playback direction.</p>
+
+<h2>Instant Reversal</h2>
+<p>Upload your video and instantly reverse the playback direction. Every frame plays in perfect reverse order for smooth backward motion.</p>
+
+<h2>Audio Reversal Options</h2>
+<p>Choose to reverse audio along with video, remove audio entirely, or keep original audio timing. Flexible options for different creative needs.</p>
+
+<h2>Creative Magic Effects</h2>
+<p>Make water flow upward, objects fly back to your hand, or create impossible physics. Reversed video opens up endless creative possibilities.</p>
+
+<h2>Social Media Content</h2>
+<p>Reversed videos are popular on TikTok, Instagram, and YouTube. Create engaging content that stops viewers mid-scroll.</p>
+
+<h2>Quality Preservation</h2>
+<p>Full quality maintained during reversal. Your reversed video matches the original in resolution and clarity.</p>`,
+  },
+  {
+    id: "video-reverser",
+    name: "Video Reverser",
+    description: "Advanced video reversal with additional options",
+    icon: "Undo",
+    type: "video-reverser",
+    color: "bg-pink-500",
+    emoji: "🔄",
+    metaTitle: "Video Reverser Online Free - Advanced Reverse Video Tool | Video Tools",
+    metaDescription: "Advanced video reverser online for free. Professional reverse video creation with speed control and audio options. Perfect for content creators.",
+    seoArticle: `<h2>Video Reverser - Advanced Backward Video Tool</h2>
+<p>Our professional video reverser offers advanced options for creating perfect backward-playing videos. More control and features than basic reverse tools.</p>
+
+<h2>Speed During Reversal</h2>
+<p>Combine reversal with speed changes. Create slow-motion reverse effects or fast-reverse time-lapses in a single operation.</p>
+
+<h2>Partial Reversal</h2>
+<p>Reverse only a portion of your video. Select start and end points to reverse specific sections while keeping the rest normal.</p>
+
+<h2>Ping-Pong Mode</h2>
+<p>Create videos that play forward then backward continuously. Perfect for creating seamless loop effects.</p>
+
+<h2>Frame-Accurate Control</h2>
+<p>Precise frame-level control over reversal. Perfect for professional editing where exact timing matters.</p>
+
+<h2>Export Options</h2>
+<p>Choose output format, quality settings, and compression level. Export reversed videos optimized for your target platform.</p>`,
+  },
+  {
+    id: "add-filter-to-video",
+    name: "Add Filter to Video",
+    description: "Apply visual filters and effects to your videos",
+    icon: "Palette",
+    type: "add-filter-to-video",
+    color: "bg-amber-500",
+    emoji: "🎨",
+    metaTitle: "Add Filter to Video Online Free - Video Effects & Filters | Video Tools",
+    metaDescription: "Add filters to videos online for free. Apply Instagram-style filters, color effects, and visual enhancements. No software installation required.",
+    seoArticle: `<h2>Add Filter to Video - Visual Effects & Enhancements</h2>
+<p>Transform your videos with beautiful filters and effects using our free online filter tool. Apply Instagram-style filters, cinematic looks, or custom color adjustments to any video.</p>
+
+<h2>Popular Filter Presets</h2>
+<p>Choose from dozens of popular filter presets including Vintage, Cinematic, Noir, Warm, Cool, Sepia, and more. One-click application for instant transformation.</p>
+
+<h2>Instagram-Style Filters</h2>
+<p>Recreate popular social media filter looks. Make your videos match your photo aesthetic for consistent branding.</p>
+
+<h2>Cinematic Color Grades</h2>
+<p>Apply Hollywood-inspired color grades. Create film noir looks, summer blockbuster vibes, or indie film aesthetics.</p>
+
+<h2>Custom Filter Creation</h2>
+<p>Adjust brightness, contrast, saturation, and more to create your own custom filter. Save presets for consistent results across videos.</p>
+
+<h2>Preview Before Export</h2>
+<p>See exactly how your filter looks before processing. Toggle between original and filtered views to compare results.</p>`,
+  },
+  {
+    id: "video-color-correction",
+    name: "Video Color Correction",
+    description: "Professional color grading and correction tools",
+    icon: "Sliders",
+    type: "video-color-correction",
+    color: "bg-orange-500",
+    emoji: "🌈",
+    metaTitle: "Video Color Correction Online Free - Professional Color Grading | Video Tools",
+    metaDescription: "Professional video color correction online for free. Adjust white balance, exposure, contrast, and more. Cinema-quality color grading without expensive software.",
+    seoArticle: `<h2>Video Color Correction - Professional Color Grading</h2>
+<p>Achieve professional color correction results with our free online color grading tool. Adjust exposure, white balance, contrast, and more to create stunning, polished videos.</p>
+
+<h2>White Balance Correction</h2>
+<p>Fix color casts from incorrect lighting. Adjust color temperature and tint for natural, accurate colors regardless of original lighting conditions.</p>
+
+<h2>Exposure Adjustment</h2>
+<p>Correct underexposed or overexposed footage. Recover details from shadows and highlights for balanced, well-lit videos.</p>
+
+<h2>Contrast & Brightness</h2>
+<p>Fine-tune contrast for punchy, dynamic images. Adjust brightness to perfect your video's overall luminosity.</p>
+
+<h2>Saturation & Vibrance</h2>
+<p>Control color intensity with saturation and vibrance adjustments. Create anything from muted, cinematic looks to bold, vibrant visuals.</p>
+
+<h2>HSL Color Wheels</h2>
+<p>Advanced Hue, Saturation, and Luminance controls for individual colors. Perfect skin tones, enhance skies, or create creative color shifts.</p>`,
   },
 
 ];
