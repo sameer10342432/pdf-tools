@@ -645,6 +645,16 @@ export const pdfToolTypes = [
   "audio-joiner",
   "change-audio-volume",
   "increase-audio-volume",
+  "decrease-audio-volume",
+  "change-audio-speed",
+  "audio-speed-changer",
+  "change-audio-pitch",
+  "audio-pitch-shifter",
+  "reverse-audio",
+  "audio-reverser",
+  "audio-equalizer",
+  "add-audio-to-video",
+  "remove-audio-from-video",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
