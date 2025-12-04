@@ -732,6 +732,15 @@ export const pdfToolTypes = [
   "video-reverser",
   "add-filter-to-video",
   "video-color-correction",
+  "video-brightness",
+  "video-contrast",
+  "screen-recorder",
+  "record-screen-camera",
+  "webcam-recorder",
+  "video-to-jpg",
+  "video-to-png",
+  "extract-frames",
+  "video-metadata-editor",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -19240,6 +19249,7 @@ const audioProcessingTools: PdfTool[] = [
     name: "Audio Equalizer",
     description: "Adjust audio frequencies with multi-band EQ",
     icon: "Sliders",
+    type: "video-color-correction",
     type: "audio-equalizer",
     color: "bg-pink-500",
     emoji: "🎚️",
