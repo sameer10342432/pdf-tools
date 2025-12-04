@@ -702,6 +702,14 @@ export default function ToolPage() {
     if (tool.type === "video-to-webm" || tool.type === "video-to-flv") {
       return "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska,.mp4,.webm,.mov,.avi,.mkv";
     }
+    if (tool.type === "resize-video" || tool.type === "video-resizer" || 
+        tool.type === "change-video-aspect-ratio" || tool.type === "mute-video" ||
+        tool.type === "change-video-audio") {
+      return ".mp4,.webm,.mov,.avi,.mkv,video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska";
+    }
+    if (tool.type === "merge-video" || tool.type === "combine-videos" || tool.type === "video-joiner") {
+      return ".mp4,.webm,.mov,.avi,.mkv,video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska";
+    }
     return ".pdf,application/pdf";
   };
 
@@ -729,6 +737,9 @@ export default function ToolPage() {
       "combine-audio",
       "audio-joiner",
       "add-audio-to-video",
+      "merge-video",
+      "combine-videos",
+      "video-joiner",
     ].includes(tool.type);
   };
 
@@ -749,6 +760,9 @@ export default function ToolPage() {
       "combine-audio",
       "audio-joiner",
       "add-audio-to-video",
+      "merge-video",
+      "combine-videos",
+      "video-joiner",
     ].includes(tool.type);
   };
 
@@ -764,6 +778,7 @@ export default function ToolPage() {
     if (tool.type === "gif-maker") return 2;
     if (tool.type === "apng-maker") return 2;
     if (tool.type === "ai-face-swapper") return 2;
+    if (tool.type === "merge-video" || tool.type === "combine-videos" || tool.type === "video-joiner") return 2;
     return 1;
   };
 
