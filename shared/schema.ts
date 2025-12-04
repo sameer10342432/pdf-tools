@@ -715,6 +715,13 @@ export const pdfToolTypes = [
   "video-rotator",
   "flip-video",
   "video-flipper",
+  "resize-video",
+  "video-resizer",
+  "change-video-aspect-ratio",
+  "merge-video",
+  "combine-videos",
+  "video-joiner",
+  "change-video-audio",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -17061,6 +17068,203 @@ const developerTools: PdfTool[] = [
 <h2>International Characters</h2>
 <p>Full UTF-8 support means international characters, emojis, and any Unicode text is properly encoded for safe URL use. Test encoded URLs directly in your browser.</p>`,
   },
+  {
+    id: "resize-video",
+    name: "Resize Video",
+    description: "Change video dimensions and resolution",
+    icon: "Maximize2",
+    type: "resize-video",
+    color: "bg-blue-500",
+    emoji: "📐",
+    metaTitle: "Resize Video Online Free - Change Video Dimensions | Video Tools",
+    metaDescription: "Resize your videos online for free. Change video dimensions, resolution, and scale. Perfect for social media, web, and mobile optimization.",
+    seoArticle: `<h2>Resize Video Online - Change Video Dimensions</h2>
+<p>Resize your videos to any dimension with our free online video resizer. Whether you need to scale down for faster uploads, adjust for specific platforms, or create custom-sized videos for your projects, our tool handles it all with ease.</p>
+
+<h2>Custom Dimensions</h2>
+<p>Set exact width and height values for precise control over your video size. Input specific pixel dimensions to meet your exact requirements for any platform or use case.</p>
+
+<h2>Preset Resolutions</h2>
+<p>Choose from common presets like 1080p, 720p, 480p, or social media-optimized sizes. Quick selection for standard formats saves time and ensures compatibility.</p>
+
+<h2>Maintain Aspect Ratio</h2>
+<p>Lock the aspect ratio to prevent distortion when resizing. Your video maintains its original proportions while scaling to your target size.</p>
+
+<h2>Scale by Percentage</h2>
+<p>Reduce or increase video size by a percentage of the original. Simple scaling for quick size adjustments without calculating exact dimensions.</p>
+
+<h2>Quality Preservation</h2>
+<p>Advanced encoding options maintain visual quality during resizing. Choose your preferred balance between file size and video quality for optimal results.</p>`,
+  },
+  {
+    id: "video-resizer",
+    name: "Video Resizer",
+    description: "Professional video resizing with advanced options",
+    icon: "Scaling",
+    type: "video-resizer",
+    color: "bg-indigo-500",
+    emoji: "🔲",
+    metaTitle: "Video Resizer Online Free - Professional Resize Tool | Video Tools",
+    metaDescription: "Professional video resizer online for free. Advanced resizing options with quality control. Resize videos for any platform or requirement.",
+    seoArticle: `<h2>Video Resizer - Professional Resize Tool</h2>
+<p>Our professional video resizer offers advanced options for precise control over video dimensions. Whether you're preparing content for different platforms or optimizing file sizes, get exactly the results you need.</p>
+
+<h2>Advanced Scaling Algorithms</h2>
+<p>Choose from multiple scaling algorithms including Lanczos, Bicubic, and Bilinear. Each offers different quality-speed tradeoffs for your specific needs.</p>
+
+<h2>Batch Resizing</h2>
+<p>Resize multiple videos at once with consistent settings. Perfect for processing video collections or preparing content in bulk.</p>
+
+<h2>Social Media Presets</h2>
+<p>Pre-configured sizes for Instagram, TikTok, YouTube, Facebook, and more. One-click optimization for each platform's requirements.</p>
+
+<h2>Upscaling Support</h2>
+<p>Increase video resolution with intelligent upscaling. Enhance lower resolution footage for better display on larger screens.</p>
+
+<h2>Format Flexibility</h2>
+<p>Resize videos regardless of input format. Support for MP4, WebM, MOV, AVI, and many more video formats.</p>`,
+  },
+  {
+    id: "change-video-aspect-ratio",
+    name: "Change Video Aspect Ratio",
+    description: "Convert videos between different aspect ratios",
+    icon: "RectangleHorizontal",
+    type: "change-video-aspect-ratio",
+    color: "bg-purple-500",
+    emoji: "📺",
+    metaTitle: "Change Video Aspect Ratio Online Free - Convert Aspect Ratios | Video Tools",
+    metaDescription: "Change video aspect ratio online for free. Convert between 16:9, 4:3, 1:1, 9:16 and more. Perfect for adapting videos to different platforms.",
+    seoArticle: `<h2>Change Video Aspect Ratio - Convert Between Formats</h2>
+<p>Transform your video's aspect ratio to fit any screen or platform. Whether converting horizontal videos to vertical for TikTok or adjusting old 4:3 footage to modern 16:9, our tool makes it easy.</p>
+
+<h2>Popular Aspect Ratios</h2>
+<p>Quick presets for 16:9 (widescreen), 4:3 (standard), 1:1 (square), 9:16 (vertical), 21:9 (ultrawide), and more. Select your target ratio with one click.</p>
+
+<h2>Letterboxing Options</h2>
+<p>Add black bars (letterboxing) to maintain original content without cropping. Choose bar placement and color for professional results.</p>
+
+<h2>Smart Crop</h2>
+<p>Intelligently crop videos to new aspect ratios. Focus on the important parts of your frame while removing unnecessary edges.</p>
+
+<h2>Stretch or Fill</h2>
+<p>Choose how to handle aspect ratio changes - stretch to fill, crop to fit, or add padding. Multiple options for different needs.</p>
+
+<h2>Platform Optimization</h2>
+<p>Optimize for specific platforms like YouTube, Instagram, TikTok, or LinkedIn. Each platform has preferred aspect ratios for best display.</p>`,
+  },
+  {
+    id: "merge-video",
+    name: "Merge Video",
+    description: "Combine multiple videos into one",
+    icon: "Combine",
+    type: "merge-video",
+    color: "bg-green-500",
+    emoji: "🔗",
+    metaTitle: "Merge Video Online Free - Combine Videos Together | Video Tools",
+    metaDescription: "Merge videos online for free. Combine multiple video files into one seamless video. Easy video joining with no software required.",
+    seoArticle: `<h2>Merge Video Online - Combine Multiple Videos</h2>
+<p>Combine multiple video files into a single, seamless video with our free online merger. Perfect for creating compilations, joining clips, or assembling longer videos from shorter segments.</p>
+
+<h2>Drag and Drop Ordering</h2>
+<p>Easily arrange your videos in the order you want them to appear. Simple drag-and-drop interface for quick organization of your clips.</p>
+
+<h2>Seamless Transitions</h2>
+<p>Videos are joined smoothly without jarring cuts. Option to add crossfade transitions between clips for professional-looking results.</p>
+
+<h2>Multiple Format Support</h2>
+<p>Merge videos regardless of their original format. Our tool handles format conversion automatically during the merge process.</p>
+
+<h2>Resolution Handling</h2>
+<p>Intelligently handles videos of different resolutions. Choose to match all clips to the highest quality or a specific target resolution.</p>
+
+<h2>Audio Continuity</h2>
+<p>Preserves audio from all source videos with smooth transitions. Option to normalize audio levels across all clips for consistent sound.</p>`,
+  },
+  {
+    id: "combine-videos",
+    name: "Combine Videos",
+    description: "Join multiple video clips together",
+    icon: "Layers",
+    type: "combine-videos",
+    color: "bg-teal-500",
+    emoji: "🎬",
+    metaTitle: "Combine Videos Online Free - Join Video Clips | Video Tools",
+    metaDescription: "Combine videos online for free. Join multiple video clips into one file. Easy video combination tool with no installation required.",
+    seoArticle: `<h2>Combine Videos - Join Clips Together</h2>
+<p>Join your video clips into a single file with our easy-to-use video combiner. Whether you're creating a highlight reel, combining event footage, or assembling a presentation, our tool makes it simple.</p>
+
+<h2>Easy Upload</h2>
+<p>Upload multiple video files at once. Drag and drop support for quick file selection and arrangement of your clips.</p>
+
+<h2>Preserve Quality</h2>
+<p>Smart encoding preserves the quality of your original videos. No unnecessary re-encoding means your combined video looks as good as the originals.</p>
+
+<h2>Add Transitions</h2>
+<p>Optional transitions between clips including fade, dissolve, and wipe effects. Customize transition duration for smooth or quick cuts.</p>
+
+<h2>Background Music</h2>
+<p>Add background music to your combined video. Keep original audio, replace it, or mix both for the perfect soundtrack.</p>
+
+<h2>Fast Processing</h2>
+<p>Efficient processing engine combines your videos quickly. Large files are handled without excessive wait times.</p>`,
+  },
+  {
+    id: "video-joiner",
+    name: "Video Joiner",
+    description: "Professional video joining tool",
+    icon: "Link",
+    type: "video-joiner",
+    color: "bg-emerald-500",
+    emoji: "🔀",
+    metaTitle: "Video Joiner Online Free - Professional Video Joining | Video Tools",
+    metaDescription: "Join videos online for free with professional results. Combine clips with transitions, effects, and quality control. No software download needed.",
+    seoArticle: `<h2>Video Joiner - Professional Video Combination</h2>
+<p>Our professional video joiner provides advanced options for combining clips with precision. Create seamless compilations with customizable transitions and quality settings.</p>
+
+<h2>Transition Effects</h2>
+<p>Choose from multiple transition effects including fade, dissolve, slide, zoom, and more. Customize timing for each transition point.</p>
+
+<h2>Audio Crossfade</h2>
+<p>Smooth audio transitions between clips with adjustable crossfade duration. Prevents jarring audio cuts for professional results.</p>
+
+<h2>Chapter Markers</h2>
+<p>Add chapter markers at each join point for easy navigation. Viewers can jump between original clips in the combined video.</p>
+
+<h2>Encoding Control</h2>
+<p>Choose output quality, bitrate, and codec settings. Balance between file size and quality based on your needs.</p>
+
+<h2>Preview Before Export</h2>
+<p>Preview your joined video before final export. Ensure transitions and ordering are exactly as you want them.</p>`,
+  },
+  {
+    id: "change-video-audio",
+    name: "Change Video Audio",
+    description: "Replace or modify audio in your video",
+    icon: "Music",
+    type: "change-video-audio",
+    color: "bg-orange-500",
+    emoji: "🎵",
+    metaTitle: "Change Video Audio Online Free - Replace Video Sound | Video Tools",
+    metaDescription: "Change video audio online for free. Replace, remove, or modify audio tracks in your videos. Easy audio replacement with no software required.",
+    seoArticle: `<h2>Change Video Audio - Replace or Modify Sound</h2>
+<p>Replace, modify, or enhance the audio in your videos with our free online tool. Whether you need to add music, replace dialogue, or fix audio issues, we have got you covered.</p>
+
+<h2>Replace Audio Track</h2>
+<p>Completely replace your video audio with a new track. Upload music, voiceover, or any audio file to use as the new soundtrack.</p>
+
+<h2>Mix Audio Tracks</h2>
+<p>Blend original video audio with new audio. Adjust volume levels for each track to achieve the perfect mix.</p>
+
+<h2>Audio Offset</h2>
+<p>Sync your new audio with the video by adjusting timing. Delay or advance audio to match visual cues perfectly.</p>
+
+<h2>Volume Adjustment</h2>
+<p>Increase or decrease audio volume. Normalize audio levels or apply custom volume changes throughout the video.</p>
+
+<h2>Fade Effects</h2>
+<p>Add fade in and fade out effects to audio. Smooth audio transitions at the beginning and end of your video.</p>`,
+  },
+
 ];
 
 pdfTools.push(...developerTools);
