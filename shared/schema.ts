@@ -705,6 +705,16 @@ export const pdfToolTypes = [
   "gif-to-mp4-hd",
   "video-to-webm",
   "video-to-flv",
+  "video-to-3gp",
+  "cut-video",
+  "trim-video",
+  "video-trimmer",
+  "crop-video",
+  "video-cropper",
+  "rotate-video",
+  "video-rotator",
+  "flip-video",
+  "video-flipper",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -19806,6 +19816,287 @@ const newVideoTools: PdfTool[] = [
 
 <h2>Convert from Any Format</h2>
 <p>Upload MP4, AVI, MOV, MKV, or any other video format. Our converter handles the transformation to FLV with customizable quality settings.</p>`,
+  },
+  },
+  {
+    id: "video-to-3gp",
+    name: "Video to 3GP",
+    description: "Convert any video format to 3GP for mobile devices",
+    icon: "Smartphone",
+    type: "video-to-3gp",
+    color: "bg-orange-500",
+    emoji: "📱",
+    metaTitle: "Video to 3GP Converter Online Free - Convert Video to 3GP | Video Tools",
+    metaDescription: "Convert any video to 3GP format online for free. Create mobile-optimized videos from MP4, AVI, MOV and more. Perfect for older mobile phones.",
+    seoArticle: `<h2>Video to 3GP Converter - Mobile Video Format</h2>
+<p>Convert your videos to 3GP format for maximum compatibility with mobile devices, especially older smartphones and feature phones. 3GP is optimized for cellular networks and small screens.</p>
+
+<h2>What is 3GP Format?</h2>
+<p>3GP (3rd Generation Partnership Project) is a multimedia container format designed specifically for 3G mobile phones. It provides excellent compression for transmitting video over cellular networks while maintaining acceptable quality on small screens.</p>
+
+<h2>Wide Device Compatibility</h2>
+<p>3GP files play on virtually any mobile phone made in the last two decades. From basic feature phones to early smartphones, 3GP ensures your videos reach the widest possible audience.</p>
+
+<h2>Efficient Compression</h2>
+<p>3GP uses H.263 or MPEG-4 video codecs with AMR audio, providing excellent compression ratios. Files are small enough to share via MMS or download over slow connections.</p>
+
+<h2>Convert from Any Format</h2>
+<p>Upload MP4, AVI, MOV, MKV, WebM, or any other video format. Our converter handles the transformation to 3GP with optimized settings for mobile playback.</p>
+
+<h2>Customizable Settings</h2>
+<p>Choose from different quality presets or customize resolution and bitrate. Balance file size against video quality for your specific needs.</p>`,
+  },
+  {
+    id: "cut-video",
+    name: "Cut Video",
+    description: "Remove unwanted sections from your video files",
+    icon: "Scissors",
+    type: "cut-video",
+    color: "bg-red-500",
+    emoji: "✂️",
+    metaTitle: "Cut Video Online Free - Remove Video Sections | Video Tools",
+    metaDescription: "Cut and remove unwanted sections from videos online for free. Easy video cutting tool for MP4, AVI, MOV and more. No software installation required.",
+    seoArticle: `<h2>Cut Video Online - Remove Unwanted Sections</h2>
+<p>Quickly cut and remove unwanted parts from your video files with our powerful online video cutter. Whether you need to remove ads, mistakes, or simply shorten your content, our tool makes it easy.</p>
+
+<h2>Precise Cutting Controls</h2>
+<p>Set exact start and end times to define the section you want to keep or remove. Frame-accurate cutting ensures you get exactly the content you want without losing important moments.</p>
+
+<h2>Support for All Formats</h2>
+<p>Upload videos in MP4, AVI, MOV, MKV, WebM, WMV, and many more formats. Our cutter works with virtually any video file you have.</p>
+
+<h2>Fast Processing</h2>
+<p>Our optimized processing engine cuts videos quickly without re-encoding when possible. Get your edited video in seconds, not minutes.</p>
+
+<h2>Maintain Quality</h2>
+<p>We use smart cutting techniques to preserve your video quality. No unnecessary compression or quality loss during the cutting process.</p>
+
+<h2>Easy to Use</h2>
+<p>Simply upload your video, set the time range, and download your cut video. No complex editing software required. Works directly in your browser.</p>`,
+  },
+  {
+    id: "trim-video",
+    name: "Trim Video",
+    description: "Trim the beginning and end of your videos",
+    icon: "Slice",
+    type: "trim-video",
+    color: "bg-blue-500",
+    emoji: "🎬",
+    metaTitle: "Trim Video Online Free - Video Trimmer Tool | Video Tools",
+    metaDescription: "Trim videos online for free. Remove unwanted beginnings and endings from MP4, AVI, MOV files. Fast and easy online video trimming.",
+    seoArticle: `<h2>Trim Video Online - Perfect Your Clips</h2>
+<p>Trim the beginning and end of your videos to create perfectly timed clips. Remove intro padding, credits, or any unwanted footage from the start or end of your videos.</p>
+
+<h2>Simple Timeline Interface</h2>
+<p>Use our intuitive timeline to set your trim points visually. Drag handles to adjust start and end positions with precision. Preview your trimmed result before downloading.</p>
+
+<h2>Multiple Format Support</h2>
+<p>Works with MP4, MOV, AVI, MKV, WebM, and many other video formats. Upload any video and trim it to perfection regardless of the source format.</p>
+
+<h2>Quick Processing</h2>
+<p>Our efficient trimming process works quickly on files of any size. When possible, we use lossless trimming to preserve original quality while speeding up processing.</p>
+
+<h2>No Quality Loss</h2>
+<p>Smart trimming preserves your video quality. We only re-encode when necessary, ensuring your trimmed video looks as good as the original.</p>
+
+<h2>Perfect for Social Media</h2>
+<p>Create perfectly timed clips for TikTok, Instagram Reels, YouTube Shorts, or any platform. Get your videos to the exact length required.</p>`,
+  },
+  {
+    id: "video-trimmer",
+    name: "Video Trimmer",
+    description: "Professional video trimming with frame-accurate precision",
+    icon: "Timer",
+    type: "video-trimmer",
+    color: "bg-purple-500",
+    emoji: "⏱️",
+    metaTitle: "Video Trimmer Online Free - Frame-Accurate Trimming | Video Tools",
+    metaDescription: "Professional video trimmer online for free. Frame-accurate trimming for MP4, AVI, MOV and more. Create perfect clips with precise timing.",
+    seoArticle: `<h2>Video Trimmer - Professional Frame-Accurate Editing</h2>
+<p>Our professional video trimmer provides frame-accurate precision for perfect cuts every time. Whether you are editing professional content or personal videos, get the exact timing you need.</p>
+
+<h2>Frame-by-Frame Control</h2>
+<p>Navigate through your video frame by frame to find the perfect cut points. No more guessing - see exactly where your trim will occur before processing.</p>
+
+<h2>Timestamp Precision</h2>
+<p>Enter exact timestamps in hours, minutes, seconds, and milliseconds format. Perfect for when you know exactly where you want to trim based on video timecodes.</p>
+
+<h2>Preview Before Trimming</h2>
+<p>Watch a preview of your trimmed video before downloading. Make adjustments until you are satisfied with the result. No wasted downloads or repeated uploads.</p>
+
+<h2>Batch Processing</h2>
+<p>Need to trim multiple videos? Our trimmer handles batch processing efficiently. Set your parameters and process multiple files with consistent settings.</p>
+
+<h2>Export Options</h2>
+<p>Choose your output format and quality settings. Match your original format or convert during trimming. Optimize for specific platforms or use cases.</p>`,
+  },
+  {
+    id: "crop-video",
+    name: "Crop Video",
+    description: "Crop and resize your video dimensions",
+    icon: "Crop",
+    type: "crop-video",
+    color: "bg-green-500",
+    emoji: "🖼️",
+    metaTitle: "Crop Video Online Free - Video Cropping Tool | Video Tools",
+    metaDescription: "Crop videos online for free. Remove unwanted borders, resize to any aspect ratio. Perfect for social media formats. Supports MP4, AVI, MOV and more.",
+    seoArticle: `<h2>Crop Video Online - Resize for Any Platform</h2>
+<p>Crop your videos to any size or aspect ratio with our free online video cropper. Remove unwanted borders, focus on the important content, or resize for specific platforms like Instagram, TikTok, or YouTube.</p>
+
+<h2>Preset Aspect Ratios</h2>
+<p>Choose from popular aspect ratios including 16:9 (widescreen), 9:16 (vertical/mobile), 1:1 (square), 4:3 (standard), and 4:5 (Instagram portrait). One click to crop for any platform.</p>
+
+<h2>Custom Crop Areas</h2>
+<p>Need a specific size? Draw your crop area manually or enter exact pixel dimensions. Full control over the final output dimensions.</p>
+
+<h2>Visual Crop Interface</h2>
+<p>See exactly what your cropped video will look like with our visual preview. Adjust the crop area by dragging corners or edges until it is perfect.</p>
+
+<h2>Maintain Subject Focus</h2>
+<p>Keep the important parts of your video in frame. Our cropping tool lets you position the crop area precisely to focus on your subject.</p>
+
+<h2>High-Quality Output</h2>
+<p>Cropping is processed with high-quality settings to ensure your output looks professional. No unnecessary quality loss from the cropping process.</p>`,
+  },
+  {
+    id: "video-cropper",
+    name: "Video Cropper",
+    description: "Advanced video cropping with aspect ratio presets",
+    icon: "Square",
+    type: "video-cropper",
+    color: "bg-teal-500",
+    emoji: "📐",
+    metaTitle: "Video Cropper Online Free - Advanced Cropping Tool | Video Tools",
+    metaDescription: "Advanced video cropper online for free. Crop to any aspect ratio with presets for social media. Supports all major video formats.",
+    seoArticle: `<h2>Video Cropper - Advanced Cropping Features</h2>
+<p>Our advanced video cropper gives you complete control over your video dimensions. Whether you need specific aspect ratios for social media or custom dimensions for your project, we have got you covered.</p>
+
+<h2>Social Media Presets</h2>
+<p>Instantly crop for TikTok, Instagram Reels, YouTube Shorts, Facebook, Twitter, and more. Each preset is optimized for the platform requirements and best practices.</p>
+
+<h2>Smart Crop Suggestions</h2>
+<p>Our tool can suggest crop areas based on your video content. Keep faces and important subjects in frame automatically with smart detection.</p>
+
+<h2>Precise Dimension Control</h2>
+<p>Enter exact width and height in pixels for complete control. Perfect for professional workflows with specific output requirements.</p>
+
+<h2>Aspect Ratio Lock</h2>
+<p>Lock the aspect ratio while adjusting crop size. Maintain proper proportions as you resize the crop area for consistent results.</p>
+
+<h2>Real-Time Preview</h2>
+<p>See your cropped result in real-time as you adjust. No guessing - what you see is exactly what you will get after processing.</p>`,
+  },
+  {
+    id: "rotate-video",
+    name: "Rotate Video",
+    description: "Rotate your videos by 90, 180, or 270 degrees",
+    icon: "RotateCw",
+    type: "rotate-video",
+    color: "bg-indigo-500",
+    emoji: "🔄",
+    metaTitle: "Rotate Video Online Free - Video Rotation Tool | Video Tools",
+    metaDescription: "Rotate videos online for free. Turn videos 90, 180, or 270 degrees. Fix sideways or upside-down recordings. Supports MP4, AVI, MOV and more.",
+    seoArticle: `<h2>Rotate Video Online - Fix Video Orientation</h2>
+<p>Rotate your videos to the correct orientation with our free online video rotator. Fix sideways smartphone recordings, upside-down camera footage, or simply change the orientation for creative purposes.</p>
+
+<h2>Common Rotation Options</h2>
+<p>Rotate 90 degrees clockwise, 90 degrees counter-clockwise, or 180 degrees. Quick one-click rotation fixes most orientation problems instantly.</p>
+
+<h2>Fix Phone Recordings</h2>
+<p>Smartphone videos often end up sideways due to how the phone was held. Our tool quickly corrects these recordings so they display properly on all devices.</p>
+
+<h2>Preserve Quality</h2>
+<p>Rotation is performed with high-quality processing to maintain your video original clarity. No unnecessary compression or quality degradation.</p>
+
+<h2>All Formats Supported</h2>
+<p>Works with MP4, AVI, MOV, MKV, WebM, and virtually any other video format. Upload your video and rotate it regardless of the source format.</p>
+
+<h2>Fast Processing</h2>
+<p>Our efficient rotation algorithm processes videos quickly. Get your properly oriented video in seconds, ready to share or use.</p>`,
+  },
+  {
+    id: "video-rotator",
+    name: "Video Rotator",
+    description: "Professional video rotation with custom angle support",
+    icon: "RefreshCw",
+    type: "video-rotator",
+    color: "bg-cyan-500",
+    emoji: "↻",
+    metaTitle: "Video Rotator Online Free - Custom Angle Rotation | Video Tools",
+    metaDescription: "Professional video rotator online for free. Rotate videos to any angle including custom degrees. Fix orientation and create creative effects.",
+    seoArticle: `<h2>Video Rotator - Professional Rotation Tool</h2>
+<p>Our professional video rotator offers both standard rotation options and custom angle support for creative video editing. Perfect for fixing orientation issues or creating unique visual effects.</p>
+
+<h2>Standard Rotations</h2>
+<p>Quick access to 90, 180, and 270 degree rotations for common orientation fixes. One-click solutions for the most frequent rotation needs.</p>
+
+<h2>Custom Angle Rotation</h2>
+<p>Need a specific angle? Enter any degree value for precise rotation. Perfect for creative effects or correcting slightly tilted footage.</p>
+
+<h2>Background Fill Options</h2>
+<p>When rotating to non-standard angles, choose how to fill the background. Options include black, white, blur, or mirror effects for professional results.</p>
+
+<h2>Keyframe Animation</h2>
+<p>For advanced users, create rotation animations that change over time. Make your video spin, tilt, or slowly rotate throughout playback.</p>
+
+<h2>Metadata Handling</h2>
+<p>Properly handles rotation metadata so your video displays correctly on all devices and platforms. Fix hidden rotation flags that cause playback issues.</p>`,
+  },
+  {
+    id: "flip-video",
+    name: "Flip Video",
+    description: "Flip videos horizontally or vertically",
+    icon: "FlipHorizontal",
+    type: "flip-video",
+    color: "bg-pink-500",
+    emoji: "↔️",
+    metaTitle: "Flip Video Online Free - Mirror Video Horizontally or Vertically | Video Tools",
+    metaDescription: "Flip videos online for free. Mirror horizontally or vertically. Perfect for fixing mirrored selfie recordings or creating mirror effects.",
+    seoArticle: `<h2>Flip Video Online - Mirror Your Footage</h2>
+<p>Flip your videos horizontally or vertically with our free online video flipper. Fix mirrored selfie camera recordings, create mirror effects, or simply reverse the orientation of your footage.</p>
+
+<h2>Horizontal Flip (Mirror)</h2>
+<p>Mirror your video horizontally to create a reflected image. Perfect for fixing front-facing camera recordings where text appears backwards or movements are reversed.</p>
+
+<h2>Vertical Flip</h2>
+<p>Flip your video upside down with vertical flipping. Useful for correcting footage recorded with an inverted camera or creating creative effects.</p>
+
+<h2>Fix Selfie Videos</h2>
+<p>Many front-facing cameras record mirrored video. Our flip tool corrects this so your video appears as others see you, with text readable and natural movement.</p>
+
+<h2>Create Mirror Effects</h2>
+<p>Use flipping creatively to produce mirror effects for music videos, artistic projects, or social media content. Combine with other effects for unique results.</p>
+
+<h2>Quality Preservation</h2>
+<p>Flipping is a simple transformation that preserves your original video quality. No re-encoding of the video stream means no quality loss.</p>`,
+  },
+  {
+    id: "video-flipper",
+    name: "Video Flipper",
+    description: "Advanced video flipping with combination options",
+    icon: "FlipVertical",
+    type: "video-flipper",
+    color: "bg-rose-500",
+    emoji: "🪞",
+    metaTitle: "Video Flipper Online Free - Advanced Mirror Tool | Video Tools",
+    metaDescription: "Advanced video flipper online for free. Combine horizontal and vertical flips, rotate and flip together. Professional video transformation tools.",
+    seoArticle: `<h2>Video Flipper - Advanced Mirror Transformations</h2>
+<p>Our advanced video flipper combines flipping options with rotation for complete orientation control. Fix any video orientation issue or create unique mirror effects with multiple transformation options.</p>
+
+<h2>Combined Transformations</h2>
+<p>Apply horizontal flip, vertical flip, and rotation in any combination. Solve complex orientation problems with a single processing step.</p>
+
+<h2>Preview All Options</h2>
+<p>See how each transformation affects your video before processing. Compare original and transformed versions side by side to choose the right option.</p>
+
+<h2>Fix Any Orientation</h2>
+<p>No matter how your video is oriented, our flipper can correct it. Combine flips and rotations to get your video displaying exactly right.</p>
+
+<h2>Batch Processing</h2>
+<p>Apply the same flip transformation to multiple videos at once. Consistent processing for video series or large collections.</p>
+
+<h2>Metadata Correction</h2>
+<p>Properly updates video metadata to reflect the new orientation. Ensures your flipped video plays correctly on all devices and platforms.</p>`,
   },
 ];
 
