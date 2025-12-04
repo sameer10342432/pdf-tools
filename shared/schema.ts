@@ -18483,6 +18483,254 @@ const audioProcessingTools: PdfTool[] = [
 <h2>No Quality Compromise</h2>
 <p>High-quality audio processing algorithms. Maintain clarity while increasing volume. Preserve original dynamic range when possible. Professional results every time.</p>`,
   },
-];
+  {
+    id: "decrease-audio-volume",
+    name: "Decrease Audio Volume",
+    description: "Lower the volume of loud audio files",
+    icon: "ChevronsDown",
+    type: "decrease-audio-volume",
+    color: "bg-teal-500",
+    emoji: "🔉",
+    metaTitle: "Decrease Audio Volume Online Free - Lower Audio Loudness | PDF Tools",
+    metaDescription: "Decrease the volume of audio files online for free. Lower loud recordings and reduce audio levels. Professional audio volume reducer tool.",
+    seoArticle: `<h2>Decrease Audio Volume - Make Your Audio Quieter</h2>
+<p>Lower the volume of loud audio files with our free online volume reducer. Perfect for fixing recordings that were captured at high levels or balancing audio for various applications.</p>
 
-pdfTools.push(...audioProcessingTools);
+<h2>Precise Volume Control</h2>
+<p>Decrease volume by up to 90%. Apply gradual reduction for natural sound. Maintain audio quality throughout the process. Real-time preview of volume changes.</p>
+
+<h2>Common Use Cases</h2>
+<p>Lower overly loud music tracks. Reduce volume for background audio. Balance audio levels in video projects. Create quieter versions for different environments.</p>
+
+<h2>Professional Processing</h2>
+<p>Our tool provides professional-grade volume reduction. Maintain the original dynamic range. Preserve audio clarity and fidelity. Perfect for podcasts, videos, and music.</p>
+
+<h2>Easy to Use</h2>
+<p>Simply upload your audio file and adjust the volume slider. Instant processing with no quality loss. Download your adjusted file in seconds.</p>`,
+  },
+  {
+    id: "change-audio-speed",
+    name: "Change Audio Speed",
+    description: "Speed up or slow down audio playback",
+    icon: "Timer",
+    type: "change-audio-speed",
+    color: "bg-cyan-500",
+    emoji: "⏱️",
+    metaTitle: "Change Audio Speed Online Free - Adjust Audio Tempo | PDF Tools",
+    metaDescription: "Change the speed of audio files online for free. Speed up or slow down recordings without changing pitch. Professional audio speed changer tool.",
+    seoArticle: `<h2>Change Audio Speed - Adjust Your Audio Tempo</h2>
+<p>Modify the playback speed of your audio files with our professional online tool. Speed up lectures, slow down music for learning, or adjust tempo for any purpose.</p>
+
+<h2>Flexible Speed Control</h2>
+<p>Adjust speed from 0.25x to 4x original tempo. Maintain pitch while changing speed (time stretching). Real-time preview of speed changes. Precise speed adjustment slider.</p>
+
+<h2>Popular Applications</h2>
+<p>Speed up podcasts and lectures for faster consumption. Slow down music for transcription or learning. Create time-lapse audio effects. Adjust audio to match video timing.</p>
+
+<h2>Advanced Technology</h2>
+<p>Uses sophisticated time-stretching algorithms. Preserves audio quality at all speed settings. Maintains natural sound characteristics. Professional broadcast-quality results.</p>
+
+<h2>Seamless Process</h2>
+<p>Upload your audio, select desired speed, and download. No complex software needed. Works with all popular audio formats. Fast processing for quick results.</p>`,
+  },
+  {
+    id: "audio-speed-changer",
+    name: "Audio Speed Changer",
+    description: "Modify audio tempo and playback rate",
+    icon: "Gauge",
+    type: "audio-speed-changer",
+    color: "bg-sky-500",
+    emoji: "🏃",
+    metaTitle: "Audio Speed Changer Online Free - Modify Audio Tempo | PDF Tools",
+    metaDescription: "Professional audio speed changer tool. Modify tempo and playback rate of audio files online for free. Preserve pitch while changing speed.",
+    seoArticle: `<h2>Audio Speed Changer - Professional Tempo Modification</h2>
+<p>Our audio speed changer provides professional-grade tempo modification for your audio files. Whether you need faster playback or slower analysis, this tool delivers.</p>
+
+<h2>Versatile Speed Options</h2>
+<p>Choose from preset speeds or custom values. Range from ultra-slow to high-speed playback. Maintain audio clarity at any speed. Perfect tempo matching for video sync.</p>
+
+<h2>Use Cases</h2>
+<p>Language learning - slow down native speakers. Music practice - reduce tempo for difficult passages. Podcast efficiency - speed up long episodes. Video editing - match audio to scene duration.</p>
+
+<h2>Quality Preservation</h2>
+<p>Advanced algorithms prevent audio artifacts. Natural sound at all speed settings. No chipmunk effect when speeding up. No distortion when slowing down.</p>
+
+<h2>Simple Workflow</h2>
+<p>Upload audio file, adjust speed slider, download result. Instant processing on our servers. Compatible with MP3, WAV, OGG, and more. No registration required.</p>`,
+  },
+  {
+    id: "change-audio-pitch",
+    name: "Change Audio Pitch",
+    description: "Shift the pitch of audio higher or lower",
+    icon: "Music2",
+    type: "change-audio-pitch",
+    color: "bg-indigo-500",
+    emoji: "🎵",
+    metaTitle: "Change Audio Pitch Online Free - Shift Audio Key | PDF Tools",
+    metaDescription: "Change the pitch of audio files online for free. Shift audio higher or lower without changing speed. Professional pitch shifting tool.",
+    seoArticle: `<h2>Change Audio Pitch - Shift Your Audio Key</h2>
+<p>Adjust the pitch of your audio files with our professional pitch shifting tool. Transpose music to different keys, create voice effects, or match pitch for your projects.</p>
+
+<h2>Precise Pitch Control</h2>
+<p>Shift pitch by semitones or cents for musical precision. Range from -12 to +12 semitones. Maintain original tempo while shifting pitch. Real-time preview of changes.</p>
+
+<h2>Creative Applications</h2>
+<p>Transpose songs to match your vocal range. Create harmonies from single tracks. Voice disguise and character effects. Match audio to different instrumental keys.</p>
+
+<h2>Professional Results</h2>
+<p>High-quality pitch shifting algorithms. Minimize artifacts and distortion. Preserve natural sound characteristics. Suitable for professional productions.</p>
+
+<h2>Easy to Use</h2>
+<p>Upload, adjust pitch with slider, and download. Works with all major audio formats. Fast cloud processing. No software installation needed.</p>`,
+  },
+  {
+    id: "audio-pitch-shifter",
+    name: "Audio Pitch Shifter",
+    description: "Professional pitch adjustment for audio files",
+    icon: "TrendingUp",
+    type: "audio-pitch-shifter",
+    color: "bg-violet-500",
+    emoji: "🎹",
+    metaTitle: "Audio Pitch Shifter Online Free - Professional Pitch Adjustment | PDF Tools",
+    metaDescription: "Professional audio pitch shifter tool. Adjust pitch of audio files online for free. Transpose music and modify voice pitch with precision.",
+    seoArticle: `<h2>Audio Pitch Shifter - Professional Pitch Adjustment</h2>
+<p>Our audio pitch shifter provides studio-quality pitch adjustment for your audio files. Perfect for musicians, podcasters, and content creators needing precise pitch control.</p>
+
+<h2>Musical Precision</h2>
+<p>Adjust pitch in semitone increments. Fine-tune with cent adjustments. Preserve tempo during pitch shifts. Compatible with musical scales and keys.</p>
+
+<h2>Versatile Applications</h2>
+<p>Transpose backing tracks for singers. Shift instrumental tracks to match vocals. Create unique voice effects for podcasts. Adjust pitch for video voiceovers.</p>
+
+<h2>Advanced Processing</h2>
+<p>Uses professional-grade algorithms. Minimal audio artifacts. Maintains original audio quality. Fast processing for immediate results.</p>
+
+<h2>Streamlined Workflow</h2>
+<p>Simple upload and adjust interface. Preview changes before downloading. Multiple format support. No account required.</p>`,
+  },
+  {
+    id: "reverse-audio",
+    name: "Reverse Audio",
+    description: "Play audio backwards for creative effects",
+    icon: "Undo2",
+    type: "reverse-audio",
+    color: "bg-purple-500",
+    emoji: "⏪",
+    metaTitle: "Reverse Audio Online Free - Play Audio Backwards | PDF Tools",
+    metaDescription: "Reverse audio files online for free. Create backwards audio effects for music, sound design, and creative projects. Easy audio reversal tool.",
+    seoArticle: `<h2>Reverse Audio - Play Your Audio Backwards</h2>
+<p>Create unique backwards audio effects with our free online audio reverser. Perfect for music production, sound design, creative projects, and discovering hidden messages.</p>
+
+<h2>Instant Reversal</h2>
+<p>One-click audio reversal. Preserves original audio quality. Works with any audio length. Fast processing for immediate results.</p>
+
+<h2>Creative Uses</h2>
+<p>Create reverse cymbal swells. Generate unique sound effects. Produce ambient textures. Discover backmasked content in music.</p>
+
+<h2>Professional Quality</h2>
+<p>Lossless audio processing. Maintains bit depth and sample rate. Compatible with all audio formats. Clean reversal without artifacts.</p>
+
+<h2>Simple Process</h2>
+<p>Upload your audio file. Click reverse. Download the reversed version. No complex settings needed.</p>`,
+  },
+  {
+    id: "audio-reverser",
+    name: "Audio Reverser",
+    description: "Flip audio playback direction instantly",
+    icon: "RefreshCcw",
+    type: "audio-reverser",
+    color: "bg-fuchsia-500",
+    emoji: "🔄",
+    metaTitle: "Audio Reverser Online Free - Flip Audio Direction | PDF Tools",
+    metaDescription: "Reverse audio files instantly online for free. Flip audio playback direction for creative sound effects and music production.",
+    seoArticle: `<h2>Audio Reverser - Flip Your Audio Instantly</h2>
+<p>Our audio reverser tool flips your audio playback direction with a single click. Create mesmerizing reverse effects for music, videos, and creative projects.</p>
+
+<h2>One-Click Reversal</h2>
+<p>Instant audio reversal. No complex settings. Preserves original quality. Works with files of any length.</p>
+
+<h2>Popular Applications</h2>
+<p>Music production reverse effects. Sound design for films and games. Creating unique transitions. Ambient soundscape creation.</p>
+
+<h2>Quality Guaranteed</h2>
+<p>Professional audio processing. No quality degradation. Maintains original specifications. Clean, artifact-free results.</p>
+
+<h2>Effortless Workflow</h2>
+<p>Drag and drop your audio. Process with one click. Download immediately. No registration needed.</p>`,
+  },
+  {
+    id: "audio-equalizer",
+    name: "Audio Equalizer",
+    description: "Adjust audio frequencies with multi-band EQ",
+    icon: "Sliders",
+    type: "audio-equalizer",
+    color: "bg-pink-500",
+    emoji: "🎚️",
+    metaTitle: "Audio Equalizer Online Free - Multi-Band EQ Tool | PDF Tools",
+    metaDescription: "Adjust audio frequencies online with our free multi-band equalizer. Enhance bass, treble, and mid frequencies for perfect sound balance.",
+    seoArticle: `<h2>Audio Equalizer - Perfect Your Sound Balance</h2>
+<p>Fine-tune your audio with our professional multi-band equalizer. Adjust bass, mids, and treble to achieve the perfect sound for your recordings, music, or podcasts.</p>
+
+<h2>Multi-Band Control</h2>
+<p>10-band graphic equalizer. Precise frequency adjustment. Preset options for quick results. Custom EQ profiles for specific needs.</p>
+
+<h2>Common Adjustments</h2>
+<p>Boost bass for fuller sound. Reduce harsh high frequencies. Enhance vocal clarity in podcasts. Balance instruments in music.</p>
+
+<h2>Professional Features</h2>
+<p>Studio-quality EQ processing. Real-time preview of changes. Wide frequency range coverage. Smooth transitions between bands.</p>
+
+<h2>Easy Operation</h2>
+<p>Visual frequency display. Intuitive slider controls. Preset templates available. Export with your custom EQ applied.</p>`,
+  },
+  {
+    id: "add-audio-to-video",
+    name: "Add Audio to Video",
+    description: "Add background music or audio tracks to videos",
+    icon: "Film",
+    type: "add-audio-to-video",
+    color: "bg-rose-500",
+    emoji: "🎬",
+    metaTitle: "Add Audio to Video Online Free - Combine Audio and Video | PDF Tools",
+    metaDescription: "Add audio tracks to videos online for free. Combine background music, voiceovers, or sound effects with your video files easily.",
+    seoArticle: `<h2>Add Audio to Video - Enhance Your Videos with Sound</h2>
+<p>Combine audio tracks with your video files using our free online tool. Add background music, voiceovers, narration, or sound effects to create engaging video content.</p>
+
+<h2>Flexible Audio Options</h2>
+<p>Add any audio file to your video. Replace existing audio or mix with original. Adjust audio volume levels. Sync audio with video timing.</p>
+
+<h2>Common Uses</h2>
+<p>Add background music to silent videos. Include voiceover narration. Add sound effects to clips. Create music videos.</p>
+
+<h2>Professional Features</h2>
+<p>Precise audio positioning. Volume mixing controls. Multiple audio format support. High-quality video output.</p>
+
+<h2>Simple Process</h2>
+<p>Upload video and audio files. Adjust positioning and volume. Preview the result. Download your enhanced video.</p>`,
+  },
+  {
+    id: "remove-audio-from-video",
+    name: "Remove Audio from Video",
+    description: "Extract silent video by removing audio track",
+    icon: "VolumeX",
+    type: "remove-audio-from-video",
+    color: "bg-red-600",
+    emoji: "🔇",
+    metaTitle: "Remove Audio from Video Online Free - Mute Video Sound | PDF Tools",
+    metaDescription: "Remove audio from videos online for free. Create silent videos by extracting and removing audio tracks. Quick and easy video muting tool.",
+    seoArticle: `<h2>Remove Audio from Video - Create Silent Videos</h2>
+<p>Remove unwanted audio from your video files with our free online tool. Create silent videos for adding new audio, sharing on social media, or privacy purposes.</p>
+
+<h2>Complete Audio Removal</h2>
+<p>Remove all audio tracks from video. Preserve video quality perfectly. Fast processing for any video length. Support for all major video formats.</p>
+
+<h2>Popular Uses</h2>
+<p>Remove background noise from recordings. Prepare videos for new voiceovers. Create silent clips for presentations. Remove copyrighted audio.</p>
+
+<h2>Quality Preservation</h2>
+<p>No video quality degradation. Maintains original resolution and frame rate. Preserves video metadata. Professional encoding options.</p>
+
+<h2>Quick and Easy</h2>
+<p>Upload your video file. Click to remove audio. Download the silent version. No software installation needed.</p>`,
+  },
+];

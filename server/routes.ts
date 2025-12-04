@@ -29312,6 +29312,154 @@ File analyzed: ${imageFile.originalname}
           }
 
 
+          case "decrease-audio-volume": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to decrease volume");
+            }
+            const inputPath = files[0].path;
+            const decreaseAmount = options.volumeDecrease ? parseFloat(options.volumeDecrease) : 0.5;
+            const volumeLevel = Math.max(0.1, Math.min(1.0, decreaseAmount));
+            const outputFilePath = path.join(outputDir, `volume-decreased-${randomUUID()}.mp3`);
+            
+            await execAsync(`ffmpeg -i "${inputPath}" -af "volume=${volumeLevel}" -c:a libmp3lame -b:a 192k "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "volume-decreased.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "change-audio-speed":
+          case "audio-speed-changer": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to change speed");
+            }
+            const inputPath = files[0].path;
+            const speedValue = options.speedValue ? parseFloat(options.speedValue) : 1.0;
+            const speed = Math.max(0.25, Math.min(4.0, speedValue));
+            const preservePitch = options.preservePitch !== false;
+            const outputFilePath = path.join(outputDir, `speed-changed-${randomUUID()}.mp3`);
+            
+            let filterComplex;
+            if (preservePitch) {
+              filterComplex = `atempo=${speed > 2 ? 2 : speed}${speed > 2 ? `,atempo=${speed/2}` : ''}`;
+            } else {
+              filterComplex = `asetrate=44100*${speed},aresample=44100`;
+            }
+            
+            await execAsync(`ffmpeg -i "${inputPath}" -af "${filterComplex}" -c:a libmp3lame -b:a 192k "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "speed-changed.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "change-audio-pitch":
+          case "audio-pitch-shifter": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to change pitch");
+            }
+            const inputPath = files[0].path;
+            const semitones = options.pitchSemitones ? parseFloat(options.pitchSemitones) : 0;
+            const pitchShift = Math.max(-12, Math.min(12, semitones));
+            const pitchRatio = Math.pow(2, pitchShift / 12);
+            const outputFilePath = path.join(outputDir, `pitch-shifted-${randomUUID()}.mp3`);
+            
+            const asetrate = Math.round(44100 * pitchRatio);
+            await execAsync(`ffmpeg -i "${inputPath}" -af "asetrate=${asetrate},aresample=44100,atempo=${1/pitchRatio > 2 ? 2 : (1/pitchRatio < 0.5 ? 0.5 : 1/pitchRatio)}${1/pitchRatio > 2 ? ',atempo=' + (1/pitchRatio)/2 : (1/pitchRatio < 0.5 ? ',atempo=' + (1/pitchRatio)*2 : '')}" -c:a libmp3lame -b:a 192k "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "pitch-shifted.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "reverse-audio":
+          case "audio-reverser": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to reverse");
+            }
+            const inputPath = files[0].path;
+            const outputFilePath = path.join(outputDir, `reversed-${randomUUID()}.mp3`);
+            
+            await execAsync(`ffmpeg -i "${inputPath}" -af "areverse" -c:a libmp3lame -b:a 192k "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "reversed-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "audio-equalizer": {
+            if (files.length === 0) {
+              throw new Error("Please upload an audio file to equalize");
+            }
+            const inputPath = files[0].path;
+            const bass = options.eqBass ? parseFloat(options.eqBass) : 0;
+            const midLow = options.eqMidLow ? parseFloat(options.eqMidLow) : 0;
+            const mid = options.eqMid ? parseFloat(options.eqMid) : 0;
+            const midHigh = options.eqMidHigh ? parseFloat(options.eqMidHigh) : 0;
+            const treble = options.eqTreble ? parseFloat(options.eqTreble) : 0;
+            const outputFilePath = path.join(outputDir, `equalized-${randomUUID()}.mp3`);
+            
+            const eqFilter = `superequalizer=1b=${bass}:2b=${bass}:3b=${midLow}:4b=${midLow}:5b=${mid}:6b=${mid}:7b=${midHigh}:8b=${midHigh}:9b=${treble}:10b=${treble}:11b=${treble}:12b=${treble}:13b=${treble}:14b=${treble}:15b=${treble}:16b=${treble}:17b=${treble}:18b=${treble}`;
+            
+            await execAsync(`ffmpeg -i "${inputPath}" -af "${eqFilter}" -c:a libmp3lame -b:a 192k "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "equalized-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
+          case "add-audio-to-video": {
+            if (files.length < 2) {
+              throw new Error("Please upload both a video file and an audio file");
+            }
+            
+            let videoPath = '';
+            let audioPath = '';
+            
+            for (const file of files) {
+              const ext = file.originalname.toLowerCase();
+              if (['.mp4', '.webm', '.mov', '.avi', '.mkv'].some(e => ext.endsWith(e)) || file.mimetype.startsWith('video/')) {
+                videoPath = file.path;
+              } else if (['.mp3', '.wav', '.aac', '.m4a', '.ogg', '.flac'].some(e => ext.endsWith(e)) || file.mimetype.startsWith('audio/')) {
+                audioPath = file.path;
+              }
+            }
+            
+            if (!videoPath || !audioPath) {
+              throw new Error("Please upload one video file and one audio file");
+            }
+            
+            const replaceAudio = options.replaceAudio === true || options.replaceAudio === 'true';
+            const audioVolume = options.audioVolume ? parseFloat(options.audioVolume) : 1.0;
+            const outputFilePath = path.join(outputDir, `video-with-audio-${randomUUID()}.mp4`);
+            
+            if (replaceAudio) {
+              await execAsync(`ffmpeg -i "${videoPath}" -i "${audioPath}" -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 -shortest "${outputFilePath}"`);
+            } else {
+              await execAsync(`ffmpeg -i "${videoPath}" -i "${audioPath}" -c:v copy -filter_complex "[0:a]volume=1[a0];[1:a]volume=${audioVolume}[a1];[a0][a1]amix=inputs=2:duration=first[aout]" -map 0:v -map "[aout]" -c:a aac -shortest "${outputFilePath}"`);
+            }
+            
+            result = outputFilePath;
+            filename = "video-with-audio.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "remove-audio-from-video": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to remove audio from");
+            }
+            const inputPath = files[0].path;
+            const outputFilePath = path.join(outputDir, `video-no-audio-${randomUUID()}.mp4`);
+            
+            await execAsync(`ffmpeg -i "${inputPath}" -c:v copy -an "${outputFilePath}"`);
+            result = outputFilePath;
+            filename = "video-no-audio.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+
           case "json-formatter": {
             let jsonInput = options.jsonInput || '';
             if (!jsonInput && files.length > 0) {
