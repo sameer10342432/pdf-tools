@@ -637,6 +637,16 @@ export const pdfToolTypes = [
   "mp4-to-mp3",
   "avi-to-mp3",
   "mov-to-mp3",
+  "hex-to-text",
+  "text-to-morse",
+  "morse-to-text",
+  "text-to-handwriting",
+  "compress-audio",
+  "compress-mp3",
+  "compress-wav",
+  "audio-converter",
+  "mp3-to-wav",
+  "wav-to-mp3",
   "cut-audio",
   "trim-audio",
   "audio-trimmer",
@@ -18734,3 +18744,5 @@ const audioProcessingTools: PdfTool[] = [
 <p>Upload your video file. Click to remove audio. Download the silent version. No software installation needed.</p>`,
   },
 ];
+
+pdfTools.push(...audioProcessingTools);

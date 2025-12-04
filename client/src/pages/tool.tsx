@@ -621,8 +621,14 @@ export default function ToolPage() {
       return ".avi,.mov,video/x-msvideo,video/quicktime";
     }
     if (tool.type === "cut-audio" || tool.type === "trim-audio" || tool.type === "audio-trimmer" ||
-        tool.type === "change-audio-volume" || tool.type === "increase-audio-volume") {
+        tool.type === "change-audio-volume" || tool.type === "increase-audio-volume"| tool.type === "decrease-audio-volume" || tool.type === "change-audio-speed" || tool.type === "audio-speed-changer" || tool.type === "change-audio-pitch" || tool.type === "audio-pitch-shifter" || tool.type === "reverse-audio" || tool.type === "audio-reverser" || tool.type === "audio-equalizer") {
       return ".mp3,.wav,.aac,.m4a,.ogg,.flac,.wma,audio/mpeg,audio/wav,audio/aac,audio/mp4,audio/ogg,audio/flac";
+    }
+    if (tool.type === "add-audio-to-video") {
+      return ".mp4,.webm,.mov,.avi,.mkv,.mp3,.wav,.aac,.m4a,.ogg,.flac,video/mp4,video/webm,video/quicktime,video/x-msvideo,audio/mpeg,audio/wav,audio/aac,audio/mp4,audio/ogg,audio/flac";
+    }
+    if (tool.type === "remove-audio-from-video") {
+      return ".mp4,.webm,.mov,.avi,.mkv,video/mp4,video/webm,video/quicktime,video/x-msvideo";
     }
     if (tool.type === "merge-audio" || tool.type === "combine-audio" || tool.type === "audio-joiner") {
       return ".mp3,.wav,.aac,.m4a,.ogg,.flac,.wma,audio/mpeg,audio/wav,audio/aac,audio/mp4,audio/ogg,audio/flac";
@@ -656,6 +662,7 @@ export default function ToolPage() {
       "merge-audio",
       "combine-audio",
       "audio-joiner",
+      "add-audio-to-video",
     ].includes(tool.type);
   };
 
@@ -675,6 +682,7 @@ export default function ToolPage() {
       "merge-audio",
       "combine-audio",
       "audio-joiner",
+      "add-audio-to-video",
     ].includes(tool.type);
   };
 

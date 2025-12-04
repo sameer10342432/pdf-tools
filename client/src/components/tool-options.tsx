@@ -12534,6 +12534,224 @@ export function ToolOptionsComponent({
           </div>
         </div>
       );
+
+    case "decrease-audio-volume":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Volume Reduction Level</Label>
+            <Select
+              value={options.volumeDecrease || "0.5"}
+              onValueChange={(value) => updateOption("volumeDecrease", value)}
+            >
+              <SelectTrigger data-testid="select-volume-decrease">
+                <SelectValue placeholder="Select reduction level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0.9">10% reduction (90% volume)</SelectItem>
+                <SelectItem value="0.75">25% reduction (75% volume)</SelectItem>
+                <SelectItem value="0.5">50% reduction (50% volume)</SelectItem>
+                <SelectItem value="0.25">75% reduction (25% volume)</SelectItem>
+                <SelectItem value="0.1">90% reduction (10% volume)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Choose how much to reduce the audio volume.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "change-audio-speed":
+    case "audio-speed-changer":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Playback Speed</Label>
+            <Select
+              value={options.speedValue || "1.0"}
+              onValueChange={(value) => updateOption("speedValue", value)}
+            >
+              <SelectTrigger data-testid="select-speed-value">
+                <SelectValue placeholder="Select speed" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0.25">0.25x (Very Slow)</SelectItem>
+                <SelectItem value="0.5">0.5x (Half Speed)</SelectItem>
+                <SelectItem value="0.75">0.75x (Slower)</SelectItem>
+                <SelectItem value="1.0">1.0x (Normal)</SelectItem>
+                <SelectItem value="1.25">1.25x (Faster)</SelectItem>
+                <SelectItem value="1.5">1.5x (Fast)</SelectItem>
+                <SelectItem value="2.0">2.0x (Double Speed)</SelectItem>
+                <SelectItem value="3.0">3.0x (Triple Speed)</SelectItem>
+                <SelectItem value="4.0">4.0x (Very Fast)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              checked={options.preservePitch !== false}
+              onCheckedChange={(checked) => updateOption("preservePitch", checked)}
+              data-testid="switch-preserve-pitch"
+            />
+            <Label>Preserve original pitch</Label>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Keeping pitch preserved prevents the chipmunk effect when speeding up.
+          </p>
+        </div>
+      );
+
+    case "change-audio-pitch":
+    case "audio-pitch-shifter":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Pitch Shift (Semitones)</Label>
+            <Select
+              value={options.pitchSemitones || "0"}
+              onValueChange={(value) => updateOption("pitchSemitones", value)}
+            >
+              <SelectTrigger data-testid="select-pitch-semitones">
+                <SelectValue placeholder="Select pitch shift" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="-12">-12 (One octave down)</SelectItem>
+                <SelectItem value="-7">-7 (Perfect fifth down)</SelectItem>
+                <SelectItem value="-5">-5 (Perfect fourth down)</SelectItem>
+                <SelectItem value="-3">-3 (Minor third down)</SelectItem>
+                <SelectItem value="-2">-2 (Whole step down)</SelectItem>
+                <SelectItem value="-1">-1 (Half step down)</SelectItem>
+                <SelectItem value="0">0 (No change)</SelectItem>
+                <SelectItem value="1">+1 (Half step up)</SelectItem>
+                <SelectItem value="2">+2 (Whole step up)</SelectItem>
+                <SelectItem value="3">+3 (Minor third up)</SelectItem>
+                <SelectItem value="5">+5 (Perfect fourth up)</SelectItem>
+                <SelectItem value="7">+7 (Perfect fifth up)</SelectItem>
+                <SelectItem value="12">+12 (One octave up)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              Shift the pitch of your audio up or down in musical semitones.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "reverse-audio":
+    case "audio-reverser":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            This tool will reverse your audio file, playing it backwards. Simply upload your audio file and the reversal will be applied automatically.
+          </p>
+        </div>
+      );
+
+    case "audio-equalizer":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Bass (60-250 Hz)</Label>
+            <Slider
+              value={[parseFloat(options.eqBass || "0")]}
+              min={-12}
+              max={12}
+              step={1}
+              onValueChange={(value) => updateOption("eqBass", value[0].toString())}
+              data-testid="slider-eq-bass"
+            />
+            <p className="text-xs text-muted-foreground text-center">{options.eqBass || 0} dB</p>
+          </div>
+          <div className="space-y-2">
+            <Label>Low-Mid (250-500 Hz)</Label>
+            <Slider
+              value={[parseFloat(options.eqMidLow || "0")]}
+              min={-12}
+              max={12}
+              step={1}
+              onValueChange={(value) => updateOption("eqMidLow", value[0].toString())}
+              data-testid="slider-eq-midlow"
+            />
+            <p className="text-xs text-muted-foreground text-center">{options.eqMidLow || 0} dB</p>
+          </div>
+          <div className="space-y-2">
+            <Label>Mid (500-2000 Hz)</Label>
+            <Slider
+              value={[parseFloat(options.eqMid || "0")]}
+              min={-12}
+              max={12}
+              step={1}
+              onValueChange={(value) => updateOption("eqMid", value[0].toString())}
+              data-testid="slider-eq-mid"
+            />
+            <p className="text-xs text-muted-foreground text-center">{options.eqMid || 0} dB</p>
+          </div>
+          <div className="space-y-2">
+            <Label>High-Mid (2000-4000 Hz)</Label>
+            <Slider
+              value={[parseFloat(options.eqMidHigh || "0")]}
+              min={-12}
+              max={12}
+              step={1}
+              onValueChange={(value) => updateOption("eqMidHigh", value[0].toString())}
+              data-testid="slider-eq-midhigh"
+            />
+            <p className="text-xs text-muted-foreground text-center">{options.eqMidHigh || 0} dB</p>
+          </div>
+          <div className="space-y-2">
+            <Label>Treble (4000-16000 Hz)</Label>
+            <Slider
+              value={[parseFloat(options.eqTreble || "0")]}
+              min={-12}
+              max={12}
+              step={1}
+              onValueChange={(value) => updateOption("eqTreble", value[0].toString())}
+              data-testid="slider-eq-treble"
+            />
+            <p className="text-xs text-muted-foreground text-center">{options.eqTreble || 0} dB</p>
+          </div>
+        </div>
+      );
+
+    case "add-audio-to-video":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload both a video file and an audio file. The audio will be added to your video.
+          </p>
+          <div className="flex items-center space-x-2">
+            <Switch
+              checked={options.replaceAudio === true || options.replaceAudio === 'true'}
+              onCheckedChange={(checked) => updateOption("replaceAudio", checked)}
+              data-testid="switch-replace-audio"
+            />
+            <Label>Replace existing audio (instead of mixing)</Label>
+          </div>
+          <div className="space-y-2">
+            <Label>New Audio Volume</Label>
+            <Slider
+              value={[parseFloat(options.audioVolume || "1.0")]}
+              min={0.1}
+              max={2.0}
+              step={0.1}
+              onValueChange={(value) => updateOption("audioVolume", value[0].toString())}
+              data-testid="slider-audio-volume"
+            />
+            <p className="text-xs text-muted-foreground text-center">{(parseFloat(options.audioVolume || "1.0") * 100).toFixed(0)}%</p>
+          </div>
+        </div>
+      );
+
+    case "remove-audio-from-video":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload a video file and the audio track will be completely removed, creating a silent video.
+          </p>
+        </div>
+      );
+
     default:
       return null;
   }
