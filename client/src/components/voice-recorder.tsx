@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Mic, Square, Download, Play, Pause, Trash2 } from "lucide-react";
+import { Mic, Square, Download, Play, Pause, Trash2, MicOff } from "lucide-react";
 
 interface VoiceRecorderProps {
   onRecordingComplete?: (blob: Blob) => void;
@@ -15,6 +15,13 @@ export function VoiceRecorder({ onRecordingComplete }: VoiceRecorderProps) {
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSupported, setIsSupported] = useState(true);
+
+  useEffect(() => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === "undefined") {
+      setIsSupported(false);
+    }
+  }, []);
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -152,6 +159,19 @@ export function VoiceRecorder({ onRecordingComplete }: VoiceRecorderProps) {
       audioRef.current.onended = () => setIsPlaying(false);
     }
   }, [audioUrl]);
+
+  if (!isSupported) {
+    return (
+      <Card className="p-6">
+        <div className="flex flex-col items-center space-y-4 text-center">
+          <MicOff className="w-12 h-12 text-muted-foreground" />
+          <p className="text-muted-foreground">
+            Voice recording is not supported in your browser. Please try using Chrome, Firefox, or Edge.
+          </p>
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card className="p-6">

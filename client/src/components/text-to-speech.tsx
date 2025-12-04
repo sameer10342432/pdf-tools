@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Volume2, VolumeX, Play, Pause, Download, Square } from "lucide-react";
+import { Volume2, VolumeX, Play, Pause, Square } from "lucide-react";
 
 interface Voice {
   name: string;

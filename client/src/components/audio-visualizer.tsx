@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Upload, Play, Pause, Download, AudioWaveform } from "lucide-react";
+import { Upload, Play, Pause, Download, AudioWaveform, AudioLines } from "lucide-react";
 
 interface AudioVisualizerProps {
   onVisualizationComplete?: (imageBlob: Blob) => void;
@@ -23,6 +23,14 @@ export function AudioVisualizerComponent({ onVisualizationComplete }: AudioVisua
   const [bgColor, setBgColor] = useState("#1f2937");
   const [visualizationType, setVisualizationType] = useState<"waveform" | "bars">("waveform");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isSupported, setIsSupported] = useState(true);
+
+  useEffect(() => {
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContext) {
+      setIsSupported(false);
+    }
+  }, []);
   
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -192,6 +200,9 @@ export function AudioVisualizerComponent({ onVisualizationComplete }: AudioVisua
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
       if (audioUrl) {
         URL.revokeObjectURL(audioUrl);
       }
@@ -211,6 +222,19 @@ export function AudioVisualizerComponent({ onVisualizationComplete }: AudioVisua
       };
     }
   }, [audioUrl]);
+
+  if (!isSupported) {
+    return (
+      <Card className="p-6">
+        <div className="flex flex-col items-center space-y-4 text-center">
+          <AudioLines className="w-12 h-12 text-muted-foreground" />
+          <p className="text-muted-foreground">
+            Audio visualization is not supported in your browser. Please try using Chrome, Firefox, or Edge.
+          </p>
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card className="p-6">
