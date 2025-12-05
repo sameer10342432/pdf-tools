@@ -287,10 +287,40 @@ export default function ToolPage() {
       }
       metaDescription.setAttribute("content", tool.metaDescription);
 
+      let ogTitle = document.querySelector('meta[property="og:title"]');
+      if (!ogTitle) {
+        ogTitle = document.createElement("meta");
+        ogTitle.setAttribute("property", "og:title");
+        document.head.appendChild(ogTitle);
+      }
+      ogTitle.setAttribute("content", tool.metaTitle);
+
+      let ogDescription = document.querySelector('meta[property="og:description"]');
+      if (!ogDescription) {
+        ogDescription = document.createElement("meta");
+        ogDescription.setAttribute("property", "og:description");
+        document.head.appendChild(ogDescription);
+      }
+      ogDescription.setAttribute("content", tool.metaDescription);
+
+      let ogType = document.querySelector('meta[property="og:type"]');
+      if (!ogType) {
+        ogType = document.createElement("meta");
+        ogType.setAttribute("property", "og:type");
+        document.head.appendChild(ogType);
+      }
+      ogType.setAttribute("content", "website");
+
       return () => {
-        document.title = "PDF Tools - Free Online PDF Editor";
+        document.title = "File Tools - Free Online File Processor";
         if (metaDescription) {
-          metaDescription.setAttribute("content", "Free online PDF tools to merge, split, compress, convert, rotate, unlock and watermark PDFs.");
+          metaDescription.setAttribute("content", "Free online tools for PDFs, videos, images, and archives. Process your files easily.");
+        }
+        if (ogTitle) {
+          ogTitle.setAttribute("content", "File Tools - Free Online File Processor");
+        }
+        if (ogDescription) {
+          ogDescription.setAttribute("content", "Free online tools for PDFs, videos, images, and archives. Process your files easily.");
         }
       };
     }
@@ -657,7 +687,7 @@ export default function ToolPage() {
       return ".avi,.mov,video/x-msvideo,video/quicktime";
     }
     if (tool.type === "cut-audio" || tool.type === "trim-audio" || tool.type === "audio-trimmer" ||
-        tool.type === "change-audio-volume" || tool.type === "increase-audio-volume"| tool.type === "decrease-audio-volume" || tool.type === "change-audio-speed" || tool.type === "audio-speed-changer" || tool.type === "change-audio-pitch" || tool.type === "audio-pitch-shifter" || tool.type === "reverse-audio" || tool.type === "audio-reverser" || tool.type === "audio-equalizer") {
+        tool.type === "change-audio-volume" || tool.type === "increase-audio-volume" || tool.type === "decrease-audio-volume" || tool.type === "change-audio-speed" || tool.type === "audio-speed-changer" || tool.type === "change-audio-pitch" || tool.type === "audio-pitch-shifter" || tool.type === "reverse-audio" || tool.type === "audio-reverser" || tool.type === "audio-equalizer") {
       return ".mp3,.wav,.aac,.m4a,.ogg,.flac,.wma,audio/mpeg,audio/wav,audio/aac,audio/mp4,audio/ogg,audio/flac";
     }
     if (tool.type === "add-audio-to-video") {

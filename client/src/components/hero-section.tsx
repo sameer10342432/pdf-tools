@@ -21,12 +21,12 @@ export function HeroSection() {
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
             All Your{" "}
-            <span className="text-primary">PDF Tools</span>
+            <span className="text-primary">File Tools</span>
             {" "}in One Place
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Merge, split, compress, convert, rotate, and edit your PDFs with ease. 
+            PDFs, videos, images, and archives - all your file processing needs in one place.
             Free, secure, and incredibly fast.
           </p>
           
