@@ -31175,6 +31175,179 @@ file '${loopInputPath}'`;
             contentType = "application/json";
             break;
           }
+          case "video-to-wav": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to extract audio");
+            }
+            const wavInputPath = files[0].path;
+            const wavOutputPath = path.join(outputDir, `audio-${randomUUID()}.wav`);
+            
+            await execAsync(`ffmpeg -i "${wavInputPath}" -vn -acodec pcm_s16le -ar 44100 -ac 2 "${wavOutputPath}"`);
+            
+            result = wavOutputPath;
+            filename = "extracted-audio.wav";
+            contentType = "audio/wav";
+            break;
+          }
+
+          case "video-to-audio": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video file to extract audio");
+            }
+            const audioInputPath = files[0].path;
+            const audioFormat = options.format || "mp3";
+            const audioBitrate = options.bitrate || "192k";
+            let audioOutputPath = "";
+            let audioContentType = "";
+            
+            switch (audioFormat) {
+              case "wav":
+                audioOutputPath = path.join(outputDir, `audio-${randomUUID()}.wav`);
+                await execAsync(`ffmpeg -i "${audioInputPath}" -vn -acodec pcm_s16le -ar 44100 -ac 2 "${audioOutputPath}"`);
+                audioContentType = "audio/wav";
+                break;
+              case "aac":
+                audioOutputPath = path.join(outputDir, `audio-${randomUUID()}.aac`);
+                await execAsync(`ffmpeg -i "${audioInputPath}" -vn -acodec aac -b:a ${audioBitrate} "${audioOutputPath}"`);
+                audioContentType = "audio/aac";
+                break;
+              case "ogg":
+                audioOutputPath = path.join(outputDir, `audio-${randomUUID()}.ogg`);
+                await execAsync(`ffmpeg -i "${audioInputPath}" -vn -acodec libvorbis -b:a ${audioBitrate} "${audioOutputPath}"`);
+                audioContentType = "audio/ogg";
+                break;
+              default:
+                audioOutputPath = path.join(outputDir, `audio-${randomUUID()}.mp3`);
+                await execAsync(`ffmpeg -i "${audioInputPath}" -vn -acodec libmp3lame -b:a ${audioBitrate} "${audioOutputPath}"`);
+                audioContentType = "audio/mpeg";
+            }
+            
+            result = audioOutputPath;
+            filename = `extracted-audio.${audioFormat}`;
+            contentType = audioContentType;
+            break;
+          }
+
+          case "slideshow-maker": {
+            if (files.length < 2) {
+              throw new Error("Please upload at least 2 images to create a slideshow");
+            }
+            const slideDuration = sanitizeNumber(options.duration, 3, 1, 10);
+            const slideTransition = options.transition || "fade";
+            const slideshowOutputPath = path.join(outputDir, `slideshow-${randomUUID()}.mp4`);
+            
+            const slideListPath = path.join(outputDir, `slides-${randomUUID()}.txt`);
+            const slideContent = files.map(f => `file '${f.path}'\nduration ${slideDuration}`).join("\n");
+            fs.writeFileSync(slideListPath, slideContent.replace(/\\n/g, "\n"));
+            
+            let filterComplex = "";
+            if (slideTransition === "fade") {
+              filterComplex = `-filter_complex "[0:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30[v]" -map "[v]"`;
+            } else {
+              filterComplex = `-vf "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1"`;
+            }
+            
+            await execAsync(`ffmpeg -f concat -safe 0 -i "${slideListPath}" ${filterComplex} -c:v libx264 -preset fast -pix_fmt yuv420p -t ${files.length * slideDuration} "${slideshowOutputPath}"`);
+            
+            result = slideshowOutputPath;
+            filename = "slideshow.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "stop-motion-maker": {
+            if (files.length < 3) {
+              throw new Error("Please upload at least 3 images to create stop motion");
+            }
+            const fps = sanitizeNumber(options.fps, 12, 1, 60);
+            const stopMotionOutputPath = path.join(outputDir, `stop-motion-${randomUUID()}.mp4`);
+            
+            const frameListPath = path.join(outputDir, `frames-list-${randomUUID()}.txt`);
+            const frameDuration = 1 / fps;
+            const frameContent = files.map(f => `file '${f.path}'\nduration ${frameDuration}`).join("\n");
+            fs.writeFileSync(frameListPath, frameContent.replace(/\\n/g, "\n"));
+            
+            await execAsync(`ffmpeg -f concat -safe 0 -i "${frameListPath}" -vf "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1" -c:v libx264 -preset fast -pix_fmt yuv420p -r ${fps} "${stopMotionOutputPath}"`);
+            
+            result = stopMotionOutputPath;
+            filename = "stop-motion.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "video-collage-maker": {
+            if (files.length < 2 || files.length > 4) {
+              throw new Error("Please upload 2-4 videos for the collage");
+            }
+            const collageLayout = options.layout || "2x2";
+            const collageOutputPath = path.join(outputDir, `collage-${randomUUID()}.mp4`);
+            
+            let filterStr = "";
+            let inputStr = files.map((f, i) => `-i "${f.path}"`).join(" ");
+            
+            if (files.length === 2) {
+              filterStr = `"[0:v]scale=640:360[v0];[1:v]scale=640:360[v1];[v0][v1]hstack=inputs=2[v]" -map "[v]"`;
+            } else if (files.length === 3) {
+              filterStr = `"[0:v]scale=640:360[v0];[1:v]scale=640:360[v1];[2:v]scale=1280:360[v2];[v0][v1]hstack[top];[top][v2]vstack[v]" -map "[v]"`;
+            } else {
+              filterStr = `"[0:v]scale=640:360[v0];[1:v]scale=640:360[v1];[2:v]scale=640:360[v2];[3:v]scale=640:360[v3];[v0][v1]hstack[top];[v2][v3]hstack[bottom];[top][bottom]vstack[v]" -map "[v]"`;
+            }
+            
+            await execAsync(`ffmpeg ${inputStr} -filter_complex ${filterStr} -c:v libx264 -preset fast -shortest "${collageOutputPath}"`);
+            
+            result = collageOutputPath;
+            filename = "video-collage.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "ai-video-upscaler": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video to upscale");
+            }
+            const upscaleInputPath = files[0].path;
+            const upscaleOutputPath = path.join(outputDir, `upscaled-${randomUUID()}.mp4`);
+            const scaleFactor = sanitizeNumber(options.scale, 2, 2, 4);
+            
+            await execAsync(`ffmpeg -i "${upscaleInputPath}" -vf "scale=iw*${scaleFactor}:ih*${scaleFactor}:flags=lanczos,unsharp=5:5:1.0:5:5:0.0" -c:v libx264 -preset slow -crf 18 -c:a copy "${upscaleOutputPath}"`);
+            
+            result = upscaleOutputPath;
+            filename = "upscaled-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "ai-video-background-remover": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video to process");
+            }
+            const bgRemoveInputPath = files[0].path;
+            const bgRemoveOutputPath = path.join(outputDir, `bg-removed-${randomUUID()}.mp4`);
+            const bgColor = options.backgroundColor || "green";
+            
+            let colorKey = "";
+            switch (bgColor) {
+              case "green":
+                colorKey = "colorkey=0x00FF00:0.3:0.2";
+                break;
+              case "blue":
+                colorKey = "colorkey=0x0000FF:0.3:0.2";
+                break;
+              case "white":
+                colorKey = "colorkey=0xFFFFFF:0.3:0.2";
+                break;
+              default:
+                colorKey = "chromakey=0x00FF00:0.1:0.2";
+            }
+            
+            await execAsync(`ffmpeg -i "${bgRemoveInputPath}" -vf "${colorKey}" -c:v libx264 -preset fast -c:a copy "${bgRemoveOutputPath}"`);
+            
+            result = bgRemoveOutputPath;
+            filename = "background-removed.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
 
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
