@@ -800,6 +800,16 @@ export const pdfToolTypes = [
   "what-is-my-ip",
   "http-header-viewer",
   "redirect-checker",
+  "css-gradient-generator",
+  "unit-converter-length",
+  "unit-converter-weight",
+  "unit-converter-temperature",
+  "unit-converter-data",
+  "time-zone-converter",
+  "age-calculator",
+  "date-calculator",
+  "world-clock",
+  "stopwatch",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -22650,3 +22660,289 @@ const colorCssTools: PdfTool[] = [
 ];
 
 pdfTools.push(...colorCssTools);
+
+// Utility Tools - Interactive calculators and converters
+const utilityTools: PdfTool[] = [
+  {
+    id: "css-gradient-generator",
+    name: "CSS Gradient Generator",
+    description: "Create stunning CSS gradients with a visual editor",
+    icon: "Palette",
+    type: "css-gradient-generator",
+    color: "bg-gradient-to-r from-purple-500 via-pink-500 to-red-500",
+    emoji: "🎨",
+    metaTitle: "CSS Gradient Generator - Create Beautiful Gradients Online | File Tools",
+    metaDescription: "Create stunning CSS gradients with our visual editor. Generate linear, radial, and conic gradients with multiple color stops. Copy CSS code instantly.",
+    seoArticle: `<h2>CSS Gradient Generator - Create Beautiful Color Transitions</h2>
+<p>Our CSS Gradient Generator is a powerful visual tool that lets you create stunning gradients for your web projects. Whether you need a subtle background gradient or a bold, eye-catching color transition, this tool makes it easy to design and export production-ready CSS code.</p>
+
+<h3>Linear, Radial, and Conic Gradients</h3>
+<p>Choose from three gradient types: linear gradients that transition in a straight line, radial gradients that radiate from a center point, and conic gradients that rotate around a center. Each type creates unique visual effects perfect for different design needs.</p>
+
+<h3>Multiple Color Stops</h3>
+<p>Add as many color stops as you need to create complex, multi-color gradients. Drag stops to position them precisely, and adjust opacity for semi-transparent effects. The visual editor shows your changes in real-time.</p>
+
+<h3>Angle and Position Control</h3>
+<p>For linear gradients, set any angle from 0 to 360 degrees. For radial and conic gradients, position the center point anywhere within the preview area. Fine-tune every parameter to achieve your exact vision.</p>
+
+<h3>Copy CSS Instantly</h3>
+<p>Once you have created your perfect gradient, copy the generated CSS code with one click. The code includes all vendor prefixes for maximum browser compatibility and is ready to paste directly into your stylesheet.</p>
+
+<h3>Preset Gradients</h3>
+<p>Start from beautiful preset gradients created by designers. Use them as-is or customize them to match your brand. Save time while ensuring professional-quality results.</p>`,
+  },
+  {
+    id: "unit-converter-length",
+    name: "Unit Converter (Length)",
+    description: "Convert between length units: meters, feet, inches, and more",
+    icon: "Ruler",
+    type: "unit-converter-length",
+    color: "bg-blue-500",
+    emoji: "📏",
+    metaTitle: "Length Unit Converter - Convert Meters, Feet, Inches Online | File Tools",
+    metaDescription: "Convert between length units instantly. Meters, feet, inches, yards, miles, kilometers, centimeters, millimeters. Free online length converter.",
+    seoArticle: `<h2>Length Unit Converter - Accurate Measurement Conversions</h2>
+<p>Our Length Unit Converter provides instant, accurate conversions between all common length and distance measurements. Whether you are working with metric or imperial units, this tool handles conversions seamlessly.</p>
+
+<h3>Supported Length Units</h3>
+<p>Convert between meters, centimeters, millimeters, kilometers, inches, feet, yards, miles, nautical miles, and more. Each conversion uses precise conversion factors for maximum accuracy.</p>
+
+<h3>Real-Time Conversion</h3>
+<p>Enter a value in any unit and instantly see the equivalent in all other units. No need to click buttons or wait for results - conversions happen as you type.</p>
+
+<h3>Metric and Imperial</h3>
+<p>Seamlessly convert between metric (SI) and imperial units. Perfect for international projects, scientific work, or everyday conversions between measurement systems.</p>
+
+<h3>High Precision</h3>
+<p>Our converter maintains high precision for scientific and engineering applications while also providing rounded values for everyday use. Adjust decimal places to match your needs.</p>
+
+<h3>Common Conversion Examples</h3>
+<p>1 meter = 3.28084 feet, 1 inch = 2.54 centimeters, 1 mile = 1.60934 kilometers. Use our tool to convert any value with complete accuracy.</p>`,
+  },
+  {
+    id: "unit-converter-weight",
+    name: "Unit Converter (Weight)",
+    description: "Convert between weight units: kilograms, pounds, ounces, and more",
+    icon: "Scale",
+    type: "unit-converter-weight",
+    color: "bg-green-500",
+    emoji: "⚖️",
+    metaTitle: "Weight Unit Converter - Convert Kilograms, Pounds, Ounces Online | File Tools",
+    metaDescription: "Convert between weight units instantly. Kilograms, pounds, ounces, grams, tons, stones. Free online weight and mass converter.",
+    seoArticle: `<h2>Weight Unit Converter - Accurate Mass Conversions</h2>
+<p>Our Weight Unit Converter provides instant conversions between all common weight and mass measurements. From grams to tons, and pounds to kilograms, convert any weight unit with precision.</p>
+
+<h3>Supported Weight Units</h3>
+<p>Convert between kilograms, grams, milligrams, metric tons, pounds, ounces, stones, US tons, UK tons, and more. Perfect for cooking, shipping, science, and everyday use.</p>
+
+<h3>Instant Results</h3>
+<p>Enter a weight in any unit and see immediate conversions to all other units. The interface updates in real-time as you type, making conversions quick and effortless.</p>
+
+<h3>Cooking and Recipes</h3>
+<p>Easily convert recipe measurements between metric and imperial. Convert grams to ounces for baking, or pounds to kilograms for international recipes.</p>
+
+<h3>Scientific Precision</h3>
+<p>Precise conversions suitable for laboratory work and engineering calculations. Display results with up to 10 decimal places for maximum accuracy.</p>
+
+<h3>Common Conversions</h3>
+<p>1 kilogram = 2.20462 pounds, 1 pound = 453.592 grams, 1 ounce = 28.3495 grams. Convert any weight value with our accurate calculator.</p>`,
+  },
+  {
+    id: "unit-converter-temperature",
+    name: "Unit Converter (Temperature)",
+    description: "Convert between Celsius, Fahrenheit, and Kelvin",
+    icon: "Thermometer",
+    type: "unit-converter-temperature",
+    color: "bg-red-500",
+    emoji: "🌡️",
+    metaTitle: "Temperature Unit Converter - Celsius, Fahrenheit, Kelvin | File Tools",
+    metaDescription: "Convert between temperature units instantly. Celsius, Fahrenheit, Kelvin, Rankine. Free online temperature converter with formula display.",
+    seoArticle: `<h2>Temperature Unit Converter - Quick Temperature Conversions</h2>
+<p>Our Temperature Unit Converter makes it easy to convert between Celsius, Fahrenheit, Kelvin, and Rankine. Get instant, accurate temperature conversions for weather, cooking, science, and more.</p>
+
+<h3>All Temperature Scales</h3>
+<p>Convert between Celsius, Fahrenheit, Kelvin, and Rankine. Each scale is used in different contexts, and our converter handles them all seamlessly.</p>
+
+<h3>Visual Temperature Scale</h3>
+<p>See your temperature displayed on a visual thermometer scale. Easily understand where your temperature falls in relation to common reference points like freezing and boiling.</p>
+
+<h3>Conversion Formulas</h3>
+<p>View the mathematical formulas used for each conversion. Learn how temperature scales relate to each other with clear formula displays.</p>
+
+<h3>Common Reference Points</h3>
+<p>Quickly see common temperatures: water freezes at 0C/32F/273.15K, water boils at 100C/212F/373.15K, and absolute zero is -273.15C/0K.</p>
+
+<h3>Instant Updates</h3>
+<p>Type a temperature in any scale and see immediate conversions to all other scales. Perfect for quick conversions when cooking, traveling, or studying.</p>`,
+  },
+  {
+    id: "unit-converter-data",
+    name: "Unit Converter (Data)",
+    description: "Convert between data units: bytes, KB, MB, GB, TB",
+    icon: "HardDrive",
+    type: "unit-converter-data",
+    color: "bg-purple-500",
+    emoji: "💾",
+    metaTitle: "Data Unit Converter - Convert Bytes, KB, MB, GB, TB Online | File Tools",
+    metaDescription: "Convert between data storage units instantly. Bytes, KB, MB, GB, TB, PB. Binary and decimal conversions. Free online data size converter.",
+    seoArticle: `<h2>Data Unit Converter - Storage Size Conversions</h2>
+<p>Our Data Unit Converter helps you convert between digital storage units accurately. Whether you are working with file sizes, drive capacities, or bandwidth, this tool handles both binary and decimal conversions.</p>
+
+<h3>Binary vs Decimal</h3>
+<p>Understand the difference between binary (KiB, MiB, GiB) and decimal (KB, MB, GB) units. Binary uses 1024 as the base (used by operating systems), while decimal uses 1000 (used by drive manufacturers).</p>
+
+<h3>All Data Units</h3>
+<p>Convert between bits, bytes, kilobytes, megabytes, gigabytes, terabytes, petabytes, and their binary equivalents. Handle any data size from tiny to massive.</p>
+
+<h3>File Size Context</h3>
+<p>Understand what your data size means in real terms. See how many songs, photos, or videos can fit in a given storage space. Compare file sizes practically.</p>
+
+<h3>Bandwidth Calculations</h3>
+<p>Convert between bits and bytes for network bandwidth calculations. Understand the difference between Mbps (megabits per second) and MB/s (megabytes per second).</p>
+
+<h3>Instant Conversions</h3>
+<p>Enter a value in any unit and see immediate conversions to all other units. Perfect for IT professionals, developers, and anyone working with digital storage.</p>`,
+  },
+  {
+    id: "time-zone-converter",
+    name: "Time Zone Converter",
+    description: "Convert times between different time zones worldwide",
+    icon: "Globe",
+    type: "time-zone-converter",
+    color: "bg-indigo-500",
+    emoji: "🌍",
+    metaTitle: "Time Zone Converter - Convert Times Between Zones | File Tools",
+    metaDescription: "Convert times between time zones instantly. All world time zones supported. Perfect for scheduling meetings across different regions.",
+    seoArticle: `<h2>Time Zone Converter - Schedule Across the World</h2>
+<p>Our Time Zone Converter makes it easy to convert times between any time zones in the world. Perfect for scheduling international meetings, coordinating with remote teams, or planning travel.</p>
+
+<h3>All World Time Zones</h3>
+<p>Access every time zone in the world, from UTC-12 to UTC+14. Search by city name, country, or timezone abbreviation (EST, PST, GMT, etc.) to find the zone you need.</p>
+
+<h3>Multiple Zone Comparison</h3>
+<p>Compare times across several time zones simultaneously. See at a glance what time it is in New York, London, Tokyo, and Sydney when it is noon in your location.</p>
+
+<h3>Daylight Saving Awareness</h3>
+<p>Our converter automatically accounts for daylight saving time changes. Get accurate conversions year-round without worrying about DST transitions.</p>
+
+<h3>Meeting Scheduler</h3>
+<p>Find the best time for meetings across multiple time zones. See which hours overlap with working hours in all locations you need to coordinate.</p>
+
+<h3>Current Time Display</h3>
+<p>View the current time in any timezone, updated in real-time. Perfect for remote workers who need to know colleagues local times.</p>`,
+  },
+  {
+    id: "age-calculator",
+    name: "Age Calculator",
+    description: "Calculate exact age in years, months, days, hours, and minutes",
+    icon: "Cake",
+    type: "age-calculator",
+    color: "bg-pink-500",
+    emoji: "🎂",
+    metaTitle: "Age Calculator - Calculate Exact Age in Years, Months, Days | File Tools",
+    metaDescription: "Calculate your exact age in years, months, days, hours, and minutes. Find age between any two dates. Free online age calculator.",
+    seoArticle: `<h2>Age Calculator - Know Your Exact Age</h2>
+<p>Our Age Calculator tells you precisely how old you are down to the day, hour, and minute. Enter your birthdate and get a detailed breakdown of your age in multiple units.</p>
+
+<h3>Precise Age Breakdown</h3>
+<p>See your age expressed in years, months, weeks, days, hours, minutes, and even seconds. Discover exactly how long you have been alive in any unit of time.</p>
+
+<h3>Next Birthday Countdown</h3>
+<p>See exactly how many days until your next birthday. Plan celebrations and never forget how close your special day is.</p>
+
+<h3>Age on Any Date</h3>
+<p>Calculate what your age was or will be on any specific date. See how old you were at historical events or will be at future milestones.</p>
+
+<h3>Birth Day Facts</h3>
+<p>Discover fun facts about your birth date: what day of the week you were born, your zodiac sign, Chinese zodiac animal, and generation name.</p>
+
+<h3>Age Comparison</h3>
+<p>Compare ages between two people. Find out exactly how much older or younger someone is, down to the day.</p>`,
+  },
+  {
+    id: "date-calculator",
+    name: "Date Calculator",
+    description: "Calculate days between dates or add/subtract days from a date",
+    icon: "CalendarDays",
+    type: "date-calculator",
+    color: "bg-teal-500",
+    emoji: "📅",
+    metaTitle: "Date Calculator - Days Between Dates, Add/Subtract Days | File Tools",
+    metaDescription: "Calculate days between two dates or add/subtract days from a date. Count weekdays, business days. Free online date calculator.",
+    seoArticle: `<h2>Date Calculator - Work with Dates Easily</h2>
+<p>Our Date Calculator helps you perform date arithmetic effortlessly. Calculate the number of days between two dates, add or subtract days from a date, and count business days for project planning.</p>
+
+<h3>Days Between Dates</h3>
+<p>Enter any two dates and instantly see the difference in days, weeks, months, and years. Perfect for counting down to events or calculating time elapsed.</p>
+
+<h3>Add or Subtract Days</h3>
+<p>Start with any date and add or subtract a number of days, weeks, months, or years. Find out what date falls 90 days from now or 6 months ago.</p>
+
+<h3>Business Days Calculator</h3>
+<p>Calculate working days between dates, excluding weekends and holidays. Essential for project deadlines, delivery estimates, and business planning.</p>
+
+<h3>Holiday Exclusion</h3>
+<p>Optionally exclude holidays from your business day calculations. Select your country to use the correct national holidays.</p>
+
+<h3>Recurring Date Finder</h3>
+<p>Find all occurrences of a date pattern, like every third Tuesday or the last Friday of each month. Perfect for scheduling recurring meetings or events.</p>`,
+  },
+  {
+    id: "world-clock",
+    name: "World Clock",
+    description: "View current time in cities around the world",
+    icon: "Clock",
+    type: "world-clock",
+    color: "bg-orange-500",
+    emoji: "🕐",
+    metaTitle: "World Clock - Current Time in Cities Around the World | File Tools",
+    metaDescription: "View current time in any city worldwide. Add multiple locations to your world clock. Real-time updates with daylight saving support.",
+    seoArticle: `<h2>World Clock - Track Time Globally</h2>
+<p>Our World Clock displays the current time in cities around the world in real-time. Perfect for remote teams, international business, and keeping in touch with friends and family abroad.</p>
+
+<h3>Add Multiple Cities</h3>
+<p>Create your personalized world clock by adding cities that matter to you. Track time in your office locations, client cities, or wherever your loved ones live.</p>
+
+<h3>Real-Time Updates</h3>
+<p>All clocks update in real-time, every second. No need to refresh - watch the time tick by in Tokyo, London, and New York simultaneously.</p>
+
+<h3>Analog and Digital Display</h3>
+<p>Choose between beautiful analog clock faces or clear digital displays. Switch views based on your preference or the information density you need.</p>
+
+<h3>Daylight Saving Indicators</h3>
+<p>See at a glance which locations are currently observing daylight saving time. Never be confused by seasonal time changes.</p>
+
+<h3>Sun Position Indicator</h3>
+<p>Visual indicators show whether it is daytime, nighttime, sunrise, or sunset in each location. Know the best times to call based on local conditions.</p>`,
+  },
+  {
+    id: "stopwatch",
+    name: "Stopwatch",
+    description: "Precise stopwatch with lap times and split timing",
+    icon: "Timer",
+    type: "stopwatch",
+    color: "bg-yellow-500",
+    emoji: "⏱️",
+    metaTitle: "Online Stopwatch - Lap Timer, Split Times | File Tools",
+    metaDescription: "Precise online stopwatch with lap times and split timing. Millisecond accuracy. Free stopwatch for sports, cooking, and productivity.",
+    seoArticle: `<h2>Online Stopwatch - Precise Time Tracking</h2>
+<p>Our Online Stopwatch provides millisecond-accurate timing with lap and split functionality. Perfect for sports training, cooking, presentations, exams, and any activity requiring precise timing.</p>
+
+<h3>Millisecond Precision</h3>
+<p>Track time with millisecond accuracy. The large, clear display makes it easy to read elapsed time at a glance, whether timing a sprint or a speech.</p>
+
+<h3>Lap and Split Times</h3>
+<p>Record lap times without stopping the main timer. Review split times between laps to analyze performance. Perfect for interval training and race timing.</p>
+
+<h3>Lap History</h3>
+<p>View a complete list of all recorded laps with individual lap times and cumulative times. Identify your fastest and slowest laps at a glance.</p>
+
+<h3>Keyboard Shortcuts</h3>
+<p>Control the stopwatch with your keyboard for hands-free operation. Press Space to start/stop, L for lap, and R to reset. Focus on your activity, not the interface.</p>
+
+<h3>Fullscreen Mode</h3>
+<p>Enter fullscreen mode for distraction-free timing with extra-large digits. Perfect for classroom timers, presentations, or when viewing from a distance.</p>`,
+  },
+];
+
+pdfTools.push(...utilityTools);
