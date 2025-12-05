@@ -741,6 +741,16 @@ export const pdfToolTypes = [
   "video-to-png",
   "extract-frames",
   "video-metadata-editor",
+  "video-to-wav",
+  "video-to-audio",
+  "slideshow-maker",
+  "video-collage-maker",
+  "stop-motion-maker",
+  "video-player",
+  "online-video-player",
+  "teleprompter",
+  "ai-video-upscaler",
+  "ai-video-background-remover",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -20784,3 +20794,262 @@ const newVideoTools: PdfTool[] = [
 ];
 
 pdfTools.push(...newVideoTools);
+
+// New Video and Media Tools - December 2025
+const newMediaTools: PdfTool[] = [
+  {
+    id: "video-to-wav",
+    name: "Video to WAV",
+    description: "Extract high-quality WAV audio from any video file",
+    icon: "FileAudio",
+    type: "video-to-wav",
+    color: "bg-blue-500",
+    emoji: "🎵",
+    metaTitle: "Video to WAV Converter Online Free - Extract WAV Audio | Video Tools",
+    metaDescription: "Convert video to WAV audio online for free. Extract high-quality uncompressed audio from any video format. Perfect for professional audio editing.",
+    seoArticle: `<h2>Video to WAV - Professional Audio Extraction</h2>
+<p>Extract uncompressed WAV audio from any video file with our free online converter. WAV format provides the highest audio quality, perfect for professional editing, music production, and archival purposes.</p>
+
+<h2>Why Choose WAV Format?</h2>
+<p>WAV (Waveform Audio File Format) is an uncompressed audio format that preserves every detail of the original sound. Unlike MP3 or AAC, WAV files contain no compression artifacts, making them ideal for professional audio work.</p>
+
+<h2>Supported Video Formats</h2>
+<p>Our converter supports all major video formats including MP4, AVI, MOV, MKV, WebM, FLV, and more. Simply upload your video and get high-quality WAV audio output.</p>
+
+<h2>Perfect for Audio Production</h2>
+<p>Content creators, musicians, and audio engineers rely on WAV format for editing and mixing. Extract audio from video interviews, music videos, or any other video content for further processing in your DAW.</p>`,
+  },
+  {
+    id: "video-to-audio",
+    name: "Video to Audio",
+    description: "Extract audio track from any video in multiple formats",
+    icon: "Music",
+    type: "video-to-audio",
+    color: "bg-purple-500",
+    emoji: "🎧",
+    metaTitle: "Video to Audio Converter Online Free - Extract Audio from Video | Video Tools",
+    metaDescription: "Extract audio from video online for free. Convert video to MP3, WAV, AAC, or other audio formats. Fast and easy audio extraction from any video.",
+    seoArticle: `<h2>Video to Audio - Universal Audio Extraction</h2>
+<p>Extract the audio track from any video file and save it in your preferred format. Choose from MP3, WAV, AAC, OGG, and more output formats to suit your needs.</p>
+
+<h2>Multiple Output Formats</h2>
+<p>Select the audio format that works best for your project. MP3 for compact file sizes, WAV for uncompressed quality, AAC for modern compatibility, or OGG for open-source projects.</p>
+
+<h2>Preserve Original Quality</h2>
+<p>Our extraction process preserves the original audio quality from your video. No re-encoding means no quality loss when extracting the audio track.</p>
+
+<h2>Use Cases</h2>
+<p>Perfect for creating podcasts from video content, extracting music from music videos, saving audio from lectures or presentations, or converting video calls to audio-only files.</p>`,
+  },
+  {
+    id: "slideshow-maker",
+    name: "Slideshow Maker",
+    description: "Create stunning video slideshows from your photos",
+    icon: "Images",
+    type: "slideshow-maker",
+    color: "bg-pink-500",
+    emoji: "🎬",
+    metaTitle: "Slideshow Maker Online Free - Photos to Video Creator | Video Tools",
+    metaDescription: "Create beautiful video slideshows from photos online for free. Add transitions, music, and effects. Turn your photo memories into stunning videos.",
+    seoArticle: `<h2>Slideshow Maker - Transform Photos into Videos</h2>
+<p>Create professional video slideshows from your photo collection. Our free online slideshow maker combines your images with smooth transitions and customizable timing to produce stunning video presentations.</p>
+
+<h2>Easy to Use</h2>
+<p>Simply upload your photos, arrange them in your preferred order, set the duration for each slide, and choose your transition effects. Preview your slideshow before downloading the final video.</p>
+
+<h2>Professional Transitions</h2>
+<p>Choose from a variety of transition effects including fade, slide, zoom, and more. Each transition smoothly connects your photos for a polished, professional look.</p>
+
+<h2>Perfect for Any Occasion</h2>
+<p>Create slideshows for weddings, birthdays, travel memories, business presentations, social media content, and more. Share your stories in video format that engages viewers.</p>
+
+<h2>High-Quality Output</h2>
+<p>Export your slideshow in HD quality, ready for sharing on social media, embedding on websites, or playing at events. Full resolution preservation ensures your photos look their best.</p>`,
+  },
+  {
+    id: "video-collage-maker",
+    name: "Video Collage Maker",
+    description: "Combine multiple videos into a single collage layout",
+    icon: "LayoutGrid",
+    type: "video-collage-maker",
+    color: "bg-indigo-500",
+    emoji: "🎞️",
+    metaTitle: "Video Collage Maker Online Free - Multi-Video Layout Creator | Video Tools",
+    metaDescription: "Create video collages online for free. Combine multiple videos into one screen with custom layouts. Perfect for comparisons, reactions, and creative content.",
+    seoArticle: `<h2>Video Collage Maker - Multi-Video Layouts</h2>
+<p>Combine multiple videos into a single frame with our free video collage maker. Choose from various grid layouts to display 2, 3, 4, or more videos simultaneously in one output file.</p>
+
+<h2>Flexible Layout Options</h2>
+<p>Select from side-by-side, grid, picture-in-picture, and custom layouts. Arrange your videos exactly how you want them to appear in the final collage.</p>
+
+<h2>Synchronized Playback</h2>
+<p>All videos in your collage play simultaneously, perfect for comparison videos, reaction content, or showing multiple angles of the same event.</p>
+
+<h2>Creative Applications</h2>
+<p>Use video collages for before/after comparisons, reaction videos, multi-angle sports footage, tutorial side-by-sides, and creative social media content.</p>
+
+<h2>Maintain Quality</h2>
+<p>Our processing maintains video quality while combining multiple sources. Each video in the collage retains its original clarity and color.</p>`,
+  },
+  {
+    id: "stop-motion-maker",
+    name: "Stop Motion Maker",
+    description: "Create stop-motion animation videos from image sequences",
+    icon: "Clapperboard",
+    type: "stop-motion-maker",
+    color: "bg-amber-500",
+    emoji: "🎭",
+    metaTitle: "Stop Motion Maker Online Free - Create Animation from Images | Video Tools",
+    metaDescription: "Create stop motion animation videos online for free. Turn image sequences into animated videos with custom frame rates. Perfect for creative projects.",
+    seoArticle: `<h2>Stop Motion Maker - Bring Images to Life</h2>
+<p>Create captivating stop-motion animation videos from your image sequences. Our free tool combines your photos into smooth animations with customizable frame rates and timing.</p>
+
+<h2>Customizable Frame Rate</h2>
+<p>Control the speed of your animation by adjusting the frames per second. Create quick, snappy animations or slow, cinematic sequences based on your creative vision.</p>
+
+<h2>Perfect for Creative Projects</h2>
+<p>Ideal for claymation, LEGO animations, paper cutout films, time-lapse compilations, and any project where you want to animate still images.</p>
+
+<h2>Easy Workflow</h2>
+<p>Upload your image sequence, set your preferred frame rate, preview the animation, and export as a video file. Simple enough for beginners, powerful enough for serious creators.</p>
+
+<h2>Professional Output</h2>
+<p>Export your stop motion video in high quality MP4 format, ready for sharing on social media, YouTube, or professional presentations.</p>`,
+  },
+  {
+    id: "video-player",
+    name: "Video Player",
+    description: "Play any video file directly in your browser",
+    icon: "Play",
+    type: "video-player",
+    color: "bg-red-500",
+    emoji: "▶️",
+    metaTitle: "Video Player Online Free - Play Any Video Format | Video Tools",
+    metaDescription: "Play any video file online for free. Support for MP4, AVI, MOV, MKV, WebM and more. No software installation required. Fast and secure browser playback.",
+    seoArticle: `<h2>Video Player - Play Any Format Online</h2>
+<p>Play virtually any video file directly in your browser with our free online video player. No software installation required - just upload and play.</p>
+
+<h2>Universal Format Support</h2>
+<p>Our player supports all major video formats including MP4, AVI, MOV, MKV, WebM, FLV, WMV, and more. If you have a video file, we can play it.</p>
+
+<h2>Full Playback Controls</h2>
+<p>Enjoy complete playback controls including play/pause, seek, volume adjustment, playback speed control, and fullscreen mode. Everything you need for comfortable viewing.</p>
+
+<h2>No Downloads Required</h2>
+<p>Unlike desktop video players, our online player requires no installation. Your video stays on your device and plays securely in your browser.</p>
+
+<h2>Privacy Focused</h2>
+<p>Your videos are processed locally and never uploaded to our servers. Watch any content with complete privacy and security.</p>`,
+  },
+  {
+    id: "online-video-player",
+    name: "Online Video Player",
+    description: "Stream and play videos from URLs directly in browser",
+    icon: "PlayCircle",
+    type: "online-video-player",
+    color: "bg-green-500",
+    emoji: "📺",
+    metaTitle: "Online Video Player Free - Stream Videos from URL | Video Tools",
+    metaDescription: "Stream and play online videos from URL for free. Support for direct video links, HLS, and DASH streams. Watch any accessible video content.",
+    seoArticle: `<h2>Online Video Player - Stream from Any URL</h2>
+<p>Play videos directly from URLs without downloading them first. Our online video player supports direct links, HLS streams, and DASH content for seamless playback.</p>
+
+<h2>Stream Without Downloading</h2>
+<p>Enter a video URL and start watching immediately. No need to download files or install any software. Perfect for previewing videos or watching content on the go.</p>
+
+<h2>Multiple Streaming Protocols</h2>
+<p>Support for direct MP4/WebM links, HLS (HTTP Live Streaming), and DASH (Dynamic Adaptive Streaming over HTTP) protocols. Stream adaptive quality content smoothly.</p>
+
+<h2>Full Playback Features</h2>
+<p>Complete video controls including play/pause, volume, seek bar, playback speed, picture-in-picture mode, and fullscreen. Everything you need for comfortable viewing.</p>
+
+<h2>Quick Preview Tool</h2>
+<p>Perfect for content creators who need to preview videos before downloading, or anyone who wants to watch accessible video content without local storage.</p>`,
+  },
+  {
+    id: "teleprompter",
+    name: "Teleprompter",
+    description: "Professional teleprompter for video recording and presentations",
+    icon: "FileText",
+    type: "teleprompter",
+    color: "bg-slate-600",
+    emoji: "📜",
+    metaTitle: "Teleprompter Online Free - Script Reader for Video Recording | Video Tools",
+    metaDescription: "Free online teleprompter for video recording and presentations. Scrolling text display with adjustable speed, font size, and mirroring options.",
+    seoArticle: `<h2>Teleprompter - Professional Script Reading</h2>
+<p>Deliver polished video presentations with our free online teleprompter. Display your script in large, easy-to-read text that scrolls at your preferred speed.</p>
+
+<h2>Adjustable Scroll Speed</h2>
+<p>Control the scrolling speed to match your natural reading pace. Slow down for complex content or speed up for conversational delivery. Pause anytime with a single click.</p>
+
+<h2>Customizable Display</h2>
+<p>Adjust font size, text color, and background for optimal readability. Choose mirror mode if using a teleprompter beam splitter setup with your camera.</p>
+
+<h2>Perfect for Content Creators</h2>
+<p>YouTube creators, podcasters, news readers, and presenters rely on teleprompters to deliver smooth, professional content while maintaining eye contact with the camera.</p>
+
+<h2>No Registration Required</h2>
+<p>Start using the teleprompter immediately. Paste your script, adjust settings, and begin recording. Your scripts stay private on your device.</p>
+
+<h2>Keyboard Controls</h2>
+<p>Use keyboard shortcuts to start, stop, and control scroll speed without touching your mouse. Keep your hands free for gesturing during presentations.</p>`,
+  },
+  {
+    id: "ai-video-upscaler",
+    name: "AI Video Upscaler",
+    description: "Enhance video resolution using AI-powered upscaling",
+    icon: "Maximize",
+    type: "ai-video-upscaler",
+    color: "bg-violet-500",
+    emoji: "🔍",
+    metaTitle: "AI Video Upscaler Online Free - Enhance Video Resolution | Video Tools",
+    metaDescription: "Upscale video resolution with AI online for free. Enhance low-resolution videos to HD or 4K quality. Intelligent detail enhancement for sharper videos.",
+    seoArticle: `<h2>AI Video Upscaler - Intelligent Resolution Enhancement</h2>
+<p>Transform low-resolution videos into crisp, high-definition content with our AI-powered video upscaler. Our advanced algorithms analyze each frame and intelligently add detail to create sharper, clearer videos.</p>
+
+<h2>How AI Upscaling Works</h2>
+<p>Unlike simple interpolation that just enlarges pixels, our AI model understands image content and generates realistic details. Edges become sharper, textures become more defined, and faces look more natural.</p>
+
+<h2>Multiple Upscaling Options</h2>
+<p>Choose your target resolution: 2x upscale for moderate enhancement, or 4x for maximum resolution boost. Upscale 480p to 1080p, or 1080p to 4K quality.</p>
+
+<h2>Preserve Original Quality</h2>
+<p>Our AI preserves the original video's color accuracy and artistic intent while enhancing resolution. No color shifts or artificial processing artifacts.</p>
+
+<h2>Perfect for Old Footage</h2>
+<p>Breathe new life into old family videos, vintage content, or any low-resolution footage. Make your video archives look modern and watchable on today's high-resolution displays.</p>
+
+<h2>Processing Information</h2>
+<p>Video upscaling uses advanced algorithmic enhancement to improve resolution while maintaining visual quality and natural appearance.</p>`,
+  },
+  {
+    id: "ai-video-background-remover",
+    name: "AI Video Background Remover",
+    description: "Remove or replace video backgrounds using AI technology",
+    icon: "Eraser",
+    type: "ai-video-background-remover",
+    color: "bg-emerald-500",
+    emoji: "🪄",
+    metaTitle: "AI Video Background Remover Online Free - Remove Video Background | Video Tools",
+    metaDescription: "Remove video background with AI online for free. Automatically isolate subjects and remove or replace backgrounds. Perfect for green screen effects.",
+    seoArticle: `<h2>AI Video Background Remover - Smart Subject Isolation</h2>
+<p>Remove or replace video backgrounds automatically with our AI-powered tool. Our advanced algorithm identifies subjects in your video and separates them from the background with precision.</p>
+
+<h2>No Green Screen Needed</h2>
+<p>Traditional background removal requires expensive green screens and careful lighting. Our AI technology works with any background, automatically detecting and isolating the subject.</p>
+
+<h2>Replace or Remove</h2>
+<p>Choose to remove the background entirely for a transparent output, replace it with a solid color, or substitute with a custom image or video background.</p>
+
+<h2>Perfect Edge Detection</h2>
+<p>Our AI carefully handles difficult areas like hair, semi-transparent objects, and motion blur. Get clean, professional-looking results without manual masking.</p>
+
+<h2>Content Creator Essential</h2>
+<p>Perfect for YouTube videos, virtual meetings, streaming content, marketing videos, and any project where you need to change or remove the background.</p>
+
+<h2>Processing Technology</h2>
+<p>Uses advanced computer vision algorithms for intelligent subject detection and background separation, producing professional-quality results automatically.</p>`,
+  },
+];
+
+pdfTools.push(...newMediaTools);
