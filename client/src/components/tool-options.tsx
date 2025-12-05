@@ -1,5 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -14633,6 +14634,404 @@ export function ToolOptionsComponent({
         </div>
       );
     }
+
+    case "website-to-pdf": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="websiteUrl">Website URL</Label>
+            <Input
+              id="websiteUrl"
+              type="url"
+              placeholder="https://example.com"
+              value={options.websiteUrl || ""}
+              onChange={(e) => updateOption("websiteUrl", e.target.value)}
+              data-testid="input-website-to-pdf-url"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter the full URL of the website to convert to PDF.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "website-to-jpg": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="websiteUrl">Website URL</Label>
+            <Input
+              id="websiteUrl"
+              type="url"
+              placeholder="https://example.com"
+              value={options.websiteUrl || ""}
+              onChange={(e) => updateOption("websiteUrl", e.target.value)}
+              data-testid="input-website-to-jpg-url"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>JPG Quality</Label>
+            <Select
+              value={options.jpgQuality || "90"}
+              onValueChange={(value) => updateOption("jpgQuality", value)}
+            >
+              <SelectTrigger data-testid="select-jpg-quality">
+                <SelectValue placeholder="Select quality" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="100">Maximum (100%)</SelectItem>
+                <SelectItem value="90">High (90%)</SelectItem>
+                <SelectItem value="80">Medium (80%)</SelectItem>
+                <SelectItem value="60">Low (60%)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Viewport Width</Label>
+            <Select
+              value={options.viewportWidth || "1920"}
+              onValueChange={(value) => updateOption("viewportWidth", value)}
+            >
+              <SelectTrigger data-testid="select-viewport-width-jpg">
+                <SelectValue placeholder="Select width" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1920">Desktop (1920px)</SelectItem>
+                <SelectItem value="1366">Laptop (1366px)</SelectItem>
+                <SelectItem value="768">Tablet (768px)</SelectItem>
+                <SelectItem value="375">Mobile (375px)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+    }
+
+    case "website-source-code-viewer": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="websiteUrl">Website URL</Label>
+            <Input
+              id="websiteUrl"
+              type="url"
+              placeholder="https://example.com"
+              value={options.websiteUrl || ""}
+              onChange={(e) => updateOption("websiteUrl", e.target.value)}
+              data-testid="input-source-code-url"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter the URL of the website to view its source code.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "website-seo-analyzer": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="websiteUrl">Website URL</Label>
+            <Input
+              id="websiteUrl"
+              type="url"
+              placeholder="https://example.com"
+              value={options.websiteUrl || ""}
+              onChange={(e) => updateOption("websiteUrl", e.target.value)}
+              data-testid="input-seo-analyzer-url"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter the URL to analyze its SEO performance.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "keyword-density-checker": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="websiteUrl">Website URL (Optional)</Label>
+            <Input
+              id="websiteUrl"
+              type="url"
+              placeholder="https://example.com"
+              value={options.websiteUrl || ""}
+              onChange={(e) => updateOption("websiteUrl", e.target.value)}
+              data-testid="input-keyword-url"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter a URL to analyze, or paste text below.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="textContent">Or Paste Text Content</Label>
+            <Textarea
+              id="textContent"
+              placeholder="Paste your text content here to analyze keyword density..."
+              value={options.textContent || ""}
+              onChange={(e) => updateOption("textContent", e.target.value)}
+              className="min-h-32"
+              data-testid="input-text-content"
+            />
+          </div>
+        </div>
+      );
+    }
+
+    case "meta-tag-generator": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="pageTitle">Page Title</Label>
+            <Input
+              id="pageTitle"
+              placeholder="Your Page Title (10-60 characters)"
+              value={options.pageTitle || ""}
+              onChange={(e) => updateOption("pageTitle", e.target.value)}
+              data-testid="input-meta-title"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="pageDescription">Meta Description</Label>
+            <Textarea
+              id="pageDescription"
+              placeholder="Your page description (50-160 characters)"
+              value={options.pageDescription || ""}
+              onChange={(e) => updateOption("pageDescription", e.target.value)}
+              className="min-h-20"
+              data-testid="input-meta-description"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="pageKeywords">Keywords (comma separated)</Label>
+            <Input
+              id="pageKeywords"
+              placeholder="keyword1, keyword2, keyword3"
+              value={options.pageKeywords || ""}
+              onChange={(e) => updateOption("pageKeywords", e.target.value)}
+              data-testid="input-meta-keywords"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="siteUrl">Site URL</Label>
+            <Input
+              id="siteUrl"
+              type="url"
+              placeholder="https://example.com"
+              value={options.siteUrl || ""}
+              onChange={(e) => updateOption("siteUrl", e.target.value)}
+              data-testid="input-site-url"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="pagePath">Page Path</Label>
+            <Input
+              id="pagePath"
+              placeholder="/about-us"
+              value={options.pagePath || "/"}
+              onChange={(e) => updateOption("pagePath", e.target.value)}
+              data-testid="input-page-path"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="ogImageUrl">Open Graph Image URL (optional)</Label>
+            <Input
+              id="ogImageUrl"
+              type="url"
+              placeholder="https://example.com/image.jpg"
+              value={options.ogImageUrl || ""}
+              onChange={(e) => updateOption("ogImageUrl", e.target.value)}
+              data-testid="input-og-image"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="twitterHandle">Twitter Handle (optional)</Label>
+            <Input
+              id="twitterHandle"
+              placeholder="@yourhandle"
+              value={options.twitterHandle || ""}
+              onChange={(e) => updateOption("twitterHandle", e.target.value)}
+              data-testid="input-twitter-handle"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="authorName">Author Name (optional)</Label>
+            <Input
+              id="authorName"
+              placeholder="John Doe"
+              value={options.authorName || ""}
+              onChange={(e) => updateOption("authorName", e.target.value)}
+              data-testid="input-author-name"
+            />
+          </div>
+        </div>
+      );
+    }
+
+    case "robots-txt-generator": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="sitemapUrl">Sitemap URL (optional)</Label>
+            <Input
+              id="sitemapUrl"
+              type="url"
+              placeholder="https://example.com/sitemap.xml"
+              value={options.sitemapUrl || ""}
+              onChange={(e) => updateOption("sitemapUrl", e.target.value)}
+              data-testid="input-sitemap-url"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Allow All Crawling</Label>
+            <Select
+              value={options.allowAll || "true"}
+              onValueChange={(value) => updateOption("allowAll", value)}
+            >
+              <SelectTrigger data-testid="select-allow-all">
+                <SelectValue placeholder="Select option" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="true">Yes - Allow all pages</SelectItem>
+                <SelectItem value="false">No - Specify paths</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="disallowPaths">Disallow Paths (comma separated)</Label>
+            <Input
+              id="disallowPaths"
+              placeholder="/admin, /private, /tmp"
+              value={options.disallowPaths || ""}
+              onChange={(e) => updateOption("disallowPaths", e.target.value)}
+              data-testid="input-disallow-paths"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="crawlDelay">Crawl Delay (seconds)</Label>
+            <Select
+              value={options.crawlDelay || "0"}
+              onValueChange={(value) => updateOption("crawlDelay", value)}
+            >
+              <SelectTrigger data-testid="select-crawl-delay">
+                <SelectValue placeholder="Select delay" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0">No delay</SelectItem>
+                <SelectItem value="1">1 second</SelectItem>
+                <SelectItem value="5">5 seconds</SelectItem>
+                <SelectItem value="10">10 seconds</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+    }
+
+    case "sitemap-xml-generator": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="sitemapUrls">URLs (one per line)</Label>
+            <Textarea
+              id="sitemapUrls"
+              placeholder={"https://example.com\nhttps://example.com/about\nhttps://example.com/contact"}
+              value={options.sitemapUrls || ""}
+              onChange={(e) => updateOption("sitemapUrls", e.target.value)}
+              className="min-h-40"
+              data-testid="input-sitemap-urls"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter one URL per line. Optionally add priority and frequency: URL|priority|changefreq
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label>Default Priority</Label>
+            <Select
+              value={options.defaultPriority || "0.8"}
+              onValueChange={(value) => updateOption("defaultPriority", value)}
+            >
+              <SelectTrigger data-testid="select-default-priority">
+                <SelectValue placeholder="Select priority" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1.0">1.0 - Highest</SelectItem>
+                <SelectItem value="0.8">0.8 - High</SelectItem>
+                <SelectItem value="0.5">0.5 - Medium</SelectItem>
+                <SelectItem value="0.3">0.3 - Low</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Default Change Frequency</Label>
+            <Select
+              value={options.defaultChangefreq || "weekly"}
+              onValueChange={(value) => updateOption("defaultChangefreq", value)}
+            >
+              <SelectTrigger data-testid="select-changefreq">
+                <SelectValue placeholder="Select frequency" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="always">Always</SelectItem>
+                <SelectItem value="hourly">Hourly</SelectItem>
+                <SelectItem value="daily">Daily</SelectItem>
+                <SelectItem value="weekly">Weekly</SelectItem>
+                <SelectItem value="monthly">Monthly</SelectItem>
+                <SelectItem value="yearly">Yearly</SelectItem>
+                <SelectItem value="never">Never</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+    }
+
+    case "domain-authority-checker": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="websiteUrl">Domain URL</Label>
+            <Input
+              id="websiteUrl"
+              type="url"
+              placeholder="https://example.com"
+              value={options.websiteUrl || ""}
+              onChange={(e) => updateOption("websiteUrl", e.target.value)}
+              data-testid="input-domain-authority-url"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter the domain URL to check its authority score.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "page-authority-checker": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="websiteUrl">Page URL</Label>
+            <Input
+              id="websiteUrl"
+              type="url"
+              placeholder="https://example.com/page"
+              value={options.websiteUrl || ""}
+              onChange={(e) => updateOption("websiteUrl", e.target.value)}
+              data-testid="input-page-authority-url"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter the specific page URL to check its authority score.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
 
     case "archive-converter": {
       return (

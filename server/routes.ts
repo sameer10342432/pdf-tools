@@ -32500,6 +32500,685 @@ file '${loopInputPath}'`;
             contentType = "video/mp4";
             break;
           }
+          case "website-to-pdf": {
+            const websiteUrl = options.websiteUrl;
+            if (!websiteUrl || typeof websiteUrl !== "string" || !websiteUrl.startsWith("http")) {
+              throw new Error("Please provide a valid website URL (starting with http:// or https://)");
+            }
+            
+            const pdfPath = path.join(outputDir, `website-${randomUUID()}.pdf`);
+            
+            try {
+              const chromiumArgs = [
+                "--headless",
+                "--disable-gpu",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--print-to-pdf=" + pdfPath,
+                "--print-to-pdf-no-header",
+                websiteUrl
+              ].join(" ");
+              
+              await execAsync(`chromium ${chromiumArgs}`, { timeout: 60000 });
+            } catch (pdfError) {
+              throw new Error("Could not convert website to PDF. Please check if the URL is accessible.");
+            }
+            
+            if (!fs.existsSync(pdfPath)) {
+              throw new Error("PDF conversion failed. The website may be blocking automated access.");
+            }
+            
+            const urlHostname = new URL(websiteUrl).hostname;
+            result = pdfPath;
+            filename = `${urlHostname}.pdf`;
+            contentType = "application/pdf";
+            break;
+          }
+
+          case "website-to-jpg": {
+            const websiteUrl = options.websiteUrl;
+            if (!websiteUrl || typeof websiteUrl !== "string" || !websiteUrl.startsWith("http")) {
+              throw new Error("Please provide a valid website URL (starting with http:// or https://)");
+            }
+            
+            const quality = parseInt(options.jpgQuality || "90");
+            const viewportWidth = parseInt(options.viewportWidth || "1920");
+            const pngPath = path.join(outputDir, `website-${randomUUID()}.png`);
+            const jpgPath = path.join(outputDir, `website-${randomUUID()}.jpg`);
+            
+            try {
+              const chromiumArgs = [
+                "--headless",
+                "--disable-gpu",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                `--window-size=${viewportWidth},1080`,
+                `--screenshot=${pngPath}`,
+                websiteUrl
+              ].join(" ");
+              
+              await execAsync(`chromium ${chromiumArgs}`, { timeout: 30000 });
+              
+              const sharpImg = sharp(pngPath);
+              await sharpImg.jpeg({ quality }).toFile(jpgPath);
+              
+              try { fs.unlinkSync(pngPath); } catch {}
+            } catch (error) {
+              throw new Error("Could not capture website as JPG. Please check if the URL is accessible.");
+            }
+            
+            if (!fs.existsSync(jpgPath)) {
+              throw new Error("JPG conversion failed. The website may be blocking automated access.");
+            }
+            
+            const urlHostname = new URL(websiteUrl).hostname;
+            result = jpgPath;
+            filename = `${urlHostname}.jpg`;
+            contentType = "image/jpeg";
+            break;
+          }
+
+          case "website-source-code-viewer": {
+            const websiteUrl = options.websiteUrl;
+            if (!websiteUrl || typeof websiteUrl !== "string" || !websiteUrl.startsWith("http")) {
+              throw new Error("Please provide a valid website URL (starting with http:// or https://)");
+            }
+            
+            try {
+              const response = await fetch(websiteUrl, {
+                headers: {
+                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                }
+              });
+              
+              if (!response.ok) {
+                throw new Error(`Failed to fetch website: ${response.status}`);
+              }
+              
+              const html = await response.text();
+              
+              const sourceCodePath = path.join(outputDir, `source-code-${randomUUID()}.html`);
+              fs.writeFileSync(sourceCodePath, html);
+              
+              const urlHostname = new URL(websiteUrl).hostname;
+              result = sourceCodePath;
+              filename = `${urlHostname}-source.html`;
+              contentType = "text/html";
+            } catch (error: any) {
+              throw new Error(`Could not fetch website source code: ${error.message}`);
+            }
+            break;
+          }
+
+          case "website-seo-analyzer": {
+            const websiteUrl = options.websiteUrl;
+            if (!websiteUrl || typeof websiteUrl !== "string" || !websiteUrl.startsWith("http")) {
+              throw new Error("Please provide a valid website URL (starting with http:// or https://)");
+            }
+            
+            try {
+              const response = await fetch(websiteUrl, {
+                headers: {
+                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                }
+              });
+              
+              if (!response.ok) {
+                throw new Error(`Failed to fetch website: ${response.status}`);
+              }
+              
+              const html = await response.text();
+              
+              const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+              const title = titleMatch ? titleMatch[1].trim() : "Not found";
+              
+              const descMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i) ||
+                               html.match(/<meta[^>]*content=["']([^"']*)["'][^>]*name=["']description["']/i);
+              const description = descMatch ? descMatch[1].trim() : "Not found";
+              
+              const h1Matches = html.match(/<h1[^>]*>([^<]*)<\/h1>/gi) || [];
+              const h2Matches = html.match(/<h2[^>]*>([^<]*)<\/h2>/gi) || [];
+              const h3Matches = html.match(/<h3[^>]*>([^<]*)<\/h3>/gi) || [];
+              
+              const imgMatches = html.match(/<img[^>]*>/gi) || [];
+              const imagesWithAlt = imgMatches.filter(img => /alt=["'][^"']+["']/i.test(img)).length;
+              const imagesWithoutAlt = imgMatches.length - imagesWithAlt;
+              
+              const internalLinks = (html.match(/<a[^>]*href=["'][\/][^"']*["']/gi) || []).length;
+              const externalLinks = (html.match(/<a[^>]*href=["']https?:\/\/[^"']*["']/gi) || []).length;
+              
+              const canonicalMatch = html.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']*)["']/i);
+              const canonical = canonicalMatch ? canonicalMatch[1] : "Not set";
+              
+              const robotsMatch = html.match(/<meta[^>]*name=["']robots["'][^>]*content=["']([^"']*)["']/i);
+              const robots = robotsMatch ? robotsMatch[1] : "Not set";
+              
+              const ogTitleMatch = html.match(/<meta[^>]*property=["']og:title["'][^>]*content=["']([^"']*)["']/i);
+              const ogTitle = ogTitleMatch ? ogTitleMatch[1] : "Not set";
+              
+              const ogDescMatch = html.match(/<meta[^>]*property=["']og:description["'][^>]*content=["']([^"']*)["']/i);
+              const ogDescription = ogDescMatch ? ogDescMatch[1] : "Not set";
+              
+              const viewportMatch = html.match(/<meta[^>]*name=["']viewport["'][^>]*content=["']([^"']*)["']/i);
+              const viewport = viewportMatch ? viewportMatch[1] : "Not set";
+              
+              const wordCount = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().split(' ').length;
+              
+              let score = 0;
+              const issues: string[] = [];
+              const recommendations: string[] = [];
+              
+              if (title !== "Not found" && title.length > 10 && title.length < 60) score += 15;
+              else if (title === "Not found") { issues.push("Missing title tag"); recommendations.push("Add a descriptive title tag between 10-60 characters"); }
+              else { issues.push("Title length is not optimal"); recommendations.push("Adjust title to be between 10-60 characters"); }
+              
+              if (description !== "Not found" && description.length > 50 && description.length < 160) score += 15;
+              else if (description === "Not found") { issues.push("Missing meta description"); recommendations.push("Add a meta description between 50-160 characters"); }
+              else { issues.push("Meta description length is not optimal"); recommendations.push("Adjust meta description to be between 50-160 characters"); }
+              
+              if (h1Matches.length === 1) score += 10;
+              else if (h1Matches.length === 0) { issues.push("No H1 tag found"); recommendations.push("Add exactly one H1 tag per page"); }
+              else { issues.push("Multiple H1 tags found"); recommendations.push("Use only one H1 tag per page"); }
+              
+              if (h2Matches.length >= 2) score += 10;
+              else { recommendations.push("Add more H2 tags to structure your content"); }
+              
+              if (imagesWithoutAlt === 0 && imgMatches.length > 0) score += 10;
+              else if (imagesWithoutAlt > 0) { issues.push(`${imagesWithoutAlt} images missing alt text`); recommendations.push("Add alt text to all images"); }
+              
+              if (canonical !== "Not set") score += 5;
+              else { recommendations.push("Add a canonical URL to prevent duplicate content issues"); }
+              
+              if (viewport !== "Not set") score += 10;
+              else { issues.push("Missing viewport meta tag"); recommendations.push("Add viewport meta tag for mobile responsiveness"); }
+              
+              if (ogTitle !== "Not set" && ogDescription !== "Not set") score += 10;
+              else { recommendations.push("Add Open Graph tags for better social media sharing"); }
+              
+              if (wordCount > 300) score += 10;
+              else { recommendations.push("Consider adding more content (at least 300 words)"); }
+              
+              if (internalLinks >= 3) score += 5;
+              else { recommendations.push("Add more internal links to improve site structure"); }
+              
+              const seoReport = {
+                url: websiteUrl,
+                score: Math.min(score, 100),
+                title: { value: title, length: title.length },
+                metaDescription: { value: description, length: description.length },
+                headings: {
+                  h1Count: h1Matches.length,
+                  h2Count: h2Matches.length,
+                  h3Count: h3Matches.length
+                },
+                images: {
+                  total: imgMatches.length,
+                  withAlt: imagesWithAlt,
+                  withoutAlt: imagesWithoutAlt
+                },
+                links: {
+                  internal: internalLinks,
+                  external: externalLinks
+                },
+                technical: {
+                  canonical,
+                  robots,
+                  viewport
+                },
+                social: {
+                  ogTitle,
+                  ogDescription
+                },
+                content: {
+                  wordCount
+                },
+                issues,
+                recommendations
+              };
+              
+              const reportPath = path.join(outputDir, `seo-report-${randomUUID()}.json`);
+              fs.writeFileSync(reportPath, JSON.stringify(seoReport, null, 2));
+              
+              const urlHostname = new URL(websiteUrl).hostname;
+              result = reportPath;
+              filename = `${urlHostname}-seo-report.json`;
+              contentType = "application/json";
+            } catch (error: any) {
+              throw new Error(`Could not analyze website: ${error.message}`);
+            }
+            break;
+          }
+
+          case "keyword-density-checker": {
+            const websiteUrl = options.websiteUrl;
+            const textContent = options.textContent;
+            
+            let textToAnalyze = "";
+            
+            if (websiteUrl && typeof websiteUrl === "string" && websiteUrl.startsWith("http")) {
+              try {
+                const response = await fetch(websiteUrl, {
+                  headers: {
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                  }
+                });
+                
+                if (!response.ok) {
+                  throw new Error(`Failed to fetch website: ${response.status}`);
+                }
+                
+                const html = await response.text();
+                textToAnalyze = html.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+                                   .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+                                   .replace(/<[^>]*>/g, ' ')
+                                   .replace(/\s+/g, ' ')
+                                   .trim()
+                                   .toLowerCase();
+              } catch (error: any) {
+                throw new Error(`Could not fetch website: ${error.message}`);
+              }
+            } else if (textContent && typeof textContent === "string") {
+              textToAnalyze = textContent.toLowerCase();
+            } else {
+              throw new Error("Please provide a website URL or text content to analyze");
+            }
+            
+            const words = textToAnalyze.split(/\s+/).filter(word => word.length > 2);
+            const totalWords = words.length;
+            
+            const stopWords = new Set(["the", "and", "for", "are", "but", "not", "you", "all", "can", "her", "was", "one", "our", "out", "has", "have", "been", "were", "they", "this", "that", "with", "will", "from", "your", "more", "when", "what", "there", "their", "about", "would", "which", "could", "other", "than", "then", "into", "just", "also", "some", "these", "only", "come", "over", "such", "take", "very", "most"]);
+            
+            const wordCounts: Record<string, number> = {};
+            const twoWordCounts: Record<string, number> = {};
+            const threeWordCounts: Record<string, number> = {};
+            
+            for (let i = 0; i < words.length; i++) {
+              const word = words[i].replace(/[^a-z0-9]/g, '');
+              if (word.length > 2 && !stopWords.has(word)) {
+                wordCounts[word] = (wordCounts[word] || 0) + 1;
+              }
+              
+              if (i < words.length - 1) {
+                const twoWord = `${words[i]} ${words[i+1]}`.replace(/[^a-z0-9\s]/g, '');
+                if (twoWord.split(' ').every(w => w.length > 2 && !stopWords.has(w))) {
+                  twoWordCounts[twoWord] = (twoWordCounts[twoWord] || 0) + 1;
+                }
+              }
+              
+              if (i < words.length - 2) {
+                const threeWord = `${words[i]} ${words[i+1]} ${words[i+2]}`.replace(/[^a-z0-9\s]/g, '');
+                if (threeWord.split(' ').every(w => w.length > 2 && !stopWords.has(w))) {
+                  threeWordCounts[threeWord] = (threeWordCounts[threeWord] || 0) + 1;
+                }
+              }
+            }
+            
+            const sortByCount = (obj: Record<string, number>) => 
+              Object.entries(obj)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 20)
+                .map(([word, count]) => ({
+                  keyword: word,
+                  count,
+                  density: ((count / totalWords) * 100).toFixed(2) + "%"
+                }));
+            
+            const keywordReport = {
+              source: websiteUrl || "Text content",
+              totalWords,
+              singleWords: sortByCount(wordCounts),
+              twoWordPhrases: sortByCount(twoWordCounts),
+              threeWordPhrases: sortByCount(threeWordCounts)
+            };
+            
+            const reportPath = path.join(outputDir, `keyword-density-${randomUUID()}.json`);
+            fs.writeFileSync(reportPath, JSON.stringify(keywordReport, null, 2));
+            
+            result = reportPath;
+            filename = "keyword-density-report.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "meta-tag-generator": {
+            const pageTitle = options.pageTitle || "Your Page Title";
+            const pageDescription = options.pageDescription || "Your page description goes here.";
+            const pageKeywords = options.pageKeywords || "";
+            const siteUrl = options.siteUrl || "https://example.com";
+            const pagePath = options.pagePath || "/";
+            const ogImageUrl = options.ogImageUrl || "";
+            const twitterHandle = options.twitterHandle || "";
+            const authorName = options.authorName || "";
+            
+            const fullUrl = siteUrl.replace(/\/$/, '') + pagePath;
+            
+            let metaTags = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Primary Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${pageTitle}</title>
+    <meta name="title" content="${pageTitle}">
+    <meta name="description" content="${pageDescription}">`;
+            
+            if (pageKeywords) {
+              metaTags += `
+    <meta name="keywords" content="${pageKeywords}">`;
+            }
+            
+            if (authorName) {
+              metaTags += `
+    <meta name="author" content="${authorName}">`;
+            }
+            
+            metaTags += `
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="${fullUrl}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="${fullUrl}">
+    <meta property="og:title" content="${pageTitle}">
+    <meta property="og:description" content="${pageDescription}">`;
+            
+            if (ogImageUrl) {
+              metaTags += `
+    <meta property="og:image" content="${ogImageUrl}">`;
+            }
+            
+            metaTags += `
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="${fullUrl}">
+    <meta property="twitter:title" content="${pageTitle}">
+    <meta property="twitter:description" content="${pageDescription}">`;
+            
+            if (ogImageUrl) {
+              metaTags += `
+    <meta property="twitter:image" content="${ogImageUrl}">`;
+            }
+            
+            if (twitterHandle) {
+              metaTags += `
+    <meta property="twitter:creator" content="@${twitterHandle.replace('@', '')}">`;
+            }
+            
+            metaTags += `
+</head>
+<body>
+    <!-- Your content here -->
+</body>
+</html>`;
+            
+            const metaTagsPath = path.join(outputDir, `meta-tags-${randomUUID()}.html`);
+            fs.writeFileSync(metaTagsPath, metaTags);
+            
+            result = metaTagsPath;
+            filename = "meta-tags.html";
+            contentType = "text/html";
+            break;
+          }
+
+          case "robots-txt-generator": {
+            const sitemapUrl = options.sitemapUrl || "";
+            const allowAll = options.allowAll !== "false";
+            const disallowPaths = (options.disallowPaths || "").split(",").map((p: string) => p.trim()).filter(Boolean);
+            const allowPaths = (options.allowPaths || "").split(",").map((p: string) => p.trim()).filter(Boolean);
+            const crawlDelay = parseInt(options.crawlDelay || "0");
+            
+            let robotsTxt = "# robots.txt generated by File Tools\n\n";
+            
+            robotsTxt += "User-agent: *\n";
+            
+            if (allowAll) {
+              robotsTxt += "Allow: /\n";
+            }
+            
+            for (const path of disallowPaths) {
+              robotsTxt += `Disallow: ${path}\n`;
+            }
+            
+            for (const path of allowPaths) {
+              robotsTxt += `Allow: ${path}\n`;
+            }
+            
+            if (crawlDelay > 0) {
+              robotsTxt += `Crawl-delay: ${crawlDelay}\n`;
+            }
+            
+            robotsTxt += "\n# Common disallows\n";
+            robotsTxt += "Disallow: /admin/\n";
+            robotsTxt += "Disallow: /private/\n";
+            robotsTxt += "Disallow: /tmp/\n";
+            robotsTxt += "Disallow: /*.json$\n";
+            
+            if (sitemapUrl) {
+              robotsTxt += `\n# Sitemap\nSitemap: ${sitemapUrl}\n`;
+            }
+            
+            const robotsPath = path.join(outputDir, `robots-${randomUUID()}.txt`);
+            fs.writeFileSync(robotsPath, robotsTxt);
+            
+            result = robotsPath;
+            filename = "robots.txt";
+            contentType = "text/plain";
+            break;
+          }
+
+          case "sitemap-xml-generator": {
+            const urls = (options.sitemapUrls || "").split("\n").map((line: string) => line.trim()).filter(Boolean);
+            const defaultPriority = options.defaultPriority || "0.8";
+            const defaultChangefreq = options.defaultChangefreq || "weekly";
+            
+            if (urls.length === 0) {
+              throw new Error("Please provide at least one URL for the sitemap");
+            }
+            
+            let sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+`;
+            
+            for (const url of urls) {
+              const urlParts = url.split("|");
+              const loc = urlParts[0].trim();
+              const priority = urlParts[1]?.trim() || defaultPriority;
+              const changefreq = urlParts[2]?.trim() || defaultChangefreq;
+              const lastmod = new Date().toISOString().split("T")[0];
+              
+              sitemapXml += `  <url>
+    <loc>${loc}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>
+`;
+            }
+            
+            sitemapXml += `</urlset>`;
+            
+            const sitemapPath = path.join(outputDir, `sitemap-${randomUUID()}.xml`);
+            fs.writeFileSync(sitemapPath, sitemapXml);
+            
+            result = sitemapPath;
+            filename = "sitemap.xml";
+            contentType = "application/xml";
+            break;
+          }
+
+          case "domain-authority-checker": {
+            const websiteUrl = options.websiteUrl;
+            if (!websiteUrl || typeof websiteUrl !== "string" || !websiteUrl.startsWith("http")) {
+              throw new Error("Please provide a valid website URL (starting with http:// or https://)");
+            }
+            
+            try {
+              const urlObj = new URL(websiteUrl);
+              const domain = urlObj.hostname;
+              
+              const response = await fetch(websiteUrl, {
+                headers: {
+                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                }
+              });
+              
+              const html = await response.text();
+              
+              const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+              const title = titleMatch ? titleMatch[1].trim() : "Unknown";
+              
+              const internalLinks = (html.match(/<a[^>]*href=["'][\/][^"']*["']/gi) || []).length;
+              const externalLinks = (html.match(/<a[^>]*href=["']https?:\/\/[^"']*["']/gi) || []).length;
+              const totalLinks = internalLinks + externalLinks;
+              
+              const imgCount = (html.match(/<img[^>]*>/gi) || []).length;
+              const scriptCount = (html.match(/<script[^>]*>/gi) || []).length;
+              const styleCount = (html.match(/<style[^>]*>/gi) || []).length + (html.match(/<link[^>]*rel=["']stylesheet["']/gi) || []).length;
+              
+              const hasSSL = websiteUrl.startsWith("https");
+              const hasViewport = /<meta[^>]*name=["']viewport["']/i.test(html);
+              const hasDescription = /<meta[^>]*name=["']description["']/i.test(html);
+              
+              let daScore = 20;
+              if (hasSSL) daScore += 15;
+              if (hasViewport) daScore += 10;
+              if (hasDescription) daScore += 10;
+              if (totalLinks > 10) daScore += 10;
+              if (imgCount > 0) daScore += 5;
+              daScore += Math.min(20, Math.floor(totalLinks / 5));
+              daScore += Math.min(10, Math.floor(html.length / 10000));
+              
+              daScore = Math.min(100, Math.max(1, daScore));
+              
+              const domainReport = {
+                domain,
+                url: websiteUrl,
+                title,
+                domainAuthority: daScore,
+                metrics: {
+                  hasSSL,
+                  hasMobileViewport: hasViewport,
+                  hasMetaDescription: hasDescription,
+                  internalLinks,
+                  externalLinks,
+                  totalLinks,
+                  images: imgCount,
+                  scripts: scriptCount,
+                  stylesheets: styleCount,
+                  pageSize: (html.length / 1024).toFixed(2) + " KB"
+                },
+                recommendations: []
+              };
+              
+              if (!hasSSL) domainReport.recommendations.push("Enable HTTPS for better security and SEO");
+              if (!hasViewport) domainReport.recommendations.push("Add viewport meta tag for mobile responsiveness");
+              if (!hasDescription) domainReport.recommendations.push("Add meta description for better SEO");
+              if (internalLinks < 5) domainReport.recommendations.push("Add more internal links to improve site structure");
+              
+              const reportPath = path.join(outputDir, `domain-authority-${randomUUID()}.json`);
+              fs.writeFileSync(reportPath, JSON.stringify(domainReport, null, 2));
+              
+              result = reportPath;
+              filename = `${domain}-domain-authority.json`;
+              contentType = "application/json";
+            } catch (error: any) {
+              throw new Error(`Could not analyze domain: ${error.message}`);
+            }
+            break;
+          }
+
+          case "page-authority-checker": {
+            const pageUrl = options.websiteUrl;
+            if (!pageUrl || typeof pageUrl !== "string" || !pageUrl.startsWith("http")) {
+              throw new Error("Please provide a valid page URL (starting with http:// or https://)");
+            }
+            
+            try {
+              const urlObj = new URL(pageUrl);
+              const domain = urlObj.hostname;
+              const pagePath = urlObj.pathname;
+              
+              const response = await fetch(pageUrl, {
+                headers: {
+                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                }
+              });
+              
+              const html = await response.text();
+              
+              const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+              const title = titleMatch ? titleMatch[1].trim() : "Unknown";
+              
+              const h1Match = html.match(/<h1[^>]*>([^<]*)<\/h1>/i);
+              const h1 = h1Match ? h1Match[1].trim() : "Not found";
+              
+              const descMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i);
+              const description = descMatch ? descMatch[1].trim() : "Not found";
+              
+              const internalLinks = (html.match(/<a[^>]*href=["'][\/][^"']*["']/gi) || []).length;
+              const externalLinks = (html.match(/<a[^>]*href=["']https?:\/\/[^"']*["']/gi) || []).length;
+              
+              const imgMatches = html.match(/<img[^>]*>/gi) || [];
+              const imagesWithAlt = imgMatches.filter(img => /alt=["'][^"']+["']/i.test(img)).length;
+              
+              const wordCount = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().split(' ').length;
+              
+              const hasCanonical = /<link[^>]*rel=["']canonical["']/i.test(html);
+              const hasOgTags = /<meta[^>]*property=["']og:/i.test(html);
+              
+              let paScore = 15;
+              if (title !== "Unknown" && title.length > 10) paScore += 15;
+              if (h1 !== "Not found") paScore += 10;
+              if (description !== "Not found" && description.length > 50) paScore += 15;
+              if (hasCanonical) paScore += 10;
+              if (hasOgTags) paScore += 5;
+              if (wordCount > 300) paScore += 10;
+              if (imagesWithAlt > 0) paScore += 5;
+              paScore += Math.min(15, Math.floor(internalLinks / 3));
+              
+              paScore = Math.min(100, Math.max(1, paScore));
+              
+              const pageReport = {
+                url: pageUrl,
+                domain,
+                path: pagePath,
+                title,
+                h1,
+                pageAuthority: paScore,
+                metrics: {
+                  metaDescription: description,
+                  wordCount,
+                  internalLinks,
+                  externalLinks,
+                  totalImages: imgMatches.length,
+                  imagesWithAlt,
+                  hasCanonicalTag: hasCanonical,
+                  hasOpenGraphTags: hasOgTags
+                },
+                recommendations: []
+              };
+              
+              if (title === "Unknown" || title.length < 10) pageReport.recommendations.push("Add a descriptive title tag (10-60 characters)");
+              if (h1 === "Not found") pageReport.recommendations.push("Add an H1 heading to the page");
+              if (description === "Not found") pageReport.recommendations.push("Add a meta description (50-160 characters)");
+              if (!hasCanonical) pageReport.recommendations.push("Add a canonical URL tag");
+              if (!hasOgTags) pageReport.recommendations.push("Add Open Graph tags for social sharing");
+              if (wordCount < 300) pageReport.recommendations.push("Consider adding more content (at least 300 words)");
+              
+              const reportPath = path.join(outputDir, `page-authority-${randomUUID()}.json`);
+              fs.writeFileSync(reportPath, JSON.stringify(pageReport, null, 2));
+              
+              result = reportPath;
+              filename = "page-authority-report.json";
+              contentType = "application/json";
+            } catch (error: any) {
+              throw new Error(`Could not analyze page: ${error.message}`);
+            }
+            break;
+          }
+
+
 
 
           default:
