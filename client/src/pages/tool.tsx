@@ -12,6 +12,8 @@ import { AudioVisualizerComponent } from "@/components/audio-visualizer";
 import { VideoPlayer } from "@/components/video-player";
 import { OnlineVideoPlayer } from "@/components/online-video-player";
 import { Teleprompter } from "@/components/teleprompter";
+import { UrlToolInput } from "@/components/url-tool-input";
+import { UrlToolResults } from "@/components/url-tool-results";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
@@ -266,6 +268,8 @@ export default function ToolPage() {
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState<ProcessResponse | null>(null);
   const [pageCount, setPageCount] = useState<number | undefined>();
+  const [urlToolResult, setUrlToolResult] = useState<any>(null);
+  const [isUrlToolLoading, setIsUrlToolLoading] = useState(false);
 
   const resetState = useCallback(() => {
     setFiles([]);
@@ -274,6 +278,8 @@ export default function ToolPage() {
     setProgress(0);
     setResult(null);
     setPageCount(undefined);
+    setUrlToolResult(null);
+    setIsUrlToolLoading(false);
   }, []);
 
   const handleFooterToolClick = useCallback((toolId: string) => {
@@ -799,6 +805,10 @@ export default function ToolPage() {
     return ".pdf,application/pdf";
   };
 
+  const urlBasedToolTypes = ["backlink-checker", "broken-link-checker", "website-speed-test", "ping-tool", "whois-lookup", "dns-lookup", "ip-address-lookup", "what-is-my-ip", "http-header-viewer", "redirect-checker"];
+
+  const isUrlBasedTool = () => urlBasedToolTypes.includes(tool?.type || "");
+
   const isMultiFileAllowed = () => {
     return [
       "merge",
@@ -1024,6 +1034,33 @@ export default function ToolPage() {
     return true;
   };
 
+  const handleUrlToolSubmit = async (data: { url?: string; domain?: string; ip?: string }) => {
+    if (!tool) return;
+    
+    setIsUrlToolLoading(true);
+    setUrlToolResult(null);
+    
+    try {
+      const response = await fetch("/api/url-tool", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ toolType: tool.type, ...data }),
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        setUrlToolResult(result.data);
+      } else {
+        console.error("URL tool error:", result.error);
+      }
+    } catch (error) {
+      console.error("URL tool request failed:", error);
+    } finally {
+      setIsUrlToolLoading(false);
+    }
+  };
+
   const handleProcess = async () => {
     if (!canProcess()) return;
 
@@ -1156,11 +1193,26 @@ export default function ToolPage() {
                       <OnlineVideoPlayer />
                     )}
 
+                    {isUrlBasedTool() && (
+                      <div className="space-y-6">
+                        <UrlToolInput
+                          toolType={tool.type}
+                          onSubmit={handleUrlToolSubmit}
+                          isLoading={isUrlToolLoading}
+                        />
+                        {urlToolResult && (
+                          <div className="mt-6">
+                            <UrlToolResults toolType={tool.type} data={urlToolResult} />
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                     {tool.type === "teleprompter" && (
                       <Teleprompter />
                     )}
 
-                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting", "website-to-pdf", "website-to-jpg", "website-source-code-viewer", "website-seo-analyzer", "keyword-density-checker", "meta-tag-generator", "robots-txt-generator", "sitemap-xml-generator", "domain-authority-checker", "page-authority-checker", "website-downloader", "screenshot-website", "voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder", "video-player", "online-video-player", "teleprompter"].includes(tool.type) && (
+                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting", "website-to-pdf", "website-to-jpg", "website-source-code-viewer", "website-seo-analyzer", "keyword-density-checker", "meta-tag-generator", "robots-txt-generator", "sitemap-xml-generator", "domain-authority-checker", "page-authority-checker", "website-downloader", "screenshot-website", "voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder", "video-player", "online-video-player", "teleprompter", "backlink-checker", "broken-link-checker", "website-speed-test", "ping-tool", "whois-lookup", "dns-lookup", "ip-address-lookup", "what-is-my-ip", "http-header-viewer", "redirect-checker"].includes(tool.type) && (
                       <FileUpload
                         accept={getAcceptType() as string}
                         multiple={isMultiFileAllowed()}
@@ -1170,7 +1222,7 @@ export default function ToolPage() {
                       />
                     )}
 
-                    {!["voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder"].includes(tool.type) && (files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting", "website-to-pdf", "website-to-jpg", "website-source-code-viewer", "website-seo-analyzer", "keyword-density-checker", "meta-tag-generator", "robots-txt-generator", "sitemap-xml-generator", "domain-authority-checker", "page-authority-checker", "website-downloader", "screenshot-website"].includes(tool.type)) && (
+                    {!["voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder"].includes(tool.type) && (files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting", "website-to-pdf", "website-to-jpg", "website-source-code-viewer", "website-seo-analyzer", "keyword-density-checker", "meta-tag-generator", "robots-txt-generator", "sitemap-xml-generator", "domain-authority-checker", "page-authority-checker", "website-downloader", "screenshot-website", "backlink-checker", "broken-link-checker", "website-speed-test", "ping-tool", "whois-lookup", "dns-lookup", "ip-address-lookup", "what-is-my-ip", "http-header-viewer", "redirect-checker"].includes(tool.type)) && (
                       <ToolOptionsComponent
                         toolType={tool.type}
                         options={options}
@@ -1185,7 +1237,7 @@ export default function ToolPage() {
                       </p>
                     )}
 
-                    {!["voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder", "video-player", "online-video-player", "teleprompter"].includes(tool.type) && (
+                    {!["voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder", "video-player", "online-video-player", "teleprompter", "backlink-checker", "broken-link-checker", "website-speed-test", "ping-tool", "whois-lookup", "dns-lookup", "ip-address-lookup", "what-is-my-ip", "http-header-viewer", "redirect-checker"].includes(tool.type) && (
                       <div className="flex justify-end gap-3">
                         <Button
                           onClick={handleProcess}

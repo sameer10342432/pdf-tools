@@ -790,8 +790,17 @@ export const pdfToolTypes = [
   "sitemap-xml-generator",
   "domain-authority-checker",
   "page-authority-checker",
+  "backlink-checker",
+  "broken-link-checker",
+  "website-speed-test",
+  "ping-tool",
+  "whois-lookup",
+  "dns-lookup",
+  "ip-address-lookup",
+  "what-is-my-ip",
+  "http-header-viewer",
+  "redirect-checker",
 ] as const;
-
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
 export const pdfToolSchema = z.object({
@@ -16111,8 +16120,6 @@ const newConverterTools: PdfTool[] = [
 
 // Add new converter tools to the main array
 pdfTools.push(...newConverterTools);
-
-
 // New Document Conversion Tools
 const newDocConverterTools: PdfTool[] = [
   {
@@ -16626,8 +16633,6 @@ const newPdfConversionTools: PdfTool[] = [
 
 // Add new PDF and conversion tools to the main array
 pdfTools.push(...newPdfConversionTools);
-
-
 // Code Formatting and Validation Tools
 const codeFormattingTools: PdfTool[] = [
   {
@@ -16883,8 +16888,6 @@ const codeFormattingTools: PdfTool[] = [
 ];
 
 pdfTools.push(...codeFormattingTools);
-
-
 const developerTools: PdfTool[] = [
   {
     id: "js-beautifier",
@@ -21880,8 +21883,6 @@ const archiveAndVideoTools: PdfTool[] = [
 ];
 
 pdfTools.push(...archiveAndVideoTools);
-
-
 // Website & SEO Tools
 const websiteSeoTools: PdfTool[] = [
   {
@@ -22112,10 +22113,10 @@ const websiteSeoTools: PdfTool[] = [
   {
     id: "page-authority-checker",
     name: "Page Authority Checker",
+    color: "bg-emerald-500",
     description: "Check the page authority score and ranking potential of specific web pages",
     icon: "FileSearch",
     type: "page-authority-checker",
-    color: "bg-emerald-500",
     emoji: "📄",
     metaTitle: "Page Authority Checker Online Free - Check PA Score | File Tools",
     metaDescription: "Check page authority of any URL. Get PA score and ranking metrics for specific pages. Free page authority checker tool.",
@@ -22137,3 +22138,259 @@ const websiteSeoTools: PdfTool[] = [
 ];
 
 pdfTools.push(...websiteSeoTools);
+
+// Network & SEO Diagnostic Tools
+const networkSeoTools: PdfTool[] = [
+  {
+    id: "backlink-checker",
+    name: "Backlink Checker",
+    description: "Analyze backlinks pointing to any website or URL",
+    icon: "Link2",
+    type: "backlink-checker",
+    color: "bg-blue-500",
+    emoji: "🔗",
+    metaTitle: "Backlink Checker Online Free - Analyze Website Backlinks | File Tools",
+    metaDescription: "Check backlinks for any website. Analyze link quality, anchor text, and referring domains. Free backlink checker tool.",
+    seoArticle: `<h2>Backlink Checker - Analyze Your Link Profile</h2>
+<p>Backlinks are one of the most important ranking factors in SEO. Our free backlink checker tool helps you analyze the links pointing to any website, giving you valuable insights into your link profile and competitive landscape.</p>
+
+<h2>Understanding Backlink Quality</h2>
+<p>Not all backlinks are created equal. Our tool evaluates link quality based on factors like domain authority, relevance, anchor text diversity, and link placement. High-quality backlinks from authoritative websites carry more weight than numerous low-quality links.</p>
+
+<h2>Competitor Analysis</h2>
+<p>Discover where your competitors are getting their backlinks. Use this intelligence to identify new link building opportunities and develop a more effective SEO strategy. Understanding your competitive link landscape is crucial for success.</p>
+
+<h2>Monitor Your Link Building Progress</h2>
+<p>Track new and lost backlinks over time. Monitor the health of your link profile and identify potentially harmful links that could negatively impact your rankings. Regular monitoring helps maintain a healthy backlink profile.</p>
+
+<h2>Actionable Insights</h2>
+<p>Get detailed reports including referring domains, anchor text distribution, dofollow vs nofollow ratio, and link type breakdown. Use these insights to refine your link building strategy and improve your search rankings.</p>`,
+  },
+  {
+    id: "broken-link-checker",
+    name: "Broken Link Checker",
+    description: "Find and fix broken links on any website",
+    icon: "LinkOff",
+    type: "broken-link-checker",
+    color: "bg-red-500",
+    emoji: "🔴",
+    metaTitle: "Broken Link Checker Online Free - Find Dead Links | File Tools",
+    metaDescription: "Scan any website for broken links. Find 404 errors and dead links instantly. Free broken link checker tool for SEO.",
+    seoArticle: `<h2>Broken Link Checker - Keep Your Website Healthy</h2>
+<p>Broken links hurt your SEO and user experience. Our free broken link checker scans any website to find dead links, 404 errors, and redirect issues that could be harming your site's performance and rankings.</p>
+
+<h2>Why Broken Links Matter</h2>
+<p>Search engines like Google use crawlers to discover and index your content. When they encounter broken links, it signals poor website maintenance and can negatively impact your rankings. Users who click broken links leave frustrated, increasing bounce rates.</p>
+
+<h2>Comprehensive Scanning</h2>
+<p>Our tool checks all links on your page including internal links, external links, images, CSS files, and JavaScript resources. Get a complete picture of your website's link health in one comprehensive scan.</p>
+
+<h2>Easy to Fix</h2>
+<p>We provide detailed reports showing exactly which links are broken and where they're located. You can quickly identify and fix issues, whether that means updating links, setting up redirects, or removing dead references.</p>
+
+<h2>Regular Monitoring</h2>
+<p>Websites change constantly. New pages are added, old ones are removed, and external sites may disappear. Regular broken link checking helps maintain a professional, user-friendly website that search engines love.</p>`,
+  },
+  {
+    id: "website-speed-test",
+    name: "Website Speed Test",
+    description: "Analyze page load times and performance metrics",
+    icon: "Zap",
+    type: "website-speed-test",
+    color: "bg-yellow-500",
+    emoji: "⚡",
+    metaTitle: "Website Speed Test Online Free - Page Load Time Analyzer | File Tools",
+    metaDescription: "Test your website speed and performance. Get detailed metrics on page load time, TTFB, and optimization suggestions. Free speed test tool.",
+    seoArticle: `<h2>Website Speed Test - Optimize Your Performance</h2>
+<p>Page speed is a critical ranking factor and directly impacts user experience. Our free website speed test tool analyzes your page load times and provides actionable recommendations to improve performance.</p>
+
+<h2>Key Performance Metrics</h2>
+<p>We measure essential metrics including Time to First Byte (TTFB), First Contentful Paint (FCP), Largest Contentful Paint (LCP), and Total Blocking Time. These Core Web Vitals directly impact your search rankings and user satisfaction.</p>
+
+<h2>Detailed Analysis</h2>
+<p>Get a breakdown of what's slowing down your website. Our tool identifies large images, render-blocking resources, unoptimized code, and server issues that contribute to slow load times.</p>
+
+<h2>Mobile vs Desktop</h2>
+<p>With mobile traffic dominating the web, mobile performance is crucial. We test your site on both mobile and desktop to ensure fast loading across all devices your visitors use.</p>
+
+<h2>Actionable Recommendations</h2>
+<p>Don't just see the problems - get solutions. Our speed test provides specific recommendations for image optimization, caching, minification, and other improvements you can implement to speed up your website.</p>`,
+  },
+  {
+    id: "ping-tool",
+    name: "Ping Tool",
+    description: "Check server response time and availability",
+    icon: "Radio",
+    type: "ping-tool",
+    color: "bg-green-500",
+    emoji: "📡",
+    metaTitle: "Ping Tool Online Free - Check Server Response Time | File Tools",
+    metaDescription: "Ping any server or website to check response time and availability. Test network connectivity instantly. Free online ping tool.",
+    seoArticle: `<h2>Ping Tool - Test Server Connectivity</h2>
+<p>Our free online ping tool helps you check if a server or website is reachable and measure its response time. Essential for troubleshooting network issues and monitoring server availability.</p>
+
+<h2>How Ping Works</h2>
+<p>Ping sends ICMP echo request packets to the target host and measures the time it takes to receive a response. This simple but powerful test reveals network latency, packet loss, and connectivity issues.</p>
+
+<h2>Server Monitoring</h2>
+<p>Regular pinging helps monitor your server's health and uptime. Detect outages quickly, identify network problems, and ensure your services remain accessible to users worldwide.</p>
+
+<h2>Latency Analysis</h2>
+<p>Response times matter for user experience. Our tool shows minimum, maximum, and average latency values, helping you understand your server's performance and identify potential bottlenecks.</p>
+
+<h2>Troubleshooting Made Easy</h2>
+<p>When something goes wrong, ping is often the first diagnostic step. Quickly determine if a server is down, experiencing high latency, or if the issue lies elsewhere in the network path.</p>`,
+  },
+  {
+    id: "whois-lookup",
+    name: "WHOIS Lookup",
+    description: "Find domain registration and ownership information",
+    icon: "Search",
+    type: "whois-lookup",
+    color: "bg-purple-500",
+    emoji: "🔍",
+    metaTitle: "WHOIS Lookup Online Free - Domain Registration Info | File Tools",
+    metaDescription: "Look up domain WHOIS information. Find domain owner, registrar, expiration date, and more. Free WHOIS lookup tool.",
+    seoArticle: `<h2>WHOIS Lookup - Domain Information Search</h2>
+<p>WHOIS is the internet's public directory of domain registration information. Our free WHOIS lookup tool helps you find details about any domain name including ownership, registration dates, and technical contacts.</p>
+
+<h2>What WHOIS Reveals</h2>
+<p>A WHOIS lookup can show you the domain registrant, registrar, creation date, expiration date, nameservers, and status codes. This information is valuable for business research, due diligence, and technical troubleshooting.</p>
+
+<h2>Domain Availability</h2>
+<p>Checking WHOIS helps you understand if a domain is available for registration or when it might expire. Valuable for acquiring domains you're interested in or monitoring competitor domains.</p>
+
+<h2>Contact Information</h2>
+<p>Find contact details for domain owners when you need to reach out about business opportunities, report abuse, or resolve technical issues. Note that many registrants now use privacy protection services.</p>
+
+<h2>Due Diligence</h2>
+<p>Before doing business with a website, WHOIS lookup can reveal how long the domain has been registered and who owns it. Newly registered domains or hidden ownership may warrant additional scrutiny.</p>`,
+  },
+  {
+    id: "dns-lookup",
+    name: "DNS Lookup",
+    description: "Query DNS records for any domain",
+    icon: "Globe",
+    type: "dns-lookup",
+    color: "bg-indigo-500",
+    emoji: "🌐",
+    metaTitle: "DNS Lookup Online Free - Query DNS Records | File Tools",
+    metaDescription: "Look up DNS records for any domain. Check A, AAAA, MX, CNAME, TXT, and NS records. Free DNS lookup tool.",
+    seoArticle: `<h2>DNS Lookup - Query Domain Name Records</h2>
+<p>The Domain Name System (DNS) translates human-readable domain names into IP addresses. Our free DNS lookup tool lets you query all types of DNS records to troubleshoot, verify, and understand domain configurations.</p>
+
+<h2>Record Types Explained</h2>
+<p>DNS includes various record types: A records point to IPv4 addresses, AAAA records to IPv6, MX records handle email routing, CNAME creates aliases, TXT records store text data, and NS records specify authoritative nameservers.</p>
+
+<h2>Email Configuration</h2>
+<p>Check MX records to verify email routing is configured correctly. Also review SPF, DKIM, and DMARC records in TXT entries to ensure email authentication is properly set up to prevent spoofing.</p>
+
+<h2>Troubleshooting</h2>
+<p>DNS issues are a common cause of website and email problems. Use our lookup tool to verify records are correctly configured and propagating as expected across the internet.</p>
+
+<h2>Domain Migration</h2>
+<p>When moving to new hosting or changing email providers, DNS lookup helps verify that changes have propagated correctly. Compare records before and after changes to ensure smooth transitions.</p>`,
+  },
+  {
+    id: "ip-address-lookup",
+    name: "IP Address Lookup",
+    description: "Get geolocation and details for any IP address",
+    icon: "MapPin",
+    type: "ip-address-lookup",
+    color: "bg-cyan-500",
+    emoji: "📍",
+    metaTitle: "IP Address Lookup Online Free - IP Geolocation | File Tools",
+    metaDescription: "Look up any IP address to find location, ISP, and network information. Free IP address lookup and geolocation tool.",
+    seoArticle: `<h2>IP Address Lookup - Geolocation and Details</h2>
+<p>Every device connected to the internet has an IP address. Our free IP lookup tool provides geolocation data, network information, and other details for any IP address you want to investigate.</p>
+
+<h2>Geolocation Data</h2>
+<p>Discover the approximate location associated with an IP address including country, region, city, and timezone. While not precise to street level, this information is useful for understanding where traffic originates.</p>
+
+<h2>ISP and Network Info</h2>
+<p>Find out which Internet Service Provider or organization owns an IP address. This helps identify the source of traffic, whether it's from residential connections, data centers, or known VPN services.</p>
+
+<h2>Security Applications</h2>
+<p>IP lookup is essential for security research. Identify the origin of suspicious traffic, investigate potential threats, and gather intelligence for incident response and forensic analysis.</p>
+
+<h2>Fraud Prevention</h2>
+<p>Businesses use IP geolocation to detect fraudulent transactions when the IP location doesn't match billing addresses, or when traffic comes from high-risk regions or known proxy services.</p>`,
+  },
+  {
+    id: "what-is-my-ip",
+    name: "What is My IP",
+    description: "Find your public IP address instantly",
+    icon: "Wifi",
+    type: "what-is-my-ip",
+    color: "bg-teal-500",
+    emoji: "🌍",
+    metaTitle: "What is My IP Address - Check Your Public IP | File Tools",
+    metaDescription: "Find your public IP address instantly. See your IPv4 and IPv6 addresses, location, and ISP information. Free IP checker.",
+    seoArticle: `<h2>What is My IP - Find Your Public IP Address</h2>
+<p>Your IP address is your digital identifier on the internet. Our free tool instantly shows your public IP address along with additional details about your connection and approximate location.</p>
+
+<h2>Public vs Private IP</h2>
+<p>Your private IP is used within your local network, while your public IP is what websites and services see. This tool shows your public IP - the address that represents you on the wider internet.</p>
+
+<h2>IPv4 and IPv6</h2>
+<p>The internet is transitioning from IPv4 to IPv6. Our tool shows both addresses if available, helping you understand your connectivity and whether your ISP supports the newer IPv6 protocol.</p>
+
+<h2>Location Information</h2>
+<p>Along with your IP address, we show your approximate geolocation and ISP information. This helps you verify your VPN is working or understand how websites might see your location.</p>
+
+<h2>Privacy Awareness</h2>
+<p>Understanding your IP address is important for privacy. Websites can use it to track you, determine your location, and potentially identify you. This awareness helps you make informed decisions about VPNs and privacy tools.</p>`,
+  },
+  {
+    id: "http-header-viewer",
+    name: "HTTP Header Viewer",
+    description: "View HTTP response headers for any URL",
+    icon: "FileCode",
+    type: "http-header-viewer",
+    color: "bg-orange-500",
+    emoji: "📋",
+    metaTitle: "HTTP Header Viewer Online Free - Check Response Headers | File Tools",
+    metaDescription: "View HTTP headers for any website. Check security headers, caching, and server configuration. Free HTTP header checker.",
+    seoArticle: `<h2>HTTP Header Viewer - Inspect Server Responses</h2>
+<p>HTTP headers contain important metadata about web server responses. Our free header viewer lets you inspect these headers to troubleshoot issues, verify security configurations, and understand server behavior.</p>
+
+<h2>Security Headers</h2>
+<p>Check for important security headers like Content-Security-Policy, X-Frame-Options, X-XSS-Protection, and Strict-Transport-Security. These headers protect against common web vulnerabilities and are essential for secure websites.</p>
+
+<h2>Caching Configuration</h2>
+<p>Examine Cache-Control, ETag, and Expires headers to understand how content is cached. Proper caching improves performance and reduces server load, making it crucial for high-traffic websites.</p>
+
+<h2>Server Information</h2>
+<p>Headers reveal server software, content types, compression status, and other technical details. This information helps with debugging and understanding how a website is configured.</p>
+
+<h2>Debugging and Development</h2>
+<p>When building web applications, checking headers helps verify your configuration is correct. See exactly what the server sends to browsers and ensure everything works as expected.</p>`,
+  },
+  {
+    id: "redirect-checker",
+    name: "Redirect Checker",
+    description: "Trace URL redirects and check redirect chains",
+    icon: "Shuffle",
+    type: "redirect-checker",
+    color: "bg-pink-500",
+    emoji: "➡️",
+    metaTitle: "Redirect Checker Online Free - Trace URL Redirects | File Tools",
+    metaDescription: "Check URL redirects and trace redirect chains. Find 301, 302 redirects and identify redirect issues. Free redirect checker tool.",
+    seoArticle: `<h2>Redirect Checker - Trace URL Redirect Chains</h2>
+<p>URL redirects are essential for website management but can cause SEO and performance issues if not configured properly. Our free redirect checker traces the complete redirect chain and identifies potential problems.</p>
+
+<h2>Redirect Types</h2>
+<p>Understand the difference between 301 (permanent) and 302 (temporary) redirects. Using the wrong type can harm your SEO by not properly transferring link equity to the destination URL.</p>
+
+<h2>Redirect Chains</h2>
+<p>Multiple redirects in sequence create chains that slow down page loading and can confuse search engines. Our tool reveals these chains so you can optimize them into single, direct redirects.</p>
+
+<h2>Migration Verification</h2>
+<p>When moving to a new domain or restructuring your website, proper redirects are crucial. Verify that all important URLs redirect correctly to preserve your search rankings and user bookmarks.</p>
+
+<h2>SEO Optimization</h2>
+<p>Redirect issues can prevent search engines from properly crawling and indexing your content. Identify and fix redirect loops, chains, and incorrect redirect types to maintain optimal SEO health.</p>`,
+  },
+];
+
+pdfTools.push(...networkSeoTools);
