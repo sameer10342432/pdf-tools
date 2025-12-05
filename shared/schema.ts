@@ -780,6 +780,16 @@ export const pdfToolTypes = [
   "merge-archives",
   "website-downloader",
   "screenshot-website",
+  "website-to-pdf",
+  "website-to-jpg",
+  "website-source-code-viewer",
+  "website-seo-analyzer",
+  "keyword-density-checker",
+  "meta-tag-generator",
+  "robots-txt-generator",
+  "sitemap-xml-generator",
+  "domain-authority-checker",
+  "page-authority-checker",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -21870,3 +21880,260 @@ const archiveAndVideoTools: PdfTool[] = [
 ];
 
 pdfTools.push(...archiveAndVideoTools);
+
+
+// Website & SEO Tools
+const websiteSeoTools: PdfTool[] = [
+  {
+    id: "website-to-pdf",
+    name: "Website to PDF",
+    description: "Convert any website or web page to a downloadable PDF document",
+    icon: "Globe",
+    type: "website-to-pdf",
+    color: "bg-blue-500",
+    emoji: "🌐",
+    metaTitle: "Website to PDF Converter Online Free - Convert Web Pages | File Tools",
+    metaDescription: "Convert any website to PDF online for free. Capture entire web pages as PDF documents. No registration required. Fast, secure conversion.",
+    seoArticle: `<h2>Website to PDF - Capture Web Pages as Documents</h2>
+<p>Convert any website or web page into a professional PDF document instantly. Our Website to PDF converter captures the complete page layout, images, text, and styling in a downloadable PDF file.</p>
+
+<h2>Complete Page Capture</h2>
+<p>Unlike simple screenshots, our tool renders the full web page content including all HTML, CSS styling, images, and text. The resulting PDF maintains the original layout and appearance of the website.</p>
+
+<h2>Perfect for Documentation</h2>
+<p>Ideal for creating documentation, archiving web content, saving receipts, preserving research materials, or sharing web content offline. The PDF format ensures your captured content remains accessible and readable.</p>
+
+<h2>Professional Quality Output</h2>
+<p>Generate high-quality PDFs suitable for printing, presentations, or digital archives. Our conversion engine produces crisp text and properly scaled images.</p>
+
+<h2>No Software Required</h2>
+<p>Simply enter a URL and get your PDF in seconds. No browser extensions, desktop software, or registration needed. Works with any modern website.</p>`,
+  },
+  {
+    id: "website-to-jpg",
+    name: "Website to JPG",
+    description: "Capture any website as a high-quality JPG image",
+    icon: "Image",
+    type: "website-to-jpg",
+    color: "bg-green-500",
+    emoji: "📷",
+    metaTitle: "Website to JPG Converter Online Free - Screenshot Any Website | File Tools",
+    metaDescription: "Convert any website to JPG image online. Capture full-page screenshots as high-quality JPG files. Free, fast, and no registration required.",
+    seoArticle: `<h2>Website to JPG - Full Page Screenshots</h2>
+<p>Capture any website as a high-quality JPG image instantly. Our Website to JPG converter takes full-page screenshots that include everything from header to footer.</p>
+
+<h2>High Resolution Output</h2>
+<p>Generate crisp, high-resolution JPG images suitable for presentations, design mockups, or social media sharing. Choose your preferred quality and dimensions.</p>
+
+<h2>Complete Page Capture</h2>
+<p>Unlike browser screenshots that only capture visible content, our tool scrolls through and captures the entire page, creating a complete image of the website.</p>
+
+<h2>Multiple Use Cases</h2>
+<p>Perfect for web designers showing client previews, marketers creating competitive analysis reports, developers documenting designs, or anyone needing to save web content as images.</p>
+
+<h2>Fast and Free</h2>
+<p>Enter any URL and download your JPG in seconds. No software installation or account creation required. Simple, fast, and completely free.</p>`,
+  },
+  {
+    id: "website-source-code-viewer",
+    name: "Website Source Code Viewer",
+    description: "View and analyze the HTML, CSS, and JavaScript source code of any website",
+    icon: "Code",
+    type: "website-source-code-viewer",
+    color: "bg-purple-500",
+    emoji: "💻",
+    metaTitle: "Website Source Code Viewer Online Free - View HTML CSS JS | File Tools",
+    metaDescription: "View the source code of any website online. Analyze HTML, CSS, and JavaScript. Free source code viewer with syntax highlighting.",
+    seoArticle: `<h2>Website Source Code Viewer - Analyze Any Website</h2>
+<p>View and analyze the complete source code of any website. Our tool fetches and displays the HTML, CSS references, JavaScript files, and meta information in an easy-to-read format.</p>
+
+<h2>Syntax Highlighting</h2>
+<p>Source code is displayed with proper syntax highlighting, making it easy to read and understand. Identify HTML tags, CSS properties, and JavaScript functions at a glance.</p>
+
+<h2>Learning and Research</h2>
+<p>Perfect for web developers learning new techniques, students studying web design, or researchers analyzing website structures. See how professional websites are built.</p>
+
+<h2>SEO Analysis</h2>
+<p>Examine meta tags, heading structures, link attributes, and other SEO-relevant HTML elements. Understand how websites are optimized for search engines.</p>
+
+<h2>Instant Access</h2>
+<p>Simply enter a URL to view its source code immediately. No need to right-click and navigate browser menus. Quick, easy, and accessible from any device.</p>`,
+  },
+  {
+    id: "website-seo-analyzer",
+    name: "Website SEO Analyzer",
+    description: "Comprehensive SEO analysis tool for any website with actionable recommendations",
+    icon: "Search",
+    type: "website-seo-analyzer",
+    color: "bg-orange-500",
+    emoji: "🔍",
+    metaTitle: "Website SEO Analyzer Online Free - SEO Audit Tool | File Tools",
+    metaDescription: "Analyze any website SEO performance. Get detailed reports on meta tags, headings, links, and more. Free SEO analyzer with actionable recommendations.",
+    seoArticle: `<h2>Website SEO Analyzer - Complete SEO Audit</h2>
+<p>Get a comprehensive SEO analysis of any website in seconds. Our analyzer examines over 50 SEO factors and provides actionable recommendations to improve search engine rankings.</p>
+
+<h2>Complete SEO Report</h2>
+<p>Analyze meta titles, descriptions, heading structure, image alt tags, internal and external links, page speed indicators, mobile responsiveness, and much more.</p>
+
+<h2>Actionable Recommendations</h2>
+<p>Receive clear, prioritized recommendations for improving your website SEO. Each issue is explained with specific steps to fix it and its potential impact on rankings.</p>
+
+<h2>Competitive Analysis</h2>
+<p>Analyze competitor websites to understand their SEO strategies. Learn what makes high-ranking sites successful and apply those insights to your own website.</p>
+
+<h2>Regular Monitoring</h2>
+<p>Use our analyzer regularly to track your SEO progress and catch any issues before they impact your rankings. Free, unlimited analysis for continuous improvement.</p>`,
+  },
+  {
+    id: "keyword-density-checker",
+    name: "Keyword Density Checker",
+    description: "Analyze keyword frequency and density in any web page or text content",
+    icon: "BarChart3",
+    type: "keyword-density-checker",
+    color: "bg-teal-500",
+    emoji: "📊",
+    metaTitle: "Keyword Density Checker Online Free - Analyze Keyword Usage | File Tools",
+    metaDescription: "Check keyword density of any webpage or text. Analyze keyword frequency, distribution, and optimization. Free keyword density analyzer.",
+    seoArticle: `<h2>Keyword Density Checker - Optimize Your Content</h2>
+<p>Analyze the keyword density of any web page or text content. Our tool calculates the frequency and percentage of keywords to help you optimize content for search engines without over-optimization.</p>
+
+<h2>Comprehensive Analysis</h2>
+<p>Get detailed breakdowns of single words, two-word phrases, and three-word phrases. See exactly which terms appear most frequently and their percentage density.</p>
+
+<h2>Avoid Over-Optimization</h2>
+<p>Keyword stuffing can hurt your rankings. Our tool helps you maintain optimal keyword density (typically 1-3%) while keeping your content natural and readable.</p>
+
+<h2>Content Optimization</h2>
+<p>Perfect for content writers, SEO specialists, and marketers who want to ensure their content is properly optimized for target keywords without appearing spammy.</p>
+
+<h2>URL or Text Analysis</h2>
+<p>Analyze any web page by entering its URL, or paste your own text content directly. Get instant results with detailed keyword statistics.</p>`,
+  },
+  {
+    id: "meta-tag-generator",
+    name: "Meta Tag Generator",
+    description: "Generate SEO-optimized meta tags for your website including title, description, and Open Graph",
+    icon: "Tags",
+    type: "meta-tag-generator",
+    color: "bg-pink-500",
+    emoji: "🏷",
+    metaTitle: "Meta Tag Generator Online Free - Create SEO Meta Tags | File Tools",
+    metaDescription: "Generate SEO meta tags for your website. Create title tags, meta descriptions, Open Graph tags, and Twitter Cards. Free meta tag generator.",
+    seoArticle: `<h2>Meta Tag Generator - Professional SEO Tags</h2>
+<p>Generate complete, SEO-optimized meta tags for your website pages. Our tool creates all essential meta tags including title, description, keywords, Open Graph, and Twitter Cards.</p>
+
+<h2>All Essential Meta Tags</h2>
+<p>Generate title tags, meta descriptions, viewport settings, robots directives, canonical URLs, Open Graph tags for social sharing, and Twitter Card meta tags.</p>
+
+<h2>SEO Best Practices</h2>
+<p>Our generator follows current SEO best practices for tag length, keyword placement, and formatting. Get perfectly optimized tags that help improve your search rankings.</p>
+
+<h2>Social Media Ready</h2>
+<p>Generated Open Graph and Twitter Card tags ensure your content looks professional when shared on Facebook, Twitter, LinkedIn, and other social platforms.</p>
+
+<h2>Copy-Ready Code</h2>
+<p>Get clean, properly formatted HTML code ready to paste into your website head section. Works with any website platform or CMS.</p>`,
+  },
+  {
+    id: "robots-txt-generator",
+    name: "Robots.txt Generator",
+    description: "Create a robots.txt file to control how search engines crawl your website",
+    icon: "Bot",
+    type: "robots-txt-generator",
+    color: "bg-gray-500",
+    emoji: "🤖",
+    metaTitle: "Robots.txt Generator Online Free - Create Robots File | File Tools",
+    metaDescription: "Generate robots.txt file for your website. Control search engine crawlers and indexing. Free robots.txt generator with best practices.",
+    seoArticle: `<h2>Robots.txt Generator - Control Search Engine Crawlers</h2>
+<p>Create a properly formatted robots.txt file for your website. Control which pages search engines can crawl and index, and which should be excluded from search results.</p>
+
+<h2>Easy Configuration</h2>
+<p>Specify rules for different user agents (Google, Bing, etc.), set crawl delays, exclude directories or specific URLs, and add sitemap references.</p>
+
+<h2>Common Templates</h2>
+<p>Choose from common templates for WordPress, e-commerce sites, or custom configurations. Get started quickly with pre-built options for typical use cases.</p>
+
+<h2>Syntax Validation</h2>
+<p>Our generator creates properly formatted robots.txt files that follow the official specification. Avoid syntax errors that could cause crawling issues.</p>
+
+<h2>SEO Best Practices</h2>
+<p>Learn which pages to block (admin areas, duplicates) and which to allow. Our tool includes guidance for optimal robots.txt configuration.</p>`,
+  },
+  {
+    id: "sitemap-xml-generator",
+    name: "Sitemap XML Generator",
+    description: "Generate XML sitemaps to help search engines discover and index your web pages",
+    icon: "Map",
+    type: "sitemap-xml-generator",
+    color: "bg-indigo-500",
+    emoji: "🗺",
+    metaTitle: "Sitemap XML Generator Online Free - Create XML Sitemap | File Tools",
+    metaDescription: "Generate XML sitemap for your website. Help search engines discover your pages. Free sitemap generator with priority and frequency settings.",
+    seoArticle: `<h2>Sitemap XML Generator - Improve Search Engine Discovery</h2>
+<p>Generate a properly formatted XML sitemap for your website. Help search engines like Google and Bing discover, crawl, and index all your important pages efficiently.</p>
+
+<h2>Complete Sitemap Creation</h2>
+<p>Add multiple URLs with individual priority levels, change frequency settings, and last modification dates. Create comprehensive sitemaps that guide search engine crawlers.</p>
+
+<h2>Standards Compliant</h2>
+<p>Generated sitemaps follow the official sitemap protocol (sitemaps.org). Compatible with all major search engines including Google, Bing, Yahoo, and Yandex.</p>
+
+<h2>Priority and Frequency</h2>
+<p>Set priority levels (0.0 to 1.0) and change frequency (always, hourly, daily, weekly, monthly, yearly, never) for each URL to optimize crawl behavior.</p>
+
+<h2>Ready to Submit</h2>
+<p>Download your sitemap and upload it to your website root. Submit to Google Search Console and Bing Webmaster Tools for faster indexing.</p>`,
+  },
+  {
+    id: "domain-authority-checker",
+    name: "Domain Authority Checker",
+    description: "Check the domain authority score and SEO metrics for any website",
+    icon: "Award",
+    type: "domain-authority-checker",
+    color: "bg-yellow-500",
+    emoji: "🏆",
+    metaTitle: "Domain Authority Checker Online Free - Check DA Score | File Tools",
+    metaDescription: "Check domain authority of any website. Get DA score, backlink info, and SEO metrics. Free domain authority checker tool.",
+    seoArticle: `<h2>Domain Authority Checker - Measure Website Strength</h2>
+<p>Check the domain authority score of any website. Domain authority is a key SEO metric that predicts how well a website will rank in search engine results.</p>
+
+<h2>Comprehensive Metrics</h2>
+<p>Get domain age, estimated traffic, backlink count, referring domains, and other SEO metrics that indicate the overall strength and trustworthiness of a domain.</p>
+
+<h2>Competitive Analysis</h2>
+<p>Compare your domain authority with competitors to understand your market position. Identify opportunities to improve your website authority and rankings.</p>
+
+<h2>Link Building Planning</h2>
+<p>Evaluate potential backlink sources by checking their domain authority. Focus your link building efforts on high-authority websites for maximum impact.</p>
+
+<h2>Track Progress</h2>
+<p>Monitor your domain authority over time to measure the effectiveness of your SEO efforts. Higher authority generally leads to better search rankings.</p>`,
+  },
+  {
+    id: "page-authority-checker",
+    name: "Page Authority Checker",
+    description: "Check the page authority score and ranking potential of specific web pages",
+    icon: "FileSearch",
+    type: "page-authority-checker",
+    color: "bg-emerald-500",
+    emoji: "📄",
+    metaTitle: "Page Authority Checker Online Free - Check PA Score | File Tools",
+    metaDescription: "Check page authority of any URL. Get PA score and ranking metrics for specific pages. Free page authority checker tool.",
+    seoArticle: `<h2>Page Authority Checker - Analyze Individual Page Strength</h2>
+<p>Check the page authority score of any specific URL. Unlike domain authority which measures entire websites, page authority predicts the ranking potential of individual pages.</p>
+
+<h2>Page-Level Analysis</h2>
+<p>Get detailed metrics for specific pages including backlinks pointing to that page, social shares, content quality indicators, and estimated ranking potential.</p>
+
+<h2>Content Strategy</h2>
+<p>Identify your highest-performing pages and understand what makes them successful. Apply those insights to improve lower-authority pages.</p>
+
+<h2>Internal Linking</h2>
+<p>Discover which pages have the most authority and use them to boost other pages through strategic internal linking.</p>
+
+<h2>Competitor Page Analysis</h2>
+<p>Analyze the page authority of competitor pages ranking for your target keywords. Understand what you need to outrank them in search results.</p>`,
+  },
+];
+
+pdfTools.push(...websiteSeoTools);
