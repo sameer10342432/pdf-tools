@@ -14122,6 +14122,213 @@ export function ToolOptionsComponent({
           </div>
         </div>
       );
+    case "video-to-wav":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload a video file to extract the audio track as a WAV file.
+            WAV format provides uncompressed, high-quality audio.
+          </p>
+        </div>
+      );
+
+    case "video-to-audio":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.format || "mp3"}
+              onValueChange={(value) => updateOption("format", value)}
+            >
+              <SelectTrigger data-testid="select-audio-format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mp3">MP3 (Most compatible)</SelectItem>
+                <SelectItem value="wav">WAV (Uncompressed)</SelectItem>
+                <SelectItem value="aac">AAC (High quality)</SelectItem>
+                <SelectItem value="ogg">OGG (Open format)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Bitrate</Label>
+            <Select
+              value={options.bitrate || "192k"}
+              onValueChange={(value) => updateOption("bitrate", value)}
+            >
+              <SelectTrigger data-testid="select-audio-bitrate">
+                <SelectValue placeholder="Select bitrate" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="128k">128 kbps (Good quality)</SelectItem>
+                <SelectItem value="192k">192 kbps (High quality)</SelectItem>
+                <SelectItem value="256k">256 kbps (Very high quality)</SelectItem>
+                <SelectItem value="320k">320 kbps (Maximum quality)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "slideshow-maker":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Slide Duration (seconds)</Label>
+            <Select
+              value={String(options.duration || "3")}
+              onValueChange={(value) => updateOption("duration", parseInt(value))}
+            >
+              <SelectTrigger data-testid="select-slide-duration">
+                <SelectValue placeholder="Select duration" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">1 second</SelectItem>
+                <SelectItem value="2">2 seconds</SelectItem>
+                <SelectItem value="3">3 seconds</SelectItem>
+                <SelectItem value="4">4 seconds</SelectItem>
+                <SelectItem value="5">5 seconds</SelectItem>
+                <SelectItem value="7">7 seconds</SelectItem>
+                <SelectItem value="10">10 seconds</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Transition Effect</Label>
+            <Select
+              value={options.transition || "fade"}
+              onValueChange={(value) => updateOption("transition", value)}
+            >
+              <SelectTrigger data-testid="select-transition">
+                <SelectValue placeholder="Select transition" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="fade">Fade</SelectItem>
+                <SelectItem value="none">No transition</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Upload 2 or more images to create a slideshow video.
+          </p>
+        </div>
+      );
+
+    case "stop-motion-maker":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Frames Per Second (FPS)</Label>
+            <Select
+              value={String(options.fps || "12")}
+              onValueChange={(value) => updateOption("fps", parseInt(value))}
+            >
+              <SelectTrigger data-testid="select-fps">
+                <SelectValue placeholder="Select FPS" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="6">6 FPS (Very slow)</SelectItem>
+                <SelectItem value="8">8 FPS (Slow)</SelectItem>
+                <SelectItem value="10">10 FPS (Medium slow)</SelectItem>
+                <SelectItem value="12">12 FPS (Standard)</SelectItem>
+                <SelectItem value="15">15 FPS (Fast)</SelectItem>
+                <SelectItem value="24">24 FPS (Smooth)</SelectItem>
+                <SelectItem value="30">30 FPS (Very smooth)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Upload 3 or more images to create a stop motion animation.
+            Higher FPS values create smoother animations.
+          </p>
+        </div>
+      );
+
+    case "video-collage-maker":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Layout</Label>
+            <Select
+              value={options.layout || "2x2"}
+              onValueChange={(value) => updateOption("layout", value)}
+            >
+              <SelectTrigger data-testid="select-layout">
+                <SelectValue placeholder="Select layout" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="horizontal">Horizontal (2 videos side by side)</SelectItem>
+                <SelectItem value="vertical">Vertical (2 videos stacked)</SelectItem>
+                <SelectItem value="2x2">Grid (2x2 for 4 videos)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Upload 2-4 videos to create a video collage.
+            The final video length will match the shortest input video.
+          </p>
+        </div>
+      );
+
+    case "ai-video-upscaler":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Upscale Factor</Label>
+            <Select
+              value={String(options.scale || "2")}
+              onValueChange={(value) => updateOption("scale", parseInt(value))}
+            >
+              <SelectTrigger data-testid="select-scale-factor">
+                <SelectValue placeholder="Select scale" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2">2x (Double resolution)</SelectItem>
+                <SelectItem value="3">3x (Triple resolution)</SelectItem>
+                <SelectItem value="4">4x (Quadruple resolution)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Upscale your video using AI-enhanced algorithms for better quality.
+            Higher scale factors will take longer to process.
+          </p>
+        </div>
+      );
+
+    case "ai-video-background-remover":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Background Color to Remove</Label>
+            <Select
+              value={options.backgroundColor || "green"}
+              onValueChange={(value) => updateOption("backgroundColor", value)}
+            >
+              <SelectTrigger data-testid="select-bg-color">
+                <SelectValue placeholder="Select color" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="green">Green Screen</SelectItem>
+                <SelectItem value="blue">Blue Screen</SelectItem>
+                <SelectItem value="white">White Background</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Remove solid color backgrounds from your video.
+            Works best with videos recorded on a green or blue screen.
+          </p>
+        </div>
+      );
+
+    case "video-player":
+    case "online-video-player":
+    case "teleprompter":
+      return null;
+
 
     default:
       return null;

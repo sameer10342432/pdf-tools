@@ -9,6 +9,9 @@ import { TextToSpeechComponent } from "@/components/text-to-speech";
 import { ScreenRecorder } from "@/components/screen-recorder";
 import { WebcamRecorder } from "@/components/webcam-recorder";
 import { AudioVisualizerComponent } from "@/components/audio-visualizer";
+import { VideoPlayer } from "@/components/video-player";
+import { OnlineVideoPlayer } from "@/components/online-video-player";
+import { Teleprompter } from "@/components/teleprompter";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
@@ -1065,7 +1068,19 @@ export default function ToolPage() {
                       <WebcamRecorder />
                     )}
 
-                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting", "voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder"].includes(tool.type) && (
+                    {tool.type === "video-player" && (
+                      <VideoPlayer />
+                    )}
+
+                    {tool.type === "online-video-player" && (
+                      <OnlineVideoPlayer />
+                    )}
+
+                    {tool.type === "teleprompter" && (
+                      <Teleprompter />
+                    )}
+
+                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting", "voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder", "video-player", "online-video-player", "teleprompter"].includes(tool.type) && (
                       <FileUpload
                         accept={getAcceptType() as string}
                         multiple={isMultiFileAllowed()}
@@ -1090,7 +1105,7 @@ export default function ToolPage() {
                       </p>
                     )}
 
-                    {!["voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder"].includes(tool.type) && (
+                    {!["voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder", "video-player", "online-video-player", "teleprompter"].includes(tool.type) && (
                       <div className="flex justify-end gap-3">
                         <Button
                           onClick={handleProcess}
