@@ -459,12 +459,29 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
     if (tool.type === "audio-visualizer" || tool.type === "spectrogram-generator" || tool.type === "audio-normalizer" || tool.type === "remove-vocals" || tool.type === "vocal-remover" || tool.type === "isolate-vocals" || tool.type === "audio-noise-reduction" || tool.type === "denoise-audio" || tool.type === "audio-fader" || tool.type === "8d-audio-converter" || tool.type === "change-audio-channels") {
       return "audio/*,.mp3,.wav,.ogg,.m4a,.flac,.aac";
     }
+    // Archive tools
+    if (tool.type === "zip-creator") {
+      return "*/*";
+    }
+    if (tool.type === "zip-extractor" || tool.type === "online-unzipper") {
+      return ".zip,application/zip,application/x-zip-compressed";
+    }
+    if (tool.type === "rar-extractor" || tool.type === "online-unrar") {
+      return ".rar,application/x-rar-compressed,application/vnd.rar";
+    }
+    if (tool.type === "7z-extractor") {
+      return ".7z,application/x-7z-compressed";
+    }
+    // Video tools
+    if (tool.type === "ai-video-noise-reduction" || tool.type === "ai-auto-subtitle-generator" || tool.type === "ai-video-editor" || tool.type === "green-screen-remover") {
+      return "video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska,.mp4,.webm,.mov,.avi,.mkv";
+    }
     return ".pdf,application/pdf";
   };
 
   const isMultiFileAllowed = () => {
     if (!tool) return true;
-    return ["merge", "images-to-pdf", "gif-maker", "apng-maker", "ai-face-swapper", "merge-images", "image-combiner-horizontal", "image-combiner-vertical", "merge-video", "combine-videos", "video-joiner", "change-video-audio"].includes(tool.type);
+    return ["merge", "images-to-pdf", "gif-maker", "apng-maker", "ai-face-swapper", "merge-images", "image-combiner-horizontal", "image-combiner-vertical", "merge-video", "combine-videos", "video-joiner", "change-video-audio", "zip-creator"].includes(tool.type);
   };
 
   const needsMultipleFiles = () => {

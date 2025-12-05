@@ -106,13 +106,14 @@ const upload = multer({
     const isLatex = ext.endsWith(".tex") || ext.endsWith(".latex");
     const isPostScript = ext.endsWith(".ps") || ext.endsWith(".eps");
     const isRaw = [".raw", ".cr2", ".nef", ".arw", ".dng", ".orf", ".rw2", ".pef", ".srw", ".raf"].some(e => ext.endsWith(e));
+    const isArchive = ext.endsWith(".zip") || ext.endsWith(".rar") || ext.endsWith(".7z");
     const isAudio = file.mimetype.startsWith("audio/") || 
       [".mp3", ".wav", ".aac", ".m4a", ".ogg", ".flac", ".wma", ".aiff", ".ape"].some(e => ext.endsWith(e));
     
     if (isPdf || isImage || isVideo || isDocx || isExcel || isPowerPoint || isHtml || isTxt || isRtf || isSvg || isJson || 
         isOdt || isOds || isOdp || isCsv || isEpub || isMobi || isDjvu || isXml || isMarkdown ||
         isPublisher || isVisio || isProject || isPages || isNumbers || isKeynote || isEmail || isMsg ||
-        isPsd || isAi || isIndd || isDwg || isDxf || isXps || isOxps || isWpd || isCbr || isLatex || isPostScript || isRaw || isAudio) {
+        isPsd || isAi || isIndd || isDwg || isDxf || isXps || isOxps || isWpd || isCbr || isLatex || isPostScript || isRaw || isAudio || isArchive) {
       cb(null, true);
     } else {
       cb(new Error("Invalid file type"));
@@ -31331,6 +31332,333 @@ file '${loopInputPath}'`;
                 colorKey = "colorkey=0x00FF00:0.3:0.2";
                 break;
               case "blue":
+
+          case "zip-creator": {
+            if (files.length === 0) {
+              throw new Error("Please upload files to create a ZIP archive");
+            }
+            const zipOutputPath = path.join(outputDir, `archive-${randomUUID()}.zip`);
+            const zipArchive = archiver("zip", { zlib: { level: 9 } });
+            const zipOutput = fs.createWriteStream(zipOutputPath);
+            
+            await new Promise<void>((resolve, reject) => {
+              zipOutput.on("close", () => resolve());
+              zipArchive.on("error", (err) => reject(err));
+              
+              zipArchive.pipe(zipOutput);
+              
+              for (const file of files) {
+                zipArchive.file(file.path, { name: file.originalname });
+              }
+              
+              zipArchive.finalize();
+            });
+            
+            result = zipOutputPath;
+            filename = "archive.zip";
+            contentType = "application/zip";
+            break;
+          }
+
+          case "zip-extractor":
+          case "online-unzipper": {
+            if (files.length === 0) {
+              throw new Error("Please upload a ZIP file to extract");
+            }
+            const zipFile = files[0];
+            const extractExt = zipFile.originalname.toLowerCase();
+            if (!extractExt.endsWith(".zip")) {
+              throw new Error("Please upload a valid ZIP file");
+            }
+            
+            const extractDir = path.join(outputDir, `extracted-${randomUUID()}`);
+            fs.mkdirSync(extractDir, { recursive: true });
+            
+            const zip = new AdmZip(zipFile.path);
+            zip.extractAllTo(extractDir, true);
+            
+            const extractedFiles = fs.readdirSync(extractDir, { recursive: true }) as string[];
+            const fileList = extractedFiles.filter(f => fs.statSync(path.join(extractDir, f)).isFile());
+            
+            if (fileList.length === 1) {
+              const singleFile = path.join(extractDir, fileList[0]);
+              const singleFileName = path.basename(fileList[0]);
+              result = singleFile;
+              filename = singleFileName;
+              contentType = "application/octet-stream";
+            } else {
+              const repackZipPath = path.join(outputDir, `extracted-${randomUUID()}.zip`);
+              const repackArchive = archiver("zip", { zlib: { level: 9 } });
+              const repackOutput = fs.createWriteStream(repackZipPath);
+              
+              await new Promise<void>((resolve, reject) => {
+                repackOutput.on("close", () => resolve());
+                repackArchive.on("error", (err) => reject(err));
+                
+                repackArchive.pipe(repackOutput);
+                repackArchive.directory(extractDir, false);
+                repackArchive.finalize();
+              });
+              
+              result = repackZipPath;
+              filename = "extracted-files.zip";
+              contentType = "application/zip";
+            }
+            break;
+          }
+
+          case "rar-extractor":
+          case "online-unrar": {
+            if (files.length === 0) {
+              throw new Error("Please upload a RAR file to extract");
+            }
+            const rarFile = files[0];
+            const rarExt = rarFile.originalname.toLowerCase();
+            if (!rarExt.endsWith(".rar")) {
+              throw new Error("Please upload a valid RAR file");
+            }
+            
+            const rarExtractDir = path.join(outputDir, `rar-extracted-${randomUUID()}`);
+            fs.mkdirSync(rarExtractDir, { recursive: true });
+            
+            try {
+              await execAsync(`unrar x -y "${rarFile.path}" "${rarExtractDir}/"`);
+            } catch (unrarError) {
+              throw new Error("Could not extract RAR file. The file may be corrupted or password-protected.");
+            }
+            
+            const rarExtractedFiles = fs.readdirSync(rarExtractDir, { recursive: true }) as string[];
+            const rarFileList = rarExtractedFiles.filter(f => {
+              try {
+                return fs.statSync(path.join(rarExtractDir, f)).isFile();
+              } catch {
+                return false;
+              }
+            });
+            
+            if (rarFileList.length === 1) {
+              const singleRarFile = path.join(rarExtractDir, rarFileList[0]);
+              const singleRarFileName = path.basename(rarFileList[0]);
+              result = singleRarFile;
+              filename = singleRarFileName;
+              contentType = "application/octet-stream";
+            } else {
+              const rarRepackPath = path.join(outputDir, `rar-extracted-${randomUUID()}.zip`);
+              const rarRepackArchive = archiver("zip", { zlib: { level: 9 } });
+              const rarRepackOutput = fs.createWriteStream(rarRepackPath);
+              
+              await new Promise<void>((resolve, reject) => {
+                rarRepackOutput.on("close", () => resolve());
+                rarRepackArchive.on("error", (err) => reject(err));
+                
+                rarRepackArchive.pipe(rarRepackOutput);
+                rarRepackArchive.directory(rarExtractDir, false);
+                rarRepackArchive.finalize();
+              });
+              
+              result = rarRepackPath;
+              filename = "extracted-rar-files.zip";
+              contentType = "application/zip";
+            }
+            break;
+          }
+
+          case "7z-extractor": {
+            if (files.length === 0) {
+              throw new Error("Please upload a 7z file to extract");
+            }
+            const sevenZFile = files[0];
+            const sevenZExt = sevenZFile.originalname.toLowerCase();
+            if (!sevenZExt.endsWith(".7z")) {
+              throw new Error("Please upload a valid 7z file");
+            }
+            
+            const sevenZExtractDir = path.join(outputDir, `7z-extracted-${randomUUID()}`);
+            fs.mkdirSync(sevenZExtractDir, { recursive: true });
+            
+            try {
+              await execAsync(`7z x -y -o"${sevenZExtractDir}" "${sevenZFile.path}"`);
+            } catch (sevenZError) {
+              throw new Error("Could not extract 7z file. The file may be corrupted or password-protected.");
+            }
+            
+            const sevenZExtractedFiles = fs.readdirSync(sevenZExtractDir, { recursive: true }) as string[];
+            const sevenZFileList = sevenZExtractedFiles.filter(f => {
+              try {
+                return fs.statSync(path.join(sevenZExtractDir, f)).isFile();
+              } catch {
+                return false;
+              }
+            });
+            
+            if (sevenZFileList.length === 1) {
+              const single7zFile = path.join(sevenZExtractDir, sevenZFileList[0]);
+              const single7zFileName = path.basename(sevenZFileList[0]);
+              result = single7zFile;
+              filename = single7zFileName;
+              contentType = "application/octet-stream";
+            } else {
+              const sevenZRepackPath = path.join(outputDir, `7z-extracted-${randomUUID()}.zip`);
+              const sevenZRepackArchive = archiver("zip", { zlib: { level: 9 } });
+              const sevenZRepackOutput = fs.createWriteStream(sevenZRepackPath);
+              
+              await new Promise<void>((resolve, reject) => {
+                sevenZRepackOutput.on("close", () => resolve());
+                sevenZRepackArchive.on("error", (err) => reject(err));
+                
+                sevenZRepackArchive.pipe(sevenZRepackOutput);
+                sevenZRepackArchive.directory(sevenZExtractDir, false);
+                sevenZRepackArchive.finalize();
+              });
+              
+              result = sevenZRepackPath;
+              filename = "extracted-7z-files.zip";
+              contentType = "application/zip";
+            }
+            break;
+          }
+
+          case "ai-video-noise-reduction": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video for noise reduction");
+            }
+            const noiseInputPath = files[0].path;
+            const noiseOutputPath = path.join(outputDir, `denoised-${randomUUID()}.mp4`);
+            const noiseStrength = sanitizeNumber(options.noiseReductionStrength, 10, 1, 20);
+            
+            await execAsync(`ffmpeg -i "${noiseInputPath}" -vf "hqdn3d=${noiseStrength}:${noiseStrength}:${noiseStrength * 0.6}:${noiseStrength * 0.6}" -c:v libx264 -preset medium -crf 23 -c:a copy "${noiseOutputPath}"`);
+            
+            result = noiseOutputPath;
+            filename = "denoised-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "ai-auto-subtitle-generator": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video to generate subtitles");
+            }
+            const subtitleInputPath = files[0].path;
+            const audioExtractPath = path.join(outputDir, `audio-${randomUUID()}.wav`);
+            const subtitleOutputPath = path.join(outputDir, `subtitles-${randomUUID()}.srt`);
+            
+            await execAsync(`ffmpeg -i "${subtitleInputPath}" -vn -acodec pcm_s16le -ar 16000 -ac 1 "${audioExtractPath}"`);
+            
+            const { data: { text } } = await Tesseract.recognize(audioExtractPath, 'eng', {
+              logger: () => {}
+            }).catch(() => ({ data: { text: "" } }));
+            
+            const lines = text.split('\n').filter(line => line.trim());
+            let srtContent = "";
+            let counter = 1;
+            const segmentDuration = 3;
+            
+            for (let i = 0; i < lines.length; i++) {
+              const startSeconds = i * segmentDuration;
+              const endSeconds = (i + 1) * segmentDuration;
+              
+              const formatTime = (seconds: number) => {
+                const hrs = Math.floor(seconds / 3600);
+                const mins = Math.floor((seconds % 3600) / 60);
+                const secs = Math.floor(seconds % 60);
+                const ms = 0;
+                return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')},${ms.toString().padStart(3, '0')}`;
+              };
+              
+              srtContent += `${counter}\n`;
+              srtContent += `${formatTime(startSeconds)} --> ${formatTime(endSeconds)}\n`;
+              srtContent += `${lines[i]}\n\n`;
+              counter++;
+            }
+            
+            if (!srtContent) {
+              srtContent = "1\n00:00:00,000 --> 00:00:05,000\n[No speech detected]\n\n";
+            }
+            
+            fs.writeFileSync(subtitleOutputPath, srtContent);
+            
+            if (fs.existsSync(audioExtractPath)) {
+              fs.unlinkSync(audioExtractPath);
+            }
+            
+            result = subtitleOutputPath;
+            filename = "subtitles.srt";
+            contentType = "application/x-subrip";
+            break;
+          }
+
+          case "ai-video-editor": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video to edit");
+            }
+            const editInputPath = files[0].path;
+            const editOutputPath = path.join(outputDir, `edited-${randomUUID()}.mp4`);
+            
+            const editStartTime = sanitizeNumber(options.videoCutStartTime, 0, 0, 86400);
+            const editEndTime = options.videoCutEndTime ? sanitizeNumber(options.videoCutEndTime, 0, 0, 86400) : null;
+            const editBrightness = sanitizeNumber(options.videoBrightness, 0, -1, 1);
+            const editContrast = sanitizeNumber(options.videoContrast, 1, 0.5, 2);
+            const editSaturation = sanitizeNumber(options.videoSaturation, 1, 0, 3);
+            
+            let editFilters: string[] = [];
+            
+            if (editBrightness !== 0 || editContrast !== 1 || editSaturation !== 1) {
+              editFilters.push(`eq=brightness=${editBrightness}:contrast=${editContrast}:saturation=${editSaturation}`);
+            }
+            
+            let editCmd = `ffmpeg -i "${editInputPath}"`;
+            
+            if (editStartTime > 0) {
+              editCmd += ` -ss ${editStartTime}`;
+            }
+            
+            if (editEndTime !== null && editEndTime > editStartTime) {
+              const duration = editEndTime - editStartTime;
+              editCmd += ` -t ${duration}`;
+            }
+            
+            if (editFilters.length > 0) {
+              editCmd += ` -vf "${editFilters.join(',')}"`;
+            }
+            
+            editCmd += ` -c:v libx264 -preset medium -crf 23 -c:a aac -b:a 128k "${editOutputPath}"`;
+            
+            await execAsync(editCmd);
+            
+            result = editOutputPath;
+            filename = "edited-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
+          case "green-screen-remover": {
+            if (files.length === 0) {
+              throw new Error("Please upload a video to process");
+            }
+            const greenInputPath = files[0].path;
+            const greenOutputPath = path.join(outputDir, `green-removed-${randomUUID()}.mp4`);
+            const greenColor = sanitizeStringOption(options.chromaKeyColor, ["green", "blue", "custom"], "green");
+            const greenSimilarity = sanitizeNumber(options.chromaSimilarity, 0.3, 0.1, 0.5);
+            const greenBlend = sanitizeNumber(options.chromaBlend, 0.1, 0, 0.3);
+            
+            let greenKeyFilter = "";
+            switch (greenColor) {
+              case "blue":
+                greenKeyFilter = `colorkey=0x0000FF:${greenSimilarity}:${greenBlend}`;
+                break;
+              case "green":
+              default:
+                greenKeyFilter = `colorkey=0x00FF00:${greenSimilarity}:${greenBlend}`;
+            }
+            
+            await execAsync(`ffmpeg -i "${greenInputPath}" -vf "${greenKeyFilter}" -c:v libx264 -preset fast -crf 23 -c:a copy "${greenOutputPath}"`);
+            
+            result = greenOutputPath;
+            filename = "green-screen-removed.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+
                 colorKey = "colorkey=0x0000FF:0.3:0.2";
                 break;
               case "white":

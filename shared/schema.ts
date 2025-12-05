@@ -751,6 +751,16 @@ export const pdfToolTypes = [
   "teleprompter",
   "ai-video-upscaler",
   "ai-video-background-remover",
+  "zip-creator",
+  "zip-extractor",
+  "online-unzipper",
+  "rar-extractor",
+  "online-unrar",
+  "7z-extractor",
+  "ai-video-noise-reduction",
+  "ai-auto-subtitle-generator",
+  "ai-video-editor",
+  "green-screen-remover",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -21053,3 +21063,289 @@ const newMediaTools: PdfTool[] = [
 ];
 
 pdfTools.push(...newMediaTools);
+
+// Archive and Video Tools - New Tools December 2025
+const archiveAndVideoTools: PdfTool[] = [
+  {
+    id: "zip-creator",
+    name: "ZIP Creator",
+    description: "Create ZIP archives from multiple files easily",
+    icon: "Archive",
+    type: "zip-creator",
+    color: "bg-amber-500",
+    emoji: "📦",
+    metaTitle: "ZIP Creator Online Free - Create ZIP Archives | File Tools",
+    metaDescription: "Create ZIP archives online for free. Compress multiple files into a single ZIP file. Fast, secure, and easy to use. No software installation required.",
+    seoArticle: `<h2>ZIP Creator - Compress Multiple Files Into One Archive</h2>
+<p>Create ZIP archives instantly with our free online ZIP Creator. Upload multiple files and combine them into a single compressed archive for easy sharing, storage, and organization. No software installation required.</p>
+
+<h2>Why Use ZIP Archives?</h2>
+<p>ZIP files are universally supported across all operating systems. They reduce file sizes, making uploads and downloads faster. Perfect for emailing multiple files, backing up documents, or organizing project files into convenient packages.</p>
+
+<h2>Easy to Use</h2>
+<p>Simply drag and drop your files onto our uploader. Our tool automatically compresses them into a single ZIP archive. Download your ZIP file instantly - it's that simple. No complex settings or technical knowledge required.</p>
+
+<h2>Secure Processing</h2>
+<p>Your files are processed securely on our servers and automatically deleted after processing. We don't store or access your file contents. Your data privacy is our priority.</p>
+
+<h2>Batch File Processing</h2>
+<p>Upload as many files as you need - documents, images, videos, or any file type. Our ZIP Creator handles them all efficiently, creating optimized archives that maintain file quality while reducing overall size.</p>
+
+<h2>Fast Compression</h2>
+<p>Our cloud-based compression uses efficient algorithms to create ZIP archives quickly. Even large collections of files are processed in seconds, ready for download immediately.</p>`,
+  },
+  {
+    id: "zip-extractor",
+    name: "ZIP Extractor",
+    description: "Extract files from ZIP archives instantly",
+    icon: "FileArchive",
+    type: "zip-extractor",
+    color: "bg-blue-500",
+    emoji: "📂",
+    metaTitle: "ZIP Extractor Online Free - Unzip Files | File Tools",
+    metaDescription: "Extract ZIP files online for free. Unzip archives instantly without software. View and download individual files or extract all at once.",
+    seoArticle: `<h2>ZIP Extractor - Unzip Files Online</h2>
+<p>Extract files from ZIP archives instantly with our free online ZIP Extractor. No software installation needed - just upload your ZIP file and access all contents immediately.</p>
+
+<h2>View Before Extracting</h2>
+<p>Preview the contents of your ZIP archive before extracting. See file names, sizes, and folder structure. Choose to extract all files or select specific items you need.</p>
+
+<h2>Universal Compatibility</h2>
+<p>Works with standard ZIP files created by any software on any operating system. Whether your archive was made on Windows, Mac, or Linux, our extractor handles it seamlessly.</p>
+
+<h2>Fast Extraction</h2>
+<p>Our cloud-based extraction processes your archives quickly. Large ZIP files with many entries are handled efficiently, making all contents available for download in seconds.</p>
+
+<h2>Secure and Private</h2>
+<p>Your uploaded files and extracted contents are processed securely and deleted automatically after your session. We never access or store your file contents.</p>
+
+<h2>Download Options</h2>
+<p>Download individual files from your archive or get everything at once. Perfect for accessing specific documents from large archives without downloading unnecessary files.</p>`,
+  },
+  {
+    id: "online-unzipper",
+    name: "Online Unzipper",
+    description: "View and extract ZIP contents in your browser",
+    icon: "FolderOpen",
+    type: "online-unzipper",
+    color: "bg-green-500",
+    emoji: "🗂️",
+    metaTitle: "Online Unzipper Free - View & Extract ZIP Files | File Tools",
+    metaDescription: "Unzip files online for free. View ZIP archive contents in your browser. Extract and download files without installing software.",
+    seoArticle: `<h2>Online Unzipper - Browser-Based ZIP Extraction</h2>
+<p>Access ZIP file contents directly in your web browser with our free Online Unzipper. No downloads, no installations - just instant access to your archived files from any device.</p>
+
+<h2>Works On Any Device</h2>
+<p>Access your ZIP files from any device with a web browser. Whether you're on a desktop, laptop, tablet, or phone, our online unzipper works seamlessly without requiring any app installation.</p>
+
+<h2>Interactive File Browser</h2>
+<p>Navigate through your ZIP archive with our intuitive file browser. Explore folder structures, view file details, and select exactly what you want to extract.</p>
+
+<h2>Selective Extraction</h2>
+<p>Don't need every file? Select only the files you want and download them individually. Perfect for large archives where you only need specific documents or images.</p>
+
+<h2>Instant Processing</h2>
+<p>Upload your ZIP file and see its contents immediately. Our fast processing engine handles archives of any size efficiently, giving you quick access to your files.</p>
+
+<h2>Privacy First</h2>
+<p>Your files are processed in memory and never stored permanently. Once you're done, all data is automatically cleaned up, ensuring your privacy is protected.</p>`,
+  },
+  {
+    id: "rar-extractor",
+    name: "RAR Extractor",
+    description: "Extract files from RAR archives online",
+    icon: "FileBox",
+    type: "rar-extractor",
+    color: "bg-purple-500",
+    emoji: "📁",
+    metaTitle: "RAR Extractor Online Free - Extract RAR Files | File Tools",
+    metaDescription: "Extract RAR files online for free. Open and unpack RAR archives without WinRAR. Fast extraction with download support.",
+    seoArticle: `<h2>RAR Extractor - Open RAR Files Online</h2>
+<p>Extract RAR archives online without installing WinRAR or any other software. Our free RAR Extractor handles RAR files of all versions, making archived content accessible instantly.</p>
+
+<h2>No WinRAR Needed</h2>
+<p>RAR files typically require special software like WinRAR to open. Our online tool eliminates that requirement - just upload your RAR file and extract contents directly in your browser.</p>
+
+<h2>Supports All RAR Versions</h2>
+<p>Whether your archive is in RAR4 or RAR5 format, our extractor handles it. We support all common RAR archive variations for maximum compatibility.</p>
+
+<h2>Password Protected Archives</h2>
+<p>Have a password-protected RAR file? Enter your password and we'll decrypt and extract the contents for you. Your password is used only for extraction and never stored.</p>
+
+<h2>Large File Support</h2>
+<p>Our extraction engine handles large RAR archives efficiently. Multi-part RAR archives are also supported - upload all parts to extract the complete contents.</p>
+
+<h2>Quick Downloads</h2>
+<p>Once extracted, download files individually or get everything in a convenient package. Our fast servers ensure quick download speeds for all your extracted files.</p>`,
+  },
+  {
+    id: "online-unrar",
+    name: "Online Unrar",
+    description: "View and extract RAR contents in your browser",
+    icon: "Files",
+    type: "online-unrar",
+    color: "bg-indigo-500",
+    emoji: "📋",
+    metaTitle: "Online Unrar Free - View & Extract RAR Files | File Tools",
+    metaDescription: "Unrar files online for free. View RAR archive contents in browser. Extract without software installation. Fast and secure.",
+    seoArticle: `<h2>Online Unrar - Browser-Based RAR Extraction</h2>
+<p>Open and extract RAR files directly in your web browser. Our free Online Unrar tool provides instant access to RAR archive contents without any software downloads.</p>
+
+<h2>Browser-Based Convenience</h2>
+<p>No need to install WinRAR or any extraction software. Access RAR file contents from any computer or device with just a web browser. Perfect when you're on a shared computer or mobile device.</p>
+
+<h2>File Preview</h2>
+<p>See what's inside your RAR archive before extracting. View file names, sizes, modification dates, and folder structure. Make informed decisions about what to download.</p>
+
+<h2>Selective Download</h2>
+<p>Extract only the files you need rather than everything in the archive. Save time and bandwidth by downloading only what's relevant to your needs.</p>
+
+<h2>Secure Processing</h2>
+<p>Your RAR files are processed securely on our servers. Contents are never stored permanently and are automatically deleted after your session ends.</p>
+
+<h2>Cross-Platform</h2>
+<p>Works on Windows, Mac, Linux, iOS, Android - any platform with a modern web browser. Access your RAR files anywhere, anytime, without compatibility concerns.</p>`,
+  },
+  {
+    id: "7z-extractor",
+    name: "7z Extractor",
+    description: "Extract files from 7z archives online",
+    icon: "PackageOpen",
+    type: "7z-extractor",
+    color: "bg-cyan-500",
+    emoji: "🗃️",
+    metaTitle: "7z Extractor Online Free - Extract 7-Zip Files | File Tools",
+    metaDescription: "Extract 7z files online for free. Open 7-Zip archives without software. High compression format support with easy extraction.",
+    seoArticle: `<h2>7z Extractor - Open 7-Zip Archives Online</h2>
+<p>Extract 7z archives online without installing 7-Zip software. Our free 7z Extractor handles the highly compressed 7z format, giving you access to archived files instantly.</p>
+
+<h2>High Compression Format</h2>
+<p>7z is known for its superior compression ratio, creating smaller archives than ZIP or RAR. Our extractor fully supports this format, decompressing files efficiently in the cloud.</p>
+
+<h2>No Software Required</h2>
+<p>7z files require special software to open normally. Our online tool eliminates that need - just upload your 7z file and access all contents immediately through your browser.</p>
+
+<h2>LZMA2 Compression Support</h2>
+<p>We support 7z archives using LZMA2, the advanced compression algorithm that makes 7z files so efficient. Your highly compressed archives are extracted accurately.</p>
+
+<h2>Fast Cloud Processing</h2>
+<p>Our powerful servers handle 7z decompression quickly. Even large, heavily compressed archives are processed in moments, ready for download.</p>
+
+<h2>Complete File Access</h2>
+<p>View all files and folders within your 7z archive. Download individual files or extract everything at once. Full support for complex archive structures with nested folders.</p>`,
+  },
+  {
+    id: "ai-video-noise-reduction",
+    name: "AI Video Noise Reduction",
+    description: "Remove noise and grain from videos with AI",
+    icon: "Wand2",
+    type: "ai-video-noise-reduction",
+    color: "bg-violet-500",
+    emoji: "✨",
+    metaTitle: "AI Video Noise Reduction Online Free - Remove Video Grain | Video Tools",
+    metaDescription: "Remove video noise and grain with AI technology. Enhance video quality by reducing noise from low-light footage. Free online video denoising.",
+    seoArticle: `<h2>AI Video Noise Reduction - Clean Up Your Videos</h2>
+<p>Remove unwanted noise and grain from your videos using advanced AI technology. Our intelligent algorithms analyze your footage and selectively reduce noise while preserving important details.</p>
+
+<h2>Fix Low-Light Footage</h2>
+<p>Videos shot in dim conditions often suffer from excessive noise and grain. Our AI denoiser specifically targets this noise, dramatically improving the visual quality of dark or poorly lit recordings.</p>
+
+<h2>Preserve Details</h2>
+<p>Unlike simple blur filters, our AI technology distinguishes between noise and actual image detail. Textures, edges, and fine details are preserved while random noise is eliminated.</p>
+
+<h2>Adjustable Strength</h2>
+<p>Control how aggressively noise is removed. Light denoising maintains a more natural look, while stronger settings tackle severe noise problems. Find the perfect balance for your footage.</p>
+
+<h2>Works With All Video Types</h2>
+<p>Whether it's phone footage, action camera recordings, or professional video, our AI adapts to different noise patterns and video characteristics for optimal results.</p>
+
+<h2>Quick Processing</h2>
+<p>Our cloud-based AI processing handles video denoising efficiently. Upload your noisy video and get a clean, improved version ready for download in minutes.</p>`,
+  },
+  {
+    id: "ai-auto-subtitle-generator",
+    name: "AI Auto-Subtitle Generator",
+    description: "Generate subtitles automatically with AI speech recognition",
+    icon: "Subtitles",
+    type: "ai-auto-subtitle-generator",
+    color: "bg-rose-500",
+    emoji: "💬",
+    metaTitle: "AI Auto-Subtitle Generator Online Free - Generate Video Subtitles | Video Tools",
+    metaDescription: "Generate video subtitles automatically with AI. Accurate speech recognition creates subtitles instantly. Export SRT, VTT formats free.",
+    seoArticle: `<h2>AI Auto-Subtitle Generator - Automatic Caption Creation</h2>
+<p>Generate accurate subtitles for your videos automatically using AI-powered speech recognition. Our advanced technology transcribes spoken content and creates perfectly timed subtitles instantly.</p>
+
+<h2>Accurate Speech Recognition</h2>
+<p>Our AI understands natural speech patterns, accents, and context. Get highly accurate transcriptions that capture what's being said, even with background noise or multiple speakers.</p>
+
+<h2>Perfect Timing</h2>
+<p>Subtitles are automatically synchronized with the audio. Each caption appears and disappears at exactly the right moment, following natural speech rhythms and pauses.</p>
+
+<h2>Multiple Export Formats</h2>
+<p>Download your subtitles in popular formats including SRT, VTT, and TXT. Compatible with all major video platforms, editing software, and media players.</p>
+
+<h2>Accessibility Made Easy</h2>
+<p>Make your content accessible to deaf and hard-of-hearing viewers. Subtitles also help viewers watching without sound, in noisy environments, or in languages they're learning.</p>
+
+<h2>Video Platform Ready</h2>
+<p>Generated subtitles are formatted for direct upload to YouTube, Vimeo, Facebook, and other platforms. Improve your video's reach and engagement with professional captions.</p>`,
+  },
+  {
+    id: "ai-video-editor",
+    name: "AI Video Editor",
+    description: "Smart video editing with AI-powered features",
+    icon: "Clapperboard",
+    type: "ai-video-editor",
+    color: "bg-orange-500",
+    emoji: "🎬",
+    metaTitle: "AI Video Editor Online Free - Smart Video Editing | Video Tools",
+    metaDescription: "Edit videos with AI assistance. Automatic scene detection, smart cuts, and AI-powered enhancements. Free online video editor.",
+    seoArticle: `<h2>AI Video Editor - Smart Editing Made Simple</h2>
+<p>Edit your videos with the power of artificial intelligence. Our AI Video Editor automates complex editing tasks, helping you create professional-looking videos quickly and easily.</p>
+
+<h2>Automatic Scene Detection</h2>
+<p>AI automatically identifies different scenes in your footage. Jump between sections easily, remove unwanted parts, and organize your video content effortlessly.</p>
+
+<h2>Smart Trimming</h2>
+<p>Tell the AI what you want to keep or remove, and it intelligently makes cuts at natural transition points. No more tedious frame-by-frame trimming.</p>
+
+<h2>One-Click Enhancements</h2>
+<p>Apply AI-powered color correction, stabilization, and audio enhancement with a single click. Our algorithms analyze your footage and apply optimal improvements automatically.</p>
+
+<h2>Beginner Friendly</h2>
+<p>No video editing experience required. The AI handles complex technical decisions, letting you focus on your creative vision. Simple interface, professional results.</p>
+
+<h2>Fast Processing</h2>
+<p>Cloud-based AI processing means your videos are edited quickly regardless of your device's capabilities. Upload, edit, and download all from your browser.</p>`,
+  },
+  {
+    id: "green-screen-remover",
+    name: "Green Screen Remover",
+    description: "Remove green screen backgrounds from videos",
+    icon: "Eraser",
+    type: "green-screen-remover",
+    color: "bg-emerald-500",
+    emoji: "🟢",
+    metaTitle: "Green Screen Remover Online Free - Chroma Key Video | Video Tools",
+    metaDescription: "Remove green screen backgrounds from videos online for free. Professional chroma key effect. Replace backgrounds instantly.",
+    seoArticle: `<h2>Green Screen Remover - Professional Chroma Key</h2>
+<p>Remove green screen backgrounds from your videos with professional chroma key technology. Replace solid color backgrounds with transparency or custom backgrounds for stunning visual effects.</p>
+
+<h2>Precise Color Removal</h2>
+<p>Our advanced chroma key algorithm accurately removes green (or blue) screen backgrounds while preserving fine details like hair, transparent objects, and subtle edges.</p>
+
+<h2>Adjustable Settings</h2>
+<p>Fine-tune the color removal sensitivity for perfect results. Handle variations in green screen lighting and color with adjustable tolerance settings.</p>
+
+<h2>Replace With Any Background</h2>
+<p>After removing the green screen, replace it with transparency, a solid color, an image, or another video. Create professional composite videos easily.</p>
+
+<h2>Spill Correction</h2>
+<p>Green screen lighting often causes color spill on subjects. Our tool includes spill suppression to remove green tint from edges and skin tones for natural-looking results.</p>
+
+<h2>Production Quality</h2>
+<p>Used by content creators, marketers, and filmmakers for professional video production. Achieve broadcast-quality chroma key effects without expensive software.</p>`,
+  },
+];
+
+pdfTools.push(...archiveAndVideoTools);

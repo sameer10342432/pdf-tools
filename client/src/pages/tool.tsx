@@ -720,6 +720,23 @@ export default function ToolPage() {
     if (tool.type === "merge-video" || tool.type === "combine-videos" || tool.type === "video-joiner") {
       return ".mp4,.webm,.mov,.avi,.mkv,video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska";
     }
+    // Archive tools
+    if (tool.type === "zip-creator") {
+      return "*/*";
+    }
+    if (tool.type === "zip-extractor" || tool.type === "online-unzipper") {
+      return ".zip,application/zip,application/x-zip-compressed";
+    }
+    if (tool.type === "rar-extractor" || tool.type === "online-unrar") {
+      return ".rar,application/x-rar-compressed,application/vnd.rar";
+    }
+    if (tool.type === "7z-extractor") {
+      return ".7z,application/x-7z-compressed";
+    }
+    // Video tools
+    if (tool.type === "ai-video-noise-reduction" || tool.type === "ai-auto-subtitle-generator" || tool.type === "ai-video-editor" || tool.type === "green-screen-remover") {
+      return ".mp4,.webm,.mov,.avi,.mkv,video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska";
+    }
     return ".pdf,application/pdf";
   };
 
@@ -750,6 +767,7 @@ export default function ToolPage() {
       "merge-video",
       "combine-videos",
       "video-joiner",
+      "zip-creator",
     ].includes(tool.type);
   };
 
@@ -773,6 +791,7 @@ export default function ToolPage() {
       "merge-video",
       "combine-videos",
       "video-joiner",
+      "zip-creator",
     ].includes(tool.type);
   };
 

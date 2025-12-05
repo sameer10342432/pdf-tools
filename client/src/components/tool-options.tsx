@@ -14329,6 +14329,187 @@ export function ToolOptionsComponent({
     case "teleprompter":
       return null;
 
+    case "zip-creator":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload multiple files to create a ZIP archive. All your files will be compressed into a single downloadable ZIP file.
+          </p>
+        </div>
+      );
+
+    case "zip-extractor":
+    case "online-unzipper":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload a ZIP file to extract its contents. You can download all extracted files as a single package.
+          </p>
+        </div>
+      );
+
+    case "rar-extractor":
+    case "online-unrar":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload a RAR archive to extract its contents. No WinRAR installation required - everything happens in your browser.
+          </p>
+        </div>
+      );
+
+    case "7z-extractor":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload a 7z archive to extract its contents. 7z files offer high compression ratios.
+          </p>
+        </div>
+      );
+
+    case "ai-video-noise-reduction":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Noise Reduction Strength</Label>
+            <Slider
+              value={[options.noiseReductionStrength || 10]}
+              min={1}
+              max={20}
+              step={1}
+              onValueChange={(value) => updateOption("noiseReductionStrength", value[0])}
+              data-testid="slider-noise-reduction"
+            />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Light (1)</span>
+              <span>Current: {options.noiseReductionStrength || 10}</span>
+              <span>Strong (20)</span>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Remove unwanted noise and grain from your video. Higher values remove more noise but may reduce detail.
+          </p>
+        </div>
+      );
+
+    case "ai-auto-subtitle-generator":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Upload a video to automatically generate subtitles. The AI will transcribe speech and create an SRT subtitle file.
+          </p>
+        </div>
+      );
+
+    case "ai-video-editor":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Start Time (seconds)</Label>
+            <Input
+              type="number"
+              min="0"
+              value={options.videoCutStartTime || 0}
+              onChange={(e) => updateOption("videoCutStartTime", parseFloat(e.target.value) || 0)}
+              data-testid="input-start-time"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>End Time (seconds, optional)</Label>
+            <Input
+              type="number"
+              min="0"
+              value={options.videoCutEndTime || ""}
+              onChange={(e) => updateOption("videoCutEndTime", parseFloat(e.target.value) || undefined)}
+              data-testid="input-end-time"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Brightness</Label>
+            <Slider
+              value={[options.videoBrightness || 0]}
+              min={-1}
+              max={1}
+              step={0.1}
+              onValueChange={(value) => updateOption("videoBrightness", value[0])}
+              data-testid="slider-brightness"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Contrast</Label>
+            <Slider
+              value={[options.videoContrast || 1]}
+              min={0.5}
+              max={2}
+              step={0.1}
+              onValueChange={(value) => updateOption("videoContrast", value[0])}
+              data-testid="slider-contrast"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Saturation</Label>
+            <Slider
+              value={[options.videoSaturation || 1]}
+              min={0}
+              max={3}
+              step={0.1}
+              onValueChange={(value) => updateOption("videoSaturation", value[0])}
+              data-testid="slider-saturation"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Trim your video and adjust color settings.
+          </p>
+        </div>
+      );
+
+    case "green-screen-remover":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Chroma Key Color</Label>
+            <Select
+              value={options.chromaKeyColor || "green"}
+              onValueChange={(value) => updateOption("chromaKeyColor", value)}
+            >
+              <SelectTrigger data-testid="select-chroma-color">
+                <SelectValue placeholder="Select color" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="green">Green</SelectItem>
+                <SelectItem value="blue">Blue</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Similarity (how close to the key color)</Label>
+            <Slider
+              value={[options.chromaSimilarity || 0.3]}
+              min={0.1}
+              max={0.5}
+              step={0.05}
+              onValueChange={(value) => updateOption("chromaSimilarity", value[0])}
+              data-testid="slider-similarity"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Blend (edge softness)</Label>
+            <Slider
+              value={[options.chromaBlend || 0.1]}
+              min={0}
+              max={0.3}
+              step={0.02}
+              onValueChange={(value) => updateOption("chromaBlend", value[0])}
+              data-testid="slider-blend"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Remove green or blue screen backgrounds from your video.
+          </p>
+        </div>
+      );
+
+
 
     default:
       return null;
