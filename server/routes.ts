@@ -29765,6 +29765,20 @@ File analyzed: ${imageFile.originalname}
               case "mono-to-stereo":
                 channelFilter = "-ac 2";
                 break;
+              case "stereo-to-mono":
+                channelFilter = "-ac 1";
+                break;
+              default:
+                channelFilter = "-ac 2";
+            }
+            
+            await execAsync(`ffmpeg -i "${channelInputPath}" ${channelFilter} "${channelOutputPath}"`);
+            result = channelOutputPath;
+            filename = "channel-changed.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+
 
           case "ringtone-maker": {
             if (files.length === 0) {
@@ -30365,6 +30379,23 @@ File analyzed: ${imageFile.originalname}
               case "low":
                 flvSettings = "-c:v flv1 -q:v 8 -c:a mp3 -b:a 128k -ar 44100";
                 break;
+              case "medium":
+                flvSettings = "-c:v flv1 -q:v 5 -c:a mp3 -b:a 192k -ar 44100";
+                break;
+              case "high":
+                flvSettings = "-c:v flv1 -q:v 2 -c:a mp3 -b:a 256k -ar 44100";
+                break;
+              default:
+                flvSettings = "-c:v flv1 -q:v 5 -c:a mp3 -b:a 192k -ar 44100";
+            }
+            
+            await execAsync(`ffmpeg -i "${videoToFlvInputPath}" ${flvSettings} "${videoToFlvOutputPath}"`);
+            result = videoToFlvOutputPath;
+            filename = "converted.flv";
+            contentType = "video/x-flv";
+            break;
+          }
+
 
           case "video-to-3gp": {
             if (files.length === 0) {

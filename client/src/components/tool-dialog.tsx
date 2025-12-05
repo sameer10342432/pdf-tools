@@ -648,6 +648,7 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
                 </Button>
               </div>
             </>
+            )
           )}
 
           {(processingState === "uploading" || processingState === "processing") && (
