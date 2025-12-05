@@ -33702,6 +33702,414 @@ file '${loopInputPath}'`;
           break;
         }
         
+        
+        // Color & CSS Design Tools
+        case "color-picker-screen": {
+          result = {
+            supported: true,
+            message: "Use the EyeDropper API in the browser to pick colors from your screen",
+            instructions: [
+              "Click the 'Pick Color' button",
+              "Your cursor will become an eyedropper",
+              "Click anywhere on your screen to capture that color",
+              "The color values will be displayed in HEX, RGB, and HSL formats"
+            ],
+            browserSupport: {
+              chrome: "Chrome 95+",
+              edge: "Edge 95+",
+              opera: "Opera 81+",
+              note: "Safari and Firefox do not yet support the EyeDropper API"
+            }
+          };
+          break;
+        }
+        
+        case "color-picker-image": {
+          result = {
+            supported: true,
+            message: "Upload an image and click anywhere to extract color values",
+            instructions: [
+              "Upload an image file (JPG, PNG, GIF, WebP)",
+              "Click anywhere on the image to extract the color",
+              "View color values in HEX, RGB, and HSL formats",
+              "Build a palette by clicking multiple locations"
+            ],
+            supportedFormats: ["image/jpeg", "image/png", "image/gif", "image/webp"],
+            maxFileSize: "10MB"
+          };
+          break;
+        }
+        
+        case "hex-to-rgb": {
+          if (!url) {
+            return res.status(400).json({ success: false, error: "HEX color code is required" });
+          }
+          
+          const hex = url.replace(/^#/, '');
+          if (!/^[0-9A-Fa-f]{6}$/.test(hex) && !/^[0-9A-Fa-f]{3}$/.test(hex)) {
+            return res.status(400).json({ success: false, error: "Invalid HEX color code" });
+          }
+          
+          let fullHex = hex;
+          if (hex.length === 3) {
+            fullHex = hex.split('').map(c => c + c).join('');
+          }
+          
+          const r = parseInt(fullHex.substring(0, 2), 16);
+          const g = parseInt(fullHex.substring(2, 4), 16);
+          const b = parseInt(fullHex.substring(4, 6), 16);
+          
+          result = {
+            input: `#${hex.toUpperCase()}`,
+            hex: `#${fullHex.toUpperCase()}`,
+            rgb: { r, g, b },
+            rgbString: `rgb(${r}, ${g}, ${b})`,
+            rgbArray: [r, g, b],
+            cssValue: `rgb(${r}, ${g}, ${b})`
+          };
+          break;
+        }
+        
+        case "rgb-to-hex": {
+          if (!url) {
+            return res.status(400).json({ success: false, error: "RGB values are required" });
+          }
+          
+          const rgbMatch = url.match(/(\d{1,3})\s*,?\s*(\d{1,3})\s*,?\s*(\d{1,3})/);
+          if (!rgbMatch) {
+            return res.status(400).json({ success: false, error: "Invalid RGB format. Use: 255, 128, 64 or rgb(255, 128, 64)" });
+          }
+          
+          const r = Math.min(255, Math.max(0, parseInt(rgbMatch[1])));
+          const g = Math.min(255, Math.max(0, parseInt(rgbMatch[2])));
+          const b = Math.min(255, Math.max(0, parseInt(rgbMatch[3])));
+          
+          const toHex = (n: number) => n.toString(16).padStart(2, '0').toUpperCase();
+          const hexValue = `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+          
+          result = {
+            input: url,
+            rgb: { r, g, b },
+            hex: hexValue,
+            hexLower: hexValue.toLowerCase(),
+            shortHex: r % 17 === 0 && g % 17 === 0 && b % 17 === 0 
+              ? `#${(r/17).toString(16)}${(g/17).toString(16)}${(b/17).toString(16)}`.toUpperCase()
+              : null
+          };
+          break;
+        }
+        
+        case "hex-to-hsl": {
+          if (!url) {
+            return res.status(400).json({ success: false, error: "HEX color code is required" });
+          }
+          
+          const hexInput = url.replace(/^#/, '');
+          if (!/^[0-9A-Fa-f]{6}$/.test(hexInput) && !/^[0-9A-Fa-f]{3}$/.test(hexInput)) {
+            return res.status(400).json({ success: false, error: "Invalid HEX color code" });
+          }
+          
+          let fullHexHsl = hexInput;
+          if (hexInput.length === 3) {
+            fullHexHsl = hexInput.split('').map(c => c + c).join('');
+          }
+          
+          const rHsl = parseInt(fullHexHsl.substring(0, 2), 16) / 255;
+          const gHsl = parseInt(fullHexHsl.substring(2, 4), 16) / 255;
+          const bHsl = parseInt(fullHexHsl.substring(4, 6), 16) / 255;
+          
+          const max = Math.max(rHsl, gHsl, bHsl);
+          const min = Math.min(rHsl, gHsl, bHsl);
+          let h = 0, s = 0;
+          const l = (max + min) / 2;
+          
+          if (max !== min) {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+              case rHsl: h = ((gHsl - bHsl) / d + (gHsl < bHsl ? 6 : 0)) / 6; break;
+              case gHsl: h = ((bHsl - rHsl) / d + 2) / 6; break;
+              case bHsl: h = ((rHsl - gHsl) / d + 4) / 6; break;
+            }
+          }
+          
+          const hDeg = Math.round(h * 360);
+          const sPercent = Math.round(s * 100);
+          const lPercent = Math.round(l * 100);
+          
+          result = {
+            input: `#${hexInput.toUpperCase()}`,
+            hex: `#${fullHexHsl.toUpperCase()}`,
+            hsl: { h: hDeg, s: sPercent, l: lPercent },
+            hslString: `hsl(${hDeg}, ${sPercent}%, ${lPercent}%)`,
+            cssValue: `hsl(${hDeg}, ${sPercent}%, ${lPercent}%)`
+          };
+          break;
+        }
+        
+        case "rgb-to-cmyk": {
+          if (!url) {
+            return res.status(400).json({ success: false, error: "RGB values are required" });
+          }
+          
+          const rgbCmykMatch = url.match(/(\d{1,3})\s*,?\s*(\d{1,3})\s*,?\s*(\d{1,3})/);
+          if (!rgbCmykMatch) {
+            return res.status(400).json({ success: false, error: "Invalid RGB format" });
+          }
+          
+          const rCmyk = Math.min(255, Math.max(0, parseInt(rgbCmykMatch[1]))) / 255;
+          const gCmyk = Math.min(255, Math.max(0, parseInt(rgbCmykMatch[2]))) / 255;
+          const bCmyk = Math.min(255, Math.max(0, parseInt(rgbCmykMatch[3]))) / 255;
+          
+          const k = 1 - Math.max(rCmyk, gCmyk, bCmyk);
+          const c = k < 1 ? (1 - rCmyk - k) / (1 - k) : 0;
+          const m = k < 1 ? (1 - gCmyk - k) / (1 - k) : 0;
+          const y = k < 1 ? (1 - bCmyk - k) / (1 - k) : 0;
+          
+          result = {
+            input: url,
+            rgb: { 
+              r: Math.round(rCmyk * 255), 
+              g: Math.round(gCmyk * 255), 
+              b: Math.round(bCmyk * 255) 
+            },
+            cmyk: {
+              c: Math.round(c * 100),
+              m: Math.round(m * 100),
+              y: Math.round(y * 100),
+              k: Math.round(k * 100)
+            },
+            cmykString: `cmyk(${Math.round(c * 100)}%, ${Math.round(m * 100)}%, ${Math.round(y * 100)}%, ${Math.round(k * 100)}%)`,
+            printReady: true
+          };
+          break;
+        }
+        
+        case "color-palette-generator": {
+          let baseColor = url || '';
+          let baseHex = baseColor.replace(/^#/, '');
+          
+          // Generate random color if none provided
+          if (!baseHex || !/^[0-9A-Fa-f]{6}$/.test(baseHex)) {
+            baseHex = Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+          }
+          
+          // Parse base color
+          const baseR = parseInt(baseHex.substring(0, 2), 16) / 255;
+          const baseG = parseInt(baseHex.substring(2, 4), 16) / 255;
+          const baseB = parseInt(baseHex.substring(4, 6), 16) / 255;
+          
+          // Convert to HSL
+          const maxC = Math.max(baseR, baseG, baseB);
+          const minC = Math.min(baseR, baseG, baseB);
+          let hBase = 0, sBase = 0;
+          const lBase = (maxC + minC) / 2;
+          
+          if (maxC !== minC) {
+            const d = maxC - minC;
+            sBase = lBase > 0.5 ? d / (2 - maxC - minC) : d / (maxC + minC);
+            switch (maxC) {
+              case baseR: hBase = ((baseG - baseB) / d + (baseG < baseB ? 6 : 0)) / 6; break;
+              case baseG: hBase = ((baseB - baseR) / d + 2) / 6; break;
+              case baseB: hBase = ((baseR - baseG) / d + 4) / 6; break;
+            }
+          }
+          
+          // Helper to convert HSL to HEX
+          const hslToHex = (h: number, s: number, l: number): string => {
+            h = ((h % 1) + 1) % 1; // Normalize hue
+            const c = (1 - Math.abs(2 * l - 1)) * s;
+            const x = c * (1 - Math.abs((h * 6) % 2 - 1));
+            const m = l - c / 2;
+            let r = 0, g = 0, b = 0;
+            
+            if (h < 1/6) { r = c; g = x; b = 0; }
+            else if (h < 2/6) { r = x; g = c; b = 0; }
+            else if (h < 3/6) { r = 0; g = c; b = x; }
+            else if (h < 4/6) { r = 0; g = x; b = c; }
+            else if (h < 5/6) { r = x; g = 0; b = c; }
+            else { r = c; g = 0; b = x; }
+            
+            const toHexP = (n: number) => Math.round((n + m) * 255).toString(16).padStart(2, '0');
+            return `#${toHexP(r)}${toHexP(g)}${toHexP(b)}`.toUpperCase();
+          };
+          
+          // Generate palettes
+          const complementary = [
+            hslToHex(hBase, sBase, lBase),
+            hslToHex(hBase + 0.5, sBase, lBase)
+          ];
+          
+          const analogous = [
+            hslToHex(hBase - 1/12, sBase, lBase),
+            hslToHex(hBase, sBase, lBase),
+            hslToHex(hBase + 1/12, sBase, lBase)
+          ];
+          
+          const triadic = [
+            hslToHex(hBase, sBase, lBase),
+            hslToHex(hBase + 1/3, sBase, lBase),
+            hslToHex(hBase + 2/3, sBase, lBase)
+          ];
+          
+          const splitComplementary = [
+            hslToHex(hBase, sBase, lBase),
+            hslToHex(hBase + 5/12, sBase, lBase),
+            hslToHex(hBase + 7/12, sBase, lBase)
+          ];
+          
+          const monochromatic = [
+            hslToHex(hBase, sBase, Math.max(0.1, lBase - 0.3)),
+            hslToHex(hBase, sBase, Math.max(0.2, lBase - 0.15)),
+            hslToHex(hBase, sBase, lBase),
+            hslToHex(hBase, sBase, Math.min(0.8, lBase + 0.15)),
+            hslToHex(hBase, sBase, Math.min(0.9, lBase + 0.3))
+          ];
+          
+          result = {
+            baseColor: `#${baseHex.toUpperCase()}`,
+            palettes: {
+              complementary,
+              analogous,
+              triadic,
+              splitComplementary,
+              monochromatic
+            },
+            hsl: {
+              h: Math.round(hBase * 360),
+              s: Math.round(sBase * 100),
+              l: Math.round(lBase * 100)
+            }
+          };
+          break;
+        }
+        
+        case "gradient-generator": {
+          // Parse colors from input or generate defaults
+          let colors = ['#FF6B6B', '#4ECDC4'];
+          if (url) {
+            const colorMatches = url.match(/#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}/g);
+            if (colorMatches && colorMatches.length >= 2) {
+              colors = colorMatches.slice(0, 5);
+            }
+          }
+          
+          const angle = 90;
+          const linearGradient = `linear-gradient(${angle}deg, ${colors.join(', ')})`;
+          const radialGradient = `radial-gradient(circle, ${colors.join(', ')})`;
+          const conicGradient = `conic-gradient(from 0deg, ${colors.join(', ')})`;
+          
+          result = {
+            colors,
+            gradients: {
+              linear: {
+                css: linearGradient,
+                angle,
+                type: 'linear'
+              },
+              radial: {
+                css: radialGradient,
+                shape: 'circle',
+                type: 'radial'
+              },
+              conic: {
+                css: conicGradient,
+                startAngle: 0,
+                type: 'conic'
+              }
+            },
+            cssCode: {
+              linear: `background: ${linearGradient};`,
+              radial: `background: ${radialGradient};`,
+              conic: `background: ${conicGradient};`
+            }
+          };
+          break;
+        }
+        
+        case "box-shadow-generator": {
+          // Parse shadow parameters or use defaults
+          const defaults = {
+            offsetX: 5,
+            offsetY: 5,
+            blur: 15,
+            spread: 0,
+            color: 'rgba(0, 0, 0, 0.3)',
+            inset: false
+          };
+          
+          const shadow = url ? (() => {
+            const parts = url.split(',').map(p => p.trim());
+            return {
+              offsetX: parseInt(parts[0]) || defaults.offsetX,
+              offsetY: parseInt(parts[1]) || defaults.offsetY,
+              blur: parseInt(parts[2]) || defaults.blur,
+              spread: parseInt(parts[3]) || defaults.spread,
+              color: parts[4] || defaults.color,
+              inset: parts[5] === 'true' || defaults.inset
+            };
+          })() : defaults;
+          
+          const shadowCss = `${shadow.inset ? 'inset ' : ''}${shadow.offsetX}px ${shadow.offsetY}px ${shadow.blur}px ${shadow.spread}px ${shadow.color}`;
+          
+          result = {
+            parameters: shadow,
+            css: `box-shadow: ${shadowCss};`,
+            value: shadowCss,
+            presets: {
+              subtle: 'box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);',
+              medium: 'box-shadow: 0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.12);',
+              large: 'box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.10);',
+              floating: 'box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);',
+              inset: 'box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);'
+            }
+          };
+          break;
+        }
+        
+        case "border-radius-generator": {
+          // Parse radius values or use defaults
+          const defaultRadius = { tl: 10, tr: 10, br: 10, bl: 10 };
+          
+          let radius = defaultRadius;
+          if (url) {
+            const values = url.split(',').map(v => parseInt(v.trim()) || 0);
+            if (values.length === 1) {
+              radius = { tl: values[0], tr: values[0], br: values[0], bl: values[0] };
+            } else if (values.length === 4) {
+              radius = { tl: values[0], tr: values[1], br: values[2], bl: values[3] };
+            }
+          }
+          
+          const uniformRadius = radius.tl === radius.tr && radius.tr === radius.br && radius.br === radius.bl;
+          const cssValue = uniformRadius 
+            ? `${radius.tl}px`
+            : `${radius.tl}px ${radius.tr}px ${radius.br}px ${radius.bl}px`;
+          
+          result = {
+            values: radius,
+            css: `border-radius: ${cssValue};`,
+            isUniform: uniformRadius,
+            presets: {
+              none: 'border-radius: 0;',
+              small: 'border-radius: 4px;',
+              medium: 'border-radius: 8px;',
+              large: 'border-radius: 16px;',
+              xlarge: 'border-radius: 24px;',
+              pill: 'border-radius: 9999px;',
+              circle: 'border-radius: 50%;',
+              blob: 'border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;'
+            },
+            examples: {
+              button: 'border-radius: 8px;',
+              card: 'border-radius: 12px;',
+              avatar: 'border-radius: 50%;',
+              badge: 'border-radius: 9999px;',
+              tooltip: 'border-radius: 4px;'
+            }
+          };
+          break;
+        }
         default:
           return res.status(400).json({ success: false, error: `Unknown tool type: ${toolType}` });
       }

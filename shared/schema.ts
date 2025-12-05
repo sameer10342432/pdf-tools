@@ -22394,3 +22394,259 @@ const networkSeoTools: PdfTool[] = [
 ];
 
 pdfTools.push(...networkSeoTools);
+
+// Color & CSS Design Tools
+const colorCssTools: PdfTool[] = [
+  {
+    id: "color-picker-screen",
+    name: "Color Picker (Screen)",
+    description: "Pick any color from your screen using the browser's EyeDropper API",
+    icon: "Pipette",
+    type: "color-picker-screen",
+    color: "bg-purple-500",
+    emoji: "🎨",
+    metaTitle: "Screen Color Picker Online Free - Pick Colors from Screen | File Tools",
+    metaDescription: "Pick any color from your screen instantly. Use the browser's EyeDropper tool to capture colors from any application. Free screen color picker.",
+    seoArticle: `<h2>Screen Color Picker - Capture Colors from Anywhere</h2>
+<p>Our free screen color picker allows you to extract colors directly from your screen. Using the browser's native EyeDropper API, you can capture any color from any application, website, or image displayed on your monitor.</p>
+
+<h2>How It Works</h2>
+<p>Click the color picker button and your cursor becomes an eyedropper. Move it anywhere on your screen and click to capture that exact color. The tool instantly provides you with HEX, RGB, and HSL values.</p>
+
+<h2>Perfect Color Matching</h2>
+<p>Need to match a specific brand color or replicate a design element? The screen color picker gives you precise color values that you can use directly in your CSS, design software, or graphics applications.</p>
+
+<h2>Designer's Essential Tool</h2>
+<p>Web designers, graphic artists, and developers constantly need to identify colors. This tool eliminates guesswork by giving you exact color codes from any visual source on your screen.</p>
+
+<h2>Cross-Application Support</h2>
+<p>Unlike limited in-app color pickers, our tool works across your entire desktop. Pick colors from images, videos, documents, websites, or any application visible on your screen.</p>`,
+  },
+  {
+    id: "color-picker-image",
+    name: "Color Picker (Image)",
+    description: "Extract colors from any uploaded image",
+    icon: "Image",
+    type: "color-picker-image",
+    color: "bg-pink-500",
+    emoji: "🖼️",
+    metaTitle: "Image Color Picker Online Free - Extract Colors from Images | File Tools",
+    metaDescription: "Extract colors from any image. Upload a photo or image and pick colors by clicking. Get HEX, RGB, and HSL values instantly.",
+    seoArticle: `<h2>Image Color Picker - Extract Colors from Photos</h2>
+<p>Upload any image and extract precise color values by clicking anywhere on it. Our image color picker gives you HEX, RGB, and HSL codes for every pixel, making it easy to build color palettes from photographs and designs.</p>
+
+<h2>Build Palettes from Photos</h2>
+<p>Professional designers often derive color schemes from photographs. Upload an inspiring image and extract its key colors to create harmonious palettes for your projects.</p>
+
+<h2>Precise Color Extraction</h2>
+<p>Click on any pixel in your uploaded image to get its exact color values. The magnified view helps you select the precise shade you need, especially from complex images.</p>
+
+<h2>Multiple Color Formats</h2>
+<p>Every extracted color is provided in HEX, RGB, and HSL formats. Copy any format directly to use in your CSS, design software, or graphics applications.</p>
+
+<h2>Save Your Colors</h2>
+<p>Build a collection of extracted colors as you click around the image. Export your collection for use in your design projects or share with your team.</p>`,
+  },
+  {
+    id: "hex-to-rgb",
+    name: "HEX to RGB Converter",
+    description: "Convert HEX color codes to RGB values",
+    icon: "RefreshCw",
+    type: "hex-to-rgb",
+    color: "bg-blue-500",
+    emoji: "🔄",
+    metaTitle: "HEX to RGB Converter Online Free - Color Code Converter | File Tools",
+    metaDescription: "Convert HEX color codes to RGB values instantly. Free HEX to RGB converter with live preview. Supports all color formats.",
+    seoArticle: `<h2>HEX to RGB Converter - Color Code Translation</h2>
+<p>Convert hexadecimal color codes to RGB (Red, Green, Blue) values instantly. Whether you're working with web design, graphic design, or programming, this tool makes color conversion effortless.</p>
+
+<h2>Understanding HEX Colors</h2>
+<p>Hexadecimal color codes use a 6-digit format (#RRGGBB) where each pair represents red, green, and blue intensity from 00 to FF. Our converter translates these to the 0-255 RGB scale.</p>
+
+<h2>Why Convert to RGB?</h2>
+<p>While HEX codes are common in web development, many design tools and programming languages prefer RGB values. CSS supports both, but JavaScript and other languages often work with RGB directly.</p>
+
+<h2>Live Color Preview</h2>
+<p>See your converted color in real-time as you type. The instant preview helps you verify you're working with the correct shade before using it in your projects.</p>
+
+<h2>Copy with One Click</h2>
+<p>Get your converted RGB values in multiple formats: comma-separated (255, 128, 64), CSS function rgb(255, 128, 64), or individual R, G, B values. Copy any format with a single click.</p>`,
+  },
+  {
+    id: "rgb-to-hex",
+    name: "RGB to HEX Converter",
+    description: "Convert RGB values to HEX color codes",
+    icon: "RefreshCw",
+    type: "rgb-to-hex",
+    color: "bg-green-500",
+    emoji: "🎯",
+    metaTitle: "RGB to HEX Converter Online Free - Color Code Converter | File Tools",
+    metaDescription: "Convert RGB values to HEX color codes instantly. Free RGB to HEX converter with live preview. Easy color format conversion.",
+    seoArticle: `<h2>RGB to HEX Converter - Color Code Translation</h2>
+<p>Convert RGB (Red, Green, Blue) values to hexadecimal color codes for use in web design and CSS. Our converter instantly translates RGB values (0-255) to standard HEX format.</p>
+
+<h2>Understanding RGB Colors</h2>
+<p>RGB uses three values from 0 to 255 representing red, green, and blue light intensity. This additive color model is how screens display colors, making it intuitive for digital design.</p>
+
+<h2>Why Convert to HEX?</h2>
+<p>Hexadecimal codes are the standard for web colors in HTML and CSS. They're more compact than RGB notation and universally supported across all browsers and design tools.</p>
+
+<h2>Flexible Input</h2>
+<p>Enter RGB values as individual numbers, comma-separated (255, 128, 64), or CSS format rgb(255, 128, 64). Our converter handles all common input formats automatically.</p>
+
+<h2>Instant Results</h2>
+<p>See your HEX code update in real-time as you adjust RGB values. The color preview confirms your conversion, and one-click copy makes it easy to use your code immediately.</p>`,
+  },
+  {
+    id: "hex-to-hsl",
+    name: "HEX to HSL Converter",
+    description: "Convert HEX color codes to HSL values",
+    icon: "RefreshCw",
+    type: "hex-to-hsl",
+    color: "bg-indigo-500",
+    emoji: "🌈",
+    metaTitle: "HEX to HSL Converter Online Free - Color Code Converter | File Tools",
+    metaDescription: "Convert HEX color codes to HSL values instantly. Free HEX to HSL converter with live preview. Hue, Saturation, Lightness conversion.",
+    seoArticle: `<h2>HEX to HSL Converter - Intuitive Color Values</h2>
+<p>Convert hexadecimal color codes to HSL (Hue, Saturation, Lightness) format. HSL is often more intuitive for adjusting colors because it separates the color's hue from its saturation and brightness.</p>
+
+<h2>Understanding HSL</h2>
+<p>HSL represents colors as: Hue (0-360 degrees on the color wheel), Saturation (0-100% intensity), and Lightness (0-100% from black to white). This makes it easy to create variations of a color.</p>
+
+<h2>Why Use HSL?</h2>
+<p>HSL is perfect for creating color schemes. Want a darker version? Reduce lightness. Need a more muted tone? Lower saturation. The separated components make color adjustments intuitive.</p>
+
+<h2>CSS Compatible</h2>
+<p>Modern CSS fully supports HSL colors with the hsl() function. Many designers prefer HSL for stylesheets because creating hover states and color variations is straightforward.</p>
+
+<h2>Design System Applications</h2>
+<p>When building design systems, HSL helps create consistent color scales. Keep hue constant while varying saturation and lightness to generate accessible color palettes.</p>`,
+  },
+  {
+    id: "rgb-to-cmyk",
+    name: "RGB to CMYK Converter",
+    description: "Convert RGB colors to CMYK for print",
+    icon: "Printer",
+    type: "rgb-to-cmyk",
+    color: "bg-cyan-500",
+    emoji: "🖨️",
+    metaTitle: "RGB to CMYK Converter Online Free - Print Color Conversion | File Tools",
+    metaDescription: "Convert RGB colors to CMYK for printing. Free RGB to CMYK converter for print-ready colors. Screen to print color translation.",
+    seoArticle: `<h2>RGB to CMYK Converter - Screen to Print Colors</h2>
+<p>Convert RGB screen colors to CMYK print colors. CMYK (Cyan, Magenta, Yellow, Key/Black) is the standard color model for printing, and understanding the conversion helps achieve accurate printed results.</p>
+
+<h2>Why CMYK for Print?</h2>
+<p>Screens emit light using RGB, while printers apply ink using CMYK. Colors that look vibrant on screen may print differently due to this fundamental difference in how colors are created.</p>
+
+<h2>Understanding the Conversion</h2>
+<p>Our converter calculates the equivalent CMYK percentages for any RGB color. Note that some RGB colors (especially bright neons) cannot be perfectly reproduced in CMYK due to the smaller print gamut.</p>
+
+<h2>Professional Print Preparation</h2>
+<p>When preparing designs for professional printing, converting colors to CMYK early helps avoid surprises. See how your colors will translate to print before sending files to the printer.</p>
+
+<h2>Accurate Color Values</h2>
+<p>Get precise CMYK percentages (0-100%) for each component. These values can be used directly in print-oriented design software like Adobe InDesign or Illustrator.</p>`,
+  },
+  {
+    id: "color-palette-generator",
+    name: "Color Palette Generator",
+    description: "Generate beautiful, harmonious color palettes",
+    icon: "Palette",
+    type: "color-palette-generator",
+    color: "bg-rose-500",
+    emoji: "🎭",
+    metaTitle: "Color Palette Generator Online Free - Create Color Schemes | File Tools",
+    metaDescription: "Generate beautiful color palettes instantly. Create complementary, analogous, triadic, and custom color schemes. Free palette generator.",
+    seoArticle: `<h2>Color Palette Generator - Create Harmonious Schemes</h2>
+<p>Generate beautiful, professionally balanced color palettes for your design projects. Our tool uses color theory principles to create harmonious combinations that work together.</p>
+
+<h2>Color Harmony Types</h2>
+<p>Choose from various harmony rules: complementary (opposite colors), analogous (adjacent colors), triadic (three evenly spaced), split-complementary, tetradic, and monochromatic schemes.</p>
+
+<h2>Start from Any Color</h2>
+<p>Enter a base color or pick one randomly, and the generator creates a complete palette using your selected harmony rule. Lock colors you like and regenerate the rest.</p>
+
+<h2>Export for Any Project</h2>
+<p>Export your palette in multiple formats: HEX codes, RGB values, CSS variables, Tailwind config, or a shareable URL. Use your palette immediately in any design or development project.</p>
+
+<h2>Accessibility Aware</h2>
+<p>Check contrast ratios between palette colors to ensure accessibility. The tool helps you choose combinations that meet WCAG guidelines for readable text and UI elements.</p>`,
+  },
+  {
+    id: "gradient-generator",
+    name: "Gradient Generator",
+    description: "Create beautiful CSS gradients with visual editor",
+    icon: "Sparkles",
+    type: "gradient-generator",
+    color: "bg-gradient-to-r from-purple-500 to-pink-500",
+    emoji: "✨",
+    metaTitle: "CSS Gradient Generator Online Free - Create Gradients | File Tools",
+    metaDescription: "Create beautiful CSS gradients with visual editor. Generate linear, radial gradients with multiple color stops. Copy CSS code instantly.",
+    seoArticle: `<h2>CSS Gradient Generator - Beautiful Color Transitions</h2>
+<p>Create stunning CSS gradients with our visual editor. Design linear, radial, and conic gradients with multiple color stops, and get production-ready CSS code instantly.</p>
+
+<h2>Visual Gradient Editor</h2>
+<p>Drag color stops to position them precisely. Adjust angle for linear gradients or position for radial gradients. See your changes in real-time as you design.</p>
+
+<h2>Multiple Gradient Types</h2>
+<p>Create linear gradients in any direction, radial gradients expanding from any point, or conic gradients that rotate around a center. Mix and layer gradients for complex effects.</p>
+
+<h2>Color Stop Control</h2>
+<p>Add unlimited color stops to create complex, multi-color gradients. Adjust the position and opacity of each stop to achieve exactly the transition you envision.</p>
+
+<h2>Ready-to-Use CSS</h2>
+<p>Copy the generated CSS code directly into your stylesheet. The code includes vendor prefixes for maximum browser compatibility and is optimized for performance.</p>`,
+  },
+  {
+    id: "box-shadow-generator",
+    name: "CSS Box-Shadow Generator",
+    description: "Create custom CSS box shadows with visual controls",
+    icon: "Square",
+    type: "box-shadow-generator",
+    color: "bg-slate-500",
+    emoji: "🔲",
+    metaTitle: "CSS Box-Shadow Generator Online Free - Create Shadows | File Tools",
+    metaDescription: "Create CSS box shadows with visual editor. Adjust offset, blur, spread, and color. Generate multiple shadows with live preview.",
+    seoArticle: `<h2>CSS Box-Shadow Generator - Design Perfect Shadows</h2>
+<p>Create professional CSS box shadows with our intuitive visual editor. Adjust every parameter with sliders and see changes instantly. Generate code for both simple and complex shadow effects.</p>
+
+<h2>Shadow Parameters</h2>
+<p>Control all shadow properties: horizontal and vertical offset, blur radius, spread radius, and shadow color with opacity. Combine these to create subtle depth or dramatic effects.</p>
+
+<h2>Multiple Shadows</h2>
+<p>Layer multiple shadows for complex, realistic effects. Modern design often uses several subtle shadows to create depth that mimics real-world lighting conditions.</p>
+
+<h2>Inset Shadows</h2>
+<p>Create inner shadows for pressed buttons, input fields, or carved effects. Toggle between outer and inset shadows to achieve the exact look you need.</p>
+
+<h2>Live Preview</h2>
+<p>See your shadow applied to a sample element in real-time. Adjust the preview element's size and background to match your actual use case.</p>`,
+  },
+  {
+    id: "border-radius-generator",
+    name: "CSS Border-Radius Generator",
+    description: "Create complex border radius values with visual editor",
+    icon: "SquareStack",
+    type: "border-radius-generator",
+    color: "bg-amber-500",
+    emoji: "⬜",
+    metaTitle: "CSS Border-Radius Generator Online Free - Create Rounded Corners | File Tools",
+    metaDescription: "Create CSS border radius with visual editor. Design complex rounded corners, organic shapes, and pill buttons. Copy CSS code instantly.",
+    seoArticle: `<h2>CSS Border-Radius Generator - Shape Your Elements</h2>
+<p>Create custom border radius values from simple rounded corners to complex organic shapes. Our visual editor lets you control each corner independently or create uniform curves.</p>
+
+<h2>Individual Corner Control</h2>
+<p>Set different radius values for each corner to create unique shapes. The CSS border-radius property supports up to 8 values for completely asymmetric designs.</p>
+
+<h2>Horizontal and Vertical Radius</h2>
+<p>Each corner can have different horizontal and vertical radii, creating elliptical curves. This advanced control enables organic, blob-like shapes that aren't possible with simple values.</p>
+
+<h2>Common Shapes</h2>
+<p>Quickly create common shapes: circles (50%), pills (9999px), rounded rectangles, or custom organic forms. Save time with preset shapes you can further customize.</p>
+
+<h2>Responsive Values</h2>
+<p>Choose between pixel values for fixed corners or percentages for responsive designs that scale with element size. The generated CSS works across all modern browsers.</p>`,
+  },
+];
+
+pdfTools.push(...colorCssTools);

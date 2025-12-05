@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Search, Globe, Link2, Wifi, Server, MapPin, FileCode, Shuffle, AlertCircle } from "lucide-react";
+import { Loader2, Search, Globe, Link2, Wifi, Server, MapPin, FileCode, Shuffle, AlertCircle, Pipette, Image, RefreshCw, Printer, Palette, Sparkles, Square, SquareStack } from "lucide-react";
 
 interface UrlToolInputProps {
   toolType: string;
@@ -88,6 +88,76 @@ const toolConfig: Record<string, {
     icon: Shuffle,
     description: "Enter a URL to trace its redirect chain"
   },
+  "color-picker-screen": {
+    inputType: "any",
+    placeholder: "",
+    label: "",
+    icon: Pipette,
+    description: "Click the button to pick a color from your screen"
+  },
+  "color-picker-image": {
+    inputType: "any",
+    placeholder: "",
+    label: "",
+    icon: Image,
+    description: "Upload an image to extract colors from it"
+  },
+  "hex-to-rgb": {
+    inputType: "any",
+    placeholder: "#FF5733 or FF5733",
+    label: "HEX Color Code",
+    icon: RefreshCw,
+    description: "Enter a HEX color code to convert to RGB"
+  },
+  "rgb-to-hex": {
+    inputType: "any",
+    placeholder: "255, 87, 51 or rgb(255, 87, 51)",
+    label: "RGB Values",
+    icon: RefreshCw,
+    description: "Enter RGB values to convert to HEX"
+  },
+  "hex-to-hsl": {
+    inputType: "any",
+    placeholder: "#FF5733 or FF5733",
+    label: "HEX Color Code",
+    icon: RefreshCw,
+    description: "Enter a HEX color code to convert to HSL"
+  },
+  "rgb-to-cmyk": {
+    inputType: "any",
+    placeholder: "255, 87, 51 or rgb(255, 87, 51)",
+    label: "RGB Values",
+    icon: Printer,
+    description: "Enter RGB values to convert to CMYK for printing"
+  },
+  "color-palette-generator": {
+    inputType: "any",
+    placeholder: "#FF5733 (optional - leave empty for random)",
+    label: "Base Color (optional)",
+    icon: Palette,
+    description: "Enter a base color or leave empty to generate random palettes"
+  },
+  "gradient-generator": {
+    inputType: "any",
+    placeholder: "#FF6B6B, #4ECDC4 (comma-separated colors)",
+    label: "Colors (optional)",
+    icon: Sparkles,
+    description: "Enter colors separated by commas or leave empty for defaults"
+  },
+  "box-shadow-generator": {
+    inputType: "any",
+    placeholder: "5, 5, 15, 0, rgba(0,0,0,0.3)",
+    label: "Shadow Parameters (optional)",
+    icon: Square,
+    description: "Enter shadow values: offsetX, offsetY, blur, spread, color"
+  },
+  "border-radius-generator": {
+    inputType: "any",
+    placeholder: "10, 10, 10, 10 (top-left, top-right, bottom-right, bottom-left)",
+    label: "Border Radius Values (optional)",
+    icon: SquareStack,
+    description: "Enter radius values for each corner or a single value"
+  },
 };
 
 export function UrlToolInput({ toolType, onSubmit, isLoading }: UrlToolInputProps) {
@@ -103,11 +173,14 @@ export function UrlToolInput({ toolType, onSubmit, isLoading }: UrlToolInputProp
   
   const Icon = config.icon;
   
+  const noInputTools = ["what-is-my-ip", "color-picker-screen", "color-picker-image"];
+  const optionalInputTools = ["color-palette-generator", "gradient-generator", "box-shadow-generator", "border-radius-generator"];
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (toolType === "what-is-my-ip") {
-      onSubmit({});
+    if (noInputTools.includes(toolType) || optionalInputTools.includes(toolType)) {
+      onSubmit({ url: inputValue.trim() || "" });
       return;
     }
     
@@ -151,7 +224,7 @@ export function UrlToolInput({ toolType, onSubmit, isLoading }: UrlToolInputProp
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {toolType !== "what-is-my-ip" && (
+          {!noInputTools.includes(toolType) && (
             <div className="space-y-2">
               <Label htmlFor="url-input">{config.label}</Label>
               <div className="flex gap-2">
@@ -171,19 +244,30 @@ export function UrlToolInput({ toolType, onSubmit, isLoading }: UrlToolInputProp
           
           <Button 
             type="submit" 
-            disabled={isLoading || (toolType !== "what-is-my-ip" && !inputValue.trim())}
+            disabled={isLoading || (!noInputTools.includes(toolType) && !optionalInputTools.includes(toolType) && !inputValue.trim())}
             className="w-full"
             data-testid="button-analyze"
           >
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Analyzing...
+                Processing...
               </>
             ) : (
               <>
                 <Search className="mr-2 h-4 w-4" />
-                {toolType === "what-is-my-ip" ? "Get My IP Address" : "Analyze"}
+                {toolType === "what-is-my-ip" ? "Get My IP Address" : 
+                 toolType === "color-picker-screen" ? "Pick Color from Screen" :
+                 toolType === "color-picker-image" ? "Upload Image" :
+                 toolType === "color-palette-generator" ? "Generate Palette" :
+                 toolType === "gradient-generator" ? "Generate Gradient" :
+                 toolType === "box-shadow-generator" ? "Generate Shadow" :
+                 toolType === "border-radius-generator" ? "Generate Radius" :
+                 toolType === "hex-to-rgb" ? "Convert to RGB" :
+                 toolType === "rgb-to-hex" ? "Convert to HEX" :
+                 toolType === "hex-to-hsl" ? "Convert to HSL" :
+                 toolType === "rgb-to-cmyk" ? "Convert to CMYK" :
+                 "Analyze"}
               </>
             )}
           </Button>
