@@ -19,10 +19,10 @@ export default function AllTools() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              All PDF Tools
+              All Tools
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Choose from our collection of powerful PDF tools to get started
+              Choose from our collection of powerful PDF, multimedia, and archive tools
             </p>
           </div>
           

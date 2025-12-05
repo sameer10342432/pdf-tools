@@ -1,5 +1,6 @@
 import { ArrowDown, FileText, Zap, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { pdfTools } from "@shared/schema";
 
 export function HeroSection() {
   const scrollToTools = () => {
@@ -15,7 +16,7 @@ export function HeroSection() {
         <div className="text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
             <Zap className="h-4 w-4" />
-            <span>10 Powerful PDF Tools</span>
+            <span>{pdfTools.length} Powerful Tools</span>
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
