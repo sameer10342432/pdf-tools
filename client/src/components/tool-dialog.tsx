@@ -12,6 +12,16 @@ import { FileUpload } from "./file-upload";
 import { ScreenRecorder } from "./screen-recorder";
 import { WebcamRecorder } from "./webcam-recorder";
 import { ToolOptionsComponent } from "./tool-options";
+import { CssGradientGenerator } from "./css-gradient-generator";
+import { UnitConverterLength } from "./unit-converter-length";
+import { UnitConverterWeight } from "./unit-converter-weight";
+import { UnitConverterTemperature } from "./unit-converter-temperature";
+import { UnitConverterData } from "./unit-converter-data";
+import { TimeZoneConverter } from "./time-zone-converter";
+import { AgeCalculator } from "./age-calculator";
+import { DateCalculator } from "./date-calculator";
+import { WorldClockComponent } from "./world-clock";
+import { StopwatchComponent } from "./stopwatch";
 import {
   type PdfTool,
   type UploadedFile,
@@ -99,6 +109,15 @@ import {
   FileArchive,
   FolderArchive,
   Combine,
+  Ruler,
+  Scale,
+  Thermometer,
+  Database,
+  Clock,
+  Cake,
+  CalendarDays,
+  Globe2,
+  Timer as TimerIcon,
   type LucideIcon,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -179,7 +198,29 @@ const iconMap: Record<string, LucideIcon> = {
   FileArchive,
   FolderArchive,
   Combine,
+  Ruler,
+  Scale,
+  Thermometer,
+  Database,
+  Clock,
+  Cake,
+  CalendarDays,
+  Globe2,
+  TimerIcon,
 };
+
+const utilityToolTypes = [
+  "css-gradient-generator",
+  "unit-converter-length",
+  "unit-converter-weight",
+  "unit-converter-temperature",
+  "unit-converter-data",
+  "time-zone-converter",
+  "age-calculator",
+  "date-calculator",
+  "world-clock",
+  "stopwatch",
+];
 
 interface ToolDialogProps {
   tool: PdfTool | null;
@@ -644,7 +685,25 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
 
         <div className="mt-4 space-y-6">
           {processingState === "idle" && (
-            (tool.type === "screen-recorder" || tool.type === "record-screen-camera" || tool.type === "webcam-recorder") ? (
+            utilityToolTypes.includes(tool.type) ? (
+              <div className="space-y-6">
+                {tool.type === "css-gradient-generator" && <CssGradientGenerator />}
+                {tool.type === "unit-converter-length" && <UnitConverterLength />}
+                {tool.type === "unit-converter-weight" && <UnitConverterWeight />}
+                {tool.type === "unit-converter-temperature" && <UnitConverterTemperature />}
+                {tool.type === "unit-converter-data" && <UnitConverterData />}
+                {tool.type === "time-zone-converter" && <TimeZoneConverter />}
+                {tool.type === "age-calculator" && <AgeCalculator />}
+                {tool.type === "date-calculator" && <DateCalculator />}
+                {tool.type === "world-clock" && <WorldClockComponent />}
+                {tool.type === "stopwatch" && <StopwatchComponent />}
+                <div className="flex justify-end">
+                  <Button variant="outline" onClick={handleClose} data-testid="button-close">
+                    Close
+                  </Button>
+                </div>
+              </div>
+            ) : (tool.type === "screen-recorder" || tool.type === "record-screen-camera" || tool.type === "webcam-recorder") ? (
               <div className="space-y-6">
                 {tool.type === "webcam-recorder" ? (
                   <WebcamRecorder />
