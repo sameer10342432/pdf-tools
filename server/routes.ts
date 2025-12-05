@@ -106,7 +106,7 @@ const upload = multer({
     const isLatex = ext.endsWith(".tex") || ext.endsWith(".latex");
     const isPostScript = ext.endsWith(".ps") || ext.endsWith(".eps");
     const isRaw = [".raw", ".cr2", ".nef", ".arw", ".dng", ".orf", ".rw2", ".pef", ".srw", ".raf"].some(e => ext.endsWith(e));
-    const isArchive = ext.endsWith(".zip") || ext.endsWith(".rar") || ext.endsWith(".7z");
+    const isArchive = ext.endsWith(".zip") || ext.endsWith(".rar") || ext.endsWith(".7z") || ext.endsWith(".tar") || ext.endsWith(".tar.gz") || ext.endsWith(".tgz") || ext.endsWith(".tar.bz2") || ext.endsWith(".tbz2") || ext.endsWith(".tbz");
     const isAudio = file.mimetype.startsWith("audio/") || 
       [".mp3", ".wav", ".aac", ".m4a", ".ogg", ".flac", ".wma", ".aiff", ".ape"].some(e => ext.endsWith(e));
     
@@ -31517,6 +31517,438 @@ file '${loopInputPath}'`;
             }
             break;
           }
+
+          case "tar-extractor": {
+            if (files.length === 0) {
+              throw new Error("Please upload a TAR file to extract");
+            }
+            const tarFile = files[0];
+            const tarExt = tarFile.originalname.toLowerCase();
+            if (!tarExt.endsWith(".tar")) {
+              throw new Error("Please upload a valid TAR file");
+            }
+            
+            const tarExtractDir = path.join(outputDir, `tar-extracted-${randomUUID()}`);
+            fs.mkdirSync(tarExtractDir, { recursive: true });
+            
+            try {
+              await execAsync(`tar -xf "${tarFile.path}" -C "${tarExtractDir}"`);
+            } catch (tarError) {
+              throw new Error("Could not extract TAR file. The file may be corrupted.");
+            }
+            
+            const tarExtractedFiles = fs.readdirSync(tarExtractDir, { recursive: true }) as string[];
+            const tarFileList = tarExtractedFiles.filter(f => {
+              try {
+                return fs.statSync(path.join(tarExtractDir, f)).isFile();
+              } catch {
+                return false;
+              }
+            });
+            
+            if (tarFileList.length === 1) {
+              const singleTarFile = path.join(tarExtractDir, tarFileList[0]);
+              const singleTarFileName = path.basename(tarFileList[0]);
+              result = singleTarFile;
+              filename = singleTarFileName;
+              contentType = "application/octet-stream";
+            } else {
+              const tarRepackPath = path.join(outputDir, `tar-extracted-${randomUUID()}.zip`);
+              const tarRepackArchive = archiver("zip", { zlib: { level: 9 } });
+              const tarRepackOutput = fs.createWriteStream(tarRepackPath);
+              
+              await new Promise<void>((resolve, reject) => {
+                tarRepackOutput.on("close", () => resolve());
+                tarRepackArchive.on("error", (err) => reject(err));
+                
+                tarRepackArchive.pipe(tarRepackOutput);
+                tarRepackArchive.directory(tarExtractDir, false);
+                tarRepackArchive.finalize();
+              });
+              
+              result = tarRepackPath;
+              filename = "extracted-tar-files.zip";
+              contentType = "application/zip";
+            }
+            break;
+          }
+
+          case "tar-gz-extractor": {
+            if (files.length === 0) {
+              throw new Error("Please upload a TAR.GZ file to extract");
+            }
+            const tarGzFile = files[0];
+            const tarGzExt = tarGzFile.originalname.toLowerCase();
+            if (!tarGzExt.endsWith(".tar.gz") && !tarGzExt.endsWith(".tgz")) {
+              throw new Error("Please upload a valid TAR.GZ or .tgz file");
+            }
+            
+            const tarGzExtractDir = path.join(outputDir, `tar-gz-extracted-${randomUUID()}`);
+            fs.mkdirSync(tarGzExtractDir, { recursive: true });
+            
+            try {
+              await execAsync(`tar -xzf "${tarGzFile.path}" -C "${tarGzExtractDir}"`);
+            } catch (tarGzError) {
+              throw new Error("Could not extract TAR.GZ file. The file may be corrupted.");
+            }
+            
+            const tarGzExtractedFiles = fs.readdirSync(tarGzExtractDir, { recursive: true }) as string[];
+            const tarGzFileList = tarGzExtractedFiles.filter(f => {
+              try {
+                return fs.statSync(path.join(tarGzExtractDir, f)).isFile();
+              } catch {
+                return false;
+              }
+            });
+            
+            if (tarGzFileList.length === 1) {
+              const singleTarGzFile = path.join(tarGzExtractDir, tarGzFileList[0]);
+              const singleTarGzFileName = path.basename(tarGzFileList[0]);
+              result = singleTarGzFile;
+              filename = singleTarGzFileName;
+              contentType = "application/octet-stream";
+            } else {
+              const tarGzRepackPath = path.join(outputDir, `tar-gz-extracted-${randomUUID()}.zip`);
+              const tarGzRepackArchive = archiver("zip", { zlib: { level: 9 } });
+              const tarGzRepackOutput = fs.createWriteStream(tarGzRepackPath);
+              
+              await new Promise<void>((resolve, reject) => {
+                tarGzRepackOutput.on("close", () => resolve());
+                tarGzRepackArchive.on("error", (err) => reject(err));
+                
+                tarGzRepackArchive.pipe(tarGzRepackOutput);
+                tarGzRepackArchive.directory(tarGzExtractDir, false);
+                tarGzRepackArchive.finalize();
+              });
+              
+              result = tarGzRepackPath;
+              filename = "extracted-tar-gz-files.zip";
+              contentType = "application/zip";
+            }
+            break;
+          }
+
+          case "tar-bz2-extractor": {
+            if (files.length === 0) {
+              throw new Error("Please upload a TAR.BZ2 file to extract");
+            }
+            const tarBz2File = files[0];
+            const tarBz2Ext = tarBz2File.originalname.toLowerCase();
+            if (!tarBz2Ext.endsWith(".tar.bz2") && !tarBz2Ext.endsWith(".tbz2") && !tarBz2Ext.endsWith(".tbz")) {
+              throw new Error("Please upload a valid TAR.BZ2 file");
+            }
+            
+            const tarBz2ExtractDir = path.join(outputDir, `tar-bz2-extracted-${randomUUID()}`);
+            fs.mkdirSync(tarBz2ExtractDir, { recursive: true });
+            
+            try {
+              await execAsync(`tar -xjf "${tarBz2File.path}" -C "${tarBz2ExtractDir}"`);
+            } catch (tarBz2Error) {
+              throw new Error("Could not extract TAR.BZ2 file. The file may be corrupted.");
+            }
+            
+            const tarBz2ExtractedFiles = fs.readdirSync(tarBz2ExtractDir, { recursive: true }) as string[];
+            const tarBz2FileList = tarBz2ExtractedFiles.filter(f => {
+              try {
+                return fs.statSync(path.join(tarBz2ExtractDir, f)).isFile();
+              } catch {
+                return false;
+              }
+            });
+            
+            if (tarBz2FileList.length === 1) {
+              const singleTarBz2File = path.join(tarBz2ExtractDir, tarBz2FileList[0]);
+              const singleTarBz2FileName = path.basename(tarBz2FileList[0]);
+              result = singleTarBz2File;
+              filename = singleTarBz2FileName;
+              contentType = "application/octet-stream";
+            } else {
+              const tarBz2RepackPath = path.join(outputDir, `tar-bz2-extracted-${randomUUID()}.zip`);
+              const tarBz2RepackArchive = archiver("zip", { zlib: { level: 9 } });
+              const tarBz2RepackOutput = fs.createWriteStream(tarBz2RepackPath);
+              
+              await new Promise<void>((resolve, reject) => {
+                tarBz2RepackOutput.on("close", () => resolve());
+                tarBz2RepackArchive.on("error", (err) => reject(err));
+                
+                tarBz2RepackArchive.pipe(tarBz2RepackOutput);
+                tarBz2RepackArchive.directory(tarBz2ExtractDir, false);
+                tarBz2RepackArchive.finalize();
+              });
+              
+              result = tarBz2RepackPath;
+              filename = "extracted-tar-bz2-files.zip";
+              contentType = "application/zip";
+            }
+            break;
+          }
+
+          case "create-7z-archive": {
+            if (files.length === 0) {
+              throw new Error("Please upload files to create a 7z archive");
+            }
+            
+            const create7zTempDir = path.join(outputDir, `create-7z-temp-${randomUUID()}`);
+            fs.mkdirSync(create7zTempDir, { recursive: true });
+            
+            for (const file of files) {
+              const destPath = path.join(create7zTempDir, file.originalname);
+              fs.copyFileSync(file.path, destPath);
+            }
+            
+            const archive7zPath = path.join(outputDir, `archive-${randomUUID()}.7z`);
+            
+            try {
+              await execAsync(`7z a -t7z "${archive7zPath}" "${create7zTempDir}/*"`);
+            } catch (create7zError) {
+              throw new Error("Could not create 7z archive");
+            }
+            
+            try {
+              fs.rmSync(create7zTempDir, { recursive: true, force: true });
+            } catch {}
+            
+            result = archive7zPath;
+            filename = "archive.7z";
+            contentType = "application/x-7z-compressed";
+            break;
+          }
+
+          case "create-tar-gz-archive": {
+            if (files.length === 0) {
+              throw new Error("Please upload files to create a TAR.GZ archive");
+            }
+            
+            const createTarGzTempDir = path.join(outputDir, `create-tar-gz-temp-${randomUUID()}`);
+            fs.mkdirSync(createTarGzTempDir, { recursive: true });
+            
+            for (const file of files) {
+              const destPath = path.join(createTarGzTempDir, file.originalname);
+              fs.copyFileSync(file.path, destPath);
+            }
+            
+            const tarGzArchivePath = path.join(outputDir, `archive-${randomUUID()}.tar.gz`);
+            
+            try {
+              await execAsync(`tar -czvf "${tarGzArchivePath}" -C "${createTarGzTempDir}" .`);
+            } catch (createTarGzError) {
+              throw new Error("Could not create TAR.GZ archive");
+            }
+            
+            try {
+              fs.rmSync(createTarGzTempDir, { recursive: true, force: true });
+            } catch {}
+            
+            result = tarGzArchivePath;
+            filename = "archive.tar.gz";
+            contentType = "application/gzip";
+            break;
+          }
+
+          case "archive-converter": {
+            if (files.length === 0) {
+              throw new Error("Please upload an archive file to convert");
+            }
+            const archiveFile = files[0];
+            const archiveExt = archiveFile.originalname.toLowerCase();
+            const outputFormat = options.outputFormat || "zip";
+            
+            const converterTempDir = path.join(outputDir, `converter-temp-${randomUUID()}`);
+            fs.mkdirSync(converterTempDir, { recursive: true });
+            
+            try {
+              if (archiveExt.endsWith(".zip")) {
+                const zip = new AdmZip(archiveFile.path);
+                zip.extractAllTo(converterTempDir, true);
+              } else if (archiveExt.endsWith(".7z")) {
+                await execAsync(`7z x -y -o"${converterTempDir}" "${archiveFile.path}"`);
+              } else if (archiveExt.endsWith(".rar")) {
+                await execAsync(`unrar x -y "${archiveFile.path}" "${converterTempDir}/"`);
+              } else if (archiveExt.endsWith(".tar.gz") || archiveExt.endsWith(".tgz")) {
+                await execAsync(`tar -xzf "${archiveFile.path}" -C "${converterTempDir}"`);
+              } else if (archiveExt.endsWith(".tar.bz2") || archiveExt.endsWith(".tbz2")) {
+                await execAsync(`tar -xjf "${archiveFile.path}" -C "${converterTempDir}"`);
+              } else if (archiveExt.endsWith(".tar")) {
+                await execAsync(`tar -xf "${archiveFile.path}" -C "${converterTempDir}"`);
+              } else {
+                throw new Error("Unsupported input archive format");
+              }
+            } catch (extractError) {
+              throw new Error("Could not extract the archive file");
+            }
+            
+            let convertedArchivePath: string;
+            let convertedFilename: string;
+            let convertedContentType: string;
+            
+            switch (outputFormat) {
+              case "7z": {
+                convertedArchivePath = path.join(outputDir, `converted-${randomUUID()}.7z`);
+                await execAsync(`7z a -t7z "${convertedArchivePath}" "${converterTempDir}/*"`);
+                convertedFilename = "converted.7z";
+                convertedContentType = "application/x-7z-compressed";
+                break;
+              }
+              case "tar.gz": {
+                convertedArchivePath = path.join(outputDir, `converted-${randomUUID()}.tar.gz`);
+                await execAsync(`tar -czvf "${convertedArchivePath}" -C "${converterTempDir}" .`);
+                convertedFilename = "converted.tar.gz";
+                convertedContentType = "application/gzip";
+                break;
+              }
+              case "tar": {
+                convertedArchivePath = path.join(outputDir, `converted-${randomUUID()}.tar`);
+                await execAsync(`tar -cvf "${convertedArchivePath}" -C "${converterTempDir}" .`);
+                convertedFilename = "converted.tar";
+                convertedContentType = "application/x-tar";
+                break;
+              }
+              case "zip":
+              default: {
+                convertedArchivePath = path.join(outputDir, `converted-${randomUUID()}.zip`);
+                const convertArchive = archiver("zip", { zlib: { level: 9 } });
+                const convertOutput = fs.createWriteStream(convertedArchivePath);
+                
+                await new Promise<void>((resolve, reject) => {
+                  convertOutput.on("close", () => resolve());
+                  convertArchive.on("error", (err) => reject(err));
+                  convertArchive.pipe(convertOutput);
+                  convertArchive.directory(converterTempDir, false);
+                  convertArchive.finalize();
+                });
+                
+                convertedFilename = "converted.zip";
+                convertedContentType = "application/zip";
+                break;
+              }
+            }
+            
+            try {
+              fs.rmSync(converterTempDir, { recursive: true, force: true });
+            } catch {}
+            
+            result = convertedArchivePath;
+            filename = convertedFilename;
+            contentType = convertedContentType;
+            break;
+          }
+
+          case "zip-to-7z": {
+            if (files.length === 0) {
+              throw new Error("Please upload a ZIP file to convert");
+            }
+            const zipTo7zFile = files[0];
+            const zipTo7zExt = zipTo7zFile.originalname.toLowerCase();
+            if (!zipTo7zExt.endsWith(".zip")) {
+              throw new Error("Please upload a valid ZIP file");
+            }
+            
+            const zipTo7zTempDir = path.join(outputDir, `zip-to-7z-temp-${randomUUID()}`);
+            fs.mkdirSync(zipTo7zTempDir, { recursive: true });
+            
+            const zipFor7z = new AdmZip(zipTo7zFile.path);
+            zipFor7z.extractAllTo(zipTo7zTempDir, true);
+            
+            const zipTo7zOutputPath = path.join(outputDir, `converted-${randomUUID()}.7z`);
+            
+            try {
+              await execAsync(`7z a -t7z "${zipTo7zOutputPath}" "${zipTo7zTempDir}/*"`);
+            } catch (zipTo7zError) {
+              throw new Error("Could not convert ZIP to 7z");
+            }
+            
+            try {
+              fs.rmSync(zipTo7zTempDir, { recursive: true, force: true });
+            } catch {}
+            
+            result = zipTo7zOutputPath;
+            filename = zipTo7zFile.originalname.replace(/\.zip$/i, ".7z");
+            contentType = "application/x-7z-compressed";
+            break;
+          }
+
+          case "7z-to-zip": {
+            if (files.length === 0) {
+              throw new Error("Please upload a 7z file to convert");
+            }
+            const sevenZToZipFile = files[0];
+            const sevenZToZipExt = sevenZToZipFile.originalname.toLowerCase();
+            if (!sevenZToZipExt.endsWith(".7z")) {
+              throw new Error("Please upload a valid 7z file");
+            }
+            
+            const sevenZToZipTempDir = path.join(outputDir, `7z-to-zip-temp-${randomUUID()}`);
+            fs.mkdirSync(sevenZToZipTempDir, { recursive: true });
+            
+            try {
+              await execAsync(`7z x -y -o"${sevenZToZipTempDir}" "${sevenZToZipFile.path}"`);
+            } catch (sevenZToZipError) {
+              throw new Error("Could not extract 7z file");
+            }
+            
+            const sevenZToZipOutputPath = path.join(outputDir, `converted-${randomUUID()}.zip`);
+            const sevenZToZipArchive = archiver("zip", { zlib: { level: 9 } });
+            const sevenZToZipOutput = fs.createWriteStream(sevenZToZipOutputPath);
+            
+            await new Promise<void>((resolve, reject) => {
+              sevenZToZipOutput.on("close", () => resolve());
+              sevenZToZipArchive.on("error", (err) => reject(err));
+              sevenZToZipArchive.pipe(sevenZToZipOutput);
+              sevenZToZipArchive.directory(sevenZToZipTempDir, false);
+              sevenZToZipArchive.finalize();
+            });
+            
+            try {
+              fs.rmSync(sevenZToZipTempDir, { recursive: true, force: true });
+            } catch {}
+            
+            result = sevenZToZipOutputPath;
+            filename = sevenZToZipFile.originalname.replace(/\.7z$/i, ".zip");
+            contentType = "application/zip";
+            break;
+          }
+
+          case "rar-to-zip": {
+            if (files.length === 0) {
+              throw new Error("Please upload a RAR file to convert");
+            }
+            const rarToZipFile = files[0];
+            const rarToZipExt = rarToZipFile.originalname.toLowerCase();
+            if (!rarToZipExt.endsWith(".rar")) {
+              throw new Error("Please upload a valid RAR file");
+            }
+            
+            const rarToZipTempDir = path.join(outputDir, `rar-to-zip-temp-${randomUUID()}`);
+            fs.mkdirSync(rarToZipTempDir, { recursive: true });
+            
+            try {
+              await execAsync(`unrar x -y "${rarToZipFile.path}" "${rarToZipTempDir}/"`);
+            } catch (rarToZipError) {
+              throw new Error("Could not extract RAR file. The file may be corrupted or password-protected.");
+            }
+            
+            const rarToZipOutputPath = path.join(outputDir, `converted-${randomUUID()}.zip`);
+            const rarToZipArchive = archiver("zip", { zlib: { level: 9 } });
+            const rarToZipOutput = fs.createWriteStream(rarToZipOutputPath);
+            
+            await new Promise<void>((resolve, reject) => {
+              rarToZipOutput.on("close", () => resolve());
+              rarToZipArchive.on("error", (err) => reject(err));
+              rarToZipArchive.pipe(rarToZipOutput);
+              rarToZipArchive.directory(rarToZipTempDir, false);
+              rarToZipArchive.finalize();
+            });
+            
+            try {
+              fs.rmSync(rarToZipTempDir, { recursive: true, force: true });
+            } catch {}
+            
+            result = rarToZipOutputPath;
+            filename = rarToZipFile.originalname.replace(/\.rar$/i, ".zip");
+            contentType = "application/zip";
+            break;
+          }
+
 
           case "ai-video-noise-reduction": {
             if (files.length === 0) {

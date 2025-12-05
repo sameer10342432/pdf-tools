@@ -14509,7 +14509,32 @@ export function ToolOptionsComponent({
         </div>
       );
 
-
+    case "archive-converter": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.outputFormat || "zip"}
+              onValueChange={(value) => updateOption("outputFormat", value)}
+            >
+              <SelectTrigger data-testid="select-output-format">
+                <SelectValue placeholder="Select output format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="zip">ZIP - Universal Compatibility</SelectItem>
+                <SelectItem value="7z">7z - Maximum Compression</SelectItem>
+                <SelectItem value="tar.gz">TAR.GZ - Linux Standard</SelectItem>
+                <SelectItem value="tar">TAR - No Compression</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Choose the format to convert your archive to.
+            </p>
+          </div>
+        </div>
+      );
+    }
 
     default:
       return null;

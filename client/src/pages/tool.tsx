@@ -763,6 +763,30 @@ export default function ToolPage() {
     if (tool.type === "7z-extractor") {
       return ".7z,application/x-7z-compressed";
     }
+    if (tool.type === "tar-extractor") {
+      return ".tar,application/x-tar";
+    }
+    if (tool.type === "tar-gz-extractor") {
+      return ".tar.gz,.tgz,application/gzip,application/x-gzip";
+    }
+    if (tool.type === "tar-bz2-extractor") {
+      return ".tar.bz2,.tbz2,.tbz,application/x-bzip2";
+    }
+    if (tool.type === "create-7z-archive" || tool.type === "create-tar-gz-archive") {
+      return "*/*";
+    }
+    if (tool.type === "archive-converter") {
+      return ".zip,.rar,.7z,.tar,.tar.gz,.tgz,.tar.bz2,.tbz2,application/zip,application/x-rar-compressed,application/x-7z-compressed,application/x-tar,application/gzip";
+    }
+    if (tool.type === "zip-to-7z") {
+      return ".zip,application/zip,application/x-zip-compressed";
+    }
+    if (tool.type === "7z-to-zip") {
+      return ".7z,application/x-7z-compressed";
+    }
+    if (tool.type === "rar-to-zip") {
+      return ".rar,application/x-rar-compressed,application/vnd.rar";
+    }
     // Video tools
     if (tool.type === "ai-video-noise-reduction" || tool.type === "ai-auto-subtitle-generator" || tool.type === "ai-video-editor" || tool.type === "green-screen-remover") {
       return ".mp4,.webm,.mov,.avi,.mkv,video/mp4,video/webm,video/quicktime,video/x-msvideo,video/x-matroska";
@@ -798,6 +822,8 @@ export default function ToolPage() {
       "combine-videos",
       "video-joiner",
       "zip-creator",
+      "create-7z-archive",
+      "create-tar-gz-archive",
     ].includes(tool.type);
   };
 

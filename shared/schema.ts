@@ -761,6 +761,15 @@ export const pdfToolTypes = [
   "ai-auto-subtitle-generator",
   "ai-video-editor",
   "green-screen-remover",
+  "tar-extractor",
+  "tar-gz-extractor",
+  "tar-bz2-extractor",
+  "create-7z-archive",
+  "create-tar-gz-archive",
+  "archive-converter",
+  "zip-to-7z",
+  "7z-to-zip",
+  "rar-to-zip",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -21345,6 +21354,258 @@ const archiveAndVideoTools: PdfTool[] = [
 
 <h2>Production Quality</h2>
 <p>Used by content creators, marketers, and filmmakers for professional video production. Achieve broadcast-quality chroma key effects without expensive software.</p>`,
+  },
+  {
+    id: "tar-extractor",
+    name: "TAR Extractor",
+    description: "Extract files from TAR archives online",
+    icon: "FolderOpen",
+    type: "tar-extractor",
+    color: "bg-amber-500",
+    emoji: "📦",
+    metaTitle: "TAR Extractor Online Free - Extract TAR Files | File Tools",
+    metaDescription: "Extract TAR files online for free. Open and unpack TAR archives without software. Fast, secure TAR extraction in your browser.",
+    seoArticle: `<h2>TAR Extractor - Unpack TAR Archives Online</h2>
+<p>Extract files from TAR archives directly in your browser. Our free TAR Extractor tool makes it easy to access archived files without installing any software on your computer.</p>
+
+<h2>What is a TAR File?</h2>
+<p>TAR (Tape Archive) is a file format used primarily on Unix and Linux systems to combine multiple files into a single archive. Unlike ZIP, TAR doesn't compress files by itself - it simply bundles them together.</p>
+
+<h2>How Our TAR Extractor Works</h2>
+<p>Upload your TAR file to our secure server, and we'll extract all contents instantly. Browse the extracted files, preview what's inside, and download individual files or the entire extracted folder.</p>
+
+<h2>Preserve File Structure</h2>
+<p>Our extractor maintains the original directory structure of your TAR archive. Nested folders, file permissions metadata, and all organizational elements are preserved during extraction.</p>
+
+<h2>Fast Cloud Processing</h2>
+<p>Even large TAR archives are processed quickly on our powerful servers. No waiting for slow local extraction - get your files unpacked in seconds.</p>
+
+<h2>Secure File Handling</h2>
+<p>Your files are processed securely and deleted automatically after extraction. We don't store your data, ensuring complete privacy for your archived content.</p>`,
+  },
+  {
+    id: "tar-gz-extractor",
+    name: "TAR.GZ Extractor",
+    description: "Extract files from TAR.GZ (tgz) compressed archives",
+    icon: "FileArchive",
+    type: "tar-gz-extractor",
+    color: "bg-orange-500",
+    emoji: "📁",
+    metaTitle: "TAR.GZ Extractor Online Free - Extract Tgz Files | File Tools",
+    metaDescription: "Extract TAR.GZ and .tgz files online for free. Decompress and unpack gzipped tar archives instantly. No software installation required.",
+    seoArticle: `<h2>TAR.GZ Extractor - Decompress Gzipped Archives</h2>
+<p>Extract TAR.GZ (also known as .tgz) files online without any software. Our tool handles the dual-layer compression of gzipped tar archives, giving you instant access to your files.</p>
+
+<h2>Understanding TAR.GZ Format</h2>
+<p>TAR.GZ combines TAR archiving with GZIP compression. First, files are bundled into a TAR archive, then compressed with GZIP. This two-step process is standard on Linux and widely used for software distribution.</p>
+
+<h2>Complete Decompression</h2>
+<p>Our extractor handles both layers automatically. Upload your .tar.gz or .tgz file, and we decompress the GZIP layer and extract the TAR contents in one seamless operation.</p>
+
+<h2>Common TAR.GZ Uses</h2>
+<p>TAR.GZ is the standard format for Linux software packages, source code distributions, and backup archives. It offers excellent compression for text-based files while maintaining file attributes.</p>
+
+<h2>Browser-Based Extraction</h2>
+<p>Access your compressed files from any device with a web browser. Windows, Mac, Linux, Chromebook, or mobile - extract TAR.GZ files anywhere without compatibility issues.</p>
+
+<h2>Efficient Processing</h2>
+<p>Cloud-based extraction means your device doesn't do the heavy lifting. Large compressed archives are processed quickly on our servers, saving your device's resources.</p>`,
+  },
+  {
+    id: "tar-bz2-extractor",
+    name: "TAR.BZ2 Extractor",
+    description: "Extract files from TAR.BZ2 bzip2 compressed archives",
+    icon: "Archive",
+    type: "tar-bz2-extractor",
+    color: "bg-red-500",
+    emoji: "🗃️",
+    metaTitle: "TAR.BZ2 Extractor Online Free - Extract Bzip2 Archives | File Tools",
+    metaDescription: "Extract TAR.BZ2 files online for free. Decompress bzip2 compressed tar archives instantly. No software needed.",
+    seoArticle: `<h2>TAR.BZ2 Extractor - Handle Bzip2 Compressed Archives</h2>
+<p>Extract TAR.BZ2 files online without installing software. Our tool decompresses bzip2 compressed tar archives, giving you access to files packed with this high-compression format.</p>
+
+<h2>What is TAR.BZ2?</h2>
+<p>TAR.BZ2 combines TAR archiving with BZIP2 compression. BZIP2 typically achieves better compression than GZIP, making .tar.bz2 files smaller but slightly slower to create and extract.</p>
+
+<h2>Superior Compression Format</h2>
+<p>BZIP2's block-sorting algorithm creates smaller archives than GZIP for most file types. This makes TAR.BZ2 ideal for distributing large software packages where download size matters.</p>
+
+<h2>Full Extraction Support</h2>
+<p>Our extractor handles the complete decompression process. Upload your .tar.bz2 file, and we'll decompress and extract all contents, maintaining the original folder structure.</p>
+
+<h2>No Software Required</h2>
+<p>Opening BZ2 files often requires specific software on Windows. Our online tool eliminates that need - extract TAR.BZ2 archives from any device with just a web browser.</p>
+
+<h2>Quick Cloud Processing</h2>
+<p>BZIP2 decompression can be CPU-intensive. Our powerful servers handle this efficiently, extracting your archives faster than most local computers could.</p>`,
+  },
+  {
+    id: "create-7z-archive",
+    name: "Create 7z Archive",
+    description: "Create highly compressed 7z archives from your files",
+    icon: "PackagePlus",
+    type: "create-7z-archive",
+    color: "bg-blue-600",
+    emoji: "🔒",
+    metaTitle: "Create 7z Archive Online Free - Compress Files to 7-Zip | File Tools",
+    metaDescription: "Create 7z archives online for free. Compress files with high compression ratio. No 7-Zip software needed.",
+    seoArticle: `<h2>Create 7z Archive - Maximum Compression Online</h2>
+<p>Create 7z archives online without installing 7-Zip software. Our tool compresses your files using the 7z format's superior LZMA2 algorithm, achieving smaller file sizes than ZIP or RAR.</p>
+
+<h2>Why Choose 7z Format?</h2>
+<p>7z offers the highest compression ratios among popular archive formats. Files can be compressed 30-70% smaller than equivalent ZIP archives, saving storage space and reducing upload/download times.</p>
+
+<h2>LZMA2 Compression</h2>
+<p>The 7z format uses LZMA2, an advanced compression algorithm that excels at compressing text, code, and similar data. Get maximum compression with this industry-leading technology.</p>
+
+<h2>Multi-File Support</h2>
+<p>Upload multiple files and folders to combine into a single 7z archive. Our tool maintains directory structure and handles any file type.</p>
+
+<h2>Optional Password Protection</h2>
+<p>Secure your 7z archive with strong AES-256 encryption. Set a password to protect sensitive files while enjoying the benefits of high compression.</p>
+
+<h2>Simple Online Process</h2>
+<p>No software installation required. Upload your files, configure compression options, and download your 7z archive. Works on any device with a web browser.</p>`,
+  },
+  {
+    id: "create-tar-gz-archive",
+    name: "Create TAR.GZ Archive",
+    description: "Create compressed TAR.GZ archives from your files",
+    icon: "FolderPlus",
+    type: "create-tar-gz-archive",
+    color: "bg-green-600",
+    emoji: "📦",
+    metaTitle: "Create TAR.GZ Archive Online Free - Compress Files | File Tools",
+    metaDescription: "Create TAR.GZ archives online for free. Bundle and compress files in the universal tar.gz format. No software required.",
+    seoArticle: `<h2>Create TAR.GZ Archive - Universal Compression Format</h2>
+<p>Create TAR.GZ archives online without installing software. Our tool bundles your files into a TAR archive and compresses with GZIP, producing the universally compatible .tar.gz format.</p>
+
+<h2>Industry Standard Format</h2>
+<p>TAR.GZ is the standard archive format for Linux and Unix systems. It's widely used for software distribution, backups, and file transfer across different operating systems.</p>
+
+<h2>Two-Stage Process</h2>
+<p>TAR.GZ creation involves bundling files into a TAR archive, then compressing with GZIP. Our tool handles both steps automatically, optimizing for best results.</p>
+
+<h2>Cross-Platform Compatibility</h2>
+<p>TAR.GZ archives can be opened on virtually any system. Linux and Mac support it natively, while Windows users can use common tools. Maximum compatibility for sharing files.</p>
+
+<h2>Preserve Everything</h2>
+<p>TAR format preserves file attributes, permissions, and directory structure. Create archives that maintain all metadata when extracted on compatible systems.</p>
+
+<h2>Fast Compression</h2>
+<p>GZIP offers a good balance of compression ratio and speed. Create compressed archives quickly while still achieving significant file size reduction.</p>`,
+  },
+  {
+    id: "archive-converter",
+    name: "Archive Converter",
+    description: "Convert between different archive formats (ZIP, 7z, TAR, RAR)",
+    icon: "RefreshCw",
+    type: "archive-converter",
+    color: "bg-purple-500",
+    emoji: "🔄",
+    metaTitle: "Archive Converter Online Free - Convert ZIP, 7z, RAR, TAR | File Tools",
+    metaDescription: "Convert between archive formats online for free. Transform ZIP to 7z, RAR to ZIP, TAR to ZIP and more. No software needed.",
+    seoArticle: `<h2>Archive Converter - Transform Archive Formats</h2>
+<p>Convert between popular archive formats online. Transform ZIP, 7z, RAR, TAR, and TAR.GZ archives to any other format without installing software.</p>
+
+<h2>Supported Conversions</h2>
+<p>Our converter handles all major archive formats. Convert ZIP to 7z for better compression, transform RAR to ZIP for compatibility, or change TAR.GZ to ZIP for Windows users.</p>
+
+<h2>Why Convert Archives?</h2>
+<p>Different systems and users prefer different formats. Convert archives to match recipient requirements, reduce file sizes with better compression, or improve compatibility.</p>
+
+<h2>Maintain Contents</h2>
+<p>All files and folder structures are preserved during conversion. Convert between formats without losing any data or organization from your original archive.</p>
+
+<h2>Choose Your Format</h2>
+<p>Select the output format that best suits your needs. ZIP for universal compatibility, 7z for maximum compression, or TAR.GZ for Linux systems.</p>
+
+<h2>Quick Conversion</h2>
+<p>Our servers extract and recompress your archives efficiently. The entire conversion process happens in the cloud, delivering your new archive format quickly.</p>`,
+  },
+  {
+    id: "zip-to-7z",
+    name: "ZIP to 7z Converter",
+    description: "Convert ZIP archives to highly compressed 7z format",
+    icon: "ArrowRightCircle",
+    type: "zip-to-7z",
+    color: "bg-indigo-500",
+    emoji: "⬇️",
+    metaTitle: "ZIP to 7z Converter Online Free - Compress Better | File Tools",
+    metaDescription: "Convert ZIP to 7z online for free. Reduce file sizes with 7-Zip's superior compression. No software required.",
+    seoArticle: `<h2>ZIP to 7z Converter - Superior Compression</h2>
+<p>Convert your ZIP archives to 7z format for significantly better compression. Our online tool transforms ZIP files to 7z, reducing file sizes by 30-70% compared to the original ZIP.</p>
+
+<h2>Why Convert ZIP to 7z?</h2>
+<p>7z format offers superior compression using the LZMA2 algorithm. Converting existing ZIP archives to 7z can dramatically reduce storage requirements and transfer times.</p>
+
+<h2>Significant Size Reduction</h2>
+<p>Most ZIP files can be compressed much smaller in 7z format. Text files, documents, and code archives see the biggest improvements, often reducing to half their ZIP size or less.</p>
+
+<h2>Simple Process</h2>
+<p>Upload your ZIP file and we handle the conversion automatically. The contents are extracted and recompressed using optimal 7z settings for maximum compression.</p>
+
+<h2>Preserve All Contents</h2>
+<p>Every file and folder from your ZIP archive is maintained in the converted 7z file. Directory structure and file integrity are guaranteed during conversion.</p>
+
+<h2>No Software Needed</h2>
+<p>Create 7z archives from ZIP files without installing 7-Zip software. Our online converter works in any web browser on any device.</p>`,
+  },
+  {
+    id: "7z-to-zip",
+    name: "7z to ZIP Converter",
+    description: "Convert 7z archives to universally compatible ZIP format",
+    icon: "ArrowLeftCircle",
+    type: "7z-to-zip",
+    color: "bg-teal-500",
+    emoji: "⬆️",
+    metaTitle: "7z to ZIP Converter Online Free - Universal Format | File Tools",
+    metaDescription: "Convert 7z to ZIP online for free. Make 7-Zip archives universally accessible. No software required.",
+    seoArticle: `<h2>7z to ZIP Converter - Universal Compatibility</h2>
+<p>Convert 7z archives to ZIP format for universal compatibility. While 7z offers better compression, ZIP files can be opened by anyone on any system without special software.</p>
+
+<h2>When to Convert 7z to ZIP</h2>
+<p>ZIP is the most universally supported archive format. Convert to ZIP when sharing files with users who may not have 7-Zip installed, or for systems that only support ZIP natively.</p>
+
+<h2>Windows Integration</h2>
+<p>Windows has built-in ZIP support but requires additional software for 7z files. Converting to ZIP ensures recipients can open your archive with just Windows Explorer.</p>
+
+<h2>Trade-Off: Size vs Compatibility</h2>
+<p>ZIP files may be slightly larger than the original 7z, but the increased compatibility is often worth it. Everyone can access ZIP files regardless of their software.</p>
+
+<h2>Complete Conversion</h2>
+<p>All files and directories from your 7z archive are preserved in the ZIP conversion. Nothing is lost in the format transformation.</p>
+
+<h2>Online Convenience</h2>
+<p>No need to install 7-Zip to convert your archives. Upload your 7z file online and download the ZIP version immediately.</p>`,
+  },
+  {
+    id: "rar-to-zip",
+    name: "RAR to ZIP Converter",
+    description: "Convert RAR archives to widely compatible ZIP format",
+    icon: "FileInput",
+    type: "rar-to-zip",
+    color: "bg-pink-500",
+    emoji: "📋",
+    metaTitle: "RAR to ZIP Converter Online Free - Open RAR Files | File Tools",
+    metaDescription: "Convert RAR to ZIP online for free. Transform WinRAR archives to ZIP format. No WinRAR software needed.",
+    seoArticle: `<h2>RAR to ZIP Converter - Free RAR Conversion</h2>
+<p>Convert RAR archives to ZIP format online without WinRAR software. Our tool transforms proprietary RAR files into universally accessible ZIP archives.</p>
+
+<h2>RAR Format Limitations</h2>
+<p>RAR is a proprietary format that requires specific software to create or extract. By converting to ZIP, you create archives that anyone can open with standard tools on any operating system.</p>
+
+<h2>No WinRAR Needed</h2>
+<p>Opening RAR files typically requires WinRAR or similar paid software. Our free online converter extracts RAR contents and creates a ZIP file you can share with anyone.</p>
+
+<h2>Universal ZIP Output</h2>
+<p>ZIP files work everywhere. Windows, Mac, Linux, iOS, Android - all systems can handle ZIP archives natively or with built-in tools. Maximum compatibility for your files.</p>
+
+<h2>Full Content Transfer</h2>
+<p>Every file and folder from your RAR archive is preserved in the ZIP conversion. Complex directory structures and all file types are handled correctly.</p>
+
+<h2>Quick Conversion</h2>
+<p>Upload your RAR file, and our servers handle the extraction and recompression quickly. Get your ZIP file ready for download in moments.</p>`,
   },
 ];
 
