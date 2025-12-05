@@ -770,6 +770,16 @@ export const pdfToolTypes = [
   "zip-to-7z",
   "7z-to-zip",
   "rar-to-zip",
+  "rar-to-7z",
+  "compress-files-zip",
+  "compress-folder-zip",
+  "password-protect-zip",
+  "zip-file-viewer",
+  "rar-file-viewer",
+  "split-archive",
+  "merge-archives",
+  "website-downloader",
+  "screenshot-website",
 ] as const;
 
 export type PdfToolType = (typeof pdfToolTypes)[number];
@@ -21606,6 +21616,256 @@ const archiveAndVideoTools: PdfTool[] = [
 
 <h2>Quick Conversion</h2>
 <p>Upload your RAR file, and our servers handle the extraction and recompression quickly. Get your ZIP file ready for download in moments.</p>`,
+  },
+  {
+    id: "rar-to-7z",
+    name: "RAR to 7z",
+    description: "Convert RAR archives to 7z format with better compression",
+    icon: "Archive",
+    type: "rar-to-7z",
+    color: "bg-purple-500",
+    emoji: "📦",
+    metaTitle: "RAR to 7z Converter Online Free - Convert RAR to 7z | File Tools",
+    metaDescription: "Convert RAR archives to 7z format online for free. Get better compression ratios with 7z. No software installation required.",
+    seoArticle: `<h2>RAR to 7z Converter - Superior Compression</h2>
+<p>Transform your RAR archives into 7z format for better compression ratios. Our free online converter handles the conversion quickly and efficiently, giving you smaller file sizes without quality loss.</p>
+
+<h2>Why Convert to 7z?</h2>
+<p>7z format offers superior compression compared to RAR and ZIP. LZMA and LZMA2 compression algorithms can reduce file sizes by up to 70% compared to standard ZIP compression. Perfect for large files and storage optimization.</p>
+
+<h2>How It Works</h2>
+<p>Simply upload your RAR file, and our servers extract the contents and recompress them using 7z. The process preserves all your files, folder structures, and file attributes.</p>
+
+<h2>Maximum Compatibility</h2>
+<p>7z archives can be opened with free software like 7-Zip on Windows, The Unarchiver on Mac, and p7zip on Linux. Share your compressed files with anyone.</p>
+
+<h2>Secure Processing</h2>
+<p>All uploads are processed on secure servers and automatically deleted after conversion. Your files remain private and protected throughout the process.</p>`,
+  },
+  {
+    id: "compress-files-zip",
+    name: "Compress Files to ZIP",
+    description: "Compress multiple files into a single ZIP archive",
+    icon: "FileArchive",
+    type: "compress-files-zip",
+    color: "bg-blue-500",
+    emoji: "📁",
+    metaTitle: "Compress Files to ZIP Online Free - Create ZIP Archive | File Tools",
+    metaDescription: "Compress multiple files into a single ZIP archive online. Fast, free, and secure file compression. No software installation needed.",
+    seoArticle: `<h2>Compress Files to ZIP - Easy File Compression</h2>
+<p>Create ZIP archives from multiple files with our free online compression tool. Perfect for bundling documents, images, and other files for easy sharing and storage.</p>
+
+<h2>Universal ZIP Format</h2>
+<p>ZIP is the most widely supported archive format. Every major operating system can open ZIP files without additional software, ensuring maximum compatibility for your recipients.</p>
+
+<h2>Efficient Compression</h2>
+<p>Our tool uses optimized compression algorithms to reduce file sizes while maintaining fast processing speeds. Balance between file size reduction and quick archive creation.</p>
+
+<h2>Batch Processing</h2>
+<p>Upload multiple files at once and combine them into a single ZIP archive. Organize your files before compression and get a clean, ready-to-share archive.</p>
+
+<h2>Secure and Private</h2>
+<p>All files are processed securely and automatically deleted after your download. Your data never leaves our secure servers during the compression process.</p>`,
+  },
+  {
+    id: "compress-folder-zip",
+    name: "Compress Folder to ZIP",
+    description: "Compress an entire folder structure into a ZIP archive",
+    icon: "FolderArchive",
+    type: "compress-folder-zip",
+    color: "bg-green-500",
+    emoji: "📂",
+    metaTitle: "Compress Folder to ZIP Online Free - ZIP Folder | File Tools",
+    metaDescription: "Compress entire folder structures into ZIP archives online. Preserve directory hierarchy. Free and secure folder compression.",
+    seoArticle: `<h2>Compress Folder to ZIP - Preserve Directory Structure</h2>
+<p>Compress entire folder hierarchies into ZIP archives while maintaining the original directory structure. Perfect for backing up projects, sharing organized file collections, and archiving complex folder setups.</p>
+
+<h2>Structure Preservation</h2>
+<p>Unlike simple file compression, folder compression maintains your entire directory hierarchy. Subfolders, nested directories, and file organization remain intact in the resulting ZIP archive.</p>
+
+<h2>Project Backup</h2>
+<p>Ideal for developers, designers, and content creators who need to archive or share complete project folders. All files remain organized exactly as you arranged them.</p>
+
+<h2>Easy Sharing</h2>
+<p>Share complex folder structures with collaborators, clients, or team members. They can extract the ZIP and have your entire file organization ready to use.</p>
+
+<h2>Quick Processing</h2>
+<p>Upload your folder contents and get a compressed ZIP archive in moments. Our servers handle large folder structures efficiently.</p>`,
+  },
+  {
+    id: "password-protect-zip",
+    name: "Password Protect ZIP",
+    description: "Create password-protected ZIP archives for secure file sharing",
+    icon: "LockKeyhole",
+    type: "password-protect-zip",
+    color: "bg-red-500",
+    emoji: "🔐",
+    metaTitle: "Password Protect ZIP Online Free - Encrypt ZIP Files | File Tools",
+    metaDescription: "Create password-protected ZIP archives online. Encrypt your files with strong security. Free and secure ZIP password protection.",
+    seoArticle: `<h2>Password Protect ZIP - Secure Your Archives</h2>
+<p>Add password protection to your ZIP archives for secure file sharing. Our tool creates encrypted archives that can only be opened with the correct password, ensuring your sensitive files stay private.</p>
+
+<h2>Strong Encryption</h2>
+<p>We use AES-256 encryption, the same standard used by governments and financial institutions. Your password-protected ZIP files are virtually unbreakable without the correct password.</p>
+
+<h2>Universal Compatibility</h2>
+<p>Password-protected ZIP files can be opened with standard tools on Windows, Mac, and Linux. Recipients just need to enter the password you share with them.</p>
+
+<h2>Secure Sharing</h2>
+<p>Perfect for sending confidential documents, financial records, personal photos, or any sensitive data via email or cloud storage. Share files safely with password protection.</p>
+
+<h2>Choose Your Password</h2>
+<p>Set any password you like. We recommend using a strong combination of letters, numbers, and symbols for maximum security. Share the password through a separate channel for best security practices.</p>`,
+  },
+  {
+    id: "zip-file-viewer",
+    name: "ZIP File Viewer",
+    description: "View and browse contents of ZIP archives without extracting",
+    icon: "Eye",
+    type: "zip-file-viewer",
+    color: "bg-indigo-500",
+    emoji: "👁",
+    metaTitle: "ZIP File Viewer Online Free - Browse ZIP Contents | File Tools",
+    metaDescription: "View ZIP file contents online without extracting. Browse files, check sizes, and preview archive contents. Free ZIP viewer.",
+    seoArticle: `<h2>ZIP File Viewer - Browse Archives Instantly</h2>
+<p>Preview the contents of ZIP archives without extracting them. See file names, sizes, dates, and folder structures before deciding to download or extract.</p>
+
+<h2>Quick Preview</h2>
+<p>Upload any ZIP file and instantly see its complete contents. Navigate through folder structures, check file sizes, and verify what's inside before extraction.</p>
+
+<h2>File Details</h2>
+<p>View detailed information about each file including name, size, compression ratio, modification date, and file type. Make informed decisions about which files you need.</p>
+
+<h2>No Extraction Needed</h2>
+<p>Save time and bandwidth by previewing ZIP contents without downloading everything. Especially useful for large archives where you only need specific files.</p>
+
+<h2>Safe Inspection</h2>
+<p>Check archive contents before extracting to ensure you're getting what you expect. Verify file integrity and review folder organization.</p>`,
+  },
+  {
+    id: "rar-file-viewer",
+    name: "RAR File Viewer",
+    description: "View and browse contents of RAR archives without extracting",
+    icon: "FileSearch",
+    type: "rar-file-viewer",
+    color: "bg-orange-500",
+    emoji: "🔍",
+    metaTitle: "RAR File Viewer Online Free - Browse RAR Contents | File Tools",
+    metaDescription: "View RAR file contents online without WinRAR. Browse files, check sizes, and preview archive contents. Free RAR viewer.",
+    seoArticle: `<h2>RAR File Viewer - No WinRAR Needed</h2>
+<p>Preview RAR archive contents online without installing WinRAR or other software. See exactly what's inside any RAR file before extracting.</p>
+
+<h2>Free RAR Access</h2>
+<p>RAR is a proprietary format that usually requires paid software. Our free online viewer lets you inspect RAR contents without any software purchase or installation.</p>
+
+<h2>Complete File Listing</h2>
+<p>View all files and folders within the RAR archive. See file names, sizes, modification dates, and directory structure at a glance.</p>
+
+<h2>Safe Preview</h2>
+<p>Check what's inside RAR archives before extraction. Verify file contents, check for suspicious files, and ensure you're getting what you expect.</p>
+
+<h2>Works with All RAR Versions</h2>
+<p>Our viewer supports all RAR format versions including RAR5. Upload any RAR file and browse its contents instantly.</p>`,
+  },
+  {
+    id: "split-archive",
+    name: "Split Archive",
+    description: "Split large archives into smaller parts for easier sharing",
+    icon: "Scissors",
+    type: "split-archive",
+    color: "bg-pink-500",
+    emoji: "✂️",
+    metaTitle: "Split Archive Online Free - Divide Large Archives | File Tools",
+    metaDescription: "Split large ZIP and archive files into smaller parts online. Overcome email attachment limits. Free archive splitter.",
+    seoArticle: `<h2>Split Archive - Divide Large Files</h2>
+<p>Break large archive files into smaller, more manageable parts. Perfect for overcoming email attachment limits, uploading to file sharing services, or fitting files on removable media.</p>
+
+<h2>Overcome Size Limits</h2>
+<p>Many email services limit attachments to 25MB or less. Split your large archives into smaller parts that can be sent individually and easily recombined by the recipient.</p>
+
+<h2>Custom Split Sizes</h2>
+<p>Choose exactly how large each split part should be. Common options include 10MB, 25MB, 50MB, 100MB, or specify your own custom size.</p>
+
+<h2>Easy Reconstruction</h2>
+<p>Split archives can be easily rejoined using our merge tool or standard archive software. Recipients get complete files after combining all parts.</p>
+
+<h2>Universal Format</h2>
+<p>Split archives are created in a format compatible with major archive tools. Anyone can rejoin the parts using 7-Zip, WinRAR, or similar software.</p>`,
+  },
+  {
+    id: "merge-archives",
+    name: "Merge Archives",
+    description: "Combine multiple archives into a single unified archive",
+    icon: "Combine",
+    type: "merge-archives",
+    color: "bg-teal-500",
+    emoji: "🔗",
+    metaTitle: "Merge Archives Online Free - Combine ZIP Files | File Tools",
+    metaDescription: "Combine multiple ZIP and archive files into one. Merge split archives or unite separate archives. Free online archive merger.",
+    seoArticle: `<h2>Merge Archives - Combine Multiple Archives</h2>
+<p>Unite multiple archive files into a single, organized archive. Perfect for combining split archives, merging related file collections, or consolidating backup files.</p>
+
+<h2>Rejoin Split Archives</h2>
+<p>If you received a large archive split into multiple parts, use our tool to combine them back into the original complete archive.</p>
+
+<h2>Combine Collections</h2>
+<p>Merge separate archives containing related files into a single organized archive. Great for consolidating project files, photo collections, or document sets.</p>
+
+<h2>Preserve Structure</h2>
+<p>All files from each source archive are preserved with their original folder structures. The merged archive contains everything from all input files.</p>
+
+<h2>Multiple Format Support</h2>
+<p>Merge ZIP archives together, or combine archives from different sources. Our tool handles the combination process automatically.</p>`,
+  },
+  {
+    id: "website-downloader",
+    name: "Website Downloader",
+    description: "Download complete websites for offline viewing and backup",
+    icon: "Globe",
+    type: "website-downloader",
+    color: "bg-cyan-500",
+    emoji: "🌐",
+    metaTitle: "Website Downloader Online Free - Save Websites Offline | File Tools",
+    metaDescription: "Download complete websites for offline viewing. Save web pages with images, CSS, and links. Free website backup tool.",
+    seoArticle: `<h2>Website Downloader - Save Websites Offline</h2>
+<p>Download complete web pages for offline viewing, backup, or archival purposes. Our tool captures HTML, images, stylesheets, and other assets to recreate the page locally.</p>
+
+<h2>Complete Page Capture</h2>
+<p>Download not just the HTML, but all associated resources including images, CSS, JavaScript, and fonts. Get a complete offline copy that looks just like the original.</p>
+
+<h2>Offline Viewing</h2>
+<p>Access downloaded websites without an internet connection. Perfect for travel, areas with poor connectivity, or preserving content that might change or disappear.</p>
+
+<h2>Research and Archival</h2>
+<p>Researchers, journalists, and archivists use website downloads to preserve online content. Keep permanent records of web pages as they appeared at a specific time.</p>
+
+<h2>Easy Download</h2>
+<p>Simply enter a URL, and we'll download all the necessary files packaged in a convenient ZIP archive. Open locally in any web browser.</p>`,
+  },
+  {
+    id: "screenshot-website",
+    name: "Screenshot Website",
+    description: "Capture full-page screenshots of any website",
+    icon: "Camera",
+    type: "screenshot-website",
+    color: "bg-amber-500",
+    emoji: "📸",
+    metaTitle: "Screenshot Website Online Free - Full Page Capture | File Tools",
+    metaDescription: "Capture full-page screenshots of any website. Get high-quality PNG or JPG images of entire web pages. Free website screenshot tool.",
+    seoArticle: `<h2>Screenshot Website - Full Page Capture</h2>
+<p>Capture complete screenshots of any website, including content below the fold. Get high-quality images of entire web pages for presentations, documentation, or archival purposes.</p>
+
+<h2>Full Page Screenshots</h2>
+<p>Unlike browser screenshots that only capture visible content, our tool scrolls through the entire page and captures everything from top to bottom.</p>
+
+<h2>High Quality Output</h2>
+<p>Get crisp, high-resolution screenshots suitable for print, presentations, or professional documentation. Choose PNG for perfect quality or JPG for smaller file sizes.</p>
+
+<h2>Multiple Use Cases</h2>
+<p>Perfect for web designers, developers, marketers, legal professionals, and anyone who needs to document web content. Capture competitors' pages, record evidence, or create design references.</p>
+
+<h2>Quick and Easy</h2>
+<p>Enter any URL and get a complete screenshot in seconds. No browser extensions or software installation required.</p>`,
   },
 ];
 
