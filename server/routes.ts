@@ -31950,6 +31950,399 @@ file '${loopInputPath}'`;
           }
 
 
+
+          case "rar-to-7z": {
+            if (files.length === 0) {
+              throw new Error("Please upload a RAR file to convert");
+            }
+            const rarTo7zFile = files[0];
+            const rarTo7zExt = rarTo7zFile.originalname.toLowerCase();
+            if (!rarTo7zExt.endsWith(".rar")) {
+              throw new Error("Please upload a valid RAR file");
+            }
+            
+            const rarTo7zTempDir = path.join(outputDir, `rar-to-7z-temp-${randomUUID()}`);
+            fs.mkdirSync(rarTo7zTempDir, { recursive: true });
+            
+            try {
+              await execAsync(`unrar x -y "${rarTo7zFile.path}" "${rarTo7zTempDir}/"`);
+            } catch (rarTo7zError) {
+              throw new Error("Could not extract RAR file. The file may be corrupted or password-protected.");
+            }
+            
+            const rarTo7zOutputPath = path.join(outputDir, `converted-${randomUUID()}.7z`);
+            
+            try {
+              await execAsync(`7z a -mx=9 "${rarTo7zOutputPath}" "${rarTo7zTempDir}/*"`);
+            } catch (sevenZError) {
+              throw new Error("Could not create 7z archive.");
+            }
+            
+            try {
+              fs.rmSync(rarTo7zTempDir, { recursive: true, force: true });
+            } catch {}
+            
+            result = rarTo7zOutputPath;
+            filename = rarTo7zFile.originalname.replace(/.rar$/i, ".7z");
+            contentType = "application/x-7z-compressed";
+            break;
+          }
+
+          case "compress-files-zip":
+          case "compress-folder-zip": {
+            if (files.length === 0) {
+              throw new Error("Please upload files to compress");
+            }
+            
+            const compressZipPath = path.join(outputDir, `compressed-${randomUUID()}.zip`);
+            const compressArchive = archiver("zip", { zlib: { level: 9 } });
+            const compressOutput = fs.createWriteStream(compressZipPath);
+            
+            await new Promise<void>((resolve, reject) => {
+              compressOutput.on("close", () => resolve());
+              compressArchive.on("error", (err) => reject(err));
+              
+              compressArchive.pipe(compressOutput);
+              
+              for (const file of files) {
+                compressArchive.file(file.path, { name: file.originalname });
+              }
+              
+              compressArchive.finalize();
+            });
+            
+            result = compressZipPath;
+            filename = files.length === 1 
+              ? files[0].originalname.replace(/.[^.]+$/, ".zip")
+              : "compressed-files.zip";
+            contentType = "application/zip";
+            break;
+          }
+
+          case "password-protect-zip": {
+            if (files.length === 0) {
+              throw new Error("Please upload files to protect");
+            }
+            
+            const password = options.archivePassword;
+            if (!password || typeof password !== "string" || password.length < 1) {
+              throw new Error("Please provide a password for the ZIP archive");
+            }
+            
+            const pwZipPath = path.join(outputDir, `protected-${randomUUID()}.zip`);
+            const pwTempDir = path.join(outputDir, `pw-temp-${randomUUID()}`);
+            fs.mkdirSync(pwTempDir, { recursive: true });
+            
+            for (const file of files) {
+              const destPath = path.join(pwTempDir, file.originalname);
+              fs.copyFileSync(file.path, destPath);
+            }
+            
+            try {
+              await execAsync(`7z a -p"${password}" -mhe=on "${pwZipPath}" "${pwTempDir}/*"`);
+            } catch (pwError) {
+              throw new Error("Could not create password-protected archive.");
+            }
+            
+            try {
+              fs.rmSync(pwTempDir, { recursive: true, force: true });
+            } catch {}
+            
+            result = pwZipPath;
+            filename = files.length === 1 
+              ? files[0].originalname.replace(/.[^.]+$/, "-protected.zip")
+              : "protected-files.zip";
+            contentType = "application/zip";
+            break;
+          }
+
+          case "zip-file-viewer": {
+            if (files.length === 0) {
+              throw new Error("Please upload a ZIP file to view");
+            }
+            const viewZipFile = files[0];
+            const viewZipExt = viewZipFile.originalname.toLowerCase();
+            if (!viewZipExt.endsWith(".zip")) {
+              throw new Error("Please upload a valid ZIP file");
+            }
+            
+            const viewZip = new AdmZip(viewZipFile.path);
+            const zipEntries = viewZip.getEntries();
+            
+            const fileList = zipEntries.map(entry => ({
+              name: entry.entryName,
+              size: entry.header.size,
+              compressedSize: entry.header.compressedSize,
+              isDirectory: entry.isDirectory,
+              modified: new Date(entry.header.time).toISOString()
+            }));
+            
+            const viewerHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZIP Contents - ${viewZipFile.originalname}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f5f5f5; }
+    h1 { color: #333; border-bottom: 2px solid #ef4444; padding-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #ef4444; color: white; }
+    tr:hover { background: #f9f9f9; }
+    .dir { color: #666; font-style: italic; }
+    .size { text-align: right; }
+  </style>
+</head>
+<body>
+  <h1>ZIP Contents: ${viewZipFile.originalname}</h1>
+  <p>Total files: ${fileList.filter(f => !f.isDirectory).length} | Total folders: ${fileList.filter(f => f.isDirectory).length}</p>
+  <table>
+    <thead><tr><th>Name</th><th class="size">Size</th><th class="size">Compressed</th></tr></thead>
+    <tbody>
+      ${fileList.map(f => `<tr class="${f.isDirectory ? 'dir' : ''}"><td>${f.name}</td><td class="size">${f.isDirectory ? '-' : formatSize(f.size)}</td><td class="size">${f.isDirectory ? '-' : formatSize(f.compressedSize)}</td></tr>`).join('')}
+    </tbody>
+  </table>
+  <script>
+    function formatSize(bytes) {
+      if (bytes === 0) return '0 B';
+      const k = 1024;
+      const sizes = ['B', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+    document.querySelectorAll('td.size').forEach(td => {
+      const text = td.textContent;
+      if (text !== '-') td.textContent = formatSize(parseInt(text));
+    });
+  </script>
+</body>
+</html>`;
+            
+            const viewerPath = path.join(outputDir, `zip-contents-${randomUUID()}.html`);
+            fs.writeFileSync(viewerPath, viewerHtml);
+            
+            result = viewerPath;
+            filename = `${viewZipFile.originalname}-contents.html`;
+            contentType = "text/html";
+            break;
+          }
+
+          case "rar-file-viewer": {
+            if (files.length === 0) {
+              throw new Error("Please upload a RAR file to view");
+            }
+            const viewRarFile = files[0];
+            const viewRarExt = viewRarFile.originalname.toLowerCase();
+            if (!viewRarExt.endsWith(".rar")) {
+              throw new Error("Please upload a valid RAR file");
+            }
+            
+            let rarListOutput = "";
+            try {
+              const { stdout } = await execAsync(`unrar l "${viewRarFile.path}"`);
+              rarListOutput = stdout;
+            } catch (rarListError) {
+              throw new Error("Could not read RAR file. The file may be corrupted or password-protected.");
+            }
+            
+            const rarViewerHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAR Contents - ${viewRarFile.originalname}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f5f5f5; }
+    h1 { color: #333; border-bottom: 2px solid #ef4444; padding-bottom: 10px; }
+    pre { background: white; padding: 20px; border-radius: 8px; overflow-x: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 14px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <h1>RAR Contents: ${viewRarFile.originalname}</h1>
+  <pre>${rarListOutput}</pre>
+</body>
+</html>`;
+            
+            const rarViewerPath = path.join(outputDir, `rar-contents-${randomUUID()}.html`);
+            fs.writeFileSync(rarViewerPath, rarViewerHtml);
+            
+            result = rarViewerPath;
+            filename = `${viewRarFile.originalname}-contents.html`;
+            contentType = "text/html";
+            break;
+          }
+
+          case "split-archive": {
+            if (files.length === 0) {
+              throw new Error("Please upload an archive file to split");
+            }
+            const splitFile = files[0];
+            const splitSizeMB = parseInt(options.splitSize || "25");
+            const splitSizeBytes = splitSizeMB * 1024 * 1024;
+            
+            const splitOutputDir = path.join(outputDir, `split-${randomUUID()}`);
+            fs.mkdirSync(splitOutputDir, { recursive: true });
+            
+            const baseName = splitFile.originalname.replace(/.[^.]+$/, "");
+            
+            try {
+              await execAsync(`7z a -v${splitSizeBytes}b "${splitOutputDir}/${baseName}.7z" "${splitFile.path}"`);
+            } catch (splitError) {
+              throw new Error("Could not split the archive.");
+            }
+            
+            const splitResultZip = path.join(outputDir, `${baseName}-split-parts.zip`);
+            const splitArchiver = archiver("zip", { zlib: { level: 9 } });
+            const splitZipOutput = fs.createWriteStream(splitResultZip);
+            
+            await new Promise<void>((resolve, reject) => {
+              splitZipOutput.on("close", () => resolve());
+              splitArchiver.on("error", (err) => reject(err));
+              splitArchiver.pipe(splitZipOutput);
+              splitArchiver.directory(splitOutputDir, false);
+              splitArchiver.finalize();
+            });
+            
+            try {
+              fs.rmSync(splitOutputDir, { recursive: true, force: true });
+            } catch {}
+            
+            result = splitResultZip;
+            filename = `${baseName}-split-parts.zip`;
+            contentType = "application/zip";
+            break;
+          }
+
+          case "merge-archives": {
+            if (files.length < 2) {
+              throw new Error("Please upload at least 2 archive files to merge");
+            }
+            
+            const mergeDir = path.join(outputDir, `merge-temp-${randomUUID()}`);
+            fs.mkdirSync(mergeDir, { recursive: true });
+            
+            for (const file of files) {
+              const fileExt = file.originalname.toLowerCase();
+              const extractSubDir = path.join(mergeDir, path.basename(file.originalname, path.extname(file.originalname)));
+              fs.mkdirSync(extractSubDir, { recursive: true });
+              
+              try {
+                if (fileExt.endsWith(".zip")) {
+                  const mergeZip = new AdmZip(file.path);
+                  mergeZip.extractAllTo(extractSubDir, true);
+                } else if (fileExt.endsWith(".7z")) {
+                  await execAsync(`7z x -y -o"${extractSubDir}" "${file.path}"`);
+                } else if (fileExt.endsWith(".rar")) {
+                  await execAsync(`unrar x -y "${file.path}" "${extractSubDir}/"`);
+                } else if (fileExt.endsWith(".tar") || fileExt.endsWith(".tar.gz") || fileExt.endsWith(".tgz")) {
+                  await execAsync(`tar -xf "${file.path}" -C "${extractSubDir}"`);
+                } else {
+                  fs.copyFileSync(file.path, path.join(extractSubDir, file.originalname));
+                }
+              } catch (extractErr) {
+                console.error(`Failed to extract ${file.originalname}`, extractErr);
+              }
+            }
+            
+            const mergedZipPath = path.join(outputDir, `merged-archives-${randomUUID()}.zip`);
+            const mergeArchiver = archiver("zip", { zlib: { level: 9 } });
+            const mergeOutput = fs.createWriteStream(mergedZipPath);
+            
+            await new Promise<void>((resolve, reject) => {
+              mergeOutput.on("close", () => resolve());
+              mergeArchiver.on("error", (err) => reject(err));
+              mergeArchiver.pipe(mergeOutput);
+              mergeArchiver.directory(mergeDir, false);
+              mergeArchiver.finalize();
+            });
+            
+            try {
+              fs.rmSync(mergeDir, { recursive: true, force: true });
+            } catch {}
+            
+            result = mergedZipPath;
+            filename = "merged-archives.zip";
+            contentType = "application/zip";
+            break;
+          }
+
+          case "website-downloader": {
+            const websiteUrl = options.websiteUrl;
+            if (!websiteUrl || typeof websiteUrl !== "string" || !websiteUrl.startsWith("http")) {
+              throw new Error("Please provide a valid website URL (starting with http:// or https://)");
+            }
+            
+            const downloadDir = path.join(outputDir, `website-${randomUUID()}`);
+            fs.mkdirSync(downloadDir, { recursive: true });
+            
+            try {
+              await execAsync(`wget --mirror --convert-links --adjust-extension --page-requisites --no-parent -P "${downloadDir}" --timeout=30 --tries=2 "${websiteUrl}"`, { timeout: 60000 });
+            } catch (wgetError) {
+              console.log("wget finished with some errors (normal for partial downloads)");
+            }
+            
+            const websiteZipPath = path.join(outputDir, `website-${randomUUID()}.zip`);
+            const websiteArchiver = archiver("zip", { zlib: { level: 9 } });
+            const websiteZipOutput = fs.createWriteStream(websiteZipPath);
+            
+            await new Promise<void>((resolve, reject) => {
+              websiteZipOutput.on("close", () => resolve());
+              websiteArchiver.on("error", (err) => reject(err));
+              websiteArchiver.pipe(websiteZipOutput);
+              websiteArchiver.directory(downloadDir, false);
+              websiteArchiver.finalize();
+            });
+            
+            try {
+              fs.rmSync(downloadDir, { recursive: true, force: true });
+            } catch {}
+            
+            const urlHost = new URL(websiteUrl).hostname;
+            result = websiteZipPath;
+            filename = `${urlHost}-website.zip`;
+            contentType = "application/zip";
+            break;
+          }
+
+          case "screenshot-website": {
+            const screenshotUrl = options.websiteUrl;
+            if (!screenshotUrl || typeof screenshotUrl !== "string" || !screenshotUrl.startsWith("http")) {
+              throw new Error("Please provide a valid website URL (starting with http:// or https://)");
+            }
+            
+            const screenshotFormat = options.screenshotFormat || "png";
+            const viewportWidth = parseInt(options.viewportWidth || "1920");
+            
+            const screenshotPath = path.join(outputDir, `screenshot-${randomUUID()}.${screenshotFormat}`);
+            
+            try {
+              const chromiumArgs = [
+                "--headless",
+                "--disable-gpu",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                `--window-size=${viewportWidth},1080`,
+                `--screenshot=${screenshotPath}`,
+                screenshotUrl
+              ].join(" ");
+              
+              await execAsync(`chromium ${chromiumArgs}`, { timeout: 30000 });
+            } catch (screenshotError) {
+              throw new Error("Could not capture screenshot. Please check if the URL is accessible.");
+            }
+            
+            if (!fs.existsSync(screenshotPath)) {
+              throw new Error("Screenshot capture failed. The website may be blocking automated access.");
+            }
+            
+            const urlHostname = new URL(screenshotUrl).hostname;
+            result = screenshotPath;
+            filename = `${urlHostname}-screenshot.${screenshotFormat}`;
+            contentType = screenshotFormat === "png" ? "image/png" : "image/jpeg";
+            break;
+          }
+
           case "ai-video-noise-reduction": {
             if (files.length === 0) {
               throw new Error("Please upload a video for noise reduction");

@@ -136,6 +136,9 @@ import {
   Crop,
   Square,
   RefreshCw,
+  FileArchive,
+  FolderArchive,
+  Camera,
 } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -246,6 +249,8 @@ const iconMap: Record<string, LucideIcon> = {
   Crop,
   Square,
   RefreshCw,
+  FileArchive,
+  FolderArchive,
 };
 
 type ProcessingState = "idle" | "uploading" | "processing" | "success" | "error";

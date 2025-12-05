@@ -14509,6 +14509,131 @@ export function ToolOptionsComponent({
         </div>
       );
 
+
+    case "password-protect-zip": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter password for ZIP protection"
+              value={options.archivePassword || ""}
+              onChange={(e) => updateOption("archivePassword", e.target.value)}
+              data-testid="input-archive-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              Create a strong password to protect your ZIP archive.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "split-archive": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Split Size (MB)</Label>
+            <Select
+              value={options.splitSize || "25"}
+              onValueChange={(value) => updateOption("splitSize", value)}
+            >
+              <SelectTrigger data-testid="select-split-size">
+                <SelectValue placeholder="Select split size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="10">10 MB</SelectItem>
+                <SelectItem value="25">25 MB (Email Limit)</SelectItem>
+                <SelectItem value="50">50 MB</SelectItem>
+                <SelectItem value="100">100 MB</SelectItem>
+                <SelectItem value="250">250 MB</SelectItem>
+                <SelectItem value="500">500 MB</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Choose the maximum size for each archive part.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "website-downloader": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="websiteUrl">Website URL</Label>
+            <Input
+              id="websiteUrl"
+              type="url"
+              placeholder="https://example.com"
+              value={options.websiteUrl || ""}
+              onChange={(e) => updateOption("websiteUrl", e.target.value)}
+              data-testid="input-website-url"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter the full URL of the website to download.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    case "screenshot-website": {
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="screenshotUrl">Website URL</Label>
+            <Input
+              id="screenshotUrl"
+              type="url"
+              placeholder="https://example.com"
+              value={options.websiteUrl || ""}
+              onChange={(e) => updateOption("websiteUrl", e.target.value)}
+              data-testid="input-screenshot-url"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Output Format</Label>
+            <Select
+              value={options.screenshotFormat || "png"}
+              onValueChange={(value) => updateOption("screenshotFormat", value)}
+            >
+              <SelectTrigger data-testid="select-screenshot-format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="png">PNG - High Quality</SelectItem>
+                <SelectItem value="jpg">JPG - Smaller Size</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Viewport Width</Label>
+            <Select
+              value={options.viewportWidth || "1920"}
+              onValueChange={(value) => updateOption("viewportWidth", value)}
+            >
+              <SelectTrigger data-testid="select-viewport-width">
+                <SelectValue placeholder="Select width" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1920">Desktop (1920px)</SelectItem>
+                <SelectItem value="1366">Laptop (1366px)</SelectItem>
+                <SelectItem value="768">Tablet (768px)</SelectItem>
+                <SelectItem value="375">Mobile (375px)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Choose the device viewport for the screenshot.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
     case "archive-converter": {
       return (
         <div className="space-y-4">

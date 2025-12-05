@@ -96,6 +96,9 @@ import {
   Square,
   RefreshCw,
   Monitor,
+  FileArchive,
+  FolderArchive,
+  Combine,
   type LucideIcon,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -173,6 +176,9 @@ const iconMap: Record<string, LucideIcon> = {
   Square,
   RefreshCw,
   Monitor,
+  FileArchive,
+  FolderArchive,
+  Combine,
 };
 
 interface ToolDialogProps {

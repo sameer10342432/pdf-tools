@@ -71,6 +71,9 @@ import {
   Crop,
   Square,
   RefreshCw,
+  FileArchive,
+  FolderArchive,
+  Combine,
   type LucideIcon,
 } from "lucide-react";
 
@@ -144,6 +147,9 @@ const iconMap: Record<string, LucideIcon> = {
   Crop,
   Square,
   RefreshCw,
+  FileArchive,
+  FolderArchive,
+  Combine,
 };
 
 interface ToolCardProps {
