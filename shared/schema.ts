@@ -25077,6 +25077,7 @@ const newDevTools: PdfTool[] = [
 pdfTools.push(...newDevTools);
 
 
+
 // New PDF Tools - htpasswd, cron, subnet, gzip, email obfuscator, port scanner, QR/barcode tools
 const newPdfToolsSet: PdfTool[] = [
   {
@@ -25089,20 +25090,16 @@ const newPdfToolsSet: PdfTool[] = [
     emoji: "🔐",
     metaTitle: "htpasswd Generator Free - Apache Password File Creator | PDF Tools",
     metaDescription: "Generate htpasswd file entries for Apache basic authentication online for free. Create secure password hashes using bcrypt, MD5, SHA. No signup required.",
-    seoArticle: \`<h2>htpasswd Generator - Secure Apache Authentication</h2>
+    seoArticle: `<h2>htpasswd Generator - Secure Apache Authentication</h2>
 <p>Create secure password file entries for Apache HTTP Server basic authentication. Our free htpasswd generator creates properly hashed passwords using industry-standard algorithms including bcrypt, MD5, SHA-1, and crypt. Essential for protecting web directories and resources.</p>
-
 <h2>Supported Hashing Algorithms</h2>
 <p>Bcrypt: Most secure option, resistant to GPU attacks. MD5: Apache-specific format, widely compatible. SHA-1: Standard hashing, good compatibility. Crypt: Traditional Unix DES-based encryption. Choose based on your security requirements and server compatibility.</p>
-
 <h2>How htpasswd Works</h2>
 <p>The htpasswd file stores username:password pairs where passwords are hashed. When users access protected resources, Apache verifies credentials against this file. Each line contains one user entry. The hash algorithm is indicated by a prefix in the stored hash.</p>
-
 <h2>Implementation Steps</h2>
 <p>1. Generate password entries using this tool. 2. Create or append to .htpasswd file on your server. 3. Configure .htaccess with AuthType, AuthName, AuthUserFile, and Require directives. 4. Test access to protected resources. 5. Store .htpasswd outside web root for security.</p>
-
 <h2>Security Best Practices</h2>
-<p>Use bcrypt for new installations when supported. Store .htpasswd outside document root. Use HTTPS to protect credentials in transit. Implement strong password policies. Consider additional authentication layers for sensitive resources. Regularly rotate passwords.</p>\`,
+<p>Use bcrypt for new installations when supported. Store .htpasswd outside document root. Use HTTPS to protect credentials in transit. Implement strong password policies. Consider additional authentication layers for sensitive resources. Regularly rotate passwords.</p>`,
   },
   {
     id: "cron-job-generator",
@@ -25114,20 +25111,16 @@ const newPdfToolsSet: PdfTool[] = [
     emoji: "⏰",
     metaTitle: "Cron Job Generator Free - Cron Expression Builder | PDF Tools",
     metaDescription: "Generate cron job expressions with our visual cron builder online for free. Create scheduled task expressions easily. Human-readable explanations. No signup required.",
-    seoArticle: \`<h2>Cron Job Generator - Visual Cron Expression Builder</h2>
+    seoArticle: `<h2>Cron Job Generator - Visual Cron Expression Builder</h2>
 <p>Create cron expressions easily with our intuitive visual interface. No need to memorize cron syntax - select your schedule using dropdowns and checkboxes, and we generate the correct cron expression. Perfect for scheduling automated tasks on Linux, Unix, and cloud platforms.</p>
-
 <h2>Understanding Cron Syntax</h2>
 <p>Cron expressions have 5 fields: minute (0-59), hour (0-23), day of month (1-31), month (1-12), day of week (0-7). Special characters include * (any), , (list), - (range), and / (step). Our generator handles all syntax for you.</p>
-
 <h2>Common Cron Schedules</h2>
 <p>Every minute: * * * * *. Every hour: 0 * * * *. Daily at midnight: 0 0 * * *. Weekly on Sunday: 0 0 * * 0. Monthly on the 1st: 0 0 1 * *. Weekdays at 9 AM: 0 9 * * 1-5. Every 5 minutes: */5 * * * *.</p>
-
 <h2>Platform Compatibility</h2>
 <p>Standard cron format works on Linux, macOS, FreeBSD, and Unix systems. Also compatible with cloud schedulers like AWS CloudWatch Events, Google Cloud Scheduler, Azure Functions Timer Triggers, and Kubernetes CronJobs. Minor variations may exist.</p>
-
 <h2>Best Practices for Scheduled Tasks</h2>
-<p>Log all cron job output for debugging. Use absolute paths in cron commands. Consider timezone implications. Test jobs manually before scheduling. Implement error handling and notifications. Monitor job execution and failures. Document your cron schedules.</p>\`,
+<p>Log all cron job output for debugging. Use absolute paths in cron commands. Consider timezone implications. Test jobs manually before scheduling. Implement error handling and notifications. Monitor job execution and failures. Document your cron schedules.</p>`,
   },
   {
     id: "subnet-calculator",
@@ -25139,20 +25132,16 @@ const newPdfToolsSet: PdfTool[] = [
     emoji: "🖧",
     metaTitle: "Subnet Calculator Free - IP Address & CIDR Calculator | PDF Tools",
     metaDescription: "Calculate IP subnets, CIDR notation, network ranges, and broadcast addresses online for free. IPv4 and IPv6 support. Essential network planning tool. No signup required.",
-    seoArticle: \`<h2>Subnet Calculator - Network Planning Made Easy</h2>
+    seoArticle: `<h2>Subnet Calculator - Network Planning Made Easy</h2>
 <p>Calculate IP subnets, CIDR notation, network ranges, and broadcast addresses with our comprehensive subnet calculator. Essential for network administrators, IT professionals, and anyone planning network infrastructure. Supports both IPv4 and IPv6 addressing.</p>
-
 <h2>What is Subnetting?</h2>
 <p>Subnetting divides a network into smaller, manageable segments. Each subnet has its own range of IP addresses. Benefits include improved security through network segmentation, reduced broadcast traffic, efficient IP address allocation, and easier network management.</p>
-
 <h2>CIDR Notation Explained</h2>
 <p>CIDR (Classless Inter-Domain Routing) notation combines IP address with subnet mask. Format: IP/prefix (e.g., 192.168.1.0/24). The prefix indicates network bits. /24 = 256 addresses, /25 = 128 addresses, /26 = 64 addresses. Smaller prefix = more addresses.</p>
-
 <h2>Subnet Mask Reference</h2>
 <p>/8 = 255.0.0.0 (16M hosts). /16 = 255.255.0.0 (65K hosts). /24 = 255.255.255.0 (254 hosts). /25 = 255.255.255.128 (126 hosts). /26 = 255.255.255.192 (62 hosts). /27 = 255.255.255.224 (30 hosts). /28 = 255.255.255.240 (14 hosts).</p>
-
 <h2>Network Planning Tips</h2>
-<p>Plan for growth - allocate more addresses than currently needed. Document all subnet assignments. Use private IP ranges for internal networks (10.x, 172.16-31.x, 192.168.x). Consider VLSM for efficient allocation. Implement proper routing between subnets.</p>\`,
+<p>Plan for growth - allocate more addresses than currently needed. Document all subnet assignments. Use private IP ranges for internal networks (10.x, 172.16-31.x, 192.168.x). Consider VLSM for efficient allocation. Implement proper routing between subnets.</p>`,
   },
   {
     id: "gzip-compression-checker",
@@ -25163,21 +25152,17 @@ const newPdfToolsSet: PdfTool[] = [
     color: "bg-purple-500",
     emoji: "📦",
     metaTitle: "GZIP Compression Checker Free - Test Website Compression | PDF Tools",
-    metaDescription: "Check if websites have GZIP compression enabled online for free. Test your site's compression and see potential savings. Improve page load speed. No signup required.",
-    seoArticle: \`<h2>GZIP Compression Checker - Optimize Website Speed</h2>
+    metaDescription: "Check if websites have GZIP compression enabled online for free. Test your site compression and see potential savings. Improve page load speed. No signup required.",
+    seoArticle: `<h2>GZIP Compression Checker - Optimize Website Speed</h2>
 <p>Check if your website has GZIP compression enabled and see the compression ratio achieved. GZIP compression reduces file sizes by 60-80%, dramatically improving page load times. Essential for web performance optimization and better SEO rankings.</p>
-
 <h2>Why GZIP Matters</h2>
 <p>GZIP compression reduces bandwidth usage and speeds up page loads. Google considers page speed a ranking factor. Users abandon slow sites - each second of delay reduces conversions. Compressed pages load faster on mobile networks where speed matters most.</p>
-
 <h2>What Gets Compressed</h2>
 <p>Text-based files benefit most: HTML, CSS, JavaScript, JSON, XML, SVG. Already compressed formats (JPEG, PNG, PDF, ZIP) should not be re-compressed. Modern servers intelligently compress only appropriate content types.</p>
-
 <h2>How to Enable GZIP</h2>
 <p>Apache: Enable mod_deflate, add AddOutputFilterByType directives. Nginx: Enable gzip on, configure gzip_types. IIS: Enable dynamic and static compression. CDNs: Usually enabled by default. Check documentation for your specific setup.</p>
-
 <h2>Beyond GZIP</h2>
-<p>Brotli offers better compression than GZIP (10-20% smaller files). Most modern browsers support Brotli. Use Brotli for static assets, GZIP as fallback. Combine with proper caching headers for optimal performance. Monitor compression effectiveness regularly.</p>\`,
+<p>Brotli offers better compression than GZIP (10-20% smaller files). Most modern browsers support Brotli. Use Brotli for static assets, GZIP as fallback. Combine with proper caching headers for optimal performance. Monitor compression effectiveness regularly.</p>`,
   },
   {
     id: "email-obfuscator",
@@ -25189,20 +25174,16 @@ const newPdfToolsSet: PdfTool[] = [
     emoji: "📧",
     metaTitle: "Email Obfuscator Free - Protect Email from Spam Bots | PDF Tools",
     metaDescription: "Obfuscate email addresses to protect from spam bots and harvesters online for free. Multiple encoding methods. Reduce spam without losing accessibility. No signup required.",
-    seoArticle: \`<h2>Email Obfuscator - Stop Spam at the Source</h2>
+    seoArticle: `<h2>Email Obfuscator - Stop Spam at the Source</h2>
 <p>Protect your email addresses from spam bots and harvesters with our free obfuscation tool. We encode email addresses in ways that humans and browsers understand, but automated spam harvesters cannot easily parse. Reduce spam without removing contact information.</p>
-
 <h2>How Email Harvesting Works</h2>
 <p>Spam bots crawl websites looking for patterns like name@domain.com. They extract millions of addresses to sell or spam. Simple mailto: links are easy targets. Obfuscation breaks these patterns while maintaining functionality for real users.</p>
-
 <h2>Obfuscation Methods</h2>
 <p>HTML Entity Encoding: Converts characters to HTML entities. JavaScript Decoding: Assembles email via script. CSS Reversal: Displays email reversed, CSS fixes it visually. ROT13: Simple substitution cipher. Image: Convert email to image. Each method has trade-offs.</p>
-
 <h2>Choosing the Right Method</h2>
-<p>HTML entities: Good compatibility, some bots can decode. JavaScript: Effective but requires JS enabled. CSS tricks: Creative but can break copy/paste. Multiple methods combined offer best protection. Consider your audience's technical capabilities.</p>
-
+<p>HTML entities: Good compatibility, some bots can decode. JavaScript: Effective but requires JS enabled. CSS tricks: Creative but can break copy/paste. Multiple methods combined offer best protection. Consider your audience technical capabilities.</p>
 <h2>Additional Spam Prevention</h2>
-<p>Use contact forms instead of exposed emails. Implement CAPTCHA on forms. Set up server-side spam filtering. Use email aliases that can be retired. Monitor for harvesting with unique addresses. Combine obfuscation with other techniques.</p>\`,
+<p>Use contact forms instead of exposed emails. Implement CAPTCHA on forms. Set up server-side spam filtering. Use email aliases that can be retired. Monitor for harvesting with unique addresses. Combine obfuscation with other techniques.</p>`,
   },
   {
     id: "port-scanner",
@@ -25214,20 +25195,16 @@ const newPdfToolsSet: PdfTool[] = [
     emoji: "🔍",
     metaTitle: "Port Scanner Free - Check Open Ports Online | PDF Tools",
     metaDescription: "Scan ports to check which services are running on a host online for free. Identify open ports and potential security issues. Network diagnostics tool. No signup required.",
-    seoArticle: \`<h2>Port Scanner - Network Diagnostics Tool</h2>
+    seoArticle: `<h2>Port Scanner - Network Diagnostics Tool</h2>
 <p>Scan ports on any accessible host to identify running services and open ports. Essential for network administrators, security professionals, and anyone troubleshooting connectivity issues. Identify potential security vulnerabilities and verify firewall configurations.</p>
-
 <h2>Understanding Ports</h2>
 <p>Ports are virtual endpoints for network communication. Each service uses specific ports: HTTP (80), HTTPS (443), SSH (22), FTP (21), SMTP (25), DNS (53), MySQL (3306), PostgreSQL (5432). Knowing which ports are open reveals running services.</p>
-
 <h2>Common Port Ranges</h2>
 <p>Well-known ports: 0-1023 (system services). Registered ports: 1024-49151 (user applications). Dynamic ports: 49152-65535 (temporary connections). Focus security audits on well-known and registered port ranges.</p>
-
 <h2>Security Implications</h2>
 <p>Open ports represent potential attack surfaces. Unused open ports should be closed. Verify only necessary services are exposed. Use firewalls to restrict port access. Regular scanning identifies configuration drift. Document authorized open ports.</p>
-
 <h2>Troubleshooting with Port Scanning</h2>
-<p>Verify services are running and accessible. Diagnose firewall issues blocking connections. Check if ports are open externally vs internally. Identify port conflicts between applications. Verify load balancer and proxy configurations.</p>\`,
+<p>Verify services are running and accessible. Diagnose firewall issues blocking connections. Check if ports are open externally vs internally. Identify port conflicts between applications. Verify load balancer and proxy configurations.</p>`,
   },
   {
     id: "split-pdf-by-qrcode",
@@ -25239,20 +25216,16 @@ const newPdfToolsSet: PdfTool[] = [
     emoji: "📄",
     metaTitle: "Split PDF by QR Code Free - Automatic Document Separation | PDF Tools",
     metaDescription: "Split PDF documents automatically at pages containing QR codes online for free. Perfect for batch processing and document automation. No signup required.",
-    seoArticle: \`<h2>Split PDF by QR Code - Intelligent Document Separation</h2>
+    seoArticle: `<h2>Split PDF by QR Code - Intelligent Document Separation</h2>
 <p>Automatically split PDF documents at pages containing QR codes. Perfect for batch processing scanned documents, automated mail processing, or any workflow where QR codes mark document boundaries. Our tool detects QR codes and creates separate PDFs accordingly.</p>
-
 <h2>How It Works</h2>
 <p>Upload your multi-page PDF containing QR codes. Our system scans each page for QR codes. When a QR code is detected, a new document section begins. Download separate PDF files for each section. QR code content can optionally name the output files.</p>
-
 <h2>Use Cases</h2>
 <p>Batch invoice processing with QR separators. Medical records separation by patient QR. Legal document processing with case QR markers. Shipping manifest separation by destination QR. Any high-volume document processing workflow.</p>
-
 <h2>QR Code Requirements</h2>
 <p>QR codes should be clearly printed and scannable. Minimum recommended size is 1 inch square. Place QR codes consistently on separator pages. Ensure good contrast between QR code and background. Test with sample documents before bulk processing.</p>
-
 <h2>Automation Integration</h2>
-<p>Combine with document scanning workflows. Integrate into RPA (Robotic Process Automation) pipelines. Use with OCR for full document digitization. Export to document management systems. Create consistent file naming conventions.</p>\`,
+<p>Combine with document scanning workflows. Integrate into RPA (Robotic Process Automation) pipelines. Use with OCR for full document digitization. Export to document management systems. Create consistent file naming conventions.</p>`,
   },
   {
     id: "split-pdf-by-barcode",
@@ -25264,20 +25237,16 @@ const newPdfToolsSet: PdfTool[] = [
     emoji: "📄",
     metaTitle: "Split PDF by Barcode Free - Automatic Document Separation | PDF Tools",
     metaDescription: "Split PDF documents automatically at pages containing barcodes online for free. Supports multiple barcode formats. Perfect for document automation. No signup required.",
-    seoArticle: \`<h2>Split PDF by Barcode - Automated Document Processing</h2>
+    seoArticle: `<h2>Split PDF by Barcode - Automated Document Processing</h2>
 <p>Automatically split PDF documents at pages containing barcodes. Supports various barcode formats including Code 128, Code 39, EAN, UPC, and more. Ideal for industrial document processing, inventory management, and automated mail handling workflows.</p>
-
 <h2>Supported Barcode Formats</h2>
 <p>Code 128: High-density alphanumeric encoding. Code 39: Widely used in manufacturing. EAN-13/UPC-A: Retail product codes. ITF (Interleaved 2 of 5): Shipping containers. PDF417: 2D barcode with high capacity. DataMatrix: Compact 2D format.</p>
-
 <h2>How It Works</h2>
 <p>Upload your PDF containing barcode separator pages. Our system analyzes each page for barcode presence. Documents are split at each barcode occurrence. Barcode values can be used for file naming. Download individual PDFs or a ZIP archive.</p>
-
 <h2>Industrial Applications</h2>
 <p>Manufacturing batch documentation. Warehouse receiving document processing. Healthcare patient record separation. Legal case file organization. Shipping and logistics documentation. Quality control record management.</p>
-
 <h2>Implementation Best Practices</h2>
-<p>Use consistent barcode placement on separator pages. Ensure adequate print quality for reliable scanning. Test barcode recognition with sample documents. Establish naming conventions using barcode values. Integrate with document management systems.</p>\`,
+<p>Use consistent barcode placement on separator pages. Ensure adequate print quality for reliable scanning. Test barcode recognition with sample documents. Establish naming conventions using barcode values. Integrate with document management systems.</p>`,
   },
   {
     id: "add-qrcode-to-pdf",
@@ -25289,20 +25258,16 @@ const newPdfToolsSet: PdfTool[] = [
     emoji: "📱",
     metaTitle: "Add QR Code to PDF Free - Embed QR Codes in Documents | PDF Tools",
     metaDescription: "Add QR codes with custom content to PDF documents online for free. Embed links, text, or contact info. Position anywhere on pages. No signup required.",
-    seoArticle: \`<h2>Add QR Code to PDF - Enhanced Document Interactivity</h2>
+    seoArticle: `<h2>Add QR Code to PDF - Enhanced Document Interactivity</h2>
 <p>Embed QR codes containing custom content directly into your PDF documents. Link to websites, share contact information, or encode any text data. Position QR codes precisely where you need them, on any or all pages. Perfect for marketing materials, business documents, and more.</p>
-
 <h2>QR Code Content Types</h2>
 <p>URLs: Link to websites, landing pages, or online resources. Plain text: Encode messages or reference numbers. vCard: Share contact information scannable by phones. WiFi: Network credentials for easy connection. Email: Pre-filled email composition. Phone: Click-to-call functionality.</p>
-
 <h2>Positioning Options</h2>
 <p>Corners: Top-left, top-right, bottom-left, bottom-right. Center: Prominent placement for key documents. Custom: Precise X,Y coordinates for exact positioning. Apply to all pages or specific page ranges. Maintain consistent branding across documents.</p>
-
 <h2>Design Considerations</h2>
 <p>Size QR codes appropriately for scanning distance. Ensure adequate quiet zone (white space) around codes. Test scannability after embedding. Consider color contrast for reliable reading. Balance prominence with document aesthetics.</p>
-
 <h2>Business Applications</h2>
-<p>Marketing brochures linking to campaigns. Invoices with payment links. Product manuals linking to videos. Event tickets with check-in codes. Business cards with vCard QR. Certificates with verification links.</p>\`,
+<p>Marketing brochures linking to campaigns. Invoices with payment links. Product manuals linking to videos. Event tickets with check-in codes. Business cards with vCard QR. Certificates with verification links.</p>`,
   },
   {
     id: "add-barcode-to-pdf",
@@ -25314,20 +25279,16 @@ const newPdfToolsSet: PdfTool[] = [
     emoji: "📊",
     metaTitle: "Add Barcode to PDF Free - Embed Barcodes in Documents | PDF Tools",
     metaDescription: "Add barcodes to PDF documents online for free. Multiple formats: Code 128, Code 39, EAN, UPC. Perfect for inventory and shipping documents. No signup required.",
-    seoArticle: \`<h2>Add Barcode to PDF - Professional Document Labeling</h2>
+    seoArticle: `<h2>Add Barcode to PDF - Professional Document Labeling</h2>
 <p>Embed barcodes in various formats directly into your PDF documents. Choose from Code 128, Code 39, EAN, UPC, and other popular formats. Perfect for inventory management, shipping labels, product documentation, and any workflow requiring barcode integration.</p>
-
 <h2>Barcode Format Selection</h2>
 <p>Code 128: Full ASCII character set, compact. Code 39: Alphanumeric, self-checking. EAN-13: 13-digit international product code. UPC-A: 12-digit US product code. ITF-14: Shipping container marking. Code 93: Compact alphanumeric.</p>
-
 <h2>Common Use Cases</h2>
 <p>Inventory labels on product documentation. Shipping labels with tracking numbers. Asset tags on equipment manuals. Library book labels. Healthcare specimen labels. Warehouse bin location labels.</p>
-
 <h2>Placement and Sizing</h2>
 <p>Position barcodes for easy scanning access. Size appropriately for scanner type used. Ensure quiet zones are preserved. Test print quality affects scannability. Consider label placement on curved surfaces.</p>
-
 <h2>Integration Workflows</h2>
-<p>Generate barcodes from database values. Batch process multiple documents. Create serialized barcode sequences. Export for label printing. Integrate with inventory management systems. Automate document tracking workflows.</p>\`,
+<p>Generate barcodes from database values. Batch process multiple documents. Create serialized barcode sequences. Export for label printing. Integrate with inventory management systems. Automate document tracking workflows.</p>`,
   },
 ];
 
