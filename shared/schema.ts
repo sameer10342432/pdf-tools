@@ -25039,30 +25039,10 @@ const newDevTools: PdfTool[] = [
   },
   {
     id: "image-to-data-uri",
-  "css-triangle-generator",
-  "css-button-generator",
-  "css-form-generator",
-  "css-loader-generator",
-  "css-animated-background",
-  "html-table-generator",
-  "html-list-generator",
-  "html-symbol-codes",
-  "emoji-list",
-  "htaccess-generator",
     name: "Image to Data URI",
     description: "Convert images to Base64 data URI strings",
     icon: "Code",
     type: "image-to-data-uri",
-  "css-triangle-generator",
-  "css-button-generator",
-  "css-form-generator",
-  "css-loader-generator",
-  "css-animated-background",
-  "html-table-generator",
-  "html-list-generator",
-  "html-symbol-codes",
-  "emoji-list",
-  "htaccess-generator",
     color: "bg-gray-600",
     emoji: "🔗",
     metaTitle: "Image to Data URI Converter Free - Base64 Encoding | PDF Tools",
@@ -25085,3 +25065,4 @@ const newDevTools: PdfTool[] = [
 ];
 
 pdfTools.push(...newDevTools);
+
