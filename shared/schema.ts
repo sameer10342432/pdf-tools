@@ -880,6 +880,16 @@ export const pdfToolTypes = [
   "online-sticky-notes",
   "online-wysiwyg-editor",
   "online-code-editor",
+  "online-regex-tester",
+  "online-json-editor",
+  "online-xml-editor",
+  "qr-code-wifi",
+  "qr-code-vcard",
+  "qr-code-email",
+  "qr-code-phone",
+  "qr-code-event",
+  "image-to-css-art",
+  "image-to-data-uri",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -24789,3 +24799,259 @@ const productivityTools: PdfTool[] = [
 ];
 
 pdfTools.push(...productivityTools);
+
+// New developer and utility tools
+const newDevTools: PdfTool[] = [
+  {
+    id: "online-regex-tester",
+    name: "Online Regex Tester",
+    description: "Test and debug regular expressions with real-time matching",
+    icon: "Braces",
+    type: "online-regex-tester",
+    color: "bg-purple-500",
+    emoji: "🔍",
+    metaTitle: "Online Regex Tester Free - Test Regular Expressions | PDF Tools",
+    metaDescription: "Test and debug regular expressions online for free. Real-time matching, syntax highlighting, and match extraction. No signup required.",
+    seoArticle: `<h2>Online Regex Tester - Master Regular Expressions</h2>
+<p>Regular expressions are powerful tools for pattern matching and text manipulation. Our free online regex tester lets you write, test, and debug regex patterns in real-time. See matches highlighted instantly as you type, with detailed match information and group captures.</p>
+
+<h2>What Are Regular Expressions?</h2>
+<p>Regular expressions (regex) are sequences of characters that define search patterns. They're used in programming, text editors, and command-line tools for searching, replacing, and validating text. From simple pattern matching to complex text parsing, regex is an essential skill.</p>
+
+<h2>Features of Our Regex Tester</h2>
+<p>Real-time pattern matching with instant visual feedback. Support for all standard regex flags (global, case-insensitive, multiline). Detailed match information including groups and indices. Syntax highlighting for both pattern and test text. Quick reference for common regex patterns.</p>
+
+<h2>Common Regex Patterns</h2>
+<p>Email validation, URL matching, phone number formats, date patterns, and more. Use character classes like \\d for digits, \\w for word characters. Quantifiers like *, +, ? control repetition. Groups () capture subpatterns. Anchors ^ and $ match start and end.</p>
+
+<h2>Regex Best Practices</h2>
+<p>Start simple and build complexity gradually. Test with various edge cases. Use non-capturing groups (?:) when you don't need captures. Be specific to avoid false positives. Consider performance with large texts. Our tester helps you develop robust patterns.</p>`,
+  },
+  {
+    id: "online-json-editor",
+    name: "Online JSON Editor",
+    description: "Edit, format, and validate JSON data with syntax highlighting",
+    icon: "Braces",
+    type: "online-json-editor",
+    color: "bg-yellow-600",
+    emoji: "📋",
+    metaTitle: "Online JSON Editor Free - Format & Validate JSON | PDF Tools",
+    metaDescription: "Edit, format, and validate JSON data online for free. Syntax highlighting, error detection, and beautification. No signup required.",
+    seoArticle: `<h2>Online JSON Editor - Format and Validate JSON</h2>
+<p>JSON (JavaScript Object Notation) is the universal data exchange format. Our free online JSON editor helps you create, edit, format, and validate JSON data with ease. See syntax errors instantly, beautify minified JSON, and ensure your data is properly structured.</p>
+
+<h2>JSON Formatting Features</h2>
+<p>Beautify compressed JSON with proper indentation. Minify JSON to reduce file size. Validate JSON syntax with detailed error messages. Syntax highlighting for easy reading. Tree view for complex nested structures. Copy formatted output with one click.</p>
+
+<h2>Why JSON Matters</h2>
+<p>JSON is used everywhere: REST APIs, configuration files, data storage, and inter-application communication. Clean, valid JSON ensures smooth data exchange. Our editor helps you catch errors before they cause problems in production.</p>
+
+<h2>Working with JSON</h2>
+<p>Paste your JSON to validate and format. Edit directly with syntax highlighting. Collapse/expand nested objects. Search within your JSON structure. Convert between JSON and other formats. Export your cleaned-up data instantly.</p>
+
+<h2>JSON Best Practices</h2>
+<p>Use descriptive key names. Keep nesting manageable. Validate before sending to APIs. Use arrays for ordered collections, objects for named properties. Our editor enforces proper JSON structure automatically.</p>`,
+  },
+  {
+    id: "online-xml-editor",
+    name: "Online XML Editor",
+    description: "Edit, format, and validate XML documents with syntax highlighting",
+    icon: "Code",
+    type: "online-xml-editor",
+    color: "bg-orange-600",
+    emoji: "📄",
+    metaTitle: "Online XML Editor Free - Format & Validate XML | PDF Tools",
+    metaDescription: "Edit, format, and validate XML documents online for free. Syntax highlighting, error detection, and beautification. No signup required.",
+    seoArticle: `<h2>Online XML Editor - Format and Validate XML</h2>
+<p>XML (eXtensible Markup Language) remains essential for configuration files, data exchange, and document formats. Our free online XML editor helps you create, edit, format, and validate XML documents with proper syntax highlighting and error detection.</p>
+
+<h2>XML Formatting Features</h2>
+<p>Beautify compressed XML with proper indentation. Validate XML syntax and well-formedness. Syntax highlighting for tags, attributes, and values. Collapse/expand elements for navigation. Detect common XML errors instantly.</p>
+
+<h2>Why XML Still Matters</h2>
+<p>XML powers configuration files (web.config, pom.xml), data formats (SVG, XHTML), and enterprise integrations (SOAP, RSS). Understanding and working with XML remains a valuable skill. Our editor makes XML manipulation straightforward.</p>
+
+<h2>XML vs JSON</h2>
+<p>XML offers schemas for strict validation, attributes for metadata, and namespaces for complex documents. JSON is simpler but less expressive. Many systems still require XML, making our editor essential for developers.</p>
+
+<h2>XML Best Practices</h2>
+<p>Use meaningful element names. Keep attributes for metadata, elements for data. Validate against schemas when available. Use proper encoding declarations. Our editor helps you create clean, valid XML documents.</p>`,
+  },
+  {
+    id: "qr-code-wifi",
+    name: "QR Code Generator (WiFi)",
+    description: "Generate QR codes for WiFi network connection sharing",
+    icon: "Share2",
+    type: "qr-code-wifi",
+    color: "bg-blue-500",
+    emoji: "📶",
+    metaTitle: "WiFi QR Code Generator Free - Share WiFi Networks | PDF Tools",
+    metaDescription: "Generate WiFi QR codes online for free. Share your WiFi network with guests instantly. Support for WPA, WPA2, and WEP. No signup required.",
+    seoArticle: `<h2>WiFi QR Code Generator - Share Networks Instantly</h2>
+<p>Never type WiFi passwords again. Our free WiFi QR code generator creates scannable codes that automatically connect devices to your network. Perfect for homes, offices, cafes, and events. Just scan and connect.</p>
+
+<h2>How WiFi QR Codes Work</h2>
+<p>The QR code encodes your network name (SSID), password, and security type. When scanned, smartphones automatically connect without manual entry. Supported by iPhone, Android, and most modern devices.</p>
+
+<h2>Security Considerations</h2>
+<p>WiFi QR codes contain your password, so treat them accordingly. Great for guest networks but consider who can see the code. Use strong passwords regardless. WPA2/WPA3 security is recommended for all networks.</p>
+
+<h2>Use Cases</h2>
+<p>Guest network sharing at home. Customer WiFi in retail stores. Conference and event connectivity. Airbnb and rental property welcome packets. Office visitor access. Print and display anywhere you need easy WiFi access.</p>
+
+<h2>Creating Your WiFi QR Code</h2>
+<p>Enter your network name exactly as it appears. Input the password (case-sensitive). Select your security type (WPA/WPA2 or WEP). Generate and download your QR code. Print or share digitally.</p>`,
+  },
+  {
+    id: "qr-code-vcard",
+    name: "QR Code Generator (vCard)",
+    description: "Generate QR codes for contact information sharing",
+    icon: "Users",
+    type: "qr-code-vcard",
+    color: "bg-green-500",
+    emoji: "👤",
+    metaTitle: "vCard QR Code Generator Free - Share Contact Info | PDF Tools",
+    metaDescription: "Generate vCard QR codes online for free. Share your contact information instantly. Include name, phone, email, and address. No signup required.",
+    seoArticle: `<h2>vCard QR Code Generator - Share Contacts Instantly</h2>
+<p>Exchange contact information effortlessly with vCard QR codes. Our free generator creates scannable codes that add your details directly to phone contacts. No typing, no errors, just scan and save.</p>
+
+<h2>What is vCard?</h2>
+<p>vCard is the standard format for electronic business cards. It stores name, phone numbers, email addresses, company info, and more. When encoded in a QR code, all this information transfers instantly to any smartphone.</p>
+
+<h2>Information You Can Include</h2>
+<p>Full name and title. Multiple phone numbers (work, mobile, home). Email addresses. Company and job title. Physical address. Website URL. All fields are optional - include what you need.</p>
+
+<h2>Use Cases</h2>
+<p>Business cards that never run out. Networking events. Conference badges. Email signatures. Resume headers. Storefront contact displays. LinkedIn profile links. Make connections stick.</p>
+
+<h2>Best Practices</h2>
+<p>Include essential contact methods. Keep information current. Test your QR code on multiple devices. Consider a smaller code with less data for easier scanning. Print at adequate size for reliable scanning.</p>`,
+  },
+  {
+    id: "qr-code-email",
+    name: "QR Code Generator (Email)",
+    description: "Generate QR codes for pre-filled email composition",
+    icon: "Send",
+    type: "qr-code-email",
+    color: "bg-red-500",
+    emoji: "📧",
+    metaTitle: "Email QR Code Generator Free - Pre-filled Emails | PDF Tools",
+    metaDescription: "Generate email QR codes online for free. Create QR codes with pre-filled recipient, subject, and body. Make contacting you easy. No signup required.",
+    seoArticle: `<h2>Email QR Code Generator - Pre-filled Messages</h2>
+<p>Make it easy for people to email you with our free email QR code generator. Create scannable codes that open the email app with recipient, subject, and body already filled in. One scan, and they're ready to send.</p>
+
+<h2>How Email QR Codes Work</h2>
+<p>The QR code contains a mailto: link with pre-filled fields. When scanned, the device opens the default email app with your address and optional subject/body text ready. Users just review and hit send.</p>
+
+<h2>What You Can Pre-fill</h2>
+<p>Recipient email address (required). Subject line for context. Body text for common inquiries. CC and BCC recipients if needed. Make responding convenient and structured.</p>
+
+<h2>Use Cases</h2>
+<p>Customer feedback collection. Event RSVP requests. Product inquiry forms. Support ticket initiation. Newsletter signups. Conference badge contact links. Anywhere you want easy email engagement.</p>
+
+<h2>Tips for Effective Email QR Codes</h2>
+<p>Keep subject lines clear and descriptive. Pre-fill body text to guide responses. Test on multiple devices. Consider spam filters with body text. Include your email address visibly near the QR code as backup.</p>`,
+  },
+  {
+    id: "qr-code-phone",
+    name: "QR Code Generator (Phone)",
+    description: "Generate QR codes for phone number quick dialing",
+    icon: "Smartphone",
+    type: "qr-code-phone",
+    color: "bg-teal-500",
+    emoji: "📞",
+    metaTitle: "Phone Number QR Code Generator Free - Quick Dial | PDF Tools",
+    metaDescription: "Generate phone number QR codes online for free. Create scannable codes for instant calling. Perfect for business cards and signage. No signup required.",
+    seoArticle: `<h2>Phone Number QR Code Generator - One-Scan Calling</h2>
+<p>Make calling you effortless with phone number QR codes. Our free generator creates scannable codes that dial your number instantly. No manual entry, no typos - just scan and call. Perfect for business and personal use.</p>
+
+<h2>How Phone QR Codes Work</h2>
+<p>The QR code contains a tel: link with your phone number. When scanned, smartphones offer to call that number immediately. Works with mobile phones, landlines, and toll-free numbers worldwide.</p>
+
+<h2>Phone Number Formatting</h2>
+<p>Include country code for international accessibility. Use the format +1234567890 for best compatibility. The + ensures proper international dialing. Our generator formats the number correctly for you.</p>
+
+<h2>Use Cases</h2>
+<p>Business cards for instant contact. Store signage for customer service. Emergency contact information. Real estate signs for property inquiries. Product packaging for support calls. Event materials for organizer contact.</p>
+
+<h2>Best Practices</h2>
+<p>Test your QR code to ensure correct dialing. Include the phone number visibly as text backup. Consider business hours if applicable. Use a dedicated line for QR-generated calls if tracking is important.</p>`,
+  },
+  {
+    id: "qr-code-event",
+    name: "QR Code Generator (Event)",
+    description: "Generate QR codes for calendar event creation",
+    icon: "Calendar",
+    type: "qr-code-event",
+    color: "bg-indigo-500",
+    emoji: "📅",
+    metaTitle: "Event QR Code Generator Free - Calendar Events | PDF Tools",
+    metaDescription: "Generate event QR codes online for free. Create scannable codes that add events to calendars instantly. Include date, time, location, and details. No signup required.",
+    seoArticle: `<h2>Event QR Code Generator - Add to Calendar Instantly</h2>
+<p>Boost event attendance with calendar QR codes. Our free generator creates scannable codes that add events directly to smartphone calendars. Date, time, location, and description - all transferred with one scan.</p>
+
+<h2>How Event QR Codes Work</h2>
+<p>The QR code contains calendar event data in iCalendar format. When scanned, devices offer to add the event to the calendar app. Works with Google Calendar, Apple Calendar, Outlook, and other calendar apps.</p>
+
+<h2>Event Information Included</h2>
+<p>Event title and description. Start and end date/time. Location (physical address or virtual meeting link). Reminder settings. All fields transfer directly to the calendar for easy reference.</p>
+
+<h2>Use Cases</h2>
+<p>Conference invitations. Workshop and class schedules. Appointment reminders. Wedding save-the-dates. Product launch announcements. Recurring meeting setup. Any event worth remembering.</p>
+
+<h2>Tips for Effective Event QR Codes</h2>
+<p>Include complete address for navigation. Set appropriate reminder times. Add virtual meeting links when applicable. Test across different calendar apps. Pair with printed event details for accessibility.</p>`,
+  },
+  {
+    id: "image-to-css-art",
+    name: "Image to CSS Art",
+    description: "Convert images to pure CSS box-shadow art",
+    icon: "Palette",
+    type: "image-to-css-art",
+    color: "bg-pink-500",
+    emoji: "🎨",
+    metaTitle: "Image to CSS Art Converter Free - Box Shadow Art | PDF Tools",
+    metaDescription: "Convert images to pure CSS box-shadow art online for free. Create pixel art using only CSS. Perfect for creative web projects. No signup required.",
+    seoArticle: `<h2>Image to CSS Art - Pure CSS Pixel Art</h2>
+<p>Transform any image into pure CSS art using box-shadows. Our free converter creates stunning pixel representations using only CSS - no images required. Perfect for creative web projects, loading animations, and unique visual effects.</p>
+
+<h2>How CSS Art Works</h2>
+<p>Each pixel becomes a box-shadow declaration. A single 1x1 element with thousands of shadows creates the image. The result is pure CSS that renders without any image files. Fascinating technique meets practical application.</p>
+
+<h2>Why Use CSS Art?</h2>
+<p>No image requests means faster loading. Easily animated with CSS transitions. Scales cleanly at certain sizes. Great for favicons and small icons. Educational for understanding CSS. Unique aesthetic for creative projects.</p>
+
+<h2>Optimization Options</h2>
+<p>Reduce image size before conversion for smaller CSS. Choose output resolution based on use case. Higher resolution means larger CSS files. Balance detail against file size for optimal results.</p>
+
+<h2>Using Your CSS Art</h2>
+<p>Copy the generated CSS to your stylesheet. Add a single div element with the correct dimensions. The CSS handles all visual rendering. Adjust size with transform:scale() if needed. Animate with CSS transitions for effects.</p>`,
+  },
+  {
+    id: "image-to-data-uri",
+    name: "Image to Data URI",
+    description: "Convert images to Base64 data URI strings",
+    icon: "Code",
+    type: "image-to-data-uri",
+    color: "bg-gray-600",
+    emoji: "🔗",
+    metaTitle: "Image to Data URI Converter Free - Base64 Encoding | PDF Tools",
+    metaDescription: "Convert images to Base64 data URI strings online for free. Embed images directly in HTML and CSS. Reduce HTTP requests. No signup required.",
+    seoArticle: `<h2>Image to Data URI - Embed Images in Code</h2>
+<p>Convert any image to a Base64 data URI that can be embedded directly in HTML or CSS. Our free converter eliminates the need for separate image files, reducing HTTP requests and simplifying deployment. Perfect for small icons, backgrounds, and inline images.</p>
+
+<h2>What Are Data URIs?</h2>
+<p>Data URIs encode file contents as Base64 text within the URL itself. Instead of referencing an external file, the image data is included inline. Format: data:[mediatype];base64,[data]. Works in all modern browsers.</p>
+
+<h2>Benefits of Data URIs</h2>
+<p>Reduce HTTP requests for faster loading. Simplify deployment with no external files. Perfect for small images under 5KB. Avoid CORS issues with embedded images. Bundle assets directly in CSS or HTML.</p>
+
+<h2>When to Use Data URIs</h2>
+<p>Small icons and UI elements. CSS background images. Email HTML templates. Single-page applications. Offline-capable pages. Avoid for large images - file size increases ~33% with Base64.</p>
+
+<h2>How to Use Generated Data URIs</h2>
+<p>In HTML: <img src="data:image/png;base64,...">. In CSS: background-image: url(data:image/png;base64,...). Copy the complete string including the data: prefix. Test rendering before deployment.</p>`,
+  },
+];
+
+pdfTools.push(...newDevTools);

@@ -35058,5 +35058,124 @@ file '${loopInputPath}'`;
       res.status(500).json({ error: error.message || "Text processing failed" });
     }
   });
+
+  // Additional QR Code API endpoints
+  app.post("/api/qr-code/wifi", async (req: Request, res: Response) => {
+    try {
+      const { ssid, password, encryption, hidden } = req.body;
+      const wifiString = `WIFI:T:${encryption};S:${ssid};P:${password};H:${hidden ? 'true' : 'false'};;`;
+      const qrBuffer = await QRCode.toBuffer(wifiString, { type: 'png', width: 256, margin: 2 });
+      res.setHeader('Content-Type', 'image/png');
+      res.send(qrBuffer);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/qr-code/vcard", async (req: Request, res: Response) => {
+    try {
+      const { firstName, lastName, phone, email, company, title, website, address } = req.body;
+      const vcard = `BEGIN:VCARD
+VERSION:3.0
+N:${lastName};${firstName}
+FN:${firstName} ${lastName}
+${company ? `ORG:${company}` : ''}
+${title ? `TITLE:${title}` : ''}
+${phone ? `TEL:${phone}` : ''}
+${email ? `EMAIL:${email}` : ''}
+${website ? `URL:${website}` : ''}
+${address ? `ADR:;;${address}` : ''}
+END:VCARD`.replace(/\n+/g, '\n');
+      const qrBuffer = await QRCode.toBuffer(vcard, { type: 'png', width: 256, margin: 2 });
+      res.setHeader('Content-Type', 'image/png');
+      res.send(qrBuffer);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/qr-code/email", async (req: Request, res: Response) => {
+    try {
+      const { email, subject, body } = req.body;
+      let mailto = `mailto:${email}`;
+      const params = [];
+      if (subject) params.push(`subject=${encodeURIComponent(subject)}`);
+      if (body) params.push(`body=${encodeURIComponent(body)}`);
+      if (params.length) mailto += '?' + params.join('&');
+      const qrBuffer = await QRCode.toBuffer(mailto, { type: 'png', width: 256, margin: 2 });
+      res.setHeader('Content-Type', 'image/png');
+      res.send(qrBuffer);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/qr-code/phone", async (req: Request, res: Response) => {
+    try {
+      const { phone } = req.body;
+      const tel = `tel:${phone}`;
+      const qrBuffer = await QRCode.toBuffer(tel, { type: 'png', width: 256, margin: 2 });
+      res.setHeader('Content-Type', 'image/png');
+      res.send(qrBuffer);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/qr-code/event", async (req: Request, res: Response) => {
+    try {
+      const { title, location, description, startDate, startTime, endDate, endTime } = req.body;
+      const formatDate = (d: string, t: string) => d.replace(/-/g, '') + 'T' + t.replace(/:/g, '') + '00';
+      const dtstart = formatDate(startDate, startTime);
+      const dtend = endDate && endTime ? formatDate(endDate, endTime) : formatDate(startDate, startTime);
+      const ical = `BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:${title}
+${location ? `LOCATION:${location}` : ''}
+${description ? `DESCRIPTION:${description}` : ''}
+DTSTART:${dtstart}
+DTEND:${dtend}
+END:VEVENT
+END:VCALENDAR`.replace(/\n+/g, '\n');
+      const qrBuffer = await QRCode.toBuffer(ical, { type: 'png', width: 256, margin: 2 });
+      res.setHeader('Content-Type', 'image/png');
+      res.send(qrBuffer);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/image-to-css-art", upload.single("image"), async (req: Request, res: Response) => {
+    try {
+      if (!req.file) return res.status(400).json({ error: "No image uploaded" });
+      const resolution = parseInt(req.body.resolution) || 32;
+      const image = await sharp(req.file.path).resize(resolution, resolution, { fit: 'contain' }).raw().toBuffer({ resolveWithObject: true });
+      const { data, info } = image;
+      let shadows = [];
+      for (let y = 0; y < info.height; y++) {
+        for (let x = 0; x < info.width; x++) {
+          const idx = (y * info.width + x) * info.channels;
+          const r = data[idx], g = data[idx + 1], b = data[idx + 2];
+          const a = info.channels === 4 ? data[idx + 3] / 255 : 1;
+          if (a > 0.1) {
+            shadows.push(`${x}px ${y}px rgba(${r},${g},${b},${a.toFixed(2)})`);
+          }
+        }
+      }
+      const css = `.css-art {
+  width: 1px;
+  height: 1px;
+  box-shadow: ${shadows.join(',\n    ')};
+  transform: scale(4);
+  transform-origin: top left;
+}`;
+      fs.unlinkSync(req.file.path);
+      res.json({ css });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   return httpServer;
 }

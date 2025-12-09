@@ -82,6 +82,7 @@ import {
   Clipboard,
   Share2,
   Upload,
+  Calendar,
   PenSquare,
   type LucideIcon,
 } from "lucide-react";
@@ -167,6 +168,7 @@ const iconMap: Record<string, LucideIcon> = {
   Clipboard,
   Share2,
   Upload,
+  Calendar,
   PenSquare,
 };
 
