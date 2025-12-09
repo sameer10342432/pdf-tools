@@ -22,6 +22,16 @@ import { AgeCalculator } from "./age-calculator";
 import { DateCalculator } from "./date-calculator";
 import { WorldClockComponent } from "./world-clock";
 import { StopwatchComponent } from "./stopwatch";
+import { OnlineCalculator } from "./online-calculator";
+import { ScientificCalculator } from "./scientific-calculator";
+import { BmiCalculator } from "./bmi-calculator";
+import { LoanCalculator } from "./loan-calculator";
+import { MortgageCalculator } from "./mortgage-calculator";
+import { PercentageCalculator } from "./percentage-calculator";
+import { SalesTaxCalculator } from "./sales-tax-calculator";
+import { DiscountCalculator } from "./discount-calculator";
+import { OnlineNotepad } from "./online-notepad";
+import { TimerTool } from "./timer-tool";
 import {
   type PdfTool,
   type UploadedFile,
@@ -118,6 +128,11 @@ import {
   CalendarDays,
   Globe2,
   Timer as TimerIcon,
+  Calculator,
+  DollarSign,
+  Home,
+  Percent,
+  Receipt,
   type LucideIcon,
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
@@ -207,6 +222,11 @@ const iconMap: Record<string, LucideIcon> = {
   CalendarDays,
   Globe2,
   TimerIcon,
+  Calculator,
+  DollarSign,
+  Home,
+  Percent,
+  Receipt,
 };
 
 const utilityToolTypes = [
@@ -220,6 +240,16 @@ const utilityToolTypes = [
   "date-calculator",
   "world-clock",
   "stopwatch",
+  "online-calculator",
+  "scientific-calculator",
+  "bmi-calculator",
+  "loan-calculator",
+  "mortgage-calculator",
+  "percentage-calculator",
+  "sales-tax-calculator",
+  "discount-calculator",
+  "online-notepad",
+  "timer",
 ];
 
 interface ToolDialogProps {
@@ -697,6 +727,16 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
                 {tool.type === "date-calculator" && <DateCalculator />}
                 {tool.type === "world-clock" && <WorldClockComponent />}
                 {tool.type === "stopwatch" && <StopwatchComponent />}
+                {tool.type === "online-calculator" && <OnlineCalculator />}
+                {tool.type === "scientific-calculator" && <ScientificCalculator />}
+                {tool.type === "bmi-calculator" && <BmiCalculator />}
+                {tool.type === "loan-calculator" && <LoanCalculator />}
+                {tool.type === "mortgage-calculator" && <MortgageCalculator />}
+                {tool.type === "percentage-calculator" && <PercentageCalculator />}
+                {tool.type === "sales-tax-calculator" && <SalesTaxCalculator />}
+                {tool.type === "discount-calculator" && <DiscountCalculator />}
+                {tool.type === "online-notepad" && <OnlineNotepad />}
+                {tool.type === "timer" && <TimerTool />}
                 <div className="flex justify-end">
                   <Button variant="outline" onClick={handleClose} data-testid="button-close">
                     Close

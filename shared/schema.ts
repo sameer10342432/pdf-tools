@@ -810,6 +810,16 @@ export const pdfToolTypes = [
   "date-calculator",
   "world-clock",
   "stopwatch",
+  "online-calculator",
+  "scientific-calculator",
+  "bmi-calculator",
+  "loan-calculator",
+  "mortgage-calculator",
+  "percentage-calculator",
+  "sales-tax-calculator",
+  "discount-calculator",
+  "online-notepad",
+  "timer",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -22942,6 +22952,256 @@ const utilityTools: PdfTool[] = [
 
 <h3>Fullscreen Mode</h3>
 <p>Enter fullscreen mode for distraction-free timing with extra-large digits. Perfect for classroom timers, presentations, or when viewing from a distance.</p>`,
+  },
+  {
+    id: "online-calculator",
+    name: "Online Calculator",
+    description: "Simple and intuitive calculator for everyday math",
+    icon: "Calculator",
+    type: "online-calculator",
+    color: "bg-blue-500",
+    emoji: "🔢",
+    metaTitle: "Online Calculator - Free Basic Calculator | File Tools",
+    metaDescription: "Free online calculator for basic math operations. Add, subtract, multiply, divide with a clean, easy-to-use interface. No download required.",
+    seoArticle: `<h2>Online Calculator - Simple Math Made Easy</h2>
+<p>Our free online calculator provides a clean, intuitive interface for all your everyday math needs. Whether you're calculating tips, splitting bills, or working on homework, this tool makes arithmetic simple and accessible.</p>
+
+<h3>Basic Operations</h3>
+<p>Perform addition, subtraction, multiplication, and division with ease. The large buttons and clear display make it easy to enter and read numbers, even on mobile devices.</p>
+
+<h3>Memory Functions</h3>
+<p>Store and recall numbers using memory functions. Add to memory, subtract from memory, recall stored values, and clear memory with dedicated buttons.</p>
+
+<h3>Keyboard Support</h3>
+<p>Use your keyboard for faster input. Number keys, operators, Enter for equals, and Escape to clear all work exactly as you'd expect.</p>
+
+<h3>History Log</h3>
+<p>View your calculation history to track previous operations. Perfect for double-checking your work or referencing earlier calculations.</p>`,
+  },
+  {
+    id: "scientific-calculator",
+    name: "Scientific Calculator",
+    description: "Advanced calculator with trigonometry, logarithms, and more",
+    icon: "Calculator",
+    type: "scientific-calculator",
+    color: "bg-purple-500",
+    emoji: "🧮",
+    metaTitle: "Scientific Calculator Online - Advanced Math Functions | File Tools",
+    metaDescription: "Free scientific calculator with trigonometry, logarithms, exponents, roots, and constants. Perfect for students and professionals.",
+    seoArticle: `<h2>Scientific Calculator - Advanced Mathematics at Your Fingertips</h2>
+<p>Our scientific calculator provides comprehensive mathematical functions for students, engineers, and scientists. From basic arithmetic to complex trigonometric calculations, this tool handles it all.</p>
+
+<h3>Trigonometric Functions</h3>
+<p>Calculate sine, cosine, tangent, and their inverse functions. Switch between degrees and radians mode based on your needs.</p>
+
+<h3>Logarithms and Exponents</h3>
+<p>Compute natural logarithms, base-10 logarithms, and exponentials. Calculate any power or root with precision.</p>
+
+<h3>Constants and Memory</h3>
+<p>Quick access to mathematical constants like Pi and Euler's number. Store intermediate results in memory for complex multi-step calculations.</p>
+
+<h3>Parentheses and Order of Operations</h3>
+<p>Use parentheses to control calculation order. The calculator follows standard mathematical order of operations (PEMDAS/BODMAS).</p>`,
+  },
+  {
+    id: "bmi-calculator",
+    name: "BMI Calculator",
+    description: "Calculate your Body Mass Index with health insights",
+    icon: "Activity",
+    type: "bmi-calculator",
+    color: "bg-green-500",
+    emoji: "⚖️",
+    metaTitle: "BMI Calculator - Calculate Body Mass Index Online | File Tools",
+    metaDescription: "Free BMI calculator with health insights. Calculate your Body Mass Index using weight and height. Supports metric and imperial units.",
+    seoArticle: `<h2>BMI Calculator - Understand Your Body Mass Index</h2>
+<p>Our BMI Calculator helps you quickly determine your Body Mass Index, a widely used measure to categorize weight status. Get instant results with health insights and recommendations.</p>
+
+<h3>What is BMI?</h3>
+<p>Body Mass Index is calculated by dividing your weight by the square of your height. It provides a simple numeric measure of a person's thickness or thinness, allowing health professionals to discuss weight objectively.</p>
+
+<h3>BMI Categories</h3>
+<p>Understand where your BMI falls: Underweight (below 18.5), Normal weight (18.5-24.9), Overweight (25-29.9), or Obese (30 and above). Each category comes with health information.</p>
+
+<h3>Metric and Imperial Units</h3>
+<p>Enter your measurements in either metric (kg/cm) or imperial (lbs/ft-in) units. The calculator automatically converts and computes your BMI accurately.</p>
+
+<h3>Health Disclaimer</h3>
+<p>BMI is a screening tool, not a diagnostic measure. It doesn't account for muscle mass, bone density, or body composition. Always consult healthcare professionals for medical advice.</p>`,
+  },
+  {
+    id: "loan-calculator",
+    name: "Loan Calculator",
+    description: "Calculate monthly payments, interest, and amortization",
+    icon: "DollarSign",
+    type: "loan-calculator",
+    color: "bg-emerald-500",
+    emoji: "💰",
+    metaTitle: "Loan Calculator - Calculate Monthly Payments & Interest | File Tools",
+    metaDescription: "Free loan calculator with amortization schedule. Calculate monthly payments, total interest, and payoff timeline for any loan amount and term.",
+    seoArticle: `<h2>Loan Calculator - Plan Your Borrowing Wisely</h2>
+<p>Our comprehensive loan calculator helps you understand the true cost of borrowing. Calculate monthly payments, see total interest paid, and view detailed amortization schedules.</p>
+
+<h3>Monthly Payment Calculation</h3>
+<p>Enter your loan amount, interest rate, and term to instantly see your monthly payment. Adjust values to find the loan terms that fit your budget.</p>
+
+<h3>Amortization Schedule</h3>
+<p>View a complete breakdown of every payment over the life of the loan. See how much goes to principal versus interest each month, and track your balance over time.</p>
+
+<h3>Total Interest Analysis</h3>
+<p>Understand the full cost of your loan by seeing total interest paid. Compare different loan terms to minimize interest costs.</p>
+
+<h3>Extra Payment Scenarios</h3>
+<p>See how extra payments can reduce your loan term and save on interest. Plan strategies to pay off your loan faster.</p>`,
+  },
+  {
+    id: "mortgage-calculator",
+    name: "Mortgage Calculator",
+    description: "Calculate home loan payments with taxes and insurance",
+    icon: "Home",
+    type: "mortgage-calculator",
+    color: "bg-amber-500",
+    emoji: "🏠",
+    metaTitle: "Mortgage Calculator - Home Loan Payment Calculator | File Tools",
+    metaDescription: "Free mortgage calculator with taxes and insurance. Calculate monthly payments, PITI breakdown, and amortization for home loans.",
+    seoArticle: `<h2>Mortgage Calculator - Plan Your Home Purchase</h2>
+<p>Our mortgage calculator provides a complete picture of your home loan costs, including principal, interest, property taxes, and insurance (PITI). Make informed decisions about the biggest purchase of your life.</p>
+
+<h3>Complete PITI Calculation</h3>
+<p>Calculate your total monthly housing payment including Principal, Interest, Taxes, and Insurance. Get an accurate picture of what homeownership will really cost.</p>
+
+<h3>Down Payment Analysis</h3>
+<p>See how different down payment amounts affect your monthly payment and total interest paid. Understand the benefits of putting more money down.</p>
+
+<h3>PMI Consideration</h3>
+<p>If your down payment is less than 20%, see how Private Mortgage Insurance affects your monthly payment and when it can be removed.</p>
+
+<h3>Compare Loan Terms</h3>
+<p>Compare 15-year versus 30-year mortgages to see the trade-off between monthly payment and total interest paid.</p>`,
+  },
+  {
+    id: "percentage-calculator",
+    name: "Percentage Calculator",
+    description: "Calculate percentages, increases, decreases, and ratios",
+    icon: "Percent",
+    type: "percentage-calculator",
+    color: "bg-indigo-500",
+    emoji: "📊",
+    metaTitle: "Percentage Calculator - Calculate Any Percentage | File Tools",
+    metaDescription: "Free percentage calculator for all percentage problems. Calculate percentage of, percentage increase/decrease, and percentage difference.",
+    seoArticle: `<h2>Percentage Calculator - Solve Any Percentage Problem</h2>
+<p>Our percentage calculator handles all common percentage calculations. Whether you need to find a percentage of a number, calculate percentage change, or determine what percentage one number is of another, this tool does it all.</p>
+
+<h3>What is X% of Y?</h3>
+<p>The most common percentage calculation. Enter any percentage and number to find the result instantly. Perfect for calculating tips, discounts, and taxes.</p>
+
+<h3>X is What % of Y?</h3>
+<p>Determine what percentage one number represents of another. Great for understanding proportions and comparing values.</p>
+
+<h3>Percentage Increase/Decrease</h3>
+<p>Calculate how much a value has changed in percentage terms. Essential for tracking growth, analyzing data, and understanding trends.</p>
+
+<h3>Reverse Percentage</h3>
+<p>Find the original number before a percentage was added or subtracted. Useful for calculating pre-tax prices or original values.</p>`,
+  },
+  {
+    id: "sales-tax-calculator",
+    name: "Sales Tax Calculator",
+    description: "Calculate sales tax and total price for any purchase",
+    icon: "Receipt",
+    type: "sales-tax-calculator",
+    color: "bg-teal-500",
+    emoji: "🧾",
+    metaTitle: "Sales Tax Calculator - Calculate Tax on Purchases | File Tools",
+    metaDescription: "Free sales tax calculator. Calculate tax amount and total price for any purchase. Supports custom tax rates for any location.",
+    seoArticle: `<h2>Sales Tax Calculator - Know Your Total Before You Buy</h2>
+<p>Our sales tax calculator helps you determine the exact amount you'll pay at checkout. Enter the price and tax rate to see the tax amount and total price instantly.</p>
+
+<h3>Simple Tax Calculation</h3>
+<p>Enter the item price and your local sales tax rate to see the tax amount and final total. No more surprises at the register.</p>
+
+<h3>Reverse Tax Calculation</h3>
+<p>Have a total that includes tax? Calculate the pre-tax price and the tax amount separately. Perfect for expense reports and accounting.</p>
+
+<h3>Multiple Items</h3>
+<p>Add multiple items to calculate the total tax on your entire purchase. Track individual item taxes and the combined total.</p>
+
+<h3>Custom Tax Rates</h3>
+<p>Enter any tax rate from 0% to 100%. Supports different rates for different locations or special tax situations.</p>`,
+  },
+  {
+    id: "discount-calculator",
+    name: "Discount Calculator",
+    description: "Calculate sale prices and savings from discounts",
+    icon: "Tag",
+    type: "discount-calculator",
+    color: "bg-rose-500",
+    emoji: "🏷️",
+    metaTitle: "Discount Calculator - Calculate Sale Price & Savings | File Tools",
+    metaDescription: "Free discount calculator. Calculate sale prices, savings amount, and final price after discount. Supports percentage and fixed discounts.",
+    seoArticle: `<h2>Discount Calculator - Find Your Real Savings</h2>
+<p>Our discount calculator shows you exactly how much you'll save and pay during sales. Whether it's a percentage off or a fixed amount discount, get instant calculations for smarter shopping.</p>
+
+<h3>Percentage Discounts</h3>
+<p>Enter the original price and discount percentage to see the sale price and savings. Common discounts like 10%, 25%, and 50% off are just a click away.</p>
+
+<h3>Fixed Amount Discounts</h3>
+<p>Calculate the final price when a fixed dollar amount is taken off. Perfect for coupons and promotional offers with set values.</p>
+
+<h3>Multiple Discounts</h3>
+<p>Stack discounts to see cumulative savings. Calculate the result of applying multiple percentage or fixed discounts in sequence.</p>
+
+<h3>Compare Deals</h3>
+<p>Compare two different discount offers to see which gives you better savings. Make informed decisions about the best deals.</p>`,
+  },
+  {
+    id: "online-notepad",
+    name: "Online Notepad",
+    description: "Simple text editor with auto-save and download options",
+    icon: "FileText",
+    type: "online-notepad",
+    color: "bg-slate-500",
+    emoji: "📝",
+    metaTitle: "Online Notepad - Free Text Editor with Auto-Save | File Tools",
+    metaDescription: "Free online notepad with auto-save. Write notes, save locally, and download as text file. Clean, distraction-free text editor.",
+    seoArticle: `<h2>Online Notepad - Write Without Distractions</h2>
+<p>Our online notepad provides a clean, simple space for writing and note-taking. Your content auto-saves locally, so you never lose your work. Download your notes as text files anytime.</p>
+
+<h3>Auto-Save Feature</h3>
+<p>Your notes are automatically saved to your browser's local storage as you type. Return anytime and pick up where you left off.</p>
+
+<h3>Download as Text</h3>
+<p>Export your notes as a .txt file with one click. Save important content to your computer for offline access or sharing.</p>
+
+<h3>Word and Character Count</h3>
+<p>Track your writing progress with live word and character counts. Perfect for meeting word limits or tracking productivity.</p>
+
+<h3>Clean Interface</h3>
+<p>No clutter, no distractions. Just a simple text area where you can focus on writing. Dark mode support for comfortable writing in any lighting.</p>`,
+  },
+  {
+    id: "timer",
+    name: "Timer",
+    description: "Countdown timer with alarms and preset options",
+    icon: "Timer",
+    type: "timer",
+    color: "bg-red-500",
+    emoji: "⏲️",
+    metaTitle: "Online Timer - Countdown Timer with Alarm | File Tools",
+    metaDescription: "Free online countdown timer with alarm. Set custom timers or use presets. Perfect for cooking, exercise, studying, and productivity.",
+    seoArticle: `<h2>Online Timer - Never Miss a Deadline</h2>
+<p>Our online countdown timer helps you track time for any activity. Set custom durations, use quick presets, and get alerted when time is up with audio notifications.</p>
+
+<h3>Custom Timer</h3>
+<p>Set any duration from seconds to hours. Enter hours, minutes, and seconds for precise timing of any activity.</p>
+
+<h3>Quick Presets</h3>
+<p>One-click presets for common durations: 1 minute, 5 minutes, 10 minutes, 15 minutes, 30 minutes, and 1 hour. Start timing instantly without manual entry.</p>
+
+<h3>Audio Alarm</h3>
+<p>A clear alarm sounds when your timer reaches zero. Never miss the end of a timer, even if you're in another tab or across the room.</p>
+
+<h3>Multiple Timers</h3>
+<p>Run multiple timers simultaneously for complex timing needs. Perfect for cooking multiple dishes or managing parallel tasks.</p>`,
   },
 ];
 
