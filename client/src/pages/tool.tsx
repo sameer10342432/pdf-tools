@@ -44,6 +44,16 @@ import { OnlineClipboard } from "@/components/online-clipboard";
 import { ShareTextOnline } from "@/components/share-text-online";
 import { ShareFilesOnline } from "@/components/share-files-online";
 import { UrlShortener } from "@/components/url-shortener";
+import { ReadabilityChecker } from "@/components/readability-checker";
+import { PlagiarismChecker } from "@/components/plagiarism-checker";
+import { GrammarChecker } from "@/components/grammar-checker";
+import { SpellChecker } from "@/components/spell-checker";
+import { ArticleSpinner } from "@/components/article-spinner";
+import { ParaphrasingTool } from "@/components/paraphrasing-tool";
+import { TextSummarizer } from "@/components/text-summarizer";
+import { WordCloudGenerator } from "@/components/word-cloud-generator";
+import { SignatureGenerator } from "@/components/signature-generator";
+import { EmailValidator } from "@/components/email-validator";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
@@ -1300,7 +1310,47 @@ export default function ToolPage() {
                       <UrlShortener />
                     )}
 
-                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting", "website-to-pdf", "website-to-jpg", "website-source-code-viewer", "website-seo-analyzer", "keyword-density-checker", "meta-tag-generator", "robots-txt-generator", "sitemap-xml-generator", "domain-authority-checker", "page-authority-checker", "website-downloader", "screenshot-website", "voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder", "video-player", "online-video-player", "teleprompter", "backlink-checker", "broken-link-checker", "website-speed-test", "ping-tool", "whois-lookup", "dns-lookup", "ip-address-lookup", "what-is-my-ip", "http-header-viewer", "redirect-checker", "color-picker-screen", "color-picker-image", "hex-to-rgb", "rgb-to-hex", "hex-to-hsl", "rgb-to-cmyk", "color-palette-generator", "gradient-generator", "box-shadow-generator", "border-radius-generator", "online-whiteboard", "online-poll-maker", "online-survey-maker", "random-name-picker", "dice-roller", "coin-flipper", "online-clipboard", "share-text-online", "share-files-online", "url-shortener"].includes(tool.type) && (
+                    {tool.type === "readability-checker" && (
+                      <ReadabilityChecker />
+                    )}
+
+                    {tool.type === "plagiarism-checker" && (
+                      <PlagiarismChecker />
+                    )}
+
+                    {tool.type === "grammar-checker" && (
+                      <GrammarChecker />
+                    )}
+
+                    {tool.type === "spell-checker" && (
+                      <SpellChecker />
+                    )}
+
+                    {tool.type === "article-spinner" && (
+                      <ArticleSpinner />
+                    )}
+
+                    {tool.type === "paraphrasing-tool" && (
+                      <ParaphrasingTool />
+                    )}
+
+                    {tool.type === "text-summarizer" && (
+                      <TextSummarizer />
+                    )}
+
+                    {tool.type === "word-cloud-generator" && (
+                      <WordCloudGenerator />
+                    )}
+
+                    {tool.type === "signature-generator" && (
+                      <SignatureGenerator />
+                    )}
+
+                    {tool.type === "email-validator" && (
+                      <EmailValidator />
+                    )}
+
+                    {!["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting", "website-to-pdf", "website-to-jpg", "website-source-code-viewer", "website-seo-analyzer", "keyword-density-checker", "meta-tag-generator", "robots-txt-generator", "sitemap-xml-generator", "domain-authority-checker", "page-authority-checker", "website-downloader", "screenshot-website", "voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder", "video-player", "online-video-player", "teleprompter", "backlink-checker", "broken-link-checker", "website-speed-test", "ping-tool", "whois-lookup", "dns-lookup", "ip-address-lookup", "what-is-my-ip", "http-header-viewer", "redirect-checker", "color-picker-screen", "color-picker-image", "hex-to-rgb", "rgb-to-hex", "hex-to-hsl", "rgb-to-cmyk", "color-palette-generator", "gradient-generator", "box-shadow-generator", "border-radius-generator", "online-whiteboard", "online-poll-maker", "online-survey-maker", "random-name-picker", "dice-roller", "coin-flipper", "online-clipboard", "share-text-online", "share-files-online", "url-shortener", "readability-checker", "plagiarism-checker", "grammar-checker", "spell-checker", "article-spinner", "paraphrasing-tool", "text-summarizer", "word-cloud-generator", "signature-generator", "email-validator"].includes(tool.type) && (
                       <FileUpload
                         accept={getAcceptType() as string}
                         multiple={isMultiFileAllowed()}
@@ -1310,7 +1360,7 @@ export default function ToolPage() {
                       />
                     )}
 
-                    {!["voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder", "color-picker-screen", "color-picker-image", "hex-to-rgb", "rgb-to-hex", "hex-to-hsl", "rgb-to-cmyk", "color-palette-generator", "gradient-generator", "box-shadow-generator", "border-radius-generator", "online-whiteboard", "online-poll-maker", "online-survey-maker", "random-name-picker", "dice-roller", "coin-flipper", "online-clipboard", "share-text-online", "share-files-online", "url-shortener"].includes(tool.type) && (files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting", "website-to-pdf", "website-to-jpg", "website-source-code-viewer", "website-seo-analyzer", "keyword-density-checker", "meta-tag-generator", "robots-txt-generator", "sitemap-xml-generator", "domain-authority-checker", "page-authority-checker", "website-downloader", "screenshot-website", "backlink-checker", "broken-link-checker", "website-speed-test", "ping-tool", "whois-lookup", "dns-lookup", "ip-address-lookup", "what-is-my-ip", "http-header-viewer", "redirect-checker", "color-picker-screen", "color-picker-image", "hex-to-rgb", "rgb-to-hex", "hex-to-hsl", "rgb-to-cmyk", "color-palette-generator", "gradient-generator", "box-shadow-generator", "border-radius-generator"].includes(tool.type)) && (
+                    {!["voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder", "color-picker-screen", "color-picker-image", "hex-to-rgb", "rgb-to-hex", "hex-to-hsl", "rgb-to-cmyk", "color-palette-generator", "gradient-generator", "box-shadow-generator", "border-radius-generator", "online-whiteboard", "online-poll-maker", "online-survey-maker", "random-name-picker", "dice-roller", "coin-flipper", "online-clipboard", "share-text-online", "share-files-online", "url-shortener", "readability-checker", "plagiarism-checker", "grammar-checker", "spell-checker", "article-spinner", "paraphrasing-tool", "text-summarizer", "word-cloud-generator", "signature-generator", "email-validator"].includes(tool.type) && (files.length > 0 || ["base64-to-image", "json-validator", "json-minifier", "json-beautifier", "json-formatter", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "url-decode", "text-case-converter", "uppercase-converter", "lowercase-converter", "title-case-converter", "sentence-case-converter", "remove-line-breaks", "add-line-breaks", "text-sorter", "alphabetize-list", "reverse-text", "random-number-generator", "password-generator", "text-repeater", "find-replace-text", "text-statistics", "character-counter", "line-counter", "whitespace-remover", "slugify-url", "hex-to-text", "text-to-morse", "morse-to-text", "text-to-handwriting", "website-to-pdf", "website-to-jpg", "website-source-code-viewer", "website-seo-analyzer", "keyword-density-checker", "meta-tag-generator", "robots-txt-generator", "sitemap-xml-generator", "domain-authority-checker", "page-authority-checker", "website-downloader", "screenshot-website", "backlink-checker", "broken-link-checker", "website-speed-test", "ping-tool", "whois-lookup", "dns-lookup", "ip-address-lookup", "what-is-my-ip", "http-header-viewer", "redirect-checker", "color-picker-screen", "color-picker-image", "hex-to-rgb", "rgb-to-hex", "hex-to-hsl", "rgb-to-cmyk", "color-palette-generator", "gradient-generator", "box-shadow-generator", "border-radius-generator"].includes(tool.type)) && (
                       <ToolOptionsComponent
                         toolType={tool.type}
                         options={options}
@@ -1325,7 +1375,7 @@ export default function ToolPage() {
                       </p>
                     )}
 
-                    {!["voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder", "video-player", "online-video-player", "teleprompter", "backlink-checker", "broken-link-checker", "website-speed-test", "ping-tool", "whois-lookup", "dns-lookup", "ip-address-lookup", "what-is-my-ip", "http-header-viewer", "redirect-checker", "color-picker-screen", "color-picker-image", "hex-to-rgb", "rgb-to-hex", "hex-to-hsl", "rgb-to-cmyk", "color-palette-generator", "gradient-generator", "box-shadow-generator", "border-radius-generator", "online-whiteboard", "online-poll-maker", "online-survey-maker", "random-name-picker", "dice-roller", "coin-flipper", "online-clipboard", "share-text-online", "share-files-online", "url-shortener"].includes(tool.type) && (
+                    {!["voice-recorder", "online-voice-recorder", "text-to-speech", "audio-visualizer", "screen-recorder", "record-screen-camera", "webcam-recorder", "video-player", "online-video-player", "teleprompter", "backlink-checker", "broken-link-checker", "website-speed-test", "ping-tool", "whois-lookup", "dns-lookup", "ip-address-lookup", "what-is-my-ip", "http-header-viewer", "redirect-checker", "color-picker-screen", "color-picker-image", "hex-to-rgb", "rgb-to-hex", "hex-to-hsl", "rgb-to-cmyk", "color-palette-generator", "gradient-generator", "box-shadow-generator", "border-radius-generator", "online-whiteboard", "online-poll-maker", "online-survey-maker", "random-name-picker", "dice-roller", "coin-flipper", "online-clipboard", "share-text-online", "share-files-online", "url-shortener", "readability-checker", "plagiarism-checker", "grammar-checker", "spell-checker", "article-spinner", "paraphrasing-tool", "text-summarizer", "word-cloud-generator", "signature-generator", "email-validator"].includes(tool.type) && (
                       <div className="flex justify-end gap-3">
                         <Button
                           onClick={handleProcess}

@@ -23494,7 +23494,7 @@ const textProcessingTools: PdfTool[] = [
     emoji: "📖",
     metaTitle: "Readability Checker - Analyze Text Complexity | File Tools",
     metaDescription: "Check text readability with Flesch-Kincaid, Gunning Fog, and SMOG indexes. Get grade level scores and suggestions to improve content clarity.",
-    seoArticle: \`<h2>Readability Checker - Analyze Your Text Complexity</h2>
+    seoArticle: `<h2>Readability Checker - Analyze Your Text Complexity</h2>
 <p>Ensure your content is accessible to your target audience with our comprehensive readability analyzer. Get instant feedback on reading level and complexity.</p>
 
 <h3>Multiple Readability Metrics</h3>
@@ -23507,7 +23507,7 @@ const textProcessingTools: PdfTool[] = [
 <p>Get actionable recommendations to improve readability. Identify long sentences, complex words, and passive voice that may hinder comprehension.</p>
 
 <h3>Word and Sentence Analysis</h3>
-<p>View detailed statistics including word count, sentence count, average sentence length, syllable count, and percentage of complex words.</p>\`,
+<p>View detailed statistics including word count, sentence count, average sentence length, syllable count, and percentage of complex words.</p>`,
   },
   {
     id: "plagiarism-checker",
@@ -23519,7 +23519,7 @@ const textProcessingTools: PdfTool[] = [
     emoji: "🔍",
     metaTitle: "Plagiarism Checker - Detect Duplicate Content | File Tools",
     metaDescription: "Check your text for plagiarism and duplicate content. Identify copied passages and ensure content originality. Free plagiarism detection tool.",
-    seoArticle: \`<h2>Plagiarism Checker - Ensure Content Originality</h2>
+    seoArticle: `<h2>Plagiarism Checker - Ensure Content Originality</h2>
 <p>Protect your reputation and ensure content authenticity with our plagiarism detection tool. Identify duplicate content and maintain academic or professional integrity.</p>
 
 <h3>Pattern-Based Detection</h3>
@@ -23532,7 +23532,7 @@ const textProcessingTools: PdfTool[] = [
 <p>Compare two or more documents against each other to find overlapping content. Perfect for educators checking student submissions.</p>
 
 <h3>Privacy First</h3>
-<p>Your content is processed securely and never stored or shared. Check sensitive documents with confidence knowing your text remains private.</p>\`,
+<p>Your content is processed securely and never stored or shared. Check sensitive documents with confidence knowing your text remains private.</p>`,
   },
   {
     id: "grammar-checker",
@@ -23544,7 +23544,7 @@ const textProcessingTools: PdfTool[] = [
     emoji: "✅",
     metaTitle: "Grammar Checker - Fix Writing Errors Instantly | File Tools",
     metaDescription: "Check grammar, punctuation, and style errors in your text. Get instant corrections and improve your writing quality. Free grammar checking tool.",
-    seoArticle: \`<h2>Grammar Checker - Perfect Your Writing</h2>
+    seoArticle: `<h2>Grammar Checker - Perfect Your Writing</h2>
 <p>Eliminate embarrassing grammar mistakes and polish your writing with our comprehensive grammar checking tool. Get instant feedback and corrections.</p>
 
 <h3>Common Error Detection</h3>
@@ -23557,7 +23557,7 @@ const textProcessingTools: PdfTool[] = [
 <p>Improve writing clarity with suggestions for wordy phrases, passive voice, and repetitive language. Make your content more engaging.</p>
 
 <h3>Context-Aware Corrections</h3>
-<p>Our checker understands context to provide accurate suggestions. Avoid false positives with intelligent analysis of your writing.</p>\`,
+<p>Our checker understands context to provide accurate suggestions. Avoid false positives with intelligent analysis of your writing.</p>`,
   },
   {
     id: "spell-checker",
@@ -23569,7 +23569,7 @@ const textProcessingTools: PdfTool[] = [
     emoji: "🔤",
     metaTitle: "Spell Checker - Find Spelling Mistakes | File Tools",
     metaDescription: "Check spelling errors in your text and get correction suggestions. Support for multiple languages. Free online spell checking tool.",
-    seoArticle: \`<h2>Spell Checker - Eliminate Spelling Errors</h2>
+    seoArticle: `<h2>Spell Checker - Eliminate Spelling Errors</h2>
 <p>Catch every spelling mistake before it reaches your readers. Our spell checker identifies typos and provides smart correction suggestions.</p>
 
 <h3>Instant Error Detection</h3>
@@ -23582,7 +23582,7 @@ const textProcessingTools: PdfTool[] = [
 <p>Add technical terms, names, and industry-specific words to avoid false positives. Build your personal dictionary for accurate checking.</p>
 
 <h3>Bulk Text Support</h3>
-<p>Check documents of any length efficiently. Process essays, articles, reports, or entire manuscripts in seconds.</p>\`,
+<p>Check documents of any length efficiently. Process essays, articles, reports, or entire manuscripts in seconds.</p>`,
   },
   {
     id: "article-spinner",
@@ -23594,7 +23594,7 @@ const textProcessingTools: PdfTool[] = [
     emoji: "🔄",
     metaTitle: "Article Spinner - Rewrite Content Automatically | File Tools",
     metaDescription: "Spin articles using intelligent synonym replacement. Create unique content variations while maintaining meaning. Free article rewriter tool.",
-    seoArticle: \`<h2>Article Spinner - Create Content Variations</h2>
+    seoArticle: `<h2>Article Spinner - Create Content Variations</h2>
 <p>Generate unique versions of existing content with our intelligent article spinning tool. Create multiple variations while preserving the original meaning.</p>
 
 <h3>Synonym Replacement</h3>
@@ -23607,7 +23607,7 @@ const textProcessingTools: PdfTool[] = [
 <p>Control how aggressively the content is rewritten. Choose light spinning for minor variations or heavy spinning for completely unique output.</p>
 
 <h3>Preserve Key Terms</h3>
-<p>Mark important terms, brand names, or technical vocabulary to keep them unchanged during the spinning process.</p>\`,
+<p>Mark important terms, brand names, or technical vocabulary to keep them unchanged during the spinning process.</p>`,
   },
   {
     id: "paraphrasing-tool",
@@ -23619,7 +23619,7 @@ const textProcessingTools: PdfTool[] = [
     emoji: "✍️",
     metaTitle: "Paraphrasing Tool - Rewrite Text Intelligently | File Tools",
     metaDescription: "Paraphrase text to create unique content. Reword sentences while preserving meaning. Free online paraphrasing and rewriting tool.",
-    seoArticle: \`<h2>Paraphrasing Tool - Rewrite With Intelligence</h2>
+    seoArticle: `<h2>Paraphrasing Tool - Rewrite With Intelligence</h2>
 <p>Transform your text into fresh, original content while maintaining the core message. Perfect for avoiding plagiarism and creating unique variations.</p>
 
 <h3>Meaning Preservation</h3>
@@ -23632,7 +23632,7 @@ const textProcessingTools: PdfTool[] = [
 <p>Get complete sentence restructuring, not just word swaps. Create content that reads naturally and sounds human-written.</p>
 
 <h3>Vocabulary Enhancement</h3>
-<p>Improve your vocabulary by seeing alternative ways to express ideas. Learn new phrases and writing techniques.</p>\`,
+<p>Improve your vocabulary by seeing alternative ways to express ideas. Learn new phrases and writing techniques.</p>`,
   },
   {
     id: "text-summarizer",
@@ -23644,7 +23644,7 @@ const textProcessingTools: PdfTool[] = [
     emoji: "📝",
     metaTitle: "Text Summarizer - Summarize Long Content | File Tools",
     metaDescription: "Summarize long articles, documents, and text into concise summaries. Extract key points automatically. Free text summarization tool.",
-    seoArticle: \`<h2>Text Summarizer - Extract Key Information</h2>
+    seoArticle: `<h2>Text Summarizer - Extract Key Information</h2>
 <p>Save time by automatically condensing lengthy documents into digestible summaries. Extract the most important information in seconds.</p>
 
 <h3>Extractive Summarization</h3>
@@ -23657,7 +23657,7 @@ const textProcessingTools: PdfTool[] = [
 <p>Automatically identify main topics and key points. Perfect for quickly understanding long reports, articles, or research papers.</p>
 
 <h3>Bullet Point Format</h3>
-<p>Generate summaries as bullet points for easy scanning. Great for meeting notes, report highlights, and quick reference.</p>\`,
+<p>Generate summaries as bullet points for easy scanning. Great for meeting notes, report highlights, and quick reference.</p>`,
   },
   {
     id: "word-cloud-generator",
@@ -23669,7 +23669,7 @@ const textProcessingTools: PdfTool[] = [
     emoji: "☁️",
     metaTitle: "Word Cloud Generator - Create Visual Word Art | File Tools",
     metaDescription: "Generate beautiful word clouds from any text. Visualize word frequency with customizable colors and layouts. Free word cloud maker.",
-    seoArticle: \`<h2>Word Cloud Generator - Visualize Your Text</h2>
+    seoArticle: `<h2>Word Cloud Generator - Visualize Your Text</h2>
 <p>Transform text into stunning visual word clouds. See which words appear most frequently with larger sizes. Perfect for presentations and analysis.</p>
 
 <h3>Frequency-Based Sizing</h3>
@@ -23682,7 +23682,7 @@ const textProcessingTools: PdfTool[] = [
 <p>Generate word clouds in different shapes and arrangements. Choose horizontal, circular, or custom layouts for visual variety.</p>
 
 <h3>Export Options</h3>
-<p>Download your word cloud as PNG or SVG. Get high-resolution images perfect for print or digital use.</p>\`,
+<p>Download your word cloud as PNG or SVG. Get high-resolution images perfect for print or digital use.</p>`,
   },
   {
     id: "signature-generator",
@@ -23694,7 +23694,7 @@ const textProcessingTools: PdfTool[] = [
     emoji: "✒️",
     metaTitle: "Signature Generator - Create Digital Signatures | File Tools",
     metaDescription: "Generate professional digital signatures with handwritten styles. Create custom signatures for documents and emails. Free signature maker.",
-    seoArticle: \`<h2>Signature Generator - Create Professional Signatures</h2>
+    seoArticle: `<h2>Signature Generator - Create Professional Signatures</h2>
 <p>Design beautiful digital signatures for documents, emails, and online forms. Choose from handwritten styles or create your own unique signature.</p>
 
 <h3>Multiple Signature Styles</h3>
@@ -23707,7 +23707,7 @@ const textProcessingTools: PdfTool[] = [
 <p>Draw your signature directly with mouse or touchscreen. Capture your actual handwriting for authentic signatures.</p>
 
 <h3>Export Formats</h3>
-<p>Download signatures as transparent PNG for easy insertion into documents. Get vector SVG for scalable, high-quality output.</p>\`,
+<p>Download signatures as transparent PNG for easy insertion into documents. Get vector SVG for scalable, high-quality output.</p>`,
   },
   {
     id: "email-validator",
@@ -23719,7 +23719,7 @@ const textProcessingTools: PdfTool[] = [
     emoji: "📧",
     metaTitle: "Email Validator - Verify Email Addresses | File Tools",
     metaDescription: "Validate email addresses for correct format and syntax. Check single emails or bulk lists. Free email verification tool.",
-    seoArticle: \`<h2>Email Validator - Verify Email Addresses</h2>
+    seoArticle: `<h2>Email Validator - Verify Email Addresses</h2>
 <p>Ensure email addresses are correctly formatted before sending. Check syntax, detect typos, and validate email structure instantly.</p>
 
 <h3>Syntax Validation</h3>
@@ -23732,7 +23732,7 @@ const textProcessingTools: PdfTool[] = [
 <p>Identify probable typos in popular email domains. Catch mistakes like "gmial.com" or "hotmal.com" before they cause bounces.</p>
 
 <h3>Disposable Email Detection</h3>
-<p>Identify temporary and disposable email addresses. Keep your mailing lists clean with quality email addresses.</p>\`,
+<p>Identify temporary and disposable email addresses. Keep your mailing lists clean with quality email addresses.</p>`,
   },
 ];
 
