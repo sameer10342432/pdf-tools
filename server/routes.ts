@@ -21,6 +21,8 @@ import { Document, Paragraph, TextRun, Packer } from "docx";
 import QRCode from "qrcode";
 import jsQR from "jsqr";
 import { Jimp } from "jimp";
+import bwipjs from "bwip-js";
+import Parser from "rss-parser";
 
 const execAsync = promisify(exec);
 
@@ -34355,5 +34357,188 @@ file '${loopInputPath}'`;
     }
   });
 
+
+  // Barcode Generator API
+  const supportedBarcodeFormats = [
+    "code128", "code39", "code93", "ean13", "ean8", "upca", "upce",
+    "itf14", "interleaved2of5", "code25", "codabar", "msi", "plessey",
+    "telepen", "qrcode", "datamatrix", "pdf417", "azteccode", "maxicode"
+  ];
+  
+  app.post("/api/barcode/generate", async (req: Request, res: Response) => {
+    try {
+      const { text, format = "code128", scale = 3, height = 100, includeText = true } = req.body;
+      if (!text) {
+        return res.status(400).json({ error: "Text is required" });
+      }
+      
+      if (!supportedBarcodeFormats.includes(format)) {
+        return res.status(400).json({ 
+          error: `Unsupported barcode format: ${format}. Supported formats: ${supportedBarcodeFormats.join(", ")}` 
+        });
+      }
+      
+      const barcodeOptions: any = {
+        bcid: format,
+        text: text,
+        scale: Math.min(Math.max(scale, 1), 5),
+        height: Math.min(Math.max(height, 30), 200),
+        includetext: includeText,
+        textxalign: "center",
+      };
+      
+      const png = await bwipjs.toBuffer(barcodeOptions);
+      const base64 = png.toString("base64");
+      res.json({ success: true, barcode: `data:image/png;base64,${base64}` });
+    } catch (error: any) {
+      console.error("Barcode generation error:", error);
+      const userMessage = error.message?.includes("Invalid")
+        ? error.message
+        : "Failed to generate barcode. Please check your input and format.";
+      res.status(400).json({ error: userMessage });
+    }
+  });
+
+  // Barcode Reader API
+  app.post("/api/barcode/read", upload.single("file"), async (req: Request, res: Response) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "Image file is required" });
+      }
+      
+      const image = await Jimp.read(req.file.path);
+      const width = image.width;
+      const height = image.height;
+      const imageData = new Uint8ClampedArray(image.bitmap.data);
+      
+      const code = jsQR(imageData, width, height);
+      
+      // Clean up
+      fs.unlinkSync(req.file.path);
+      
+      if (code) {
+        res.json({ success: true, data: code.data, format: "QR Code" });
+      } else {
+        res.json({ success: false, error: "No barcode or QR code found in image" });
+      }
+    } catch (error: any) {
+      console.error("Barcode reading error:", error);
+      res.status(500).json({ error: error.message || "Failed to read barcode" });
+    }
+  });
+
+  // RSS Feed Reader API
+  app.post("/api/rss/parse", async (req: Request, res: Response) => {
+    try {
+      const { url } = req.body;
+      if (!url) {
+        return res.status(400).json({ error: "RSS feed URL is required" });
+      }
+      
+      const parser = new Parser({
+        timeout: 10000,
+        headers: {
+          "User-Agent": "Mozilla/5.0 (compatible; FileTools RSS Reader/1.0)"
+        }
+      });
+      
+      const feed = await parser.parseURL(url);
+      
+      res.json({
+        success: true,
+        feed: {
+          title: feed.title,
+          description: feed.description,
+          link: feed.link,
+          image: feed.image,
+          items: feed.items.slice(0, 50).map(item => ({
+            title: item.title,
+            link: item.link,
+            pubDate: item.pubDate,
+            creator: item.creator || item.author,
+            content: item.contentSnippet || item.content?.substring(0, 500),
+            categories: item.categories
+          }))
+        }
+      });
+    } catch (error: any) {
+      console.error("RSS parsing error:", error);
+      res.status(500).json({ error: error.message || "Failed to parse RSS feed" });
+    }
+  });
+
+  // YouTube Thumbnail Downloader API
+  app.get("/api/youtube/thumbnail/:videoId", async (req: Request, res: Response) => {
+    try {
+      const { videoId } = req.params;
+      const { quality = "maxresdefault" } = req.query;
+      
+      if (!videoId || !/^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
+        return res.status(400).json({ error: "Invalid YouTube video ID" });
+      }
+      
+      const qualities = ["maxresdefault", "sddefault", "hqdefault", "mqdefault", "default"];
+      const selectedQuality = qualities.includes(quality as string) ? quality : "maxresdefault";
+      
+      const thumbnails = qualities.map(q => ({
+        quality: q,
+        url: `https://img.youtube.com/vi/${videoId}/${q}.jpg`,
+        width: q === "maxresdefault" ? 1280 : q === "sddefault" ? 640 : q === "hqdefault" ? 480 : q === "mqdefault" ? 320 : 120,
+        height: q === "maxresdefault" ? 720 : q === "sddefault" ? 480 : q === "hqdefault" ? 360 : q === "mqdefault" ? 180 : 90
+      }));
+      
+      res.json({
+        success: true,
+        videoId,
+        thumbnails,
+        selectedThumbnail: `https://img.youtube.com/vi/${videoId}/${selectedQuality}.jpg`
+      });
+    } catch (error: any) {
+      console.error("YouTube thumbnail error:", error);
+      res.status(500).json({ error: error.message || "Failed to get thumbnails" });
+    }
+  });
+
+  // YouTube Tag Extractor API
+  app.get("/api/youtube/tags/:videoId", async (req: Request, res: Response) => {
+    try {
+      const { videoId } = req.params;
+      
+      if (!videoId || !/^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
+        return res.status(400).json({ error: "Invalid YouTube video ID" });
+      }
+      
+      const response = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        }
+      });
+      
+      const html = await response.text();
+      
+      // Extract title
+      const titleMatch = html.match(/<title>([^<]+)<\/title>/);
+      const title = titleMatch ? titleMatch[1].replace(" - YouTube", "").trim() : "";
+      
+      // Extract keywords from meta tag
+      const keywordsMatch = html.match(/<meta name="keywords" content="([^"]+)"/);
+      const keywords = keywordsMatch ? keywordsMatch[1].split(",").map((k: string) => k.trim()) : [];
+      
+      // Extract description
+      const descMatch = html.match(/<meta name="description" content="([^"]+)"/);
+      const description = descMatch ? descMatch[1] : "";
+      
+      res.json({
+        success: true,
+        videoId,
+        title,
+        description,
+        tags: keywords.filter((k: string) => k.length > 0)
+      });
+    } catch (error: any) {
+      console.error("YouTube tags extraction error:", error);
+      res.status(500).json({ error: error.message || "Failed to extract tags" });
+    }
+  });
   return httpServer;
 }
