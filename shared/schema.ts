@@ -870,6 +870,16 @@ export const pdfToolTypes = [
   "random-color-generator",
   "random-palette-generator",
   "password-strength-checker",
+  "what-font-is-this",
+  "color-blindness-simulator",
+  "online-mind-map",
+  "online-flowchart-maker",
+  "online-diagram-tool",
+  "online-gantt-chart",
+  "online-kanban-board",
+  "online-sticky-notes",
+  "online-wysiwyg-editor",
+  "online-code-editor",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -24524,3 +24534,258 @@ const screenBrowserTools: PdfTool[] = [
 ];
 
 pdfTools.push(...screenBrowserTools);
+// New Productivity Tools
+const productivityTools: PdfTool[] = [
+  {
+    id: "what-font-is-this",
+    name: "What Font Is This",
+    description: "Identify fonts from images using advanced recognition",
+    icon: "Type",
+    type: "what-font-is-this",
+    color: "bg-indigo-500",
+    emoji: "🔤",
+    metaTitle: "What Font Is This - Font Identifier from Image | PDF Tools",
+    metaDescription: "Identify fonts from any image online for free. Upload an image and discover what font is used. Perfect for designers and typography enthusiasts.",
+    seoArticle: `<h2>What Font Is This - Identify Fonts from Images</h2>
+<p>Discover fonts used in any image with our advanced font identification tool. Upload an image containing text, and our AI-powered system will analyze the letterforms to identify matching or similar fonts. Perfect for designers, marketers, and typography enthusiasts.</p>
+
+<h2>How Font Recognition Works</h2>
+<p>Our font identifier analyzes key characteristics: x-height, stroke contrast, serif style, letterform shapes, and spacing. By comparing these features against thousands of fonts, we provide accurate matches and similar alternatives.</p>
+
+<h2>Best Practices for Accurate Results</h2>
+<p>For best results: use high-resolution images, ensure text is horizontal and clear, include multiple characters (especially distinctive ones like 'a', 'g', 'e'). Avoid heavily stylized or distorted text. The clearer the sample, the better the match.</p>
+
+<h2>Similar Font Suggestions</h2>
+<p>Even when an exact match isn't found, we suggest visually similar alternatives. Many fonts share design DNA - find free alternatives to expensive typefaces, or discover new options that capture the same aesthetic feel.</p>
+
+<h2>Designer's Typography Toolkit</h2>
+<p>Font identification is just the first step. Once identified, research the font's history, licensing, and best use cases. Build your typography knowledge by understanding why certain fonts work in specific contexts.</p>`,
+  },
+  {
+    id: "color-blindness-simulator",
+    name: "Color Blindness Simulator",
+    description: "Preview how images appear to people with color vision deficiencies",
+    icon: "Eye",
+    type: "color-blindness-simulator",
+    color: "bg-purple-500",
+    emoji: "👁️",
+    metaTitle: "Color Blindness Simulator Online Free - Test Accessibility | PDF Tools",
+    metaDescription: "Simulate how images look to colorblind users. Test protanopia, deuteranopia, tritanopia and more. Ensure your designs are accessible to everyone.",
+    seoArticle: `<h2>Color Blindness Simulator - Design for Everyone</h2>
+<p>Test how your designs appear to people with color vision deficiencies. Our simulator accurately replicates protanopia, deuteranopia, tritanopia, and other forms of color blindness. Essential for creating accessible designs that work for all users.</p>
+
+<h2>Types of Color Blindness</h2>
+<p>Protanopia (red-blind) and deuteranopia (green-blind) affect about 8% of men. Tritanopia (blue-blind) is rarer. Achromatopsia (complete color blindness) is very rare. Each type perceives colors differently - test all variants to ensure accessibility.</p>
+
+<h2>Why Accessibility Matters</h2>
+<p>1 in 12 men and 1 in 200 women have some form of color vision deficiency. That's millions of users who may struggle with your content. Accessible design isn't just ethical - it expands your audience and improves usability for everyone.</p>
+
+<h2>Design Tips for Color Accessibility</h2>
+<p>Don't rely on color alone to convey information. Use patterns, labels, and icons alongside color coding. Ensure sufficient contrast. Test with actual color blindness simulators. The goal: information should be clear even in grayscale.</p>
+
+<h2>Testing Workflow</h2>
+<p>Upload your design, select each color blindness type, and review. Pay special attention to: charts and graphs, status indicators, navigation elements, and calls to action. If information is lost in any simulation, redesign with additional visual cues.</p>`,
+  },
+  {
+    id: "online-mind-map",
+    name: "Online Mind Map",
+    description: "Create visual mind maps to organize ideas and concepts",
+    icon: "Network",
+    type: "online-mind-map",
+    color: "bg-cyan-500",
+    emoji: "🧠",
+    metaTitle: "Online Mind Map Maker Free - Create Mind Maps | PDF Tools",
+    metaDescription: "Create beautiful mind maps online for free. Organize ideas, brainstorm concepts, and visualize connections. No signup required. Export as image or PDF.",
+    seoArticle: `<h2>Online Mind Map - Visualize Your Ideas</h2>
+<p>Create powerful mind maps to organize thoughts, brainstorm ideas, and visualize connections. Our free online tool lets you build unlimited mind maps with intuitive drag-and-drop functionality. Perfect for students, professionals, and creative thinkers.</p>
+
+<h2>Benefits of Mind Mapping</h2>
+<p>Mind maps mirror how your brain naturally organizes information - radially from central concepts. Studies show mind mapping improves memory retention by 10-15%, enhances creativity, and helps identify connections that linear notes miss.</p>
+
+<h2>Use Cases</h2>
+<p>Project planning and brainstorming. Study notes and exam preparation. Meeting notes and action items. Content outlines and story planning. Problem-solving and decision making. Goal setting and life planning. The applications are endless.</p>
+
+<h2>Creating Effective Mind Maps</h2>
+<p>Start with a central topic. Branch out with main ideas. Add sub-branches for details. Use colors to categorize related concepts. Include icons and images for visual memory. Keep text concise - keywords work better than sentences.</p>
+
+<h2>Export and Share</h2>
+<p>Export your mind maps as high-resolution images or PDFs. Share with team members or embed in presentations. Your mind maps work offline and are stored locally for privacy. Collaborate by sharing exported versions.</p>`,
+  },
+  {
+    id: "online-flowchart-maker",
+    name: "Online Flowchart Maker",
+    description: "Design professional flowcharts and process diagrams",
+    icon: "GitBranch",
+    type: "online-flowchart-maker",
+    color: "bg-blue-500",
+    emoji: "📊",
+    metaTitle: "Online Flowchart Maker Free - Create Flowcharts | PDF Tools",
+    metaDescription: "Create professional flowcharts online for free. Design process flows, decision trees, and algorithms. Easy drag-and-drop interface. Export as image or PDF.",
+    seoArticle: `<h2>Online Flowchart Maker - Design Process Flows</h2>
+<p>Create professional flowcharts with our intuitive online tool. Design process flows, decision trees, algorithms, and organizational charts. Drag-and-drop shapes, connect with arrows, and export polished diagrams for presentations and documentation.</p>
+
+<h2>Standard Flowchart Symbols</h2>
+<p>Rectangles for processes/actions. Diamonds for decisions. Ovals for start/end points. Parallelograms for input/output. Arrows show flow direction. Our tool includes all standard symbols plus custom shapes for specialized diagrams.</p>
+
+<h2>Professional Applications</h2>
+<p>Document business processes for training and compliance. Map software algorithms and user flows. Create decision trees for customer service. Design organizational structures. Plan project workflows. Flowcharts communicate complex processes clearly.</p>
+
+<h2>Flowchart Best Practices</h2>
+<p>Flow top-to-bottom or left-to-right consistently. Keep text concise inside shapes. Use consistent sizing and spacing. Label decision branches clearly (Yes/No, True/False). Avoid crossing lines when possible. Test your flowchart by walking through it.</p>
+
+<h2>Export Options</h2>
+<p>Download as PNG for presentations, SVG for scalable graphics, or PDF for documentation. Your flowcharts maintain quality at any size. Perfect for embedding in reports, websites, or training materials.</p>`,
+  },
+  {
+    id: "online-diagram-tool",
+    name: "Online Diagram Tool",
+    description: "Create various diagrams including network, ER, and UML diagrams",
+    icon: "Share2",
+    type: "online-diagram-tool",
+    color: "bg-teal-500",
+    emoji: "📐",
+    metaTitle: "Online Diagram Tool Free - Create Diagrams | PDF Tools",
+    metaDescription: "Create professional diagrams online for free. Design network diagrams, ER diagrams, UML charts and more. Easy to use with drag-and-drop interface.",
+    seoArticle: `<h2>Online Diagram Tool - Create Any Diagram</h2>
+<p>Design professional diagrams for any purpose with our versatile online tool. From network architectures to database schemas, UML diagrams to organizational charts - create clear, polished visuals that communicate complex structures effectively.</p>
+
+<h2>Supported Diagram Types</h2>
+<p>Network diagrams with standard icons. Entity-Relationship (ER) diagrams for databases. UML diagrams (class, sequence, use case). Organizational charts. Venn diagrams. Architecture diagrams. Each type includes specialized shapes and connectors.</p>
+
+<h2>Technical Documentation</h2>
+<p>Clear diagrams are essential for technical documentation. Network admins map infrastructure. Database architects design schemas. Software developers document system architecture. Our tool produces documentation-ready visuals.</p>
+
+<h2>Collaboration Features</h2>
+<p>Export diagrams in multiple formats for easy sharing. PNG for quick viewing, SVG for editing, PDF for formal documentation. Share with team members who can view or import into their own projects.</p>
+
+<h2>Tips for Clear Diagrams</h2>
+<p>Use consistent styling throughout. Align elements to a grid. Group related components. Use colors purposefully (not decoratively). Add clear labels. Include legends when using symbols. White space improves readability.</p>`,
+  },
+  {
+    id: "online-gantt-chart",
+    name: "Online Gantt Chart",
+    description: "Create project timelines and Gantt charts for planning",
+    icon: "CalendarRange",
+    type: "online-gantt-chart",
+    color: "bg-orange-500",
+    emoji: "📅",
+    metaTitle: "Online Gantt Chart Maker Free - Project Timeline | PDF Tools",
+    metaDescription: "Create Gantt charts online for free. Plan project timelines, track tasks, and manage dependencies. Perfect for project managers. Export as image or PDF.",
+    seoArticle: `<h2>Online Gantt Chart - Plan Your Projects</h2>
+<p>Create professional Gantt charts to visualize project timelines, task dependencies, and milestones. Our free online tool helps project managers, teams, and individuals plan and track work effectively with intuitive timeline visualization.</p>
+
+<h2>What is a Gantt Chart?</h2>
+<p>Developed by Henry Gantt in the 1910s, Gantt charts display tasks as horizontal bars along a timeline. Bar length shows duration. Position shows start/end dates. Dependencies show which tasks must complete before others can begin. Milestones mark key dates.</p>
+
+<h2>Project Planning Benefits</h2>
+<p>Visualize the entire project at a glance. Identify the critical path - the longest sequence determining minimum duration. Spot scheduling conflicts and resource bottlenecks. Communicate timelines clearly to stakeholders. Track progress against plan.</p>
+
+<h2>Creating Effective Gantt Charts</h2>
+<p>Break work into manageable tasks. Estimate durations realistically (add buffer). Define dependencies carefully. Set clear milestones. Assign resources. Update regularly as work progresses. Use colors to categorize task types or status.</p>
+
+<h2>Export and Share</h2>
+<p>Export your Gantt chart as high-resolution images or PDFs for presentations and reports. Print for war room displays. Share with stakeholders who need timeline visibility without tool access. Keep everyone aligned on project schedule.</p>`,
+  },
+  {
+    id: "online-kanban-board",
+    name: "Online Kanban Board",
+    description: "Manage tasks with a visual Kanban board workflow",
+    icon: "LayoutGrid",
+    type: "online-kanban-board",
+    color: "bg-green-500",
+    emoji: "📋",
+    metaTitle: "Online Kanban Board Free - Task Management | PDF Tools",
+    metaDescription: "Create Kanban boards online for free. Manage tasks visually, track progress, and improve workflow. Drag-and-drop cards between columns. No signup required.",
+    seoArticle: `<h2>Online Kanban Board - Visual Task Management</h2>
+<p>Manage your workflow with a visual Kanban board. Create columns for different stages, add task cards, and drag items as work progresses. The Kanban method, developed by Toyota, optimizes flow and limits work-in-progress for maximum efficiency.</p>
+
+<h2>The Kanban Method</h2>
+<p>Kanban means "signboard" in Japanese. Core principles: visualize work, limit work-in-progress (WIP), manage flow, make policies explicit, implement feedback loops, improve collaboratively. Simple boards with powerful methodology.</p>
+
+<h2>Benefits of Kanban</h2>
+<p>See all work at a glance. Identify bottlenecks instantly. Reduce multitasking by limiting WIP. Improve predictability. Enable continuous delivery. Adapt easily to changing priorities. Works for individuals, teams, or entire organizations.</p>
+
+<h2>Setting Up Your Board</h2>
+<p>Classic columns: To Do, In Progress, Done. Customize for your workflow: Backlog, Design, Development, Review, Testing, Complete. Add swimlanes for different projects or team members. Set WIP limits to prevent overload.</p>
+
+<h2>Card Best Practices</h2>
+<p>Keep cards small and actionable. Include clear titles and descriptions. Add due dates and assignees. Use labels for categorization. Track blockers explicitly. Move cards promptly when status changes. Regular cleanup keeps boards useful.</p>`,
+  },
+  {
+    id: "online-sticky-notes",
+    name: "Online Sticky Notes",
+    description: "Create and organize virtual sticky notes for brainstorming",
+    icon: "StickyNote",
+    type: "online-sticky-notes",
+    color: "bg-yellow-500",
+    emoji: "📝",
+    metaTitle: "Online Sticky Notes Free - Virtual Post-it Notes | PDF Tools",
+    metaDescription: "Create virtual sticky notes online for free. Perfect for brainstorming, planning, and organizing ideas. Drag, resize, and color-code notes. No signup required.",
+    seoArticle: `<h2>Online Sticky Notes - Digital Brainstorming</h2>
+<p>Create virtual sticky notes for brainstorming, planning, and organizing ideas. Our free online tool replicates the flexibility of physical sticky notes with digital advantages - unlimited space, easy reorganization, and permanent storage.</p>
+
+<h2>The Power of Sticky Notes</h2>
+<p>Sticky notes are powerful because they're simple. One idea per note. Easy to move and reorganize. Visual clustering reveals patterns. Physical limitations force conciseness. Our digital version keeps these benefits while adding flexibility.</p>
+
+<h2>Brainstorming Techniques</h2>
+<p>Generate ideas without judgment first. Quantity over quality initially. Use colors to categorize. Cluster related notes. Vote on favorites with dots. Move from divergent (generate) to convergent (refine) thinking. Sticky notes support this flow naturally.</p>
+
+<h2>Use Cases</h2>
+<p>Team brainstorming sessions. Personal to-do lists. Affinity mapping in research. Retrospective meetings. User story mapping. Event planning. Recipe planning. The simple format adapts to countless applications.</p>
+
+<h2>Organization Tips</h2>
+<p>Use consistent colors for categories. Keep notes brief - key phrases only. Group related notes spatially. Create labeled zones on your canvas. Save and export completed boards. Clear regularly to stay focused on current work.</p>`,
+  },
+  {
+    id: "online-wysiwyg-editor",
+    name: "Online WYSIWYG Editor",
+    description: "Rich text editor with formatting and export options",
+    icon: "FileEdit",
+    type: "online-wysiwyg-editor",
+    color: "bg-rose-500",
+    emoji: "✏️",
+    metaTitle: "Online WYSIWYG Editor Free - Rich Text Editor | PDF Tools",
+    metaDescription: "Create formatted documents online for free. WYSIWYG editor with bold, italic, lists, and more. Export as HTML, Markdown, or plain text. No signup required.",
+    seoArticle: `<h2>Online WYSIWYG Editor - What You See Is What You Get</h2>
+<p>Create richly formatted documents with our intuitive WYSIWYG (What You See Is What You Get) editor. Apply formatting visually - bold, italic, headers, lists, links - and see exactly how your content will appear. Export to multiple formats.</p>
+
+<h2>Formatting Features</h2>
+<p>Text styling: bold, italic, underline, strikethrough. Headers (H1-H6) for document structure. Ordered and unordered lists. Blockquotes for citations. Links to external resources. Clean, semantic HTML output.</p>
+
+<h2>Export Options</h2>
+<p>Export your work as HTML for web publishing, Markdown for developer documentation, or plain text for simplicity. Copy formatted content directly to paste into other applications. Your formatting transfers cleanly.</p>
+
+<h2>Use Cases</h2>
+<p>Blog post drafting. Email composition. Documentation writing. Note-taking with formatting. Quick document creation without heavy software. Our editor handles common writing needs without the complexity of full word processors.</p>
+
+<h2>Writing Tips</h2>
+<p>Use headers to organize content hierarchically. Keep paragraphs focused and manageable. Use lists for scannable information. Bold sparingly for emphasis. Link to sources. Preview your work regularly to ensure formatting looks correct.</p>`,
+  },
+  {
+    id: "online-code-editor",
+    name: "Online Code Editor",
+    description: "Write and format code with syntax highlighting",
+    icon: "Code",
+    type: "online-code-editor",
+    color: "bg-slate-600",
+    emoji: "💻",
+    metaTitle: "Online Code Editor Free - Syntax Highlighting | PDF Tools",
+    metaDescription: "Write and format code online for free. Syntax highlighting for multiple languages. Perfect for code snippets, learning, and sharing. No signup required.",
+    seoArticle: `<h2>Online Code Editor - Write Code Anywhere</h2>
+<p>Write, edit, and format code with professional syntax highlighting directly in your browser. Our free online code editor supports multiple programming languages with proper indentation, color coding, and formatting. Perfect for quick edits, learning, and sharing.</p>
+
+<h2>Supported Languages</h2>
+<p>JavaScript, TypeScript, Python, HTML, CSS, JSON, SQL, Java, C++, Ruby, Go, Rust, PHP, and more. Each language gets appropriate syntax highlighting, making code readable and helping spot errors. Language detection or manual selection available.</p>
+
+<h2>Features</h2>
+<p>Syntax highlighting for readability. Auto-indentation for structure. Line numbers for reference. Tab support for proper formatting. Multiple themes (light/dark). Copy formatted code for documentation. Export for sharing.</p>
+
+<h2>Use Cases</h2>
+<p>Quick code editing without IDE setup. Learning programming with clear syntax highlighting. Preparing code snippets for documentation. Formatting code for blog posts or tutorials. Sharing readable code with colleagues.</p>
+
+<h2>Coding Best Practices</h2>
+<p>Consistent indentation (spaces or tabs, pick one). Meaningful variable names. Comments for complex logic. Keep functions focused and small. Test code frequently. Use version control for larger projects. Our editor helps you write clean, readable code.</p>`,
+  },
+];
+
+pdfTools.push(...productivityTools);
