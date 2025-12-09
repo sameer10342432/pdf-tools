@@ -34686,61 +34686,17 @@ file '${loopInputPath}'`;
               note: "The input appears to be a numeric ID already"
             };
             break;
+          }
+
           result = {
             success: true,
             username,
             result: `Username: ${username}\n\nNote: Facebook requires authentication to look up profile IDs.\n\nSuggestion: Visit https://findmyfbid.in/${username} to find the ID manually, or use the Graph API Explorer at developers.facebook.com with proper authentication.`,
             isValid: false
           };
-          result = {
-            success: true,
-            username,
-            result: `Username: ${username}\n\nNote: Facebook requires authentication to look up profile IDs.\n\nSuggestion: Visit https://findmyfbid.in/${username} to find the ID manually, or use the Graph API Explorer at developers.facebook.com with proper authentication.`,
-            isValid: false
-          };
-          result = {
-            success: true,
-            username,
-            result: `Username: ${username}\n\nNote: Facebook requires authentication to look up profile IDs.\n\nSuggestion: Visit https://findmyfbid.in/${username} to find the ID manually, or use the Graph API Explorer at developers.facebook.com with proper authentication.`,
-            isValid: false
-          };
-          result = {
-            success: true,
-            username,
-            result: `Username: ${username}\n\nNote: Facebook requires authentication to look up profile IDs.\n\nSuggestion: Visit https://findmyfbid.in/${username} to find the ID manually, or use the Graph API Explorer at developers.facebook.com with proper authentication.`,
-            isValid: false
-          };
-          result = {
-            success: true,
-            username,
-            result: `Username: ${username}\n\nNote: Facebook requires authentication to look up profile IDs.\n\nSuggestion: Visit https://findmyfbid.in/${username} to find the ID manually, or use the Graph API Explorer at developers.facebook.com with proper authentication.`,
-            isValid: false
-          };
-          result = {
-            success: true,
-            username,
-            result: `Username: ${username}\n\nNote: Facebook requires authentication to look up profile IDs.\n\nSuggestion: Visit https://findmyfbid.in/${username} to find the ID manually, or use the Graph API Explorer at developers.facebook.com with proper authentication.`,
-            isValid: false
-          };
-          result = {
-            success: true,
-            username,
-            result: `Username: ${username}\n\nNote: Facebook requires authentication to look up profile IDs.\n\nSuggestion: Visit https://findmyfbid.in/${username} to find the ID manually, or use the Graph API Explorer at developers.facebook.com with proper authentication.`,
-            isValid: false
-          };
-          result = {
-            success: true,
-            username,
-            result: `Username: ${username}\n\nNote: Facebook requires authentication to look up profile IDs.\n\nSuggestion: Visit https://findmyfbid.in/${username} to find the ID manually, or use the Graph API Explorer at developers.facebook.com with proper authentication.`,
-            isValid: false
-          };
-          result = {
-            success: true,
-            username,
-            result: `Username: ${username}\n\nNote: Facebook requires authentication to look up profile IDs.\n\nSuggestion: Visit https://findmyfbid.in/${username} to find the ID manually, or use the Graph API Explorer at developers.facebook.com with proper authentication.`,
-            isValid: false
-          };
+          break;
         }
+
 
         case "find-twitter-id": {
           const inputUrl = input.trim();
