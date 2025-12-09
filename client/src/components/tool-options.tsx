@@ -15151,6 +15151,374 @@ export function ToolOptionsComponent({
       );
 
 
+
+    // Combined PDF Tools
+    case "compress-and-merge-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Compression Level</Label>
+            <Select
+              value={options.compressionLevel || "medium"}
+              onValueChange={(value) =>
+                updateOption("compressionLevel", value as "low" | "medium" | "high")
+              }
+            >
+              <SelectTrigger data-testid="select-compression">
+                <SelectValue placeholder="Select compression level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="low">Low (Best Quality)</SelectItem>
+                <SelectItem value="medium">Medium (Balanced)</SelectItem>
+                <SelectItem value="high">High (Smallest Size)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Files will be merged in order and then compressed.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "split-and-compress-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="pages">Pages to extract</Label>
+            <Input
+              id="pages"
+              placeholder="e.g., 1,3,5-10"
+              value={options.pages || ""}
+              onChange={(e) => updateOption("pages", e.target.value)}
+              data-testid="input-pages"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter page numbers separated by commas. Use hyphen for ranges.
+              {pageCount && ` (Total pages: ${pageCount})`}
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label>Compression Level</Label>
+            <Select
+              value={options.compressionLevel || "medium"}
+              onValueChange={(value) =>
+                updateOption("compressionLevel", value as "low" | "medium" | "high")
+              }
+            >
+              <SelectTrigger data-testid="select-compression">
+                <SelectValue placeholder="Select compression level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="low">Low (Best Quality)</SelectItem>
+                <SelectItem value="medium">Medium (Balanced)</SelectItem>
+                <SelectItem value="high">High (Smallest Size)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "rotate-and-watermark-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Rotation Angle</Label>
+            <Select
+              value={options.rotation || "90"}
+              onValueChange={(value) =>
+                updateOption("rotation", value as "90" | "180" | "270")
+              }
+            >
+              <SelectTrigger data-testid="select-rotation">
+                <SelectValue placeholder="Select angle" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="90">90° Clockwise</SelectItem>
+                <SelectItem value="180">180°</SelectItem>
+                <SelectItem value="270">270° Clockwise (90° Counter-clockwise)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="watermarkText">Watermark Text</Label>
+            <Input
+              id="watermarkText"
+              placeholder="Enter watermark text"
+              value={options.watermarkText || ""}
+              onChange={(e) => updateOption("watermarkText", e.target.value)}
+              data-testid="input-watermark-text"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Watermark Position</Label>
+            <Select
+              value={options.watermarkPosition || "diagonal"}
+              onValueChange={(value) =>
+                updateOption("watermarkPosition", value as "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "diagonal")
+              }
+            >
+              <SelectTrigger data-testid="select-watermark-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="diagonal">Diagonal</SelectItem>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="top-left">Top Left</SelectItem>
+                <SelectItem value="top-right">Top Right</SelectItem>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Watermark Opacity: {Math.round((options.watermarkOpacity || 0.3) * 100)}%</Label>
+            <Slider
+              value={[options.watermarkOpacity || 0.3]}
+              min={0.1}
+              max={1}
+              step={0.1}
+              onValueChange={(value) => updateOption("watermarkOpacity", value[0])}
+              data-testid="slider-watermark-opacity"
+            />
+          </div>
+        </div>
+      );
+
+    case "word-to-pdf-and-protect":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="password">Password to protect PDF</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter password"
+              value={options.password || ""}
+              onChange={(e) => updateOption("password", e.target.value)}
+              data-testid="input-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              The converted PDF will be password-protected.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "extract-images-to-jpg":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Image Quality: {options.imageQuality || 85}%</Label>
+            <Slider
+              value={[options.imageQuality || 85]}
+              min={50}
+              max={100}
+              step={5}
+              onValueChange={(value) => updateOption("imageQuality", value[0])}
+              data-testid="slider-image-quality"
+            />
+            <p className="text-sm text-muted-foreground">
+              Higher quality means larger file sizes.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "unlock-and-compress-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="unlockPassword">Current PDF Password</Label>
+            <Input
+              id="unlockPassword"
+              type="password"
+              placeholder="Enter current password"
+              value={options.unlockPassword || ""}
+              onChange={(e) => updateOption("unlockPassword", e.target.value)}
+              data-testid="input-unlock-password"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter the password to unlock the PDF.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label>Compression Level</Label>
+            <Select
+              value={options.compressionLevel || "medium"}
+              onValueChange={(value) =>
+                updateOption("compressionLevel", value as "low" | "medium" | "high")
+              }
+            >
+              <SelectTrigger data-testid="select-compression">
+                <SelectValue placeholder="Select compression level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="low">Low (Best Quality)</SelectItem>
+                <SelectItem value="medium">Medium (Balanced)</SelectItem>
+                <SelectItem value="high">High (Smallest Size)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "ocr-and-compress-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>OCR Language</Label>
+            <Select
+              value={options.ocrLanguage || "eng"}
+              onValueChange={(value) => updateOption("ocrLanguage", value as any)}
+            >
+              <SelectTrigger data-testid="select-ocr-language">
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="eng">English</SelectItem>
+                <SelectItem value="spa">Spanish</SelectItem>
+                <SelectItem value="fra">French</SelectItem>
+                <SelectItem value="deu">German</SelectItem>
+                <SelectItem value="ita">Italian</SelectItem>
+                <SelectItem value="por">Portuguese</SelectItem>
+                <SelectItem value="nld">Dutch</SelectItem>
+                <SelectItem value="rus">Russian</SelectItem>
+                <SelectItem value="jpn">Japanese</SelectItem>
+                <SelectItem value="chi_sim">Chinese (Simplified)</SelectItem>
+                <SelectItem value="chi_tra">Chinese (Traditional)</SelectItem>
+                <SelectItem value="kor">Korean</SelectItem>
+                <SelectItem value="ara">Arabic</SelectItem>
+                <SelectItem value="hin">Hindi</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Compression Level</Label>
+            <Select
+              value={options.compressionLevel || "medium"}
+              onValueChange={(value) =>
+                updateOption("compressionLevel", value as "low" | "medium" | "high")
+              }
+            >
+              <SelectTrigger data-testid="select-compression">
+                <SelectValue placeholder="Select compression level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="low">Low (Best Quality)</SelectItem>
+                <SelectItem value="medium">Medium (Balanced)</SelectItem>
+                <SelectItem value="high">High (Smallest Size)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "pdf-to-searchable-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>OCR Language</Label>
+            <Select
+              value={options.ocrLanguage || "eng"}
+              onValueChange={(value) => updateOption("ocrLanguage", value as any)}
+            >
+              <SelectTrigger data-testid="select-ocr-language">
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="eng">English</SelectItem>
+                <SelectItem value="spa">Spanish</SelectItem>
+                <SelectItem value="fra">French</SelectItem>
+                <SelectItem value="deu">German</SelectItem>
+                <SelectItem value="ita">Italian</SelectItem>
+                <SelectItem value="por">Portuguese</SelectItem>
+                <SelectItem value="nld">Dutch</SelectItem>
+                <SelectItem value="rus">Russian</SelectItem>
+                <SelectItem value="jpn">Japanese</SelectItem>
+                <SelectItem value="chi_sim">Chinese (Simplified)</SelectItem>
+                <SelectItem value="chi_tra">Chinese (Traditional)</SelectItem>
+                <SelectItem value="kor">Korean</SelectItem>
+                <SelectItem value="ara">Arabic</SelectItem>
+                <SelectItem value="hin">Hindi</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-muted-foreground">
+              Select the primary language of your document for accurate text recognition.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "add-signature-and-protect-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="signatureText">Signature Text</Label>
+            <Input
+              id="signatureText"
+              placeholder="Your Name"
+              value={options.signatureText || ""}
+              onChange={(e) => updateOption("signatureText", e.target.value)}
+              data-testid="input-signature-text"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Signature Position</Label>
+            <Select
+              value={options.signaturePosition || "bottom-right"}
+              onValueChange={(value) => updateOption("signaturePosition", value)}
+            >
+              <SelectTrigger data-testid="select-signature-position">
+                <SelectValue placeholder="Select position" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="bottom-left">Bottom Left</SelectItem>
+                <SelectItem value="bottom-center">Bottom Center</SelectItem>
+                <SelectItem value="bottom-right">Bottom Right</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Password to protect PDF</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter password"
+              value={options.password || ""}
+              onChange={(e) => updateOption("password", e.target.value)}
+              data-testid="input-password"
+            />
+          </div>
+        </div>
+      );
+
+    case "fill-form-and-flatten-pdf":
+      return (
+        <div className="space-y-4">
+          <div className="p-4 bg-muted rounded-md">
+            <p className="text-sm text-muted-foreground">
+              Upload a fillable PDF form. After processing, form fields will be filled and flattened into static content.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="formData">Form Data (JSON)</Label>
+            <Textarea
+              id="formData"
+              placeholder='{"fieldName": "value", "anotherField": "value"}'
+              value={options.formData || ""}
+              onChange={(e) => updateOption("formData", e.target.value)}
+              className="font-mono text-sm"
+              rows={5}
+              data-testid="input-form-data"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter form field values as JSON. Leave empty to just flatten existing data.
+            </p>
+          </div>
+        </div>
+      );
+
+
     default:
       return null;
   }

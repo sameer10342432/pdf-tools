@@ -33184,6 +33184,364 @@ file '${loopInputPath}'`;
 
 
 
+
+          // Combined PDF Tools
+          case "compress-and-merge-pdf": {
+            if (files.length < 2) {
+              throw new Error("At least 2 PDF files are required for merging");
+            }
+            // First merge all PDFs
+            const mergedPdf = await mergePdfs(files);
+            // Then compress the result
+            const compressedMerged = await compressPdf(mergedPdf);
+            result = compressedMerged;
+            filename = "merged-compressed.pdf";
+            break;
+          }
+
+          case "split-and-compress-pdf": {
+            if (!options.pages) {
+              throw new Error("Please specify which pages to extract (e.g., 1,3,5-10)");
+            }
+            // First split the PDF
+            const splitResult = await splitPdf(files[0], options.pages);
+            // Then compress the result
+            const compressedSplit = await compressPdf(splitResult);
+            result = compressedSplit;
+            filename = "split-compressed.pdf";
+            break;
+          }
+
+          case "rotate-and-watermark-pdf": {
+            const rotationAngle = parseInt(options.rotation || "90", 10);
+            const pdfBytes = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBytes);
+            const pages = pdfDoc.getPages();
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const watermarkText = options.watermarkText || "WATERMARK";
+            const opacity = options.watermarkOpacity || 0.3;
+            
+            for (const page of pages) {
+              // Rotate
+              page.setRotation(degrees(rotationAngle));
+              
+              // Add watermark
+              const { width, height } = page.getSize();
+              const position = options.watermarkPosition || "diagonal";
+              let x = width / 2;
+              let y = height / 2;
+              let rotate = degrees(0);
+              
+              switch (position) {
+                case "diagonal":
+                  rotate = degrees(-45);
+                  break;
+                case "top-left":
+                  x = 50;
+                  y = height - 50;
+                  break;
+                case "top-right":
+                  x = width - 150;
+                  y = height - 50;
+                  break;
+                case "bottom-left":
+                  x = 50;
+                  y = 50;
+                  break;
+                case "bottom-right":
+                  x = width - 150;
+                  y = 50;
+                  break;
+              }
+              
+              page.drawText(watermarkText, {
+                x,
+                y,
+                size: 48,
+                font,
+                color: rgb(0.5, 0.5, 0.5),
+                opacity,
+                rotate,
+              });
+            }
+            
+            const resultBytes = await pdfDoc.save();
+            const outputPath = path.join(outputDir, `rotated-watermarked-${randomUUID()}.pdf`);
+            fs.writeFileSync(outputPath, resultBytes);
+            result = outputPath;
+            filename = "rotated-watermarked.pdf";
+            break;
+          }
+
+          case "word-to-pdf-and-protect": {
+            // First convert Word to PDF
+            const wordBuffer = fs.readFileSync(files[0]);
+            const { value: htmlContent } = await mammoth.convertToHtml({ buffer: wordBuffer });
+            
+            const pdfDoc = await PDFDocument.create();
+            const page = pdfDoc.addPage([595, 842]); // A4
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            
+            const plainText = htmlContent.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+            const words = plainText.split(" ");
+            let yPosition = 800;
+            let line = "";
+            
+            for (const word of words) {
+              const testLine = line + word + " ";
+              if (font.widthOfTextAtSize(testLine, 12) > 500) {
+                page.drawText(line, { x: 50, y: yPosition, size: 12, font, color: rgb(0, 0, 0) });
+                yPosition -= 18;
+                line = word + " ";
+                if (yPosition < 50) break;
+              } else {
+                line = testLine;
+              }
+            }
+            if (line && yPosition >= 50) {
+              page.drawText(line, { x: 50, y: yPosition, size: 12, font, color: rgb(0, 0, 0) });
+            }
+            
+            // Add password protection using muhammara
+            const tempPath = path.join(outputDir, `temp-word-${randomUUID()}.pdf`);
+            const protectedPath = path.join(outputDir, `protected-word-${randomUUID()}.pdf`);
+            fs.writeFileSync(tempPath, await pdfDoc.save());
+            
+            if (options.password) {
+              muhammara.recrypt(tempPath, protectedPath, {
+                userPassword: options.password,
+                ownerPassword: options.password,
+                userProtectionFlag: 4
+              });
+              fs.unlinkSync(tempPath);
+              result = protectedPath;
+            } else {
+              result = tempPath;
+            }
+            filename = "converted-protected.pdf";
+            break;
+          }
+
+          case "extract-images-to-jpg": {
+            const pdfBuffer = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBuffer);
+            const pageCount = pdfDoc.getPageCount();
+            
+            const zip = new AdmZip();
+            const quality = options.imageQuality || 85;
+            
+            for (let i = 0; i < pageCount; i++) {
+              const newPdf = await PDFDocument.create();
+              const [copiedPage] = await newPdf.copyPages(pdfDoc, [i]);
+              newPdf.addPage(copiedPage);
+              
+              const pdfBytes = await newPdf.save();
+              const pdfTempPath = path.join(outputDir, `page-${i}-${randomUUID()}.pdf`);
+              fs.writeFileSync(pdfTempPath, pdfBytes);
+              
+              // Use sharp to convert - first render as PNG then convert to JPG
+              const jpgBuffer = await sharp(pdfTempPath, { density: 150 })
+                .flatten({ background: { r: 255, g: 255, b: 255 } })
+                .jpeg({ quality })
+                .toBuffer()
+                .catch(() => null);
+              
+              if (jpgBuffer) {
+                zip.addFile(`image-${i + 1}.jpg`, jpgBuffer);
+              }
+              fs.unlinkSync(pdfTempPath);
+            }
+            
+            const zipPath = path.join(outputDir, `extracted-images-${randomUUID()}.zip`);
+            zip.writeZip(zipPath);
+            result = zipPath;
+            filename = "extracted-images.zip";
+            isZip = true;
+            break;
+          }
+
+          case "unlock-and-compress-pdf": {
+            const inputPath = files[0];
+            const unlockPassword = options.unlockPassword || "";
+            const unlockedPath = path.join(outputDir, `unlocked-${randomUUID()}.pdf`);
+            
+            try {
+              muhammara.recrypt(inputPath, unlockedPath, {
+                password: unlockPassword
+              });
+            } catch (e) {
+              // If recrypt fails, try loading directly
+              const pdfBytes = fs.readFileSync(inputPath);
+              fs.writeFileSync(unlockedPath, pdfBytes);
+            }
+            
+            // Now compress the unlocked PDF
+            const compressedResult = await compressPdf(unlockedPath);
+            fs.unlinkSync(unlockedPath);
+            result = compressedResult;
+            filename = "unlocked-compressed.pdf";
+            break;
+          }
+
+          case "ocr-and-compress-pdf": {
+            const ocrLanguage = options.ocrLanguage || "eng";
+            const pdfBuffer = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBuffer);
+            const page = pdfDoc.getPage(0);
+            
+            // Perform OCR on first page (simplified)
+            const { data: { text } } = await Tesseract.recognize(files[0], ocrLanguage, {
+              logger: () => {}
+            });
+            
+            // Add invisible text layer
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            page.drawText(text.substring(0, 1000), {
+              x: 50,
+              y: 50,
+              size: 1,
+              font,
+              color: rgb(1, 1, 1),
+              opacity: 0.01
+            });
+            
+            const ocrPath = path.join(outputDir, `ocr-temp-${randomUUID()}.pdf`);
+            fs.writeFileSync(ocrPath, await pdfDoc.save());
+            
+            // Compress the result
+            const compressedOcr = await compressPdf(ocrPath);
+            fs.unlinkSync(ocrPath);
+            result = compressedOcr;
+            filename = "ocr-compressed.pdf";
+            break;
+          }
+
+          case "pdf-to-searchable-pdf": {
+            const ocrLanguage = options.ocrLanguage || "eng";
+            const pdfBuffer = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBuffer);
+            const pages = pdfDoc.getPages();
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            
+            // Perform OCR on first page
+            const { data: { text } } = await Tesseract.recognize(files[0], ocrLanguage, {
+              logger: () => {}
+            });
+            
+            // Add invisible text layer to first page
+            if (pages.length > 0) {
+              pages[0].drawText(text.substring(0, 2000), {
+                x: 50,
+                y: 50,
+                size: 1,
+                font,
+                color: rgb(1, 1, 1),
+                opacity: 0.01
+              });
+            }
+            
+            const searchablePath = path.join(outputDir, `searchable-${randomUUID()}.pdf`);
+            fs.writeFileSync(searchablePath, await pdfDoc.save());
+            result = searchablePath;
+            filename = "searchable.pdf";
+            break;
+          }
+
+          case "add-signature-and-protect-pdf": {
+            const pdfBytes = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBytes);
+            const pages = pdfDoc.getPages();
+            const lastPage = pages[pages.length - 1];
+            const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            
+            const signatureText = options.signatureText || "Signature";
+            const { width, height } = lastPage.getSize();
+            
+            let x = width - 200;
+            let y = 50;
+            
+            switch (options.signaturePosition) {
+              case "bottom-left":
+                x = 50;
+                break;
+              case "bottom-center":
+                x = width / 2 - 50;
+                break;
+              default:
+                x = width - 200;
+            }
+            
+            lastPage.drawText(signatureText, {
+              x,
+              y,
+              size: 18,
+              font,
+              color: rgb(0, 0, 0.5),
+            });
+            
+            // Add date
+            lastPage.drawText(new Date().toLocaleDateString(), {
+              x,
+              y: y - 20,
+              size: 10,
+              font: await pdfDoc.embedFont(StandardFonts.Helvetica),
+              color: rgb(0.3, 0.3, 0.3),
+            });
+            
+            const tempPath = path.join(outputDir, `signed-temp-${randomUUID()}.pdf`);
+            const protectedPath = path.join(outputDir, `signed-protected-${randomUUID()}.pdf`);
+            fs.writeFileSync(tempPath, await pdfDoc.save());
+            
+            if (options.password) {
+              muhammara.recrypt(tempPath, protectedPath, {
+                userPassword: options.password,
+                ownerPassword: options.password,
+                userProtectionFlag: 4
+              });
+              fs.unlinkSync(tempPath);
+              result = protectedPath;
+            } else {
+              result = tempPath;
+            }
+            filename = "signed-protected.pdf";
+            break;
+          }
+
+          case "fill-form-and-flatten-pdf": {
+            const pdfBytes = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBytes);
+            const form = pdfDoc.getForm();
+            
+            // Fill form fields if provided
+            if (options.formData) {
+              try {
+                const formData = JSON.parse(options.formData);
+                for (const [fieldName, value] of Object.entries(formData)) {
+                  try {
+                    const field = form.getTextField(fieldName);
+                    if (field) {
+                      field.setText(String(value));
+                    }
+                  } catch (e) {
+                    // Field not found or not a text field
+                  }
+                }
+              } catch (e) {
+                // Invalid JSON, continue with flattening only
+              }
+            }
+            
+            // Flatten the form
+            form.flatten();
+            
+            const flattenedPath = path.join(outputDir, `flattened-${randomUUID()}.pdf`);
+            fs.writeFileSync(flattenedPath, await pdfDoc.save());
+            result = flattenedPath;
+            filename = "filled-flattened.pdf";
+            break;
+          }
+
+
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
         }

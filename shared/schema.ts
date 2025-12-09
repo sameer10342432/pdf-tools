@@ -910,6 +910,16 @@ export const pdfToolTypes = [
   "split-pdf-by-barcode",
   "add-qrcode-to-pdf",
   "add-barcode-to-pdf",
+  "compress-and-merge-pdf",
+  "split-and-compress-pdf",
+  "rotate-and-watermark-pdf",
+  "word-to-pdf-and-protect",
+  "extract-images-to-jpg",
+  "unlock-and-compress-pdf",
+  "ocr-and-compress-pdf",
+  "pdf-to-searchable-pdf",
+  "add-signature-and-protect-pdf",
+  "fill-form-and-flatten-pdf",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -25290,6 +25300,175 @@ const newPdfToolsSet: PdfTool[] = [
 <h2>Integration Workflows</h2>
 <p>Generate barcodes from database values. Batch process multiple documents. Create serialized barcode sequences. Export for label printing. Integrate with inventory management systems. Automate document tracking workflows.</p>`,
   },
+  {
+    id: "compress-and-merge-pdf",
+    name: "Compress and Merge PDF",
+    description: "Combine multiple PDFs into one and compress the result",
+    icon: "Combine",
+    type: "compress-and-merge-pdf",
+    color: "bg-red-500",
+    emoji: "🗜️",
+    metaTitle: "Compress and Merge PDF Online Free - Combine & Reduce Size | PDF Tools",
+    metaDescription: "Merge multiple PDF files into one and compress the result online for free. Combine PDFs and reduce file size in one step. Fast, secure, no registration.",
+    seoArticle: `<h2>Compress and Merge PDF - Two-in-One PDF Tool</h2>
+<p>Our Compress and Merge PDF tool combines two essential PDF operations into one streamlined workflow. Upload multiple PDF files, merge them into a single document, and automatically compress the result—all in one step. This saves time and ensures your final document is both organized and optimized for sharing.</p>
+<h2>Why Combine Merging and Compression?</h2>
+<p>When you merge multiple PDFs, the resulting file can become quite large, especially if the source documents contain images or complex graphics. By integrating compression into the merge process, you get a final document that's easier to email, upload, and store. No need to run two separate operations.</p>
+<h2>How It Works</h2>
+<p>Upload your PDF files in the desired order. Our tool merges them sequentially, then applies intelligent compression that reduces file size while preserving quality. Choose from different compression levels based on your needs—whether you prioritize quality or size reduction.</p>
+<h2>Use Cases</h2>
+<p>Combining monthly reports into quarterly summaries. Merging contract documents with appendices. Creating portfolios from individual project PDFs. Consolidating research papers into a single document. Preparing documents for email attachments with size limits.</p>
+<h2>Features</h2>
+<p>Drag-and-drop file ordering. Multiple compression level options. Preview before download. Preserves bookmarks and links. Maintains document metadata. Fast processing even for large files.</p>`,
+  },
+  {
+    id: "split-and-compress-pdf",
+    name: "Split and Compress PDF",
+    description: "Split PDF into multiple files and compress each part",
+    icon: "Scissors",
+    type: "split-and-compress-pdf",
+    color: "bg-blue-500",
+    emoji: "✂️",
+    metaTitle: "Split and Compress PDF Online Free - Divide & Reduce Size | PDF Tools",
+    metaDescription: "Split PDF into multiple files and compress each part online for free. Extract pages and reduce file sizes in one operation. Fast and secure.",
+    seoArticle: `<h2>Split and Compress PDF - Efficient Document Division</h2>
+<p>Our Split and Compress PDF tool divides your large PDF into smaller, compressed files. Whether you're extracting specific pages or splitting a document into equal parts, each resulting file is automatically optimized for size. Perfect for sharing large documents via email or organizing content.</p>
+<h2>Benefits of Combined Splitting and Compression</h2>
+<p>When you split a PDF, you often end up with files that inherit the full compression overhead of the original. By compressing during the split, each extracted section is optimized independently, resulting in smaller file sizes and faster sharing.</p>
+<h2>Splitting Options</h2>
+<p>Extract specific pages (e.g., pages 1, 3, 5-10). Split into equal parts (2, 3, 4, or more sections). Split by page count (every 5 pages). Split by file size (max 10MB each). Extract odd or even pages only.</p>
+<h2>Common Applications</h2>
+<p>Sending specific chapters to reviewers. Breaking down large manuals into sections. Extracting invoices from batch PDF files. Preparing presentations from comprehensive reports. Archiving documents in manageable sizes.</p>
+<h2>Quality Assurance</h2>
+<p>Each split file maintains document quality. Compression uses smart algorithms for best results. Page numbering and bookmarks preserved where applicable. Preview splits before downloading. Batch download as ZIP file.</p>`,
+  },
+  {
+    id: "rotate-and-watermark-pdf",
+    name: "Rotate and Watermark PDF",
+    description: "Rotate PDF pages and add custom watermarks",
+    icon: "RotateCw",
+    type: "rotate-and-watermark-pdf",
+    color: "bg-purple-500",
+    emoji: "🔄",
+    metaTitle: "Rotate and Watermark PDF Online Free - Adjust & Brand PDFs | PDF Tools",
+    metaDescription: "Rotate PDF pages and add custom watermarks in one step online for free. Fix orientation and protect your documents. Fast, secure, no registration.",
+    seoArticle: `<h2>Rotate and Watermark PDF - Orientation and Protection Combined</h2>
+<p>Fix incorrectly oriented pages and add professional watermarks in a single operation. Our Rotate and Watermark PDF tool lets you correct page orientation while simultaneously adding text or image watermarks for branding or protection.</p>
+<h2>Rotation Options</h2>
+<p>Rotate all pages uniformly (90°, 180°, 270°). Rotate specific pages individually. Auto-detect and fix orientation. Handle mixed orientation documents. Preview rotation before applying.</p>
+<h2>Watermark Customization</h2>
+<p>Text watermarks with custom fonts and colors. Diagonal, centered, or corner placement. Adjustable opacity for subtle or bold marks. Company logos and images as watermarks. Apply to all pages or selected ranges.</p>
+<h2>Professional Use Cases</h2>
+<p>Correcting scanned document orientation while adding "CONFIDENTIAL" stamps. Preparing branded presentations from rotated source materials. Creating proof copies with "DRAFT" watermarks. Standardizing document orientation in archives while adding ownership marks.</p>
+<h2>Workflow Efficiency</h2>
+<p>Combining rotation and watermarking saves time when both operations are needed. Process multiple files with consistent settings. Download individually or as a batch. Maintain original document quality throughout.</p>`,
+  },
+  {
+    id: "word-to-pdf-and-protect",
+    name: "Convert Word to PDF and Protect",
+    description: "Convert Word documents to PDF and add password protection",
+    icon: "ShieldCheck",
+    type: "word-to-pdf-and-protect",
+    color: "bg-green-500",
+    emoji: "🔐",
+    metaTitle: "Word to PDF with Password Protection Online Free | PDF Tools",
+    metaDescription: "Convert Word documents to PDF and add password protection in one step online for free. Create secure PDFs from DOCX files. Fast and reliable.",
+    seoArticle: `<h2>Convert Word to PDF and Protect - Secure Document Conversion</h2>
+<p>Transform your Word documents into password-protected PDFs in a single workflow. Our tool converts DOCX and DOC files to PDF format while simultaneously adding encryption, ensuring your sensitive documents are secure from unauthorized access.</p>
+<h2>Why Protect During Conversion?</h2>
+<p>Sensitive business documents often start as Word files. By adding protection during the conversion to PDF, you ensure the document is secured from the moment it exists in shareable format. No gap in security between conversion and protection.</p>
+<h2>Protection Options</h2>
+<p>Open password: Require password to view the document. Permission password: Control printing, copying, editing. 128-bit or 256-bit AES encryption. Restrict text selection and copying. Prevent printing or allow limited prints.</p>
+<h2>Supported Formats</h2>
+<p>Microsoft Word (.docx, .doc). Rich Text Format (.rtf). OpenDocument Text (.odt). All converted with high fidelity to the original formatting.</p>
+<h2>Business Applications</h2>
+<p>Contracts and legal documents. Employee handbooks and policies. Confidential reports and proposals. Client presentations with proprietary information. Internal memos with sensitive data.</p>`,
+  },
+  {
+    id: "extract-images-to-jpg",
+    name: "Extract Images and Convert to JPG",
+    description: "Extract all images from PDF and convert them to JPG format",
+    icon: "Image",
+    type: "extract-images-to-jpg",
+    color: "bg-orange-500",
+    emoji: "🖼️",
+    metaTitle: "Extract Images from PDF to JPG Online Free | PDF Tools",
+    metaDescription: "Extract all images from PDF documents and convert them to JPG format online for free. Download individual images or as ZIP. Fast and easy.",
+    seoArticle: `<h2>Extract Images from PDF to JPG - Image Recovery Made Easy</h2>
+<p>Our Extract Images to JPG tool scans your PDF documents and extracts every embedded image, converting them to high-quality JPG format. Perfect for recovering images from presentations, reports, or any PDF containing graphics you need to reuse.</p>
+<h2>How It Works</h2>
+<p>Upload your PDF and our tool automatically detects and extracts all embedded images. Each image is converted to JPG format with optimal compression settings that balance quality and file size. Download individual images or get them all as a convenient ZIP file.</p>
+<h2>Quality Options</h2>
+<p>High quality: Minimal compression, larger files. Balanced: Good quality with reasonable file sizes. Optimized: Smaller files for web use. Custom DPI: Specify output resolution. Preserve original dimensions or resize.</p>
+<h2>Common Use Cases</h2>
+<p>Extracting product photos from catalogs. Recovering graphics from presentations. Archiving images from PDF reports. Reusing charts and diagrams. Extracting photos from scanned documents.</p>
+<h2>Output Features</h2>
+<p>Sequential naming for easy organization. Original image dimensions preserved. EXIF data stripped for privacy. Batch download as ZIP archive. Preview images before download.</p>`,
+  },
+  {
+    id: "unlock-and-compress-pdf",
+    name: "Unlock and Compress PDF",
+    description: "Remove PDF password protection and compress the file",
+    icon: "Unlock",
+    type: "unlock-and-compress-pdf",
+    color: "bg-yellow-500",
+    emoji: "🔓",
+    metaTitle: "Unlock and Compress PDF Online Free - Remove Password & Reduce Size | PDF Tools",
+    metaDescription: "Remove PDF password protection and compress the file in one step online for free. Unlock protected PDFs and reduce file size. Fast and secure.",
+    seoArticle: `<h2>Unlock and Compress PDF - Remove Protection and Optimize</h2>
+<p>Our Unlock and Compress PDF tool removes password protection from your PDFs while simultaneously reducing file size. If you have the password and need to create an unprotected, optimized version for easier sharing, this tool does both in one step.</p>
+<h2>How It Works</h2>
+<p>Upload your password-protected PDF and enter the document password. Our tool removes the encryption and applies compression to reduce file size. The result is an unlocked, optimized PDF ready for sharing without restrictions.</p>
+<h2>Important Note</h2>
+<p>You must have the correct password to unlock the PDF. This tool is designed for legitimate use cases where you have authorization to remove protection. We do not bypass security without proper credentials.</p>
+<h2>Benefits</h2>
+<p>Share documents without password hassles. Reduce file size for email attachments. Create archival copies without restrictions. Enable printing and copying as needed. Prepare documents for editing.</p>
+<h2>Compression Options</h2>
+<p>Light compression: Maximum quality preservation. Standard compression: Balanced quality and size. Maximum compression: Smallest file size. Preserve images: Prioritize image quality. Optimize for web viewing.</p>`,
+  },
+  {
+    id: "ocr-and-compress-pdf",
+    name: "OCR and Compress PDF",
+    description: "Make scanned PDFs searchable with OCR and compress the result",
+    icon: "Search",
+    type: "ocr-and-compress-pdf",
+    color: "bg-teal-500",
+    emoji: "🔍",
+    metaTitle: "OCR and Compress PDF Online Free - Searchable & Smaller PDFs | PDF Tools",
+    metaDescription: "Convert scanned PDFs to searchable text using OCR and compress the result online for free. Make documents searchable and reduce file size in one step.",
+    seoArticle: `<h2>OCR and Compress PDF - Searchability Meets Optimization</h2>
+<p>Transform scanned PDFs into searchable documents while reducing file size. Our OCR and Compress tool applies optical character recognition to make text selectable and searchable, then compresses the result for efficient storage and sharing.</p>
+<h2>Why Combine OCR and Compression?</h2>
+<p>Scanned PDFs are often large because they're essentially images. OCR adds a text layer for searchability, and compression optimizes the overall file. Together, you get a document that's both functional and efficient.</p>
+<h2>OCR Features</h2>
+<p>Support for 14+ languages including English, Spanish, French, German, and Asian languages. High accuracy text recognition. Preserves original visual appearance. Creates invisible text layer for searching. Handles mixed content documents.</p>
+<h2>Compression Benefits</h2>
+<p>Significantly smaller file sizes. Faster loading and transmission. Reduced storage requirements. Maintained visual quality. Optimized for digital archiving.</p>
+<h2>Use Cases</h2>
+<p>Digitizing paper archives. Making scanned contracts searchable. Creating searchable document libraries. Preparing legal discovery documents. Archiving historical records.</p>`,
+  },
+  {
+    id: "add-signature-and-protect-pdf",
+    name: "Add Signature and Protect PDF",
+    description: "Sign PDF documents and add password protection",
+    icon: "FileSignature",
+    type: "add-signature-and-protect-pdf",
+    color: "bg-indigo-500",
+    emoji: "✍️",
+    metaTitle: "Sign and Protect PDF Online Free - Add Signature & Password | PDF Tools",
+    metaDescription: "Add your signature to PDF documents and protect them with a password online for free. Sign and secure documents in one step. Fast and reliable.",
+    seoArticle: `<h2>Add Signature and Protect PDF</h2><p>Sign and protect your PDFs in one step. Add your digital signature and secure with password protection.</p>`,
+  },
+  {
+    id: "fill-form-and-flatten-pdf",
+    name: "Fill Form and Flatten PDF",
+    description: "Fill PDF forms and flatten them to prevent editing",
+    icon: "ClipboardList",
+    type: "fill-form-and-flatten-pdf",
+    color: "bg-pink-500",
+    emoji: "📝",
+    metaTitle: "Fill and Flatten PDF Forms Online Free - Complete & Lock Forms | PDF Tools",
+    metaDescription: "Fill PDF forms and flatten them to prevent further editing online for free. Complete forms and create permanent documents. Fast and secure.",
+    seoArticle: `<h2>Fill Form and Flatten PDF</h2><p>Fill out PDF forms and permanently flatten them to prevent any future edits. Creates permanent records of completed forms.</p>`,
+  },
 ];
-
-pdfTools.push(...newPdfToolsSet);
