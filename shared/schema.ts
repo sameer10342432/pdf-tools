@@ -860,6 +860,16 @@ export const pdfToolTypes = [
   "find-facebook-id",
   "find-twitter-id",
   "http-status-checker",
+  "screen-resolution-detector",
+  "browser-info",
+  "dpi-calculator",
+  "aspect-ratio-calculator",
+  "pixels-to-cm-converter",
+  "words-to-pages-converter",
+  "reading-time-calculator",
+  "random-color-generator",
+  "random-palette-generator",
+  "password-strength-checker",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -24258,3 +24268,259 @@ const textProcessingTools: PdfTool[] = [
 ];
 
 pdfTools.push(...textProcessingTools);
+
+// New Screen, Browser, Calculator Tools
+const screenBrowserTools: PdfTool[] = [
+  {
+    id: "screen-resolution-detector",
+    name: "Screen Resolution Detector",
+    description: "Detect your screen resolution, viewport size, and display information",
+    icon: "Monitor",
+    type: "screen-resolution-detector",
+    color: "bg-blue-500",
+    emoji: "🖥️",
+    metaTitle: "Screen Resolution Detector Online Free - Check Display Size | PDF Tools",
+    metaDescription: "Detect your screen resolution, viewport dimensions, and display properties online for free. Get accurate DPI, color depth, and device pixel ratio information instantly.",
+    seoArticle: `<h2>Screen Resolution Detector - Know Your Display</h2>
+<p>Our free Screen Resolution Detector instantly identifies your monitor's resolution, viewport size, and display properties. Whether you're a developer testing responsive designs or curious about your screen specifications, this tool provides comprehensive display information in real-time.</p>
+
+<h2>What Information Does It Detect?</h2>
+<p>Get complete display metrics including screen width and height in pixels, available screen area (excluding taskbar), viewport dimensions, device pixel ratio for retina displays, color depth, and pixel density. All measurements update automatically when you resize your browser window.</p>
+
+<h2>Why Screen Resolution Matters</h2>
+<p>Screen resolution affects everything from image quality to website layouts. Higher resolutions display more content but with smaller elements. Understanding your resolution helps you choose appropriate image sizes, configure displays for comfort, and troubleshoot display issues effectively.</p>
+
+<h2>Developer Tool for Responsive Design</h2>
+<p>Web developers use resolution detection to test responsive breakpoints. Our tool shows real-time viewport changes as you resize, helping you verify CSS media queries and ensure your designs work across all screen sizes from mobile to ultra-wide monitors.</p>
+
+<h2>Device Pixel Ratio Explained</h2>
+<p>Modern high-DPI displays like Retina screens have pixel ratios greater than 1. This means each CSS pixel maps to multiple physical pixels. Understanding your device pixel ratio helps you serve appropriate image sizes and achieve crisp visuals on all displays.</p>`,
+  },
+  {
+    id: "browser-info",
+    name: "Browser Info",
+    description: "Get detailed information about your browser, OS, and device",
+    icon: "Globe",
+    type: "browser-info",
+    color: "bg-indigo-500",
+    emoji: "🌐",
+    metaTitle: "Browser Info Detector Online Free - Check Browser Details | PDF Tools",
+    metaDescription: "Detect your browser name, version, operating system, and device information online for free. Identify user agent, platform, and capabilities instantly.",
+    seoArticle: `<h2>Browser Info Detector - Complete System Analysis</h2>
+<p>Discover detailed information about your web browser, operating system, and device with our free Browser Info tool. Get instant access to your user agent string, browser name and version, OS details, and hardware capabilities - all without installing anything.</p>
+
+<h2>Browser Detection Details</h2>
+<p>Identify your exact browser name (Chrome, Firefox, Safari, Edge, etc.) and version number. Know your rendering engine, JavaScript engine, and supported web standards. Essential for developers debugging browser-specific issues and ensuring compatibility.</p>
+
+<h2>Operating System Information</h2>
+<p>Detect your operating system including Windows, macOS, Linux, iOS, or Android. Get version information and architecture details (32-bit or 64-bit). Useful for software compatibility checks and system troubleshooting.</p>
+
+<h2>Device and Platform Details</h2>
+<p>Learn whether you're on desktop, tablet, or mobile. Get information about touch support, screen orientation capabilities, and device memory. Understand your hardware context for optimizing web experiences.</p>
+
+<h2>Feature Detection</h2>
+<p>Beyond basic info, discover which modern web features your browser supports. Check for WebGL, Service Workers, Web Audio, and dozens of other capabilities. Perfect for web developers ensuring feature compatibility.</p>`,
+  },
+  {
+    id: "dpi-calculator",
+    name: "DPI Calculator",
+    description: "Calculate DPI (dots per inch) and PPI for displays and printing",
+    icon: "Maximize2",
+    type: "dpi-calculator",
+    color: "bg-purple-500",
+    emoji: "📐",
+    metaTitle: "DPI Calculator Online Free - Calculate Pixels Per Inch | PDF Tools",
+    metaDescription: "Calculate DPI (dots per inch) and PPI (pixels per inch) online for free. Convert between screen resolutions and physical sizes for displays and printing.",
+    seoArticle: `<h2>DPI Calculator - Precise Pixel Density Calculations</h2>
+<p>Calculate DPI (Dots Per Inch) and PPI (Pixels Per Inch) with precision using our free online calculator. Whether you're preparing images for print, choosing a monitor, or understanding display specifications, this tool provides accurate pixel density calculations.</p>
+
+<h2>How DPI Calculation Works</h2>
+<p>DPI is calculated by dividing the diagonal pixel count by the diagonal screen size. For a given resolution (width × height) and physical screen size, we compute the precise pixel density. Higher DPI means sharper images and text.</p>
+
+<h2>Screen vs Print DPI</h2>
+<p>Computer screens typically range from 72-300+ PPI, while professional printing often requires 300 DPI or higher. Understanding this difference helps you prepare images correctly for each medium. Our calculator handles both use cases seamlessly.</p>
+
+<h2>Common DPI Values</h2>
+<p>Standard monitors: 72-100 DPI. Retina displays: 200-300+ PPI. Professional photo printing: 300 DPI. Large format printing: 150-200 DPI. Newspaper: 85-100 DPI. Each application has optimal density ranges for quality results.</p>
+
+<h2>Reverse Calculations</h2>
+<p>Calculate in any direction. Enter DPI and physical size to find required resolution. Or enter resolution and DPI to determine physical dimensions. Flexible calculations for all your pixel density needs.</p>`,
+  },
+  {
+    id: "aspect-ratio-calculator",
+    name: "Aspect Ratio Calculator",
+    description: "Calculate and convert aspect ratios for images and videos",
+    icon: "RatioIcon",
+    type: "aspect-ratio-calculator",
+    color: "bg-orange-500",
+    emoji: "📏",
+    metaTitle: "Aspect Ratio Calculator Online Free - Calculate Width Height Ratio | PDF Tools",
+    metaDescription: "Calculate aspect ratios for images and videos online for free. Convert between different ratios, find missing dimensions, and understand common formats.",
+    seoArticle: `<h2>Aspect Ratio Calculator - Perfect Proportions Every Time</h2>
+<p>Calculate, convert, and understand aspect ratios with our free online calculator. Enter any two dimensions to find the ratio, or specify a ratio with one dimension to calculate the other. Essential for photographers, videographers, and designers.</p>
+
+<h2>Understanding Aspect Ratios</h2>
+<p>Aspect ratio expresses the proportional relationship between width and height. Common ratios include 16:9 (widescreen video), 4:3 (standard monitors), 1:1 (square for social media), and 21:9 (ultrawide). Each format serves specific purposes.</p>
+
+<h2>Calculate Missing Dimensions</h2>
+<p>Know your target ratio but only have one dimension? Enter the ratio and width to calculate height, or vice versa. Scale images proportionally without distortion. Maintain perfect proportions when resizing.</p>
+
+<h2>Video and Cinema Formats</h2>
+<p>Professional video uses specific ratios: 16:9 for HD/4K broadcast, 2.39:1 for cinematic widescreen, 9:16 for vertical mobile video. Understanding these ensures your content displays correctly on target platforms.</p>
+
+<h2>Photography and Print</h2>
+<p>Standard photo prints use ratios like 3:2 (35mm), 4:3 (digital cameras), 5:4 (8×10 prints). Match your crop to intended output format to avoid unwanted cropping at the print stage.</p>`,
+  },
+  {
+    id: "pixels-to-cm-converter",
+    name: "Pixels to CM Converter",
+    description: "Convert pixels to centimeters and vice versa based on DPI",
+    icon: "Ruler",
+    type: "pixels-to-cm-converter",
+    color: "bg-teal-500",
+    emoji: "📏",
+    metaTitle: "Pixels to CM Converter Online Free - Convert Pixels Centimeters | PDF Tools",
+    metaDescription: "Convert pixels to centimeters and cm to pixels online for free. Accurate conversion based on DPI settings for print and web design.",
+    seoArticle: `<h2>Pixels to CM Converter - Bridge Digital and Physical</h2>
+<p>Convert between pixels and centimeters accurately with our free online converter. Understanding this relationship is crucial for preparing digital images for print, designing physical layouts, and ensuring your work appears at the intended size.</p>
+
+<h2>How Pixel to CM Conversion Works</h2>
+<p>The conversion depends on DPI (dots per inch). At 72 DPI, one inch equals 72 pixels, and one centimeter equals about 28.35 pixels. At 300 DPI for print, one centimeter is approximately 118.11 pixels. Our calculator handles any DPI value.</p>
+
+<h2>Common DPI Settings</h2>
+<p>Web graphics: 72 or 96 DPI. Standard printing: 150 DPI. High-quality printing: 300 DPI. Professional photo printing: 300-600 DPI. Select the appropriate DPI for your output medium to get accurate conversions.</p>
+
+<h2>Practical Applications</h2>
+<p>Designers use this conversion when creating print layouts in Photoshop or Illustrator. Developers need it for responsive design calculations. Photographers convert to ensure prints come out at the right physical size.</p>
+
+<h2>Bidirectional Conversion</h2>
+<p>Convert pixels to centimeters for print dimensions, or centimeters to pixels when creating digital assets at specific physical sizes. Our tool works both directions instantly with any custom DPI value.</p>`,
+  },
+  {
+    id: "words-to-pages-converter",
+    name: "Words to Pages Converter",
+    description: "Estimate page count based on word count and formatting",
+    icon: "FileText",
+    type: "words-to-pages-converter",
+    color: "bg-amber-500",
+    emoji: "📄",
+    metaTitle: "Words to Pages Converter Online Free - Word Count to Page Count | PDF Tools",
+    metaDescription: "Convert word count to page count online for free. Estimate how many pages your document will be based on formatting, font size, and spacing.",
+    seoArticle: `<h2>Words to Pages Converter - Accurate Page Estimation</h2>
+<p>Estimate how many pages your document will occupy based on word count and formatting. Whether you're writing an essay, preparing a manuscript, or planning content length, our converter provides accurate page estimates for various document formats.</p>
+
+<h2>Factors Affecting Page Count</h2>
+<p>Page count depends on multiple factors: font type and size, line spacing (single, 1.5, or double), margin sizes, and paper format. A 1000-word document can range from 2 to 5 pages depending on these settings. Our calculator accounts for all variables.</p>
+
+<h2>Standard Formatting Presets</h2>
+<p>Academic papers: Times New Roman 12pt, double-spaced, 1-inch margins (~250 words/page). Business documents: Arial 11pt, single-spaced (~500 words/page). Manuscripts: Courier 12pt, double-spaced (~250 words/page). Select your format for instant estimates.</p>
+
+<h2>Reverse Calculation</h2>
+<p>Have a page limit? Calculate how many words you can write. Enter your target page count and formatting to find the word count. Perfect for meeting assignment requirements or publication guidelines.</p>
+
+<h2>Multiple Paper Sizes</h2>
+<p>Support for Letter (8.5×11), A4, Legal, and other paper sizes. Each size affects how many words fit per page. Get accurate estimates for your specific document format and regional paper standards.</p>`,
+  },
+  {
+    id: "reading-time-calculator",
+    name: "Reading Time Calculator",
+    description: "Calculate estimated reading time for text content",
+    icon: "Clock",
+    type: "reading-time-calculator",
+    color: "bg-rose-500",
+    emoji: "⏱️",
+    metaTitle: "Reading Time Calculator Online Free - Estimate Read Time | PDF Tools",
+    metaDescription: "Calculate reading time for any text online for free. Get accurate estimates based on word count and reading speed. Perfect for content creators and writers.",
+    seoArticle: `<h2>Reading Time Calculator - Know Your Content Length</h2>
+<p>Calculate how long it takes to read your content with our free Reading Time Calculator. Essential for bloggers, content creators, and educators who want to inform readers about time investment. Accurate estimates based on proven reading speed research.</p>
+
+<h2>Average Reading Speeds</h2>
+<p>Adults read approximately 200-250 words per minute for average content. Technical or complex material: 100-150 WPM. Light fiction: 250-300 WPM. Speed readers can exceed 400 WPM. Our calculator uses customizable speeds for accurate estimates.</p>
+
+<h2>Why Display Reading Time?</h2>
+<p>Studies show that displaying estimated reading time increases engagement. Readers appreciate knowing the time commitment before starting. Medium.com and major publications use reading time estimates because they measurably improve click-through rates.</p>
+
+<h2>Content Planning Benefits</h2>
+<p>Plan your content length to match audience expectations. Blog posts typically perform best at 7-10 minute reads (1,400-2,000 words). Quick tips work at 2-3 minutes. Long-form guides can extend to 15+ minutes. Match format to purpose.</p>
+
+<h2>Speaking Time Calculation</h2>
+<p>Our tool also estimates speaking time for presentations. Speaking rates average 125-150 words per minute. Know exactly how long your script will take to deliver, helping you prepare perfectly timed presentations.</p>`,
+  },
+  {
+    id: "random-color-generator",
+    name: "Random Color Generator",
+    description: "Generate random colors in HEX, RGB, and HSL formats",
+    icon: "Palette",
+    type: "random-color-generator",
+    color: "bg-pink-500",
+    emoji: "🎨",
+    metaTitle: "Random Color Generator Online Free - Generate Colors | PDF Tools",
+    metaDescription: "Generate random colors online for free. Get colors in HEX, RGB, HSL formats. Perfect for design inspiration and creative projects.",
+    seoArticle: `<h2>Random Color Generator - Infinite Color Inspiration</h2>
+<p>Generate beautiful random colors instantly with our free online color generator. Get colors in multiple formats (HEX, RGB, HSL) ready to use in your designs. Perfect for breaking creative blocks, exploring new palettes, and finding unexpected color combinations.</p>
+
+<h2>Multiple Color Formats</h2>
+<p>Every generated color comes in three formats: HEX (#FF5733) for web CSS, RGB (255, 87, 51) for image editing, and HSL (11, 100%, 60%) for intuitive color manipulation. Copy any format with one click.</p>
+
+<h2>Color Constraints</h2>
+<p>Generate truly random colors, or constrain the output to specific ranges. Filter by saturation to avoid muddy colors. Limit lightness to ensure readability. Generate only warm or cool tones. Customize randomness to your needs.</p>
+
+<h2>Design Inspiration</h2>
+<p>Stuck on color choices? Random generation breaks decision paralysis. Many designers use random color as a starting point, then refine. You might discover combinations you'd never have considered manually.</p>
+
+<h2>Accessibility Check</h2>
+<p>Each generated color shows contrast ratios against white and black backgrounds. Know instantly if your color works for text, buttons, or backgrounds. Ensure your random discoveries are also accessible choices.</p>`,
+  },
+  {
+    id: "random-palette-generator",
+    name: "Random Palette Generator",
+    description: "Generate harmonious color palettes randomly",
+    icon: "Layers",
+    type: "random-palette-generator",
+    color: "bg-violet-500",
+    emoji: "🎭",
+    metaTitle: "Random Palette Generator Online Free - Generate Color Palettes | PDF Tools",
+    metaDescription: "Generate random color palettes online for free. Create harmonious 5-color schemes for design projects. Export in multiple formats.",
+    seoArticle: `<h2>Random Palette Generator - Complete Color Schemes Instantly</h2>
+<p>Generate beautiful, harmonious color palettes with a single click. Our Random Palette Generator creates 5-color schemes using color theory principles, ensuring each palette is visually cohesive and ready for real design projects.</p>
+
+<h2>Color Harmony Modes</h2>
+<p>Choose generation modes: Analogous (neighboring colors for harmony), Complementary (opposite colors for contrast), Triadic (balanced triangular selection), or Truly Random for maximum variety. Each mode produces different aesthetic effects.</p>
+
+<h2>Export Options</h2>
+<p>Export your palette in multiple formats. Get CSS variables for web development, SCSS variables, JSON arrays, or simple HEX codes. Download as image swatches for reference. Share palettes with your team easily.</p>
+
+<h2>Palette Locking</h2>
+<p>Found a color you love? Lock it and regenerate the rest. Build your perfect palette iteratively by keeping favorites and randomizing the remainder. Mix intentional choices with serendipitous discoveries.</p>
+
+<h2>Accessibility Verification</h2>
+<p>Each palette shows contrast relationships between colors. Know which combinations work for text, which for backgrounds. Ensure your generated palette isn't just beautiful but also accessible and usable.</p>`,
+  },
+  {
+    id: "password-strength-checker",
+    name: "Password Strength Checker",
+    description: "Check password strength and get security recommendations",
+    icon: "Shield",
+    type: "password-strength-checker",
+    color: "bg-red-500",
+    emoji: "🔒",
+    metaTitle: "Password Strength Checker Online Free - Test Password Security | PDF Tools",
+    metaDescription: "Check password strength online for free. Get security score, crack time estimate, and improvement suggestions. Analyze password without storing it.",
+    seoArticle: `<h2>Password Strength Checker - Analyze Your Security</h2>
+<p>Test your password strength with our comprehensive security analyzer. Get an instant strength score, estimated crack time, and specific recommendations for improvement. All analysis happens locally - your password is never transmitted or stored.</p>
+
+<h2>What Makes a Strong Password?</h2>
+<p>Strong passwords combine length (12+ characters), complexity (mixed case, numbers, symbols), and unpredictability (no dictionary words or patterns). Our checker evaluates all these factors and weights them appropriately for an accurate assessment.</p>
+
+<h2>Crack Time Estimation</h2>
+<p>See how long it would take to crack your password using various attack methods: online attacks (limited by rate limiting), offline attacks (faster, against stolen databases), and GPU-accelerated attacks. Understand your real-world vulnerability.</p>
+
+<h2>Common Weakness Detection</h2>
+<p>We detect patterns that weaken passwords: keyboard sequences (qwerty), repeated characters, common substitutions (@ for a), dictionary words, and personal info patterns. These predictable elements drastically reduce security.</p>
+
+<h2>Actionable Recommendations</h2>
+<p>Don't just get a score - get specific advice. Our checker suggests exactly how to improve: add length, include symbols, avoid patterns. Transform weak passwords into strong ones with targeted guidance.</p>`,
+  },
+];
+
+pdfTools.push(...screenBrowserTools);

@@ -34777,6 +34777,277 @@ file '${loopInputPath}'`;
           break;
         }
 
+        case "screen-resolution-detector": {
+          result = {
+            success: true,
+            message: "Screen resolution detection is handled client-side for accuracy.",
+            clientSideDetection: true
+          };
+          break;
+        }
+
+        case "browser-info": {
+          const userAgent = req.headers['user-agent'] || '';
+          let browser = 'Unknown';
+          let browserVersion = '';
+          let os = 'Unknown';
+          let device = 'Desktop';
+          
+          if (userAgent.includes('Firefox')) {
+            browser = 'Firefox';
+            const match = userAgent.match(/Firefox\/([\d.]+)/);
+            browserVersion = match ? match[1] : '';
+          } else if (userAgent.includes('Chrome') && !userAgent.includes('Edg')) {
+            browser = 'Chrome';
+            const match = userAgent.match(/Chrome\/([\d.]+)/);
+            browserVersion = match ? match[1] : '';
+          } else if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) {
+            browser = 'Safari';
+            const match = userAgent.match(/Version\/([\d.]+)/);
+            browserVersion = match ? match[1] : '';
+          } else if (userAgent.includes('Edg')) {
+            browser = 'Edge';
+            const match = userAgent.match(/Edg\/([\d.]+)/);
+            browserVersion = match ? match[1] : '';
+          }
+          
+          if (userAgent.includes('Windows')) os = 'Windows';
+          else if (userAgent.includes('Mac OS')) os = 'macOS';
+          else if (userAgent.includes('Linux')) os = 'Linux';
+          else if (userAgent.includes('Android')) { os = 'Android'; device = 'Mobile'; }
+          else if (userAgent.includes('iPhone') || userAgent.includes('iPad')) { os = 'iOS'; device = userAgent.includes('iPad') ? 'Tablet' : 'Mobile'; }
+          
+          result = {
+            success: true,
+            browser,
+            browserVersion,
+            os,
+            device,
+            userAgent,
+            platform: process.platform,
+            nodeVersion: process.version
+          };
+          break;
+        }
+
+        case "dpi-calculator": {
+          const { width, height, diagonal, calcMode } = options;
+          const w = parseFloat(width) || 1920;
+          const h = parseFloat(height) || 1080;
+          const d = parseFloat(diagonal) || 24;
+          
+          const diagonalPixels = Math.sqrt(w * w + h * h);
+          const dpi = Math.round(diagonalPixels / d);
+          
+          result = {
+            success: true,
+            width: w,
+            height: h,
+            diagonal: d,
+            diagonalPixels: Math.round(diagonalPixels),
+            dpi,
+            ppi: dpi,
+            category: dpi < 100 ? 'Low' : dpi < 150 ? 'Standard' : dpi < 200 ? 'High' : dpi < 300 ? 'Retina' : 'Ultra High'
+          };
+          break;
+        }
+
+        case "aspect-ratio-calculator": {
+          const { width, height, targetRatio, calcMode } = options;
+          const gcd = (a: number, b: number): number => b === 0 ? a : gcd(b, a % b);
+          
+          const w = parseInt(width) || 1920;
+          const h = parseInt(height) || 1080;
+          const divisor = gcd(w, h);
+          const ratioW = w / divisor;
+          const ratioH = h / divisor;
+          
+          result = {
+            success: true,
+            width: w,
+            height: h,
+            ratio: ratioW + ':' + ratioH,
+            decimal: (w / h).toFixed(4),
+            common: w/h > 1.7 ? '16:9 (Widescreen)' : w/h > 1.3 ? '4:3 (Standard)' : w === h ? '1:1 (Square)' : 'Custom'
+          };
+          break;
+        }
+
+        case "pixels-to-cm-converter": {
+          const { pixels, cm, dpi, conversionMode } = options;
+          const d = parseFloat(dpi) || 96;
+          const cmPerInch = 2.54;
+          
+          const px = parseFloat(pixels) || parseFloat(input) || 100;
+          const inches = px / d;
+          const centimeters = inches * cmPerInch;
+          
+          result = {
+            success: true,
+            pixels: px,
+            centimeters: centimeters.toFixed(4),
+            inches: inches.toFixed(4),
+            millimeters: (centimeters * 10).toFixed(4),
+            dpi: d
+          };
+          break;
+        }
+
+        case "words-to-pages-converter": {
+          const text = input.trim();
+          const wordCount = text ? text.split(/\s+/).filter((w: string) => w.length > 0).length : parseInt(options.wordCount) || 0;
+          const fontSize = parseInt(options.fontSize) || 12;
+          const lineSpacing = parseFloat(options.lineSpacing) || 1.5;
+          
+          let baseWordsPerPage = 250;
+          const fontFactor = (12 / fontSize) * (12 / fontSize);
+          const spacingFactor = 1.5 / lineSpacing;
+          const wordsPerPage = Math.round(baseWordsPerPage * fontFactor * spacingFactor);
+          const pages = wordCount / wordsPerPage;
+          
+          result = {
+            success: true,
+            wordCount,
+            wordsPerPage,
+            pages: pages.toFixed(2),
+            pagesRounded: Math.ceil(pages),
+            settings: { fontSize, lineSpacing },
+            characterCount: text.length
+          };
+          break;
+        }
+
+        case "reading-time-calculator": {
+          const text = input.trim();
+          const wordCount = text.split(/\s+/).filter((w: string) => w.length > 0).length;
+          const readingSpeed = parseInt(options.readingSpeed) || 200;
+          const speakingSpeed = parseInt(options.speakingSpeed) || 150;
+          
+          const readingMinutes = wordCount / readingSpeed;
+          const speakingMinutes = wordCount / speakingSpeed;
+          
+          const formatTime = (minutes: number) => {
+            const mins = Math.floor(minutes);
+            const secs = Math.round((minutes - mins) * 60);
+            if (mins === 0) return secs + ' seconds';
+            if (secs === 0) return mins + ' minute' + (mins > 1 ? 's' : '');
+            return mins + ' min ' + secs + ' sec';
+          };
+          
+          result = {
+            success: true,
+            wordCount,
+            characterCount: text.length,
+            readingTime: formatTime(readingMinutes),
+            readingMinutes: readingMinutes.toFixed(2),
+            speakingTime: formatTime(speakingMinutes),
+            speakingMinutes: speakingMinutes.toFixed(2),
+            readingSpeed,
+            speakingSpeed
+          };
+          break;
+        }
+
+        case "random-color-generator": {
+          const count = parseInt(options.count) || 1;
+          const colors = [];
+          
+          for (let i = 0; i < count; i++) {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            const hex = '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase();
+            
+            colors.push({
+              hex,
+              rgb: 'rgb(' + r + ', ' + g + ', ' + b + ')',
+              rgbValues: { r, g, b }
+            });
+          }
+          
+          result = {
+            success: true,
+            colors: count === 1 ? colors[0] : colors,
+            count
+          };
+          break;
+        }
+
+        case "random-palette-generator": {
+          const paletteSize = parseInt(options.paletteSize) || 5;
+          const colors = [];
+          const baseHue = Math.random() * 360;
+          
+          for (let i = 0; i < paletteSize; i++) {
+            const h = (baseHue + i * (360 / paletteSize)) % 360;
+            const s = 60 + Math.random() * 30;
+            const l = 40 + Math.random() * 30;
+            
+            const c = (1 - Math.abs(2 * l / 100 - 1)) * s / 100;
+            const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+            const m = l / 100 - c / 2;
+            let r1 = 0, g1 = 0, b1 = 0;
+            if (h < 60) { r1 = c; g1 = x; b1 = 0; }
+            else if (h < 120) { r1 = x; g1 = c; b1 = 0; }
+            else if (h < 180) { r1 = 0; g1 = c; b1 = x; }
+            else if (h < 240) { r1 = 0; g1 = x; b1 = c; }
+            else if (h < 300) { r1 = x; g1 = 0; b1 = c; }
+            else { r1 = c; g1 = 0; b1 = x; }
+            
+            const r = Math.round((r1 + m) * 255);
+            const g = Math.round((g1 + m) * 255);
+            const b = Math.round((b1 + m) * 255);
+            const hex = '#' + [r, g, b].map(n => n.toString(16).padStart(2, '0')).join('').toUpperCase();
+            
+            colors.push({ hex, rgb: 'rgb(' + r + ', ' + g + ', ' + b + ')' });
+          }
+          
+          result = { success: true, palette: colors, paletteSize };
+          break;
+        }
+
+        case "password-strength-checker": {
+          const password = input;
+          let score = 0;
+          const feedback = [];
+          const requirements = {
+            length: password.length >= 8,
+            uppercase: /[A-Z]/.test(password),
+            lowercase: /[a-z]/.test(password),
+            numbers: /[0-9]/.test(password),
+            special: /[^A-Za-z0-9]/.test(password)
+          };
+          
+          if (password.length >= 8) score += 1;
+          if (password.length >= 12) score += 1;
+          if (password.length >= 16) score += 1;
+          if (requirements.uppercase) score += 1;
+          if (requirements.lowercase) score += 1;
+          if (requirements.numbers) score += 1;
+          if (requirements.special) score += 2;
+          
+          if (!requirements.length) feedback.push('Use at least 8 characters');
+          if (!requirements.uppercase) feedback.push('Add uppercase letters');
+          if (!requirements.lowercase) feedback.push('Add lowercase letters');
+          if (!requirements.numbers) feedback.push('Add numbers');
+          if (!requirements.special) feedback.push('Add special characters');
+          
+          const strengthLabels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
+          const strengthIndex = Math.min(Math.floor(score / 2), 5);
+          
+          result = {
+            success: true,
+            score,
+            maxScore: 9,
+            strength: strengthLabels[strengthIndex],
+            strengthPercent: Math.round((score / 9) * 100),
+            requirements,
+            feedback,
+            length: password.length
+          };
+          break;
+        }
+
         default:
           return res.status(400).json({ error: "Unknown tool type: " + toolType });
       }

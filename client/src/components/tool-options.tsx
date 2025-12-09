@@ -15060,6 +15060,95 @@ export function ToolOptionsComponent({
       );
     }
 
+    case "screen-resolution-detector":
+      return (
+        <Card className="p-6">
+          <div className="text-center space-y-4">
+            <Monitor className="w-16 h-16 mx-auto text-primary" />
+            <h3 className="text-lg font-semibold">Screen Resolution Detector</h3>
+            <div className="grid grid-cols-2 gap-4 text-left">
+              <div className="p-3 bg-muted rounded-md">
+                <p className="text-sm text-muted-foreground">Screen Width</p>
+                <p className="text-xl font-bold" data-testid="text-screen-width">{typeof window !== 'undefined' ? window.screen.width : 0}px</p>
+              </div>
+              <div className="p-3 bg-muted rounded-md">
+                <p className="text-sm text-muted-foreground">Screen Height</p>
+                <p className="text-xl font-bold" data-testid="text-screen-height">{typeof window !== 'undefined' ? window.screen.height : 0}px</p>
+              </div>
+              <div className="p-3 bg-muted rounded-md">
+                <p className="text-sm text-muted-foreground">Viewport Width</p>
+                <p className="text-xl font-bold" data-testid="text-viewport-width">{typeof window !== 'undefined' ? window.innerWidth : 0}px</p>
+              </div>
+              <div className="p-3 bg-muted rounded-md">
+                <p className="text-sm text-muted-foreground">Viewport Height</p>
+                <p className="text-xl font-bold" data-testid="text-viewport-height">{typeof window !== 'undefined' ? window.innerHeight : 0}px</p>
+              </div>
+              <div className="p-3 bg-muted rounded-md">
+                <p className="text-sm text-muted-foreground">Device Pixel Ratio</p>
+                <p className="text-xl font-bold" data-testid="text-pixel-ratio">{typeof window !== 'undefined' ? window.devicePixelRatio : 1}x</p>
+              </div>
+              <div className="p-3 bg-muted rounded-md">
+                <p className="text-sm text-muted-foreground">Color Depth</p>
+                <p className="text-xl font-bold" data-testid="text-color-depth">{typeof window !== 'undefined' ? window.screen.colorDepth : 24}-bit</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      );
+
+    case "browser-info":
+      return (
+        <Card className="p-6">
+          <div className="text-center space-y-4">
+            <Globe className="w-16 h-16 mx-auto text-primary" />
+            <h3 className="text-lg font-semibold">Browser Information</h3>
+            <div className="grid grid-cols-2 gap-4 text-left">
+              <div className="p-3 bg-muted rounded-md col-span-2">
+                <p className="text-sm text-muted-foreground">User Agent</p>
+                <p className="text-xs font-mono break-all" data-testid="text-user-agent">{typeof navigator !== 'undefined' ? navigator.userAgent : ''}</p>
+              </div>
+              <div className="p-3 bg-muted rounded-md">
+                <p className="text-sm text-muted-foreground">Platform</p>
+                <p className="text-lg font-bold" data-testid="text-platform">{typeof navigator !== 'undefined' ? navigator.platform : ''}</p>
+              </div>
+              <div className="p-3 bg-muted rounded-md">
+                <p className="text-sm text-muted-foreground">Language</p>
+                <p className="text-lg font-bold" data-testid="text-language">{typeof navigator !== 'undefined' ? navigator.language : ''}</p>
+              </div>
+              <div className="p-3 bg-muted rounded-md">
+                <p className="text-sm text-muted-foreground">Cookies Enabled</p>
+                <p className="text-lg font-bold" data-testid="text-cookies">{typeof navigator !== 'undefined' ? (navigator.cookieEnabled ? 'Yes' : 'No') : ''}</p>
+              </div>
+              <div className="p-3 bg-muted rounded-md">
+                <p className="text-sm text-muted-foreground">Online Status</p>
+                <p className="text-lg font-bold" data-testid="text-online">{typeof navigator !== 'undefined' ? (navigator.onLine ? 'Online' : 'Offline') : ''}</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      );
+
+    case "dpi-calculator":
+    case "aspect-ratio-calculator":
+    case "pixels-to-cm-converter":
+    case "words-to-pages-converter":
+    case "reading-time-calculator":
+    case "random-color-generator":
+    case "random-palette-generator":
+    case "password-strength-checker":
+      return (
+        <Card className="p-6">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Settings className="w-5 h-5" />
+              <span className="font-medium">Tool Options</span>
+            </div>
+            <p className="text-sm text-muted-foreground">Enter your input and click Process to use this tool.</p>
+          </div>
+        </Card>
+      );
+
+
     default:
       return null;
   }
