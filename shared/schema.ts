@@ -830,6 +830,16 @@ export const pdfToolTypes = [
   "share-text-online",
   "share-files-online",
   "url-shortener",
+  "readability-checker",
+  "plagiarism-checker",
+  "grammar-checker",
+  "spell-checker",
+  "article-spinner",
+  "paraphrasing-tool",
+  "text-summarizer",
+  "word-cloud-generator",
+  "signature-generator",
+  "email-validator",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -23472,3 +23482,258 @@ const interactiveTools: PdfTool[] = [
 ];
 
 pdfTools.push(...interactiveTools);
+
+const textProcessingTools: PdfTool[] = [
+  {
+    id: "readability-checker",
+    name: "Readability Checker",
+    description: "Analyze text readability with Flesch-Kincaid, Gunning Fog, and other metrics",
+    icon: "BookOpen",
+    type: "readability-checker",
+    color: "bg-blue-500",
+    emoji: "📖",
+    metaTitle: "Readability Checker - Analyze Text Complexity | File Tools",
+    metaDescription: "Check text readability with Flesch-Kincaid, Gunning Fog, and SMOG indexes. Get grade level scores and suggestions to improve content clarity.",
+    seoArticle: \`<h2>Readability Checker - Analyze Your Text Complexity</h2>
+<p>Ensure your content is accessible to your target audience with our comprehensive readability analyzer. Get instant feedback on reading level and complexity.</p>
+
+<h3>Multiple Readability Metrics</h3>
+<p>Analyze text using Flesch-Kincaid Grade Level, Flesch Reading Ease, Gunning Fog Index, SMOG Index, Coleman-Liau Index, and Automated Readability Index. Get a complete picture of your content's complexity.</p>
+
+<h3>Grade Level Scoring</h3>
+<p>Understand exactly what education level is needed to comprehend your text. Perfect for educators, content writers, and marketers targeting specific audiences.</p>
+
+<h3>Improvement Suggestions</h3>
+<p>Get actionable recommendations to improve readability. Identify long sentences, complex words, and passive voice that may hinder comprehension.</p>
+
+<h3>Word and Sentence Analysis</h3>
+<p>View detailed statistics including word count, sentence count, average sentence length, syllable count, and percentage of complex words.</p>\`,
+  },
+  {
+    id: "plagiarism-checker",
+    name: "Plagiarism Checker",
+    description: "Detect duplicate content and check text originality using pattern matching",
+    icon: "Search",
+    type: "plagiarism-checker",
+    color: "bg-red-500",
+    emoji: "🔍",
+    metaTitle: "Plagiarism Checker - Detect Duplicate Content | File Tools",
+    metaDescription: "Check your text for plagiarism and duplicate content. Identify copied passages and ensure content originality. Free plagiarism detection tool.",
+    seoArticle: \`<h2>Plagiarism Checker - Ensure Content Originality</h2>
+<p>Protect your reputation and ensure content authenticity with our plagiarism detection tool. Identify duplicate content and maintain academic or professional integrity.</p>
+
+<h3>Pattern-Based Detection</h3>
+<p>Our algorithm analyzes text patterns to identify potentially duplicated or closely matching content. Compare multiple texts or check against common phrases.</p>
+
+<h3>Similarity Scoring</h3>
+<p>Get a percentage score indicating how unique your content is. Detailed reports highlight specific passages that may need attention.</p>
+
+<h3>Multiple Text Comparison</h3>
+<p>Compare two or more documents against each other to find overlapping content. Perfect for educators checking student submissions.</p>
+
+<h3>Privacy First</h3>
+<p>Your content is processed securely and never stored or shared. Check sensitive documents with confidence knowing your text remains private.</p>\`,
+  },
+  {
+    id: "grammar-checker",
+    name: "Grammar Checker",
+    description: "Check and fix grammar errors, punctuation, and writing style issues",
+    icon: "FileCheck",
+    type: "grammar-checker",
+    color: "bg-green-500",
+    emoji: "✅",
+    metaTitle: "Grammar Checker - Fix Writing Errors Instantly | File Tools",
+    metaDescription: "Check grammar, punctuation, and style errors in your text. Get instant corrections and improve your writing quality. Free grammar checking tool.",
+    seoArticle: \`<h2>Grammar Checker - Perfect Your Writing</h2>
+<p>Eliminate embarrassing grammar mistakes and polish your writing with our comprehensive grammar checking tool. Get instant feedback and corrections.</p>
+
+<h3>Common Error Detection</h3>
+<p>Identify subject-verb agreement issues, incorrect tense usage, missing punctuation, run-on sentences, and other common grammar mistakes.</p>
+
+<h3>Punctuation Analysis</h3>
+<p>Check for proper comma placement, apostrophe usage, quotation marks, and other punctuation elements that affect readability.</p>
+
+<h3>Style Suggestions</h3>
+<p>Improve writing clarity with suggestions for wordy phrases, passive voice, and repetitive language. Make your content more engaging.</p>
+
+<h3>Context-Aware Corrections</h3>
+<p>Our checker understands context to provide accurate suggestions. Avoid false positives with intelligent analysis of your writing.</p>\`,
+  },
+  {
+    id: "spell-checker",
+    name: "Spell Checker",
+    description: "Find and correct spelling mistakes with smart suggestions",
+    icon: "Type",
+    type: "spell-checker",
+    color: "bg-purple-500",
+    emoji: "🔤",
+    metaTitle: "Spell Checker - Find Spelling Mistakes | File Tools",
+    metaDescription: "Check spelling errors in your text and get correction suggestions. Support for multiple languages. Free online spell checking tool.",
+    seoArticle: \`<h2>Spell Checker - Eliminate Spelling Errors</h2>
+<p>Catch every spelling mistake before it reaches your readers. Our spell checker identifies typos and provides smart correction suggestions.</p>
+
+<h3>Instant Error Detection</h3>
+<p>Paste your text and instantly see all misspelled words highlighted. No more manual proofreading or missed typos.</p>
+
+<h3>Smart Suggestions</h3>
+<p>Get intelligent correction suggestions based on common typo patterns and word similarity. One-click corrections for quick fixes.</p>
+
+<h3>Custom Dictionary</h3>
+<p>Add technical terms, names, and industry-specific words to avoid false positives. Build your personal dictionary for accurate checking.</p>
+
+<h3>Bulk Text Support</h3>
+<p>Check documents of any length efficiently. Process essays, articles, reports, or entire manuscripts in seconds.</p>\`,
+  },
+  {
+    id: "article-spinner",
+    name: "Article Spinner",
+    description: "Rewrite articles using synonym replacement and sentence restructuring",
+    icon: "RefreshCw",
+    type: "article-spinner",
+    color: "bg-orange-500",
+    emoji: "🔄",
+    metaTitle: "Article Spinner - Rewrite Content Automatically | File Tools",
+    metaDescription: "Spin articles using intelligent synonym replacement. Create unique content variations while maintaining meaning. Free article rewriter tool.",
+    seoArticle: \`<h2>Article Spinner - Create Content Variations</h2>
+<p>Generate unique versions of existing content with our intelligent article spinning tool. Create multiple variations while preserving the original meaning.</p>
+
+<h3>Synonym Replacement</h3>
+<p>Intelligently replace words with appropriate synonyms while maintaining grammatical correctness and natural flow.</p>
+
+<h3>Sentence Restructuring</h3>
+<p>Go beyond word replacement with sentence-level rewriting. Create truly unique content that passes duplicate detection.</p>
+
+<h3>Adjustable Spin Level</h3>
+<p>Control how aggressively the content is rewritten. Choose light spinning for minor variations or heavy spinning for completely unique output.</p>
+
+<h3>Preserve Key Terms</h3>
+<p>Mark important terms, brand names, or technical vocabulary to keep them unchanged during the spinning process.</p>\`,
+  },
+  {
+    id: "paraphrasing-tool",
+    name: "Paraphrasing Tool",
+    description: "Rewrite text in different words while keeping the original meaning",
+    icon: "PenTool",
+    type: "paraphrasing-tool",
+    color: "bg-teal-500",
+    emoji: "✍️",
+    metaTitle: "Paraphrasing Tool - Rewrite Text Intelligently | File Tools",
+    metaDescription: "Paraphrase text to create unique content. Reword sentences while preserving meaning. Free online paraphrasing and rewriting tool.",
+    seoArticle: \`<h2>Paraphrasing Tool - Rewrite With Intelligence</h2>
+<p>Transform your text into fresh, original content while maintaining the core message. Perfect for avoiding plagiarism and creating unique variations.</p>
+
+<h3>Meaning Preservation</h3>
+<p>Unlike simple word replacement, our paraphraser understands context and preserves the original meaning while changing the expression.</p>
+
+<h3>Multiple Modes</h3>
+<p>Choose from Standard, Fluency, Creative, or Formal modes to match your writing needs. Each mode produces different styles of output.</p>
+
+<h3>Sentence-Level Rewriting</h3>
+<p>Get complete sentence restructuring, not just word swaps. Create content that reads naturally and sounds human-written.</p>
+
+<h3>Vocabulary Enhancement</h3>
+<p>Improve your vocabulary by seeing alternative ways to express ideas. Learn new phrases and writing techniques.</p>\`,
+  },
+  {
+    id: "text-summarizer",
+    name: "Text Summarizer",
+    description: "Generate concise summaries of long articles and documents",
+    icon: "AlignLeft",
+    type: "text-summarizer",
+    color: "bg-indigo-500",
+    emoji: "📝",
+    metaTitle: "Text Summarizer - Summarize Long Content | File Tools",
+    metaDescription: "Summarize long articles, documents, and text into concise summaries. Extract key points automatically. Free text summarization tool.",
+    seoArticle: \`<h2>Text Summarizer - Extract Key Information</h2>
+<p>Save time by automatically condensing lengthy documents into digestible summaries. Extract the most important information in seconds.</p>
+
+<h3>Extractive Summarization</h3>
+<p>Identify and extract the most important sentences from your text. Get summaries that use the original wording for accuracy.</p>
+
+<h3>Adjustable Length</h3>
+<p>Control summary length as a percentage of the original or by specifying number of sentences. Get exactly the detail level you need.</p>
+
+<h3>Key Point Extraction</h3>
+<p>Automatically identify main topics and key points. Perfect for quickly understanding long reports, articles, or research papers.</p>
+
+<h3>Bullet Point Format</h3>
+<p>Generate summaries as bullet points for easy scanning. Great for meeting notes, report highlights, and quick reference.</p>\`,
+  },
+  {
+    id: "word-cloud-generator",
+    name: "Word Cloud Generator",
+    description: "Create visual word clouds from text showing word frequency",
+    icon: "LayoutGrid",
+    type: "word-cloud-generator",
+    color: "bg-pink-500",
+    emoji: "☁️",
+    metaTitle: "Word Cloud Generator - Create Visual Word Art | File Tools",
+    metaDescription: "Generate beautiful word clouds from any text. Visualize word frequency with customizable colors and layouts. Free word cloud maker.",
+    seoArticle: \`<h2>Word Cloud Generator - Visualize Your Text</h2>
+<p>Transform text into stunning visual word clouds. See which words appear most frequently with larger sizes. Perfect for presentations and analysis.</p>
+
+<h3>Frequency-Based Sizing</h3>
+<p>Words that appear more often are displayed larger. Instantly visualize the most important terms in any text.</p>
+
+<h3>Customizable Colors</h3>
+<p>Choose from preset color schemes or create custom palettes. Match your word cloud to your brand or presentation theme.</p>
+
+<h3>Multiple Layouts</h3>
+<p>Generate word clouds in different shapes and arrangements. Choose horizontal, circular, or custom layouts for visual variety.</p>
+
+<h3>Export Options</h3>
+<p>Download your word cloud as PNG or SVG. Get high-resolution images perfect for print or digital use.</p>\`,
+  },
+  {
+    id: "signature-generator",
+    name: "Signature Generator",
+    description: "Create professional digital signatures and handwritten-style text",
+    icon: "PenLine",
+    type: "signature-generator",
+    color: "bg-amber-500",
+    emoji: "✒️",
+    metaTitle: "Signature Generator - Create Digital Signatures | File Tools",
+    metaDescription: "Generate professional digital signatures with handwritten styles. Create custom signatures for documents and emails. Free signature maker.",
+    seoArticle: \`<h2>Signature Generator - Create Professional Signatures</h2>
+<p>Design beautiful digital signatures for documents, emails, and online forms. Choose from handwritten styles or create your own unique signature.</p>
+
+<h3>Multiple Signature Styles</h3>
+<p>Choose from elegant script, professional print, artistic brush, or casual handwritten styles. Find the perfect look for your needs.</p>
+
+<h3>Customization Options</h3>
+<p>Adjust color, size, stroke width, and slant to personalize your signature. Create a truly unique digital identity.</p>
+
+<h3>Drawing Canvas</h3>
+<p>Draw your signature directly with mouse or touchscreen. Capture your actual handwriting for authentic signatures.</p>
+
+<h3>Export Formats</h3>
+<p>Download signatures as transparent PNG for easy insertion into documents. Get vector SVG for scalable, high-quality output.</p>\`,
+  },
+  {
+    id: "email-validator",
+    name: "Email Validator",
+    description: "Verify email address format and syntax for validity",
+    icon: "BadgeCheck",
+    type: "email-validator",
+    color: "bg-cyan-500",
+    emoji: "📧",
+    metaTitle: "Email Validator - Verify Email Addresses | File Tools",
+    metaDescription: "Validate email addresses for correct format and syntax. Check single emails or bulk lists. Free email verification tool.",
+    seoArticle: \`<h2>Email Validator - Verify Email Addresses</h2>
+<p>Ensure email addresses are correctly formatted before sending. Check syntax, detect typos, and validate email structure instantly.</p>
+
+<h3>Syntax Validation</h3>
+<p>Check email format against RFC 5322 standards. Detect invalid characters, missing @ symbols, and malformed domains.</p>
+
+<h3>Bulk Validation</h3>
+<p>Validate entire lists of email addresses at once. Upload CSV files or paste lists for batch processing.</p>
+
+<h3>Common Typo Detection</h3>
+<p>Identify probable typos in popular email domains. Catch mistakes like "gmial.com" or "hotmal.com" before they cause bounces.</p>
+
+<h3>Disposable Email Detection</h3>
+<p>Identify temporary and disposable email addresses. Keep your mailing lists clean with quality email addresses.</p>\`,
+  },
+];
+
+pdfTools.push(...textProcessingTools);
