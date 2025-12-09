@@ -850,6 +850,16 @@ export const pdfToolTypes = [
   "youtube-thumbnail-downloader",
   "youtube-tag-extractor",
   "credit-card-validator",
+  "iban-validator",
+  "slug-to-title",
+  "title-to-slug",
+  "case-converter-camel",
+  "case-converter-snake",
+  "case-converter-kebab",
+  "case-converter-pascal",
+  "find-facebook-id",
+  "find-twitter-id",
+  "http-status-checker",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -23994,6 +24004,257 @@ const textProcessingTools: PdfTool[] = [
 <h3>Privacy First</h3>
 <p>All validation happens in your browser. No card numbers are sent to any server. Completely safe for testing purposes.</p>`,
   },
+  {
+    id: "iban-validator",
+    name: "IBAN Validator",
+    description: "Validate International Bank Account Numbers (IBAN) for correctness",
+    icon: "Building2",
+    type: "iban-validator",
+    color: "bg-blue-600",
+    emoji: "🏦",
+    metaTitle: "IBAN Validator - Verify Bank Account Numbers | File Tools",
+    metaDescription: "Validate IBAN numbers instantly. Check format, country code, and checksum. Free online IBAN verification tool.",
+    seoArticle: `<h2>IBAN Validator - International Bank Account Number Checker</h2>
+<p>Verify IBAN (International Bank Account Number) validity instantly. Our validator checks the format, country code, length, and mathematical checksum to ensure your IBAN is correct.</p>
+
+<h3>What is an IBAN?</h3>
+<p>IBAN is an internationally agreed system for identifying bank accounts across national borders. It was created to facilitate cross-border payments and reduce transaction errors.</p>
+
+<h3>How IBAN Validation Works</h3>
+<p>We check the country code format, verify the length matches the country's standard, and calculate the MOD-97 checksum to ensure mathematical validity.</p>
+
+<h3>Supported Countries</h3>
+<p>Our validator supports IBANs from all countries that use the IBAN system, including EU member states, Switzerland, United Arab Emirates, and many more.</p>
+
+<h3>Secure Validation</h3>
+<p>All validation happens in your browser. No bank account information is sent to any server. Your financial data remains completely private.</p>`,
+  },
+  {
+    id: "slug-to-title",
+    name: "Slug to Title",
+    description: "Convert URL slugs to properly formatted titles",
+    icon: "Type",
+    type: "slug-to-title",
+    color: "bg-purple-500",
+    emoji: "🔤",
+    metaTitle: "Slug to Title Converter - Transform URLs to Titles | File Tools",
+    metaDescription: "Convert URL slugs to readable titles. Transform hyphenated-text to Properly Capitalized Titles. Free online slug to title converter.",
+    seoArticle: `<h2>Slug to Title Converter - URL to Title Transformation</h2>
+<p>Convert URL slugs like "my-blog-post" into properly formatted titles like "My Blog Post". Perfect for content management and SEO optimization.</p>
+
+<h3>How It Works</h3>
+<p>Simply paste your slug, and our tool replaces hyphens and underscores with spaces, then capitalizes each word appropriately.</p>
+
+<h3>Use Cases</h3>
+<p>Content managers use this to generate titles from URLs. Developers use it to create readable labels from database slugs. SEO specialists use it for metadata generation.</p>
+
+<h3>Smart Capitalization</h3>
+<p>Our algorithm handles common words that shouldn't be capitalized (like "a", "the", "and") while ensuring proper title case formatting.</p>
+
+<h3>Instant Results</h3>
+<p>Get your converted title instantly. Copy with one click. No registration or downloads required.</p>`,
+  },
+  {
+    id: "title-to-slug",
+    name: "Title to Slug",
+    description: "Convert titles to URL-friendly slugs",
+    icon: "Link",
+    type: "title-to-slug",
+    color: "bg-indigo-500",
+    emoji: "🔗",
+    metaTitle: "Title to Slug Converter - Create URL-Friendly Slugs | File Tools",
+    metaDescription: "Convert titles to URL-friendly slugs. Transform 'My Blog Post' to 'my-blog-post'. Free online slug generator.",
+    seoArticle: `<h2>Title to Slug Generator - Create SEO-Friendly URLs</h2>
+<p>Transform any title into a clean, URL-friendly slug. Convert "My Amazing Blog Post!" into "my-amazing-blog-post" instantly.</p>
+
+<h3>What is a Slug?</h3>
+<p>A slug is the URL-friendly version of a title, used in web addresses. Good slugs improve SEO and make URLs readable and shareable.</p>
+
+<h3>Slug Generation Rules</h3>
+<p>Our generator converts to lowercase, replaces spaces with hyphens, removes special characters, and eliminates duplicate hyphens.</p>
+
+<h3>SEO Benefits</h3>
+<p>Clean slugs improve search engine rankings. They're easier to read, share, and remember. Google prefers URLs that are concise and descriptive.</p>
+
+<h3>Instant Conversion</h3>
+<p>Type or paste your title, get the slug instantly. Copy to clipboard with one click. Works with any language.</p>`,
+  },
+  {
+    id: "case-converter-camel",
+    name: "CamelCase Converter",
+    description: "Convert text to camelCase format",
+    icon: "ALargeSmall",
+    type: "case-converter-camel",
+    color: "bg-orange-500",
+    emoji: "🐪",
+    metaTitle: "CamelCase Converter - Convert Text to camelCase | File Tools",
+    metaDescription: "Convert any text to camelCase format. Transform 'hello world' to 'helloWorld'. Free online case converter for developers.",
+    seoArticle: `<h2>CamelCase Converter - Text Case Transformation</h2>
+<p>Convert any text to camelCase format used in programming. Transform "hello world" into "helloWorld" instantly.</p>
+
+<h3>What is camelCase?</h3>
+<p>camelCase is a naming convention where words are joined without spaces, the first word is lowercase, and subsequent words start with capital letters. It's named for its resemblance to camel humps.</p>
+
+<h3>Common Uses</h3>
+<p>JavaScript variables, Java methods, JSON keys, and API naming conventions commonly use camelCase. It's the standard in many programming languages.</p>
+
+<h3>How Our Converter Works</h3>
+<p>Paste any text - whether it's sentence case, kebab-case, or snake_case - and get properly formatted camelCase output.</p>
+
+<h3>Developer Friendly</h3>
+<p>Perfect for developers needing quick case conversion. No installation required, works in any browser.</p>`,
+  },
+  {
+    id: "case-converter-snake",
+    name: "Snake_Case Converter",
+    description: "Convert text to snake_case format",
+    icon: "ALargeSmall",
+    type: "case-converter-snake",
+    color: "bg-green-600",
+    emoji: "🐍",
+    metaTitle: "Snake_Case Converter - Convert Text to snake_case | File Tools",
+    metaDescription: "Convert any text to snake_case format. Transform 'hello world' to 'hello_world'. Free online case converter.",
+    seoArticle: `<h2>Snake_Case Converter - Underscore Text Formatting</h2>
+<p>Convert any text to snake_case format. Transform "Hello World" into "hello_world" instantly. Popular in Python and database naming.</p>
+
+<h3>What is snake_case?</h3>
+<p>snake_case uses underscores to separate words, with all letters in lowercase. It's widely used in Python, Ruby, and SQL database column names.</p>
+
+<h3>When to Use snake_case</h3>
+<p>Python naming conventions, PostgreSQL columns, environment variables, and configuration files commonly use snake_case.</p>
+
+<h3>Smart Conversion</h3>
+<p>Our converter handles any input format - camelCase, PascalCase, or sentence case - and produces clean snake_case output.</p>
+
+<h3>Copy and Use</h3>
+<p>Instant conversion with one-click copy. Perfect for developers switching between naming conventions.</p>`,
+  },
+  {
+    id: "case-converter-kebab",
+    name: "Kebab-Case Converter",
+    description: "Convert text to kebab-case format",
+    icon: "ALargeSmall",
+    type: "case-converter-kebab",
+    color: "bg-red-500",
+    emoji: "🍢",
+    metaTitle: "Kebab-Case Converter - Convert Text to kebab-case | File Tools",
+    metaDescription: "Convert any text to kebab-case format. Transform 'hello world' to 'hello-world'. Free online case converter.",
+    seoArticle: `<h2>Kebab-Case Converter - Hyphenated Text Formatting</h2>
+<p>Convert any text to kebab-case format. Transform "Hello World" into "hello-world" instantly. Essential for URLs and CSS classes.</p>
+
+<h3>What is kebab-case?</h3>
+<p>kebab-case uses hyphens to separate words, with all letters in lowercase. The name comes from the resemblance to food on a skewer.</p>
+
+<h3>Common Applications</h3>
+<p>URL slugs, CSS class names, HTML attributes, and npm package names commonly use kebab-case. It's the web's preferred naming convention.</p>
+
+<h3>Universal Conversion</h3>
+<p>Input text in any format - camelCase, snake_case, or plain text - and get clean kebab-case output.</p>
+
+<h3>Web Development Essential</h3>
+<p>Every web developer needs kebab-case. Our tool makes conversion instant and error-free.</p>`,
+  },
+  {
+    id: "case-converter-pascal",
+    name: "PascalCase Converter",
+    description: "Convert text to PascalCase format",
+    icon: "ALargeSmall",
+    type: "case-converter-pascal",
+    color: "bg-violet-500",
+    emoji: "📝",
+    metaTitle: "PascalCase Converter - Convert Text to PascalCase | File Tools",
+    metaDescription: "Convert any text to PascalCase format. Transform 'hello world' to 'HelloWorld'. Free online case converter.",
+    seoArticle: `<h2>PascalCase Converter - Capital Case Formatting</h2>
+<p>Convert any text to PascalCase format. Transform "hello world" into "HelloWorld" instantly. Standard for class names and components.</p>
+
+<h3>What is PascalCase?</h3>
+<p>PascalCase capitalizes the first letter of every word and removes spaces. Unlike camelCase, the first letter is also capitalized.</p>
+
+<h3>Programming Standards</h3>
+<p>C# classes, React components, TypeScript interfaces, and .NET namespaces all use PascalCase by convention.</p>
+
+<h3>Any Input Format</h3>
+<p>Our converter handles camelCase, snake_case, kebab-case, or plain text - transforming it all to proper PascalCase.</p>
+
+<h3>Quick Conversion</h3>
+<p>Paste, convert, copy. That's all it takes. Essential for developers following coding conventions.</p>`,
+  },
+  {
+    id: "find-facebook-id",
+    name: "Find Facebook ID",
+    description: "Find the numeric ID of any Facebook profile or page",
+    icon: "Search",
+    type: "find-facebook-id",
+    color: "bg-blue-700",
+    emoji: "👤",
+    metaTitle: "Find Facebook ID - Get Profile & Page Numeric ID | File Tools",
+    metaDescription: "Find the numeric Facebook ID of any profile or page. Enter username or URL to get the unique identifier. Free Facebook ID finder.",
+    seoArticle: `<h2>Facebook ID Finder - Get Numeric Profile IDs</h2>
+<p>Find the numeric Facebook ID for any profile or page. This unique identifier is essential for developers, marketers, and social media integrations.</p>
+
+<h3>Why You Need Facebook IDs</h3>
+<p>Facebook Graph API requires numeric IDs. Social media tools need them for analytics. Custom integrations use IDs for reliable identification.</p>
+
+<h3>How It Works</h3>
+<p>Enter a Facebook profile URL or username. Our tool retrieves the corresponding numeric ID using public data available through Facebook's platform.</p>
+
+<h3>Supported Formats</h3>
+<p>Works with profile URLs, page URLs, usernames, and vanity URLs. Get results for personal profiles, business pages, and public figures.</p>
+
+<h3>Developer Essential</h3>
+<p>Building Facebook integrations? You'll need numeric IDs. Our tool makes finding them simple and fast.</p>`,
+  },
+  {
+    id: "find-twitter-id",
+    name: "Find Twitter/X ID",
+    description: "Find the numeric ID of any Twitter/X account",
+    icon: "Search",
+    type: "find-twitter-id",
+    color: "bg-gray-800",
+    emoji: "🐦",
+    metaTitle: "Find Twitter ID - Get X Account Numeric ID | File Tools",
+    metaDescription: "Find the numeric Twitter/X ID of any account. Enter username to get the unique identifier. Free Twitter ID lookup tool.",
+    seoArticle: `<h2>Twitter/X ID Finder - Numeric Account Identification</h2>
+<p>Find the numeric Twitter/X ID for any account. This permanent identifier is essential for API development and social media automation.</p>
+
+<h3>Why Twitter IDs Matter</h3>
+<p>Usernames can change, but numeric IDs are permanent. API calls often require numeric IDs. Data analysis tools use IDs for accurate tracking.</p>
+
+<h3>Simple Lookup</h3>
+<p>Enter a Twitter username or profile URL. Get the numeric ID instantly. No authentication or Twitter account required.</p>
+
+<h3>Use Cases</h3>
+<p>Bot development, social media monitoring, data archiving, and account verification all benefit from numeric ID lookup.</p>
+
+<h3>Always Accurate</h3>
+<p>IDs are permanent - even if users change their username. Use IDs for reliable, long-term tracking.</p>`,
+  },
+  {
+    id: "http-status-checker",
+    name: "HTTP Status Checker",
+    description: "Check HTTP status codes for any URL",
+    icon: "Globe",
+    type: "http-status-checker",
+    color: "bg-teal-600",
+    emoji: "🌐",
+    metaTitle: "HTTP Status Checker - Check URL Response Codes | File Tools",
+    metaDescription: "Check HTTP status codes for any URL. See response headers, redirects, and server status. Free online HTTP checker.",
+    seoArticle: `<h2>HTTP Status Checker - URL Response Analyzer</h2>
+<p>Check the HTTP status code of any URL instantly. See if pages return 200 OK, 301 Redirects, 404 Not Found, or other status codes.</p>
+
+<h3>Understanding HTTP Status Codes</h3>
+<p>Status codes tell you how a server responded to a request. 2xx means success, 3xx means redirect, 4xx means client error, 5xx means server error.</p>
+
+<h3>What We Check</h3>
+<p>Status code, response headers, redirect chain, response time, and server information. Get comprehensive URL diagnostics instantly.</p>
+
+<h3>SEO and Development</h3>
+<p>Check for broken links, verify redirects work correctly, debug API endpoints, and monitor website availability.</p>
+
+<h3>Bulk Checking</h3>
+<p>Check multiple URLs at once. Perfect for auditing websites or validating link lists. Results include full details for each URL.</p>`,
+  },
+
 ];
 
 pdfTools.push(...textProcessingTools);
