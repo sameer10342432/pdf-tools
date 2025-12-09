@@ -34540,5 +34540,251 @@ file '${loopInputPath}'`;
       res.status(500).json({ error: error.message || "Failed to extract tags" });
     }
   });
+
+  // Text Processing Tools API
+  app.post("/api/text-tools", async (req: Request, res: Response) => {
+    try {
+      const { toolType, input } = req.body;
+
+      if (!toolType || !input) {
+        return res.status(400).json({ error: "Tool type and input are required" });
+      }
+
+      let result: any = {};
+
+      switch (toolType) {
+        case "iban-validator": {
+          const iban = input.replace(/\s+/g, "").toUpperCase();
+          const countryCodeRegex = /^[A-Z]{2}/;
+          const countryMatch = iban.match(countryCodeRegex);
+          
+          if (!countryMatch) {
+            result = { valid: false, error: "Invalid country code" };
+            break;
+          }
+
+          const countryCode = countryMatch[0];
+          const ibanLengths: Record<string, number> = {
+            AL: 28, AD: 24, AT: 20, AZ: 28, BH: 22, BY: 28, BE: 16, BA: 20,
+            BR: 29, BG: 22, CR: 22, HR: 21, CY: 28, CZ: 24, DK: 18, DO: 28,
+            TL: 23, EE: 20, FO: 18, FI: 18, FR: 27, GE: 22, DE: 22, GI: 23,
+            GR: 27, GL: 18, GT: 28, HU: 28, IS: 26, IE: 22, IL: 23, IT: 27,
+            JO: 30, KZ: 20, XK: 20, KW: 30, LV: 21, LB: 28, LI: 21, LT: 20,
+            LU: 20, MK: 19, MT: 31, MR: 27, MU: 30, MC: 27, MD: 24, ME: 22,
+            NL: 18, NO: 15, PK: 24, PS: 29, PL: 24, PT: 25, QA: 29, RO: 24,
+            SM: 27, SA: 24, RS: 22, SC: 31, SK: 24, SI: 19, ES: 24, SE: 24,
+            CH: 21, TN: 24, TR: 26, UA: 29, AE: 23, GB: 22, VA: 22, VG: 24
+          };
+
+          const expectedLength = ibanLengths[countryCode];
+          if (!expectedLength) {
+            result = { valid: false, error: "Unknown country code: " + countryCode };
+            break;
+          }
+
+          if (iban.length !== expectedLength) {
+            result = { valid: false, error: "Invalid length for " + countryCode + ". Expected " + expectedLength + ", got " + iban.length };
+            break;
+          }
+
+          // MOD-97 validation
+          const rearranged = iban.slice(4) + iban.slice(0, 4);
+          const numericIban = rearranged.replace(/[A-Z]/g, (char) => (char.charCodeAt(0) - 55).toString());
+          
+          let remainder = "";
+          for (const digit of numericIban) {
+            remainder += digit;
+            remainder = (parseInt(remainder, 10) % 97).toString();
+          }
+
+          const isValid = parseInt(remainder, 10) === 1;
+          result = {
+            valid: isValid,
+            iban: iban.match(/.{1,4}/g)?.join(" ") || iban,
+            countryCode,
+            checkDigits: iban.slice(2, 4),
+            bban: iban.slice(4)
+          };
+          break;
+        }
+
+        case "slug-to-title": {
+          const slug = input.trim();
+          const title = slug
+            .replace(/[-_]/g, " ")
+            .split(" ")
+            .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(" ");
+          result = { original: slug, title };
+          break;
+        }
+
+        case "title-to-slug": {
+          const title = input.trim();
+          const slug = title
+            .toLowerCase()
+            .replace(/[^\w\s-]/g, "")
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-")
+            .replace(/^-|-$/g, "");
+          result = { original: title, slug };
+          break;
+        }
+
+        case "case-converter-camel": {
+          const text = input.trim();
+          const camelCase = text
+            .replace(/[-_\s]+(.)?/g, (_: string, c: string) => c ? c.toUpperCase() : "")
+            .replace(/^./, (c: string) => c.toLowerCase());
+          result = { original: text, converted: camelCase };
+          break;
+        }
+
+        case "case-converter-snake": {
+          const text = input.trim();
+          const snakeCase = text
+            .replace(/([a-z])([A-Z])/g, "$1_$2")
+            .replace(/[-\s]+/g, "_")
+            .toLowerCase();
+          result = { original: text, converted: snakeCase };
+          break;
+        }
+
+        case "case-converter-kebab": {
+          const text = input.trim();
+          const kebabCase = text
+            .replace(/([a-z])([A-Z])/g, "$1-$2")
+            .replace(/[_\s]+/g, "-")
+            .toLowerCase();
+          result = { original: text, converted: kebabCase };
+          break;
+        }
+
+        case "case-converter-pascal": {
+          const text = input.trim();
+          const pascalCase = text
+            .replace(/[-_\s]+(.)?/g, (_: string, c: string) => c ? c.toUpperCase() : "")
+            .replace(/^./, (c: string) => c.toUpperCase());
+          result = { original: text, converted: pascalCase };
+          break;
+        }
+
+        case "find-facebook-id": {
+          const inputUrl = input.trim();
+          let username = inputUrl;
+          
+          const urlMatch = inputUrl.match(/(?:facebook\.com|fb\.com)\/(?:profile\.php\?id=)?([^/?&]+)/i);
+          if (urlMatch) {
+            username = urlMatch[1];
+          }
+
+          if (/^\d+$/.test(username)) {
+            result = { 
+              success: true, 
+              facebookId: username, 
+              username: username,
+              note: "The input appears to be a numeric ID already"
+            };
+            break;
+          }
+
+          result = {
+            success: false,
+            username,
+            note: "Facebook requires authentication to look up profile IDs. Use the Graph API Explorer at developers.facebook.com or try the FindMyFbId website.",
+            suggestion: "Try visiting: https://findmyfbid.in/" + username
+          };
+          break;
+        }
+
+        case "find-twitter-id": {
+          const inputUrl = input.trim();
+          let username = inputUrl;
+          
+          const urlMatch = inputUrl.match(/(?:twitter\.com|x\.com)\/(?:@)?([^/?&]+)/i);
+          if (urlMatch) {
+            username = urlMatch[1];
+          }
+          
+          username = username.replace(/^@/, "");
+
+          result = {
+            success: false,
+            username,
+            note: "Twitter/X API requires authentication to look up user IDs. You can use the Tweeter ID Finder or Twitter API with proper credentials.",
+            suggestion: "Try visiting: https://tweeterid.com/" + username
+          };
+          break;
+        }
+
+        case "http-status-checker": {
+          const url = input.trim();
+          
+          try {
+            new URL(url.startsWith("http") ? url : "https://" + url);
+          } catch {
+            result = { error: "Invalid URL format" };
+            break;
+          }
+
+          const targetUrl = url.startsWith("http") ? url : "https://" + url;
+          
+          try {
+            const startTime = Date.now();
+            const response = await fetch(targetUrl, {
+              method: "HEAD",
+              redirect: "manual",
+              headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+              }
+            });
+            const responseTime = Date.now() - startTime;
+
+            const statusMessages: Record<number, string> = {
+              200: "OK",
+              201: "Created",
+              204: "No Content",
+              301: "Moved Permanently",
+              302: "Found (Temporary Redirect)",
+              304: "Not Modified",
+              400: "Bad Request",
+              401: "Unauthorized",
+              403: "Forbidden",
+              404: "Not Found",
+              405: "Method Not Allowed",
+              500: "Internal Server Error",
+              502: "Bad Gateway",
+              503: "Service Unavailable",
+              504: "Gateway Timeout"
+            };
+
+            result = {
+              url: targetUrl,
+              statusCode: response.status,
+              statusMessage: statusMessages[response.status] || response.statusText,
+              responseTime: responseTime + "ms",
+              headers: Object.fromEntries(response.headers.entries()),
+              redirectLocation: response.headers.get("location") || null
+            };
+          } catch (fetchError: any) {
+            result = {
+              url: targetUrl,
+              error: fetchError.message || "Failed to fetch URL",
+              suggestion: "The URL may be unreachable or blocking requests"
+            };
+          }
+          break;
+        }
+
+        default:
+          return res.status(400).json({ error: "Unknown tool type: " + toolType });
+      }
+
+      res.json({ success: true, result });
+    } catch (error: any) {
+      console.error("Text tool processing error:", error);
+      res.status(500).json({ error: error.message || "Text processing failed" });
+    }
+  });
   return httpServer;
 }
