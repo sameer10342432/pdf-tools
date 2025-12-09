@@ -840,6 +840,16 @@ export const pdfToolTypes = [
   "word-cloud-generator",
   "signature-generator",
   "email-validator",
+  "random-word-generator",
+  "random-paragraph-generator",
+  "barcode-generator",
+  "barcode-reader",
+  "rss-feed-reader",
+  "twitter-card-generator",
+  "open-graph-generator",
+  "youtube-thumbnail-downloader",
+  "youtube-tag-extractor",
+  "credit-card-validator",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -23733,6 +23743,256 @@ const textProcessingTools: PdfTool[] = [
 
 <h3>Disposable Email Detection</h3>
 <p>Identify temporary and disposable email addresses. Keep your mailing lists clean with quality email addresses.</p>`,
+  },
+  {
+    id: "random-word-generator",
+    name: "Random Word Generator",
+    description: "Generate random words for creative writing, games, and brainstorming",
+    icon: "Type",
+    type: "random-word-generator",
+    color: "bg-indigo-500",
+    emoji: "🔤",
+    metaTitle: "Random Word Generator - Generate Random Words Online | File Tools",
+    metaDescription: "Generate random words instantly for games, writing, brainstorming, and more. Free random word generator with customizable options.",
+    seoArticle: `<h2>Random Word Generator - Creative Word Tool</h2>
+<p>Generate random words instantly for creative writing, games, vocabulary building, and brainstorming sessions. Perfect for writers, educators, and game enthusiasts.</p>
+
+<h3>Multiple Word Categories</h3>
+<p>Generate words from different categories including nouns, verbs, adjectives, and mixed words. Customize output to match your specific needs.</p>
+
+<h3>Adjustable Word Count</h3>
+<p>Generate anywhere from 1 to 100 words at once. Perfect for creating word lists, vocabulary exercises, or random name generators.</p>
+
+<h3>Copy and Export</h3>
+<p>Copy generated words to clipboard or export as text file. Easy integration with other tools and applications.</p>
+
+<h3>Use Cases</h3>
+<p>Perfect for creative writing prompts, word games like Scrabble or crosswords, vocabulary building, random name generation, and brainstorming sessions.</p>`,
+  },
+  {
+    id: "random-paragraph-generator",
+    name: "Random Paragraph Generator",
+    description: "Create random paragraphs and lorem ipsum text for design mockups",
+    icon: "FileText",
+    type: "random-paragraph-generator",
+    color: "bg-purple-500",
+    emoji: "📝",
+    metaTitle: "Random Paragraph Generator - Lorem Ipsum Alternative | File Tools",
+    metaDescription: "Generate random paragraphs for design mockups, content placeholders, and testing. Free paragraph generator with customizable length.",
+    seoArticle: `<h2>Random Paragraph Generator - Content Placeholder Tool</h2>
+<p>Create random paragraphs instantly for design mockups, website prototypes, and document templates. Alternative to Lorem Ipsum with real English text.</p>
+
+<h3>Customizable Length</h3>
+<p>Generate paragraphs of any length - short, medium, or long. Perfect for matching specific design requirements.</p>
+
+<h3>Multiple Paragraph Generation</h3>
+<p>Create multiple paragraphs at once for full page mockups. Each paragraph is unique and coherent.</p>
+
+<h3>Design and Development</h3>
+<p>Essential tool for web designers, developers, and content creators who need placeholder text during the design process.</p>
+
+<h3>Better Than Lorem Ipsum</h3>
+<p>Get realistic English text that gives accurate representation of how final content will look. No more confusing clients with Latin placeholder text.</p>`,
+  },
+  {
+    id: "barcode-generator",
+    name: "Barcode Generator",
+    description: "Create barcodes in various formats including Code128, EAN, UPC",
+    icon: "Barcode",
+    type: "barcode-generator",
+    color: "bg-gray-700",
+    emoji: "📊",
+    metaTitle: "Barcode Generator - Create Barcodes Online Free | File Tools",
+    metaDescription: "Generate barcodes in Code128, EAN-13, UPC-A, Code39 and more formats. Free online barcode generator with instant download.",
+    seoArticle: `<h2>Barcode Generator - Professional Barcode Creation</h2>
+<p>Create professional barcodes in multiple formats including Code128, EAN-13, UPC-A, Code39, and more. Perfect for product labeling, inventory management, and retail applications.</p>
+
+<h3>Multiple Barcode Formats</h3>
+<p>Support for all major barcode formats: Code128 for general use, EAN-13 for international retail, UPC-A for North American products, Code39 for industrial applications, and more.</p>
+
+<h3>High-Quality Output</h3>
+<p>Generate crisp, scannable barcodes in PNG format. Adjustable size and resolution for printing or digital use.</p>
+
+<h3>Instant Download</h3>
+<p>Download generated barcodes immediately. No registration or account required. All processing done locally.</p>
+
+<h3>Business Applications</h3>
+<p>Perfect for small businesses, inventory management, product labeling, asset tracking, and library systems.</p>`,
+  },
+  {
+    id: "barcode-reader",
+    name: "Barcode Reader",
+    description: "Scan and decode barcodes from images",
+    icon: "ScanLine",
+    type: "barcode-reader",
+    color: "bg-teal-600",
+    emoji: "📸",
+    metaTitle: "Barcode Reader - Scan Barcodes from Images | File Tools",
+    metaDescription: "Decode barcodes from images instantly. Upload barcode images and extract encoded data. Free online barcode scanner.",
+    seoArticle: `<h2>Barcode Reader - Image Barcode Scanner</h2>
+<p>Upload barcode images and instantly decode the encoded information. Supports all major barcode formats including Code128, EAN, UPC, and QR codes.</p>
+
+<h3>Multi-Format Support</h3>
+<p>Read barcodes in various formats including Code128, Code39, EAN-13, EAN-8, UPC-A, UPC-E, and many more industrial formats.</p>
+
+<h3>Image Upload</h3>
+<p>Simply upload an image containing a barcode. Supports JPG, PNG, and other common image formats.</p>
+
+<h3>Instant Results</h3>
+<p>Get decoded barcode data immediately. Copy the extracted information to clipboard for easy use.</p>
+
+<h3>Batch Processing</h3>
+<p>Upload multiple barcode images for batch decoding. Process inventory lists or product catalogs efficiently.</p>`,
+  },
+  {
+    id: "rss-feed-reader",
+    name: "RSS Feed Reader",
+    description: "Read and parse RSS feeds from any URL",
+    icon: "Rss",
+    type: "rss-feed-reader",
+    color: "bg-orange-600",
+    emoji: "📡",
+    metaTitle: "RSS Feed Reader - Parse RSS Feeds Online | File Tools",
+    metaDescription: "Read and parse RSS feeds from any website. View feed content, articles, and metadata. Free online RSS feed parser.",
+    seoArticle: `<h2>RSS Feed Reader - Online Feed Parser</h2>
+<p>Parse and read RSS feeds from any website URL. View feed content, article titles, descriptions, and publication dates in a clean interface.</p>
+
+<h3>Universal RSS Support</h3>
+<p>Support for RSS 2.0, Atom feeds, and other syndication formats. Parse feeds from blogs, news sites, podcasts, and more.</p>
+
+<h3>Feed Preview</h3>
+<p>View feed items with titles, descriptions, publication dates, and links. Quickly browse content from any RSS source.</p>
+
+<h3>Feed Validation</h3>
+<p>Check if an RSS feed is valid and properly formatted. Identify issues with feed structure and content.</p>
+
+<h3>Export Options</h3>
+<p>Export parsed feed data as JSON for integration with other applications and workflows.</p>`,
+  },
+  {
+    id: "twitter-card-generator",
+    name: "Twitter Card Generator",
+    description: "Generate Twitter Card meta tags for social sharing",
+    icon: "Twitter",
+    type: "twitter-card-generator",
+    color: "bg-sky-500",
+    emoji: "🐦",
+    metaTitle: "Twitter Card Generator - Create Twitter Meta Tags | File Tools",
+    metaDescription: "Generate Twitter Card meta tags for better social media sharing. Create summary, large image, and app cards. Free Twitter Card tool.",
+    seoArticle: `<h2>Twitter Card Generator - Social Media Meta Tags</h2>
+<p>Create Twitter Card meta tags to control how your content appears when shared on Twitter. Improve click-through rates with rich previews.</p>
+
+<h3>Card Types</h3>
+<p>Generate different card types: Summary cards with small images, Summary Large Image for visual content, App cards for mobile applications.</p>
+
+<h3>Live Preview</h3>
+<p>See exactly how your content will appear on Twitter before publishing. Adjust settings for optimal display.</p>
+
+<h3>Copy Ready Code</h3>
+<p>Get HTML meta tags ready to copy and paste into your website's head section. Easy implementation for any platform.</p>
+
+<h3>SEO Benefits</h3>
+<p>Twitter Cards improve social media engagement and can boost organic reach. Essential for content marketers and publishers.</p>`,
+  },
+  {
+    id: "open-graph-generator",
+    name: "Open Graph Generator",
+    description: "Create Open Graph meta tags for Facebook and social sharing",
+    icon: "Share2",
+    type: "open-graph-generator",
+    color: "bg-blue-600",
+    emoji: "🌐",
+    metaTitle: "Open Graph Generator - Create OG Meta Tags | File Tools",
+    metaDescription: "Generate Open Graph meta tags for Facebook, LinkedIn, and social media sharing. Create rich previews with custom images and descriptions.",
+    seoArticle: `<h2>Open Graph Generator - Social Media Meta Tags</h2>
+<p>Create Open Graph meta tags to control how your content appears on Facebook, LinkedIn, Pinterest, and other social platforms.</p>
+
+<h3>Complete OG Tags</h3>
+<p>Generate all essential Open Graph tags: og:title, og:description, og:image, og:url, og:type, and more for comprehensive social sharing.</p>
+
+<h3>Live Preview</h3>
+<p>Preview how your content will appear when shared on Facebook and other platforms. Optimize before publishing.</p>
+
+<h3>Image Specifications</h3>
+<p>Guidelines for optimal image sizes. Facebook recommends 1200x630 pixels for best display across devices.</p>
+
+<h3>Copy Ready Code</h3>
+<p>Get properly formatted HTML meta tags ready for your website. Compatible with all content management systems.</p>`,
+  },
+  {
+    id: "youtube-thumbnail-downloader",
+    name: "YouTube Thumbnail Downloader",
+    description: "Download thumbnails from YouTube videos in all resolutions",
+    icon: "Youtube",
+    type: "youtube-thumbnail-downloader",
+    color: "bg-red-600",
+    emoji: "🎬",
+    metaTitle: "YouTube Thumbnail Downloader - Download Video Thumbnails | File Tools",
+    metaDescription: "Download YouTube video thumbnails in high resolution. Get default, medium, high, standard, and maxres quality thumbnails. Free tool.",
+    seoArticle: `<h2>YouTube Thumbnail Downloader - Video Image Extractor</h2>
+<p>Download YouTube video thumbnails in multiple resolutions. Get the perfect image for reference, analysis, or creative projects.</p>
+
+<h3>Multiple Resolutions</h3>
+<p>Access all available thumbnail sizes: Default (120x90), Medium (320x180), High (480x360), Standard (640x480), and MaxRes (1280x720).</p>
+
+<h3>Simple URL Input</h3>
+<p>Just paste the YouTube video URL. Support for standard youtube.com links, youtu.be short links, and video IDs.</p>
+
+<h3>Instant Download</h3>
+<p>Download thumbnails immediately in your preferred resolution. No registration or login required.</p>
+
+<h3>Use Cases</h3>
+<p>Perfect for content creators analyzing competition, researchers studying video trends, or designers needing reference images.</p>`,
+  },
+  {
+    id: "youtube-tag-extractor",
+    name: "YouTube Tag Extractor",
+    description: "Extract tags and keywords from YouTube videos",
+    icon: "Tag",
+    type: "youtube-tag-extractor",
+    color: "bg-red-500",
+    emoji: "🏷️",
+    metaTitle: "YouTube Tag Extractor - Get Video Tags and Keywords | File Tools",
+    metaDescription: "Extract tags and keywords from any YouTube video. Discover SEO strategies and optimize your video content. Free tag extractor tool.",
+    seoArticle: `<h2>YouTube Tag Extractor - Video SEO Tool</h2>
+<p>Extract tags and keywords from any YouTube video to discover SEO strategies and improve your own content's discoverability.</p>
+
+<h3>Tag Extraction</h3>
+<p>Get all public tags from any YouTube video. See exactly what keywords successful creators are targeting.</p>
+
+<h3>Competitor Analysis</h3>
+<p>Analyze top-performing videos in your niche. Understand their tagging strategy and apply insights to your content.</p>
+
+<h3>Copy Tags</h3>
+<p>Copy extracted tags as comma-separated list or individual keywords. Easy to use in your own video uploads.</p>
+
+<h3>SEO Insights</h3>
+<p>Learn which tags correlate with high-performing videos. Optimize your content for better search rankings.</p>`,
+  },
+  {
+    id: "credit-card-validator",
+    name: "Credit Card Validator",
+    description: "Validate credit card numbers using the Luhn algorithm",
+    icon: "CreditCard",
+    type: "credit-card-validator",
+    color: "bg-emerald-600",
+    emoji: "💳",
+    metaTitle: "Credit Card Validator - Verify Card Numbers | File Tools",
+    metaDescription: "Validate credit card numbers using the Luhn algorithm. Check card format and identify card type. Free card number validator.",
+    seoArticle: `<h2>Credit Card Validator - Number Verification Tool</h2>
+<p>Validate credit card numbers using the industry-standard Luhn algorithm. Check if card numbers are mathematically valid and identify card types.</p>
+
+<h3>Luhn Algorithm Validation</h3>
+<p>Verify card numbers using the same checksum algorithm used by financial institutions worldwide. Instant pass/fail results.</p>
+
+<h3>Card Type Detection</h3>
+<p>Automatically identify card networks: Visa, Mastercard, American Express, Discover, and more based on IIN/BIN ranges.</p>
+
+<h3>Format Checking</h3>
+<p>Validate proper card number length and format. Each card type has specific requirements checked automatically.</p>
+
+<h3>Privacy First</h3>
+<p>All validation happens in your browser. No card numbers are sent to any server. Completely safe for testing purposes.</p>`,
   },
 ];
 
