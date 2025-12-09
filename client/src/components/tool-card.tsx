@@ -74,6 +74,15 @@ import {
   FileArchive,
   FolderArchive,
   Combine,
+  BarChart,
+  ClipboardList,
+  Users,
+  Dices,
+  CircleDot,
+  Clipboard,
+  Share2,
+  Upload,
+  PenSquare,
   type LucideIcon,
 } from "lucide-react";
 
@@ -150,6 +159,15 @@ const iconMap: Record<string, LucideIcon> = {
   FileArchive,
   FolderArchive,
   Combine,
+  BarChart,
+  ClipboardList,
+  Users,
+  Dices,
+  CircleDot,
+  Clipboard,
+  Share2,
+  Upload,
+  PenSquare,
 };
 
 interface ToolCardProps {

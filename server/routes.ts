@@ -1,4 +1,5 @@
 import type { Express, Request, Response } from "express";
+import { storage as dataStorage } from "./storage";
 import { createServer, type Server } from "http";
 import multer from "multer";
 import { PDFDocument, degrees, rgb, StandardFonts, PDFName, PDFDict, PDFArray, PDFNumber, PDFString } from "pdf-lib";
@@ -34122,6 +34123,235 @@ file '${loopInputPath}'`;
         success: false,
         error: error instanceof Error ? error.message : "An unexpected error occurred",
       });
+    }
+  });
+
+
+
+  // =============== NEW INTERACTIVE TOOLS API ROUTES ===============
+
+  // Poll API Routes
+  app.post("/api/polls", async (req: Request, res: Response) => {
+    try {
+      const { question, options } = req.body;
+      if (!question || !options || !Array.isArray(options) || options.length < 2) {
+        return res.status(400).json({ error: "Question and at least 2 options required" });
+      }
+      const poll = dataStorage.createPoll(question, options);
+      res.json({ success: true, poll });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create poll" });
+    }
+  });
+
+  app.get("/api/polls/:id", async (req: Request, res: Response) => {
+    try {
+      const poll = dataStorage.getPoll(req.params.id);
+      if (!poll) {
+        return res.status(404).json({ error: "Poll not found" });
+      }
+      res.json({ success: true, poll });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to get poll" });
+    }
+  });
+
+  app.post("/api/polls/:id/vote", async (req: Request, res: Response) => {
+    try {
+      const { optionIndex } = req.body;
+      const poll = dataStorage.votePoll(req.params.id, optionIndex);
+      if (!poll) {
+        return res.status(404).json({ error: "Poll not found or invalid option" });
+      }
+      res.json({ success: true, poll });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to vote" });
+    }
+  });
+
+  // Survey API Routes
+  app.post("/api/surveys", async (req: Request, res: Response) => {
+    try {
+      const { title, questions } = req.body;
+      if (!title || !questions || !Array.isArray(questions)) {
+        return res.status(400).json({ error: "Title and questions required" });
+      }
+      const survey = dataStorage.createSurvey(title, questions);
+      res.json({ success: true, survey });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create survey" });
+    }
+  });
+
+  app.get("/api/surveys/:id", async (req: Request, res: Response) => {
+    try {
+      const survey = dataStorage.getSurvey(req.params.id);
+      if (!survey) {
+        return res.status(404).json({ error: "Survey not found" });
+      }
+      res.json({ success: true, survey });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to get survey" });
+    }
+  });
+
+  app.post("/api/surveys/:id/respond", async (req: Request, res: Response) => {
+    try {
+      const { answers } = req.body;
+      const success = dataStorage.submitSurveyResponse(req.params.id, answers);
+      if (!success) {
+        return res.status(404).json({ error: "Survey not found" });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to submit response" });
+    }
+  });
+
+  // Clipboard API Routes
+  app.post("/api/clipboard", async (req: Request, res: Response) => {
+    try {
+      const { content } = req.body;
+      if (!content) {
+        return res.status(400).json({ error: "Content required" });
+      }
+      const item = dataStorage.saveClipboard(content);
+      res.json({ success: true, code: item.code, expiresAt: item.expiresAt });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to save clipboard" });
+    }
+  });
+
+  app.get("/api/clipboard/:code", async (req: Request, res: Response) => {
+    try {
+      const item = dataStorage.getClipboard(req.params.code);
+      if (!item) {
+        return res.status(404).json({ error: "Clipboard not found or expired" });
+      }
+      res.json({ success: true, content: item.content });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to get clipboard" });
+    }
+  });
+
+  // Share Text API Routes
+  app.post("/api/share-text", async (req: Request, res: Response) => {
+    try {
+      const { content, expirationHours = 24 } = req.body;
+      if (!content) {
+        return res.status(400).json({ error: "Content required" });
+      }
+      const text = dataStorage.shareText(content, expirationHours);
+      res.json({ success: true, id: text.id, expiresAt: text.expiresAt });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to share text" });
+    }
+  });
+
+  app.get("/api/share-text/:id", async (req: Request, res: Response) => {
+    try {
+      const text = dataStorage.getSharedText(req.params.id);
+      if (!text) {
+        return res.status(404).json({ error: "Shared text not found or expired" });
+      }
+      res.json({ success: true, content: text.content, views: text.views });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to get shared text" });
+    }
+  });
+
+  // Share Files API Routes
+  app.post("/api/share-file", upload.single("file"), async (req: Request, res: Response) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "File required" });
+      }
+      const expirationHours = parseInt(req.body.expirationHours) || 24;
+      const file = dataStorage.shareFile(
+        req.file.filename,
+        req.file.originalname,
+        req.file.size,
+        expirationHours
+      );
+      res.json({ success: true, id: file.id, expiresAt: file.expiresAt });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to share file" });
+    }
+  });
+
+  app.get("/api/share-file/:id", async (req: Request, res: Response) => {
+    try {
+      const file = dataStorage.getSharedFile(req.params.id);
+      if (!file) {
+        return res.status(404).json({ error: "File not found or expired" });
+      }
+      res.json({ 
+        success: true, 
+        filename: file.originalName, 
+        size: file.size, 
+        downloads: file.downloads 
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to get file info" });
+    }
+  });
+
+  app.get("/api/share-file/:id/download", async (req: Request, res: Response) => {
+    try {
+      const file = dataStorage.getSharedFile(req.params.id);
+      if (!file) {
+        return res.status(404).json({ error: "File not found or expired" });
+      }
+      storage.incrementFileDownload(req.params.id);
+      const filePath = path.join(uploadDir, file.filename);
+      res.download(filePath, file.originalName);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to download file" });
+    }
+  });
+
+  // URL Shortener API Routes
+  app.post("/api/shorten", async (req: Request, res: Response) => {
+    try {
+      const { url, customAlias } = req.body;
+      if (!url) {
+        return res.status(400).json({ error: "URL required" });
+      }
+      // Validate URL
+      try {
+        new URL(url);
+      } catch {
+        return res.status(400).json({ error: "Invalid URL" });
+      }
+      const shortened = dataStorage.shortenUrl(url, customAlias);
+      res.json({ success: true, shortCode: shortened.shortCode });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to shorten URL" });
+    }
+  });
+
+  app.get("/api/shorten/:code", async (req: Request, res: Response) => {
+    try {
+      const url = dataStorage.getShortUrl(req.params.code);
+      if (!url) {
+        return res.status(404).json({ error: "Short URL not found" });
+      }
+      res.json({ success: true, originalUrl: url.originalUrl, clicks: url.clicks });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to get URL" });
+    }
+  });
+
+  app.get("/s/:code", async (req: Request, res: Response) => {
+    try {
+      const url = dataStorage.getShortUrl(req.params.code);
+      if (!url) {
+        return res.status(404).send("Short URL not found");
+      }
+      storage.incrementUrlClick(req.params.code);
+      res.redirect(url.originalUrl);
+    } catch (error) {
+      res.status(500).send("Error redirecting");
     }
   });
 

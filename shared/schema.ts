@@ -820,6 +820,16 @@ export const pdfToolTypes = [
   "discount-calculator",
   "online-notepad",
   "timer",
+  "online-whiteboard",
+  "online-poll-maker",
+  "online-survey-maker",
+  "random-name-picker",
+  "dice-roller",
+  "coin-flipper",
+  "online-clipboard",
+  "share-text-online",
+  "share-files-online",
+  "url-shortener",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -23206,3 +23216,259 @@ const utilityTools: PdfTool[] = [
 ];
 
 pdfTools.push(...utilityTools);
+
+// Interactive Utility Tools - 10 New Tools
+const interactiveTools: PdfTool[] = [
+  {
+    id: "online-whiteboard",
+    name: "Online Whiteboard",
+    description: "Collaborative drawing board with shapes, colors, and export options",
+    icon: "PenTool",
+    type: "online-whiteboard",
+    color: "bg-purple-500",
+    emoji: "🎨",
+    metaTitle: "Online Whiteboard - Free Drawing & Collaboration Tool | File Tools",
+    metaDescription: "Free online whiteboard for drawing, brainstorming, and visual collaboration. Draw shapes, add text, use colors, and export your work instantly.",
+    seoArticle: `<h2>Online Whiteboard - Digital Canvas for Creative Expression</h2>
+<p>Our free online whiteboard provides a versatile digital canvas for sketching, brainstorming, and visual planning. Whether you're mapping out ideas, creating diagrams, or teaching concepts visually, this tool offers all the essential drawing features you need.</p>
+
+<h3>Drawing Tools</h3>
+<p>Choose from pencil, brush, and marker tools with adjustable sizes. Draw freehand sketches, create precise lines, or add artistic strokes. Multiple brush sizes let you work on fine details or broad strokes.</p>
+
+<h3>Shapes and Elements</h3>
+<p>Add rectangles, circles, triangles, arrows, and lines with a single click. Perfect for creating flowcharts, diagrams, and structured visual content. All shapes can be resized and positioned freely.</p>
+
+<h3>Color Palette</h3>
+<p>Express yourself with a full color palette. Choose from preset colors or pick custom shades. Change stroke colors, fill colors, and background colors to match your vision.</p>
+
+<h3>Export Options</h3>
+<p>Download your whiteboard as a PNG image for easy sharing. Clear the canvas with one click to start fresh. Your creative work is always just a download away.</p>`,
+  },
+  {
+    id: "online-poll-maker",
+    name: "Online Poll Maker",
+    description: "Create and share instant polls with real-time voting results",
+    icon: "BarChart",
+    type: "online-poll-maker",
+    color: "bg-blue-500",
+    emoji: "📊",
+    metaTitle: "Online Poll Maker - Create Free Polls Instantly | File Tools",
+    metaDescription: "Create free online polls in seconds. Share with anyone, collect votes, and see real-time results. No registration required. Perfect for quick decisions.",
+    seoArticle: `<h2>Online Poll Maker - Quick Decisions Made Easy</h2>
+<p>Create instant polls and gather opinions in seconds with our free online poll maker. Whether you're deciding on a lunch spot, collecting team preferences, or running a quick survey, this tool makes polling effortless.</p>
+
+<h3>Create in Seconds</h3>
+<p>Enter your question, add answer options, and your poll is ready. No sign-up required, no complex setup. Create polls as fast as you can type.</p>
+
+<h3>Share Anywhere</h3>
+<p>Get a unique shareable link for your poll. Share via email, messaging apps, social media, or embed in websites. Anyone with the link can vote.</p>
+
+<h3>Real-Time Results</h3>
+<p>Watch votes come in live with our real-time results display. See vote counts and percentages update instantly as participants respond.</p>
+
+<h3>Multiple Options</h3>
+<p>Add as many answer options as you need. Enable single-choice or multiple-choice voting. Customize your poll to fit your needs.</p>`,
+  },
+  {
+    id: "online-survey-maker",
+    name: "Online Survey Maker",
+    description: "Build comprehensive surveys with multiple question types",
+    icon: "ClipboardList",
+    type: "online-survey-maker",
+    color: "bg-green-500",
+    emoji: "📋",
+    metaTitle: "Online Survey Maker - Free Survey Builder | File Tools",
+    metaDescription: "Create professional surveys with multiple question types. Build forms, collect responses, and analyze results. Free, no registration required.",
+    seoArticle: `<h2>Online Survey Maker - Collect Meaningful Feedback</h2>
+<p>Build comprehensive surveys with our free online survey maker. Create multi-question surveys with various question types to gather detailed feedback, conduct research, or collect information efficiently.</p>
+
+<h3>Multiple Question Types</h3>
+<p>Choose from multiple choice, text input, rating scales, yes/no questions, and more. Mix question types to create engaging surveys that capture the information you need.</p>
+
+<h3>Easy Survey Builder</h3>
+<p>Drag and drop questions to reorder them. Duplicate questions quickly. Delete unwanted questions with a click. Building surveys has never been this intuitive.</p>
+
+<h3>Share and Collect</h3>
+<p>Generate a unique link for your survey. Share with participants via any channel. Collect responses in real-time with our secure submission system.</p>
+
+<h3>View Responses</h3>
+<p>See all survey responses in an organized view. Analyze patterns, review individual submissions, and export data for further analysis.</p>`,
+  },
+  {
+    id: "random-name-picker",
+    name: "Random Name Picker",
+    description: "Randomly select names or items from a list with animated wheel",
+    icon: "Users",
+    type: "random-name-picker",
+    color: "bg-yellow-500",
+    emoji: "🎯",
+    metaTitle: "Random Name Picker - Spin the Wheel Selector | File Tools",
+    metaDescription: "Pick random names from your list with our animated wheel. Perfect for raffles, classroom picks, giveaways, and random selection needs.",
+    seoArticle: `<h2>Random Name Picker - Fair Random Selection Made Fun</h2>
+<p>Make random selections fun and fair with our animated name picker wheel. Enter names or items, spin the wheel, and let fate decide. Perfect for teachers, team leads, event organizers, and anyone needing unbiased random picks.</p>
+
+<h3>Animated Wheel</h3>
+<p>Watch the colorful wheel spin with realistic physics. The suspense builds as it slows down and lands on the winner. A delightful experience for participants.</p>
+
+<h3>Easy Name Entry</h3>
+<p>Add names one by one or paste a list. Edit, remove, or clear names easily. Support for any text entries - names, tasks, prizes, or options.</p>
+
+<h3>Fair and Random</h3>
+<p>Our algorithm ensures truly random selection. Each name has an equal chance of being picked. Perfect for fair raffles and unbiased decision-making.</p>
+
+<h3>History Tracking</h3>
+<p>View previously picked names in the history. Optionally remove picked names from the wheel to avoid duplicates. Track all your selections.</p>`,
+  },
+  {
+    id: "dice-roller",
+    name: "Dice Roller",
+    description: "Roll virtual dice with customizable faces and multiple dice",
+    icon: "Dices",
+    type: "dice-roller",
+    color: "bg-red-500",
+    emoji: "🎲",
+    metaTitle: "Dice Roller - Virtual Dice for Games & Decisions | File Tools",
+    metaDescription: "Roll virtual dice online. Choose D4, D6, D8, D10, D12, or D20. Roll multiple dice at once. Perfect for board games, RPGs, and random decisions.",
+    seoArticle: `<h2>Dice Roller - Virtual Dice for Every Occasion</h2>
+<p>Roll virtual dice for board games, tabletop RPGs, classroom activities, or random decision-making. Our dice roller supports all standard dice types and lets you roll multiple dice simultaneously.</p>
+
+<h3>All Dice Types</h3>
+<p>Roll D4, D6, D8, D10, D12, or D20 dice. Perfect for Dungeons & Dragons, board games, or any game requiring specific dice types. Quick selection buttons make switching easy.</p>
+
+<h3>Multiple Dice</h3>
+<p>Roll 1 to 10 dice at once. See individual results for each die and the total sum. Great for games requiring multiple dice rolls.</p>
+
+<h3>Realistic Animation</h3>
+<p>Watch dice tumble with satisfying animation. Clear, large display shows results immediately. Sound effects add to the experience.</p>
+
+<h3>Roll History</h3>
+<p>View your recent rolls in the history panel. Track patterns, verify results, or reference past rolls. History persists during your session.</p>`,
+  },
+  {
+    id: "coin-flipper",
+    name: "Coin Flipper",
+    description: "Flip a virtual coin with realistic animation for quick decisions",
+    icon: "Circle",
+    type: "coin-flipper",
+    color: "bg-amber-500",
+    emoji: "🪙",
+    metaTitle: "Coin Flipper - Virtual Coin Toss Online | File Tools",
+    metaDescription: "Flip a virtual coin with realistic animation. Heads or tails for quick, fair decisions. No real coin needed. Works on any device.",
+    seoArticle: `<h2>Coin Flipper - Quick Decisions with a Virtual Toss</h2>
+<p>Make quick decisions with our realistic virtual coin flipper. Heads or tails has never been easier - flip a coin right in your browser with satisfying animation and clear results.</p>
+
+<h3>Realistic Animation</h3>
+<p>Watch the coin spin and flip with smooth, realistic animation. The suspense of a real coin flip, captured in digital form. See it land clearly on heads or tails.</p>
+
+<h3>Instant Results</h3>
+<p>Large, clear display shows the result immediately after the flip. No ambiguity about whether it landed on heads or tails.</p>
+
+<h3>Statistics Tracking</h3>
+<p>Track your flip history with running statistics. See how many heads vs tails you've flipped. Verify the randomness over multiple flips.</p>
+
+<h3>Multiple Coins</h3>
+<p>Flip multiple coins at once for more complex decisions or games. See all results simultaneously with individual outcomes displayed.</p>`,
+  },
+  {
+    id: "online-clipboard",
+    name: "Online Clipboard",
+    description: "Save and access text snippets from any device with unique codes",
+    icon: "Clipboard",
+    type: "online-clipboard",
+    color: "bg-teal-500",
+    emoji: "📌",
+    metaTitle: "Online Clipboard - Cross-Device Text Sharing | File Tools",
+    metaDescription: "Save text to online clipboard and access from any device. Get a unique code to retrieve your content. Perfect for transferring text between devices.",
+    seoArticle: `<h2>Online Clipboard - Access Your Text Anywhere</h2>
+<p>Copy text on one device, access it on another. Our online clipboard lets you save text snippets with unique access codes. No account needed - just save, share the code, and retrieve anywhere.</p>
+
+<h3>Save Instantly</h3>
+<p>Paste your text, click save, and get a unique access code. Your text is securely stored and ready to retrieve from any device.</p>
+
+<h3>Access Anywhere</h3>
+<p>Enter your code on any device to retrieve your saved text. Works on phones, tablets, computers - anywhere with a browser.</p>
+
+<h3>Secure and Temporary</h3>
+<p>Your clipboard content is stored securely and automatically expires after 24 hours. Perfect for quick transfers without leaving permanent traces.</p>
+
+<h3>No Sign-Up Required</h3>
+<p>No accounts, no passwords, no hassle. Just save text and get a code. Simple, fast, and private.</p>`,
+  },
+  {
+    id: "share-text-online",
+    name: "Share Text Online",
+    description: "Create shareable links for text content with optional expiration",
+    icon: "Share2",
+    type: "share-text-online",
+    color: "bg-indigo-500",
+    emoji: "💬",
+    metaTitle: "Share Text Online - Create Shareable Text Links | File Tools",
+    metaDescription: "Share text content via unique links. Create shareable notes, messages, or code snippets. Set expiration times. No registration needed.",
+    seoArticle: `<h2>Share Text Online - Instant Text Sharing</h2>
+<p>Share text content instantly with anyone via a unique link. Perfect for sharing notes, code snippets, messages, or any text that needs to reach others quickly.</p>
+
+<h3>Create Shareable Links</h3>
+<p>Paste your text, click share, and get a unique URL. Anyone with the link can view your text. No login required for you or your recipients.</p>
+
+<h3>Syntax Highlighting</h3>
+<p>Share code with automatic syntax highlighting. Your code looks clean and readable, making it perfect for sharing programming snippets.</p>
+
+<h3>Expiration Options</h3>
+<p>Choose how long your shared text stays active. Set expiration from 1 hour to 30 days. Content automatically deletes after expiration for privacy.</p>
+
+<h3>View Counter</h3>
+<p>See how many times your shared text has been viewed. Track engagement and know when your content has been accessed.</p>`,
+  },
+  {
+    id: "share-files-online",
+    name: "Share Files Online",
+    description: "Upload and share files temporarily with auto-expiring download links",
+    icon: "Upload",
+    type: "share-files-online",
+    color: "bg-cyan-500",
+    emoji: "📤",
+    metaTitle: "Share Files Online - Temporary File Sharing | File Tools",
+    metaDescription: "Share files temporarily with auto-expiring download links. Upload any file, get a shareable link. Files auto-delete for security. No registration.",
+    seoArticle: `<h2>Share Files Online - Quick Temporary File Sharing</h2>
+<p>Share files quickly without email attachments or cloud storage accounts. Upload any file, get a temporary shareable link, and send it to anyone. Files auto-delete for your security.</p>
+
+<h3>Easy Upload</h3>
+<p>Drag and drop files or click to upload. Support for all file types up to 50MB. Fast uploads with progress indicator.</p>
+
+<h3>Shareable Links</h3>
+<p>Get a unique download link for each file. Share via email, messaging apps, or anywhere. Recipients download directly without signing up.</p>
+
+<h3>Auto-Expiration</h3>
+<p>Files automatically delete after 24 hours or a set number of downloads. Your shared content doesn't linger online forever.</p>
+
+<h3>Download Tracking</h3>
+<p>See how many times your file has been downloaded. Know when recipients have accessed your shared content.</p>`,
+  },
+  {
+    id: "url-shortener",
+    name: "URL Shortener",
+    description: "Create short, memorable links from long URLs with click tracking",
+    icon: "Link",
+    type: "url-shortener",
+    color: "bg-rose-500",
+    emoji: "🔗",
+    metaTitle: "URL Shortener - Free Link Shortener with Analytics | File Tools",
+    metaDescription: "Shorten long URLs into compact, shareable links. Track clicks and analytics. Create memorable short links for social media and marketing.",
+    seoArticle: `<h2>URL Shortener - Make Links Short and Trackable</h2>
+<p>Transform long, unwieldy URLs into short, memorable links. Perfect for social media posts, marketing campaigns, or sharing links that are too long to type.</p>
+
+<h3>Instant Shortening</h3>
+<p>Paste your long URL, click shorten, and get a compact link instantly. No account needed, no waiting. Short links are created in milliseconds.</p>
+
+<h3>Click Analytics</h3>
+<p>Track how many clicks your short links receive. See when links are clicked and monitor engagement. Basic analytics without complex setup.</p>
+
+<h3>Custom Aliases</h3>
+<p>Create custom short links with memorable words. Instead of random characters, use meaningful aliases that reflect your content.</p>
+
+<h3>QR Codes</h3>
+<p>Generate QR codes for your short links automatically. Perfect for print materials, presentations, or anywhere physical and digital meet.</p>`,
+  },
+];
+
+pdfTools.push(...interactiveTools);
