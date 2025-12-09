@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
+import { Card } from "@/components/ui/card";
+import { Monitor, Globe, Settings } from "lucide-react";
 import { type PdfToolType, type ToolOptions } from "@shared/schema";
 
 interface ToolOptionsProps {

@@ -14525,7 +14525,7 @@ export async function registerRoutes(
       const files = req.files as Express.Multer.File[] | undefined;
       const { toolType, options: optionsStr } = req.body;
       
-      const noFileRequiredTools = ["create-pdf", "pdf-creator", "base64-to-image", "json-validator", "json-minifier", "json-beautifier", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "json-formatter", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder"];
+      const noFileRequiredTools = ["create-pdf", "pdf-creator", "base64-to-image", "json-validator", "json-minifier", "json-beautifier", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "json-formatter", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "screen-resolution-detector", "browser-info", "dpi-calculator", "aspect-ratio-calculator", "pixels-to-cm-converter", "words-to-pages-converter", "reading-time-calculator", "random-color-generator", "random-palette-generator", "password-strength-checker"];
       
       if ((!files || files.length === 0) && !noFileRequiredTools.includes(toolType)) {
         return res.status(400).json({ 
