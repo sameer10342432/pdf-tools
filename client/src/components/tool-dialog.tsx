@@ -32,6 +32,7 @@ import { SalesTaxCalculator } from "./sales-tax-calculator";
 import { DiscountCalculator } from "./discount-calculator";
 import { OnlineNotepad } from "./online-notepad";
 import { TimerTool } from "./timer-tool";
+import { TextProcessingTool } from "./text-processing-tool";
 import {
   type PdfTool,
   type UploadedFile,
@@ -250,6 +251,16 @@ const utilityToolTypes = [
   "discount-calculator",
   "online-notepad",
   "timer",
+  "iban-validator",
+  "slug-to-title",
+  "title-to-slug",
+  "case-converter-camel",
+  "case-converter-snake",
+  "case-converter-kebab",
+  "case-converter-pascal",
+  "find-facebook-id",
+  "find-twitter-id",
+  "http-status-checker",
 ];
 
 interface ToolDialogProps {
@@ -737,6 +748,16 @@ export function ToolDialog({ tool, open, onOpenChange }: ToolDialogProps) {
                 {tool.type === "discount-calculator" && <DiscountCalculator />}
                 {tool.type === "online-notepad" && <OnlineNotepad />}
                 {tool.type === "timer" && <TimerTool />}
+                {tool.type === "iban-validator" && <TextProcessingTool toolType="iban-validator" />}
+                {tool.type === "slug-to-title" && <TextProcessingTool toolType="slug-to-title" />}
+                {tool.type === "title-to-slug" && <TextProcessingTool toolType="title-to-slug" />}
+                {tool.type === "case-converter-camel" && <TextProcessingTool toolType="case-converter-camel" />}
+                {tool.type === "case-converter-snake" && <TextProcessingTool toolType="case-converter-snake" />}
+                {tool.type === "case-converter-kebab" && <TextProcessingTool toolType="case-converter-kebab" />}
+                {tool.type === "case-converter-pascal" && <TextProcessingTool toolType="case-converter-pascal" />}
+                {tool.type === "find-facebook-id" && <TextProcessingTool toolType="find-facebook-id" />}
+                {tool.type === "find-twitter-id" && <TextProcessingTool toolType="find-twitter-id" />}
+                {tool.type === "http-status-checker" && <TextProcessingTool toolType="http-status-checker" />}
                 <div className="flex justify-end">
                   <Button variant="outline" onClick={handleClose} data-testid="button-close">
                     Close
