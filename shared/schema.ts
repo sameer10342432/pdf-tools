@@ -970,6 +970,16 @@ export const pdfToolTypes = [
   "ai-headshot-generator",
   "ai-presentation-maker",
   "ai-website-builder",
+  "ai-logo-maker",
+  "ai-ad-copy-generator",
+  "ai-blog-post-writer",
+  "ai-email-writer",
+  "ai-social-media-generator",
+  "ai-product-description-generator",
+  "ai-video-script-writer",
+  "ai-music-generator",
+  "ai-code-generator",
+  "ai-sql-query-generator",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -26406,3 +26416,259 @@ const aiPoweredTools: PdfTool[] = [
 
 pdfTools.push(...aiPoweredTools);
 
+
+// New AI Content Generation Tools
+const aiContentGeneratorTools: PdfTool[] = [
+  {
+    id: "ai-logo-maker",
+    name: "AI Logo Maker",
+    description: "Create professional logos with AI-powered design assistance",
+    icon: "Palette",
+    type: "ai-logo-maker",
+    color: "bg-violet-600",
+    emoji: "🎨",
+    metaTitle: "AI Logo Maker Free - Create Professional Logos Instantly | PDF Tools",
+    metaDescription: "Create stunning professional logos with AI. Generate unique brand identities, customize designs, and download high-resolution files. Free AI logo generator.",
+    seoArticle: `<h2>AI Logo Maker - Create Your Brand Identity</h2>
+<p>Transform your brand vision into reality with our AI-powered logo maker. Whether you're starting a new business, refreshing your brand, or need quick logo concepts, our tool generates professional-quality logos in seconds. Simply describe your brand and let AI create unique designs tailored to your vision.</p>
+
+<h2>How Our AI Logo Generator Works</h2>
+<p>Our advanced AI analyzes your brand description, industry, and style preferences to generate logos that capture your essence. Enter your company name, select your industry, choose preferred colors and styles, and watch as AI creates multiple unique logo variations. Each design is original and ready for commercial use.</p>
+
+<h2>Customization and Export Options</h2>
+<p>Fine-tune any generated logo to perfection. Adjust colors, fonts, layouts, and icon elements. Download your finished logo in multiple formats including PNG, SVG, and PDF. Get versions optimized for web, print, social media, and business cards - all from a single design session.</p>
+
+<h2>Perfect for Every Business</h2>
+<p>From tech startups to restaurants, retail stores to consulting firms, our AI understands the visual language of every industry. Get logos that communicate professionalism, creativity, trustworthiness, or innovation - whatever your brand needs to convey.</p>
+
+<h2>Save Time and Money</h2>
+<p>Traditional logo design can take weeks and cost thousands of dollars. Our AI logo maker delivers professional results in minutes at a fraction of the cost. Perfect for entrepreneurs, small businesses, and anyone who needs quality branding fast.</p>`,
+  },
+  {
+    id: "ai-ad-copy-generator",
+    name: "AI Ad Copy Generator",
+    description: "Generate compelling advertising copy for any platform",
+    icon: "Megaphone",
+    type: "ai-ad-copy-generator",
+    color: "bg-orange-600",
+    emoji: "📣",
+    metaTitle: "AI Ad Copy Generator Free - Create Compelling Ads | PDF Tools",
+    metaDescription: "Generate high-converting ad copy with AI. Create compelling headlines, descriptions, and CTAs for Google, Facebook, Instagram, and more. Free advertising copywriter.",
+    seoArticle: `<h2>AI Ad Copy Generator - Write Ads That Convert</h2>
+<p>Create compelling advertising copy that drives clicks and conversions. Our AI ad copy generator produces platform-optimized content for Google Ads, Facebook, Instagram, LinkedIn, Twitter, and more. Simply describe your product or service, and get multiple ad variations ready to test.</p>
+
+<h2>Platform-Specific Optimization</h2>
+<p>Each advertising platform has unique requirements and best practices. Our AI understands character limits, formatting guidelines, and what performs best on each platform. Generate Google Ads with proper headline and description lengths, Facebook ads with engaging hooks, and Instagram captions that drive engagement.</p>
+
+<h2>Multiple Variations for Testing</h2>
+<p>A/B testing is crucial for advertising success. Our tool generates multiple variations of each ad, giving you diverse options to test. Find your winning combination without spending hours writing alternatives. Each variation maintains your core message while exploring different angles and emotional triggers.</p>
+
+<h2>Persuasive Copywriting Principles</h2>
+<p>Our AI is trained on proven copywriting frameworks including AIDA, PAS, and FAB. Every ad incorporates psychological triggers, clear benefits, and strong calls-to-action. The result is copy that not only catches attention but compels action.</p>
+
+<h2>Boost Your ROAS</h2>
+<p>Better ad copy means better return on ad spend. Stop wasting budget on underperforming ads. Use AI-generated copy as your starting point, test multiple variations, and scale your winners. Professional-quality advertising copy is now accessible to businesses of every size.</p>`,
+  },
+  {
+    id: "ai-blog-post-writer",
+    name: "AI Blog Post Writer",
+    description: "Create engaging blog articles with AI assistance",
+    icon: "BookOpen",
+    type: "ai-blog-post-writer",
+    color: "bg-emerald-600",
+    emoji: "📝",
+    metaTitle: "AI Blog Post Writer Free - Generate Quality Articles | PDF Tools",
+    metaDescription: "Create engaging, SEO-optimized blog posts with AI. Generate articles, outlines, and content ideas instantly. Free AI blog content generator.",
+    seoArticle: `<h2>AI Blog Post Writer - Create Engaging Content Fast</h2>
+<p>Overcome writer's block and produce quality blog content consistently. Our AI blog post writer helps you generate complete articles, detailed outlines, and fresh content ideas. Perfect for content marketers, bloggers, and businesses maintaining active blogs.</p>
+
+<h2>SEO-Optimized Content</h2>
+<p>Every blog post is structured for search engine success. Our AI incorporates proper heading hierarchy, keyword placement, meta descriptions, and readable formatting. Generate content that ranks well while engaging human readers - the perfect balance for modern content marketing.</p>
+
+<h2>Versatile Content Styles</h2>
+<p>From how-to guides to listicles, thought leadership to product reviews, our AI adapts to any content style. Specify your desired tone - professional, conversational, authoritative, or friendly - and get content that matches your brand voice perfectly.</p>
+
+<h2>Research and Depth</h2>
+<p>Our AI doesn't just generate fluff. It creates substantive content with relevant points, examples, and structure that demonstrates expertise. While you should always fact-check and add your unique insights, our AI gives you a strong foundation to build upon.</p>
+
+<h2>Consistent Publishing Schedule</h2>
+<p>Content consistency is key to building an audience. Use our AI to maintain a regular publishing schedule without burning out. Generate first drafts quickly, spend your time on refinement and personalization, and keep your blog fresh with new content.</p>`,
+  },
+  {
+    id: "ai-email-writer",
+    name: "AI Email Writer",
+    description: "Compose professional emails for any occasion",
+    icon: "Mail",
+    type: "ai-email-writer",
+    color: "bg-blue-600",
+    emoji: "📧",
+    metaTitle: "AI Email Writer Free - Professional Email Generator | PDF Tools",
+    metaDescription: "Write professional emails instantly with AI. Generate business emails, cold outreach, follow-ups, and more. Free AI email composer.",
+    seoArticle: `<h2>AI Email Writer - Professional Emails in Seconds</h2>
+<p>Craft the perfect email for any situation without staring at a blank screen. Our AI email writer generates professional, well-structured emails for business communication, sales outreach, customer service, and personal correspondence. Save hours every week on email composition.</p>
+
+<h2>Every Type of Email Covered</h2>
+<p>Cold outreach that gets responses. Follow-up emails that convert. Professional thank-you notes. Meeting requests. Apologies and difficult conversations. Whatever email challenge you face, our AI has templates and generation capabilities to help you communicate effectively.</p>
+
+<h2>Tone and Style Customization</h2>
+<p>Match your email's tone to the situation and recipient. Choose from formal, friendly, persuasive, apologetic, or custom tones. Our AI adjusts vocabulary, sentence structure, and overall approach to create emails that feel authentic to your communication style.</p>
+
+<h2>Subject Lines That Get Opened</h2>
+<p>The subject line determines whether your email gets read. Our AI generates multiple subject line options optimized for open rates. Test different approaches and find what resonates with your audience.</p>
+
+<h2>Save Time, Improve Communication</h2>
+<p>Email consumes hours of every professional's workweek. Use AI to draft emails faster while maintaining - or improving - quality. Focus on high-value work while our tool handles the writing. Every email polished, professional, and purpose-driven.</p>`,
+  },
+  {
+    id: "ai-social-media-generator",
+    name: "AI Social Media Post Generator",
+    description: "Create engaging posts for all social platforms",
+    icon: "Share2",
+    type: "ai-social-media-generator",
+    color: "bg-pink-600",
+    emoji: "📱",
+    metaTitle: "AI Social Media Post Generator Free - Create Viral Content | PDF Tools",
+    metaDescription: "Generate engaging social media content with AI. Create posts for Instagram, Twitter, LinkedIn, Facebook, and TikTok. Free social media content creator.",
+    seoArticle: `<h2>AI Social Media Post Generator - Content That Engages</h2>
+<p>Keep your social media feeds active with compelling content. Our AI generates platform-optimized posts for Instagram, Twitter, LinkedIn, Facebook, TikTok, and more. From captions to hashtags, threads to stories, get everything you need to maintain a strong social presence.</p>
+
+<h2>Platform-Perfect Content</h2>
+<p>Each social platform has its own culture and best practices. Our AI understands these nuances - professional tone for LinkedIn, casual vibes for Twitter, visual descriptions for Instagram. Generate content that feels native to each platform and resonates with its users.</p>
+
+<h2>Hashtag Strategy Included</h2>
+<p>Effective hashtags expand your reach. Our AI suggests relevant hashtags with the right mix of popularity and specificity. Get hashtag sets optimized for discoverability without looking spammy or desperate for attention.</p>
+
+<h2>Content Calendar Made Easy</h2>
+<p>Batch-create weeks of content in a single session. Generate posts around themes, campaigns, or random variety. Build a content library that keeps your feeds fresh without daily creative pressure.</p>
+
+<h2>Engagement-Focused Writing</h2>
+<p>Our AI creates posts designed to stop the scroll. Attention-grabbing hooks, clear value propositions, and strategic calls-to-action. Whether you're building community, driving traffic, or generating leads, every post is crafted for engagement.</p>`,
+  },
+  {
+    id: "ai-product-description-generator",
+    name: "AI Product Description Generator",
+    description: "Write compelling product descriptions that sell",
+    icon: "ShoppingBag",
+    type: "ai-product-description-generator",
+    color: "bg-teal-600",
+    emoji: "🛍️",
+    metaTitle: "AI Product Description Generator Free - E-commerce Copy | PDF Tools",
+    metaDescription: "Generate compelling product descriptions with AI. Create persuasive e-commerce copy that converts browsers into buyers. Free product copywriter.",
+    seoArticle: `<h2>AI Product Description Generator - Copy That Sells</h2>
+<p>Transform boring product specs into compelling descriptions that drive sales. Our AI product description generator creates persuasive, SEO-friendly copy that highlights benefits, addresses objections, and motivates purchase. Perfect for e-commerce stores, marketplaces, and product catalogs.</p>
+
+<h2>Features Become Benefits</h2>
+<p>Customers don't buy features - they buy solutions. Our AI transforms technical specifications into relatable benefits. Every description answers the customer's implicit question: What's in it for me? The result is copy that connects emotionally and drives action.</p>
+
+<h2>SEO-Optimized for Discovery</h2>
+<p>Great product descriptions do double duty - they persuade humans and rank in search engines. Our AI naturally incorporates relevant keywords while maintaining readability. Improve your product pages' visibility without sacrificing conversion-focused copy.</p>
+
+<h2>Consistent Brand Voice</h2>
+<p>Whether you have ten products or ten thousand, maintain consistent messaging across your catalog. Define your brand voice once, and our AI applies it to every description. Build brand recognition through coherent, professional product communication.</p>
+
+<h2>Scale Your E-commerce Content</h2>
+<p>Writing individual descriptions for large product catalogs is impossibly time-consuming. Our AI generates quality descriptions in seconds, allowing you to populate entire stores quickly. Launch faster, test more products, and scale your e-commerce business efficiently.</p>`,
+  },
+  {
+    id: "ai-video-script-writer",
+    name: "AI Video Script Writer",
+    description: "Create professional video scripts for any content",
+    icon: "Video",
+    type: "ai-video-script-writer",
+    color: "bg-red-600",
+    emoji: "🎬",
+    metaTitle: "AI Video Script Writer Free - YouTube & Video Scripts | PDF Tools",
+    metaDescription: "Generate professional video scripts with AI. Create YouTube scripts, explainer videos, ads, and more. Free AI video script generator.",
+    seoArticle: `<h2>AI Video Script Writer - Professional Scripts Fast</h2>
+<p>Create compelling video scripts that engage viewers from start to finish. Our AI video script writer generates scripts for YouTube videos, explainer content, advertisements, tutorials, and more. Get structured, ready-to-film scripts complete with hooks, body content, and calls-to-action.</p>
+
+<h2>Platform-Optimized Scripts</h2>
+<p>YouTube, TikTok, Instagram Reels, corporate videos - each format has unique requirements. Our AI understands optimal video lengths, pacing, and structure for different platforms. Generate scripts that work perfectly for your intended medium and audience.</p>
+
+<h2>Complete Script Structure</h2>
+<p>Every script includes attention-grabbing hooks, logical content flow, engaging transitions, and effective closings. Get viewer retention strategies built into the script structure. Keep audiences watching until the end with proven video storytelling techniques.</p>
+
+<h2>Multiple Script Styles</h2>
+<p>Educational tutorials, entertaining vlogs, persuasive sales videos, interview formats, documentary-style content - our AI adapts to any video style. Specify your approach and get scripts that match your creative vision perfectly.</p>
+
+<h2>Save Pre-Production Time</h2>
+<p>Script writing is often the biggest bottleneck in video production. Use AI to generate solid first drafts quickly, then refine with your personal touch. Spend more time on production and less on staring at blank pages.</p>`,
+  },
+  {
+    id: "ai-music-generator",
+    name: "AI Music Generator",
+    description: "Create original music and melodies with AI",
+    icon: "Music",
+    type: "ai-music-generator",
+    color: "bg-purple-600",
+    emoji: "🎵",
+    metaTitle: "AI Music Generator Free - Create Original Music | PDF Tools",
+    metaDescription: "Generate original music and melodies with AI. Create background music, jingles, and soundtracks. Free AI music composition tool.",
+    seoArticle: `<h2>AI Music Generator - Create Original Compositions</h2>
+<p>Generate unique music and melodies without musical training or expensive software. Our AI music generator creates original compositions for videos, podcasts, games, presentations, and more. Describe your desired mood and style, and let AI compose custom soundtracks.</p>
+
+<h2>Any Genre, Any Mood</h2>
+<p>From upbeat pop to ambient electronic, classical orchestral to lo-fi beats, our AI understands musical genres and emotional tones. Create energetic workout music, calming meditation tracks, dramatic cinematic scores, or catchy advertising jingles - whatever your project needs.</p>
+
+<h2>Royalty-Free Creations</h2>
+<p>Every AI-generated composition is original and royalty-free. Use your music in commercial projects, social media, YouTube videos, and more without licensing concerns. Full ownership of AI-created tracks for any purpose.</p>
+
+<h2>Customizable Parameters</h2>
+<p>Control tempo, key, instrumentation, and duration. Generate variations until you find the perfect fit. Layer multiple generations or use single compositions as-is. The flexibility to match any creative vision.</p>
+
+<h2>Perfect for Content Creators</h2>
+<p>Stop searching through endless stock music libraries. Generate custom music that perfectly matches your content's mood and timing. Unique soundtracks that set your work apart from creators using the same stock tracks everyone else uses.</p>`,
+  },
+  {
+    id: "ai-code-generator",
+    name: "AI Code Generator",
+    description: "Generate code snippets and functions with AI",
+    icon: "Code",
+    type: "ai-code-generator",
+    color: "bg-slate-600",
+    emoji: "💻",
+    metaTitle: "AI Code Generator Free - Generate Code Instantly | PDF Tools",
+    metaDescription: "Generate code snippets and functions with AI. Support for Python, JavaScript, TypeScript, and more. Free AI coding assistant.",
+    seoArticle: `<h2>AI Code Generator - Code Faster, Build Better</h2>
+<p>Accelerate your development workflow with AI-powered code generation. Describe what you need in plain English, and get working code in Python, JavaScript, TypeScript, Java, C++, and more. From simple functions to complex algorithms, our AI writes clean, efficient code.</p>
+
+<h2>Multi-Language Support</h2>
+<p>Work in whatever language your project requires. Our AI generates idiomatic code following best practices for each language. Python with proper PEP 8 styling, JavaScript with modern ES6+ features, TypeScript with proper type annotations - always production-quality output.</p>
+
+<h2>From Concept to Code</h2>
+<p>Describe functionality in natural language and get working implementations. Sort algorithms, API integrations, data transformations, UI components - if you can describe it, our AI can code it. Perfect for prototyping, learning, or accelerating routine development tasks.</p>
+
+<h2>Code Explanation Included</h2>
+<p>Every generated code snippet includes comments explaining the logic. Understand how the code works, learn new techniques, and easily modify outputs to fit your specific needs. AI that teaches while it builds.</p>
+
+<h2>Debug and Optimize</h2>
+<p>Paste existing code and ask for improvements. Our AI identifies inefficiencies, suggests optimizations, and explains better approaches. Level up your codebase with AI-assisted refactoring and enhancement.</p>`,
+  },
+  {
+    id: "ai-sql-query-generator",
+    name: "AI SQL Query Generator",
+    description: "Generate SQL queries from natural language",
+    icon: "Database",
+    type: "ai-sql-query-generator",
+    color: "bg-cyan-600",
+    emoji: "🗄️",
+    metaTitle: "AI SQL Query Generator Free - Natural Language to SQL | PDF Tools",
+    metaDescription: "Generate SQL queries from plain English with AI. Create complex queries, joins, and aggregations easily. Free AI SQL assistant.",
+    seoArticle: `<h2>AI SQL Query Generator - Database Queries Made Simple</h2>
+<p>Transform plain English questions into precise SQL queries. Our AI SQL generator understands your database needs and produces optimized queries for MySQL, PostgreSQL, SQLite, SQL Server, and Oracle. From simple SELECTs to complex JOINs and aggregations, get the queries you need instantly.</p>
+
+<h2>Natural Language to SQL</h2>
+<p>Stop memorizing SQL syntax. Describe what data you want in everyday language: "Show me all customers who made purchases last month sorted by total spend." Our AI translates your intent into precise, executable SQL queries.</p>
+
+<h2>Complex Queries Simplified</h2>
+<p>Multi-table JOINs, subqueries, window functions, CTEs - advanced SQL concepts become accessible. Describe your analytical needs, and our AI handles the complex query construction. Data analysis is limited only by your questions, not your SQL expertise.</p>
+
+<h2>Database-Specific Syntax</h2>
+<p>SQL dialects vary between database systems. Our AI generates queries optimized for your specific database, using native functions and syntax. PostgreSQL, MySQL, SQL Server, Oracle, SQLite - each gets properly formatted, compatible queries.</p>
+
+<h2>Query Optimization Included</h2>
+<p>Generated queries follow performance best practices. Proper indexing hints, efficient JOIN orders, and optimized aggregations. Get queries that not only work but run efficiently on large datasets. Learn SQL optimization through AI-generated examples.</p>`,
+  }
+];
+
+pdfTools.push(...aiContentGeneratorTools);
