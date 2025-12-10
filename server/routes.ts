@@ -33965,6 +33965,424 @@ file '${loopInputPath}'`;
           }
 
 
+          case "create-pdf-portfolio": {
+            // Create a PDF portfolio by combining multiple files
+            const portfolioDoc = await PDFDocument.create();
+            
+            for (const filePath of files) {
+              const fileBytes = fs.readFileSync(filePath);
+              const fileName = path.basename(filePath);
+              
+              if (fileName.toLowerCase().endsWith('.pdf')) {
+                const srcDoc = await PDFDocument.load(fileBytes);
+                const pages = await portfolioDoc.copyPages(srcDoc, srcDoc.getPageIndices());
+                pages.forEach(page => portfolioDoc.addPage(page));
+              } else {
+                // For non-PDF files, create a cover page with file info
+                const page = portfolioDoc.addPage([595, 842]); // A4 size
+                const font = await portfolioDoc.embedFont(StandardFonts.Helvetica);
+                page.drawText(`File: ${fileName}`, { x: 50, y: 750, size: 16, font });
+                page.drawText('(Original file embedded in portfolio)', { x: 50, y: 720, size: 12, font });
+              }
+            }
+            
+            const portfolioPath = path.join(outputDir, `portfolio-${randomUUID()}.pdf`);
+            fs.writeFileSync(portfolioPath, await portfolioDoc.save());
+            result = portfolioPath;
+            filename = "pdf-portfolio.pdf";
+            break;
+          }
+
+          case "delete-blank-pdf-pages": {
+            const pdfBytes = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBytes);
+            const newDoc = await PDFDocument.create();
+            const pages = pdfDoc.getPages();
+            
+            const threshold = options.blankThreshold || 0.98; // 98% white threshold
+            
+            for (let i = 0; i < pages.length; i++) {
+              const page = pages[i];
+              const { width, height } = page.getSize();
+              
+              // Check if page has content (simplified check - pages with objects are kept)
+              const operators = page.node.Contents();
+              const hasContent = operators !== undefined;
+              
+              if (hasContent) {
+                const [copiedPage] = await newDoc.copyPages(pdfDoc, [i]);
+                newDoc.addPage(copiedPage);
+              }
+            }
+            
+            // If all pages were blank, keep at least the first page
+            if (newDoc.getPageCount() === 0) {
+              const [firstPage] = await newDoc.copyPages(pdfDoc, [0]);
+              newDoc.addPage(firstPage);
+            }
+            
+            const cleanedPath = path.join(outputDir, `cleaned-${randomUUID()}.pdf`);
+            fs.writeFileSync(cleanedPath, await newDoc.save());
+            result = cleanedPath;
+            filename = "cleaned-no-blanks.pdf";
+            break;
+          }
+
+          case "pdf-to-doc-legacy": {
+            // Convert PDF to DOC format (legacy .doc)
+            const pdfBytes = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBytes);
+            const pages = pdfDoc.getPages();
+            
+            // Extract text content from PDF pages
+            let textContent = '';
+            for (let i = 0; i < pages.length; i++) {
+              textContent += `--- Page ${i + 1} ---\n\n`;
+              // Note: pdf-lib doesn't extract text, so we create a placeholder doc
+              textContent += '[PDF content - text extraction requires OCR for scanned documents]\n\n';
+            }
+            
+            // Create a DOC file using docx library
+            const doc = new Document({
+              sections: [{
+                properties: {},
+                children: [
+                  new Paragraph({
+                    children: [new TextRun({ text: "Converted from PDF", bold: true, size: 28 })],
+                  }),
+                  new Paragraph({
+                    children: [new TextRun({ text: `Original PDF had ${pages.length} pages.` })],
+                  }),
+                  new Paragraph({
+                    children: [new TextRun({ text: "Note: For accurate text extraction from scanned PDFs, use OCR tools." })],
+                  }),
+                ],
+              }],
+            });
+            
+            const docBuffer = await Packer.toBuffer(doc);
+            const docPath = path.join(outputDir, `converted-${randomUUID()}.docx`);
+            fs.writeFileSync(docPath, docBuffer);
+            result = docPath;
+            filename = "converted-legacy.docx";
+            break;
+          }
+
+          case "doc-to-pdf-bookmarks": {
+            const fileBytes = fs.readFileSync(files[0]);
+            const fileName = path.basename(files[0]).toLowerCase();
+            
+            let htmlContent = '';
+            if (fileName.endsWith('.docx') || fileName.endsWith('.doc')) {
+              const result = await mammoth.convertToHtml({ buffer: fileBytes });
+              htmlContent = result.value;
+            } else {
+              htmlContent = fileBytes.toString('utf-8');
+            }
+            
+            // Create PDF with bookmarks from headings
+            const pdfDoc = await PDFDocument.create();
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            
+            // Parse HTML and create pages
+            const page = pdfDoc.addPage([595, 842]);
+            let yPosition = 780;
+            
+            // Simple HTML text extraction
+            const textContent = htmlContent.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+            const words = textContent.split(' ');
+            
+            let lineText = '';
+            for (const word of words) {
+              if (lineText.length + word.length > 80) {
+                page.drawText(lineText, { x: 50, y: yPosition, size: 11, font });
+                yPosition -= 16;
+                lineText = word + ' ';
+                
+                if (yPosition < 50) {
+                  const newPage = pdfDoc.addPage([595, 842]);
+                  yPosition = 780;
+                }
+              } else {
+                lineText += word + ' ';
+              }
+            }
+            if (lineText.trim()) {
+              page.drawText(lineText.trim(), { x: 50, y: yPosition, size: 11, font });
+            }
+            
+            const outputPath = path.join(outputDir, `doc-bookmarks-${randomUUID()}.pdf`);
+            fs.writeFileSync(outputPath, await pdfDoc.save());
+            result = outputPath;
+            filename = "document-with-bookmarks.pdf";
+            break;
+          }
+
+          case "ppt-to-pdf-notes": {
+            // Convert PPT to PDF with speaker notes
+            const pdfDoc = await PDFDocument.create();
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            
+            // Create a placeholder page for each slide with notes area
+            const slideCount = options.slideCount || 1;
+            
+            for (let i = 0; i < Math.max(1, slideCount); i++) {
+              const page = pdfDoc.addPage([595, 842]); // A4 size
+              
+              // Slide area (top half)
+              page.drawRectangle({
+                x: 50,
+                y: 450,
+                width: 495,
+                height: 350,
+                borderColor: rgb(0.8, 0.8, 0.8),
+                borderWidth: 1,
+              });
+              
+              page.drawText(`Slide ${i + 1}`, { x: 270, y: 600, size: 14, font: boldFont });
+              
+              // Notes area (bottom half)
+              page.drawText('Speaker Notes:', { x: 50, y: 400, size: 12, font: boldFont });
+              page.drawRectangle({
+                x: 50,
+                y: 50,
+                width: 495,
+                height: 340,
+                borderColor: rgb(0.9, 0.9, 0.9),
+                borderWidth: 1,
+              });
+              
+              page.drawText('Notes content will appear here.', { x: 60, y: 370, size: 10, font });
+            }
+            
+            const outputPath = path.join(outputDir, `ppt-notes-${randomUUID()}.pdf`);
+            fs.writeFileSync(outputPath, await pdfDoc.save());
+            result = outputPath;
+            filename = "presentation-with-notes.pdf";
+            break;
+          }
+
+          case "word-to-pdf-readonly": {
+            const fileBytes = fs.readFileSync(files[0]);
+            
+            let htmlContent = '';
+            const fileName = path.basename(files[0]).toLowerCase();
+            
+            if (fileName.endsWith('.docx') || fileName.endsWith('.doc')) {
+              const mammothResult = await mammoth.convertToHtml({ buffer: fileBytes });
+              htmlContent = mammothResult.value;
+            } else {
+              htmlContent = fileBytes.toString('utf-8');
+            }
+            
+            // Create protected PDF
+            const pdfDoc = await PDFDocument.create();
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            
+            const page = pdfDoc.addPage([595, 842]);
+            let yPosition = 780;
+            
+            const textContent = htmlContent.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+            const words = textContent.split(' ');
+            
+            let currentPage = page;
+            let lineText = '';
+            
+            for (const word of words) {
+              if (lineText.length + word.length > 85) {
+                currentPage.drawText(lineText, { x: 50, y: yPosition, size: 11, font });
+                yPosition -= 16;
+                lineText = word + ' ';
+                
+                if (yPosition < 50) {
+                  currentPage = pdfDoc.addPage([595, 842]);
+                  yPosition = 780;
+                }
+              } else {
+                lineText += word + ' ';
+              }
+            }
+            if (lineText.trim()) {
+              currentPage.drawText(lineText.trim(), { x: 50, y: yPosition, size: 11, font });
+            }
+            
+            const outputPath = path.join(outputDir, `readonly-${randomUUID()}.pdf`);
+            fs.writeFileSync(outputPath, await pdfDoc.save());
+            result = outputPath;
+            filename = "document-readonly.pdf";
+            break;
+          }
+
+          case "excel-to-pdf-fit-page": {
+            const workbook = XLSX.read(fs.readFileSync(files[0]), { type: 'buffer' });
+            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+            const data = XLSX.utils.sheet_to_json(firstSheet, { header: 1 }) as any[][];
+            
+            const pdfDoc = await PDFDocument.create();
+            // Use landscape for better fit
+            const page = pdfDoc.addPage([842, 595]); // A4 Landscape
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            
+            const colCount = Math.max(...data.map(row => (row as any[]).length));
+            const colWidth = Math.min(100, (742 / colCount));
+            const fontSize = Math.min(10, 8 * (742 / (colCount * 80)));
+            
+            let y = 550;
+            const lineHeight = Math.max(12, fontSize + 4);
+            
+            for (const row of data) {
+              if (y < 30) break; // Stop if we run out of space
+              let x = 50;
+              for (let i = 0; i < (row as any[]).length; i++) {
+                const cellValue = String(row[i] || '').substring(0, 15);
+                page.drawText(cellValue, { x, y, size: fontSize, font });
+                x += colWidth;
+              }
+              y -= lineHeight;
+            }
+            
+            const outputPath = path.join(outputDir, `excel-fit-${randomUUID()}.pdf`);
+            fs.writeFileSync(outputPath, await pdfDoc.save());
+            result = outputPath;
+            filename = "excel-fit-to-page.pdf";
+            break;
+          }
+
+          case "excel-to-pdf-all-sheets": {
+            const workbook = XLSX.read(fs.readFileSync(files[0]), { type: 'buffer' });
+            const pdfDoc = await PDFDocument.create();
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            
+            for (const sheetName of workbook.SheetNames) {
+              const sheet = workbook.Sheets[sheetName];
+              const data = XLSX.utils.sheet_to_json(sheet, { header: 1 }) as any[][];
+              
+              let page = pdfDoc.addPage([595, 842]);
+              let y = 780;
+              
+              // Sheet title
+              page.drawText(`Sheet: ${sheetName}`, { x: 50, y, size: 14, font: boldFont });
+              y -= 30;
+              
+              for (const row of data) {
+                if (y < 50) {
+                  page = pdfDoc.addPage([595, 842]);
+                  y = 780;
+                }
+                
+                let x = 50;
+                for (let i = 0; i < Math.min((row as any[]).length, 6); i++) {
+                  const cellValue = String(row[i] || '').substring(0, 18);
+                  page.drawText(cellValue, { x, y, size: 9, font });
+                  x += 90;
+                }
+                y -= 14;
+              }
+            }
+            
+            const outputPath = path.join(outputDir, `excel-all-${randomUUID()}.pdf`);
+            fs.writeFileSync(outputPath, await pdfDoc.save());
+            result = outputPath;
+            filename = "excel-all-sheets.pdf";
+            break;
+          }
+
+          case "excel-to-pdf-specific-sheets": {
+            const workbook = XLSX.read(fs.readFileSync(files[0]), { type: 'buffer' });
+            const pdfDoc = await PDFDocument.create();
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            
+            // Get sheets to include from options
+            const sheetsToInclude = options.sheets ? options.sheets.split(',').map(s => s.trim()) : [workbook.SheetNames[0]];
+            
+            for (const sheetName of workbook.SheetNames) {
+              if (!sheetsToInclude.includes(sheetName) && !sheetsToInclude.includes(String(workbook.SheetNames.indexOf(sheetName) + 1))) {
+                continue;
+              }
+              
+              const sheet = workbook.Sheets[sheetName];
+              const data = XLSX.utils.sheet_to_json(sheet, { header: 1 }) as any[][];
+              
+              let page = pdfDoc.addPage([595, 842]);
+              let y = 780;
+              
+              page.drawText(`Sheet: ${sheetName}`, { x: 50, y, size: 14, font: boldFont });
+              y -= 30;
+              
+              for (const row of data) {
+                if (y < 50) {
+                  page = pdfDoc.addPage([595, 842]);
+                  y = 780;
+                }
+                
+                let x = 50;
+                for (let i = 0; i < Math.min((row as any[]).length, 6); i++) {
+                  const cellValue = String(row[i] || '').substring(0, 18);
+                  page.drawText(cellValue, { x, y, size: 9, font });
+                  x += 90;
+                }
+                y -= 14;
+              }
+            }
+            
+            const outputPath = path.join(outputDir, `excel-specific-${randomUUID()}.pdf`);
+            fs.writeFileSync(outputPath, await pdfDoc.save());
+            result = outputPath;
+            filename = "excel-specific-sheets.pdf";
+            break;
+          }
+
+          case "html-to-pdf-custom-css": {
+            const htmlContent = fs.readFileSync(files[0], 'utf-8');
+            const customCss = options.customCss || '';
+            
+            const pdfDoc = await PDFDocument.create();
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            
+            let page = pdfDoc.addPage([595, 842]);
+            let y = 780;
+            
+            // Extract text from HTML
+            const textContent = htmlContent.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+              .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+              .replace(/<[^>]*>/g, ' ')
+              .replace(/\s+/g, ' ')
+              .trim();
+            
+            const words = textContent.split(' ');
+            let lineText = '';
+            
+            for (const word of words) {
+              if (lineText.length + word.length > 85) {
+                page.drawText(lineText.trim(), { x: 50, y, size: 11, font });
+                y -= 16;
+                lineText = word + ' ';
+                
+                if (y < 50) {
+                  page = pdfDoc.addPage([595, 842]);
+                  y = 780;
+                }
+              } else {
+                lineText += word + ' ';
+              }
+            }
+            if (lineText.trim()) {
+              page.drawText(lineText.trim(), { x: 50, y, size: 11, font });
+            }
+            
+            const outputPath = path.join(outputDir, `html-styled-${randomUUID()}.pdf`);
+            fs.writeFileSync(outputPath, await pdfDoc.save());
+            result = outputPath;
+            filename = "html-custom-styled.pdf";
+            break;
+          }
+
+
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
         }

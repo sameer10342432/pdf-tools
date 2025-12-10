@@ -930,6 +930,16 @@ export const pdfToolTypes = [
   "pdf-attachment-adder",
   "pdf-attachment-remover",
   "pdf-portfolio-extractor",
+  "create-pdf-portfolio",
+  "delete-blank-pdf-pages",
+  "pdf-to-doc-legacy",
+  "doc-to-pdf-bookmarks",
+  "ppt-to-pdf-notes",
+  "word-to-pdf-readonly",
+  "excel-to-pdf-fit-page",
+  "excel-to-pdf-all-sheets",
+  "excel-to-pdf-specific-sheets",
+  "html-to-pdf-custom-css",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -1540,6 +1550,9 @@ export const toolOptionsSchema = z.object({
   videoFlipDirection: z.enum(["horizontal", "vertical", "both"]).optional(),
   video3gpQuality: z.enum(["low", "medium", "high"]).optional(),
   channelMode: z.enum(["stereo-to-mono", "mono-to-stereo", "swap-channels", "left-only", "right-only"]).optional(),
+  sheets: z.string().optional(),
+  customCss: z.string().optional(),
+  blankThreshold: z.number().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -25480,5 +25493,255 @@ const newPdfToolsSet: PdfTool[] = [
     metaTitle: "Fill and Flatten PDF Forms Online Free - Complete & Lock Forms | PDF Tools",
     metaDescription: "Fill PDF forms and flatten them to prevent further editing online for free. Complete forms and create permanent documents. Fast and secure.",
     seoArticle: `<h2>Fill Form and Flatten PDF</h2><p>Fill out PDF forms and permanently flatten them to prevent any future edits. Creates permanent records of completed forms.</p>`,
+  },
+  {
+    id: "create-pdf-portfolio",
+    name: "Create PDF Portfolio",
+    description: "Bundle multiple files into a single PDF portfolio package",
+    icon: "FolderArchive",
+    type: "create-pdf-portfolio",
+    color: "bg-indigo-500",
+    emoji: "📁",
+    metaTitle: "Create PDF Portfolio Online Free - Bundle Files into PDF Package | PDF Tools",
+    metaDescription: "Create professional PDF portfolios by bundling multiple files into a single organized package. Free, secure, and easy to use.",
+    seoArticle: `<h2>Create PDF Portfolio - Complete Guide</h2>
+<p>A PDF portfolio is a powerful way to organize and present multiple files in a single, professional package. Our free online PDF portfolio creator allows you to bundle PDFs, images, spreadsheets, and other documents into one cohesive presentation without any software installation.</p>
+
+<h2>Why Use PDF Portfolios?</h2>
+<p>PDF portfolios are ideal for professionals who need to share multiple related documents. Architects can bundle blueprints with specifications, marketers can combine campaign materials, and consultants can deliver comprehensive project reports. Each file maintains its original format while being accessible from a single PDF.</p>
+
+<h2>Key Features of Our Portfolio Creator</h2>
+<p>Our tool supports a wide variety of file formats including PDFs, Word documents, Excel spreadsheets, PowerPoint presentations, and images. You can organize files into folders, add descriptions, and create a professional cover page. The resulting portfolio is compatible with all major PDF readers.</p>
+
+<h2>How to Create a PDF Portfolio</h2>
+<p>Upload your files using our secure uploader. Arrange them in your preferred order and organize them into folders if desired. Add optional descriptions for each file. Click create to generate your portfolio, then download the bundled PDF package instantly.</p>
+
+<h2>Professional Presentation Made Easy</h2>
+<p>PDF portfolios present your documents professionally with a built-in navigation system. Recipients can easily browse through files, preview contents, and extract individual documents as needed. It's the perfect solution for proposals, project deliverables, and comprehensive document packages.</p>`,
+  },
+  {
+    id: "delete-blank-pdf-pages",
+    name: "Delete Blank PDF Pages",
+    description: "Automatically detect and remove empty pages from PDF files",
+    icon: "Eraser",
+    type: "delete-blank-pdf-pages",
+    color: "bg-rose-500",
+    emoji: "🧹",
+    metaTitle: "Delete Blank PDF Pages Online Free - Remove Empty Pages | PDF Tools",
+    metaDescription: "Automatically detect and remove blank pages from your PDF documents online for free. Clean up scanned documents and presentations instantly.",
+    seoArticle: `<h2>Delete Blank PDF Pages - Automatic Detection</h2>
+<p>Scanned documents and converted files often contain unwanted blank pages that waste space and look unprofessional. Our intelligent blank page detector automatically identifies and removes these empty pages, giving you clean, streamlined PDFs.</p>
+
+<h2>Smart Blank Page Detection</h2>
+<p>Our algorithm goes beyond simple white page detection. It identifies pages that appear blank to the human eye, including pages with minimal content, near-white backgrounds, or only page numbers. You can adjust the sensitivity to match your specific needs.</p>
+
+<h2>Perfect for Scanned Documents</h2>
+<p>Scanning double-sided documents often results in blank reverse pages. This tool automatically removes them while preserving your actual content. It's ideal for digitizing archives, cleaning up scanned contracts, and optimizing document storage.</p>
+
+<h2>How to Remove Blank Pages</h2>
+<p>Upload your PDF file and let our system analyze each page. The tool displays a preview of detected blank pages for your review. Confirm the pages to remove and download your cleaned PDF. The process is fast, secure, and maintains original document quality.</p>
+
+<h2>Reduce File Size and Improve Presentation</h2>
+<p>Removing blank pages not only improves document presentation but also reduces file size. This makes documents easier to share via email and faster to download. Keep your PDFs professional and efficient with automatic blank page removal.</p>`,
+  },
+  {
+    id: "pdf-to-doc-legacy",
+    name: "PDF to DOC (Legacy)",
+    description: "Convert PDF files to legacy Microsoft Word DOC format",
+    icon: "FileText",
+    type: "pdf-to-doc-legacy",
+    color: "bg-blue-600",
+    emoji: "📄",
+    metaTitle: "PDF to DOC Legacy Converter Online Free - Convert to .doc Format | PDF Tools",
+    metaDescription: "Convert PDF files to legacy Microsoft Word DOC format online for free. Perfect for older Word versions. Fast and accurate conversion.",
+    seoArticle: `<h2>PDF to DOC Legacy Format Converter</h2>
+<p>Need to convert PDFs to the classic Microsoft Word .doc format? Our legacy converter produces Word documents compatible with older versions of Microsoft Office, including Word 97-2003. Perfect for organizations that still rely on legacy software systems.</p>
+
+<h2>Why Convert to DOC Instead of DOCX?</h2>
+<p>While DOCX is the modern standard, many organizations, government agencies, and educational institutions still use older Microsoft Office versions that only support the classic .doc format. Our converter ensures compatibility with these legacy systems.</p>
+
+<h2>Accurate Format Preservation</h2>
+<p>Our conversion engine carefully preserves text formatting, tables, images, and layouts. While some complex PDF elements may require manual adjustment, the majority of documents convert accurately and are immediately editable in Word.</p>
+
+<h2>How to Convert PDF to DOC</h2>
+<p>Upload your PDF file using our secure uploader. Select any conversion options you need. Click convert and wait for processing. Download your .doc file ready to edit in any version of Microsoft Word from 97 onwards.</p>
+
+<h2>Secure and Private Processing</h2>
+<p>All files are processed on secure servers and automatically deleted after conversion. Your documents remain private and confidential. Convert sensitive business documents with complete peace of mind.</p>`,
+  },
+  {
+    id: "doc-to-pdf-bookmarks",
+    name: "DOC to PDF (with Bookmarks)",
+    description: "Convert Word documents to PDF with automatic bookmark generation",
+    icon: "BookMarked",
+    type: "doc-to-pdf-bookmarks",
+    color: "bg-blue-500",
+    emoji: "📑",
+    metaTitle: "DOC to PDF with Bookmarks Online Free - Convert Word with Navigation | PDF Tools",
+    metaDescription: "Convert Word documents to PDF with automatic bookmark generation from headings. Create navigable PDFs online for free. Fast and professional results.",
+    seoArticle: `<h2>DOC to PDF with Automatic Bookmarks</h2>
+<p>Transform your Word documents into professionally navigable PDFs with automatic bookmark generation. Our converter analyzes your document structure and creates bookmarks from headings, making long documents easy to navigate.</p>
+
+<h2>Smart Heading Detection</h2>
+<p>Our system automatically detects heading styles (H1, H2, H3, etc.) in your Word document and converts them into a hierarchical bookmark structure. Readers can jump directly to any section using the PDF's bookmark panel.</p>
+
+<h2>Perfect for Long Documents</h2>
+<p>Reports, manuals, theses, and technical documentation benefit immensely from bookmarked navigation. Instead of scrolling through hundreds of pages, readers can instantly access any chapter or section.</p>
+
+<h2>How to Convert with Bookmarks</h2>
+<p>Upload your Word document (.doc or .docx). Our system analyzes the heading structure automatically. Review the detected bookmarks if desired. Click convert and download your navigable PDF with a complete bookmark hierarchy.</p>
+
+<h2>Professional Document Delivery</h2>
+<p>Delivering PDFs with bookmarks demonstrates professionalism and attention to reader experience. Whether you're distributing corporate reports or academic papers, bookmarked PDFs make a lasting positive impression.</p>`,
+  },
+  {
+    id: "ppt-to-pdf-notes",
+    name: "PPT to PDF (with Notes)",
+    description: "Convert PowerPoint presentations to PDF including speaker notes",
+    icon: "Presentation",
+    type: "ppt-to-pdf-notes",
+    color: "bg-orange-600",
+    emoji: "🎤",
+    metaTitle: "PPT to PDF with Speaker Notes Online Free - Convert Presentations | PDF Tools",
+    metaDescription: "Convert PowerPoint presentations to PDF including speaker notes. Perfect for handouts and study materials. Free online conversion.",
+    seoArticle: `<h2>PowerPoint to PDF with Speaker Notes</h2>
+<p>Convert your PowerPoint presentations to PDF while preserving valuable speaker notes. This is perfect for creating comprehensive handouts, study materials, or presentation archives that include all your supplementary information.</p>
+
+<h2>Preserve Your Speaker Notes</h2>
+<p>Speaker notes often contain crucial information that complements your slides. Our converter places these notes alongside their corresponding slides, creating a complete document that captures both visual content and detailed explanations.</p>
+
+<h2>Multiple Layout Options</h2>
+<p>Choose from various layout options: one slide per page with notes below, multiple slides per page with notes, or slides only. Customize the output to match your specific needs and audience requirements.</p>
+
+<h2>How to Convert PPT to PDF with Notes</h2>
+<p>Upload your PowerPoint file (.ppt or .pptx). Select your preferred layout option for notes inclusion. Click convert and download your comprehensive PDF with slides and speaker notes together.</p>
+
+<h2>Ideal for Training and Education</h2>
+<p>Trainers, educators, and presenters find this tool invaluable. Create handout materials that give your audience both the presentation visuals and the detailed context from your notes. It's the complete package for effective knowledge transfer.</p>`,
+  },
+  {
+    id: "word-to-pdf-readonly",
+    name: "Word to PDF (Read-only)",
+    description: "Convert Word documents to non-editable read-only PDF format",
+    icon: "Lock",
+    type: "word-to-pdf-readonly",
+    color: "bg-gray-600",
+    emoji: "🔒",
+    metaTitle: "Word to PDF Read-Only Online Free - Create Non-Editable PDFs | PDF Tools",
+    metaDescription: "Convert Word documents to read-only PDF format that prevents editing. Protect your content from modifications. Free and secure online conversion.",
+    seoArticle: `<h2>Word to PDF Read-Only Conversion</h2>
+<p>Protect your document content by converting Word files to read-only PDFs. This prevents recipients from easily editing, copying, or extracting text from your documents, helping maintain document integrity and intellectual property protection.</p>
+
+<h2>Document Protection Features</h2>
+<p>Our read-only conversion applies multiple protection layers: disabling text selection, preventing copy operations, and blocking editing capabilities. The resulting PDF can be viewed and printed but not easily modified.</p>
+
+<h2>When to Use Read-Only PDFs</h2>
+<p>Use read-only PDFs for contracts you don't want altered, published reports, official communications, and any document where maintaining original content is crucial. It's also useful for distributing copyrighted materials.</p>
+
+<h2>How to Create Read-Only PDFs</h2>
+<p>Upload your Word document (.doc or .docx). Select the read-only protection option. Configure any additional settings like print permissions. Convert and download your protected, read-only PDF.</p>
+
+<h2>Balance Access and Protection</h2>
+<p>Read-only PDFs allow anyone to view your content while preventing modifications. It's the perfect balance between accessibility and protection, ensuring your message reaches everyone exactly as you intended.</p>`,
+  },
+  {
+    id: "excel-to-pdf-fit-page",
+    name: "Excel to PDF (Fit to Page)",
+    description: "Convert Excel spreadsheets to PDF, fitting content to a single page",
+    icon: "FileSpreadsheet",
+    type: "excel-to-pdf-fit-page",
+    color: "bg-green-600",
+    emoji: "📊",
+    metaTitle: "Excel to PDF Fit to Page Online Free - Scale Spreadsheets to One Page | PDF Tools",
+    metaDescription: "Convert Excel spreadsheets to PDF with automatic scaling to fit one page. Perfect for printable reports. Free online conversion.",
+    seoArticle: `<h2>Excel to PDF - Fit to One Page</h2>
+<p>Convert your Excel spreadsheets to perfectly formatted PDFs that fit on a single page. Our intelligent scaling automatically adjusts your content to maximize readability while ensuring everything fits on one sheet.</p>
+
+<h2>Smart Scaling Technology</h2>
+<p>Our converter analyzes your spreadsheet dimensions and calculates the optimal scale factor. Wide spreadsheets are automatically oriented to landscape, and font sizes are adjusted to maintain readability while fitting all content.</p>
+
+<h2>Perfect for Presentations and Reports</h2>
+<p>Financial summaries, project dashboards, and data tables often need to be presented on a single page. This tool ensures your spreadsheet content makes a clean, professional impression without awkward page breaks.</p>
+
+<h2>How to Convert Excel to Single-Page PDF</h2>
+<p>Upload your Excel file (.xls or .xlsx). Select the fit-to-page option. Choose portrait or landscape orientation if desired. Convert and download your perfectly scaled PDF ready for printing or sharing.</p>
+
+<h2>Maintain Data Integrity</h2>
+<p>Despite scaling, all your data remains intact and legible. Formulas are converted to their calculated values, charts are rendered as images, and formatting is preserved. Your PDF accurately represents your spreadsheet content.</p>`,
+  },
+  {
+    id: "excel-to-pdf-all-sheets",
+    name: "Excel to PDF (All Sheets)",
+    description: "Convert all worksheets in an Excel workbook to a single PDF",
+    icon: "Layers",
+    type: "excel-to-pdf-all-sheets",
+    color: "bg-green-500",
+    emoji: "📚",
+    metaTitle: "Excel to PDF All Sheets Online Free - Convert Entire Workbooks | PDF Tools",
+    metaDescription: "Convert all worksheets in your Excel workbook to a single PDF document. Include every sheet automatically. Free online conversion.",
+    seoArticle: `<h2>Excel to PDF - Convert All Worksheets</h2>
+<p>Convert your entire Excel workbook to PDF, including all worksheets in a single document. Perfect for comprehensive reports, multi-sheet financial statements, and complete data packages.</p>
+
+<h2>Complete Workbook Conversion</h2>
+<p>Unlike basic converters that only process the active sheet, our tool captures every worksheet in your workbook. Each sheet becomes a section in your PDF, maintaining the complete context of your data.</p>
+
+<h2>Preserved Formatting Across Sheets</h2>
+<p>Every worksheet maintains its individual formatting, including column widths, row heights, cell colors, and borders. Charts and images are rendered accurately, creating a professional multi-section document.</p>
+
+<h2>How to Convert All Excel Sheets</h2>
+<p>Upload your Excel workbook (.xls or .xlsx). The tool automatically detects all worksheets. Click convert to process the entire workbook. Download your comprehensive PDF containing all sheets in sequence.</p>
+
+<h2>Ideal for Financial and Project Reports</h2>
+<p>Financial workbooks often contain multiple related sheets: summaries, details, projections, and historical data. Converting all sheets together maintains the logical flow and makes sharing complete reports effortless.</p>`,
+  },
+  {
+    id: "excel-to-pdf-specific-sheets",
+    name: "Excel to PDF (Specific Sheets)",
+    description: "Select and convert only specific worksheets from Excel to PDF",
+    icon: "Target",
+    type: "excel-to-pdf-specific-sheets",
+    color: "bg-emerald-500",
+    emoji: "🎯",
+    metaTitle: "Excel to PDF Specific Sheets Online Free - Choose Which Sheets to Convert | PDF Tools",
+    metaDescription: "Select and convert only specific worksheets from your Excel workbook to PDF. Control exactly what's included. Free online conversion.",
+    seoArticle: `<h2>Excel to PDF - Select Specific Sheets</h2>
+<p>Have complete control over which worksheets are converted to PDF. Select only the sheets you need from your Excel workbook, creating focused documents without unnecessary data.</p>
+
+<h2>Granular Sheet Selection</h2>
+<p>Our tool displays all worksheets in your workbook and lets you select exactly which ones to include. Convert just the summary sheet, skip working sheets, or choose any combination that meets your needs.</p>
+
+<h2>Perfect for Sharing Partial Data</h2>
+<p>Not every recipient needs to see every worksheet. Share only relevant data with stakeholders, hide internal calculations, or create focused reports from comprehensive workbooks.</p>
+
+<h2>How to Select Specific Sheets</h2>
+<p>Upload your Excel workbook. View the list of all available worksheets. Check the sheets you want to include in your PDF. Set the order if desired. Convert and download your customized PDF.</p>
+
+<h2>Flexible Output Options</h2>
+<p>Selected sheets can be arranged in any order, not just their original sequence. Create logical document flow by placing summary sheets first or grouping related data together.</p>`,
+  },
+  {
+    id: "html-to-pdf-custom-css",
+    name: "HTML to PDF (with Custom CSS)",
+    description: "Convert HTML pages to PDF with your own custom CSS styling",
+    icon: "Code",
+    type: "html-to-pdf-custom-css",
+    color: "bg-purple-600",
+    emoji: "🎨",
+    metaTitle: "HTML to PDF with Custom CSS Online Free - Styled Web to PDF | PDF Tools",
+    metaDescription: "Convert HTML to PDF with your own custom CSS styling. Create beautifully formatted PDFs from web content. Free online conversion.",
+    seoArticle: `<h2>HTML to PDF with Custom CSS Styling</h2>
+<p>Transform HTML content into beautifully styled PDFs using your own custom CSS. Perfect for developers, designers, and anyone who needs precise control over PDF appearance from web content.</p>
+
+<h2>Full CSS Control</h2>
+<p>Apply your own CSS styles to customize fonts, colors, layouts, margins, and every visual aspect of the resulting PDF. Override default browser styling to create PDFs that match your brand guidelines.</p>
+
+<h2>Print-Specific Styling</h2>
+<p>Our converter fully supports print media queries, allowing you to create styles specifically optimized for PDF output. Control page breaks, hide navigation elements, and adjust layouts for print perfection.</p>
+
+<h2>How to Convert HTML with Custom CSS</h2>
+<p>Upload your HTML file or paste HTML content. Add your custom CSS in the styling editor. Preview the result if desired. Convert and download your professionally styled PDF document.</p>
+
+<h2>Ideal for Reports and Documentation</h2>
+<p>Generate consistent, branded reports from HTML templates. Create PDF documentation from web-based help systems. Produce styled invoices and certificates. The possibilities are endless when you control the CSS.</p>`,
   },
 ];

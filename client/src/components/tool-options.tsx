@@ -15519,6 +15519,80 @@ export function ToolOptionsComponent({
       );
 
 
+
+    case "excel-to-pdf-specific-sheets":
+      return (
+        <div className="space-y-4">
+          <div className="p-4 bg-muted rounded-md">
+            <p className="text-sm text-muted-foreground">
+              Specify which sheets to include in the PDF. Enter sheet names or numbers separated by commas.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="sheets">Sheets to Include</Label>
+            <Input
+              id="sheets"
+              placeholder="Sheet1, Sheet2 or 1, 2, 3"
+              value={options.sheets || ""}
+              onChange={(e) => updateOption("sheets", e.target.value)}
+              data-testid="input-sheets"
+            />
+            <p className="text-sm text-muted-foreground">
+              Enter sheet names or numbers (1-based) separated by commas.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "html-to-pdf-custom-css":
+      return (
+        <div className="space-y-4">
+          <div className="p-4 bg-muted rounded-md">
+            <p className="text-sm text-muted-foreground">
+              Add custom CSS styling to control how your HTML content appears in the PDF.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="customCss">Custom CSS</Label>
+            <Textarea
+              id="customCss"
+              placeholder="body { font-family: Arial; } h1 { color: #333; }"
+              value={options.customCss || ""}
+              onChange={(e) => updateOption("customCss", e.target.value)}
+              className="font-mono text-sm"
+              rows={6}
+              data-testid="input-custom-css"
+            />
+          </div>
+        </div>
+      );
+
+    case "delete-blank-pdf-pages":
+      return (
+        <div className="space-y-4">
+          <div className="p-4 bg-muted rounded-md">
+            <p className="text-sm text-muted-foreground">
+              Automatically detect and remove blank pages from your PDF. Pages with minimal content will be removed.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "create-pdf-portfolio":
+    case "pdf-to-doc-legacy":
+    case "doc-to-pdf-bookmarks":
+    case "ppt-to-pdf-notes":
+    case "word-to-pdf-readonly":
+    case "excel-to-pdf-fit-page":
+    case "excel-to-pdf-all-sheets":
+      return (
+        <div className="p-4 bg-muted rounded-md">
+          <p className="text-sm text-muted-foreground">
+            Upload your file to begin processing. No additional options required.
+          </p>
+        </div>
+      );
+
     default:
       return null;
   }
