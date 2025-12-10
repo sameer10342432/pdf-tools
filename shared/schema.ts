@@ -920,6 +920,16 @@ export const pdfToolTypes = [
   "pdf-to-searchable-pdf",
   "add-signature-and-protect-pdf",
   "fill-form-and-flatten-pdf",
+  "create-pdf-invoice",
+  "pdf-invoice-generator",
+  "merge-pdf-add-page-numbers",
+  "pdf-redact-find-and-redact",
+  "pdf-redact-area",
+  "pdf-redaction-pattern-based",
+  "pdf-redaction-metadata",
+  "pdf-attachment-adder",
+  "pdf-attachment-remover",
+  "pdf-portfolio-extractor",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 

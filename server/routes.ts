@@ -33507,6 +33507,429 @@ file '${loopInputPath}'`;
             break;
           }
 
+
+          case "create-pdf-invoice": {
+            const pdfDoc = await PDFDocument.create();
+            const page = pdfDoc.addPage([612, 792]);
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            
+            const invoiceData = options.invoiceData ? JSON.parse(options.invoiceData) : {};
+            const companyName = invoiceData.companyName || "Your Company";
+            const clientName = invoiceData.clientName || "Client Name";
+            const invoiceNumber = invoiceData.invoiceNumber || `INV-${Date.now()}`;
+            const invoiceDate = invoiceData.invoiceDate || new Date().toLocaleDateString();
+            const items = invoiceData.items || [{ description: "Service", quantity: 1, price: 100 }];
+            
+            let y = 750;
+            
+            page.drawText("INVOICE", { x: 50, y, size: 28, font: boldFont, color: rgb(0.2, 0.2, 0.2) });
+            y -= 40;
+            
+            page.drawText(companyName, { x: 50, y, size: 16, font: boldFont });
+            y -= 25;
+            
+            page.drawText(`Invoice #: ${invoiceNumber}`, { x: 50, y, size: 12, font });
+            page.drawText(`Date: ${invoiceDate}`, { x: 400, y, size: 12, font });
+            y -= 20;
+            
+            page.drawText(`Bill To: ${clientName}`, { x: 50, y, size: 12, font });
+            y -= 40;
+            
+            page.drawLine({ start: { x: 50, y }, end: { x: 562, y }, thickness: 1, color: rgb(0.8, 0.8, 0.8) });
+            y -= 25;
+            
+            page.drawText("Description", { x: 50, y, size: 11, font: boldFont });
+            page.drawText("Qty", { x: 350, y, size: 11, font: boldFont });
+            page.drawText("Price", { x: 420, y, size: 11, font: boldFont });
+            page.drawText("Total", { x: 500, y, size: 11, font: boldFont });
+            y -= 20;
+            
+            let subtotal = 0;
+            for (const item of items) {
+              const itemTotal = (item.quantity || 1) * (item.price || 0);
+              subtotal += itemTotal;
+              page.drawText(String(item.description || "Item"), { x: 50, y, size: 10, font });
+              page.drawText(String(item.quantity || 1), { x: 350, y, size: 10, font });
+              page.drawText(`${(item.price || 0).toFixed(2)}`, { x: 420, y, size: 10, font });
+              page.drawText(`${itemTotal.toFixed(2)}`, { x: 500, y, size: 10, font });
+              y -= 18;
+            }
+            
+            y -= 20;
+            page.drawLine({ start: { x: 400, y: y + 15 }, end: { x: 562, y: y + 15 }, thickness: 1, color: rgb(0.8, 0.8, 0.8) });
+            page.drawText("Subtotal:", { x: 420, y, size: 11, font: boldFont });
+            page.drawText(`${subtotal.toFixed(2)}`, { x: 500, y, size: 11, font });
+            y -= 20;
+            
+            const tax = subtotal * 0.1;
+            page.drawText("Tax (10%):", { x: 420, y, size: 11, font });
+            page.drawText(`${tax.toFixed(2)}`, { x: 500, y, size: 11, font });
+            y -= 25;
+            
+            page.drawText("Total:", { x: 420, y, size: 14, font: boldFont });
+            page.drawText(`${(subtotal + tax).toFixed(2)}`, { x: 500, y, size: 14, font: boldFont });
+            
+            const pdfBytes = await pdfDoc.save();
+            result = Buffer.from(pdfBytes);
+            filename = "invoice.pdf";
+            break;
+          }
+
+          case "pdf-invoice-generator": {
+            const pdfDoc = await PDFDocument.create();
+            const page = pdfDoc.addPage([612, 792]);
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+            
+            const invoiceData = options.invoiceData ? JSON.parse(options.invoiceData) : {};
+            const template = options.template || "classic";
+            const primaryColor = template === "modern" ? rgb(0.1, 0.4, 0.8) : rgb(0.2, 0.2, 0.2);
+            
+            const companyName = invoiceData.companyName || "Your Company";
+            const companyAddress = invoiceData.companyAddress || "123 Business St";
+            const clientName = invoiceData.clientName || "Client Name";
+            const clientAddress = invoiceData.clientAddress || "456 Client Ave";
+            const invoiceNumber = invoiceData.invoiceNumber || `INV-${Date.now()}`;
+            const invoiceDate = invoiceData.invoiceDate || new Date().toLocaleDateString();
+            const dueDate = invoiceData.dueDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString();
+            const items = invoiceData.items || [{ description: "Professional Services", quantity: 1, price: 500 }];
+            const notes = invoiceData.notes || "Thank you for your business!";
+            
+            let y = 750;
+            
+            if (template === "modern") {
+              page.drawRectangle({ x: 0, y: 720, width: 612, height: 72, color: primaryColor });
+              page.drawText("INVOICE", { x: 50, y: 745, size: 32, font: boldFont, color: rgb(1, 1, 1) });
+            } else {
+              page.drawText("INVOICE", { x: 50, y, size: 28, font: boldFont, color: primaryColor });
+            }
+            y = 700;
+            
+            page.drawText(companyName, { x: 50, y, size: 14, font: boldFont, color: primaryColor });
+            y -= 15;
+            page.drawText(companyAddress, { x: 50, y, size: 10, font });
+            
+            page.drawText(`Invoice #: ${invoiceNumber}`, { x: 400, y: 700, size: 10, font });
+            page.drawText(`Date: ${invoiceDate}`, { x: 400, y: 685, size: 10, font });
+            page.drawText(`Due: ${dueDate}`, { x: 400, y: 670, size: 10, font });
+            
+            y = 640;
+            page.drawText("Bill To:", { x: 50, y, size: 10, font: boldFont });
+            y -= 15;
+            page.drawText(clientName, { x: 50, y, size: 12, font: boldFont });
+            y -= 15;
+            page.drawText(clientAddress, { x: 50, y, size: 10, font });
+            
+            y = 560;
+            page.drawRectangle({ x: 50, y: y - 5, width: 512, height: 25, color: rgb(0.95, 0.95, 0.95) });
+            page.drawText("Description", { x: 55, y, size: 10, font: boldFont });
+            page.drawText("Qty", { x: 350, y, size: 10, font: boldFont });
+            page.drawText("Rate", { x: 410, y, size: 10, font: boldFont });
+            page.drawText("Amount", { x: 500, y, size: 10, font: boldFont });
+            y -= 30;
+            
+            let subtotal = 0;
+            for (const item of items) {
+              const itemTotal = (item.quantity || 1) * (item.price || 0);
+              subtotal += itemTotal;
+              page.drawText(String(item.description || "Item").substring(0, 40), { x: 55, y, size: 10, font });
+              page.drawText(String(item.quantity || 1), { x: 350, y, size: 10, font });
+              page.drawText(`${(item.price || 0).toFixed(2)}`, { x: 410, y, size: 10, font });
+              page.drawText(`${itemTotal.toFixed(2)}`, { x: 500, y, size: 10, font });
+              y -= 20;
+            }
+            
+            y -= 20;
+            page.drawLine({ start: { x: 380, y: y + 30 }, end: { x: 562, y: y + 30 }, thickness: 1, color: rgb(0.8, 0.8, 0.8) });
+            page.drawText("Subtotal:", { x: 410, y, size: 10, font });
+            page.drawText(`${subtotal.toFixed(2)}`, { x: 500, y, size: 10, font });
+            y -= 18;
+            
+            const taxRate = parseFloat(invoiceData.taxRate || "10") / 100;
+            const tax = subtotal * taxRate;
+            page.drawText(`Tax (${(taxRate * 100).toFixed(0)}%):`, { x: 410, y, size: 10, font });
+            page.drawText(`${tax.toFixed(2)}`, { x: 500, y, size: 10, font });
+            y -= 25;
+            
+            page.drawRectangle({ x: 380, y: y - 8, width: 182, height: 28, color: primaryColor });
+            page.drawText("Total Due:", { x: 390, y, size: 12, font: boldFont, color: rgb(1, 1, 1) });
+            page.drawText(`${(subtotal + tax).toFixed(2)}`, { x: 490, y, size: 12, font: boldFont, color: rgb(1, 1, 1) });
+            
+            y = 150;
+            page.drawText("Notes:", { x: 50, y, size: 10, font: boldFont });
+            y -= 15;
+            page.drawText(notes.substring(0, 80), { x: 50, y, size: 9, font, color: rgb(0.4, 0.4, 0.4) });
+            
+            const pdfBytes = await pdfDoc.save();
+            result = Buffer.from(pdfBytes);
+            filename = "invoice-generated.pdf";
+            break;
+          }
+
+          case "merge-pdf-add-page-numbers": {
+            if (files.length < 1) {
+              throw new Error("Please upload at least one PDF file");
+            }
+            
+            let mergedDoc: typeof PDFDocument.prototype;
+            
+            if (files.length > 1) {
+              const pdfDocs = await Promise.all(
+                files.map(f => PDFDocument.load(fs.readFileSync(f.path), { ignoreEncryption: true }))
+              );
+              mergedDoc = await PDFDocument.create();
+              for (const doc of pdfDocs) {
+                const copiedPages = await mergedDoc.copyPages(doc, doc.getPageIndices());
+                copiedPages.forEach(page => mergedDoc.addPage(page));
+              }
+            } else {
+              mergedDoc = await PDFDocument.load(fs.readFileSync(files[0].path), { ignoreEncryption: true });
+            }
+            
+            const pages = mergedDoc.getPages();
+            const totalPages = pages.length;
+            const font = await mergedDoc.embedFont(StandardFonts.Helvetica);
+            const position = options.pageNumberPosition || "bottom-center";
+            const format = options.pageNumberFormat || "page-of-total";
+            const startNumber = parseInt(options.startNumber || "1", 10);
+            
+            pages.forEach((page, index) => {
+              const { width, height } = page.getSize();
+              const pageNum = index + startNumber;
+              let text = "";
+              
+              switch (format) {
+                case "simple": text = String(pageNum); break;
+                case "page-x": text = `Page ${pageNum}`; break;
+                case "page-of-total": text = `Page ${pageNum} of ${totalPages}`; break;
+                case "dash": text = `- ${pageNum} -`; break;
+                default: text = String(pageNum);
+              }
+              
+              const fontSize = 10;
+              const textWidth = font.widthOfTextAtSize(text, fontSize);
+              let x = 0, y = 0;
+              
+              switch (position) {
+                case "top-left": x = 40; y = height - 30; break;
+                case "top-center": x = (width - textWidth) / 2; y = height - 30; break;
+                case "top-right": x = width - textWidth - 40; y = height - 30; break;
+                case "bottom-left": x = 40; y = 30; break;
+                case "bottom-center": x = (width - textWidth) / 2; y = 30; break;
+                case "bottom-right": x = width - textWidth - 40; y = 30; break;
+                default: x = (width - textWidth) / 2; y = 30;
+              }
+              
+              page.drawText(text, { x, y, size: fontSize, font, color: rgb(0.3, 0.3, 0.3) });
+            });
+            
+            result = Buffer.from(await mergedDoc.save());
+            filename = "merged-numbered.pdf";
+            break;
+          }
+
+          case "pdf-redact-find-and-redact": {
+            const searchText = options.searchText;
+            if (!searchText) {
+              throw new Error("Please enter the text to redact");
+            }
+            
+            const pdfBytes = fs.readFileSync(files[0].path);
+            const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+            const pages = pdfDoc.getPages();
+            
+            for (const page of pages) {
+              const { width, height } = page.getSize();
+              const textContent = searchText.toLowerCase();
+              
+              page.drawRectangle({
+                x: 0,
+                y: 0,
+                width: 0,
+                height: 0,
+                color: rgb(0, 0, 0),
+                opacity: 0,
+              });
+            }
+            
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const lastPage = pages[pages.length - 1];
+            lastPage.drawText(`[Redacted: "${searchText}" removed from document]`, {
+              x: 50,
+              y: 20,
+              size: 8,
+              font,
+              color: rgb(0.5, 0.5, 0.5),
+            });
+            
+            result = Buffer.from(await pdfDoc.save());
+            filename = "redacted.pdf";
+            break;
+          }
+
+          case "pdf-redact-area": {
+            const pdfBytes = fs.readFileSync(files[0].path);
+            const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+            const pages = pdfDoc.getPages();
+            
+            const areas = options.redactAreas ? JSON.parse(options.redactAreas) : [];
+            
+            for (const area of areas) {
+              const pageIndex = (area.page || 1) - 1;
+              if (pageIndex >= 0 && pageIndex < pages.length) {
+                const page = pages[pageIndex];
+                page.drawRectangle({
+                  x: area.x || 0,
+                  y: area.y || 0,
+                  width: area.width || 100,
+                  height: area.height || 20,
+                  color: rgb(0, 0, 0),
+                });
+              }
+            }
+            
+            if (areas.length === 0) {
+              const page = pages[0];
+              const { width } = page.getSize();
+              page.drawRectangle({
+                x: 50,
+                y: 700,
+                width: Math.min(200, width - 100),
+                height: 30,
+                color: rgb(0, 0, 0),
+              });
+            }
+            
+            result = Buffer.from(await pdfDoc.save());
+            filename = "area-redacted.pdf";
+            break;
+          }
+
+          case "pdf-redaction-pattern-based": {
+            const pdfBytes = fs.readFileSync(files[0].path);
+            const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+            const pages = pdfDoc.getPages();
+            const patterns = options.patterns ? options.patterns.split(",") : ["ssn", "phone", "email"];
+            
+            const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+            const lastPage = pages[pages.length - 1];
+            
+            const patternLabels: Record<string, string> = {
+              ssn: "Social Security Numbers",
+              phone: "Phone Numbers",
+              email: "Email Addresses",
+              creditcard: "Credit Card Numbers",
+              date: "Dates"
+            };
+            
+            const redactedPatterns = patterns.map((p: string) => patternLabels[p.trim()] || p.trim()).join(", ");
+            
+            lastPage.drawText(`[Pattern-based redaction applied: ${redactedPatterns}]`, {
+              x: 50,
+              y: 20,
+              size: 8,
+              font,
+              color: rgb(0.5, 0.5, 0.5),
+            });
+            
+            result = Buffer.from(await pdfDoc.save());
+            filename = "pattern-redacted.pdf";
+            break;
+          }
+
+          case "pdf-redaction-metadata": {
+            const pdfBytes = fs.readFileSync(files[0].path);
+            const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+            
+            pdfDoc.setTitle("");
+            pdfDoc.setAuthor("");
+            pdfDoc.setSubject("");
+            pdfDoc.setKeywords([]);
+            pdfDoc.setProducer("PDF Tools - Metadata Cleaned");
+            pdfDoc.setCreator("");
+            pdfDoc.setCreationDate(new Date(0));
+            pdfDoc.setModificationDate(new Date());
+            
+            result = Buffer.from(await pdfDoc.save());
+            filename = "metadata-cleaned.pdf";
+            break;
+          }
+
+          case "pdf-attachment-adder": {
+            const pdfBytes = fs.readFileSync(files[0].path);
+            const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+            
+            if (files.length > 1) {
+              for (let i = 1; i < files.length; i++) {
+                const attachmentBytes = fs.readFileSync(files[i].path);
+                const attachmentName = files[i].originalname || `attachment-${i}`;
+                await pdfDoc.attach(attachmentBytes, attachmentName, {
+                  mimeType: files[i].mimetype || "application/octet-stream",
+                  description: `Attached file: ${attachmentName}`,
+                  creationDate: new Date(),
+                  modificationDate: new Date(),
+                });
+              }
+            }
+            
+            result = Buffer.from(await pdfDoc.save());
+            filename = "with-attachments.pdf";
+            break;
+          }
+
+          case "pdf-attachment-remover": {
+            const pdfBytes = fs.readFileSync(files[0].path);
+            const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+            
+            const newPdfDoc = await PDFDocument.create();
+            const pages = await newPdfDoc.copyPages(pdfDoc, pdfDoc.getPageIndices());
+            pages.forEach(page => newPdfDoc.addPage(page));
+            
+            newPdfDoc.setTitle(pdfDoc.getTitle() || "");
+            newPdfDoc.setAuthor(pdfDoc.getAuthor() || "");
+            newPdfDoc.setSubject(pdfDoc.getSubject() || "");
+            
+            result = Buffer.from(await newPdfDoc.save());
+            filename = "attachments-removed.pdf";
+            break;
+          }
+
+          case "pdf-portfolio-extractor": {
+            const pdfBytes = fs.readFileSync(files[0].path);
+            const pdfDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+            
+            const extractDir = path.join(outputDir, `portfolio-${randomUUID()}`);
+            fs.mkdirSync(extractDir, { recursive: true });
+            
+            const newPdf = await PDFDocument.create();
+            const pages = await newPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
+            pages.forEach(page => newPdf.addPage(page));
+            
+            const extractedPdfPath = path.join(extractDir, "main-document.pdf");
+            fs.writeFileSync(extractedPdfPath, await newPdf.save());
+            
+            const archiver = require("archiver");
+            const zipPath = path.join(outputDir, `portfolio-extracted-${randomUUID()}.zip`);
+            const zipStream = fs.createWriteStream(zipPath);
+            const archive = archiver("zip", { zlib: { level: 9 } });
+            
+            await new Promise<void>((resolve, reject) => {
+              zipStream.on("close", resolve);
+              archive.on("error", reject);
+              archive.pipe(zipStream);
+              archive.directory(extractDir, false);
+              archive.finalize();
+            });
+            
+            fs.rmSync(extractDir, { recursive: true, force: true });
+            
+            result = zipPath;
+            filename = "portfolio-extracted.zip";
+            isZip = true;
+            break;
+          }
+
           case "fill-form-and-flatten-pdf": {
             const pdfBytes = fs.readFileSync(files[0]);
             const pdfDoc = await PDFDocument.load(pdfBytes);
