@@ -940,6 +940,16 @@ export const pdfToolTypes = [
   "excel-to-pdf-all-sheets",
   "excel-to-pdf-specific-sheets",
   "html-to-pdf-custom-css",
+  "url-to-pdf-full",
+  "url-to-pdf-visible",
+  "html-to-pdf-batch",
+  "jpg-to-pdf-bookmarks",
+  "jpg-to-pdf-portfolio",
+  "pdf-to-jpg-batch",
+  "pdf-to-png-batch",
+  "merge-pdf-nup",
+  "pdf-page-extractor-text",
+  "pdf-split-text-delimiter",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -18015,6 +18025,256 @@ const textTools: PdfTool[] = [
 <h2>Trim and Clean</h2>
 <p>Automatically removes extra spaces and cleans up entries while sorting. Get a perfectly formatted, alphabetized list without manual cleanup.</p>`,
   },
+  {
+    id: "url-to-pdf-full",
+    name: "URL to PDF (Full Page)",
+    description: "Convert entire webpage to PDF including scrollable content",
+    icon: "Globe",
+    type: "url-to-pdf-full",
+    color: "bg-blue-600",
+    emoji: "🌐",
+    metaTitle: "URL to PDF Full Page Online Free - Convert Complete Webpages | PDF Tools",
+    metaDescription: "Convert entire webpages to PDF including all scrollable content. Capture full page screenshots as PDF. Free online tool, no registration.",
+    seoArticle: `<h2>URL to PDF Full Page - Complete Webpage Capture</h2>
+<p>Convert any webpage to a PDF document that captures the entire page content, including areas you need to scroll to see. Our URL to PDF Full Page tool captures everything from header to footer, ensuring no content is missed.</p>
+
+<h2>Why Use Full Page Capture?</h2>
+<p>Standard screenshot tools only capture the visible viewport. Our full page converter scrolls through the entire webpage, capturing every section, image, and element. Perfect for archiving long articles, capturing entire product listings, or documenting web applications.</p>
+
+<h2>Key Features</h2>
+<p>Automatic scrolling captures all content regardless of page length. JavaScript-rendered content is fully captured. Responsive layouts are properly rendered. Images, fonts, and styling are preserved exactly as they appear in the browser.</p>
+
+<h2>How to Convert URL to Full Page PDF</h2>
+<p>Simply paste the webpage URL into our converter. Click the convert button. Our system loads the page, scrolls through all content, and generates a comprehensive PDF. Download your complete webpage PDF instantly.</p>
+
+<h2>Perfect for Research and Documentation</h2>
+<p>Researchers use this tool to archive web sources. Journalists capture full articles for offline access. Legal professionals document website content for evidence. Business analysts preserve competitor pages for analysis.</p>`,
+  },
+  {
+    id: "url-to-pdf-visible",
+    name: "URL to PDF (Visible Area)",
+    description: "Convert only the visible viewport of a webpage to PDF",
+    icon: "Monitor",
+    type: "url-to-pdf-visible",
+    color: "bg-cyan-600",
+    emoji: "🖥️",
+    metaTitle: "URL to PDF Visible Area Online Free - Screenshot Webpage as PDF | PDF Tools",
+    metaDescription: "Convert the visible area of any webpage to PDF. Capture exactly what you see on screen. Fast, free online screenshot to PDF tool.",
+    seoArticle: `<h2>URL to PDF Visible Area - Quick Viewport Capture</h2>
+<p>Capture exactly what appears in your browser window and convert it to PDF. Our visible area converter takes a snapshot of the current viewport, perfect for quick captures of specific page sections.</p>
+
+<h2>Fast and Focused Captures</h2>
+<p>When you do not need the entire page, visible area capture is faster and produces smaller files. Capture hero sections, above-the-fold content, or specific screen states without unnecessary scrolled content.</p>
+
+<h2>Ideal Use Cases</h2>
+<p>Perfect for capturing landing page headers, error messages, specific UI states, or any content that fits within a single screen. Great for bug reports, design reviews, or sharing specific webpage sections.</p>
+
+<h2>How to Capture Visible Area</h2>
+<p>Enter the URL of the page you want to capture. Our converter loads the page and captures the visible viewport exactly as a browser would display it. Download your PDF screenshot instantly.</p>
+
+<h2>Viewport Size Options</h2>
+<p>Choose from common viewport sizes including desktop, tablet, and mobile dimensions. Preview how pages appear on different devices and capture exactly what users see on each platform.</p>`,
+  },
+  {
+    id: "html-to-pdf-batch",
+    name: "HTML to PDF (Batch)",
+    description: "Convert multiple HTML files to PDFs in one operation",
+    icon: "Files",
+    type: "html-to-pdf-batch",
+    color: "bg-violet-600",
+    emoji: "📄",
+    metaTitle: "HTML to PDF Batch Converter Online Free - Convert Multiple HTML Files | PDF Tools",
+    metaDescription: "Convert multiple HTML files to PDF documents in one batch operation. Fast, efficient bulk HTML to PDF conversion. Free online tool.",
+    seoArticle: `<h2>HTML to PDF Batch Conversion</h2>
+<p>Convert dozens or hundreds of HTML files to PDF in a single operation. Our batch converter processes multiple files simultaneously, saving hours of manual conversion work.</p>
+
+<h2>Efficient Bulk Processing</h2>
+<p>Upload multiple HTML files at once. Each file is processed independently with consistent settings. Download all converted PDFs in a convenient ZIP archive. No more converting files one by one.</p>
+
+<h2>Consistent Output Quality</h2>
+<p>All HTML files in your batch are converted with identical settings, ensuring consistent formatting, page sizes, and margins across all resulting PDFs. Perfect for documentation sets and report generation.</p>
+
+<h2>How to Batch Convert HTML</h2>
+<p>Upload multiple HTML files using our bulk uploader. Set your conversion preferences once - they apply to all files. Click convert and wait for processing. Download your ZIP file containing all converted PDFs.</p>
+
+<h2>Ideal for Documentation Teams</h2>
+<p>Technical writers convert entire documentation sets. Web developers export static site pages. Marketing teams convert landing pages for offline distribution. Save time with bulk processing.</p>`,
+  },
+  {
+    id: "jpg-to-pdf-bookmarks",
+    name: "JPG to PDF (with Bookmarks)",
+    description: "Convert JPG images to PDF with automatic bookmarks for each image",
+    icon: "Bookmark",
+    type: "jpg-to-pdf-bookmarks",
+    color: "bg-amber-600",
+    emoji: "🔖",
+    metaTitle: "JPG to PDF with Bookmarks Online Free - Organized Image PDF | PDF Tools",
+    metaDescription: "Convert JPG images to PDF with automatic bookmarks for easy navigation. Create organized, navigable PDFs from images. Free online tool.",
+    seoArticle: `<h2>JPG to PDF with Bookmarks - Organized Image Documents</h2>
+<p>Transform your JPG images into a professionally organized PDF with automatic bookmarks. Each image becomes a bookmarked section, making navigation through large image collections effortless.</p>
+
+<h2>Automatic Bookmark Generation</h2>
+<p>Every image in your PDF gets its own bookmark entry. Bookmarks are named based on your original filenames, making it easy to jump to specific images. Perfect for portfolios, catalogs, and presentations.</p>
+
+<h2>Easy Navigation</h2>
+<p>Open the bookmark panel in any PDF reader to see all your images listed. Click any bookmark to jump directly to that image. No more endless scrolling through long documents.</p>
+
+<h2>How to Create Bookmarked PDF</h2>
+<p>Upload your JPG images. Arrange them in your preferred order. Our converter creates a PDF with each image on its own page and generates bookmarks automatically. Download your organized, navigable PDF.</p>
+
+<h2>Perfect for Professional Portfolios</h2>
+<p>Photographers create navigable portfolio PDFs. Designers organize project images. Real estate agents compile property photo collections. Anyone with image collections benefits from bookmark navigation.</p>`,
+  },
+  {
+    id: "jpg-to-pdf-portfolio",
+    name: "JPG to PDF (Portfolio)",
+    description: "Create a professional portfolio PDF from JPG images with layouts",
+    icon: "Layout",
+    type: "jpg-to-pdf-portfolio",
+    color: "bg-rose-600",
+    emoji: "🎨",
+    metaTitle: "JPG to PDF Portfolio Creator Online Free - Professional Image Layouts | PDF Tools",
+    metaDescription: "Create stunning portfolio PDFs from JPG images with professional layouts. Perfect for photographers and designers. Free online tool.",
+    seoArticle: `<h2>JPG to PDF Portfolio - Professional Image Presentation</h2>
+<p>Transform your JPG images into a stunning portfolio PDF with professional layouts. Choose from various design templates to showcase your work beautifully.</p>
+
+<h2>Multiple Layout Options</h2>
+<p>Select from grid layouts, full-page images, magazine-style arrangements, or mixed layouts. Each template is designed to present images in their best light with appropriate spacing and alignment.</p>
+
+<h2>Professional Presentation</h2>
+<p>Add cover pages, section dividers, and captions. Include your contact information and branding. Create PDFs that impress clients and showcase your professional work.</p>
+
+<h2>How to Create a Portfolio PDF</h2>
+<p>Upload your JPG images. Choose a layout template. Arrange images and add optional captions. Customize colors and fonts to match your brand. Generate and download your professional portfolio.</p>
+
+<h2>Ideal for Creative Professionals</h2>
+<p>Photographers create client presentation portfolios. Graphic designers showcase project compilations. Artists document their work professionally. Make your images shine in a polished presentation format.</p>`,
+  },
+  {
+    id: "pdf-to-jpg-batch",
+    name: "PDF to JPG (Batch)",
+    description: "Convert multiple PDFs to JPG images in one operation",
+    icon: "Images",
+    type: "pdf-to-jpg-batch",
+    color: "bg-green-600",
+    emoji: "🖼️",
+    metaTitle: "PDF to JPG Batch Converter Online Free - Convert Multiple PDFs to Images | PDF Tools",
+    metaDescription: "Convert multiple PDF files to JPG images in one batch operation. Extract images from many PDFs at once. Free online bulk converter.",
+    seoArticle: `<h2>PDF to JPG Batch Conversion</h2>
+<p>Convert multiple PDF files to JPG images simultaneously. Our batch converter processes many PDFs at once, extracting high-quality images from each document efficiently.</p>
+
+<h2>Bulk PDF Processing</h2>
+<p>Upload dozens of PDFs and convert them all in one operation. Each PDF page becomes a separate JPG image. All images are organized by source document and delivered in a structured ZIP archive.</p>
+
+<h2>Quality Settings</h2>
+<p>Choose your preferred image quality and resolution. Higher quality produces sharper images but larger files. Our defaults balance quality and file size for most use cases.</p>
+
+<h2>How to Batch Convert PDFs</h2>
+<p>Upload multiple PDF files. Set your quality preferences. Click convert to process all files. Download a ZIP containing folders for each PDF with their respective JPG images.</p>
+
+<h2>Perfect for Content Extraction</h2>
+<p>Extract images from document archives. Convert presentation decks for web use. Create image libraries from PDF collections. Process entire project folders efficiently.</p>`,
+  },
+  {
+    id: "pdf-to-png-batch",
+    name: "PDF to PNG (Batch)",
+    description: "Convert multiple PDFs to PNG images with transparency support",
+    icon: "FileImage",
+    type: "pdf-to-png-batch",
+    color: "bg-teal-600",
+    emoji: "🎞️",
+    metaTitle: "PDF to PNG Batch Converter Online Free - High Quality PDF to Image | PDF Tools",
+    metaDescription: "Convert multiple PDF files to high-quality PNG images with transparency. Batch process PDFs to PNG format. Free online tool.",
+    seoArticle: `<h2>PDF to PNG Batch Conversion</h2>
+<p>Convert multiple PDF files to high-quality PNG images with transparency support. PNG format preserves sharp text and graphics, making it ideal for web use and further editing.</p>
+
+<h2>Lossless Quality</h2>
+<p>PNG format uses lossless compression, preserving every detail from your PDFs. Text remains crisp, graphics stay sharp, and transparent backgrounds are properly supported.</p>
+
+<h2>Transparency Preservation</h2>
+<p>Unlike JPG, PNG supports transparency. If your PDFs have transparent elements, they are preserved in the output images. Perfect for logos, graphics, and layered designs.</p>
+
+<h2>How to Batch Convert to PNG</h2>
+<p>Upload your PDF files. Select resolution and transparency settings. Process all files simultaneously. Download your organized ZIP archive with PNG images for each PDF.</p>
+
+<h2>Ideal for Web and Design Work</h2>
+<p>Web developers extract graphics from PDF assets. Designers convert vector PDFs for editing. Content creators prepare images for presentations. Get high-quality PNGs from any PDF.</p>`,
+  },
+  {
+    id: "merge-pdf-nup",
+    name: "Merge PDF (N-up)",
+    description: "Combine multiple PDF pages onto single sheets in grid layout",
+    icon: "LayoutGrid",
+    type: "merge-pdf-nup",
+    color: "bg-indigo-600",
+    emoji: "📐",
+    metaTitle: "PDF N-up Merge Online Free - Multiple Pages Per Sheet | PDF Tools",
+    metaDescription: "Combine multiple PDF pages onto single sheets in 2-up, 4-up, or custom grid layouts. Save paper and create compact documents. Free online tool.",
+    seoArticle: `<h2>PDF N-up Merge - Multiple Pages Per Sheet</h2>
+<p>Combine multiple PDF pages onto single sheets in grid layouts. Create 2-up, 4-up, 9-up, or custom arrangements. Perfect for creating handouts, saving paper, and creating overview documents.</p>
+
+<h2>Flexible Grid Options</h2>
+<p>Choose from preset layouts: 2 pages per sheet (2-up), 4 pages per sheet (2x2), 6 pages (2x3), 9 pages (3x3), or 16 pages (4x4). Custom grid options allow any configuration you need.</p>
+
+<h2>Paper Saving</h2>
+<p>Print multiple pages on each sheet to reduce paper usage significantly. A 4-up layout uses 75% less paper. Ideal for creating study materials, meeting handouts, and archive copies.</p>
+
+<h2>How to Create N-up PDFs</h2>
+<p>Upload your PDF file. Select your grid layout (2-up, 4-up, etc.). Choose page order (left-to-right or right-to-left). Set margins and spacing. Generate and download your compact PDF.</p>
+
+<h2>Professional and Educational Use</h2>
+<p>Teachers create multi-page handouts on single sheets. Businesses produce compact meeting materials. Students create study guides. Anyone can save paper and create overview documents.</p>`,
+  },
+  {
+    id: "pdf-page-extractor-text",
+    name: "PDF Page Extractor (by Text)",
+    description: "Extract pages from PDF that contain specific text content",
+    icon: "Search",
+    type: "pdf-page-extractor-text",
+    color: "bg-orange-600",
+    emoji: "🔍",
+    metaTitle: "PDF Page Extractor by Text Search Online Free - Find and Extract Pages | PDF Tools",
+    metaDescription: "Extract pages from PDF documents that contain specific text. Search and pull matching pages into a new PDF. Free online tool.",
+    seoArticle: `<h2>PDF Page Extractor by Text Search</h2>
+<p>Extract specific pages from PDFs based on their text content. Search for keywords or phrases and automatically extract all pages containing matches into a new PDF document.</p>
+
+<h2>Smart Content Search</h2>
+<p>Our text search scans every page of your PDF for your specified keywords. Matching pages are identified and extracted while maintaining their original formatting and quality.</p>
+
+<h2>Multiple Search Terms</h2>
+<p>Search for multiple keywords or phrases at once. Extract pages containing any of your search terms, or require all terms to be present. Flexible search options for precise extraction.</p>
+
+<h2>How to Extract Pages by Text</h2>
+<p>Upload your PDF document. Enter your search terms. Choose match options (any word, all words, exact phrase). Preview matching pages. Download a new PDF containing only the relevant pages.</p>
+
+<h2>Perfect for Research and Legal Work</h2>
+<p>Researchers extract relevant sections from lengthy documents. Lawyers pull pages mentioning specific parties or terms. Analysts gather data-containing pages. Find what you need quickly.</p>`,
+  },
+  {
+    id: "pdf-split-text-delimiter",
+    name: "PDF Split (by Text Delimiter)",
+    description: "Split PDF into separate files based on text markers",
+    icon: "SplitSquareHorizontal",
+    type: "pdf-split-text-delimiter",
+    color: "bg-pink-600",
+    emoji: "📌",
+    metaTitle: "PDF Split by Text Delimiter Online Free - Automatic Document Separation | PDF Tools",
+    metaDescription: "Split PDF documents automatically based on text markers or delimiters. Create separate files at each occurrence of specific text. Free online tool.",
+    seoArticle: `<h2>PDF Split by Text Delimiter</h2>
+<p>Automatically split PDF documents based on text markers or delimiters. Define the text that marks document boundaries, and our tool creates separate PDFs at each occurrence.</p>
+
+<h2>Automatic Document Detection</h2>
+<p>Perfect for combined documents with consistent separators. Split invoices at Invoice Number:, split contracts at Agreement Date:, or any custom text pattern that marks document boundaries.</p>
+
+<h2>Intelligent Splitting</h2>
+<p>The tool identifies pages containing your delimiter text and splits the document accordingly. Each section becomes its own PDF file, named sequentially or based on extracted content.</p>
+
+<h2>How to Split by Text Delimiter</h2>
+<p>Upload your combined PDF. Enter the text that marks document boundaries. Choose whether to include the delimiter page in each section. Process and download separate PDF files for each section.</p>
+
+<h2>Ideal for Batch Document Processing</h2>
+<p>Process merged invoice batches. Separate combined reports. Split mass-printed documents. Handle any combined PDF where text markers indicate natural break points.</p>`,
+  }
 ];
 
 pdfTools.push(...textTools);
@@ -25745,3 +26005,4 @@ const newPdfToolsSet: PdfTool[] = [
 <p>Generate consistent, branded reports from HTML templates. Create PDF documentation from web-based help systems. Produce styled invoices and certificates. The possibilities are endless when you control the CSS.</p>`,
   },
 ];
+

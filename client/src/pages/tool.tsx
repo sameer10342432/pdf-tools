@@ -899,7 +899,7 @@ export default function ToolPage() {
     return ".pdf,application/pdf";
   };
 
-  const urlBasedToolTypes = ["backlink-checker", "broken-link-checker", "website-speed-test", "ping-tool", "whois-lookup", "dns-lookup", "ip-address-lookup", "what-is-my-ip", "http-header-viewer", "redirect-checker", "color-picker-screen", "color-picker-image", "hex-to-rgb", "rgb-to-hex", "hex-to-hsl", "rgb-to-cmyk", "color-palette-generator", "gradient-generator", "box-shadow-generator", "border-radius-generator"];
+  const urlBasedToolTypes = ["backlink-checker", "broken-link-checker", "website-speed-test", "ping-tool", "whois-lookup", "dns-lookup", "ip-address-lookup", "what-is-my-ip", "http-header-viewer", "redirect-checker", "color-picker-screen", "color-picker-image", "hex-to-rgb", "rgb-to-hex", "hex-to-hsl", "rgb-to-cmyk", "color-palette-generator", "gradient-generator", "box-shadow-generator", "border-radius-generator", "url-to-pdf-full", "url-to-pdf-visible"];
 
   const isUrlBasedTool = () => urlBasedToolTypes.includes(tool?.type || "");
 

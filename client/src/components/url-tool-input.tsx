@@ -151,6 +151,20 @@ const toolConfig: Record<string, {
     icon: Square,
     description: "Enter shadow values: offsetX, offsetY, blur, spread, color"
   },
+  "url-to-pdf-full": {
+    inputType: "url",
+    placeholder: "https://example.com",
+    label: "Website URL",
+    icon: Globe,
+    description: "Enter a URL to convert the entire webpage to PDF"
+  },
+  "url-to-pdf-visible": {
+    inputType: "url",
+    placeholder: "https://example.com",
+    label: "Website URL",
+    icon: Globe,
+    description: "Enter a URL to convert the visible viewport to PDF"
+  },
   "border-radius-generator": {
     inputType: "any",
     placeholder: "10, 10, 10, 10 (top-left, top-right, bottom-right, bottom-left)",

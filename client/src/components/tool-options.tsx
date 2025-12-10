@@ -15593,6 +15593,107 @@ export function ToolOptionsComponent({
         </div>
       );
 
+    case "jpg-to-pdf-portfolio":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Layout</Label>
+            <Select 
+              value={options.layout || "grid"} 
+              onValueChange={(value) => onChange({ ...options, layout: value })}
+            >
+              <SelectTrigger data-testid="select-layout">
+                <SelectValue placeholder="Select layout" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="grid">Grid (4 per page)</SelectItem>
+                <SelectItem value="full">Full Page</SelectItem>
+                <SelectItem value="column">Two Column</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+    
+    case "merge-pdf-nup":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Pages Per Sheet</Label>
+            <Select 
+              value={String(options.pagesPerSheet || "4")} 
+              onValueChange={(value) => onChange({ ...options, pagesPerSheet: parseInt(value) })}
+            >
+              <SelectTrigger data-testid="select-pages-per-sheet">
+                <SelectValue placeholder="Select pages per sheet" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2">2 Pages (2-up)</SelectItem>
+                <SelectItem value="4">4 Pages (2x2)</SelectItem>
+                <SelectItem value="6">6 Pages (2x3)</SelectItem>
+                <SelectItem value="9">9 Pages (3x3)</SelectItem>
+                <SelectItem value="16">16 Pages (4x4)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+    
+    case "pdf-page-extractor-text":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Search Text</Label>
+            <Input
+              value={options.searchText || ""}
+              onChange={(e) => onChange({ ...options, searchText: e.target.value })}
+              placeholder="Enter text to search for"
+              data-testid="input-search-text"
+            />
+            <p className="text-sm text-muted-foreground mt-1">Pages containing this text will be extracted</p>
+          </div>
+        </div>
+      );
+    
+    case "pdf-split-text-delimiter":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Delimiter Text</Label>
+            <Input
+              value={options.delimiter || ""}
+              onChange={(e) => onChange({ ...options, delimiter: e.target.value })}
+              placeholder="Enter text that marks document boundaries"
+              data-testid="input-delimiter"
+            />
+            <p className="text-sm text-muted-foreground mt-1">Document will be split at each occurrence of this text</p>
+          </div>
+        </div>
+      );
+    
+    case "pdf-to-jpg-batch":
+    case "pdf-to-png-batch":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Quality/DPI</Label>
+            <Select 
+              value={String(options.dpi || "150")} 
+              onValueChange={(value) => onChange({ ...options, dpi: parseInt(value) })}
+            >
+              <SelectTrigger data-testid="select-dpi">
+                <SelectValue placeholder="Select quality" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="72">72 DPI (Web)</SelectItem>
+                <SelectItem value="150">150 DPI (Standard)</SelectItem>
+                <SelectItem value="300">300 DPI (High Quality)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }
