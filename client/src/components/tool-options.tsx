@@ -15694,6 +15694,372 @@ export function ToolOptionsComponent({
         </div>
       );
 
+
+    case "pdf-page-resizer":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Resize Percentage</Label>
+            <div className="flex items-center gap-2">
+              <Slider
+                value={[options.resizePercentage || 100]}
+                onValueChange={([value]) => onChange({ ...options, resizePercentage: value })}
+                min={10}
+                max={500}
+                step={5}
+                className="flex-1"
+                data-testid="slider-resize-percentage"
+              />
+              <span className="w-16 text-right text-sm">{options.resizePercentage || 100}%</span>
+            </div>
+            <p className="text-sm text-muted-foreground mt-1">100% = original size, 50% = half size, 200% = double size</p>
+          </div>
+        </div>
+      );
+
+    case "pdf-page-cloner":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Pages to Clone</Label>
+            <Input
+              value={options.pagesToClone || ""}
+              onChange={(e) => onChange({ ...options, pagesToClone: e.target.value })}
+              placeholder="e.g., 1,3,5 or 2-4"
+              data-testid="input-pages-to-clone"
+            />
+            <p className="text-sm text-muted-foreground mt-1">Enter page numbers to duplicate{pageCount ? ` (Total pages: ${pageCount})` : ""}</p>
+          </div>
+          <div>
+            <Label>Number of Clones</Label>
+            <Select 
+              value={String(options.cloneCount || "1")} 
+              onValueChange={(value) => onChange({ ...options, cloneCount: parseInt(value) })}
+            >
+              <SelectTrigger data-testid="select-clone-count">
+                <SelectValue placeholder="Select clone count" />
+              </SelectTrigger>
+              <SelectContent>
+                {[1, 2, 3, 4, 5, 10, 20].map(n => (
+                  <SelectItem key={n} value={String(n)}>{n} {n === 1 ? "copy" : "copies"}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "pdf-page-sorter":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>New Page Order</Label>
+            <Input
+              value={options.pageOrder || ""}
+              onChange={(e) => onChange({ ...options, pageOrder: e.target.value })}
+              placeholder="e.g., 3,1,2,5,4"
+              data-testid="input-page-order"
+            />
+            <p className="text-sm text-muted-foreground mt-1">Enter page numbers in the desired order{pageCount ? ` (Total pages: ${pageCount})` : ""}</p>
+          </div>
+        </div>
+      );
+
+    case "pdf-link-extractor":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            This tool will extract all hyperlinks from your PDF and export them as a CSV file.
+            Simply upload your PDF and click Process.
+          </p>
+        </div>
+      );
+
+    case "pdf-annotation-extractor":
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            This tool will extract all annotations (comments, highlights, notes) from your PDF 
+            and export them as a JSON file. Simply upload your PDF and click Process.
+          </p>
+        </div>
+      );
+
+    case "online-photo-editor":
+      return (
+        <div className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label>Brightness</Label>
+              <div className="flex items-center gap-2">
+                <Slider
+                  value={[options.brightness || 0]}
+                  onValueChange={([value]) => onChange({ ...options, brightness: value })}
+                  min={-100}
+                  max={100}
+                  step={5}
+                  className="flex-1"
+                  data-testid="slider-brightness"
+                />
+                <span className="w-12 text-right text-sm">{options.brightness || 0}</span>
+              </div>
+            </div>
+            <div>
+              <Label>Contrast</Label>
+              <div className="flex items-center gap-2">
+                <Slider
+                  value={[options.contrast || 0]}
+                  onValueChange={([value]) => onChange({ ...options, contrast: value })}
+                  min={-100}
+                  max={100}
+                  step={5}
+                  className="flex-1"
+                  data-testid="slider-contrast"
+                />
+                <span className="w-12 text-right text-sm">{options.contrast || 0}</span>
+              </div>
+            </div>
+            <div>
+              <Label>Saturation</Label>
+              <div className="flex items-center gap-2">
+                <Slider
+                  value={[options.saturation || 0]}
+                  onValueChange={([value]) => onChange({ ...options, saturation: value })}
+                  min={-100}
+                  max={100}
+                  step={5}
+                  className="flex-1"
+                  data-testid="slider-saturation"
+                />
+                <span className="w-12 text-right text-sm">{options.saturation || 0}</span>
+              </div>
+            </div>
+            <div>
+              <Label>Blur</Label>
+              <div className="flex items-center gap-2">
+                <Slider
+                  value={[options.blur || 0]}
+                  onValueChange={([value]) => onChange({ ...options, blur: value })}
+                  min={0}
+                  max={20}
+                  step={0.5}
+                  className="flex-1"
+                  data-testid="slider-blur"
+                />
+                <span className="w-12 text-right text-sm">{options.blur || 0}</span>
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-4">
+            <div className="flex items-center gap-2">
+              <Checkbox 
+                checked={options.grayscale || false}
+                onCheckedChange={(checked) => onChange({ ...options, grayscale: checked })}
+                data-testid="checkbox-grayscale"
+              />
+              <Label>Grayscale</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox 
+                checked={options.flipHorizontal || false}
+                onCheckedChange={(checked) => onChange({ ...options, flipHorizontal: checked })}
+                data-testid="checkbox-flip-h"
+              />
+              <Label>Flip Horizontal</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Checkbox 
+                checked={options.flipVertical || false}
+                onCheckedChange={(checked) => onChange({ ...options, flipVertical: checked })}
+                data-testid="checkbox-flip-v"
+              />
+              <Label>Flip Vertical</Label>
+            </div>
+          </div>
+          <div>
+            <Label>Output Format</Label>
+            <Select 
+              value={options.outputFormat || "png"} 
+              onValueChange={(value) => onChange({ ...options, outputFormat: value })}
+            >
+              <SelectTrigger data-testid="select-output-format">
+                <SelectValue placeholder="Select format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="png">PNG</SelectItem>
+                <SelectItem value="jpeg">JPEG</SelectItem>
+                <SelectItem value="webp">WebP</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "ai-background-generator":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Background Description</Label>
+            <Textarea
+              value={options.backgroundPrompt || ""}
+              onChange={(e) => onChange({ ...options, backgroundPrompt: e.target.value })}
+              placeholder="Describe the background you want, e.g., 'Abstract gradient with purple and blue colors'"
+              className="min-h-[80px]"
+              data-testid="textarea-bg-prompt"
+            />
+          </div>
+          <div>
+            <Label>Style</Label>
+            <Select 
+              value={options.backgroundStyle || "modern"} 
+              onValueChange={(value) => onChange({ ...options, backgroundStyle: value })}
+            >
+              <SelectTrigger data-testid="select-bg-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="modern">Modern</SelectItem>
+                <SelectItem value="abstract">Abstract</SelectItem>
+                <SelectItem value="minimalist">Minimalist</SelectItem>
+                <SelectItem value="nature">Nature</SelectItem>
+                <SelectItem value="geometric">Geometric</SelectItem>
+                <SelectItem value="gradient">Gradient</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Image Size</Label>
+            <Select 
+              value={options.imageSize || "1024x1024"} 
+              onValueChange={(value) => onChange({ ...options, imageSize: value })}
+            >
+              <SelectTrigger data-testid="select-image-size">
+                <SelectValue placeholder="Select size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1024x1024">Square (1024x1024)</SelectItem>
+                <SelectItem value="1792x1024">Landscape (1792x1024)</SelectItem>
+                <SelectItem value="1024x1792">Portrait (1024x1792)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "ai-magic-eraser":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>What to Remove</Label>
+            <Textarea
+              value={options.eraseDescription || ""}
+              onChange={(e) => onChange({ ...options, eraseDescription: e.target.value })}
+              placeholder="Describe what you want to remove, e.g., 'Remove the person in the background'"
+              className="min-h-[80px]"
+              data-testid="textarea-erase-desc"
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Upload an image and describe what you want to remove. The AI will analyze the image 
+            and generate a version with the specified elements removed.
+          </p>
+        </div>
+      );
+
+    case "ai-image-extender":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Extend Direction</Label>
+            <Select 
+              value={options.extendDirection || "all"} 
+              onValueChange={(value) => onChange({ ...options, extendDirection: value })}
+            >
+              <SelectTrigger data-testid="select-extend-direction">
+                <SelectValue placeholder="Select direction" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Directions</SelectItem>
+                <SelectItem value="horizontal">Horizontal Only</SelectItem>
+                <SelectItem value="vertical">Vertical Only</SelectItem>
+                <SelectItem value="left">Left Only</SelectItem>
+                <SelectItem value="right">Right Only</SelectItem>
+                <SelectItem value="top">Top Only</SelectItem>
+                <SelectItem value="bottom">Bottom Only</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Extension Amount (%)</Label>
+            <div className="flex items-center gap-2">
+              <Slider
+                value={[options.extendAmount || 50]}
+                onValueChange={([value]) => onChange({ ...options, extendAmount: value })}
+                min={10}
+                max={100}
+                step={10}
+                className="flex-1"
+                data-testid="slider-extend-amount"
+              />
+              <span className="w-12 text-right text-sm">{options.extendAmount || 50}%</span>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            The AI will analyze your image and extend its boundaries with generated content 
+            that matches the original style and context.
+          </p>
+        </div>
+      );
+
+    case "ai-text-to-image":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Image Description</Label>
+            <Textarea
+              value={options.imagePrompt || ""}
+              onChange={(e) => onChange({ ...options, imagePrompt: e.target.value })}
+              placeholder="Describe the image you want to generate in detail..."
+              className="min-h-[100px]"
+              data-testid="textarea-image-prompt"
+            />
+          </div>
+          <div>
+            <Label>Image Style</Label>
+            <Select 
+              value={options.imageStyle || "realistic"} 
+              onValueChange={(value) => onChange({ ...options, imageStyle: value })}
+            >
+              <SelectTrigger data-testid="select-image-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="realistic">Realistic</SelectItem>
+                <SelectItem value="artistic">Artistic</SelectItem>
+                <SelectItem value="cartoon">Cartoon</SelectItem>
+                <SelectItem value="3d">3D Rendered</SelectItem>
+                <SelectItem value="anime">Anime</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Image Size</Label>
+            <Select 
+              value={options.imageSize || "1024x1024"} 
+              onValueChange={(value) => onChange({ ...options, imageSize: value })}
+            >
+              <SelectTrigger data-testid="select-ai-image-size">
+                <SelectValue placeholder="Select size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1024x1024">Square (1024x1024)</SelectItem>
+                <SelectItem value="1792x1024">Landscape (1792x1024)</SelectItem>
+                <SelectItem value="1024x1792">Portrait (1024x1792)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
     default:
       return null;
   }

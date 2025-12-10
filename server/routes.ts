@@ -34754,6 +34754,478 @@ file '${loopInputPath}'`;
             break;
           }
 
+
+          case "pdf-page-resizer": {
+            const percentage = parseFloat(options.resizePercentage || "100");
+            if (percentage < 10 || percentage > 500) {
+              throw new Error("Resize percentage must be between 10% and 500%");
+            }
+            const pdfBytes = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBytes);
+            const pages = pdfDoc.getPages();
+            
+            for (const page of pages) {
+              const { width, height } = page.getSize();
+              const scale = percentage / 100;
+              page.setSize(width * scale, height * scale);
+              page.scaleContent(scale, scale);
+            }
+            
+            result = Buffer.from(await pdfDoc.save());
+            filename = "resized.pdf";
+            pageCount = pages.length;
+            break;
+          }
+
+          case "pdf-page-cloner": {
+            if (!options.pagesToClone) {
+              throw new Error("Please specify which pages to clone (e.g., 1,3,5)");
+            }
+            const cloneCount = parseInt(options.cloneCount || "1", 10);
+            if (cloneCount < 1 || cloneCount > 100) {
+              throw new Error("Clone count must be between 1 and 100");
+            }
+            
+            const pdfBytes = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBytes);
+            const pageIndices = parsePageRanges(options.pagesToClone, pdfDoc.getPageCount());
+            
+            const newPdf = await PDFDocument.create();
+            const allPages = pdfDoc.getPages();
+            
+            for (let i = 0; i < allPages.length; i++) {
+              const [copiedPage] = await newPdf.copyPages(pdfDoc, [i]);
+              newPdf.addPage(copiedPage);
+              
+              if (pageIndices.includes(i + 1)) {
+                for (let c = 0; c < cloneCount; c++) {
+                  const [clonedPage] = await newPdf.copyPages(pdfDoc, [i]);
+                  newPdf.addPage(clonedPage);
+                }
+              }
+            }
+            
+            result = Buffer.from(await newPdf.save());
+            filename = "cloned-pages.pdf";
+            pageCount = newPdf.getPageCount();
+            break;
+          }
+
+          case "pdf-page-sorter": {
+            if (!options.pageOrder) {
+              throw new Error("Please specify the new page order (e.g., 3,1,2,5,4)");
+            }
+            
+            const pdfBytes = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBytes);
+            const totalPages = pdfDoc.getPageCount();
+            
+            const orderArr = options.pageOrder.split(",").map((n: string) => parseInt(n.trim(), 10));
+            
+            if (orderArr.some((n: number) => isNaN(n) || n < 1 || n > totalPages)) {
+              throw new Error(`Invalid page numbers. PDF has ${totalPages} pages.`);
+            }
+            
+            const newPdf = await PDFDocument.create();
+            for (const pageNum of orderArr) {
+              const [copiedPage] = await newPdf.copyPages(pdfDoc, [pageNum - 1]);
+              newPdf.addPage(copiedPage);
+            }
+            
+            result = Buffer.from(await newPdf.save());
+            filename = "sorted-pages.pdf";
+            pageCount = newPdf.getPageCount();
+            break;
+          }
+
+          case "pdf-link-extractor": {
+            const pdfBytes = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBytes);
+            const pages = pdfDoc.getPages();
+            
+            const links: { page: number; url: string; type: string }[] = [];
+            
+            for (let i = 0; i < pages.length; i++) {
+              const page = pages[i];
+              const annotations = page.node.lookup(PDFName.of("Annots"), PDFArray);
+              
+              if (annotations) {
+                for (let j = 0; j < annotations.size(); j++) {
+                  const annotRef = annotations.get(j);
+                  const annot = page.doc.context.lookup(annotRef, PDFDict);
+                  if (annot) {
+                    const subtype = annot.get(PDFName.of("Subtype"));
+                    if (subtype && subtype.toString() === "/Link") {
+                      const action = annot.get(PDFName.of("A"));
+                      if (action) {
+                        const actionDict = page.doc.context.lookup(action, PDFDict);
+                        if (actionDict) {
+                          const uri = actionDict.get(PDFName.of("URI"));
+                          if (uri && uri instanceof PDFString) {
+                            links.push({
+                              page: i + 1,
+                              url: uri.decodeText(),
+                              type: "URL"
+                            });
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            
+            const csvContent = "Page,URL,Type\\n" + links.map(l => 
+              `${l.page},"${l.url}",${l.type}`
+            ).join("\\n");
+            
+            result = Buffer.from(csvContent);
+            filename = "extracted-links.csv";
+            contentType = "text/csv";
+            break;
+          }
+
+          case "pdf-annotation-extractor": {
+            const pdfBytes = fs.readFileSync(files[0]);
+            const pdfDoc = await PDFDocument.load(pdfBytes);
+            const pages = pdfDoc.getPages();
+            
+            const annotations: { page: number; type: string; content: string }[] = [];
+            
+            for (let i = 0; i < pages.length; i++) {
+              const page = pages[i];
+              const annots = page.node.lookup(PDFName.of("Annots"), PDFArray);
+              
+              if (annots) {
+                for (let j = 0; j < annots.size(); j++) {
+                  const annotRef = annots.get(j);
+                  const annot = page.doc.context.lookup(annotRef, PDFDict);
+                  if (annot) {
+                    const subtype = annot.get(PDFName.of("Subtype"));
+                    const contents = annot.get(PDFName.of("Contents"));
+                    
+                    let annotType = subtype ? subtype.toString().replace("/", "") : "Unknown";
+                    let annotContent = "";
+                    
+                    if (contents && contents instanceof PDFString) {
+                      annotContent = contents.decodeText();
+                    }
+                    
+                    if (annotType !== "Link") {
+                      annotations.push({
+                        page: i + 1,
+                        type: annotType,
+                        content: annotContent
+                      });
+                    }
+                  }
+                }
+              }
+            }
+            
+            const jsonContent = JSON.stringify({ annotations, totalPages: pages.length }, null, 2);
+            result = Buffer.from(jsonContent);
+            filename = "extracted-annotations.json";
+            contentType = "application/json";
+            break;
+          }
+
+          case "online-photo-editor": {
+            if (files.length === 0) {
+              throw new Error("Please upload an image to edit");
+            }
+            
+            let image = sharp(files[0]);
+            const metadata = await image.metadata();
+            
+            if (options.brightness && options.brightness !== 0) {
+              const brightnessValue = 1 + (parseFloat(options.brightness) / 100);
+              image = image.modulate({ brightness: brightnessValue });
+            }
+            
+            if (options.contrast && options.contrast !== 0) {
+              const contrastValue = 1 + (parseFloat(options.contrast) / 100);
+              image = image.linear(contrastValue, -(128 * (contrastValue - 1)));
+            }
+            
+            if (options.saturation && options.saturation !== 0) {
+              const saturationValue = 1 + (parseFloat(options.saturation) / 100);
+              image = image.modulate({ saturation: saturationValue });
+            }
+            
+            if (options.rotation && options.rotation !== 0) {
+              image = image.rotate(parseFloat(options.rotation));
+            }
+            
+            if (options.flipHorizontal === true) {
+              image = image.flop();
+            }
+            
+            if (options.flipVertical === true) {
+              image = image.flip();
+            }
+            
+            if (options.grayscale === true) {
+              image = image.grayscale();
+            }
+            
+            if (options.blur && options.blur > 0) {
+              image = image.blur(parseFloat(options.blur));
+            }
+            
+            if (options.sharpen && options.sharpen > 0) {
+              image = image.sharpen(parseFloat(options.sharpen));
+            }
+            
+            if (options.cropWidth && options.cropHeight) {
+              image = image.extract({
+                left: parseInt(options.cropX || "0"),
+                top: parseInt(options.cropY || "0"),
+                width: parseInt(options.cropWidth),
+                height: parseInt(options.cropHeight)
+              });
+            }
+            
+            if (options.resizeWidth || options.resizeHeight) {
+              image = image.resize(
+                options.resizeWidth ? parseInt(options.resizeWidth) : undefined,
+                options.resizeHeight ? parseInt(options.resizeHeight) : undefined,
+                { fit: 'inside' }
+              );
+            }
+            
+            const outputFormat = options.outputFormat || 'png';
+            if (outputFormat === 'jpeg' || outputFormat === 'jpg') {
+              image = image.jpeg({ quality: parseInt(options.quality || "90") });
+            } else if (outputFormat === 'webp') {
+              image = image.webp({ quality: parseInt(options.quality || "90") });
+            } else {
+              image = image.png();
+            }
+            
+            result = await image.toBuffer();
+            filename = `edited-image.${outputFormat === 'jpg' ? 'jpeg' : outputFormat}`;
+            contentType = `image/${outputFormat === 'jpg' ? 'jpeg' : outputFormat}`;
+            break;
+          }
+
+          case "ai-background-generator": {
+            if (!process.env.OPENAI_API_KEY) {
+              throw new Error("AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets.");
+            }
+            
+            const prompt = options.backgroundPrompt || "Abstract colorful gradient background";
+            const style = options.backgroundStyle || "modern";
+            const size = options.imageSize || "1024x1024";
+            
+            const OpenAI = (await import("openai")).default;
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            
+            const fullPrompt = `${prompt}, ${style} style, professional background image, high quality, seamless`;
+            
+            const response = await openai.images.generate({
+              model: "dall-e-3",
+              prompt: fullPrompt,
+              n: 1,
+              size: size as "1024x1024" | "1792x1024" | "1024x1792",
+              quality: "standard",
+            });
+            
+            const imageUrl = response.data[0].url;
+            if (!imageUrl) {
+              throw new Error("Failed to generate image");
+            }
+            
+            const imageResponse = await fetch(imageUrl);
+            const imageBuffer = Buffer.from(await imageResponse.arrayBuffer());
+            
+            result = imageBuffer;
+            filename = "ai-background.png";
+            contentType = "image/png";
+            break;
+          }
+
+          case "ai-magic-eraser": {
+            if (!process.env.OPENAI_API_KEY) {
+              throw new Error("AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets.");
+            }
+            
+            if (files.length === 0) {
+              throw new Error("Please upload an image");
+            }
+            
+            const maskDescription = options.eraseDescription || "Remove the background";
+            
+            const imageBuffer = fs.readFileSync(files[0]);
+            const base64Image = imageBuffer.toString('base64');
+            
+            const OpenAI = (await import("openai")).default;
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            
+            const visionResponse = await openai.chat.completions.create({
+              model: "gpt-4o",
+              messages: [
+                {
+                  role: "user",
+                  content: [
+                    {
+                      type: "text",
+                      text: `Describe this image in detail for editing. I want to: ${maskDescription}`
+                    },
+                    {
+                      type: "image_url",
+                      image_url: {
+                        url: `data:image/png;base64,${base64Image}`
+                      }
+                    }
+                  ],
+                },
+              ],
+              max_tokens: 500,
+            });
+            
+            const description = visionResponse.choices[0].message.content || "";
+            
+            const editPrompt = `Original image description: ${description}. Edit request: ${maskDescription}. Create an edited version of this image with the requested changes, maintaining the overall composition and quality.`;
+            
+            const generateResponse = await openai.images.generate({
+              model: "dall-e-3",
+              prompt: editPrompt,
+              n: 1,
+              size: "1024x1024",
+              quality: "standard",
+            });
+            
+            const editedImageUrl = generateResponse.data[0].url;
+            if (!editedImageUrl) {
+              throw new Error("Failed to process image");
+            }
+            
+            const editedImageResponse = await fetch(editedImageUrl);
+            const editedImageBuffer = Buffer.from(await editedImageResponse.arrayBuffer());
+            
+            result = editedImageBuffer;
+            filename = "magic-eraser-result.png";
+            contentType = "image/png";
+            break;
+          }
+
+          case "ai-image-extender": {
+            if (!process.env.OPENAI_API_KEY) {
+              throw new Error("AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets.");
+            }
+            
+            if (files.length === 0) {
+              throw new Error("Please upload an image to extend");
+            }
+            
+            const extendDirection = options.extendDirection || "all";
+            const extendAmount = parseInt(options.extendAmount || "50");
+            
+            const imageBuffer = fs.readFileSync(files[0]);
+            const base64Image = imageBuffer.toString('base64');
+            
+            const OpenAI = (await import("openai")).default;
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            
+            const visionResponse = await openai.chat.completions.create({
+              model: "gpt-4o",
+              messages: [
+                {
+                  role: "user",
+                  content: [
+                    {
+                      type: "text",
+                      text: "Describe this image in detail, including the scene, objects, colors, lighting, and style."
+                    },
+                    {
+                      type: "image_url",
+                      image_url: {
+                        url: `data:image/png;base64,${base64Image}`
+                      }
+                    }
+                  ],
+                },
+              ],
+              max_tokens: 500,
+            });
+            
+            const description = visionResponse.choices[0].message.content || "";
+            
+            const directionText = extendDirection === "all" ? "in all directions" : 
+              extendDirection === "horizontal" ? "to the left and right" :
+              extendDirection === "vertical" ? "upward and downward" : extendDirection;
+            
+            const extendPrompt = `Create a wider version of this scene: ${description}. Extend the image ${directionText} by ${extendAmount}%, maintaining the same style, lighting, and seamlessly continuing the scene. Keep the same quality and artistic style.`;
+            
+            const generateResponse = await openai.images.generate({
+              model: "dall-e-3",
+              prompt: extendPrompt,
+              n: 1,
+              size: "1792x1024",
+              quality: "standard",
+            });
+            
+            const extendedImageUrl = generateResponse.data[0].url;
+            if (!extendedImageUrl) {
+              throw new Error("Failed to extend image");
+            }
+            
+            const extendedImageResponse = await fetch(extendedImageUrl);
+            const extendedImageBuffer = Buffer.from(await extendedImageResponse.arrayBuffer());
+            
+            result = extendedImageBuffer;
+            filename = "extended-image.png";
+            contentType = "image/png";
+            break;
+          }
+
+          case "ai-text-to-image": {
+            if (!process.env.OPENAI_API_KEY) {
+              throw new Error("AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets.");
+            }
+            
+            const imagePrompt = options.imagePrompt;
+            if (!imagePrompt || imagePrompt.trim() === "") {
+              throw new Error("Please enter a description for the image you want to generate");
+            }
+            
+            const imageStyle = options.imageStyle || "realistic";
+            const imageSize = options.imageSize || "1024x1024";
+            
+            const OpenAI = (await import("openai")).default;
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            
+            const styleModifier = imageStyle === "realistic" ? "photorealistic, highly detailed" :
+              imageStyle === "artistic" ? "artistic, painterly style" :
+              imageStyle === "cartoon" ? "cartoon style, colorful illustration" :
+              imageStyle === "3d" ? "3D rendered, high quality CGI" :
+              imageStyle === "anime" ? "anime style, Japanese animation" : "";
+            
+            const fullPrompt = `${imagePrompt}. ${styleModifier}, high quality, professional`;
+            
+            const response = await openai.images.generate({
+              model: "dall-e-3",
+              prompt: fullPrompt,
+              n: 1,
+              size: imageSize as "1024x1024" | "1792x1024" | "1024x1792",
+              quality: "standard",
+            });
+            
+            const generatedImageUrl = response.data[0].url;
+            if (!generatedImageUrl) {
+              throw new Error("Failed to generate image");
+            }
+            
+            const generatedImageResponse = await fetch(generatedImageUrl);
+            const generatedImageBuffer = Buffer.from(await generatedImageResponse.arrayBuffer());
+            
+            result = generatedImageBuffer;
+            filename = "generated-image.png";
+            contentType = "image/png";
+            break;
+          }
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
         }
