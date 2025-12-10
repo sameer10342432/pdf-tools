@@ -14526,7 +14526,7 @@ export async function registerRoutes(
       const files = req.files as Express.Multer.File[] | undefined;
       const { toolType, options: optionsStr } = req.body;
       
-      const noFileRequiredTools = ["create-pdf", "pdf-creator", "base64-to-image", "json-validator", "json-minifier", "json-beautifier", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "json-formatter", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "screen-resolution-detector", "browser-info", "dpi-calculator", "aspect-ratio-calculator", "pixels-to-cm-converter", "words-to-pages-converter", "reading-time-calculator", "random-color-generator", "random-palette-generator", "password-strength-checker"];
+      const noFileRequiredTools = ["create-pdf", "pdf-creator", "base64-to-image", "json-validator", "json-minifier", "json-beautifier", "xml-formatter", "xml-validator", "html-minifier", "html-beautifier", "css-minifier", "css-beautifier", "js-minifier", "json-formatter", "js-beautifier", "sql-formatter", "sql-minifier", "lorem-ipsum-generator", "uuid-generator", "md5-hash-generator", "sha256-hash-generator", "base64-encode", "base64-decode", "url-encoder", "screen-resolution-detector", "browser-info", "dpi-calculator", "aspect-ratio-calculator", "pixels-to-cm-converter", "words-to-pages-converter", "reading-time-calculator", "random-color-generator", "random-palette-generator", "password-strength-checker", "ai-text-to-video", "ai-text-to-audio", "ai-voice-cloning", "ai-avatar-generator", "ai-headshot-generator", "ai-presentation-maker", "ai-website-builder"];
       
       if ((!files || files.length === 0) && !noFileRequiredTools.includes(toolType)) {
         return res.status(400).json({ 
@@ -35226,6 +35226,480 @@ file '${loopInputPath}'`;
             contentType = "image/png";
             break;
           }
+
+          case "ai-text-to-video": {
+            if (!process.env.OPENAI_API_KEY) {
+              throw new Error("AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets.");
+            }
+            
+            const videoPrompt = options.videoPrompt;
+            if (!videoPrompt || videoPrompt.trim() === "") {
+              throw new Error("Please enter a description for the video you want to generate");
+            }
+            
+            const videoStyle = options.videoStyle || "cinematic";
+            const videoDuration = options.videoDuration || "short";
+            
+            const OpenAI = (await import("openai")).default;
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            
+            const styleModifier = videoStyle === "cinematic" ? "cinematic, movie-like quality" :
+              videoStyle === "animated" ? "animated, smooth animation style" :
+              videoStyle === "documentary" ? "documentary style, realistic footage" :
+              videoStyle === "artistic" ? "artistic, creative visual style" : "";
+            
+            const fullPrompt = `${videoPrompt}. ${styleModifier}, high quality video content`;
+            
+            const images = [];
+            const frameCount = videoDuration === "short" ? 4 : videoDuration === "medium" ? 8 : 12;
+            
+            for (let i = 0; i < frameCount; i++) {
+              const framePrompt = `${fullPrompt}, frame ${i + 1} of a sequence, consistent style`;
+              const response = await openai.images.generate({
+                model: "dall-e-3",
+                prompt: framePrompt,
+                n: 1,
+                size: "1792x1024",
+                quality: "standard",
+              });
+              
+              const imageUrl = response.data[0].url;
+              if (imageUrl) {
+                const imageResponse = await fetch(imageUrl);
+                const imageBuffer = Buffer.from(await imageResponse.arrayBuffer());
+                const framePath = path.join(uploadDir, `frame_${i}.png`);
+                fs.writeFileSync(framePath, imageBuffer);
+                images.push(framePath);
+              }
+            }
+            
+            const outputVideoPath = path.join(outputDir, `${randomUUID()}.mp4`);
+            const frameListPath = path.join(uploadDir, "frames.txt");
+            fs.writeFileSync(frameListPath, images.map(img => `file '${img}'\nduration 1`).join("\n"));
+            
+            await execAsync(`ffmpeg -y -f concat -safe 0 -i "${frameListPath}" -vf "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2" -c:v libx264 -pix_fmt yuv420p -r 24 "${outputVideoPath}"`);
+            
+            images.forEach(img => fs.unlinkSync(img));
+            fs.unlinkSync(frameListPath);
+            
+            result = outputVideoPath;
+            filename = "ai-generated-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+          
+          case "ai-text-to-audio": {
+            if (!process.env.OPENAI_API_KEY) {
+              throw new Error("AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets.");
+            }
+            
+            const audioText = options.audioText;
+            if (!audioText || audioText.trim() === "") {
+              throw new Error("Please enter the text you want to convert to speech");
+            }
+            
+            const voiceType = options.voiceType || "alloy";
+            const speechSpeed = options.speechSpeed || "1.0";
+            
+            const OpenAI = (await import("openai")).default;
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            
+            const response = await openai.audio.speech.create({
+              model: "tts-1",
+              voice: voiceType as "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer",
+              input: audioText,
+              speed: parseFloat(speechSpeed),
+            });
+            
+            const audioBuffer = Buffer.from(await response.arrayBuffer());
+            
+            result = audioBuffer;
+            filename = "ai-generated-audio.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+          
+          case "ai-voice-changer": {
+            if (!files || files.length === 0) {
+              throw new Error("Please upload an audio file to transform");
+            }
+            
+            const inputAudio = files[0].path;
+            const voiceEffect = options.voiceEffect || "pitch-up";
+            const outputAudioPath = path.join(outputDir, `${randomUUID()}.mp3`);
+            
+            let filterComplex = "";
+            switch (voiceEffect) {
+              case "pitch-up":
+                filterComplex = "asetrate=44100*1.25,aresample=44100,atempo=0.8";
+                break;
+              case "pitch-down":
+                filterComplex = "asetrate=44100*0.75,aresample=44100,atempo=1.33";
+                break;
+              case "robot":
+                filterComplex = "afftfilt=real='hypot(re,im)*sin(0)':imag='hypot(re,im)*cos(0)':win_size=512:overlap=0.75";
+                break;
+              case "echo":
+                filterComplex = "aecho=0.8:0.9:1000:0.3";
+                break;
+              case "deep":
+                filterComplex = "asetrate=44100*0.8,aresample=44100";
+                break;
+              case "chipmunk":
+                filterComplex = "asetrate=44100*1.5,aresample=44100";
+                break;
+              default:
+                filterComplex = "asetrate=44100*1.25,aresample=44100,atempo=0.8";
+            }
+            
+            await execAsync(`ffmpeg -y -i "${inputAudio}" -af "${filterComplex}" "${outputAudioPath}"`);
+            
+            result = outputAudioPath;
+            filename = "voice-changed.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+          
+          case "ai-voice-cloning": {
+            if (!process.env.OPENAI_API_KEY) {
+              throw new Error("AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets.");
+            }
+            
+            const cloneText = options.cloneText;
+            if (!cloneText || cloneText.trim() === "") {
+              throw new Error("Please enter the text to speak with the cloned voice");
+            }
+            
+            const targetVoice = options.targetVoice || "alloy";
+            
+            const OpenAI = (await import("openai")).default;
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            
+            const response = await openai.audio.speech.create({
+              model: "tts-1-hd",
+              voice: targetVoice as "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer",
+              input: cloneText,
+            });
+            
+            const audioBuffer = Buffer.from(await response.arrayBuffer());
+            
+            result = audioBuffer;
+            filename = "cloned-voice.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+          
+          case "ai-podcast-editor": {
+            if (!files || files.length === 0) {
+              throw new Error("Please upload an audio file to edit");
+            }
+            
+            const inputAudio = files[0].path;
+            const outputAudioPath = path.join(outputDir, `${randomUUID()}.mp3`);
+            
+            const removeNoise = options.removeNoise === "true";
+            const normalizeVolume = options.normalizeVolume === "true";
+            const removeSilence = options.removeSilence === "true";
+            
+            let filterChain = [];
+            
+            if (removeNoise) {
+              filterChain.push("highpass=f=80,lowpass=f=12000,afftdn=nf=-25");
+            }
+            
+            if (normalizeVolume) {
+              filterChain.push("loudnorm=I=-16:TP=-1.5:LRA=11");
+            }
+            
+            if (removeSilence) {
+              filterChain.push("silenceremove=start_periods=1:start_silence=0.5:start_threshold=-50dB:stop_periods=-1:stop_silence=0.5:stop_threshold=-50dB");
+            }
+            
+            if (filterChain.length === 0) {
+              filterChain.push("acopy");
+            }
+            
+            await execAsync(`ffmpeg -y -i "${inputAudio}" -af "${filterChain.join(",")}" "${outputAudioPath}"`);
+            
+            result = outputAudioPath;
+            filename = "edited-podcast.mp3";
+            contentType = "audio/mpeg";
+            break;
+          }
+          
+          case "ai-video-dubbing": {
+            if (!process.env.OPENAI_API_KEY) {
+              throw new Error("AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets.");
+            }
+            
+            if (!files || files.length === 0) {
+              throw new Error("Please upload a video file to dub");
+            }
+            
+            const inputVideo = files[0].path;
+            const dubText = options.dubText;
+            if (!dubText || dubText.trim() === "") {
+              throw new Error("Please enter the text for dubbing");
+            }
+            
+            const dubVoice = options.dubVoice || "alloy";
+            
+            const OpenAI = (await import("openai")).default;
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            
+            const audioResponse = await openai.audio.speech.create({
+              model: "tts-1",
+              voice: dubVoice as "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer",
+              input: dubText,
+            });
+            
+            const audioBuffer = Buffer.from(await audioResponse.arrayBuffer());
+            const tempAudioPath = path.join(uploadDir, `${randomUUID()}.mp3`);
+            fs.writeFileSync(tempAudioPath, audioBuffer);
+            
+            const outputVideoPath = path.join(outputDir, `${randomUUID()}.mp4`);
+            
+            await execAsync(`ffmpeg -y -i "${inputVideo}" -i "${tempAudioPath}" -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 "${outputVideoPath}"`);
+            
+            fs.unlinkSync(tempAudioPath);
+            
+            result = outputVideoPath;
+            filename = "dubbed-video.mp4";
+            contentType = "video/mp4";
+            break;
+          }
+          
+          case "ai-avatar-generator": {
+            if (!process.env.OPENAI_API_KEY) {
+              throw new Error("AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets.");
+            }
+            
+            const avatarDescription = options.avatarDescription;
+            if (!avatarDescription || avatarDescription.trim() === "") {
+              throw new Error("Please enter a description for your avatar");
+            }
+            
+            const avatarStyle = options.avatarStyle || "realistic";
+            
+            const OpenAI = (await import("openai")).default;
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            
+            const styleModifier = avatarStyle === "realistic" ? "photorealistic portrait, professional headshot" :
+              avatarStyle === "anime" ? "anime style, Japanese animation character" :
+              avatarStyle === "cartoon" ? "cartoon character, colorful illustration" :
+              avatarStyle === "pixel" ? "pixel art style, retro game character" :
+              avatarStyle === "3d" ? "3D rendered character, high quality CGI" : "";
+            
+            const fullPrompt = `Avatar of ${avatarDescription}. ${styleModifier}, centered face, clean background, high quality`;
+            
+            const response = await openai.images.generate({
+              model: "dall-e-3",
+              prompt: fullPrompt,
+              n: 1,
+              size: "1024x1024",
+              quality: "standard",
+            });
+            
+            const imageUrl = response.data[0].url;
+            if (!imageUrl) {
+              throw new Error("Failed to generate avatar");
+            }
+            
+            const imageResponse = await fetch(imageUrl);
+            const imageBuffer = Buffer.from(await imageResponse.arrayBuffer());
+            
+            result = imageBuffer;
+            filename = "ai-avatar.png";
+            contentType = "image/png";
+            break;
+          }
+          
+          case "ai-headshot-generator": {
+            if (!process.env.OPENAI_API_KEY) {
+              throw new Error("AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets.");
+            }
+            
+            const headshotDescription = options.headshotDescription;
+            if (!headshotDescription || headshotDescription.trim() === "") {
+              throw new Error("Please enter a description for the headshot");
+            }
+            
+            const headshotStyle = options.headshotStyle || "professional";
+            const headshotBackground = options.headshotBackground || "neutral";
+            
+            const OpenAI = (await import("openai")).default;
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            
+            const styleModifier = headshotStyle === "professional" ? "professional corporate headshot, business attire" :
+              headshotStyle === "casual" ? "casual portrait, relaxed pose" :
+              headshotStyle === "creative" ? "creative artistic portrait, unique lighting" :
+              headshotStyle === "formal" ? "formal portrait, elegant styling" : "";
+            
+            const backgroundModifier = headshotBackground === "neutral" ? "neutral gray background" :
+              headshotBackground === "white" ? "clean white background" :
+              headshotBackground === "office" ? "blurred office background" :
+              headshotBackground === "outdoor" ? "natural outdoor background, bokeh effect" : "";
+            
+            const fullPrompt = `Professional headshot portrait of ${headshotDescription}. ${styleModifier}, ${backgroundModifier}, studio lighting, sharp focus, high resolution`;
+            
+            const response = await openai.images.generate({
+              model: "dall-e-3",
+              prompt: fullPrompt,
+              n: 1,
+              size: "1024x1024",
+              quality: "hd",
+            });
+            
+            const imageUrl = response.data[0].url;
+            if (!imageUrl) {
+              throw new Error("Failed to generate headshot");
+            }
+            
+            const imageResponse = await fetch(imageUrl);
+            const imageBuffer = Buffer.from(await imageResponse.arrayBuffer());
+            
+            result = imageBuffer;
+            filename = "ai-headshot.png";
+            contentType = "image/png";
+            break;
+          }
+          
+          case "ai-presentation-maker": {
+            if (!process.env.OPENAI_API_KEY) {
+              throw new Error("AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets.");
+            }
+            
+            const presentationTopic = options.presentationTopic;
+            if (!presentationTopic || presentationTopic.trim() === "") {
+              throw new Error("Please enter a topic for your presentation");
+            }
+            
+            const slideCount = parseInt(options.slideCount) || 5;
+            const presentationStyle = options.presentationStyle || "professional";
+            
+            const OpenAI = (await import("openai")).default;
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            
+            const completion = await openai.chat.completions.create({
+              model: "gpt-4o",
+              messages: [
+                {
+                  role: "system",
+                  content: "You are a professional presentation designer. Create structured presentation content with clear titles and bullet points."
+                },
+                {
+                  role: "user",
+                  content: `Create a ${slideCount}-slide presentation about: ${presentationTopic}. For each slide, provide a title and 3-4 bullet points. Format as JSON array with objects containing 'title' and 'bullets' (array of strings).`
+                }
+              ],
+              response_format: { type: "json_object" }
+            });
+            
+            let slides;
+            try {
+              const parsed = JSON.parse(completion.choices[0].message.content || "{}");
+              slides = parsed.slides || [{ title: presentationTopic, bullets: ["Content generated by AI"] }];
+            } catch {
+              slides = [{ title: presentationTopic, bullets: ["Presentation content about " + presentationTopic] }];
+            }
+            
+            const pptx = new pptxgen();
+            pptx.title = presentationTopic;
+            pptx.author = "AI Presentation Maker";
+            
+            const colors = presentationStyle === "professional" ? { bg: "1a365d", text: "ffffff", accent: "3182ce" } :
+              presentationStyle === "creative" ? { bg: "6b21a8", text: "ffffff", accent: "d946ef" } :
+              presentationStyle === "minimal" ? { bg: "f8fafc", text: "1e293b", accent: "3b82f6" } :
+              { bg: "1a365d", text: "ffffff", accent: "3182ce" };
+            
+            for (const slideData of slides) {
+              const slide = pptx.addSlide();
+              slide.background = { color: colors.bg };
+              
+              slide.addText(slideData.title || "Slide", {
+                x: 0.5,
+                y: 0.5,
+                w: "90%",
+                h: 1,
+                fontSize: 32,
+                bold: true,
+                color: colors.text,
+              });
+              
+              const bullets = slideData.bullets || [];
+              bullets.forEach((bullet: string, idx: number) => {
+                slide.addText("• " + bullet, {
+                  x: 0.5,
+                  y: 1.8 + (idx * 0.8),
+                  w: "90%",
+                  h: 0.6,
+                  fontSize: 18,
+                  color: colors.text,
+                });
+              });
+            }
+            
+            const pptxBuffer = await pptx.write({ outputType: "nodebuffer" }) as Buffer;
+            
+            result = pptxBuffer;
+            filename = "ai-presentation.pptx";
+            contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+            break;
+          }
+          
+          case "ai-website-builder": {
+            if (!process.env.OPENAI_API_KEY) {
+              throw new Error("AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets.");
+            }
+            
+            const websiteDescription = options.websiteDescription;
+            if (!websiteDescription || websiteDescription.trim() === "") {
+              throw new Error("Please describe the website you want to build");
+            }
+            
+            const websiteStyle = options.websiteStyle || "modern";
+            const colorScheme = options.colorScheme || "blue";
+            
+            const OpenAI = (await import("openai")).default;
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+            
+            const completion = await openai.chat.completions.create({
+              model: "gpt-4o",
+              messages: [
+                {
+                  role: "system",
+                  content: "You are a professional web developer. Generate complete, valid HTML with embedded CSS for modern, responsive websites. Include proper semantic HTML5 structure."
+                },
+                {
+                  role: "user",
+                  content: `Create a complete HTML website with embedded CSS for: ${websiteDescription}. Style: ${websiteStyle}. Color scheme: ${colorScheme}. Include header, hero section, features/services section, and footer. Make it fully responsive. Return only the HTML code, no markdown.`
+                }
+              ],
+            });
+            
+            let htmlContent = completion.choices[0].message.content || "";
+            htmlContent = htmlContent.replace(/```html/g, "").replace(/```/g, "").trim();
+            
+            if (!htmlContent.includes("<!DOCTYPE html>")) {
+              htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Generated Website</title>
+</head>
+<body>
+${htmlContent}
+</body>
+</html>`;
+            }
+            
+            result = Buffer.from(htmlContent);
+            filename = "ai-website.html";
+            contentType = "text/html";
+            break;
+          }
+          
           default:
             throw new Error(`Unknown tool type: ${toolType}`);
         }

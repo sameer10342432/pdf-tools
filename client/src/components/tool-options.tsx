@@ -16060,6 +16060,430 @@ export function ToolOptionsComponent({
           </div>
         </div>
       );
+
+    case "ai-text-to-video":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Video Description</Label>
+            <Textarea
+              value={options.videoPrompt || ""}
+              onChange={(e) => onChange({ ...options, videoPrompt: e.target.value })}
+              placeholder="Describe the video you want to generate in detail..."
+              className="min-h-[100px]"
+              data-testid="textarea-video-prompt"
+            />
+          </div>
+          <div>
+            <Label>Video Style</Label>
+            <Select 
+              value={options.videoStyle || "cinematic"} 
+              onValueChange={(value) => onChange({ ...options, videoStyle: value })}
+            >
+              <SelectTrigger data-testid="select-video-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="cinematic">Cinematic</SelectItem>
+                <SelectItem value="animated">Animated</SelectItem>
+                <SelectItem value="documentary">Documentary</SelectItem>
+                <SelectItem value="artistic">Artistic</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Video Duration</Label>
+            <Select 
+              value={options.videoDuration || "short"} 
+              onValueChange={(value) => onChange({ ...options, videoDuration: value })}
+            >
+              <SelectTrigger data-testid="select-video-duration">
+                <SelectValue placeholder="Select duration" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="short">Short (4 frames)</SelectItem>
+                <SelectItem value="medium">Medium (8 frames)</SelectItem>
+                <SelectItem value="long">Long (12 frames)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "ai-text-to-audio":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Text to Convert</Label>
+            <Textarea
+              value={options.audioText || ""}
+              onChange={(e) => onChange({ ...options, audioText: e.target.value })}
+              placeholder="Enter the text you want to convert to speech..."
+              className="min-h-[100px]"
+              data-testid="textarea-audio-text"
+            />
+          </div>
+          <div>
+            <Label>Voice Type</Label>
+            <Select 
+              value={options.voiceType || "alloy"} 
+              onValueChange={(value) => onChange({ ...options, voiceType: value })}
+            >
+              <SelectTrigger data-testid="select-voice-type">
+                <SelectValue placeholder="Select voice" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="alloy">Alloy (Neutral)</SelectItem>
+                <SelectItem value="echo">Echo (Male)</SelectItem>
+                <SelectItem value="fable">Fable (Expressive)</SelectItem>
+                <SelectItem value="onyx">Onyx (Deep)</SelectItem>
+                <SelectItem value="nova">Nova (Female)</SelectItem>
+                <SelectItem value="shimmer">Shimmer (Warm)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Speech Speed</Label>
+            <Select 
+              value={options.speechSpeed || "1.0"} 
+              onValueChange={(value) => onChange({ ...options, speechSpeed: value })}
+            >
+              <SelectTrigger data-testid="select-speech-speed">
+                <SelectValue placeholder="Select speed" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="0.75">Slow (0.75x)</SelectItem>
+                <SelectItem value="1.0">Normal (1.0x)</SelectItem>
+                <SelectItem value="1.25">Fast (1.25x)</SelectItem>
+                <SelectItem value="1.5">Very Fast (1.5x)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "ai-voice-changer":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Voice Effect</Label>
+            <Select 
+              value={options.voiceEffect || "pitch-up"} 
+              onValueChange={(value) => onChange({ ...options, voiceEffect: value })}
+            >
+              <SelectTrigger data-testid="select-voice-effect">
+                <SelectValue placeholder="Select effect" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="pitch-up">Pitch Up (Higher)</SelectItem>
+                <SelectItem value="pitch-down">Pitch Down (Lower)</SelectItem>
+                <SelectItem value="robot">Robot Voice</SelectItem>
+                <SelectItem value="echo">Echo Effect</SelectItem>
+                <SelectItem value="deep">Deep Voice</SelectItem>
+                <SelectItem value="chipmunk">Chipmunk Voice</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">Upload an audio file to apply the voice effect.</p>
+        </div>
+      );
+
+    case "ai-voice-cloning":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Text to Speak</Label>
+            <Textarea
+              value={options.cloneText || ""}
+              onChange={(e) => onChange({ ...options, cloneText: e.target.value })}
+              placeholder="Enter the text you want the cloned voice to speak..."
+              className="min-h-[100px]"
+              data-testid="textarea-clone-text"
+            />
+          </div>
+          <div>
+            <Label>Target Voice Style</Label>
+            <Select 
+              value={options.targetVoice || "alloy"} 
+              onValueChange={(value) => onChange({ ...options, targetVoice: value })}
+            >
+              <SelectTrigger data-testid="select-target-voice">
+                <SelectValue placeholder="Select voice" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="alloy">Alloy (Neutral)</SelectItem>
+                <SelectItem value="echo">Echo (Male)</SelectItem>
+                <SelectItem value="fable">Fable (Expressive)</SelectItem>
+                <SelectItem value="onyx">Onyx (Deep)</SelectItem>
+                <SelectItem value="nova">Nova (Female)</SelectItem>
+                <SelectItem value="shimmer">Shimmer (Warm)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "ai-podcast-editor":
+      return (
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="removeNoise"
+              checked={options.removeNoise === "true"}
+              onChange={(e) => onChange({ ...options, removeNoise: e.target.checked ? "true" : "false" })}
+              className="rounded"
+              data-testid="checkbox-remove-noise"
+            />
+            <Label htmlFor="removeNoise">Remove Background Noise</Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="normalizeVolume"
+              checked={options.normalizeVolume === "true"}
+              onChange={(e) => onChange({ ...options, normalizeVolume: e.target.checked ? "true" : "false" })}
+              className="rounded"
+              data-testid="checkbox-normalize-volume"
+            />
+            <Label htmlFor="normalizeVolume">Normalize Volume Levels</Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="removeSilence"
+              checked={options.removeSilence === "true"}
+              onChange={(e) => onChange({ ...options, removeSilence: e.target.checked ? "true" : "false" })}
+              className="rounded"
+              data-testid="checkbox-remove-silence"
+            />
+            <Label htmlFor="removeSilence">Remove Long Silences</Label>
+          </div>
+          <p className="text-sm text-muted-foreground">Upload a podcast audio file to apply these enhancements.</p>
+        </div>
+      );
+
+    case "ai-video-dubbing":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Dubbing Text</Label>
+            <Textarea
+              value={options.dubText || ""}
+              onChange={(e) => onChange({ ...options, dubText: e.target.value })}
+              placeholder="Enter the text for the new audio track..."
+              className="min-h-[100px]"
+              data-testid="textarea-dub-text"
+            />
+          </div>
+          <div>
+            <Label>Dubbing Voice</Label>
+            <Select 
+              value={options.dubVoice || "alloy"} 
+              onValueChange={(value) => onChange({ ...options, dubVoice: value })}
+            >
+              <SelectTrigger data-testid="select-dub-voice">
+                <SelectValue placeholder="Select voice" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="alloy">Alloy (Neutral)</SelectItem>
+                <SelectItem value="echo">Echo (Male)</SelectItem>
+                <SelectItem value="fable">Fable (Expressive)</SelectItem>
+                <SelectItem value="onyx">Onyx (Deep)</SelectItem>
+                <SelectItem value="nova">Nova (Female)</SelectItem>
+                <SelectItem value="shimmer">Shimmer (Warm)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <p className="text-sm text-muted-foreground">Upload a video file to replace its audio with the new dubbing.</p>
+        </div>
+      );
+
+    case "ai-avatar-generator":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Avatar Description</Label>
+            <Textarea
+              value={options.avatarDescription || ""}
+              onChange={(e) => onChange({ ...options, avatarDescription: e.target.value })}
+              placeholder="Describe the avatar you want to generate (e.g., 'a friendly robot with blue eyes', 'a professional businesswoman')..."
+              className="min-h-[100px]"
+              data-testid="textarea-avatar-description"
+            />
+          </div>
+          <div>
+            <Label>Avatar Style</Label>
+            <Select 
+              value={options.avatarStyle || "realistic"} 
+              onValueChange={(value) => onChange({ ...options, avatarStyle: value })}
+            >
+              <SelectTrigger data-testid="select-avatar-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="realistic">Realistic</SelectItem>
+                <SelectItem value="anime">Anime</SelectItem>
+                <SelectItem value="cartoon">Cartoon</SelectItem>
+                <SelectItem value="pixel">Pixel Art</SelectItem>
+                <SelectItem value="3d">3D Rendered</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "ai-headshot-generator":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Headshot Description</Label>
+            <Textarea
+              value={options.headshotDescription || ""}
+              onChange={(e) => onChange({ ...options, headshotDescription: e.target.value })}
+              placeholder="Describe the person for the headshot (e.g., 'a confident CEO in his 40s', 'a friendly young professional')..."
+              className="min-h-[100px]"
+              data-testid="textarea-headshot-description"
+            />
+          </div>
+          <div>
+            <Label>Portrait Style</Label>
+            <Select 
+              value={options.headshotStyle || "professional"} 
+              onValueChange={(value) => onChange({ ...options, headshotStyle: value })}
+            >
+              <SelectTrigger data-testid="select-headshot-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="professional">Professional</SelectItem>
+                <SelectItem value="casual">Casual</SelectItem>
+                <SelectItem value="creative">Creative</SelectItem>
+                <SelectItem value="formal">Formal</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Background</Label>
+            <Select 
+              value={options.headshotBackground || "neutral"} 
+              onValueChange={(value) => onChange({ ...options, headshotBackground: value })}
+            >
+              <SelectTrigger data-testid="select-headshot-background">
+                <SelectValue placeholder="Select background" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="neutral">Neutral Gray</SelectItem>
+                <SelectItem value="white">White</SelectItem>
+                <SelectItem value="office">Blurred Office</SelectItem>
+                <SelectItem value="outdoor">Outdoor</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "ai-presentation-maker":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Presentation Topic</Label>
+            <Textarea
+              value={options.presentationTopic || ""}
+              onChange={(e) => onChange({ ...options, presentationTopic: e.target.value })}
+              placeholder="Enter the topic for your presentation..."
+              className="min-h-[100px]"
+              data-testid="textarea-presentation-topic"
+            />
+          </div>
+          <div>
+            <Label>Number of Slides</Label>
+            <Select 
+              value={options.slideCount || "5"} 
+              onValueChange={(value) => onChange({ ...options, slideCount: value })}
+            >
+              <SelectTrigger data-testid="select-slide-count">
+                <SelectValue placeholder="Select slides" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="3">3 Slides</SelectItem>
+                <SelectItem value="5">5 Slides</SelectItem>
+                <SelectItem value="8">8 Slides</SelectItem>
+                <SelectItem value="10">10 Slides</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Presentation Style</Label>
+            <Select 
+              value={options.presentationStyle || "professional"} 
+              onValueChange={(value) => onChange({ ...options, presentationStyle: value })}
+            >
+              <SelectTrigger data-testid="select-presentation-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="professional">Professional</SelectItem>
+                <SelectItem value="creative">Creative</SelectItem>
+                <SelectItem value="minimal">Minimal</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
+    case "ai-website-builder":
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label>Website Description</Label>
+            <Textarea
+              value={options.websiteDescription || ""}
+              onChange={(e) => onChange({ ...options, websiteDescription: e.target.value })}
+              placeholder="Describe the website you want to build (e.g., 'A landing page for a coffee shop with menu and contact info')..."
+              className="min-h-[100px]"
+              data-testid="textarea-website-description"
+            />
+          </div>
+          <div>
+            <Label>Website Style</Label>
+            <Select 
+              value={options.websiteStyle || "modern"} 
+              onValueChange={(value) => onChange({ ...options, websiteStyle: value })}
+            >
+              <SelectTrigger data-testid="select-website-style">
+                <SelectValue placeholder="Select style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="modern">Modern</SelectItem>
+                <SelectItem value="minimal">Minimal</SelectItem>
+                <SelectItem value="bold">Bold</SelectItem>
+                <SelectItem value="elegant">Elegant</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Color Scheme</Label>
+            <Select 
+              value={options.colorScheme || "blue"} 
+              onValueChange={(value) => onChange({ ...options, colorScheme: value })}
+            >
+              <SelectTrigger data-testid="select-color-scheme">
+                <SelectValue placeholder="Select colors" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="blue">Blue</SelectItem>
+                <SelectItem value="green">Green</SelectItem>
+                <SelectItem value="purple">Purple</SelectItem>
+                <SelectItem value="red">Red</SelectItem>
+                <SelectItem value="orange">Orange</SelectItem>
+                <SelectItem value="dark">Dark</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      );
+
     default:
       return null;
   }

@@ -960,6 +960,16 @@ export const pdfToolTypes = [
   "ai-magic-eraser",
   "ai-image-extender",
   "ai-text-to-image",
+  "ai-text-to-video",
+  "ai-text-to-audio",
+  "ai-voice-changer",
+  "ai-voice-cloning",
+  "ai-podcast-editor",
+  "ai-video-dubbing",
+  "ai-avatar-generator",
+  "ai-headshot-generator",
+  "ai-presentation-maker",
+  "ai-website-builder",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -26134,5 +26144,265 @@ const newPdfToolsSet: PdfTool[] = [
 
 <h2>Ideal for Reports and Documentation</h2>
 <p>Generate consistent, branded reports from HTML templates. Create PDF documentation from web-based help systems. Produce styled invoices and certificates. The possibilities are endless when you control the CSS.</p>`,
-  }
+    }
 ];
+
+
+// AI Powered Tools
+const aiPoweredTools: PdfTool[] = [
+  {
+    id: "ai-text-to-video",
+    name: "AI Text to Video",
+    description: "Transform text prompts into stunning AI-generated videos",
+    icon: "Film",
+    type: "ai-text-to-video",
+    color: "bg-violet-600",
+    emoji: "🎬",
+    metaTitle: "AI Text to Video Generator Free - Create Videos from Text | PDF Tools",
+    metaDescription: "Transform your text prompts into stunning AI-generated videos. Create professional video content from descriptions. Free AI video maker.",
+    seoArticle: `<h2>AI Text to Video - Transform Words into Visual Stories</h2>
+<p>Bring your ideas to life with our revolutionary AI text-to-video generator. Simply describe what you want to see, and our advanced AI creates stunning video content in minutes. Perfect for content creators, marketers, and storytellers who want professional videos without expensive equipment or software.</p>
+
+<h2>How AI Video Generation Works</h2>
+<p>Our AI analyzes your text description and generates frame-by-frame video content that matches your vision. The system understands context, movement, style preferences, and visual elements to create coherent, engaging videos that tell your story exactly as you imagined.</p>
+
+<h2>Perfect for Content Marketing</h2>
+<p>Create promotional videos, social media content, product demonstrations, and educational materials without any video production expertise. Our AI handles the creative heavy lifting while you focus on your message and strategy.</p>
+
+<h2>Customization Options</h2>
+<p>Choose from various styles, durations, and aspect ratios. Specify mood, color schemes, and visual themes. The AI adapts to create content that matches your brand identity and audience preferences.</p>
+
+<h2>Fast and Easy Process</h2>
+<p>Enter your text description, select your preferences, and let the AI work its magic. Download your video in high quality, ready to share on any platform. No rendering queues, no complex editing software needed.</p>`,
+  },
+  {
+    id: "ai-text-to-audio",
+    name: "AI Text to Audio",
+    description: "Convert text to natural-sounding speech with AI voices",
+    icon: "FileAudio",
+    type: "ai-text-to-audio",
+    color: "bg-indigo-600",
+    emoji: "🔊",
+    metaTitle: "AI Text to Speech Free - Convert Text to Natural Audio | PDF Tools",
+    metaDescription: "Convert text to natural-sounding speech with AI voices. Generate professional voiceovers and narration from text. Free text-to-speech tool.",
+    seoArticle: `<h2>AI Text to Audio - Professional Voiceovers in Seconds</h2>
+<p>Transform any written content into natural-sounding audio with our AI text-to-speech technology. Create voiceovers for videos, generate audiobook content, produce podcast segments, or add voice narration to presentations - all without hiring voice actors or expensive studio time.</p>
+
+<h2>Natural Human-Like Voices</h2>
+<p>Our AI voices are trained on thousands of hours of human speech, resulting in natural intonation, proper emphasis, and emotional expression. Listeners often can't distinguish our AI voices from real human speakers.</p>
+
+<h2>Multiple Voice Options</h2>
+<p>Choose from a variety of voices with different genders, accents, and speaking styles. Find the perfect voice for your content, whether you need a professional news anchor tone, a warm storytelling voice, or an energetic marketing pitch.</p>
+
+<h2>Perfect for Content Creators</h2>
+<p>YouTube creators, podcasters, and marketers use our tool to produce professional audio content efficiently. Create consistent voiceovers across multiple videos, generate audio versions of blog posts, or add narration to tutorials.</p>
+
+<h2>Easy Export and Integration</h2>
+<p>Download your audio in MP3 or WAV format, ready for any application. Import directly into video editors, podcast software, or presentation tools. Batch process multiple texts for efficient content production.</p>`,
+  },
+  {
+    id: "ai-voice-changer",
+    name: "AI Voice Changer",
+    description: "Transform your voice with AI-powered effects and modifications",
+    icon: "RefreshCw",
+    type: "ai-voice-changer",
+    color: "bg-pink-600",
+    emoji: "🎭",
+    metaTitle: "AI Voice Changer Free - Transform Your Voice Instantly | PDF Tools",
+    metaDescription: "Transform your voice with AI-powered effects. Change pitch, add effects, and modify audio characteristics. Free online voice changer.",
+    seoArticle: `<h2>AI Voice Changer - Transform Your Audio Identity</h2>
+<p>Modify your voice recordings with powerful AI technology. Change pitch, add effects, alter characteristics, and create entirely new vocal identities. Perfect for content creators, privacy protection, entertainment, and creative projects.</p>
+
+<h2>Advanced Voice Transformation</h2>
+<p>Our AI doesn't just apply simple pitch shifts - it intelligently reconstructs audio while maintaining natural speech patterns. The result sounds authentic rather than robotic, making your transformed audio usable for professional applications.</p>
+
+<h2>Multiple Transformation Modes</h2>
+<p>Choose from various presets or customize every aspect of the transformation. Make your voice deeper, higher, older, younger, or completely different. Add character effects for entertainment or subtle modifications for privacy.</p>
+
+<h2>Real-Time Processing</h2>
+<p>Upload your audio file and receive the transformed version in seconds. Our efficient AI processing handles files of any length without compromising quality. Multiple output formats available for compatibility with all audio software.</p>
+
+<h2>Privacy and Creative Applications</h2>
+<p>Protect your identity in online content while still sharing your message. Create unique character voices for animations or games. Add variety to podcast content with different voice personas. The applications are limited only by your imagination.</p>`,
+  },
+  {
+    id: "ai-voice-cloning",
+    name: "AI Voice Cloning",
+    description: "Clone voices and create custom AI voice models",
+    icon: "Users",
+    type: "ai-voice-cloning",
+    color: "bg-rose-600",
+    emoji: "🎤",
+    metaTitle: "AI Voice Cloning Free - Create Custom Voice Models | PDF Tools",
+    metaDescription: "Clone voices and create custom AI voice models for text-to-speech. Generate speech in any voice. Free AI voice cloning tool.",
+    seoArticle: `<h2>AI Voice Cloning - Create Your Custom Voice Model</h2>
+<p>Create personalized voice models that can speak any text in a specific voice. Our AI learns the unique characteristics of any voice and generates new speech that sounds authentically like the original speaker.</p>
+
+<h2>How Voice Cloning Works</h2>
+<p>Upload sample audio of the voice you want to clone. Our AI analyzes vocal patterns, speech rhythms, and tonal qualities. The result is a custom voice model that can generate unlimited new speech content matching the original voice.</p>
+
+<h2>Applications for Voice Cloning</h2>
+<p>Create consistent voiceovers using a specific voice profile. Generate audio content when the original speaker is unavailable. Preserve voices for posterity. Build custom voice assistants with unique personalities. Enable accessibility features with familiar voices.</p>
+
+<h2>Quality and Authenticity</h2>
+<p>Our cloned voices capture subtle nuances that make each voice unique - not just pitch and tone, but speaking pace, emotional inflections, and pronunciation patterns. The output is remarkably close to the original voice.</p>
+
+<h2>Responsible Use</h2>
+<p>Voice cloning is a powerful technology. We encourage responsible use with proper consent. Create content with voices you have permission to use. The technology offers amazing creative possibilities when used ethically.</p>`,
+  },
+  {
+    id: "ai-podcast-editor",
+    name: "AI Podcast Editor",
+    description: "Edit and enhance podcasts with AI-powered tools",
+    icon: "Podcast",
+    type: "ai-podcast-editor",
+    color: "bg-orange-600",
+    emoji: "🎙️",
+    metaTitle: "AI Podcast Editor Free - Edit Audio with AI | PDF Tools",
+    metaDescription: "Edit and enhance podcasts with AI-powered tools. Remove filler words, enhance audio quality, and auto-generate transcripts. Free podcast editor.",
+    seoArticle: `<h2>AI Podcast Editor - Professional Audio Editing Made Simple</h2>
+<p>Transform raw podcast recordings into polished, professional content with AI-powered editing tools. Remove awkward pauses, eliminate filler words, enhance audio quality, and create perfect episodes without spending hours in traditional audio editors.</p>
+
+<h2>Automatic Cleanup Features</h2>
+<p>Our AI identifies and removes um's, ah's, and other filler words automatically. Long pauses are shortened to natural lengths. Background noise is reduced while preserving voice clarity. The result sounds professionally produced.</p>
+
+<h2>Audio Enhancement</h2>
+<p>Normalize volume levels across multiple speakers. Apply noise reduction to clean up recordings. Enhance voice clarity and presence. Add subtle compression for broadcast-ready audio. All processing is non-destructive and reversible.</p>
+
+<h2>Transcription and Show Notes</h2>
+<p>Generate accurate transcripts of your episodes automatically. Create show notes and chapter markers. Extract quotable moments for social media. Make your content searchable and accessible to all audiences.</p>
+
+<h2>Efficient Workflow</h2>
+<p>Upload your raw recording and let AI handle the tedious editing work. Review suggested edits and make adjustments. Export your finished episode in any format. Spend less time editing and more time creating great content.</p>`,
+  },
+  {
+    id: "ai-video-dubbing",
+    name: "AI Video Dubbing",
+    description: "Dub videos into different languages using AI voices",
+    icon: "Globe",
+    type: "ai-video-dubbing",
+    color: "bg-teal-600",
+    emoji: "🌍",
+    metaTitle: "AI Video Dubbing Free - Translate Videos to Any Language | PDF Tools",
+    metaDescription: "Dub videos into different languages using AI voices. Automatic translation and voice synthesis. Free AI video dubbing tool.",
+    seoArticle: `<h2>AI Video Dubbing - Reach Global Audiences</h2>
+<p>Break language barriers with AI-powered video dubbing. Automatically translate your video content and generate natural-sounding voiceovers in any language. Expand your reach to international markets without expensive localization studios.</p>
+
+<h2>Complete Dubbing Pipeline</h2>
+<p>Our AI handles the entire process: speech recognition extracts the original dialogue, machine translation converts to target languages, and voice synthesis creates natural-sounding dubbed audio that syncs with the original video.</p>
+
+<h2>Natural Lip Sync</h2>
+<p>Advanced algorithms adjust speech timing to match lip movements as closely as possible. The AI considers the length and rhythm of translated phrases to create dubbed audio that looks and sounds natural.</p>
+
+<h2>Multiple Language Support</h2>
+<p>Dub your content into dozens of languages with native-sounding AI voices. Each language has multiple voice options to match your content style. Create multiple language versions from a single source video.</p>
+
+<h2>Perfect for Global Content</h2>
+<p>YouTube creators reach new audiences in their native languages. Businesses localize training videos and marketing content. Educational institutions make learning materials accessible worldwide. Expand your content's impact globally.</p>`,
+  },
+  {
+    id: "ai-avatar-generator",
+    name: "AI Avatar Generator",
+    description: "Generate unique AI avatars and profile pictures",
+    icon: "Users",
+    type: "ai-avatar-generator",
+    color: "bg-cyan-600",
+    emoji: "👤",
+    metaTitle: "AI Avatar Generator Free - Create Unique Profile Pictures | PDF Tools",
+    metaDescription: "Generate unique AI avatars and profile pictures. Create custom character designs and digital personas. Free AI avatar maker.",
+    seoArticle: `<h2>AI Avatar Generator - Create Your Digital Identity</h2>
+<p>Generate unique, personalized avatars using advanced AI technology. Create profile pictures, gaming characters, social media personas, or artistic self-portraits. Our AI produces endless variety with consistent quality and style.</p>
+
+<h2>Unlimited Creative Options</h2>
+<p>Choose from various art styles - realistic portraits, anime characters, cartoon illustrations, pixel art, and more. Customize features, colors, accessories, and backgrounds. Every generated avatar is unique and copyright-free.</p>
+
+<h2>Perfect for Online Presence</h2>
+<p>Create consistent avatars across all your social platforms. Generate team avatars for business profiles. Design mascots and characters for brands. Stand out with unique, professional digital identities.</p>
+
+<h2>Quick and Easy Process</h2>
+<p>Describe your desired avatar or upload a reference image for inspiration. Select your preferred style and customization options. Generate multiple variations and download your favorites in high resolution.</p>
+
+<h2>Privacy-Friendly Alternative</h2>
+<p>Not everyone wants to use personal photos online. AI avatars provide an attractive alternative that protects privacy while still creating a memorable visual identity. Perfect for gaming, forums, and social media where anonymity is preferred.</p>`,
+  },
+  {
+    id: "ai-headshot-generator",
+    name: "AI Headshot Generator",
+    description: "Create professional AI-generated headshots and portraits",
+    icon: "Camera",
+    type: "ai-headshot-generator",
+    color: "bg-sky-600",
+    emoji: "📸",
+    metaTitle: "AI Headshot Generator Free - Professional Portraits Instantly | PDF Tools",
+    metaDescription: "Create professional AI-generated headshots and portraits. Perfect for LinkedIn and business profiles. Free AI headshot maker.",
+    seoArticle: `<h2>AI Headshot Generator - Professional Portraits Without the Studio</h2>
+<p>Create stunning professional headshots using AI technology. Perfect for LinkedIn profiles, company websites, resumes, and professional portfolios. Get studio-quality portraits without booking photographers or spending hours in front of cameras.</p>
+
+<h2>Studio-Quality Results</h2>
+<p>Our AI generates headshots that look like they were taken by professional photographers. Perfect lighting, flattering angles, and crisp focus. The results are indistinguishable from traditional studio photography.</p>
+
+<h2>Multiple Style Options</h2>
+<p>Choose from corporate, creative, casual, or artistic portrait styles. Select backgrounds that match your industry and personal brand. Adjust lighting warmth and intensity. Create the perfect impression for your audience.</p>
+
+<h2>Consistent Team Photos</h2>
+<p>Generate matching headshots for entire teams with consistent styling, lighting, and backgrounds. Perfect for company websites and marketing materials. No more mismatched photos from different photographers and sessions.</p>
+
+<h2>Quick Turnaround</h2>
+<p>Upload a casual photo or selfie. Our AI transforms it into a polished professional headshot. Multiple variations generated instantly. Download high-resolution images ready for any professional application.</p>`,
+  },
+  {
+    id: "ai-presentation-maker",
+    name: "AI Presentation Maker",
+    description: "Create professional presentations with AI assistance",
+    icon: "Presentation",
+    type: "ai-presentation-maker",
+    color: "bg-amber-600",
+    emoji: "📊",
+    metaTitle: "AI Presentation Maker Free - Create Slides with AI | PDF Tools",
+    metaDescription: "Create professional presentations with AI assistance. Generate slides, content, and design automatically. Free AI presentation tool.",
+    seoArticle: `<h2>AI Presentation Maker - Create Stunning Slides Instantly</h2>
+<p>Transform your ideas into polished presentations with AI-powered design and content generation. Simply describe your topic, and our AI creates comprehensive slide decks with professional layouts, relevant content, and engaging visuals.</p>
+
+<h2>Complete Presentation Generation</h2>
+<p>Our AI doesn't just create slides - it researches your topic, structures content logically, designs attractive layouts, and suggests compelling visuals. The result is a presentation ready for delivery with minimal editing.</p>
+
+<h2>Professional Design Templates</h2>
+<p>Choose from hundreds of professionally designed templates for business, education, creative, and technical presentations. Each template is fully customizable and optimized for clarity and visual impact.</p>
+
+<h2>Smart Content Suggestions</h2>
+<p>AI analyzes your topic and suggests relevant statistics, quotes, and supporting points. Writer's block becomes a thing of the past. Get comprehensive coverage of your subject with minimal effort.</p>
+
+<h2>Export and Sharing Options</h2>
+<p>Download presentations in PowerPoint, PDF, or Google Slides format. Share directly to presentation platforms. Export individual slides as images for social media. Present directly from our platform if preferred.</p>`,
+  },
+  {
+    id: "ai-website-builder",
+    name: "AI Website Builder",
+    description: "Build complete websites using AI-powered design tools",
+    icon: "Globe",
+    type: "ai-website-builder",
+    color: "bg-emerald-600",
+    emoji: "🌐",
+    metaTitle: "AI Website Builder Free - Create Websites with AI | PDF Tools",
+    metaDescription: "Build complete websites using AI-powered design tools. Generate layouts, content, and code automatically. Free AI website generator.",
+    seoArticle: `<h2>AI Website Builder - Create Professional Websites Instantly</h2>
+<p>Build complete, functional websites using AI technology. Describe your business or project, and our AI generates professional website designs with relevant content, optimized layouts, and modern styling. No coding required.</p>
+
+<h2>Complete Website Generation</h2>
+<p>Our AI creates entire websites from scratch - homepage, about page, services, contact forms, and more. Each page is designed with user experience in mind, following best practices for conversion and engagement.</p>
+
+<h2>Responsive and Modern Design</h2>
+<p>Every generated website is fully responsive, looking perfect on desktop, tablet, and mobile devices. Modern design patterns, optimized images, and fast loading times come standard.</p>
+
+<h2>SEO-Ready Output</h2>
+<p>Websites are generated with proper heading structure, meta descriptions, semantic HTML, and other SEO best practices. Start ranking in search engines from day one.</p>
+
+<h2>Easy Customization and Export</h2>
+<p>Fine-tune the generated design with our visual editor. Export clean HTML, CSS, and JavaScript code. Deploy to any hosting platform. The code is yours to own and modify however you like.</p>`,
+  }
+
+
+];
+
+pdfTools.push(...aiPoweredTools);
+
