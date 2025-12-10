@@ -37802,7 +37802,214 @@ END:VCALENDAR`.replace(/\n+/g, '\n');
     }
   });
 
+  // AI Content Generation Route
+  app.post("/api/ai/generate", async (req: Request, res: Response) => {
+    try {
+      const { toolType, mainInput, options = {} } = req.body;
+
+      if (!mainInput || !toolType) {
+        return res.status(400).json({ success: false, error: "Missing required fields" });
+      }
+
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(500).json({ 
+          success: false, 
+          error: "AI features require an OpenAI API key. Please add OPENAI_API_KEY to your secrets." 
+        });
+      }
+
+      const OpenAI = (await import("openai")).default;
+      const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+      let systemPrompt = "";
+      let userPrompt = "";
+
+      switch (toolType) {
+        case "ai-logo-maker":
+          systemPrompt = "You are a professional brand designer. Create detailed logo concepts with descriptions.";
+          userPrompt = `Create 3 unique logo concepts for a brand called "${mainInput}".
+Industry: ${options.industry || "General"}
+Style: ${options.style || "Modern"}
+${options.colors ? `Preferred colors: ${options.colors}` : ""}
+${options.description ? `Brand description: ${options.description}` : ""}
+
+For each concept, provide:
+1. Logo name/concept title
+2. Detailed visual description (shapes, typography, colors, layout)
+3. Why it works for the brand
+4. Variations (horizontal, vertical, icon-only)`;
+          break;
+
+        case "ai-ad-copy-generator":
+          systemPrompt = "You are an expert advertising copywriter with experience in digital marketing.";
+          userPrompt = `Create compelling ad copy for "${mainInput}".
+Platform: ${options.platform || "General"}
+Target Audience: ${options.targetAudience || "General audience"}
+Tone: ${options.tone || "Professional"}
+${options.uniqueSellingPoint ? `USP: ${options.uniqueSellingPoint}` : ""}
+
+Provide:
+1. 3 headline variations (attention-grabbing)
+2. 3 primary text/body copy versions
+3. 3 call-to-action options
+4. Platform-specific tips`;
+          break;
+
+        case "ai-blog-post-writer":
+          systemPrompt = "You are a professional content writer specializing in SEO-optimized blog posts.";
+          userPrompt = `Write a comprehensive blog post about "${mainInput}".
+${options.keywords ? `Target keywords: ${options.keywords}` : ""}
+Word count: approximately ${options.wordCount || "1000"} words
+Tone: ${options.tone || "Informative"}
+${options.outline ? `Key points: ${options.outline}` : ""}
+
+Include:
+1. Engaging title with power words
+2. Introduction with hook
+3. Well-structured body with H2 and H3 headings
+4. Practical examples or tips
+5. Strong conclusion with call-to-action
+6. Meta description suggestion`;
+          break;
+
+        case "ai-email-writer":
+          systemPrompt = "You are a professional email writer skilled in business communication.";
+          userPrompt = `Write a ${options.emailType || "professional"} email about "${mainInput}".
+Recipient context: ${options.recipient || "Professional contact"}
+Tone: ${options.tone || "Professional"}
+${options.keyPoints ? `Key points to include: ${options.keyPoints}` : ""}
+
+Provide:
+1. Subject line (3 options)
+2. Email body with proper greeting
+3. Clear purpose and message
+4. Professional closing
+5. Alternative versions (shorter/longer)`;
+          break;
+
+        case "ai-social-media-generator":
+          systemPrompt = "You are a social media expert who creates viral, engaging content.";
+          userPrompt = `Create a ${options.postType || "engaging"} social media post about "${mainInput}".
+Platform: ${options.platform || "Instagram"}
+Tone: ${options.tone || "Casual"}
+${options.includeHashtags === "Yes" ? "Include relevant hashtags" : ""}
+
+Provide:
+1. Main post caption (platform-optimized)
+2. 3 alternative versions
+3. ${options.includeHashtags === "Yes" ? "20 relevant hashtags (mix of popular and niche)" : ""}
+4. Best posting tips for this content
+5. Engagement question to boost comments`;
+          break;
+
+        case "ai-product-description-generator":
+          systemPrompt = "You are an e-commerce copywriter who writes descriptions that convert browsers into buyers.";
+          userPrompt = `Write a compelling product description for "${mainInput}".
+Category: ${options.category || "General"}
+${options.features ? `Key features: ${options.features}` : ""}
+Target customer: ${options.targetAudience || "General consumers"}
+Style: ${options.tone || "Professional"}
+
+Provide:
+1. Attention-grabbing headline
+2. Short description (50-100 words)
+3. Detailed description (200-300 words)
+4. Bullet points of benefits (5-7)
+5. SEO-friendly version`;
+          break;
+
+        case "ai-video-script-writer":
+          systemPrompt = "You are a professional video scriptwriter for YouTube and social media.";
+          userPrompt = `Write a ${options.videoType || "YouTube"} video script about "${mainInput}".
+Duration: ${options.duration || "5 minutes"}
+Tone: ${options.tone || "Engaging"}
+${options.keyPoints ? `Key points: ${options.keyPoints}` : ""}
+
+Include:
+1. Hook (first 5 seconds to grab attention)
+2. Introduction
+3. Main content sections with timestamps
+4. Transitions between sections
+5. Call-to-action
+6. Outro
+7. B-roll and visual suggestions`;
+          break;
+
+        case "ai-music-generator":
+          systemPrompt = "You are a music composition expert who describes musical pieces in detail.";
+          userPrompt = `Create a detailed music composition concept for: "${mainInput}".
+Genre: ${options.genre || "Pop"}
+Mood: ${options.mood || "Upbeat"}
+Tempo: ${options.tempo || "Medium"}
+Use case: ${options.useCase || "Background music"}
+
+Provide:
+1. Composition overview
+2. Suggested tempo (BPM)
+3. Key signature recommendation
+4. Instrumentation (primary and secondary)
+5. Song structure (intro, verse, chorus, bridge, outro)
+6. Melody description
+7. Harmonic progression suggestions
+8. Production tips`;
+          break;
+
+        case "ai-code-generator":
+          systemPrompt = `You are an expert ${options.language || "JavaScript"} developer. Write clean, well-commented, production-ready code.`;
+          userPrompt = `Write ${options.codeType || "a function"} in ${options.language || "JavaScript"} that: ${mainInput}
+
+${options.context ? `Additional context: ${options.context}` : ""}
+
+Provide:
+1. The complete working code
+2. Clear comments explaining the logic
+3. Example usage
+4. Error handling
+5. Any necessary imports or dependencies`;
+          break;
+
+        case "ai-sql-query-generator":
+          systemPrompt = `You are a database expert specializing in ${options.database || "PostgreSQL"} queries.`;
+          userPrompt = `Generate a ${options.database || "PostgreSQL"} SQL query for: "${mainInput}"
+${options.tables ? `Tables involved: ${options.tables}` : ""}
+Query type: ${options.queryType || "SELECT"}
+
+Provide:
+1. The optimized SQL query
+2. Explanation of each clause
+3. Sample data expectations
+4. Performance considerations
+5. Alternative approaches if applicable`;
+          break;
+
+        default:
+          systemPrompt = "You are a helpful AI assistant that generates high-quality content.";
+          userPrompt = mainInput;
+      }
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt }
+        ],
+        max_tokens: 4000,
+        temperature: 0.7,
+      });
+
+      const generatedContent = response.choices[0]?.message?.content || "";
+
+      res.json({ success: true, content: generatedContent });
+    } catch (error) {
+      console.error("AI generation error:", error);
+      res.status(500).json({ 
+        success: false, 
+        error: error instanceof Error ? error.message : "Failed to generate content" 
+      });
+    }
+  });
+
+
+
   return httpServer;
 }
-
-// Note: These routes were added by inserting before the closing

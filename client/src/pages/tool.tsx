@@ -90,6 +90,7 @@ import { SubnetCalculator } from "@/components/subnet-calculator";
 import { GzipCompressionChecker } from "@/components/gzip-compression-checker";
 import { EmailObfuscator } from "@/components/email-obfuscator";
 import { PortScanner } from "@/components/port-scanner";
+import { AiContentGenerator } from "@/components/ai-content-generator";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
