@@ -990,6 +990,21 @@ export const pdfToolTypes = [
   "ai-homework-helper",
   "ai-story-generator",
   "ai-resume-builder",
+  "ai-cover-letter-generator",
+  "ai-interior-design",
+  "ai-tattoo-generator",
+  "ai-fashion-designer",
+  "ai-recipe-generator",
+  "ai-workout-planner",
+  "ai-travel-itinerary",
+  "ai-horoscope-generator",
+  "ai-dream-interpreter",
+  "ai-name-generator",
+  "ai-slogan-generator",
+  "ai-code-debugger",
+  "ai-code-reviewer",
+  "ai-code-translator",
+  "ai-unit-test-generator",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -1603,6 +1618,15 @@ export const toolOptionsSchema = z.object({
   sheets: z.string().optional(),
   customCss: z.string().optional(),
   blankThreshold: z.number().optional(),
+  jsonInput: z.string().optional(),
+  xmlInput: z.string().optional(),
+  htmlInput: z.string().optional(),
+  cssInput: z.string().optional(),
+  jsInput: z.string().optional(),
+  sqlInput: z.string().optional(),
+  textInput: z.string().optional(),
+  hexInput: z.string().optional(),
+  morseInput: z.string().optional(),
 });
 
 export type ToolOptions = z.infer<typeof toolOptionsSchema>;
@@ -26933,7 +26957,337 @@ const newAiTools: PdfTool[] = [
 
 <h2>Industry Customization</h2>
 <p>Language and emphasis tailored to your industry. Tech, finance, healthcare, marketing, sales - each field has its own expectations and terminology.</p>`,
-  }
+  },
+  {
+    id: "ai-cover-letter-generator",
+    name: "AI Cover Letter Generator",
+    description: "Create professional cover letters tailored to job applications",
+    icon: "FileText",
+    type: "ai-cover-letter-generator",
+    color: "bg-blue-600",
+    emoji: "📝",
+    metaTitle: "AI Cover Letter Generator Free - Create Professional Cover Letters | PDF Tools",
+    metaDescription: "Generate professional cover letters tailored to any job with AI. Highlight your skills and experience. Free AI cover letter writing assistant.",
+    seoArticle: `<h2>AI Cover Letter Generator - Make Your Application Stand Out</h2>
+<p>A compelling cover letter can be the difference between getting an interview and being overlooked. Our AI Cover Letter Generator creates personalized, professional cover letters that highlight your unique qualifications and enthusiasm for the role.</p>
+
+<h2>Tailored to Each Job</h2>
+<p>Every cover letter is customized to the specific job and company. Our AI analyzes job requirements and crafts messaging that demonstrates your fit for the position.</p>
+
+<h2>Professional Formatting</h2>
+<p>Proper business letter structure with attention-grabbing openings, compelling body paragraphs, and confident closings. Ready to submit with your application.</p>
+
+<h2>Highlight Your Value</h2>
+<p>Effectively communicate your achievements, skills, and potential contributions. Turn your experience into compelling narratives that resonate with hiring managers.</p>`,
+  },
+  {
+    id: "ai-interior-design",
+    name: "AI Interior Design",
+    description: "Get AI-powered interior design ideas and recommendations",
+    icon: "Palette",
+    type: "ai-interior-design",
+    color: "bg-amber-600",
+    emoji: "🏠",
+    metaTitle: "AI Interior Design Free - Room Design Ideas & Tips | PDF Tools",
+    metaDescription: "Get AI-powered interior design ideas for any room. Personalized style recommendations, furniture layouts, and color schemes. Free AI interior designer.",
+    seoArticle: `<h2>AI Interior Design - Transform Any Space</h2>
+<p>Whether you're renovating your home or just refreshing a room, our AI Interior Design tool provides personalized design recommendations tailored to your style, space, and budget.</p>
+
+<h2>Personalized Style Recommendations</h2>
+<p>From minimalist to bohemian, modern to traditional - get design ideas that match your personal aesthetic. Our AI understands design principles and current trends.</p>
+
+<h2>Complete Room Concepts</h2>
+<p>Receive comprehensive design plans including furniture recommendations, color palettes, lighting suggestions, and decor ideas that work together harmoniously.</p>
+
+<h2>Budget-Conscious Solutions</h2>
+<p>Get design recommendations that fit your budget. Whether you're looking for affordable updates or luxury renovations, our AI tailors suggestions accordingly.</p>`,
+  },
+  {
+    id: "ai-tattoo-generator",
+    name: "AI Tattoo Generator",
+    description: "Generate unique tattoo design ideas and concepts",
+    icon: "Pen",
+    type: "ai-tattoo-generator",
+    color: "bg-gray-800",
+    emoji: "🎨",
+    metaTitle: "AI Tattoo Generator Free - Custom Tattoo Design Ideas | PDF Tools",
+    metaDescription: "Generate unique tattoo design ideas with AI. Get custom tattoo concepts for any style - traditional, minimalist, geometric, and more. Free AI tattoo designer.",
+    seoArticle: `<h2>AI Tattoo Generator - Unique Designs for Your Story</h2>
+<p>Finding the perfect tattoo design can be challenging. Our AI Tattoo Generator creates unique, personalized tattoo concepts based on your ideas, preferred style, and the meaning you want to convey.</p>
+
+<h2>Any Style, Any Placement</h2>
+<p>From traditional to minimalist, geometric to watercolor - get design concepts in your preferred tattoo style. Recommendations include placement and sizing suggestions.</p>
+
+<h2>Meaningful Design Elements</h2>
+<p>Incorporate symbols, imagery, and elements that hold personal significance. Our AI helps translate your story into visual design concepts.</p>
+
+<h2>Artist-Ready Descriptions</h2>
+<p>Receive detailed design descriptions you can share with your tattoo artist. Clear concepts help artists bring your vision to life.</p>`,
+  },
+  {
+    id: "ai-fashion-designer",
+    name: "AI Fashion Designer",
+    description: "Get personalized fashion recommendations and outfit ideas",
+    icon: "Sparkles",
+    type: "ai-fashion-designer",
+    color: "bg-pink-600",
+    emoji: "👗",
+    metaTitle: "AI Fashion Designer Free - Outfit Ideas & Style Tips | PDF Tools",
+    metaDescription: "Get AI-powered fashion recommendations and outfit ideas. Personalized style suggestions for any occasion. Free AI personal stylist.",
+    seoArticle: `<h2>AI Fashion Designer - Your Personal Stylist</h2>
+<p>Not sure what to wear? Our AI Fashion Designer provides personalized outfit recommendations for any occasion, season, or style preference. Get expert fashion advice tailored to your taste.</p>
+
+<h2>Complete Outfit Ideas</h2>
+<p>Receive head-to-toe outfit suggestions including clothing, accessories, and footwear. Every element works together for a cohesive, stylish look.</p>
+
+<h2>Occasion-Appropriate Styling</h2>
+<p>From casual weekends to formal events, business meetings to date nights - get outfit ideas that are perfectly suited to any occasion.</p>
+
+<h2>Budget-Friendly Options</h2>
+<p>Fashion doesn't have to be expensive. Get style recommendations at various price points, from budget-friendly to luxury designer options.</p>`,
+  },
+  {
+    id: "ai-recipe-generator",
+    name: "AI Recipe Generator",
+    description: "Generate delicious recipes based on ingredients or preferences",
+    icon: "BookOpen",
+    type: "ai-recipe-generator",
+    color: "bg-orange-600",
+    emoji: "🍳",
+    metaTitle: "AI Recipe Generator Free - Create Custom Recipes | PDF Tools",
+    metaDescription: "Generate delicious recipes with AI based on your ingredients or preferences. Custom recipes for any cuisine and dietary needs. Free AI chef assistant.",
+    seoArticle: `<h2>AI Recipe Generator - Cook Something Amazing</h2>
+<p>Whether you have specific ingredients to use or cravings to satisfy, our AI Recipe Generator creates custom recipes tailored to your needs. Get step-by-step instructions for delicious meals.</p>
+
+<h2>Use What You Have</h2>
+<p>Tell us what ingredients you have, and we'll create recipes that make the most of them. Reduce food waste while discovering new dishes.</p>
+
+<h2>Dietary Accommodations</h2>
+<p>Vegetarian, vegan, keto, gluten-free - get recipes that fit your dietary requirements without sacrificing flavor or variety.</p>
+
+<h2>Clear Instructions</h2>
+<p>Every recipe includes detailed step-by-step instructions, cooking times, and tips for success. Perfect for beginners and experienced cooks alike.</p>`,
+  },
+  {
+    id: "ai-workout-planner",
+    name: "AI Workout Planner",
+    description: "Create personalized workout plans for your fitness goals",
+    icon: "Activity",
+    type: "ai-workout-planner",
+    color: "bg-green-600",
+    emoji: "💪",
+    metaTitle: "AI Workout Planner Free - Custom Fitness Plans | PDF Tools",
+    metaDescription: "Create personalized workout plans with AI. Custom exercises for any fitness level and goal. Free AI personal trainer.",
+    seoArticle: `<h2>AI Workout Planner - Achieve Your Fitness Goals</h2>
+<p>Whether you want to build muscle, lose weight, or improve endurance, our AI Workout Planner creates personalized exercise routines tailored to your goals, fitness level, and available equipment.</p>
+
+<h2>Customized to Your Level</h2>
+<p>From beginner to advanced, our AI creates workouts that challenge you appropriately. Progress at your own pace with exercises that match your current abilities.</p>
+
+<h2>Equipment Flexibility</h2>
+<p>No gym? No problem. Get effective workouts with whatever equipment you have access to - bodyweight only, dumbbells, resistance bands, or full gym.</p>
+
+<h2>Complete Workout Plans</h2>
+<p>Receive detailed workout plans including exercises, sets, reps, rest periods, and proper form tips. Everything you need for effective training.</p>`,
+  },
+  {
+    id: "ai-travel-itinerary",
+    name: "AI Travel Itinerary",
+    description: "Plan perfect trips with AI-generated travel itineraries",
+    icon: "Globe",
+    type: "ai-travel-itinerary",
+    color: "bg-cyan-600",
+    emoji: "✈️",
+    metaTitle: "AI Travel Itinerary Planner Free - Trip Planning Made Easy | PDF Tools",
+    metaDescription: "Plan perfect trips with AI-generated travel itineraries. Custom day-by-day plans for any destination. Free AI travel planner.",
+    seoArticle: `<h2>AI Travel Itinerary - Plan Your Perfect Trip</h2>
+<p>Planning a trip can be overwhelming. Our AI Travel Itinerary generator creates detailed day-by-day travel plans tailored to your destination, interests, budget, and travel style.</p>
+
+<h2>Day-by-Day Planning</h2>
+<p>Receive complete itineraries with activities, attractions, and experiences for each day. Maximize your time without feeling rushed.</p>
+
+<h2>Personalized Recommendations</h2>
+<p>Whether you're an adventure seeker, culture enthusiast, foodie, or relaxation lover - get recommendations that match your travel interests.</p>
+
+<h2>Practical Travel Tips</h2>
+<p>Beyond just activities, get practical advice on transportation, timing, local customs, and insider tips to enhance your travel experience.</p>`,
+  },
+  {
+    id: "ai-horoscope-generator",
+    name: "AI Horoscope Generator",
+    description: "Generate personalized horoscope readings",
+    icon: "Sparkles",
+    type: "ai-horoscope-generator",
+    color: "bg-purple-600",
+    emoji: "⭐",
+    metaTitle: "AI Horoscope Generator Free - Daily Zodiac Readings | PDF Tools",
+    metaDescription: "Generate personalized horoscope readings with AI. Daily, weekly, or monthly zodiac predictions. Free AI astrology assistant.",
+    seoArticle: `<h2>AI Horoscope Generator - Celestial Guidance</h2>
+<p>Curious about what the stars have in store? Our AI Horoscope Generator creates personalized astrological readings for your zodiac sign, covering love, career, health, and personal growth.</p>
+
+<h2>Multiple Time Periods</h2>
+<p>Get daily inspiration, weekly guidance, monthly overviews, or yearly predictions. Choose the timeframe that best suits your needs.</p>
+
+<h2>Life Area Focus</h2>
+<p>Focus on specific areas of life - love and relationships, career and finance, health and wellness, or personal development. Targeted insights for what matters most to you.</p>
+
+<h2>Thoughtful Readings</h2>
+<p>Receive insightful, encouraging readings that provide perspective and inspiration. Meaningful guidance presented in an engaging, accessible style.</p>`,
+  },
+  {
+    id: "ai-dream-interpreter",
+    name: "AI Dream Interpreter",
+    description: "Analyze and interpret the meaning of your dreams",
+    icon: "Eye",
+    type: "ai-dream-interpreter",
+    color: "bg-indigo-600",
+    emoji: "🌙",
+    metaTitle: "AI Dream Interpreter Free - Understand Your Dreams | PDF Tools",
+    metaDescription: "Analyze and interpret your dreams with AI. Understand dream symbolism and meanings. Free AI dream analysis.",
+    seoArticle: `<h2>AI Dream Interpreter - Unlock Dream Meanings</h2>
+<p>Dreams can be mysterious, vivid, and sometimes confusing. Our AI Dream Interpreter analyzes your dreams to uncover potential meanings, symbols, and insights from your subconscious mind.</p>
+
+<h2>Symbol Analysis</h2>
+<p>Understand the significance of dream symbols, characters, and scenarios. Our AI draws from psychological, cultural, and universal symbolism.</p>
+
+<h2>Multiple Perspectives</h2>
+<p>Get interpretations from various approaches - psychological analysis, spiritual meanings, or scientific explanations. Choose the perspective that resonates with you.</p>
+
+<h2>Personal Insights</h2>
+<p>Dreams often reflect our waking concerns, desires, and emotions. Gain insights that may help you understand yourself and your experiences better.</p>`,
+  },
+  {
+    id: "ai-name-generator",
+    name: "AI Name Generator",
+    description: "Generate creative names for babies, businesses, brands, and more",
+    icon: "Type",
+    type: "ai-name-generator",
+    color: "bg-teal-600",
+    emoji: "💡",
+    metaTitle: "AI Name Generator Free - Baby, Business & Brand Names | PDF Tools",
+    metaDescription: "Generate creative names with AI for babies, businesses, brands, and more. Unique name suggestions tailored to your needs. Free AI name creator.",
+    seoArticle: `<h2>AI Name Generator - Find the Perfect Name</h2>
+<p>Finding the right name - whether for a baby, business, product, or character - can be challenging. Our AI Name Generator creates unique, meaningful name suggestions tailored to your specific needs.</p>
+
+<h2>Multiple Name Types</h2>
+<p>Baby names, business names, brand names, usernames, character names, pet names - get suggestions for any naming need with appropriate style and considerations.</p>
+
+<h2>Cultural Considerations</h2>
+<p>Explore names from various cultural backgrounds and origins. Find names that honor heritage or have specific meanings you're looking for.</p>
+
+<h2>Style Matching</h2>
+<p>Whether you want modern, classic, unique, professional, or creative - get name suggestions that match your desired style and tone.</p>`,
+  },
+  {
+    id: "ai-slogan-generator",
+    name: "AI Slogan Generator",
+    description: "Create catchy slogans and taglines for your brand",
+    icon: "MessageSquare",
+    type: "ai-slogan-generator",
+    color: "bg-red-600",
+    emoji: "📣",
+    metaTitle: "AI Slogan Generator Free - Catchy Taglines & Slogans | PDF Tools",
+    metaDescription: "Create catchy slogans and taglines with AI. Memorable brand messaging for any industry. Free AI slogan creator.",
+    seoArticle: `<h2>AI Slogan Generator - Memorable Brand Messaging</h2>
+<p>A great slogan captures your brand essence in just a few words. Our AI Slogan Generator creates catchy, memorable taglines that communicate your value and stick in people's minds.</p>
+
+<h2>Industry-Specific</h2>
+<p>Get slogans tailored to your industry and target audience. Each suggestion considers the conventions and expectations of your market.</p>
+
+<h2>Multiple Options</h2>
+<p>Receive multiple slogan options to choose from. Compare different approaches and find the one that perfectly captures your brand voice.</p>
+
+<h2>Tone Control</h2>
+<p>Professional, playful, inspiring, bold - get slogans that match your brand personality and the impression you want to make.</p>`,
+  },
+  {
+    id: "ai-code-debugger",
+    name: "AI Code Debugger",
+    description: "Find and fix bugs in your code with AI assistance",
+    icon: "Code",
+    type: "ai-code-debugger",
+    color: "bg-red-700",
+    emoji: "🐛",
+    metaTitle: "AI Code Debugger Free - Find & Fix Bugs | PDF Tools",
+    metaDescription: "Debug code faster with AI. Identify bugs, understand errors, and get fix suggestions. Free AI debugging assistant.",
+    seoArticle: `<h2>AI Code Debugger - Fix Bugs Faster</h2>
+<p>Stuck on a bug? Our AI Code Debugger analyzes your code to identify issues, explain what's going wrong, and suggest fixes. Debug faster and learn better debugging techniques.</p>
+
+<h2>Error Analysis</h2>
+<p>Paste your code and error messages - our AI identifies the root cause and explains why the error is occurring in plain language.</p>
+
+<h2>Fix Suggestions</h2>
+<p>Get concrete fix suggestions with corrected code. Understand not just what to change, but why the fix works.</p>
+
+<h2>Multiple Languages</h2>
+<p>Support for JavaScript, Python, Java, C++, and many more programming languages. Debug code in your preferred language.</p>`,
+  },
+  {
+    id: "ai-code-reviewer",
+    name: "AI Code Reviewer",
+    description: "Get AI-powered code reviews for better code quality",
+    icon: "FileSearch",
+    type: "ai-code-reviewer",
+    color: "bg-blue-700",
+    emoji: "🔍",
+    metaTitle: "AI Code Reviewer Free - Improve Code Quality | PDF Tools",
+    metaDescription: "Get AI-powered code reviews. Identify issues, improve performance, and follow best practices. Free AI code review assistant.",
+    seoArticle: `<h2>AI Code Reviewer - Better Code Quality</h2>
+<p>Improve your code with AI-powered reviews. Our AI Code Reviewer analyzes your code for potential issues, performance improvements, and best practice violations.</p>
+
+<h2>Comprehensive Analysis</h2>
+<p>Get feedback on code quality, readability, performance, security, and adherence to best practices. Thorough reviews that help you write better code.</p>
+
+<h2>Actionable Suggestions</h2>
+<p>Receive specific, actionable improvement suggestions with examples of better implementations. Learn and improve with every review.</p>
+
+<h2>Focus Areas</h2>
+<p>Choose to focus on specific aspects - performance optimization, security review, or general best practices. Targeted feedback for your needs.</p>`,
+  },
+  {
+    id: "ai-code-translator",
+    name: "AI Code Translator",
+    description: "Convert code from one programming language to another",
+    icon: "RefreshCw",
+    type: "ai-code-translator",
+    color: "bg-green-700",
+    emoji: "🔄",
+    metaTitle: "AI Code Translator Free - Convert Between Languages | PDF Tools",
+    metaDescription: "Translate code between programming languages with AI. Convert JavaScript, Python, Java, and more. Free AI code converter.",
+    seoArticle: `<h2>AI Code Translator - Cross-Language Conversion</h2>
+<p>Need to convert code from one programming language to another? Our AI Code Translator translates your code while maintaining functionality and following language-specific conventions.</p>
+
+<h2>Accurate Translation</h2>
+<p>Get accurate code translations that work. Our AI understands language-specific patterns and converts them appropriately.</p>
+
+<h2>Idiomatic Code</h2>
+<p>Translated code follows the conventions and idioms of the target language. Not just syntactically correct, but written the way native developers would write it.</p>
+
+<h2>Wide Language Support</h2>
+<p>Translate between JavaScript, TypeScript, Python, Java, C++, C#, Go, Rust, and many more languages.</p>`,
+  },
+  {
+    id: "ai-unit-test-generator",
+    name: "AI Unit Test Generator",
+    description: "Automatically generate unit tests for your code",
+    icon: "FileCheck",
+    type: "ai-unit-test-generator",
+    color: "bg-emerald-700",
+    emoji: "✅",
+    metaTitle: "AI Unit Test Generator Free - Auto-Generate Tests | PDF Tools",
+    metaDescription: "Generate unit tests automatically with AI. Comprehensive test coverage for any code. Free AI testing assistant.",
+    seoArticle: `<h2>AI Unit Test Generator - Comprehensive Testing</h2>
+<p>Writing unit tests is essential but time-consuming. Our AI Unit Test Generator automatically creates comprehensive test suites for your code, ensuring better coverage and fewer bugs.</p>
+
+<h2>Comprehensive Coverage</h2>
+<p>Get tests that cover normal cases, edge cases, and error conditions. Thorough testing to catch bugs before they reach production.</p>
+
+<h2>Framework-Specific</h2>
+<p>Generate tests for Jest, Mocha, Pytest, JUnit, and many other popular testing frameworks. Tests that work with your existing setup.</p>
+
+<h2>Ready to Run</h2>
+<p>Receive complete, runnable test files with proper assertions and test structure. Just add them to your project and run.</p>`,
+  },
 ];
 
 pdfTools.push(...newAiTools);

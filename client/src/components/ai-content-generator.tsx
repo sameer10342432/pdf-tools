@@ -209,6 +209,155 @@ const toolConfigs: Record<string, GenerationConfig> = {
       { name: "achievements", label: "Key Achievements", type: "textarea" },
     ],
   },
+  "ai-cover-letter-generator": {
+    inputLabel: "Job Position",
+    placeholder: "Enter the job title you're applying for",
+    additionalFields: [
+      { name: "company", label: "Company Name", type: "input" },
+      { name: "experience", label: "Your Relevant Experience", type: "textarea" },
+      { name: "skills", label: "Key Skills (comma separated)", type: "input" },
+      { name: "tone", label: "Tone", type: "select", options: ["Professional", "Enthusiastic", "Confident", "Humble", "Creative"] },
+    ],
+  },
+  "ai-interior-design": {
+    inputLabel: "Room Type",
+    placeholder: "Describe the room you want to design (e.g., living room, bedroom)",
+    additionalFields: [
+      { name: "style", label: "Design Style", type: "select", options: ["Modern", "Minimalist", "Scandinavian", "Industrial", "Bohemian", "Traditional", "Contemporary", "Rustic", "Art Deco", "Mid-Century Modern"] },
+      { name: "budget", label: "Budget Range", type: "select", options: ["Budget-Friendly", "Mid-Range", "Luxury"] },
+      { name: "colors", label: "Preferred Colors", type: "input" },
+      { name: "requirements", label: "Special Requirements", type: "textarea" },
+    ],
+  },
+  "ai-tattoo-generator": {
+    inputLabel: "Tattoo Idea",
+    placeholder: "Describe your tattoo idea or concept",
+    additionalFields: [
+      { name: "style", label: "Tattoo Style", type: "select", options: ["Traditional", "Neo-Traditional", "Minimalist", "Watercolor", "Geometric", "Tribal", "Japanese", "Blackwork", "Dotwork", "Realism", "Trash Polka"] },
+      { name: "placement", label: "Body Placement", type: "select", options: ["Arm", "Forearm", "Shoulder", "Back", "Chest", "Leg", "Wrist", "Ankle", "Neck", "Finger", "Rib"] },
+      { name: "size", label: "Size", type: "select", options: ["Small", "Medium", "Large", "Full Sleeve", "Half Sleeve"] },
+      { name: "meaning", label: "Personal Meaning (optional)", type: "textarea" },
+    ],
+  },
+  "ai-fashion-designer": {
+    inputLabel: "Outfit Description",
+    placeholder: "Describe the outfit or fashion style you want",
+    additionalFields: [
+      { name: "occasion", label: "Occasion", type: "select", options: ["Casual", "Business", "Formal", "Party", "Date Night", "Wedding", "Vacation", "Athleisure", "Street Style"] },
+      { name: "season", label: "Season", type: "select", options: ["Spring", "Summer", "Fall", "Winter", "All Seasons"] },
+      { name: "gender", label: "Style For", type: "select", options: ["Women", "Men", "Unisex", "Kids"] },
+      { name: "budget", label: "Budget", type: "select", options: ["Budget-Friendly", "Mid-Range", "Designer", "Luxury"] },
+      { name: "preferences", label: "Style Preferences", type: "textarea" },
+    ],
+  },
+  "ai-recipe-generator": {
+    inputLabel: "Dish or Ingredients",
+    placeholder: "Describe the dish you want or list available ingredients",
+    additionalFields: [
+      { name: "cuisine", label: "Cuisine Type", type: "select", options: ["Italian", "Mexican", "Chinese", "Japanese", "Indian", "Thai", "French", "Mediterranean", "American", "Korean", "Middle Eastern", "Fusion"] },
+      { name: "dietary", label: "Dietary Restrictions", type: "select", options: ["None", "Vegetarian", "Vegan", "Gluten-Free", "Keto", "Paleo", "Low-Carb", "Dairy-Free", "Halal", "Kosher"] },
+      { name: "difficulty", label: "Difficulty Level", type: "select", options: ["Beginner", "Intermediate", "Advanced", "Chef Level"] },
+      { name: "servings", label: "Number of Servings", type: "select", options: ["1", "2", "4", "6", "8", "10+"] },
+      { name: "time", label: "Cooking Time", type: "select", options: ["15 minutes", "30 minutes", "1 hour", "2 hours", "No limit"] },
+    ],
+  },
+  "ai-workout-planner": {
+    inputLabel: "Fitness Goal",
+    placeholder: "Describe your fitness goal (e.g., lose weight, build muscle)",
+    additionalFields: [
+      { name: "fitnessLevel", label: "Current Fitness Level", type: "select", options: ["Beginner", "Intermediate", "Advanced", "Athlete"] },
+      { name: "workoutType", label: "Workout Type", type: "select", options: ["Strength Training", "Cardio", "HIIT", "Yoga", "Pilates", "CrossFit", "Calisthenics", "Mixed"] },
+      { name: "equipment", label: "Available Equipment", type: "select", options: ["None (Bodyweight)", "Dumbbells", "Full Gym", "Resistance Bands", "Home Gym"] },
+      { name: "duration", label: "Workout Duration", type: "select", options: ["15 minutes", "30 minutes", "45 minutes", "60 minutes", "90 minutes"] },
+      { name: "daysPerWeek", label: "Days Per Week", type: "select", options: ["3", "4", "5", "6", "7"] },
+    ],
+  },
+  "ai-travel-itinerary": {
+    inputLabel: "Destination",
+    placeholder: "Enter your travel destination",
+    additionalFields: [
+      { name: "duration", label: "Trip Duration", type: "select", options: ["Weekend (2-3 days)", "1 Week", "2 Weeks", "1 Month", "Extended"] },
+      { name: "travelStyle", label: "Travel Style", type: "select", options: ["Budget Backpacker", "Mid-Range", "Luxury", "Adventure", "Cultural", "Relaxation", "Family-Friendly"] },
+      { name: "interests", label: "Interests (comma separated)", type: "input" },
+      { name: "budget", label: "Budget Per Day", type: "select", options: ["Under $50", "$50-100", "$100-200", "$200-500", "Unlimited"] },
+      { name: "requirements", label: "Special Requirements", type: "textarea" },
+    ],
+  },
+  "ai-horoscope-generator": {
+    inputLabel: "Zodiac Sign",
+    placeholder: "Enter zodiac sign (e.g., Aries, Taurus)",
+    additionalFields: [
+      { name: "period", label: "Time Period", type: "select", options: ["Daily", "Weekly", "Monthly", "Yearly"] },
+      { name: "focus", label: "Life Area Focus", type: "select", options: ["General", "Love & Relationships", "Career & Finance", "Health & Wellness", "Personal Growth"] },
+      { name: "style", label: "Reading Style", type: "select", options: ["Traditional", "Modern", "Inspirational", "Detailed", "Brief"] },
+    ],
+  },
+  "ai-dream-interpreter": {
+    inputLabel: "Dream Description",
+    placeholder: "Describe your dream in detail",
+    additionalFields: [
+      { name: "dreamType", label: "Dream Type", type: "select", options: ["Normal", "Recurring", "Nightmare", "Lucid", "Prophetic", "Vivid"] },
+      { name: "emotions", label: "Emotions Felt", type: "input" },
+      { name: "interpretationStyle", label: "Interpretation Style", type: "select", options: ["Psychological", "Spiritual", "Cultural", "Scientific", "Mixed"] },
+    ],
+  },
+  "ai-name-generator": {
+    inputLabel: "Name Category",
+    placeholder: "What type of name do you need? (e.g., baby name, business name)",
+    additionalFields: [
+      { name: "nameType", label: "Name Type", type: "select", options: ["Baby Name", "Business Name", "Brand Name", "Username", "Character Name", "Pet Name", "Product Name", "Domain Name"] },
+      { name: "style", label: "Style", type: "select", options: ["Modern", "Classic", "Unique", "Professional", "Creative", "Funny", "Sophisticated"] },
+      { name: "origin", label: "Cultural Origin (optional)", type: "select", options: ["Any", "English", "Latin", "Greek", "Hebrew", "Arabic", "Asian", "African", "European"] },
+      { name: "startingLetter", label: "Starting Letter (optional)", type: "input" },
+      { name: "keywords", label: "Keywords/Themes", type: "input" },
+    ],
+  },
+  "ai-slogan-generator": {
+    inputLabel: "Brand/Product Name",
+    placeholder: "Enter your brand or product name",
+    additionalFields: [
+      { name: "industry", label: "Industry", type: "select", options: ["Technology", "Food & Beverage", "Fashion", "Health & Wellness", "Finance", "Education", "Entertainment", "Sports", "Travel", "Non-Profit", "Retail"] },
+      { name: "tone", label: "Slogan Tone", type: "select", options: ["Professional", "Playful", "Inspiring", "Bold", "Friendly", "Sophisticated", "Humorous"] },
+      { name: "length", label: "Slogan Length", type: "select", options: ["Short (2-4 words)", "Medium (5-7 words)", "Long (8+ words)"] },
+      { name: "description", label: "Brand Description", type: "textarea" },
+    ],
+  },
+  "ai-code-debugger": {
+    inputLabel: "Code with Bug",
+    placeholder: "Paste the code that has a bug or error",
+    additionalFields: [
+      { name: "language", label: "Programming Language", type: "select", options: ["JavaScript", "TypeScript", "Python", "Java", "C++", "C#", "Go", "Rust", "PHP", "Ruby", "Swift", "Kotlin"] },
+      { name: "errorMessage", label: "Error Message (if any)", type: "textarea" },
+      { name: "expectedBehavior", label: "Expected Behavior", type: "textarea" },
+    ],
+  },
+  "ai-code-reviewer": {
+    inputLabel: "Code to Review",
+    placeholder: "Paste the code you want reviewed",
+    additionalFields: [
+      { name: "language", label: "Programming Language", type: "select", options: ["JavaScript", "TypeScript", "Python", "Java", "C++", "C#", "Go", "Rust", "PHP", "Ruby", "Swift", "Kotlin"] },
+      { name: "focusAreas", label: "Focus Areas", type: "select", options: ["Performance", "Security", "Best Practices", "Readability", "All Areas"] },
+      { name: "context", label: "Code Context", type: "textarea" },
+    ],
+  },
+  "ai-code-translator": {
+    inputLabel: "Code to Translate",
+    placeholder: "Paste the code you want to translate",
+    additionalFields: [
+      { name: "sourceLanguage", label: "Source Language", type: "select", options: ["JavaScript", "TypeScript", "Python", "Java", "C++", "C#", "Go", "Rust", "PHP", "Ruby", "Swift", "Kotlin"] },
+      { name: "targetLanguage", label: "Target Language", type: "select", options: ["JavaScript", "TypeScript", "Python", "Java", "C++", "C#", "Go", "Rust", "PHP", "Ruby", "Swift", "Kotlin"] },
+      { name: "preserveComments", label: "Preserve Comments", type: "select", options: ["Yes", "No"] },
+    ],
+  },
+  "ai-unit-test-generator": {
+    inputLabel: "Code to Test",
+    placeholder: "Paste the code you want to generate tests for",
+    additionalFields: [
+      { name: "language", label: "Programming Language", type: "select", options: ["JavaScript", "TypeScript", "Python", "Java", "C++", "C#", "Go", "Rust", "PHP", "Ruby"] },
+      { name: "framework", label: "Testing Framework", type: "select", options: ["Jest", "Mocha", "Pytest", "JUnit", "xUnit", "Go Test", "RSpec", "PHPUnit", "Auto-detect"] },
+      { name: "coverage", label: "Test Coverage", type: "select", options: ["Basic", "Comprehensive", "Edge Cases Only", "Full Coverage"] },
+    ],
+  },
 };
 
 export function AiContentGenerator({ toolType, toolName }: AiContentGeneratorProps) {
