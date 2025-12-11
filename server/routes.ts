@@ -37982,6 +37982,154 @@ Provide:
 5. Alternative approaches if applicable`;
           break;
 
+        case "ai-regex-generator":
+          systemPrompt = "You are a regex expert. Generate precise, tested regular expressions with explanations.";
+          userPrompt = `Generate a regular expression for: "${mainInput}"
+Target language: ${options.language || "JavaScript"}
+${options.flags ? `Flags needed: ${options.flags}` : ""}
+${options.testCases ? `Test cases: ${options.testCases}` : ""}
+
+Provide:
+1. The regex pattern
+2. Explanation of each part
+3. Test cases showing matches and non-matches
+4. Common edge cases handled
+5. Alternative patterns if applicable`;
+          break;
+
+        case "ai-excel-formula-generator":
+          systemPrompt = "You are an Excel and Google Sheets expert. Generate precise formulas with explanations.";
+          userPrompt = `Generate an ${options.platform || "Excel"} formula for: "${mainInput}"
+${options.columns ? `Columns/cells involved: ${options.columns}` : ""}
+${options.complexity ? `Complexity level: ${options.complexity}` : ""}
+
+Provide:
+1. The formula
+2. Step-by-step explanation
+3. How to use it
+4. Common modifications
+5. Alternative approaches`;
+          break;
+
+        case "ai-app-builder":
+          systemPrompt = "You are a senior full-stack developer. Generate clean, production-ready code.";
+          userPrompt = `Generate code for: "${mainInput}"
+Framework: ${options.framework || "React"}
+Feature type: ${options.featureType || "Component"}
+${options.requirements ? `Requirements: ${options.requirements}` : ""}
+
+Provide:
+1. Complete, working code
+2. Component/function structure
+3. Usage examples
+4. Props/parameters documentation
+5. Styling suggestions`;
+          break;
+
+        case "ai-chatbot-builder":
+          systemPrompt = "You are a conversational AI designer. Create effective chatbot scripts and flows.";
+          userPrompt = `Create a chatbot flow for: "${mainInput}"
+Bot purpose: ${options.purpose || "Customer service"}
+Tone: ${options.tone || "Professional"}
+${options.intents ? `Key intents: ${options.intents}` : ""}
+
+Provide:
+1. Greeting message
+2. Main conversation flows
+3. Intent recognition phrases
+4. Response templates
+5. Fallback handlers`;
+          break;
+
+        case "ai-data-analyzer":
+          systemPrompt = "You are a data analyst expert. Provide insightful analysis and recommendations.";
+          userPrompt = `Analyze this data scenario: "${mainInput}"
+Data type: ${options.dataType || "General"}
+Analysis goal: ${options.goal || "Insights"}
+${options.metrics ? `Key metrics: ${options.metrics}` : ""}
+
+Provide:
+1. Key observations
+2. Trend analysis
+3. Anomalies or concerns
+4. Recommendations
+5. Next steps for deeper analysis`;
+          break;
+
+        case "ai-meeting-summarizer":
+          systemPrompt = "You are a professional meeting facilitator. Create clear, actionable meeting summaries.";
+          userPrompt = `Summarize this meeting content: "${mainInput}"
+Meeting type: ${options.meetingType || "General"}
+${options.attendees ? `Attendees: ${options.attendees}` : ""}
+
+Provide:
+1. Executive summary (2-3 sentences)
+2. Key decisions made
+3. Action items with owners
+4. Open questions/follow-ups
+5. Next meeting topics`;
+          break;
+
+        case "ai-note-taker":
+          systemPrompt = "You are a professional editor. Transform rough notes into polished, organized content.";
+          userPrompt = `Organize and improve these notes: "${mainInput}"
+Output format: ${options.format || "Bullet points"}
+${options.context ? `Context: ${options.context}` : ""}
+
+Provide:
+1. Organized, structured notes
+2. Clear headings/sections
+3. Expanded abbreviations
+4. Key takeaways
+5. Related topics to explore`;
+          break;
+
+        case "ai-homework-helper":
+          systemPrompt = "You are an educational tutor. Explain concepts clearly with step-by-step reasoning.";
+          userPrompt = `Help me understand this problem: "${mainInput}"
+Subject: ${options.subject || "General"}
+Grade level: ${options.gradeLevel || "High school"}
+${options.specificHelp ? `Specific help needed: ${options.specificHelp}` : ""}
+
+Provide:
+1. Problem breakdown
+2. Key concepts explained
+3. Step-by-step solution approach
+4. Similar practice problems
+5. Tips for similar problems`;
+          break;
+
+        case "ai-story-generator":
+          systemPrompt = "You are a creative writer. Generate engaging, original stories.";
+          userPrompt = `Write a story about: "${mainInput}"
+Genre: ${options.genre || "General fiction"}
+Length: ${options.length || "Short"}
+Tone: ${options.tone || "Engaging"}
+${options.elements ? `Include: ${options.elements}` : ""}
+
+Create a complete story with:
+1. Compelling opening hook
+2. Character development
+3. Rising action and conflict
+4. Satisfying resolution
+5. Memorable ending`;
+          break;
+
+        case "ai-resume-builder":
+          systemPrompt = "You are a professional resume writer and career coach.";
+          userPrompt = `Create resume content for: "${mainInput}"
+Industry: ${options.industry || "General"}
+Experience level: ${options.experienceLevel || "Mid-level"}
+${options.achievements ? `Key achievements: ${options.achievements}` : ""}
+
+Provide:
+1. Professional summary
+2. Achievement-focused bullet points
+3. Skills section suggestions
+4. Keywords for ATS optimization
+5. Tips for improvement`;
+          break;
+
         default:
           systemPrompt = "You are a helpful AI assistant that generates high-quality content.";
           userPrompt = mainInput;

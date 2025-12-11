@@ -980,6 +980,16 @@ export const pdfToolTypes = [
   "ai-music-generator",
   "ai-code-generator",
   "ai-sql-query-generator",
+  "ai-regex-generator",
+  "ai-excel-formula-generator",
+  "ai-app-builder",
+  "ai-chatbot-builder",
+  "ai-data-analyzer",
+  "ai-meeting-summarizer",
+  "ai-note-taker",
+  "ai-homework-helper",
+  "ai-story-generator",
+  "ai-resume-builder",
 ] as const;
 export type PdfToolType = (typeof pdfToolTypes)[number];
 
@@ -26672,3 +26682,258 @@ const aiContentGeneratorTools: PdfTool[] = [
 ];
 
 pdfTools.push(...aiContentGeneratorTools);
+
+const newAiTools: PdfTool[] = [
+  {
+    id: "ai-regex-generator",
+    name: "AI Regex Generator",
+    description: "Generate regular expressions from natural language",
+    icon: "Code",
+    type: "ai-regex-generator",
+    color: "bg-emerald-600",
+    emoji: "🔍",
+    metaTitle: "AI Regex Generator Free - Natural Language to Regex | PDF Tools",
+    metaDescription: "Generate regular expressions from plain English with AI. Create complex patterns for validation, extraction, and matching. Free AI regex assistant.",
+    seoArticle: `<h2>AI Regex Generator - Patterns Made Simple</h2>
+<p>Regular expressions are powerful but notoriously difficult to write correctly. Our AI Regex Generator transforms plain English descriptions into precise regex patterns. Describe what you want to match, and get working regex instantly for JavaScript, Python, Java, or any language.</p>
+
+<h2>Natural Language to Regex</h2>
+<p>Stop struggling with cryptic regex syntax. Simply describe your pattern: "Match email addresses" or "Find phone numbers in US format." Our AI understands your intent and produces accurate, tested regular expressions ready for immediate use.</p>
+
+<h2>Validation Patterns Made Easy</h2>
+<p>Email validation, phone numbers, postal codes, URLs, credit card numbers - common validation patterns generated in seconds. Get regex that handles edge cases and international formats. Include test cases to verify your patterns work correctly.</p>
+
+<h2>Advanced Pattern Support</h2>
+<p>Lookaheads, lookbehinds, capturing groups, non-greedy matches - advanced regex concepts without memorizing complex syntax. Describe the behavior you need, and our AI handles the implementation details.</p>
+
+<h2>Multi-Language Compatible</h2>
+<p>JavaScript, Python, Java, PHP, Ruby, Go - regex syntax varies slightly between languages. Our AI generates patterns optimized for your target language, handling dialect differences automatically.</p>`,
+  },
+  {
+    id: "ai-excel-formula-generator",
+    name: "AI Excel Formula Generator",
+    description: "Generate Excel formulas from natural language",
+    icon: "Table",
+    type: "ai-excel-formula-generator",
+    color: "bg-green-600",
+    emoji: "📊",
+    metaTitle: "AI Excel Formula Generator Free - Natural Language to Excel | PDF Tools",
+    metaDescription: "Generate Excel formulas from plain English with AI. Create VLOOKUP, IF statements, SUMIF, and complex formulas easily. Free AI Excel assistant.",
+    seoArticle: `<h2>AI Excel Formula Generator - Spreadsheet Magic</h2>
+<p>Excel formulas can be complex and confusing. Our AI Excel Formula Generator transforms your plain English requests into working Excel formulas. Whether you need simple calculations or complex nested functions, describe what you want and get the formula instantly.</p>
+
+<h2>From Description to Formula</h2>
+<p>Stop Googling Excel formula syntax. Describe your calculation: "Sum all sales from January where region is East" or "Find the nth largest value in column B." Our AI generates precise, working formulas ready to paste into your spreadsheet.</p>
+
+<h2>Complex Functions Simplified</h2>
+<p>VLOOKUP, INDEX/MATCH, SUMIFS, nested IF statements, array formulas - advanced Excel features become accessible. Describe your data analysis needs, and our AI constructs the appropriate formula with proper syntax.</p>
+
+<h2>Google Sheets Compatible</h2>
+<p>Works for both Excel and Google Sheets. Our AI understands the subtle syntax differences and generates formulas optimized for your platform. ARRAYFORMULA, QUERY, and Sheets-specific functions supported.</p>
+
+<h2>Learn While You Create</h2>
+<p>Every generated formula includes explanations of how it works. Understand the logic behind VLOOKUP vs INDEX/MATCH, when to use SUMIF vs SUMPRODUCT. Level up your spreadsheet skills through AI assistance.</p>`,
+  },
+  {
+    id: "ai-app-builder",
+    name: "AI App Builder",
+    description: "Generate app code and architecture with AI",
+    icon: "Smartphone",
+    type: "ai-app-builder",
+    color: "bg-blue-600",
+    emoji: "📱",
+    metaTitle: "AI App Builder Free - Generate App Code Instantly | PDF Tools",
+    metaDescription: "Build app features with AI-generated code. Create components, screens, and functionality for React, React Native, and more. Free AI app development assistant.",
+    seoArticle: `<h2>AI App Builder - Accelerate Your Development</h2>
+<p>Building apps requires writing thousands of lines of code. Our AI App Builder generates complete features, components, and screens from your descriptions. Describe what you want to build, and get production-ready code for React, React Native, Flutter, or native platforms.</p>
+
+<h2>Feature Generation</h2>
+<p>Login screens, user profiles, product lists, checkout flows - describe the feature you need and get complete, working code. Components, state management, API integration, and styling all generated together.</p>
+
+<h2>Full Stack Support</h2>
+<p>Frontend components, backend APIs, database schemas - our AI generates code across the entire stack. Describe your feature once, get everything needed to implement it from UI to database.</p>
+
+<h2>Best Practices Built In</h2>
+<p>Generated code follows modern patterns and best practices. Proper component structure, efficient state management, secure API design. Build apps that are maintainable and scalable from the start.</p>
+
+<h2>Framework Flexibility</h2>
+<p>React, Vue, Angular, React Native, Flutter, Swift, Kotlin - generate code for your preferred framework and platform. Our AI understands idioms and conventions for each ecosystem.</p>`,
+  },
+  {
+    id: "ai-chatbot-builder",
+    name: "AI Chatbot Builder",
+    description: "Create chatbot scripts and conversation flows",
+    icon: "MessageSquare",
+    type: "ai-chatbot-builder",
+    color: "bg-indigo-600",
+    emoji: "🤖",
+    metaTitle: "AI Chatbot Builder Free - Create Conversation Flows | PDF Tools",
+    metaDescription: "Build chatbot conversations with AI. Generate scripts, dialog flows, and responses for customer service, FAQ, and more. Free AI chatbot assistant.",
+    seoArticle: `<h2>AI Chatbot Builder - Conversations That Convert</h2>
+<p>Creating effective chatbot conversations requires understanding user intent and crafting appropriate responses. Our AI Chatbot Builder generates complete conversation flows, scripts, and response templates for customer service, sales, FAQ, and more.</p>
+
+<h2>Conversation Flow Design</h2>
+<p>Map out complete user journeys from greeting to resolution. Our AI generates branching dialog trees that handle different user intents, questions, and scenarios. Cover edge cases and provide fallback responses.</p>
+
+<h2>Intent Recognition Patterns</h2>
+<p>Generate training phrases and intent categories for your chatbot platform. Our AI creates diverse phrase variations that help your bot understand user messages accurately.</p>
+
+<h2>Platform Compatible</h2>
+<p>Dialogflow, Microsoft Bot Framework, Amazon Lex, custom implementations - generate scripts formatted for your chatbot platform. Export-ready configurations that import directly into your system.</p>
+
+<h2>Tone and Brand Voice</h2>
+<p>Professional, friendly, casual, technical - match your chatbot's personality to your brand. Our AI generates responses that maintain consistent tone while effectively handling user needs.</p>`,
+  },
+  {
+    id: "ai-data-analyzer",
+    name: "AI Data Analyzer",
+    description: "Analyze data and generate insights with AI",
+    icon: "BarChart",
+    type: "ai-data-analyzer",
+    color: "bg-orange-600",
+    emoji: "📈",
+    metaTitle: "AI Data Analyzer Free - Generate Data Insights | PDF Tools",
+    metaDescription: "Analyze data and generate insights with AI. Identify trends, patterns, and anomalies in your data. Free AI data analysis assistant.",
+    seoArticle: `<h2>AI Data Analyzer - Insights from Your Data</h2>
+<p>Data without analysis is just numbers. Our AI Data Analyzer helps you understand your data by identifying trends, patterns, correlations, and anomalies. Describe your dataset and analysis goals, and get actionable insights instantly.</p>
+
+<h2>Trend Identification</h2>
+<p>Spot trends and patterns in your data that might be missed by manual analysis. Our AI identifies seasonal patterns, growth trends, cyclical behaviors, and inflection points in your metrics.</p>
+
+<h2>Anomaly Detection</h2>
+<p>Find outliers and unusual data points that require attention. Our AI flags data that deviates significantly from expected patterns, helping you catch issues early.</p>
+
+<h2>Correlation Analysis</h2>
+<p>Discover relationships between different variables in your data. Understand what factors influence your key metrics and which variables move together.</p>
+
+<h2>Report Generation</h2>
+<p>Get analysis results in clear, readable reports. Executive summaries, detailed findings, and visualization recommendations all generated from your data description.</p>`,
+  },
+  {
+    id: "ai-meeting-summarizer",
+    name: "AI Meeting Summarizer",
+    description: "Generate meeting summaries and action items",
+    icon: "Users",
+    type: "ai-meeting-summarizer",
+    color: "bg-teal-600",
+    emoji: "📝",
+    metaTitle: "AI Meeting Summarizer Free - Summarize Meetings Instantly | PDF Tools",
+    metaDescription: "Generate meeting summaries and action items with AI. Turn meeting notes into clear summaries, decisions, and next steps. Free AI meeting assistant.",
+    seoArticle: `<h2>AI Meeting Summarizer - Never Miss Key Points</h2>
+<p>Meetings generate lots of discussion but extracting key points takes time. Our AI Meeting Summarizer transforms raw meeting notes into structured summaries with clear decisions, action items, and next steps.</p>
+
+<h2>Key Decisions Captured</h2>
+<p>Every important decision clearly documented. Our AI identifies what was agreed upon, who approved it, and any conditions or dependencies. Never lose track of what was decided.</p>
+
+<h2>Action Items Extracted</h2>
+<p>Every task, assignment, and follow-up automatically extracted. Who's responsible, what's due, and what's the priority - all organized and ready for distribution.</p>
+
+<h2>Discussion Highlights</h2>
+<p>Important points and context preserved without the filler. Our AI distills lengthy discussions into the essential information that team members need to know.</p>
+
+<h2>Shareable Format</h2>
+<p>Summaries formatted for easy sharing via email, Slack, or project management tools. Copy and distribute to keep everyone aligned on meeting outcomes.</p>`,
+  },
+  {
+    id: "ai-note-taker",
+    name: "AI Note Taker",
+    description: "Transform rough notes into organized content",
+    icon: "FileText",
+    type: "ai-note-taker",
+    color: "bg-amber-600",
+    emoji: "📒",
+    metaTitle: "AI Note Taker Free - Organize Notes Instantly | PDF Tools",
+    metaDescription: "Transform messy notes into organized, structured content with AI. Clean up, format, and enhance your notes. Free AI note-taking assistant.",
+    seoArticle: `<h2>AI Note Taker - From Chaos to Clarity</h2>
+<p>Raw notes are often messy, abbreviated, and hard to review later. Our AI Note Taker transforms your rough notes into polished, organized content that's easy to understand and reference.</p>
+
+<h2>Structure and Organization</h2>
+<p>Jumbled bullet points become logical sections with headers. Our AI identifies topics and themes, grouping related information together in a coherent structure.</p>
+
+<h2>Expansion and Clarification</h2>
+<p>Brief jottings expanded into complete thoughts. Our AI understands abbreviations and shorthand, transforming them into clear, complete sentences while preserving your original meaning.</p>
+
+<h2>Format Flexibility</h2>
+<p>Output in your preferred format - bullet points, numbered lists, paragraphs, or structured documents. Get notes formatted for sharing, studying, or archiving.</p>
+
+<h2>Context Preservation</h2>
+<p>Important context and nuance maintained throughout the cleanup process. Our AI enhances clarity without losing the essential information from your original notes.</p>`,
+  },
+  {
+    id: "ai-homework-helper",
+    name: "AI Homework Helper",
+    description: "Get help understanding homework problems",
+    icon: "BookOpen",
+    type: "ai-homework-helper",
+    color: "bg-purple-600",
+    emoji: "📚",
+    metaTitle: "AI Homework Helper Free - Understand Problems Better | PDF Tools",
+    metaDescription: "Get AI help understanding homework problems. Step-by-step explanations for math, science, writing, and more. Free AI educational assistant.",
+    seoArticle: `<h2>AI Homework Helper - Learn While You Solve</h2>
+<p>Stuck on a homework problem? Our AI Homework Helper provides step-by-step explanations that help you understand concepts, not just get answers. Learn the reasoning behind solutions across math, science, writing, and more.</p>
+
+<h2>Step-by-Step Explanations</h2>
+<p>Every problem broken down into understandable steps. See the logic and reasoning behind each part of the solution. Learn methods you can apply to similar problems.</p>
+
+<h2>Multiple Subjects Supported</h2>
+<p>Math, physics, chemistry, biology, history, literature, writing - our AI helps across the curriculum. Each subject approached with appropriate methodology and terminology.</p>
+
+<h2>Concept Clarification</h2>
+<p>Don't understand a concept? Get clear explanations with examples. Our AI identifies knowledge gaps and provides the background information you need.</p>
+
+<h2>Practice Problem Generation</h2>
+<p>Master concepts with additional practice problems. Our AI generates similar questions to help you build confidence and skill before tests.</p>`,
+  },
+  {
+    id: "ai-story-generator",
+    name: "AI Story Generator",
+    description: "Create creative stories and narratives",
+    icon: "BookMarked",
+    type: "ai-story-generator",
+    color: "bg-pink-600",
+    emoji: "📖",
+    metaTitle: "AI Story Generator Free - Create Stories Instantly | PDF Tools",
+    metaDescription: "Generate creative stories with AI. Create short stories, narratives, and creative writing for any genre. Free AI creative writing assistant.",
+    seoArticle: `<h2>AI Story Generator - Unleash Your Creativity</h2>
+<p>Writer's block? Need inspiration? Our AI Story Generator creates original stories, narratives, and creative content from your prompts. Generate short stories, character sketches, plot outlines, or complete narratives in any genre.</p>
+
+<h2>Any Genre, Any Style</h2>
+<p>Fantasy, sci-fi, romance, mystery, horror, literary fiction - our AI writes in any genre you choose. Match specific author styles or create something entirely unique to your vision.</p>
+
+<h2>Character Development</h2>
+<p>Rich, believable characters with depth and motivation. Our AI creates character backgrounds, personalities, and arcs that drive compelling narratives.</p>
+
+<h2>Plot Construction</h2>
+<p>Engaging plots with proper story structure. Beginning hooks, rising action, climaxes, and satisfying resolutions. Stories that keep readers engaged from start to finish.</p>
+
+<h2>Creative Prompts</h2>
+<p>Not sure where to start? Get creative writing prompts to spark your imagination. Use AI-generated story starters and develop them with your own voice.</p>`,
+  },
+  {
+    id: "ai-resume-builder",
+    name: "AI Resume Builder",
+    description: "Create professional resumes with AI assistance",
+    icon: "FileText",
+    type: "ai-resume-builder",
+    color: "bg-slate-600",
+    emoji: "💼",
+    metaTitle: "AI Resume Builder Free - Create Professional Resumes | PDF Tools",
+    metaDescription: "Build professional resumes with AI. Generate compelling bullet points, summaries, and skill sections. Free AI resume writing assistant.",
+    seoArticle: `<h2>AI Resume Builder - Stand Out to Employers</h2>
+<p>Your resume is your first impression with employers. Our AI Resume Builder helps you create compelling, ATS-friendly resumes that highlight your achievements and skills. Generate powerful bullet points, professional summaries, and optimized skill sections.</p>
+
+<h2>Achievement-Focused Bullet Points</h2>
+<p>Transform job duties into impressive achievements. Our AI helps quantify your impact with metrics, action verbs, and results-oriented language that catches recruiters' attention.</p>
+
+<h2>Professional Summary Writing</h2>
+<p>Compelling career summaries that position you for your target role. Highlight your unique value proposition and key qualifications in a concise, powerful statement.</p>
+
+<h2>ATS Optimization</h2>
+<p>Resumes formatted and written to pass Applicant Tracking Systems. Proper keyword integration, formatting, and structure that both humans and algorithms appreciate.</p>
+
+<h2>Industry Customization</h2>
+<p>Language and emphasis tailored to your industry. Tech, finance, healthcare, marketing, sales - each field has its own expectations and terminology.</p>`,
+  }
+];
+
+pdfTools.push(...newAiTools);

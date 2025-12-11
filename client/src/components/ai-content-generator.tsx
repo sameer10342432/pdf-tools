@@ -116,8 +116,97 @@ const toolConfigs: Record<string, GenerationConfig> = {
     placeholder: "Describe in plain English what data you want",
     additionalFields: [
       { name: "database", label: "Database Type", type: "select", options: ["MySQL", "PostgreSQL", "SQLite", "SQL Server", "Oracle", "MariaDB"] },
-      { name: "tables", label: "Table Names (comma separated)", type: "input" },
+            { name: "tables", label: "Table Names (comma separated)", type: "input" },
       { name: "queryType", label: "Query Type", type: "select", options: ["SELECT", "INSERT", "UPDATE", "DELETE", "CREATE TABLE", "JOIN", "Aggregation", "Complex Query"] },
+    ],
+  },
+  "ai-regex-generator": {
+    inputLabel: "Describe Your Pattern",
+    placeholder: "What do you want to match? (e.g., email addresses, phone numbers)",
+    additionalFields: [
+      { name: "language", label: "Target Language", type: "select", options: ["JavaScript", "Python", "Java", "PHP", "Ruby", "Go", "C#", "Rust"] },
+      { name: "flags", label: "Regex Flags (optional)", type: "input" },
+      { name: "testCases", label: "Test Cases (examples to match)", type: "textarea" },
+    ],
+  },
+  "ai-excel-formula-generator": {
+    inputLabel: "Describe Your Formula Need",
+    placeholder: "What calculation or operation do you need?",
+    additionalFields: [
+      { name: "platform", label: "Platform", type: "select", options: ["Excel", "Google Sheets", "LibreOffice Calc"] },
+      { name: "columns", label: "Columns/Cells Involved", type: "input" },
+      { name: "complexity", label: "Complexity", type: "select", options: ["Simple", "Intermediate", "Advanced", "Expert"] },
+    ],
+  },
+  "ai-app-builder": {
+    inputLabel: "Describe Your Feature",
+    placeholder: "What app feature do you want to build?",
+    additionalFields: [
+      { name: "framework", label: "Framework", type: "select", options: ["React", "React Native", "Vue", "Angular", "Flutter", "Swift", "Kotlin"] },
+      { name: "featureType", label: "Feature Type", type: "select", options: ["Component", "Page", "API", "Full Feature", "CRUD Operations"] },
+      { name: "requirements", label: "Specific Requirements", type: "textarea" },
+    ],
+  },
+  "ai-chatbot-builder": {
+    inputLabel: "Chatbot Topic/Purpose",
+    placeholder: "What should your chatbot do?",
+    additionalFields: [
+      { name: "purpose", label: "Bot Purpose", type: "select", options: ["Customer Service", "Sales", "FAQ", "Lead Generation", "Booking", "Technical Support"] },
+      { name: "tone", label: "Conversation Tone", type: "select", options: ["Professional", "Friendly", "Casual", "Formal", "Playful"] },
+      { name: "intents", label: "Key Intents (comma separated)", type: "input" },
+    ],
+  },
+  "ai-data-analyzer": {
+    inputLabel: "Describe Your Data",
+    placeholder: "What data do you have and what insights do you need?",
+    additionalFields: [
+      { name: "dataType", label: "Data Type", type: "select", options: ["Sales Data", "Survey Results", "Financial Data", "User Analytics", "Marketing Metrics", "Operations Data"] },
+      { name: "goal", label: "Analysis Goal", type: "select", options: ["Trend Analysis", "Performance Review", "Anomaly Detection", "Forecasting", "Comparison"] },
+      { name: "metrics", label: "Key Metrics (comma separated)", type: "input" },
+    ],
+  },
+  "ai-meeting-summarizer": {
+    inputLabel: "Meeting Notes",
+    placeholder: "Paste your meeting notes, transcript, or key points discussed",
+    additionalFields: [
+      { name: "meetingType", label: "Meeting Type", type: "select", options: ["Team Standup", "Project Review", "Client Call", "Brainstorm", "One-on-One", "Board Meeting"] },
+      { name: "attendees", label: "Attendees (optional)", type: "input" },
+    ],
+  },
+  "ai-note-taker": {
+    inputLabel: "Your Notes",
+    placeholder: "Paste your rough notes, jottings, or bullet points",
+    additionalFields: [
+      { name: "format", label: "Output Format", type: "select", options: ["Bullet Points", "Numbered List", "Paragraphs", "Outline", "Mind Map Text"] },
+      { name: "context", label: "Context (lecture, meeting, etc.)", type: "input" },
+    ],
+  },
+  "ai-homework-helper": {
+    inputLabel: "Your Question or Problem",
+    placeholder: "Paste your homework question or describe the problem",
+    additionalFields: [
+      { name: "subject", label: "Subject", type: "select", options: ["Math", "Physics", "Chemistry", "Biology", "History", "English", "Computer Science", "Economics"] },
+      { name: "gradeLevel", label: "Grade Level", type: "select", options: ["Elementary", "Middle School", "High School", "Undergraduate", "Graduate"] },
+      { name: "specificHelp", label: "What help do you need?", type: "textarea" },
+    ],
+  },
+  "ai-story-generator": {
+    inputLabel: "Story Idea or Prompt",
+    placeholder: "Describe your story idea, characters, or setting",
+    additionalFields: [
+      { name: "genre", label: "Genre", type: "select", options: ["Fantasy", "Sci-Fi", "Romance", "Mystery", "Horror", "Adventure", "Literary Fiction", "Childrens"] },
+      { name: "length", label: "Story Length", type: "select", options: ["Flash Fiction", "Short Story", "Long Story"] },
+      { name: "tone", label: "Tone", type: "select", options: ["Light", "Dark", "Humorous", "Dramatic", "Suspenseful", "Heartwarming"] },
+      { name: "elements", label: "Elements to Include (optional)", type: "textarea" },
+    ],
+  },
+  "ai-resume-builder": {
+    inputLabel: "Your Role or Experience",
+    placeholder: "Describe your job title, experience, and key responsibilities",
+    additionalFields: [
+      { name: "industry", label: "Industry", type: "select", options: ["Technology", "Finance", "Healthcare", "Marketing", "Sales", "Education", "Engineering", "Creative"] },
+      { name: "experienceLevel", label: "Experience Level", type: "select", options: ["Entry Level", "Mid-Level", "Senior", "Executive", "Career Change"] },
+      { name: "achievements", label: "Key Achievements", type: "textarea" },
     ],
   },
 };
