@@ -5,3 +5,5 @@ server/public
 vite.config.ts.*
 *.tar.gz
 /.local/
+git-portable.exe
+git_dist/
