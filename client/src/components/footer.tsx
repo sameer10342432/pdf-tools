@@ -11,7 +11,7 @@ export function Footer({ onToolClick }: FooterProps) {
   return (
     <footer className="border-t bg-card/50">
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
             <a
               href="/"
@@ -24,7 +24,7 @@ export function Footer({ onToolClick }: FooterProps) {
               <span>PDF Tools</span>
             </a>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Free online PDF tools to help you work with PDF files easily. 
+              Free online PDF tools to help you work with PDF files easily.
               Merge, split, compress, and convert PDFs securely.
             </p>
           </div>
@@ -46,22 +46,7 @@ export function Footer({ onToolClick }: FooterProps) {
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-semibold mb-4">More Tools</h3>
-            <ul className="space-y-2">
-              {pdfTools.slice(5).map((tool) => (
-                <li key={tool.id}>
-                  <button
-                    onClick={() => onToolClick(tool.id)}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    data-testid={`link-footer-${tool.id}`}
-                  >
-                    {tool.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+
 
           <div>
             <h3 className="font-semibold mb-4">Company</h3>
